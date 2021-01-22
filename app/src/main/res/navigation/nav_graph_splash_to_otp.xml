@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/SplashScreenFragment">
+
+    <!-- Splash Screen Fragment-->
+    <fragment
+        android:id="@+id/SplashScreenFragment"
+        android:name="com.veracity.ui.splash_screen.SplashScreenFragment"
+        tools:layout="@layout/fragment_splash_screen" >
+
+        <action
+            android:id="@+id/action_SplashScreenFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment"
+            app:launchSingleTop="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/SplashScreenFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <!-- Login Fragment-->
+    <fragment
+        android:id="@+id/LoginFragment"
+        android:name="com.veracity.ui.login.LogInFragment"
+        tools:layout="@layout/fragment_log_in"/>
+
+</navigation>

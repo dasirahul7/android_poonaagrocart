@@ -4,8 +4,8 @@
     <color name="colorSecondary">#FCC013 </color>
     <color name="colorAccent">#FCC013 </color>
 
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 
     <!--toast background colors-->
     <color name="defaultTextColor">#FFFFFF</color>
@@ -14,5 +14,9 @@
     <color name="successColor">#00CE22</color>
     <color name="warningColor">#FFA900</color>
     <color name="normalColor">#353A3E</color>
+    <color name="colorOrange">#F16531</color>
+
+    <color name="colorGreenButton">#4CAF50</color>
+    <color name="colorDefaultTextView">#808080</color>
 
 </resources>

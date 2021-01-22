@@ -8,9 +8,27 @@
     <string name="font_poppins_regular">fonts/poppins/poppins_regular.ttf</string>
     <string name="font_poppins_semi_bold">fonts/poppins/poppins_semi_bold.ttf</string>
 
+    <!--check internet connection dialog-->
     <string name="info">Information</string>
     <string name="internet_error_message">Cannot connect to Internet. Check your Internet connection.</string>
     <string name="retry">Retry</string>
     <string name="dialog_cancel">Cancel</string>
+
+    <!--logout dialog-->
+    <string name="do_you_really_want_to_logout">Do you really want to sign out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!--in app update dialog-->
+    <string name="update">Update</string>
+    <string name="update_downloaded">Successfully updated Fresh Cut Vendor App!</string>
+    <string name="restart">Restart</string>
+
+    <!--base fragment strings-->
+    <string name="ensure_your_all_permissions">Ensure all your permissions</string>
+    <string name="select_file">Select file</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
 
 </resources>

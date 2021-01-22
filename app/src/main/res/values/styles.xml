@@ -62,4 +62,15 @@
         <item name="android:textSize">@dimen/_16sp</item>
     </style>
 
+    <!--Custom Dialog Style-->
+    <style name="StyleDataConfirmationDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <!--<item name="android:windowAnimationStyle">@style/StyleDataConfirmationDialog.Animation</item>-->
+    </style>
+
+    <style name="StyleDialogUpDownAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_down</item>
+    </style>
+
 </resources>
