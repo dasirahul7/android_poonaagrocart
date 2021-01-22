@@ -31,6 +31,16 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@mipmap/ic_launcher_round" />
 
+            <com.veracity.widgets.progressbar.DotProgressBar
+                android:id="@+id/dots_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                app:color="@color/colorAccent"
+                app:count="5"
+                app:timeout="300"
+                android:layout_gravity="center"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <LinearLayout

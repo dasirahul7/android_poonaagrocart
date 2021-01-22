@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.veracity.widgets.progressbar.DotProgressBar;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -38,7 +39,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
 
     private static final String TAG = SplashScreenFragment.class.getName();
 
-    //private DotProgressBar progressbar;
+    private DotProgressBar progressbar;
 
     private Context context;
 
