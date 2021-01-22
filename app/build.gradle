@@ -2,6 +2,14 @@ plugins {
     id 'com.android.application'
 }
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
+static def getDateTime() {
+    DateFormat df = new SimpleDateFormat("dd_MM_yyyy_hh_mm_aa");
+    return df.format(new Date());
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -13,13 +21,45 @@ android {
         versionCode 1
         versionName "1.0"
 
+        multiDexEnabled true
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
+            //manifestPlaceholders = [ mapsApiKey: "AIzaSyDHYoOXbCOt_AgEbUXbj0DSowKgHFwtdGA" ] //production key
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+
+                    outputFileName = "veracity_inspection_app";
+                    outputFileName += "_v" + android.defaultConfig.versionName + "_" + getDateTime();
+                    if (variant.buildType.name == "release") {
+                        outputFileName += ".apk";
+                    } else {
+                        outputFileName += "_debug.apk";
+                    }
+                }
+            }
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+
+                    outputFileName = "veracity_inspection_app";
+                    outputFileName += "_v" + android.defaultConfig.versionName + "_" + getDateTime();
+                    if (variant.buildType.name == "release") {
+                        outputFileName += ".apk";
+                    } else {
+                        outputFileName += "_debug.apk";
+                    }
+                }
+            }
         }
     }
     compileOptions {
@@ -29,11 +69,33 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
+
+    /*retrofit*/
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
+
+    /*rxjava*/
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.5'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+
+    /*multi dex*/
+    implementation 'com.android.support:multidex:1.0.3'
+
+    /*firebase*/
+    implementation 'com.google.firebase:firebase-analytics:18.0.1'
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
+
+    /*sdp*/
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

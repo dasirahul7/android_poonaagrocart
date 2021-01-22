@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Veracity Inspection</string>
+    <string name="toast_message">Toast</string>
+
+    <!--font styles-->
+    <string name="font_poppins_bold">fonts/poppins/poppins_semi_bold.ttf</string>
+    <string name="font_poppins_medium">fonts/poppins/poppins_medium.ttf</string>
+    <string name="font_poppins_regular">fonts/poppins/poppins_regular.ttf</string>
+    <string name="font_poppins_semi_bold">fonts/poppins/poppins_semi_bold.ttf</string>
+
+    <string name="info">Information</string>
+    <string name="internet_error_message">Cannot connect to Internet. Check your Internet connection.</string>
+    <string name="retry">Retry</string>
+    <string name="dialog_cancel">Cancel</string>
+
 </resources>
