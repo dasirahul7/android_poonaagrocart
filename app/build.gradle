@@ -36,7 +36,7 @@ android {
             android.applicationVariants.all { variant ->
                 variant.outputs.all {
 
-                    outputFileName = "veracity_inspection_app";
+                    outputFileName = "app";
                     outputFileName += "_v" + android.defaultConfig.versionName + "_" + getDateTime();
                     if (variant.buildType.name == "release") {
                         outputFileName += ".apk";
@@ -52,7 +52,7 @@ android {
             android.applicationVariants.all { variant ->
                 variant.outputs.all {
 
-                    outputFileName = "veracity_inspection_app";
+                    outputFileName = "app";
                     outputFileName += "_v" + android.defaultConfig.versionName + "_" + getDateTime();
                     if (variant.buildType.name == "release") {
                         outputFileName += ".apk";
@@ -77,9 +77,9 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     /*retrofit*/
@@ -97,14 +97,14 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     /*firebase*/
-    implementation 'com.google.firebase:firebase-analytics:18.0.1'
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.google.firebase:firebase-analytics:19.0.2'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
 
     /*sdp*/
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
     /*for in app update*/
-    implementation 'com.google.android.play:core:1.9.0'
+    implementation 'com.google.android.play:core:1.10.2'
 
     /*picasso*/
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -119,10 +119,10 @@ dependencies {
 
     /*for org.apache.commons.io*/
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
-    implementation 'androidx.navigation:navigation-fragment:2.3.2'
-    implementation 'androidx.navigation:navigation-ui:2.3.2'
+    implementation 'androidx.navigation:navigation-fragment:2.3.5'
+    implementation 'androidx.navigation:navigation-ui:2.3.5'
 
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
