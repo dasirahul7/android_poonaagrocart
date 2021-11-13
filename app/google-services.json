@@ -47,7 +47,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:739877089674:android:100c4dcb1234522b4c5873",
         "android_client_info": {
-          "package_name": "com.veracity"
+          "package_name": "com.poona.agrocart"
         }
       },
       "oauth_client": [
@@ -55,7 +55,7 @@
           "client_id": "739877089674-6b320v8jr30vkq46sqbftk95vtaj1qim.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.veracity",
+            "package_name": "com.poona.agrocart",
             "certificate_hash": "3491f61886e306838a0c106913ea7d3c4c6677ec"
           }
         },

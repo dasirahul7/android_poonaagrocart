@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.vendor.splash_screen.SplashScreenActivity">
+        tools:context=".agrocart.ui.vendor.splash_screen.SplashScreenActivity">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/linearLayoutCompat"
@@ -31,7 +31,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@mipmap/ic_launcher_round" />
 
-            <com.veracity.widgets.progressbar.DotProgressBar
+            <com.poona.agrocart.widgets.progressbar.DotProgressBar
                 android:id="@+id/dots_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="MissingConstraints">
 
-            <com.veracity.widgets.CustomTextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FB3C3C"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.veracity.widgets.CustomButton
+                <com.poona.agrocart.widgets.CustomButton
                     android:id="@+id/btnCancel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                     android:textColor="@color/white"
                     app:setCustomFont="@string/font_poppins_regular"/>
 
-                <com.veracity.widgets.CustomButton
+                <com.poona.agrocart.widgets.CustomButton
                     android:id="@+id/btnRetry"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

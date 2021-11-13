@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.veracity">
+    package="com.poona.agrocart">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -36,7 +36,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.veracity"
+            android:authorities="com.poona.agrocart"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
