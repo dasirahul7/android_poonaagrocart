@@ -48,7 +48,7 @@
             android:clipToPadding="false"
             android:orientation="vertical">
 
-            <com.veracity.widgets.CustomTextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 tools:visibility="visible"
                 app:setCustomFont="@string/font_poppins_regular"/>
 
-            <com.veracity.widgets.CustomTextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tvText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                 tools:visibility="visible"
                 app:setCustomFont="@string/font_poppins_regular"/>
 
-            <com.veracity.widgets.CustomTextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_25sdp"

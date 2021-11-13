@@ -8,7 +8,7 @@
     <!-- Splash Screen Fragment-->
     <fragment
         android:id="@+id/SplashScreenFragment"
-        android:name="com.veracity.ui.splash_screen.SplashScreenFragment"
+        android:name="com.poona.agrocart.ui.splash_screen.SplashScreenFragment"
         tools:layout="@layout/fragment_splash_screen" >
 
         <action
@@ -25,7 +25,7 @@
     <!-- Login Fragment-->
     <fragment
         android:id="@+id/LoginFragment"
-        android:name="com.veracity.ui.login.LogInFragment"
+        android:name="com.poona.agrocart.ui.login.LogInFragment"
         tools:layout="@layout/fragment_log_in"/>
 
 </navigation>
