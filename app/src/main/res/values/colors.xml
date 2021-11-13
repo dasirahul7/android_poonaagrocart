@@ -19,4 +19,9 @@
     <color name="colorGreenButton">#4CAF50</color>
     <color name="colorDefaultTextView">#808080</color>
 
+    <!--login fragment colors-->
+    <color name="clr_fast_and_fresh_text">#456304</color>
+    <color name="clr_get_your_groceries_text">#030303</color>
+
+
 </resources>

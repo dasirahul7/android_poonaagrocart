@@ -1,18 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".agrocart.ui.login.LogInFragment">
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <com.poona.agrocart.widgets.CustomTextView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:layout_gravity="center"
-        android:gravity="center"
-        app:setCustomFont="@string/font_poppins_regular"/>
+        android:layout_height="wrap_content"
+        android:weightSum="100"
+        android:background="#fefefe"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/agro_main_bg"
+            android:layout_weight="40"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_40sdp"
+        android:background="#fefefe"
+        android:layout_gravity="bottom"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_height="0dp"
+        android:layout_weight="60">
+
+        <ImageView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:id="@+id/iv_poona_agro_cart_logo"
+            android:src="@drawable/ic_poona_agro_cart_logo"/>
+
+        <com.poona.agrocart.widgets.CustomTextView
+            android:id="@+id/tv_fast_fresh_healthy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_poona_agro_cart_logo"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/fast_fresh_healthy"
+            android:textColor="@color/clr_fast_and_fresh_text"
+            android:textSize="@dimen/_30sdp"
+            app:setCustomFont="@string/font_poppins_regular"/>
+        <com.poona.agrocart.widgets.CustomTextView
+            android:id="@+id/tv_get_your_groceries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/clr_get_your_groceries_text"
+            android:layout_below="@+id/tv_fast_fresh_healthy"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/get_ur_groceries"
+            android:textSize="@dimen/_20sdp"
+            app:setCustomFont="@string/font_poppins_regular"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_get_your_groceries"
+            android:background="@drawable/ll_login_signup_bg"
+            android:weightSum="100"
+            android:id="@+id/ll_et_phone_no">
+        <EditText
+            android:id="@+id/et"
+            android:layout_width="0dp"
+            android:layout_weight="25"
+            android:layout_height="wrap_content"
+            android:background="@drawable/et_login_signup_bg"
+            android:padding="@dimen/alerter_padding_half"
+            android:drawablePadding="@dimen/alerter_padding_half"
+            android:drawableStart="@drawable/india_flag"
+            app:setCustomFont="@string/font_poppins_regular"
+            android:text="+91 "
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+            <EditText
+                android:id="@+id/et_phone_no"
+                android:layout_width="0dp"
+                android:layout_weight="75"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/alerter_padding_half"
+                android:background="@drawable/et_login_signup_bg"
+                android:inputType="phone"
+                android:drawablePadding="@dimen/alerter_padding_half"
+                app:setCustomFont="@string/font_poppins_regular"
+                android:drawableEnd="@drawable/ic_sign_up"
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+        </LinearLayout>
+
+
+        <com.poona.agrocart.widgets.CustomTextView
+            android:id="@+id/tv_terms_and_conditions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_et_phone_no"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/privacy_policy_terms_n_conditions"
+            app:setCustomFont="@string/font_poppins_regular"/>
+    </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>
