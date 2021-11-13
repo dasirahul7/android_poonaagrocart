@@ -44,7 +44,8 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".ui.splash_screen.SplashScreenActivity">
+        <activity android:name=".ui.splash_screen.SplashScreenActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,7 +60,8 @@
 
         <service
             android:name=".data.firebase.VeracityFirebaseMessagingService"
-            android:stopWithTask="false">
+            android:stopWithTask="false"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

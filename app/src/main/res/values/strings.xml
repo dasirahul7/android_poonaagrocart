@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Veracity Inspection</string>
+    <string name="app_name">Android Template</string>
     <string name="toast_message">Toast</string>
 
     <!--font styles-->

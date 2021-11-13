@@ -1,5 +1,6 @@
 package com.veracity.ui.splash_screen;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -26,16 +27,15 @@ import com.veracity.ui.BaseFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.veracity.widgets.progressbar.DotProgressBar;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
+@SuppressLint("CustomSplashScreen")
 public class SplashScreenFragment extends BaseFragment implements View.OnClickListener
 {
-    private int SPLASH_TIME_OUT = 3000;
+    private final int SPLASH_TIME_OUT = 3000;
 
     private static final String TAG = SplashScreenFragment.class.getName();
 
