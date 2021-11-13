@@ -12,13 +12,13 @@ static def getDateTime() {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 31
+    buildToolsVersion "31.0.0"
 
     defaultConfig {
         applicationId "com.veracity"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -97,8 +97,11 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     /*firebase*/
-    implementation 'com.google.firebase:firebase-analytics:19.0.2'
-    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging'
 
     /*sdp*/
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
@@ -115,7 +118,7 @@ dependencies {
     implementation 'id.zelory:compressor:2.1.0'
 
     /*crop selected image*/
-    implementation 'com.github.yalantis:ucrop:2.2.6-native'
+    implementation 'com.github.yalantis:ucrop:2.2.6'
 
     /*for org.apache.commons.io*/
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
