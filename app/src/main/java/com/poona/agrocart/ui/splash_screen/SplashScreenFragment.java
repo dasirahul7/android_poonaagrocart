@@ -37,8 +37,6 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
 
     private static final String TAG = SplashScreenFragment.class.getName();
 
-    private DotProgressBar progressbar;
-
     private Context context;
 
     @Override
@@ -49,8 +47,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
 
     private FragmentSplashScreenBinding fragmentSplashScreenBinding;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentSplashScreenBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_splash_screen, container, false);
         fragmentSplashScreenBinding.setLifecycleOwner(this);
 
@@ -67,8 +64,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
         return view;
     }
 
-    private void initView(View view)
-    {
+    private void initView(View view) {
         //progressbar = view.findViewById(R.id.progressbar_splashActivity);
 
         fragmentSplashScreenBinding.btnRetry.setOnClickListener(this);
@@ -87,8 +83,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
         startSplash();
     }
 
-    private void startSplash()
-    {
+    private void startSplash() {
         getFirebaseToken();
 
         new Handler().postDelayed(() ->
@@ -117,8 +112,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
         }, SPLASH_TIME_OUT);
     }
 
-    private void getFirebaseToken()
-    {
+    private void getFirebaseToken() {
         /*option 1*/
         FirebaseInstallations.getInstance().getToken(true).addOnCompleteListener(new OnCompleteListener<InstallationTokenResult>() {
             @Override
@@ -165,8 +159,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         switch (v.getId())
         {
             case R.id.btnRetry:
