@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#86C11F</color>
-    <color name="colorSecondary">#FCC013 </color>
-    <color name="colorAccent">#FCC013 </color>
+    <color name="colorSecondary">#456304</color>
+    <color name="colorAccent">#FFAF10</color>
+    <color name="colorAppBackground">#FCFCFC</color>
+
+    <color name="color1">#FF6B06</color>
+    <color name="color2">#FFAF10</color>
+    <color name="color11">#849A31</color>
+    <color name="color12">#86C11F</color>
+    <color name="color8">#456304</color>
+    <color name="color9">#86C11F</color>
+    <color name="color3">#81C654</color>
+    <color name="color6">#3E9420</color>
+    <color name="color5">#A97C50</color>
+    <color name="color7">#603913</color>
+    <color name="color4">#F23900</color>
+    <color name="color10">#BB2913</color>
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
@@ -19,16 +33,4 @@
     <color name="colorGreenButton">#4CAF50</color>
     <color name="colorDefaultTextView">#808080</color>
 
-    <color name="color1">#FF6B06</color>
-    <color name="color2">#FFAF10</color>
-    <color name="color11">#849A31</color>
-    <color name="color12">#86C11F</color>
-    <color name="color8">#456304</color>
-    <color name="color9">#86C11F</color>
-    <color name="color3">#81C654</color>
-    <color name="color6">#3E9420</color>
-    <color name="color5">#A97C50</color>
-    <color name="color7">#603913</color>
-    <color name="color4">#F23900</color>
-    <color name="color10">#BB2913</color>
 </resources>

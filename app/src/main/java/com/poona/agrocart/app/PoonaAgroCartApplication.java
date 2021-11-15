@@ -17,11 +17,11 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public class VeracityApplication extends Application
+public class PoonaAgroCartApplication extends Application
 {
-    private static VeracityApplication instance;
+    private static PoonaAgroCartApplication instance;
 
-    public static VeracityApplication getInstance()
+    public static PoonaAgroCartApplication getInstance()
     {
         return instance;
     }
@@ -29,7 +29,7 @@ public class VeracityApplication extends Application
     public static Context getContext()
     {
         return instance;
-    }
+    }   
 
     @Override
     protected void attachBaseContext(Context base) {
