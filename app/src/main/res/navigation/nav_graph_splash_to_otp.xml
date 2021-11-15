@@ -26,6 +26,18 @@
     <fragment
         android:id="@+id/LoginFragment"
         android:name="com.poona.agrocart.ui.login.LogInFragment"
-        tools:layout="@layout/fragment_log_in"/>
+        tools:layout="@layout/fragment_log_in">
+        <action
+            android:id="@+id/action_LoginFragment_to_verifyOtpFragment"
+            app:destination="@id/verifyOtpFragment" />
+        <action
+            android:id="@+id/action_LoginFragment_to_verifyOtpFragment2"
+            app:destination="@id/verifyOtpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/verifyOtpFragment"
+        android:name="com.poona.agrocart.ui.verify_otp.VerifyOtpFragment"
+        android:label="fragment_verify_otp"
+        tools:layout="@layout/fragment_verify_otp" />
 
 </navigation>

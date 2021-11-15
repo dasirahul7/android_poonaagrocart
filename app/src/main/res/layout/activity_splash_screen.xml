@@ -5,8 +5,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/coordinatorLayout_main"
-    tools:context=".agrocart.ui.splash_screen.SplashScreenActivity">
+    >
 
-    <include layout="@layout/content_splash_activity" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:elevation="0dp"
+            >
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:id="@+id/toolbar_login"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/ic_back"/>
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+        <!--include
+            android:id="@+id/toolbar_login"
+            android:visibility="gone"
+            layout="@layout/toolbar_splash_screen_act" /-->
+
+        <include
+            layout="@layout/content_splash_activity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar_login" />
+    </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -6,7 +6,6 @@
             <stroke android:color="@color/colorGreenButton"
                 android:width="@dimen/_1sdp"/>
 
-
             <!--corners allow us to make the rounded corners button-->
             <corners android:radius="@dimen/_6sdp"/>
 
@@ -27,12 +26,12 @@
 
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorDefaultTextView"/>
-            <stroke android:color="@color/colorDefaultTextView"
-                android:width="@dimen/_1sdp"/>
+            <solid android:color="@color/clr_verify_otp_btn"/>
+            <!--stroke android:color="@color/colorDefaultTextView"
+                android:width="@dimen/_1sdp"/-->
 
             <!--corners allow us to make the rounded corners button-->
-            <corners android:radius="@dimen/_6sdp"/>
+            <corners android:radius="@dimen/_10sdp"/>
 
         </shape>
     </item>

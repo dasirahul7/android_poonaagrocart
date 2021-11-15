@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="100"
-        android:background="#fefefe"
+        android:background="@drawable/background_login_fragment"
         android:orientation="vertical">
 
         <ImageView
@@ -23,17 +23,17 @@
         android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_40sdp"
-        android:background="#fefefe"
+        android:background="@drawable/background_login_fragment"
         android:layout_gravity="bottom"
         android:layout_marginRight="@dimen/_20sdp"
         android:layout_height="0dp"
         android:layout_weight="60">
 
         <ImageView
+            android:id="@+id/iv_poona_agro_cart_logo"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:id="@+id/iv_poona_agro_cart_logo"
-            android:src="@drawable/ic_poona_agro_cart_logo"/>
+            android:src="@drawable/ic_poona_agro_cart_logo" />
 
         <com.poona.agrocart.widgets.CustomTextView
             android:id="@+id/tv_fast_fresh_healthy"
@@ -41,52 +41,79 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_poona_agro_cart_logo"
             android:layout_marginTop="@dimen/_10sdp"
+            android:lineSpacingExtra="@dimen/_10sdp"
             android:text="@string/fast_fresh_healthy"
             android:textColor="@color/clr_fast_and_fresh_text"
             android:textSize="@dimen/_30sdp"
-            app:setCustomFont="@string/font_poppins_regular"/>
+            app:setCustomFont="@string/font_poppins_regular" />
+
         <com.poona.agrocart.widgets.CustomTextView
             android:id="@+id/tv_get_your_groceries"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/clr_get_your_groceries_text"
             android:layout_below="@+id/tv_fast_fresh_healthy"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/get_ur_groceries"
+            android:textColor="@color/clr_get_your_groceries_text"
             android:textSize="@dimen/_20sdp"
-            app:setCustomFont="@string/font_poppins_regular"/>
+            app:setCustomFont="@string/font_poppins_regular"  />
+
         <LinearLayout
+            android:id="@+id/ll_et_phone_no"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_get_your_groceries"
             android:background="@drawable/ll_login_signup_bg"
-            android:weightSum="100"
-            android:id="@+id/ll_et_phone_no">
-        <EditText
-            android:id="@+id/et"
-            android:layout_width="0dp"
-            android:layout_weight="25"
-            android:layout_height="wrap_content"
-            android:background="@drawable/et_login_signup_bg"
-            android:padding="@dimen/alerter_padding_half"
-            android:drawablePadding="@dimen/alerter_padding_half"
-            android:drawableStart="@drawable/india_flag"
-            app:setCustomFont="@string/font_poppins_regular"
-            android:text="+91 "
-            android:layout_marginTop="@dimen/_10sdp"/>
+            android:padding="@dimen/alerter_padding_small"
+            android:weightSum="100">
 
-            <EditText
+            <!--ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:src="@drawable/india_flag"
+                /-->
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/country_code_picker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:ccp_showNameCode="false"
+                android:layout_weight="27"
+                android:onClick="onCountryPickerClick"
+                android:background="@drawable/et_login_signup_bg"
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+
+            <!--Spinner
+                android:id="@+id/spinner_country_code"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="10"
+                android:background="@drawable/et_login_signup_bg"
+                app:setCustomFont="@string/font_poppins_regular" /-->
+
+            <com.poona.agrocart.widgets.CustomEditText
                 android:id="@+id/et_phone_no"
                 android:layout_width="0dp"
-                android:layout_weight="75"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/alerter_padding_half"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="63"
+                android:textSize="@dimen/_14sdp"
                 android:background="@drawable/et_login_signup_bg"
                 android:inputType="phone"
-                android:drawablePadding="@dimen/alerter_padding_half"
-                app:setCustomFont="@string/font_poppins_regular"
-                android:drawableEnd="@drawable/ic_sign_up"
-                android:layout_marginTop="@dimen/_10sdp"/>
+                app:setCustomFont="@string/font_poppins_regular" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="10"
+                android:padding="@dimen/alerter_padding_small"
+                android:src="@drawable/ic_sign_up"
+                android:id="@+id/iv_sign_up"
+                />
 
         </LinearLayout>
 
@@ -97,8 +124,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_et_phone_no"
             android:layout_marginTop="@dimen/_10sdp"
+            android:drawablePadding="@dimen/alerter_padding_half"
             android:text="@string/privacy_policy_terms_n_conditions"
-            app:setCustomFont="@string/font_poppins_regular"/>
+            app:setCustomFont="@string/font_poppins_regular"  />
     </RelativeLayout>
     </LinearLayout>
 

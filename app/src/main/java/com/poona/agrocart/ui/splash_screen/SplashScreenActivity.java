@@ -1,10 +1,17 @@
 package com.poona.agrocart.ui.splash_screen;
 
+import android.app.ActionBar;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
@@ -23,6 +30,35 @@ public class SplashScreenActivity extends BaseActivity
 
     private CoordinatorLayout coordinatorLayoutMain;
 
+
+    Toolbar toolbar;
+
+
+
+
+   /* //handling click events of action bar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Take appropriate action for each action item click
+        switch (item.getItemId()) {
+            case R.id.item_action_back:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //inflating menu for action bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_login_toolbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }*/
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -34,6 +70,8 @@ public class SplashScreenActivity extends BaseActivity
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
+
+
 
         if (getIntent().getExtras() != null)
         {
@@ -47,7 +85,23 @@ public class SplashScreenActivity extends BaseActivity
 
         coordinatorLayoutMain = findViewById(R.id.coordinatorLayout_main);
 
-        /*check in app update*/
+        toolbar=findViewById(R.id.toolbar_login);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().hide();
+
+
+
+
+        // get action bar
+        /*ActionBar actionBar = getActionBar();
+
+        // Enabling Up / Back navigation
+        //actionBar.setDisplayHomeAsUpEnabled(true);*/
+
+
+        //check in app update
         checkForAppUpdate();
     }
 

@@ -24,4 +24,13 @@
     <color name="clr_get_your_groceries_text">#030303</color>
 
 
+    <!--Verify OTP fragment colors-->
+    <color name="clr_enter_otp">#181725</color>
+    <color name="clr_we_have_sent_otp">#7C7C7C</color>
+    <color name="clr_resend_otp">#53B175</color>
+    <color name="clr_verify_otp_btn">#86C11F</color>
+    <color name="clr_verify_otp_text">#FFF9FF</color>
+    <color name="clr_custom_edit_text_otp">#E2E2E2</color>
+
+
 </resources>

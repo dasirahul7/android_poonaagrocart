@@ -4,11 +4,17 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -42,6 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity
 
     protected PushNotification pushNotification;
 
+
     @Override
     public void onBackPressed()
     {
@@ -53,6 +60,8 @@ public abstract class BaseActivity extends AppCompatActivity
         super.onResume();
         checkNewAppVersionState();
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, final int resultCode, Intent intent) {
