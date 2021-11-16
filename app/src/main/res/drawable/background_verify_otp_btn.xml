@@ -14,8 +14,8 @@
 
     <item android:state_enabled="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorGreenButton"/>
-            <stroke android:color="@color/colorGreenButton"
+            <solid android:color="@color/color9"/>
+            <stroke android:color="@color/color9"
                 android:width="@dimen/_1sdp"/>
 
             <!--corners allow us to make the rounded corners button-->

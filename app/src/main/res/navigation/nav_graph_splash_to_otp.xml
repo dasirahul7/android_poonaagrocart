@@ -48,6 +48,8 @@
             android:id="@+id/action_verifyOtpFragment_to_signUpFragment"
             app:destination="@id/signUpFragment"
             app:enterAnim="@anim/fade_in"
+            app:popUpTo="@id/verifyOtpFragment"
+            app:popUpToInclusive="true"
             app:exitAnim="@anim/fade_out"/>
 
 
@@ -61,6 +63,17 @@
         android:id="@+id/signUpFragment"
         android:name="com.poona.agrocart.ui.sign_up.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_selectLocationFragment"
+            app:destination="@id/selectLocationFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectLocationFragment"
+        android:name="com.poona.agrocart.ui.select_location.SelectLocationFragment"
+        android:label="fragment_select_location"
+        tools:layout="@layout/fragment_select_location" />
 
 </navigation>

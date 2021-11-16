@@ -1,13 +1,14 @@
 package com.poona.agrocart.ui.verify_otp;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
-
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -16,68 +17,55 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.databinding.FragmentVerifyOtpBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.widgets.CustomButton;
-import com.poona.agrocart.widgets.custom_otp_edit_text.CustomOtpEditText;
 
-public class VerifyOtpFragment extends BaseFragment {
+public class VerifyOtpFragment extends BaseFragment implements View.OnClickListener{
 
-
-    //layout components
-    private CustomButton btnVerifyOtp;
-    private CustomOtpEditText cetOtp;
-
-
+    private FragmentVerifyOtpBinding fragmentVerifyOtpBinding;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-    }
-
-    private void findLayoutComponents(View view)
-    {
-        btnVerifyOtp=view.findViewById(R.id.cbtn_verify_otp);
-        cetOtp=view.findViewById(R.id.cet_otp);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_verify_otp, container, false);
+        fragmentVerifyOtpBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_verify_otp,container,false);
+        fragmentVerifyOtpBinding.setLifecycleOwner(this);
+        final View view = ((ViewDataBinding) fragmentVerifyOtpBinding).getRoot();
 
-        findLayoutComponents(view);
-        initializeVars();
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-
-
-        btnVerifyOtp.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_verifyOtpFragment_to_signUpFragment);
-        });
-
+        initViews(view);
 
         ivBack.setOnClickListener(v -> {
             hideKeyBoard(requireActivity());
             Navigation.findNavController(view).popBackStack();
         });
 
-
         return view;
     }
 
-    private void initializeVars()
+    private void initViews(View view)
     {
-        //to show otp soft keyboard
+        fragmentVerifyOtpBinding.cbtnVerifyOtp.setOnClickListener(this);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         enableSoftKeyboard();
-        cetOtp.requestFocus();
+        fragmentVerifyOtpBinding.cetOtp.requestFocus();
     }
+
 
     private void enableSoftKeyboard()
     {
         InputMethodManager imgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imgr.showSoftInput(cetOtp, 0);
+        //imgr.showSoftInput(fragmentVerifyOtpBinding.cetOtp, 0);
         imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
+
+    @Override
+    public void onClick(View v) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        hideKeyBoard(requireActivity());
+        Navigation.findNavController(v).navigate(R.id.action_verifyOtpFragment_to_signUpFragment);
     }
 }

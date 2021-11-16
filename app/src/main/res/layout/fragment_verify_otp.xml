@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.verify_otp.VerifyOtpFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.verify_otp.VerifyOtpFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -63,7 +65,7 @@
                 android:layout_marginEnd="@dimen/_80sdp"
                 android:focusable="true"
                 android:focusedByDefault="true"
-                android:textSize="@dimen/_20sdp"
+                android:textSize="@dimen/_18sp"
                 android:inputType="number"
                 android:maxLength="4"
                 android:windowSoftInputMode="stateVisible"
@@ -74,11 +76,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cet_otp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/resend_code"
+                android:layout_marginTop="@dimen/_2sdp"
                 android:padding="@dimen/alerter_padding_small"
+                android:text="@string/resend_code"
                 android:textColor="@color/clr_resend_otp"
-                app:setCustomFont="@string/font_poppins_regular"  />
+                android:textSize="@dimen/_14sdp"
+                app:setCustomFont="@string/font_poppins_regular" />
 
             <com.poona.agrocart.widgets.CustomButton
                 android:id="@+id/cbtn_verify_otp"
@@ -90,12 +93,15 @@
                 android:padding="@dimen/alerter_padding_small"
                 android:text="@string/verify_otp_btn"
                 android:textAllCaps="false"
+                android:textSize="@dimen/_14sp"
                 android:textColor="@color/background_button_selector_green"
                 app:setCustomFont="@string/font_poppins_regular" />
         </RelativeLayout>
 
     </FrameLayout>
 
+    </ScrollView>
 
 
-</ScrollView>
+
+</layout>
