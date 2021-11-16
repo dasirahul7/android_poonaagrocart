@@ -18,11 +18,12 @@ import android.widget.Toast;
 
 import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
+import com.poona.agrocart.ui.BaseFragment;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public class LogInFragment extends Fragment {
+public class LogInFragment extends BaseFragment {
 
     //private Spinner spinnerCountryCodes;
     private CountryCodePicker countryCodePicker;
@@ -37,6 +38,8 @@ public class LogInFragment extends Fragment {
         //finding/initializing fragment components
         findLayoutComponents(view);
 
+
+        //setting custom font to country code picker
         Typeface typeFace=Typeface.createFromAsset(getContext().getAssets(),"fonts/poppins/poppins_regular.ttf");
         countryCodePicker.setTypeFace(typeFace);
 
@@ -69,7 +72,7 @@ public class LogInFragment extends Fragment {
 
 
         ivSignUp.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.verifyOtpFragment);
+            Navigation.findNavController(view).navigate(R.id.action_LoginFragment_to_verifyOtpFragment);
         });
 
         return view;

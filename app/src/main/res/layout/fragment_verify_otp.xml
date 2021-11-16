@@ -12,6 +12,12 @@
         android:paddingBottom="@dimen/_40sdp"
         >
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:src="@drawable/agro_main_bg"
+            android:alpha="0.2"
+            android:layout_height="wrap_content"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,15 +29,15 @@
             >
 
             <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/ctv_enter_otp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_60sdp"
                 android:padding="@dimen/alerter_padding_small"
-                android:id="@+id/ctv_enter_otp"
-                android:textColor="@color/clr_enter_otp"
                 android:text="@string/enter_otp"
-                app:setCustomFont="@string/font_poppins_regular"
-                android:textSize="@dimen/_20sdp"/>
+                android:textColor="@color/clr_enter_otp"
+                android:textSize="@dimen/_20sdp"
+                app:setCustomFont="@string/font_poppins_regular" />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/ctv_otp_sent"
@@ -55,10 +61,11 @@
                 android:layout_below="@+id/ctv_otp_sent"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_80sdp"
+                android:focusable="true"
+                android:focusedByDefault="true"
+                android:textSize="@dimen/_20sdp"
                 android:inputType="number"
                 android:maxLength="4"
-                android:focusedByDefault="true"
-                android:focusable="true"
                 android:windowSoftInputMode="stateVisible"
                 app:setCustomFont="@string/font_poppins_regular" />
 
@@ -84,14 +91,9 @@
                 android:text="@string/verify_otp_btn"
                 android:textAllCaps="false"
                 android:textColor="@color/background_button_selector_green"
-                app:setCustomFont="@string/font_poppins_regular"  />
+                app:setCustomFont="@string/font_poppins_regular" />
         </RelativeLayout>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:src="@drawable/agro_main_bg"
-            android:alpha="0.2"
-            android:layout_height="wrap_content"/>
     </FrameLayout>
 
 

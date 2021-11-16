@@ -85,14 +85,6 @@
                 android:layout_marginTop="@dimen/_10sdp"/>
 
 
-            <!--Spinner
-                android:id="@+id/spinner_country_code"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_weight="10"
-                android:background="@drawable/et_login_signup_bg"
-                app:setCustomFont="@string/font_poppins_regular" /-->
 
             <com.poona.agrocart.widgets.CustomEditText
                 android:id="@+id/et_phone_no"
@@ -101,6 +93,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_weight="63"
                 android:textSize="@dimen/_14sdp"
+                android:maxLength="10"
                 android:background="@drawable/et_login_signup_bg"
                 android:inputType="phone"
                 app:setCustomFont="@string/font_poppins_regular" />
@@ -126,7 +119,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:drawablePadding="@dimen/alerter_padding_half"
             android:text="@string/privacy_policy_terms_n_conditions"
-            app:setCustomFont="@string/font_poppins_regular"  />
+            app:setCustomFont="@string/font_poppins_regular" />
     </RelativeLayout>
     </LinearLayout>
 

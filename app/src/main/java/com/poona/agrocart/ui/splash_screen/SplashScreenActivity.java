@@ -1,6 +1,9 @@
 package com.poona.agrocart.ui.splash_screen;
 
+import android.animation.ObjectAnimator;
+import android.animation.StateListAnimator;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -8,13 +11,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
+import androidx.navigation.NavHostController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.poona.agrocart.R;
 import com.poona.agrocart.ui.BaseActivity;
 
@@ -32,29 +44,9 @@ public class SplashScreenActivity extends BaseActivity
 
 
     Toolbar toolbar;
+    public static ImageView ivBack;
+    private AppBarLayout appBarLayout;
 
-
-
-
-   /* //handling click events of action bar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Take appropriate action for each action item click
-        switch (item.getItemId()) {
-            case R.id.item_action_back:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    //inflating menu for action bar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_login_toolbar, menu);
-        return super.onCreateOptionsMenu(menu);
-    }*/
 
 
 
@@ -83,27 +75,40 @@ public class SplashScreenActivity extends BaseActivity
             }
         }
 
+
+        findCompo();
         coordinatorLayoutMain = findViewById(R.id.coordinatorLayout_main);
 
-        toolbar=findViewById(R.id.toolbar_login);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setElevation(0);
         getSupportActionBar().hide();
 
 
+        //to remove shadows of the app bar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            StateListAnimator stateListAnimator = new StateListAnimator();
+            stateListAnimator.addState(new int[0], ObjectAnimator.ofFloat(appBarLayout, "elevation", 0.1f));
+            appBarLayout.setStateListAnimator(stateListAnimator);
+        }
 
 
-        // get action bar
-        /*ActionBar actionBar = getActionBar();
-
-        // Enabling Up / Back navigation
-        //actionBar.setDisplayHomeAsUpEnabled(true);*/
 
 
         //check in app update
         checkForAppUpdate();
     }
+
+
+    private void findCompo()
+    {
+        ivBack=findViewById(R.id.iv_back);
+        toolbar=findViewById(R.id.toolbar_login);
+        appBarLayout=findViewById(R.id.app_bar_layout);
+
+    }
+
 
     @Override
     public boolean onSupportNavigateUp()
