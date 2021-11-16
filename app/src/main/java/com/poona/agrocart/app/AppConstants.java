@@ -21,7 +21,7 @@ public class AppConstants
     public static final String PUT = "PUT";
 
     /* Shared Preferences Parameters*/
-    public static final String PREFERENCES_NAME = "VeracitySharedPreferences";
+    public static final String PREFERENCES_NAME = "PoonaAgroCartSharedPreferences";
     public static final String ANDROID_ID = "android_id";
     public static final String FCM_TOKEN = "fcm_token";
     public static final String IS_LOGGED_IN = "isLoggedIn";

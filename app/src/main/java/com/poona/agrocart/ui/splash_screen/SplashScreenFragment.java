@@ -31,14 +31,9 @@ import com.poona.agrocart.widgets.progressbar.DotProgressBar;
  * Created by Rahul Dasi on 6/10/2020
  */
 @SuppressLint("CustomSplashScreen")
-public class SplashScreenFragment extends BaseFragment implements View.OnClickListener
-{
+public class SplashScreenFragment extends BaseFragment implements View.OnClickListener {
     private final int SPLASH_TIME_OUT = 3000;
-
     private static final String TAG = SplashScreenFragment.class.getName();
-
-    private DotProgressBar progressbar;
-
     private Context context;
 
     @Override
@@ -49,8 +44,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
 
     private FragmentSplashScreenBinding fragmentSplashScreenBinding;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentSplashScreenBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_splash_screen, container, false);
         fragmentSplashScreenBinding.setLifecycleOwner(this);
 
@@ -67,10 +61,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
         return view;
     }
 
-    private void initView(View view)
-    {
-        //progressbar = view.findViewById(R.id.progressbar_splashActivity);
-
+    private void initView(View view) {
         fragmentSplashScreenBinding.btnRetry.setOnClickListener(this);
         fragmentSplashScreenBinding.btnCancel.setOnClickListener(this);
 
@@ -82,21 +73,13 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
 
         FirebaseApp.initializeApp(context);
 
-        //progressbar.setVisibility(View.VISIBLE);
-
         startSplash();
     }
 
-    private void startSplash()
-    {
+    private void startSplash() {
         getFirebaseToken();
-
-        new Handler().postDelayed(() ->
-        {
-            if (isConnectingToInternet(context))
-            {
-                //progressbar.setVisibility(View.VISIBLE);
-
+        new Handler().postDelayed(() -> {
+            if (isConnectingToInternet(context)) {
 //                if (preferences.getIsLoggedIn())
 //                {
 //                    Intent intent = new Intent(context, DashboardActivity.class);
@@ -109,22 +92,18 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
                     NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_LoginFragment);
 //                }
             }
-            else
-            {
-                //progressbar.setVisibility(View.INVISIBLE);
+            else {
                 fragmentSplashScreenBinding.linearLayoutNoInternet.setVisibility(View.VISIBLE);
             }
         }, SPLASH_TIME_OUT);
     }
 
-    private void getFirebaseToken()
-    {
+    private void getFirebaseToken() {
         /*option 1*/
         FirebaseInstallations.getInstance().getToken(true).addOnCompleteListener(new OnCompleteListener<InstallationTokenResult>() {
             @Override
             public void onComplete(@NonNull Task<InstallationTokenResult> task) {
-                if (!task.isSuccessful())
-                {
+                if (!task.isSuccessful()) {
                     Log.w(TAG, "getInstanceId failed", task.getException());
                     return;
                 }
@@ -165,16 +144,13 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
     }
 
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.btnRetry:
                 //progressbar.setVisibility(View.VISIBLE);
                 fragmentSplashScreenBinding.linearLayoutNoInternet.setVisibility(View.GONE);
                 Handler handler = new Handler();
-                handler.postDelayed(new Runnable()
-                {
+                handler.postDelayed(new Runnable() {
                     public void run()
                     {
                         startSplash();

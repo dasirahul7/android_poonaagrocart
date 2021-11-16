@@ -23,15 +23,15 @@ import static com.poona.agrocart.app.AppConstants.PUSH_NOTIFICATION;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public class VeracityFirebaseMessagingService extends FirebaseMessagingService
+public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingService
 {
-    private static final String TAG = VeracityFirebaseMessagingService.class.getSimpleName();
+    private static final String TAG = PoonaAgroCartFirebaseMessagingService.class.getSimpleName();
 
     private AppSharedPreferences preference;
 
     private Context context;
 
-    public VeracityFirebaseMessagingService() { }
+    public PoonaAgroCartFirebaseMessagingService() { }
 
     @Override
     public void onNewToken(String s) {
@@ -134,7 +134,7 @@ public class VeracityFirebaseMessagingService extends FirebaseMessagingService
         showNotification(pushNotification);
     }
 
-    private static final String CHANNEL_ID = "VeracityChannelId";
+    private static final String CHANNEL_ID = "PoonaAgroCartChannelId";
     private void showNotification(PushNotification pushNotification)
     {
         // Create an Intent for the activity you want to start
@@ -146,7 +146,7 @@ public class VeracityFirebaseMessagingService extends FirebaseMessagingService
 //        else if(preference.getIsLoggedIn() && preference.getUserType().equals(DELIVERY_BOY))
 //            resultIntent = new Intent(context, DeliveryBoyHomeActivity.class);
 //
-//        bundle.putString(FROM_SCREEN, VeracityFirebaseMessagingService.class.getSimpleName());
+//        bundle.putString(FROM_SCREEN, PoonaAgroCartFirebaseMessagingService.class.getSimpleName());
 //        bundle.putSerializable(PUSH_NOTIFICATIONS, pushNotification);
 //        resultIntent.putExtras(bundle);
 //        resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
