@@ -11,6 +11,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.navigation.Navigation;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,17 +50,30 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
 
     private void initViews(View view)
     {
-        fragmentVerifyOtpBinding.cbtnVerifyOtp.setOnClickListener(this);
+        fragmentVerifyOtpBinding.btnVerifyOtp.setOnClickListener(this);
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         enableSoftKeyboard();
-        fragmentVerifyOtpBinding.cetOtp.requestFocus();
+        fragmentVerifyOtpBinding.etOtp.requestFocus();
+
+        fragmentVerifyOtpBinding.etOtp.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()==4)
+                {
+                    hideKeyBoard(requireActivity());
+                }
+            }
+        });
     }
 
 
     private void enableSoftKeyboard()
     {
         InputMethodManager imgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        //imgr.showSoftInput(fragmentVerifyOtpBinding.cetOtp, 0);
         imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
@@ -66,6 +81,10 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
     public void onClick(View v) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         hideKeyBoard(requireActivity());
-        Navigation.findNavController(v).navigate(R.id.action_verifyOtpFragment_to_signUpFragment);
+        Bundle bundle=this.getArguments();
+        if(bundle!=null)
+        {
+            Navigation.findNavController(v).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
+        }
     }
 }

@@ -83,4 +83,8 @@ public class AppConstants
     public static final String PUSH_NOTIFICATION = "com.poona.agrocart.NOTIFICATION";
     public static final String ADMIN = "admin";
     public static final String APP = "app";
+
+    /*SignInFragment keys*/
+    public static final String MOBILE_NO = "MOBILE_NO";
+    public static final String COUNTRY_CODE ="COUNTRY_CODE";
 }

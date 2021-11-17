@@ -16,7 +16,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:src="@drawable/agro_main_bg"
+            android:src="@drawable/img_agro_main_background"
             android:alpha="0.2"
             android:layout_height="wrap_content"/>
 
@@ -31,7 +31,7 @@
             >
 
             <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/ctv_enter_otp"
+                android:id="@+id/tv_enter_otp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_60sdp"
@@ -42,10 +42,10 @@
                 app:setCustomFont="@string/font_poppins_regular" />
 
             <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/ctv_otp_sent"
+                android:id="@+id/tv_otp_sent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ctv_enter_otp"
+                android:layout_below="@+id/tv_enter_otp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_80sdp"
                 android:lineSpacingExtra="@dimen/_12sdp"
@@ -57,25 +57,26 @@
 
 
             <com.poona.agrocart.widgets.custom_otp_edit_text.CustomOtpEditText
-                android:id="@+id/cet_otp"
+                android:id="@+id/et_otp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
-                android:layout_below="@+id/ctv_otp_sent"
+                android:layout_below="@+id/tv_otp_sent"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_80sdp"
                 android:focusable="true"
+                android:textColor="@color/clr_enter_otp"
                 android:focusedByDefault="true"
-                android:textSize="@dimen/_18sp"
                 android:inputType="number"
                 android:maxLength="4"
+                android:textSize="@dimen/_18sp"
                 android:windowSoftInputMode="stateVisible"
                 app:setCustomFont="@string/font_poppins_regular" />
 
             <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/ctv_resend_otp"
+                android:id="@+id/tv_resend_otp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cet_otp"
+                android:layout_below="@+id/et_otp"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:padding="@dimen/alerter_padding_small"
                 android:text="@string/resend_code"
@@ -84,10 +85,10 @@
                 app:setCustomFont="@string/font_poppins_regular" />
 
             <com.poona.agrocart.widgets.CustomButton
-                android:id="@+id/cbtn_verify_otp"
+                android:id="@+id/btn_verify_otp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ctv_resend_otp"
+                android:layout_below="@+id/tv_resend_otp"
                 android:layout_marginTop="@dimen/_35sdp"
                 android:background="@drawable/background_verify_otp_btn"
                 android:padding="@dimen/alerter_padding_small"
@@ -97,11 +98,6 @@
                 android:textSize="@dimen/_14sp"
                 app:setCustomFont="@string/font_poppins_regular" />
         </RelativeLayout>
-
     </FrameLayout>
-
     </ScrollView>
-
-
-
 </layout>

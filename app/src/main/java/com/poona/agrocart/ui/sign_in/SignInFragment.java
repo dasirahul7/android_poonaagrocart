@@ -4,8 +4,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,33 +19,33 @@ import androidx.navigation.Navigation;
 
 import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.FragmentSelectLocationBinding;
+import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
+
+import java.util.Objects;
 
 public class SignInFragment extends BaseFragment implements View.OnClickListener{
 
     private FragmentSignInBinding fragmentSignInBinding;
-    private boolean showPassword=false;
+    private String mobileNo="",countryCode="+91";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        fragmentSignInBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_sign_in, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentSignInBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false);
         fragmentSignInBinding.setLifecycleOwner(this);
+
         final View view = ((ViewDataBinding) fragmentSignInBinding).getRoot();
 
-        initViews(view);
+        initView(view);
 
         return view;
     }
 
-    private void initViews(View view)
+    private void initView(View view)
     {
-        fragmentSignInBinding.ivShowHidePassword.setOnClickListener(this);
-        fragmentSignInBinding.ctvSignUp.setOnClickListener(this);
+        fragmentSignInBinding.ivSignUp.setOnClickListener(this);
 
-        fragmentSignInBinding.ivPoonaAgroMainLogo.bringToFront();
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         Typeface typeFace=Typeface.createFromAsset(getContext().getAssets(),"fonts/poppins/poppins_regular.ttf");
@@ -52,15 +53,32 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         fragmentSignInBinding.countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
             @Override
             public void onCcpDialogOpen(Dialog dialog) {
-                //your code
                 TextView title =(TextView)  dialog.findViewById(R.id.textView_title);
                 title.setText("Select country");
             }
             @Override
-            public void onCcpDialogDismiss(DialogInterface dialogInterface) {
-            }
+            public void onCcpDialogDismiss(DialogInterface dialogInterface) { }
             @Override
-            public void onCcpDialogCancel(DialogInterface dialogInterface) {
+            public void onCcpDialogCancel(DialogInterface dialogInterface) { }
+        });
+        fragmentSignInBinding.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                countryCode=fragmentSignInBinding.countryCodePicker.getSelectedCountryCodeWithPlus();
+            }
+        });
+
+        fragmentSignInBinding.etMobileNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()==10)
+                {
+                    hideKeyBoard(requireActivity());
+                }
             }
         });
     }
@@ -69,21 +87,23 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId())
         {
-            case R.id.iv_show_hide_password:
-                if(!showPassword) {
-                    fragmentSignInBinding.cetPassoword.setTransformationMethod(null);
-                    fragmentSignInBinding.ivShowHidePassword.setImageResource(R.drawable.ic_password_show);
+            case R.id.iv_sign_up:
+                mobileNo= Objects.requireNonNull(fragmentSignInBinding.etMobileNo.getText()).toString();
+                if(TextUtils.isEmpty(mobileNo) || mobileNo.length()<10) {
+                    errorToast(getActivity(), getString(R.string.invalid_phone_number));
                 }
-                else {
-                    fragmentSignInBinding.cetPassoword.setTransformationMethod(new PasswordTransformationMethod());
-                    fragmentSignInBinding.ivShowHidePassword.setImageResource(R.drawable.ic_password_hide);
+                else{
+                    Bundle bundle=new Bundle();
+                    bundle.putString(AppConstants.MOBILE_NO,mobileNo);
+                    bundle.putString(AppConstants.COUNTRY_CODE,countryCode);
+                    mobileNo=countryCode+mobileNo;
+                    Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_verifyOtpFragment,bundle);
                 }
-                showPassword=!showPassword;
-                fragmentSignInBinding.cetPassoword.setSelection(fragmentSignInBinding.cetPassoword.getText().length());
                 break;
-            case R.id.ctv_sign_up:
-                Navigation.findNavController(v).navigate(R.id.action_SignInFragment_to_LogInFragment);
+            case R.id.cbtn_login:
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + v.getId());
         }
     }
 }

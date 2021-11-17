@@ -1,5 +1,7 @@
 package com.poona.agrocart.ui.select_location;
 
+import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
+
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentSelectLocationBinding;
@@ -32,6 +33,9 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
 
         initViews(view);
 
+        ivBack.setOnClickListener(v -> {
+            Navigation.findNavController(view).popBackStack();
+        });
 
         return view;
     }
@@ -49,17 +53,13 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         arrayAdapterArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fragmentSelectLocationBinding.spinnerArea.setAdapter(arrayAdapterArea);
 
-
         fragmentSelectLocationBinding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
 
         fragmentSelectLocationBinding.spinnerArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -67,11 +67,8 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
     }
 
@@ -81,10 +78,8 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         switch (v.getId())
         {
             case R.id.cbtn_submit:
-                Navigation.findNavController(v).navigate(R.id.action_selectLocationFragment_to_signInFragment);
+                //Navigation.findNavController(v).navigate(R.id.action_selectLocationFragment_to_LoginFragment);
                 break;
         }
-
     }
-
 }

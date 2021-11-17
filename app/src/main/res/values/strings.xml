@@ -7,12 +7,6 @@
     <string name="font_poppins_medium">fonts/poppins/poppins_medium.ttf</string>
     <string name="font_poppins_regular">fonts/poppins/poppins_regular.ttf</string>
     <string name="font_poppins_semi_bold">fonts/poppins/poppins_semi_bold.ttf</string>
-    <string name="font_airbnb_cereal_black">fonts/airbnb/AirbnbCerealBlack.ttf</string>
-    <string name="font_airbnb_cereal_bold">fonts/airbnb/AirbnbCerealBold.ttf</string>
-    <string name="font_airbnb_cereal_book">fonts/airbnb/AirbnbCerealBookk.ttf</string>
-    <string name="font_airbnb_cereal_extra_bold">fonts/airbnb/AirbnbCerealExtraBold.ttf</string>
-    <string name="font_airbnb_cereal_light">fonts/airbnb/AirbnbCerealLight.ttf</string>
-    <string name="font_airbnb_cereal_medium">fonts/airbnb/AirbnbCerealMedium.ttf</string>
 
     <!--check internet connection dialog-->
     <string name="info">Information</string>
@@ -76,6 +70,14 @@
     <string name="login">Login</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="submit">Submit</string>
+    <string name="invalid_phone_number">Invalid phone number</string>
+    <string name="empty_username">Please enter username</string>
+    <string name="forgot_password_without_quesmark">Forgot Password</string>
+    <string name="enter_your_email_text">Enter your emails for verification we\nwill send 4 digit code to your email id.</string>
+    <string name="email_id">Email id</string>
+    <string name="continue_text">Continue</string>
+    <string name="back_to">Back to</string>
+    <string name="log_in">Log In?</string>
 
 
 </resources>
