@@ -110,7 +110,7 @@
 
 
             <com.poona.agrocart.widgets.CustomEditText
-                android:id="@+id/et_phone_no"
+                android:id="@+id/cet_phone_no"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="75"

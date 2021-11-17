@@ -24,13 +24,15 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentLogInBinding;
 import com.poona.agrocart.ui.BaseFragment;
 
+import java.util.Objects;
+
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
 public class LogInFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentLogInBinding fragmentLogInBinding;
-    private String mobileNo,countryCode="+91";
+    private String mobileNo="",countryCode="+91";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,7 +82,7 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
         switch (v.getId())
         {
             case R.id.iv_sign_up:
-                mobileNo=fragmentLogInBinding.cetPhoneNo.getText().toString();
+                mobileNo= Objects.requireNonNull(fragmentLogInBinding.cetMobileNo.getText()).toString();
                 if(TextUtils.isEmpty(mobileNo) || mobileNo.length()<10) {
                     errorToast(getActivity(), "Invalid phone number");
                 }
@@ -89,6 +91,10 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
                     Navigation.findNavController(v).navigate(R.id.action_LoginFragment_to_verifyOtpFragment);
                 }
                 break;
+            case R.id.cbtn_login:
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + v.getId());
         }
     }
 }

@@ -107,12 +107,13 @@
 
 
             <com.poona.agrocart.widgets.CustomEditText
-                android:id="@+id/cet_phone_no"
+                android:id="@+id/cet_mobile_no"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_weight="65"
                 android:maxLength="10"
+                android:textColor="@color/clr_enter_otp"
                 android:textSize="@dimen/_16sp"
                 android:background="@drawable/ll_login_signup_bg"
                 android:inputType="phone"
