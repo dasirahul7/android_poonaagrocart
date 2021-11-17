@@ -11,6 +11,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.poona.agrocart.ui.BaseFragment;
 public class LogInFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentLogInBinding fragmentLogInBinding;
+    private String mobileNo,countryCode="+91";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,25 +62,15 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
                 title.setText("Select country");
             }
             @Override
-            public void onCcpDialogDismiss(DialogInterface dialogInterface) {
-                //your code
-            }
+            public void onCcpDialogDismiss(DialogInterface dialogInterface) { }
             @Override
-            public void onCcpDialogCancel(DialogInterface dialogInterface) {
-                //your code
-            }
+            public void onCcpDialogCancel(DialogInterface dialogInterface) { }
         });
-    }
-
-    //this method will call whenever we change country code in spinner.
-    public void onCountryPickerClick() {
         fragmentLogInBinding.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
-
-                Toast.makeText(getContext(), String.valueOf(fragmentLogInBinding.countryCodePicker.getSelectedCountryCodeAsInt()), Toast.LENGTH_SHORT).show();
-                fragmentLogInBinding.countryCodePicker.getDefaultCountryCodeWithPlus();
-                //ccp.getSelectedCountryCodeWithPlus();
+                countryCode=fragmentLogInBinding.countryCodePicker.getSelectedCountryCodeWithPlus();
+                Toast.makeText(getActivity(), countryCode, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -88,7 +80,14 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
         switch (v.getId())
         {
             case R.id.iv_sign_up:
-                Navigation.findNavController(v).navigate(R.id.action_LoginFragment_to_verifyOtpFragment);
+                mobileNo=fragmentLogInBinding.cetPhoneNo.getText().toString();
+                if(TextUtils.isEmpty(mobileNo) || mobileNo.length()<10) {
+                    errorToast(getActivity(), "Invalid phone number");
+                }
+                else{
+                    mobileNo=countryCode+mobileNo;
+                    Navigation.findNavController(v).navigate(R.id.action_LoginFragment_to_verifyOtpFragment);
+                }
                 break;
         }
     }

@@ -74,6 +74,20 @@
         android:id="@+id/selectLocationFragment"
         android:name="com.poona.agrocart.ui.select_location.SelectLocationFragment"
         android:label="fragment_select_location"
-        tools:layout="@layout/fragment_select_location" />
+        tools:layout="@layout/fragment_select_location" >
+        <action
+            android:id="@+id/action_selectLocationFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.poona.agrocart.ui.sign_in.SignInFragment"
+        android:label="SignInFragment" >
+        <action
+            android:id="@+id/action_SignInFragment_to_LogInFragment"
+            app:destination="@id/LoginFragment"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
 
 </navigation>

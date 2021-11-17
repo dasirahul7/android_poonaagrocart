@@ -88,13 +88,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ctv_resend_otp"
-                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_35sdp"
                 android:background="@drawable/background_verify_otp_btn"
                 android:padding="@dimen/alerter_padding_small"
                 android:text="@string/verify_otp_btn"
                 android:textAllCaps="false"
-                android:textSize="@dimen/_14sp"
                 android:textColor="@color/background_button_selector_green"
+                android:textSize="@dimen/_14sp"
                 app:setCustomFont="@string/font_poppins_regular" />
         </RelativeLayout>
 

@@ -60,8 +60,7 @@
             android:id="@+id/tv_fast_fresh_healthy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:lineSpacingExtra="@dimen/_10sdp"
+            android:lineSpacingExtra="@dimen/_4sdp"
             android:text="@string/fast_fresh_healthy"
             android:textColor="@color/color8"
             android:textSize="@dimen/_30sdp"
@@ -72,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_fast_fresh_healthy"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/get_ur_groceries"
             android:textColor="@color/clr_get_your_groceries_text"
             android:textSize="@dimen/_20sdp"
@@ -108,7 +107,7 @@
 
 
             <com.poona.agrocart.widgets.CustomEditText
-                android:id="@+id/et_phone_no"
+                android:id="@+id/cet_phone_no"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/_10sdp"

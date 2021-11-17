@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,7 @@ import com.poona.agrocart.databinding.FragmentSelectLocationBinding;
 import com.poona.agrocart.databinding.FragmentSelectLocationBindingImpl;
 import com.poona.agrocart.ui.BaseFragment;
 
-public class SelectLocationFragment extends BaseFragment {
+public class SelectLocationFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentSelectLocationBinding fragmentSelectLocationBinding;
 
@@ -34,7 +36,20 @@ public class SelectLocationFragment extends BaseFragment {
 
     private void initViews(View view)
     {
+        fragmentSelectLocationBinding.cbtnSubmit.setOnClickListener(this);
         fragmentSelectLocationBinding.ivPoonaAgroMainLogo.bringToFront();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.cbtn_submit:
+                Navigation.findNavController(v).navigate(R.id.action_selectLocationFragment_to_signInFragment);
+                break;
+        }
+
     }
 }
