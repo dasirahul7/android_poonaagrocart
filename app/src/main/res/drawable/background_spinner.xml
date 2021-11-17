@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/ic_spinner"></item>
-</selector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+        <item android:gravity="bottom">
+            <shape>
+                <size android:height="1dp" />
+                <solid android:color="#E2E2E2" />
+            </shape>
+        </item>
+    <item android:drawable="@drawable/ic_spinner"
+        android:width="@dimen/_10sdp" android:height="@dimen/_5sdp" android:gravity="end"></item>
+</layer-list>
