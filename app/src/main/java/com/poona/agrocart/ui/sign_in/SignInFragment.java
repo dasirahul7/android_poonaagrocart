@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.hbb20.CountryCodePicker;
@@ -22,6 +23,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.login.CommonViewModel;
 
 import java.util.Objects;
 
@@ -29,16 +31,19 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
     private FragmentSignInBinding fragmentSignInBinding;
     private String mobileNo="",countryCode="+91";
+    private CommonViewModel commonViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentSignInBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false);
         fragmentSignInBinding.setLifecycleOwner(this);
 
+        commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
+        fragmentSignInBinding.setLogInViewModel(commonViewModel);
+
         final View view = ((ViewDataBinding) fragmentSignInBinding).getRoot();
 
         initView(view);
-
         return view;
     }
 
@@ -96,6 +101,8 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                     Bundle bundle=new Bundle();
                     bundle.putString(AppConstants.MOBILE_NO,mobileNo);
                     bundle.putString(AppConstants.COUNTRY_CODE,countryCode);
+                    commonViewModel.mobileNo.setValue(mobileNo);
+                    commonViewModel.countryCode.setValue(countryCode);
                     mobileNo=countryCode+mobileNo;
                     Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_verifyOtpFragment,bundle);
                 }
