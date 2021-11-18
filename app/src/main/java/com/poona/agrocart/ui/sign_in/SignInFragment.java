@@ -1,47 +1,36 @@
 package com.poona.agrocart.ui.sign_in;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
-import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.login.BasicDetails;
+import com.poona.agrocart.ui.login.CommonCountryCodePickerUtil;
 import com.poona.agrocart.ui.login.CommonViewModel;
-
-import java.util.Objects;
 
 public class SignInFragment extends BaseFragment implements View.OnClickListener{
 
     private FragmentSignInBinding fragmentSignInBinding;
-    private String mobileNo="",countryCode="+91";
     private CommonViewModel commonViewModel;
+    private BasicDetails basicDetails;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentSignInBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false);
         fragmentSignInBinding.setLifecycleOwner(this);
 
-        commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
-        fragmentSignInBinding.setCommonViewModel(commonViewModel);
-
-        final View view = ((ViewDataBinding) fragmentSignInBinding).getRoot();
+        final View view = (fragmentSignInBinding).getRoot();
 
         initView(view);
         return view;
@@ -51,28 +40,21 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     {
         fragmentSignInBinding.ivSignUp.setOnClickListener(this);
 
+        basicDetails=new BasicDetails();
+
+
+        commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
+        fragmentSignInBinding.setCommonViewModel(commonViewModel);
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
-        Typeface typeFace=Typeface.createFromAsset(getContext().getAssets(),"fonts/poppins/poppins_regular.ttf");
-        fragmentSignInBinding.countryCodePicker.setTypeFace(typeFace);
-        fragmentSignInBinding.countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
-            @Override
-            public void onCcpDialogOpen(Dialog dialog) {
-                TextView title =(TextView)  dialog.findViewById(R.id.textView_title);
-                title.setText("Select country");
-            }
-            @Override
-            public void onCcpDialogDismiss(DialogInterface dialogInterface) { }
-            @Override
-            public void onCcpDialogCancel(DialogInterface dialogInterface) { }
-        });
-        fragmentSignInBinding.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                countryCode=fragmentSignInBinding.countryCodePicker.getSelectedCountryCodeWithPlus();
-            }
-        });
+        CommonCountryCodePickerUtil.setUpCountryCodePciker(fragmentSignInBinding,getContext(),commonViewModel);
 
+        setUpTextWatcher();
+    }
+
+    private void setUpTextWatcher()
+    {
         fragmentSignInBinding.etPhoneNo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -93,22 +75,34 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.iv_sign_up:
-                mobileNo= Objects.requireNonNull(fragmentSignInBinding.etPhoneNo.getText()).toString();
-                if(TextUtils.isEmpty(mobileNo) || mobileNo.length()<10) {
-                    errorToast(getActivity(), getString(R.string.invalid_phone_number));
-                }
-                else{
-                    Bundle bundle=new Bundle();
-                    bundle.putString(AppConstants.MOBILE_NO,mobileNo);
-                    bundle.putString(AppConstants.COUNTRY_CODE,countryCode);
-                    commonViewModel.mobileNo.setValue(mobileNo);
-                    commonViewModel.countryCode.setValue(countryCode);
-                    mobileNo=countryCode+mobileNo;
-                    Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_verifyOtpFragment,bundle);
-                }
+                signInAndRedirectToVerifyOtp(v);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
+        }
+    }
+
+    private void signInAndRedirectToVerifyOtp(View v)
+    {
+        commonViewModel.mobileNo.setValue(fragmentSignInBinding.etPhoneNo.getText().toString());
+
+        basicDetails.setMobileNumber(commonViewModel.mobileNo.getValue());
+        basicDetails.setCountryCode(commonViewModel.countryCode.getValue());
+
+        int errorCodeForMobileNumber=basicDetails.isValidMobileNumber();
+        int errorCoedForCountryCode=basicDetails.isValidCountryCode();
+        if(errorCodeForMobileNumber==0){
+            errorToast(requireActivity(),getString(R.string.mobile_number_should_not_be_empty));
+        }
+        else if(errorCodeForMobileNumber==1){
+            infoToast(requireActivity(),getString(R.string.enter_valid_mobile_number));
+        }
+        else if(errorCoedForCountryCode==0){
+            errorToast(requireActivity(),getString(R.string.please_select_country_code));
+        }
+        else{
+            hideKeyBoard(requireActivity());
+            Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_verifyOtpFragment);
         }
     }
 }

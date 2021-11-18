@@ -10,6 +10,7 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/colorAppBackground"
         android:layout_height="match_parent">
 
         <ImageView
@@ -78,7 +79,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_weight="27"
+                android:layout_weight="25"
                 app:ccp_showArrow="false"
                 android:background="@drawable/et_login_signup_bg"
                 app:ccp_showNameCode="false" />
@@ -86,6 +87,7 @@
             <com.poona.agrocart.widgets.CustomEditText
                 android:id="@+id/et_phone_no"
                 android:layout_width="0dp"
+                android:layout_weight="65"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@{commonViewModel.mobileNo}"

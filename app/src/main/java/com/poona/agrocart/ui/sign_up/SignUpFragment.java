@@ -136,7 +136,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         }
         else if(TextUtils.isEmpty(mobileNo) ||  mobileNo.length()<10)
         {
-            errorToast(getActivity(),getString(R.string.invalid_phone_number));
+            errorToast(getActivity(),getString(R.string.enter_valid_mobile_number));
             return false;
         }
         return true;

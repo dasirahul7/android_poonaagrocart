@@ -3,7 +3,7 @@
     <string name="toast_message">Toast</string>
 
     <!--font styles-->
-    <string name="font_poppins_bold">fonts/poppins/poppins_semi_bold.ttf</string>
+    <string name="font_poppins_bold">fonts/poppins/poppins_bold.ttf</string>
     <string name="font_poppins_medium">fonts/poppins/poppins_medium.ttf</string>
     <string name="font_poppins_regular">fonts/poppins/poppins_regular.ttf</string>
     <string name="font_poppins_semi_bold">fonts/poppins/poppins_semi_bold.ttf</string>
@@ -63,21 +63,29 @@
     <string name="switch_on_location">Swithch on your location to stay in tune with \n what’s happening in your area</string>
     <string name="your_city">Your City</string>
     <string name="your_area">Your Area</string>
+    <string name="submit">Submit</string>
+
+    <!--Loggin screen-->
     <string name="loging">Loging</string>
     <string name="enter_your_email_and_password">Enter your email and password</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="login">Login</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
-    <string name="submit">Submit</string>
-    <string name="invalid_phone_number">Invalid phone number</string>
     <string name="empty_username">Please enter username</string>
+
+    <!--Forgot password screen-->
     <string name="forgot_password_without_quesmark">Forgot Password</string>
     <string name="enter_your_email_text">Enter your emails for verification we\nwill send 4 digit code to your email id.</string>
     <string name="email_id">Email id</string>
     <string name="continue_text">Continue</string>
     <string name="back_to">Back to</string>
     <string name="log_in">Log In?</string>
+
+    <!--sign in screen validation messages-->
+    <string name="mobile_number_should_not_be_empty">Mobile Number should not be empty!</string>
+    <string name="enter_valid_mobile_number">Please enter valid mobile number!</string>
+    <string name="please_select_country_code">Please select country code!</string>
 
 
 </resources>
