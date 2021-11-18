@@ -42,23 +42,27 @@
     <string name="your_city">Your City</string>
     <string name="your_area">Your Area</string>
     <string name="submit">Submit</string>
+    <string name="please_select_city">Please select city!</string>
+    <string name="please_select_area">Please select Area!</string>
 
     <!--Loggin screen-->
     <string name="loging">Loging</string>
-    <string name="enter_your_email_and_password">Enter your email and password</string>
+    <string name="enter_your_email_and_password">Enter your mobile number and password</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="login">Login</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="empty_username">Please enter username</string>
+    <string name="password_should_not_be_empty">Password should not be empty!</string>
 
     <!--Forgot password screen-->
     <string name="forgot_password_without_quesmark">Forgot Password</string>
-    <string name="enter_your_email_text">Enter your emails for verification we\nwill send 4 digit code to your email id.</string>
-    <string name="email_id">Email id</string>
+    <string name="enter_your_phone_number_for_otp_text">Enter your phone number for verification we\nwill send 4 digit code to your mobile number.</string>
+    <string name="phone_number">Phone Number</string>
     <string name="continue_text">Continue</string>
     <string name="back_to">Back to</string>
     <string name="log_in">Log In?</string>
+    <string name="email_id_should_not_be_empty">Email ID should not be empty!</string>
 
     <!--sign in screen validation messages-->
     <string name="mobile_number_should_not_be_empty">Mobile Number should not be empty!</string>
@@ -86,9 +90,5 @@
     <string name="privacy_policy"> &#160;Privacy Policy</string>
     <string name="username_should_not_be_empty">Username should not be empty!</string>
     <string name="please_enter_valid_email_id">Please enter valid Email ID!</string>
-    <string name="password_should_not_be_empty">Password should not be empty!</string>
-    <string name="email_id_should_not_be_empty">Email ID should not be empty!</string>
-    <string name="please_select_city">Please select city!</string>
-    <string name="please_select_area">Please select Area!</string>
 
 </resources>

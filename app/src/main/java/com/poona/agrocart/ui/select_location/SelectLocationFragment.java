@@ -47,6 +47,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
 
     private void initViews(View view)
     {
+        /*checkGpsStatus();*/
         commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
         fragmentSelectLocationBinding.setCommonViewModel(commonViewModel);
 

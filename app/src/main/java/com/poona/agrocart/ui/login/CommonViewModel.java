@@ -11,6 +11,8 @@ public class CommonViewModel extends AndroidViewModel
     public MutableLiveData<String> mobileNo;
     public MutableLiveData<String> countryCode;
 
+    public MutableLiveData<String> otp;
+
     public MutableLiveData<String> userName;
     public MutableLiveData<String> emailId;
 
@@ -23,6 +25,8 @@ public class CommonViewModel extends AndroidViewModel
 
         mobileNo=new MutableLiveData<>();
         countryCode=new MutableLiveData<>();
+
+        otp=new MutableLiveData<>();
 
         userName=new MutableLiveData<>();
         emailId=new MutableLiveData<>();
@@ -39,5 +43,4 @@ public class CommonViewModel extends AndroidViewModel
         city.setValue("");
         area.setValue("");
     }
-
 }

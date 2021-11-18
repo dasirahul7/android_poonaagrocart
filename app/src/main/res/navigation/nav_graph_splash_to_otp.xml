@@ -36,7 +36,9 @@
             app:exitAnim="@anim/fade_out"/>
         <action
             android:id="@+id/action_LoginFragment_to_forgotPasswordFragment"
-            app:destination="@id/forgotPasswordFragment" />
+            app:destination="@id/forgotPasswordFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/verifyOtpFragment"
@@ -82,6 +84,14 @@
     <fragment
         android:id="@+id/forgotPasswordFragment"
         android:name="com.poona.agrocart.ui.forgot_password.ForgotPasswordFragment"
-        android:label="ForgotPasswordFragment" />
+        android:label="ForgotPasswordFragment" >
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:popUpTo="@id/forgotPasswordFragment"
+            app:popUpToInclusive="true"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
 
 </navigation>

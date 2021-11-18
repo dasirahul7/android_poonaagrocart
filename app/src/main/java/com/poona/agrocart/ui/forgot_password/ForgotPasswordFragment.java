@@ -5,7 +5,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +19,7 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
 
-public class ForgotPasswordFragment extends BaseFragment implements View.OnClickListener{
+public class ForgotPasswordFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentForgotPasswordBinding fragmentForgotPasswordBinding;
     private CommonViewModel commonViewModel;
@@ -34,50 +37,66 @@ public class ForgotPasswordFragment extends BaseFragment implements View.OnClick
         return view;
     }
 
-    private void initViews()
-    {
+    private void initViews() {
         fragmentForgotPasswordBinding.btnContinue.setOnClickListener(this);
+        fragmentForgotPasswordBinding.tvLogIn.setOnClickListener(this);
 
-        commonViewModel=new ViewModelProvider(this).get(CommonViewModel.class);
+        setUpTextWatcher();
+
+        commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
         fragmentForgotPasswordBinding.setCommonViewModel(commonViewModel);
 
         fragmentForgotPasswordBinding.ivPoonaAgroMainLogo.bringToFront();
 
-        commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
-        fragmentForgotPasswordBinding.setCommonViewModel(commonViewModel);
-        basicDetails=new BasicDetails();
+        basicDetails = new BasicDetails();
+    }
+
+    private void setUpTextWatcher() {
+        fragmentForgotPasswordBinding.etMobileNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 10) {
+                    hideKeyBoard(requireActivity());
+                }
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_continue:
                 redirectToLoginScreen(v);
+                break;
+            case R.id.tv_log_in:
+                Navigation.findNavController(v).navigate(R.id.action_forgotPasswordFragment_to_LoginFragment);
                 break;
         }
     }
 
-    private void redirectToLoginScreen(View v)
-    {
-        basicDetails.setEmailId(fragmentForgotPasswordBinding.etEmail.getText().toString());
+    private void redirectToLoginScreen(View v) {
+        basicDetails.setMobileNumber(fragmentForgotPasswordBinding.etMobileNumber.getText().toString());
+        commonViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
 
-        int errorCodeForEmail=basicDetails.isValidEmailId();
+        int errorCodeForPhoneNumber = basicDetails.isValidMobileNumber();
 
-        if(errorCodeForEmail==0)
-        {
-            errorToast(requireActivity(),getString(R.string.email_id_should_not_be_empty));
-        }
-        else if(errorCodeForEmail==1)
-        {
-            infoToast(requireActivity(),getString(R.string.please_enter_valid_email_id));
-        }
-        else
-        {
+        if (errorCodeForPhoneNumber == 0) {
+            errorToast(requireActivity(), getString(R.string.mobile_number_should_not_be_empty));
+        } else if (errorCodeForPhoneNumber == 1) {
+            infoToast(requireActivity(), getString(R.string.enter_valid_mobile_number));
+        } else {
             hideKeyBoard(requireActivity());
             if (isConnectingToInternet(context)) {
                 //add API call here
-            }
-            else {
+            } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         }
