@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.ui.BaseActivity;

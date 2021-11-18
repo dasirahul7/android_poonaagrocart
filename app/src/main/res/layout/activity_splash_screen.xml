@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/coordinatorLayout_main"
-    tools:context=".agrocart.ui.splash_screen.SplashScreenActivity">
+    tools:context="com.poona.agrocart.ui.splash_screen.SplashScreenActivity">
 
     <include layout="@layout/content_splash_activity" />
 
