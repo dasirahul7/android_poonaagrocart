@@ -31,32 +31,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
 
-
     <!--login fragment strings-->
     <string name="get_ur_groceries">Get your groceries \nwith Poona Agrocart</string>
     <string name="fast_fresh_healthy">Fast, Fresh &amp; \nHealthy...</string>
     <string name="privacy_policy_terms_n_conditions">By continuing you agree to our Terms of Service and Privacy Policy</string>
-
-
-    <!--Verify OTP fragment-->
-    <string name="enter_otp">Enter your 4-digit code</string>
-    <string name="otp_sent">We have sent OTP code via SMS to 986 XXX XX XX</string>
-    <string name="resend_code">Resend Code</string>
-    <string name="verify_otp_btn">Verify OTP</string>
-
-
-    <!--Sign up screen-->
-    <string name="sign_up">Sign Up</string>
-    <string name="enter_your_credentials">Enter your credentials to continue</string>
-    <string name="username">Username</string>
-    <string name="mobile_no">Mobile No.</string>
-    <string name="email_id_optional">Email Id (optional)</string>
-    <string name="sign_up_btn_text">Sign Up</string>
-    <string name="by_continuing_you_agree">By continuing you agree to our</string>
-    <string name="terms_of_service">&#160;Terms of Service</string>
-    <string name="and">and</string>
-    <string name="privacy_policy"> &#160;Privacy Policy</string>
-
 
     <!--Location screen-->
     <string name="select_location">Select Your Location</string>
@@ -87,5 +65,30 @@
     <string name="enter_valid_mobile_number">Please enter valid mobile number!</string>
     <string name="please_select_country_code">Please select country code!</string>
 
+    <!--Verify OTP fragment-->
+    <string name="enter_otp">Enter your 4-digit code</string>
+    <string name="otp_sent">We have sent OTP code via SMS to 986 XXX XX XX</string>
+    <string name="resend_code">Resend Code</string>
+    <string name="verify_otp_btn">Verify OTP</string>
+    <string name="otp_should_not_be_empty">OTP should not be empty!</string>
+    <string name="please_enter_valid_otp">Please enter valid OTP!</string>
+
+    <!--Sign up screen-->
+    <string name="sign_up">Sign Up</string>
+    <string name="enter_your_credentials">Enter your credentials to continue</string>
+    <string name="username">Username</string>
+    <string name="mobile_no">Mobile No.</string>
+    <string name="email_id_optional">Email Id (optional)</string>
+    <string name="sign_up_btn_text">Sign Up</string>
+    <string name="by_continuing_you_agree">By continuing you agree to our</string>
+    <string name="terms_of_service">&#160;Terms of Service</string>
+    <string name="and">and</string>
+    <string name="privacy_policy"> &#160;Privacy Policy</string>
+    <string name="username_should_not_be_empty">Username should not be empty!</string>
+    <string name="please_enter_valid_email_id">Please enter valid Email ID!</string>
+    <string name="password_should_not_be_empty">Password should not be empty!</string>
+    <string name="email_id_should_not_be_empty">Email ID should not be empty!</string>
+    <string name="please_select_city">Please select city!</string>
+    <string name="please_select_area">Please select Area!</string>
 
 </resources>

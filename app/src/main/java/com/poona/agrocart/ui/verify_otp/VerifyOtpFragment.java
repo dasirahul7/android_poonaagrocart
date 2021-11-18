@@ -19,17 +19,15 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentVerifyOtpBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.login.BasicDetails;
 
 public class VerifyOtpFragment extends BaseFragment implements View.OnClickListener{
 
     private FragmentVerifyOtpBinding fragmentVerifyOtpBinding;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private BasicDetails basicDetails;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,10 +49,17 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
     private void initViews(View view)
     {
         fragmentVerifyOtpBinding.btnVerifyOtp.setOnClickListener(this);
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        basicDetails=new BasicDetails();
         enableSoftKeyboard();
+
         fragmentVerifyOtpBinding.etOtp.requestFocus();
 
+        setUpTextWatcher();
+    }
+
+    private void setUpTextWatcher() {
         fragmentVerifyOtpBinding.etOtp.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -70,7 +75,6 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         });
     }
 
-
     private void enableSoftKeyboard()
     {
         InputMethodManager imgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -84,7 +88,26 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         Bundle bundle=this.getArguments();
         if(bundle!=null)
         {
-            Navigation.findNavController(v).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
+            basicDetails.setOtp(fragmentVerifyOtpBinding.etOtp.getText().toString());
+            int errorCodeForOtp=basicDetails.isValidOtp();
+            if(errorCodeForOtp==0)
+            {
+                errorToast(requireActivity(),getString(R.string.otp_should_not_be_empty));
+            }
+            else if(errorCodeForOtp==1)
+            {
+                infoToast(requireActivity(),getString(R.string.please_enter_valid_otp));
+            }
+            else
+            {
+                if (isConnectingToInternet(context)) {
+                    //add API call here
+                    Navigation.findNavController(v).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
+                }
+                else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
         }
     }
 }

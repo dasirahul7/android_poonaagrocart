@@ -1,22 +1,27 @@
 package com.poona.agrocart.ui.sign_in;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
-import com.poona.agrocart.ui.login.CommonCountryCodePickerUtil;
 import com.poona.agrocart.ui.login.CommonViewModel;
 
 public class SignInFragment extends BaseFragment implements View.OnClickListener{
@@ -42,15 +47,39 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
         basicDetails=new BasicDetails();
 
-
         commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
         fragmentSignInBinding.setCommonViewModel(commonViewModel);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
-        CommonCountryCodePickerUtil.setUpCountryCodePciker(fragmentSignInBinding,getContext(),commonViewModel);
+        setUpCountryCodePciker();
 
         setUpTextWatcher();
+    }
+
+    public void setUpCountryCodePciker()
+    {
+        Typeface typeFace=Typeface.createFromAsset(getContext().getAssets(),"fonts/poppins/poppins_regular.ttf");
+        fragmentSignInBinding.countryCodePicker.setTypeFace(typeFace);
+        commonViewModel.countryCode.setValue(fragmentSignInBinding.countryCodePicker.getDefaultCountryCodeWithPlus());
+        fragmentSignInBinding.countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
+            @Override
+            public void onCcpDialogOpen(Dialog dialog) {
+                TextView title=dialog.findViewById(R.id.textView_title);
+                title.setText("Select country");
+            }
+            @Override
+            public void onCcpDialogDismiss(DialogInterface dialogInterface) { }
+            @Override
+            public void onCcpDialogCancel(DialogInterface dialogInterface) { }
+        });
+
+        fragmentSignInBinding.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                commonViewModel.countryCode.setValue(fragmentSignInBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
+            }
+        });
     }
 
     private void setUpTextWatcher()
@@ -71,7 +100,8 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         switch (v.getId())
         {
             case R.id.iv_sign_up:
@@ -102,7 +132,16 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         }
         else{
             hideKeyBoard(requireActivity());
-            Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_verifyOtpFragment);
+            if (isConnectingToInternet(context)) {
+                //add API call here
+                Bundle bundle=new Bundle();
+                bundle.putString(AppConstants.MOBILE_NO,basicDetails.getMobileNumber());
+                bundle.putString(AppConstants.COUNTRY_CODE,basicDetails.getCountryCode());
+                Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_verifyOtpFragment,bundle);
+            }
+            else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
         }
     }
 }

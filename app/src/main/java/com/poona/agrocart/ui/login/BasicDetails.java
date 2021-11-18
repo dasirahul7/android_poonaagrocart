@@ -12,6 +12,8 @@ public class BasicDetails
     String emailId;
     String city;
     String area;
+    String password;
+    String countryCode;
 
     public String getCountryCode() {
         return countryCode;
@@ -21,8 +23,6 @@ public class BasicDetails
         this.countryCode = countryCode;
     }
 
-    String password;
-    String countryCode;
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -153,6 +153,15 @@ public class BasicDetails
 
     public int isValidCountryCode(){
         if(TextUtils.isEmpty(this.countryCode)){
+            return 0;
+        }
+        else{
+            return -1;
+        }
+    }
+
+    public int isValidPassword(){
+        if(TextUtils.isEmpty(this.password)){
             return 0;
         }
         else{

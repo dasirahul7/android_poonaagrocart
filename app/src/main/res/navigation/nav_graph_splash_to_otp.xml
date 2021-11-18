@@ -34,6 +34,9 @@
             app:popUpToInclusive="true"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_LoginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/verifyOtpFragment"
@@ -64,6 +67,9 @@
         android:name="com.poona.agrocart.ui.select_location.SelectLocationFragment"
         android:label="fragment_select_location"
         tools:layout="@layout/fragment_select_location" >
+        <action
+            android:id="@+id/action_selectLocationFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -73,5 +79,9 @@
             android:id="@+id/action_signInFragment_to_verifyOtpFragment"
             app:destination="@id/verifyOtpFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.poona.agrocart.ui.forgot_password.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment" />
 
 </navigation>

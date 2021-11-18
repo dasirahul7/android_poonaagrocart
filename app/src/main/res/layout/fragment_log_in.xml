@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="commonViewModel"
+            type="com.poona.agrocart.ui.login.CommonViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -32,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:alpha="0.2"
-                android:src="@drawable/img_agro_main_background"
+                android:background="@drawable/img_agro_main_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +47,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.poona.agrocart.widgets.CustomTextView
-            android:id="@+id/ctv_loging"
+            android:id="@+id/tv_loging_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_200sdp"
@@ -58,7 +64,7 @@
 
 
         <com.poona.agrocart.widgets.CustomTextView
-            android:id="@+id/ctv_enter_email_password"
+            android:id="@+id/tv_enter_email_password_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/_14sp"
@@ -69,11 +75,11 @@
             android:padding="@dimen/alerter_padding_small"
             android:textColor="@color/clr_we_have_sent_otp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ctv_loging"
+            app:layout_constraintTop_toBottomOf="@+id/tv_loging_text"
             app:setCustomFont="@string/font_poppins_regular" />
 
         <com.poona.agrocart.widgets.CustomTextView
-            android:id="@+id/ctv_mobile_no"
+            android:id="@+id/tv_mobile_no_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_25sdp"
@@ -82,7 +88,7 @@
             android:textColor="@color/clr_we_have_sent_otp"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            app:layout_constraintTop_toBottomOf="@+id/ctv_enter_email_password"
+            app:layout_constraintTop_toBottomOf="@+id/tv_enter_email_password_text"
             android:textSize="@dimen/_16sp"
             app:setCustomFont="@string/font_poppins_regular" />
 
@@ -92,7 +98,7 @@
             android:layout_marginStart="@dimen/_22sdp"
             android:layout_marginEnd="@dimen/_20sdp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/ctv_mobile_no"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mobile_no_text"
             android:weightSum="100">
 
             <com.hbb20.CountryCodePicker
@@ -110,7 +116,7 @@
 
 
             <com.poona.agrocart.widgets.CustomEditText
-                android:id="@+id/cet_phone_no"
+                android:id="@+id/et_mobile_no"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="75"
@@ -126,7 +132,7 @@
 
 
         <com.poona.agrocart.widgets.CustomTextView
-            android:id="@+id/ctv_password"
+            android:id="@+id/tv_password_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_22sdp"
@@ -148,9 +154,9 @@
             android:layout_marginStart="@dimen/_22sdp"
             android:weightSum="100"
             android:layout_marginEnd="@dimen/_20sdp"
-            app:layout_constraintTop_toBottomOf="@+id/ctv_password">
+            app:layout_constraintTop_toBottomOf="@+id/tv_password_text">
             <com.poona.agrocart.widgets.CustomEditText
-                android:id="@+id/cet_passoword"
+                android:id="@+id/et_passoword"
                 android:layout_width="0dp"
                 android:layout_weight="90"
                 android:layout_height="wrap_content"
@@ -175,7 +181,7 @@
 
         </LinearLayout>
         <com.poona.agrocart.widgets.CustomTextView
-            android:id="@+id/ctv_forgot_password"
+            android:id="@+id/tv_forgot_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/alerter_padding_small"
@@ -194,7 +200,7 @@
 
 
         <com.poona.agrocart.widgets.CustomButton
-            android:id="@+id/cbtn_login"
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_verify_otp_btn"
@@ -206,7 +212,7 @@
             android:layout_marginTop="@dimen/_25sdp"
             android:textColor="@color/background_button_selector_green"
             android:textSize="@dimen/_16sp"
-            app:layout_constraintTop_toBottomOf="@+id/ctv_forgot_password"
+            app:layout_constraintTop_toBottomOf="@+id/tv_forgot_password"
             app:setCustomFont="@string/font_poppins_regular"
             tools:layout_editor_absoluteX="16dp" />
 
@@ -217,7 +223,7 @@
             android:layout_marginTop="@dimen/_25sdp"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            app:layout_constraintTop_toBottomOf="@+id/cbtn_login"
+            app:layout_constraintTop_toBottomOf="@+id/btn_login"
             android:gravity="center"
             android:layout_height="wrap_content"
             >
@@ -236,7 +242,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/alerter_padding_small"
                 android:text="@string/sign_up"
-                android:id="@+id/ctv_sign_up"
+                android:id="@+id/tv_sign_up"
                 android:textColor="@color/color9"
                 android:textStyle="bold"
                 android:textSize="@dimen/_14sp"

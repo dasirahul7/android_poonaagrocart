@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/drawable-ldpi/ic_no_internet.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/alerter_ic_notifications.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/background_button_green.xml" value="0.18055555555555555" />
         <entry key="app/src/main/res/drawable/background_login_fragment.xml" value="0.17777777777777778" />

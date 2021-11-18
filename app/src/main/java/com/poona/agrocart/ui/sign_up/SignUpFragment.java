@@ -7,13 +7,13 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +25,14 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentSignUpBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
 
 public class SignUpFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentSignUpBinding fragmentSignUpBinding;
-    private String mobileNo="",countryCode="+91",userName="",emailId="";
     private CommonViewModel commonViewModel;
+    private BasicDetails basicDetails;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +55,14 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     private void initView(View view)
     {
+        fragmentSignUpBinding.tvTermsOfService.setOnClickListener(this);
+        fragmentSignUpBinding.tvPrivacyPolicy.setOnClickListener(this);
+        fragmentSignUpBinding.btnSignUp.setOnClickListener(this);
+
         hideKeyBoard(getActivity());
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        basicDetails=new BasicDetails();
+
         Bundle bundle=this.getArguments();
         if(bundle!=null)
         {
@@ -62,16 +70,23 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             String tempCountryCode=bundle.getString(AppConstants.COUNTRY_CODE).replace("+","");
             fragmentSignUpBinding.countryCodePicker.setCountryForPhoneCode(Integer.parseInt(tempCountryCode));
         }
-        fragmentSignUpBinding.tvTermsOfService.setOnClickListener(this);
-        fragmentSignUpBinding.tvPrivacyPolicy.setOnClickListener(this);
-        fragmentSignUpBinding.btnSignUp.setOnClickListener(this);
+
         fragmentSignUpBinding.ivPoonaAgroMainLogo.bringToFront();
+
+        setUpCountryCodePicker();
+
+        setUpTextWatcher();
+    }
+
+    public void setUpCountryCodePicker()
+    {
         Typeface typeFace=Typeface.createFromAsset(getContext().getAssets(),"fonts/poppins/poppins_regular.ttf");
         fragmentSignUpBinding.countryCodePicker.setTypeFace(typeFace);
+        commonViewModel.countryCode.setValue(fragmentSignUpBinding.countryCodePicker.getDefaultCountryCodeWithPlus());
         fragmentSignUpBinding.countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
             @Override
             public void onCcpDialogOpen(Dialog dialog) {
-                TextView title = dialog.findViewById(R.id.textView_title);
+                TextView title=dialog.findViewById(R.id.textView_title);
                 title.setText("Select country");
             }
             @Override
@@ -79,13 +94,17 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             @Override
             public void onCcpDialogCancel(DialogInterface dialogInterface) { }
         });
+
         fragmentSignUpBinding.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
-                countryCode=fragmentSignUpBinding.countryCodePicker.getDefaultCountryCodeWithPlus();
+                commonViewModel.countryCode.setValue(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
             }
         });
+    }
 
+    private void setUpTextWatcher()
+    {
         fragmentSignUpBinding.etPhoneNo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -103,7 +122,6 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId())
         {
             case R.id.tv_terms_of_service:
@@ -113,32 +131,41 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 break;
 
             case R.id.btn_sign_up:
-                userName=fragmentSignUpBinding.etUsername.getText().toString();
-                mobileNo=fragmentSignUpBinding.etPhoneNo.getText().toString();
-                emailId=fragmentSignUpBinding.etEmailOptional.getText().toString();
-                if(checkConditions()) {
-                    mobileNo=countryCode+mobileNo;
-                    commonViewModel.userName.setValue(userName);
-                    commonViewModel.emailId.setValue(emailId);
-                    Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_selectLocationFragment);
-                }
+                RedirectToSelectLocationFragment(v);
                 break;
         }
 
     }
 
-    private boolean checkConditions()
+    private void RedirectToSelectLocationFragment(View v)
     {
-        if(TextUtils.isEmpty(userName))
-        {
-            errorToast(getActivity(),getString(R.string.empty_username));
-            return false;
+        basicDetails.setUserName(fragmentSignUpBinding.etUsername.getText().toString());
+        basicDetails.setCountryCode(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
+        basicDetails.setMobileNumber(fragmentSignUpBinding.etPhoneNo.getText().toString());
+        basicDetails.setEmailId(fragmentSignUpBinding.etEmailId.getText().toString());
+
+        int errorCodeUserName=basicDetails.isValidUserName();
+        int errorCodeEmailId=basicDetails.isValidEmailId();
+
+        if(errorCodeUserName==0){
+            errorToast(requireActivity(),getString(R.string.username_should_not_be_empty));
         }
-        else if(TextUtils.isEmpty(mobileNo) ||  mobileNo.length()<10)
-        {
-            errorToast(getActivity(),getString(R.string.enter_valid_mobile_number));
-            return false;
+        else if(errorCodeEmailId==1){
+            infoToast(requireActivity(),getString(R.string.please_enter_valid_email_id));
         }
-        return true;
+        else {
+            if (isConnectingToInternet(context)) {
+                //add API call here
+                commonViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
+                commonViewModel.countryCode.setValue(basicDetails.getCountryCode());
+                commonViewModel.userName.setValue(basicDetails.getUserName());
+                commonViewModel.emailId.setValue(basicDetails.getEmailId());
+                Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_selectLocationFragment);
+            }
+            else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }
+
     }
 }
