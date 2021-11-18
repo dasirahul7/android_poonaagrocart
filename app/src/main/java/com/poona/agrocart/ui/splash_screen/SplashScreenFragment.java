@@ -37,8 +37,6 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
     private final int SPLASH_TIME_OUT = 3000;
     private static final String TAG = SplashScreenFragment.class.getName();
     private Context context;
-    private boolean isLogin;
-    private NavOptions navOptions;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -53,6 +51,12 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
         fragmentSplashScreenBinding.setLifecycleOwner(this);
 
         final View view = ((ViewDataBinding) fragmentSplashScreenBinding).getRoot();
+
+        //if(preferences.getFromLogOut())
+        //{
+            //preferences.setFromLogOut(false);
+            //SPLASH_TIME_OUT = 300;
+        //}
 
         initView(view);
 
@@ -70,7 +74,6 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
         anim.setRepeatCount(Animation.INFINITE);
 
         FirebaseApp.initializeApp(context);
-        navOptions = new NavOptions.Builder().setPopUpTo(R.id.content_splash__activity, true).build();
 
         startSplash();
     }
@@ -79,14 +82,14 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
         getFirebaseToken();
         new Handler().postDelayed(() -> {
             if (isConnectingToInternet(context)) {
-                try {
+//                try {
                     if (preferences.getIsLoggedIn())
-                        NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_LoginFragment, null, navOptions);
+                        NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_LoginFragment);
                     else
-                        NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_introScreenFragment, null, navOptions);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                        NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_introScreenFragment);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
             else {
                 fragmentSplashScreenBinding.linearLayoutNoInternet.setVisibility(View.VISIBLE);

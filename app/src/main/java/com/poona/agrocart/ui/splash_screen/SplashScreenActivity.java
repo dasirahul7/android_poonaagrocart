@@ -58,4 +58,9 @@ public class SplashScreenActivity extends BaseActivity
         onBackPressed();
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

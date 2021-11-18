@@ -12,10 +12,18 @@
         tools:layout="@layout/fragment_splash_screen" >
         <action
             android:id="@+id/action_SplashScreenFragment_to_introScreenFragment"
-            app:destination="@id/introScreenFragment" />
+            app:destination="@id/introScreenFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/SplashScreenFragment"/>
         <action
             android:id="@+id/action_SplashScreenFragment_to_LoginFragment"
-            app:destination="@id/LoginFragment" />
+            app:destination="@id/LoginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/SplashScreenFragment"/>
     </fragment>
 
     <!-- Login Fragment-->
@@ -30,7 +38,12 @@
         tools:layout="@layout/fragment_intro_screen" >
         <action
             android:id="@+id/action_introScreenFragment_to_LoginFragment"
-            app:destination="@id/LoginFragment" />
+            app:destination="@id/LoginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/introScreenFragment"
+            tools:layout="@layout/fragment_intro_screen"/>
     </fragment>
 
 </navigation>
