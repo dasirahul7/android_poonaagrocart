@@ -38,7 +38,7 @@
 
     <!--login fragment colors-->
     <color name="clr_fast_and_fresh_text">#456304</color>
-    <color name="clr_get_your_groceries_text">#030303</color>
+    <color name="colorBlack1">#030303</color>
 
 
     <!--Verify OTP fragment colors-->
