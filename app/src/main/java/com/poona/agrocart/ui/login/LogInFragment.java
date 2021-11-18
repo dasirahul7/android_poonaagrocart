@@ -38,16 +38,12 @@ public class LogInFragment extends BaseFragment {
         //finding/initializing fragment components
         findLayoutComponents(view);
 
-
         //setting custom font to country code picker
         Typeface typeFace=Typeface.createFromAsset(getContext().getAssets(),"fonts/poppins/poppins_regular.ttf");
         countryCodePicker.setTypeFace(typeFace);
 
-
-
         //hiding action bar
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
 
         countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
             @Override
@@ -68,9 +64,6 @@ public class LogInFragment extends BaseFragment {
             }
         });
 
-
-
-
         ivSignUp.setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_LoginFragment_to_verifyOtpFragment);
         });
@@ -78,13 +71,11 @@ public class LogInFragment extends BaseFragment {
         return view;
     }
 
-
     //this method will call whenever we change country code in spinner.
     public void onCountryPickerClick() {
         countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
-
                 Toast.makeText(getContext(), String.valueOf(countryCodePicker.getSelectedCountryCodeAsInt()), Toast.LENGTH_SHORT).show();
                 countryCodePicker.getDefaultCountryCodeWithPlus();
                 //ccp.getSelectedCountryCodeWithPlus();
@@ -94,8 +85,7 @@ public class LogInFragment extends BaseFragment {
 
 
     //finding/initializing all the layout components
-    private void findLayoutComponents(View view)
-    {
+    private void findLayoutComponents(View view) {
         //spinnerCountryCodes = view.findViewById(R.id.spinner_country_code);
         countryCodePicker=view.findViewById(R.id.country_code_picker);
         ivSignUp=view.findViewById(R.id.iv_sign_up);
