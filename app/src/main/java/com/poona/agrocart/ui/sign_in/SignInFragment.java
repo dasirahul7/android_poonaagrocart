@@ -39,7 +39,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         fragmentSignInBinding.setLifecycleOwner(this);
 
         commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
-        fragmentSignInBinding.setLogInViewModel(commonViewModel);
+        fragmentSignInBinding.setCommonViewModel(commonViewModel);
 
         final View view = ((ViewDataBinding) fragmentSignInBinding).getRoot();
 
@@ -73,7 +73,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
             }
         });
 
-        fragmentSignInBinding.etMobileNo.addTextChangedListener(new TextWatcher() {
+        fragmentSignInBinding.etPhoneNo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
@@ -93,7 +93,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.iv_sign_up:
-                mobileNo= Objects.requireNonNull(fragmentSignInBinding.etMobileNo.getText()).toString();
+                mobileNo= Objects.requireNonNull(fragmentSignInBinding.etPhoneNo.getText()).toString();
                 if(TextUtils.isEmpty(mobileNo) || mobileNo.length()<10) {
                     errorToast(getActivity(), getString(R.string.invalid_phone_number));
                 }
@@ -106,8 +106,6 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                     mobileNo=countryCode+mobileNo;
                     Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_verifyOtpFragment,bundle);
                 }
-                break;
-            case R.id.cbtn_login:
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
