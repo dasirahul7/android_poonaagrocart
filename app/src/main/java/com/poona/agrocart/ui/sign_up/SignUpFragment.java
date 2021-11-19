@@ -2,11 +2,13 @@ package com.poona.agrocart.ui.sign_up;
 
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
@@ -28,6 +30,8 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
 
+import java.util.Objects;
+
 public class SignUpFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentSignUpBinding fragmentSignUpBinding;
@@ -35,7 +39,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     private BasicDetails basicDetails;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentSignUpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false);
         fragmentSignUpBinding.setLifecycleOwner(this);
@@ -46,9 +50,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
         initView(view);
 
-        ivBack.setOnClickListener(v -> {
-            Navigation.findNavController(view).popBackStack();
-        });
+        ivBack.setOnClickListener(v -> Navigation.findNavController(view).popBackStack());
 
         return view;
     }
@@ -59,8 +61,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         fragmentSignUpBinding.tvPrivacyPolicy.setOnClickListener(this);
         fragmentSignUpBinding.btnSignUp.setOnClickListener(this);
 
-        hideKeyBoard(getActivity());
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        hideKeyBoard(requireActivity());
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
         basicDetails=new BasicDetails();
 
         Bundle bundle=this.getArguments();
@@ -69,6 +71,12 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             fragmentSignUpBinding.etPhoneNo.setText(bundle.getString(AppConstants.MOBILE_NO));
             String tempCountryCode=bundle.getString(AppConstants.COUNTRY_CODE).replace("+","");
             fragmentSignUpBinding.countryCodePicker.setCountryForPhoneCode(Integer.parseInt(tempCountryCode));
+
+            basicDetails.setCountryCode(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
+            basicDetails.setMobileNumber(fragmentSignUpBinding.etPhoneNo.getText().toString());
+
+            commonViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
+            commonViewModel.countryCode.setValue(basicDetails.getCountryCode());
         }
 
         fragmentSignUpBinding.ivPoonaAgroMainLogo.bringToFront();
@@ -80,14 +88,13 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     public void setUpCountryCodePicker()
     {
-        Typeface typeFace=Typeface.createFromAsset(getContext().getAssets(),"fonts/poppins/poppins_regular.ttf");
+        Typeface typeFace=Typeface.createFromAsset(requireContext().getAssets(),getString(R.string.font_poppins_regular));
         fragmentSignUpBinding.countryCodePicker.setTypeFace(typeFace);
-        commonViewModel.countryCode.setValue(fragmentSignUpBinding.countryCodePicker.getDefaultCountryCodeWithPlus());
         fragmentSignUpBinding.countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
             @Override
             public void onCcpDialogOpen(Dialog dialog) {
                 TextView title=dialog.findViewById(R.id.textView_title);
-                title.setText("Select country");
+                title.setText(getString(R.string.select_country));
             }
             @Override
             public void onCcpDialogDismiss(DialogInterface dialogInterface) { }
@@ -95,12 +102,12 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             public void onCcpDialogCancel(DialogInterface dialogInterface) { }
         });
 
-        fragmentSignUpBinding.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+        /*fragmentSignUpBinding.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
                 commonViewModel.countryCode.setValue(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
             }
-        });
+        });*/
     }
 
     private void setUpTextWatcher()
@@ -120,6 +127,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         });
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId())

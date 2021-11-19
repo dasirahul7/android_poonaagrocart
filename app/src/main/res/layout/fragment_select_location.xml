@@ -15,7 +15,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.select_location.SelectLocationFragment">
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
@@ -23,7 +22,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
 
             <ImageView
                 android:id="@+id/iv_poona_agro_main_logo"
@@ -34,7 +32,8 @@
                 android:src="@drawable/ic_poona_agro_cart_logo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -45,10 +44,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <com.poona.agrocart.widgets.CustomTextView
             android:layout_width="match_parent"
@@ -74,13 +73,12 @@
             android:padding="@dimen/alerter_padding_small"
             android:text="@string/switch_on_location"
             android:textAlignment="center"
-            android:textColor="@color/clr_we_have_sent_otp"
+            android:textColor="@color/color17"
             android:textSize="@dimen/_14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:setCustomFont="@string/font_poppins_regular" />
-
 
         <com.poona.agrocart.widgets.CustomTextView
             android:id="@+id/ctv_your_city"
@@ -91,7 +89,7 @@
             android:layout_marginEnd="@dimen/_25sdp"
             android:padding="@dimen/alerter_padding_small"
             android:text="@string/your_city"
-            android:textColor="@color/clr_we_have_sent_otp"
+            android:textColor="@color/color17"
             android:textSize="@dimen/_16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +118,7 @@
             android:layout_marginEnd="@dimen/_25sdp"
             android:padding="@dimen/alerter_padding_small"
             android:text="@string/your_area"
-            android:textColor="@color/clr_we_have_sent_otp"
+            android:textColor="@color/color17"
             android:textSize="@dimen/_16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -142,9 +140,8 @@
             app:layout_constraintTop_toBottomOf="@+id/customTextView3"
             app:setCustomFont="@string/font_poppins_regular" />
 
-
         <com.poona.agrocart.widgets.CustomButton
-            android:id="@+id/cbtn_submit"
+            android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_verify_otp_btn"
@@ -159,7 +156,6 @@
             app:layout_constraintTop_toBottomOf="@+id/spinner_area"
             app:setCustomFont="@string/font_poppins_regular"
             tools:layout_editor_absoluteX="16dp" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

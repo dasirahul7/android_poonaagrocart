@@ -10,6 +10,11 @@
         <entry key="app/src/main/res/drawable/background_login_fragment.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/background_spinner.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/background_verify_otp_btn.xml" value="0.18055555555555555" />
+        <entry key="app/src/main/res/drawable/bg_check_availabilty_btn.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/drawable/bg_dashboard_et_layout.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/drawable/bg_login_et_fields.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/drawable/bg_my_profile_dob.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/drawable/bg_my_profile_spinner.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/et_login_signup_bg.xml" value="0.18055555555555555" />
         <entry key="app/src/main/res/drawable/ic_logo.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/ic_password_hide.xml" value="0.17777777777777778" />
@@ -24,8 +29,10 @@
         <entry key="app/src/main/res/layout/circular_progresbar.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/content_splash_activity.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/dialog_logout.xml" value="0.1703125" />
+        <entry key="app/src/main/res/layout/fragment_addresses_form.xml" value="0.340625" />
         <entry key="app/src/main/res/layout/fragment_forgot_password.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_log_in.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.27245508982035926" />

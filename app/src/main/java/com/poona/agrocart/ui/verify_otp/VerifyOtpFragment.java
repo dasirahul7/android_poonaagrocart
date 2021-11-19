@@ -5,10 +5,10 @@ import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.text.Editable;
@@ -19,22 +19,25 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.poona.agrocart.R;
-import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentVerifyOtpBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
+import com.poona.agrocart.ui.login.CommonViewModel;
+
+import java.util.Objects;
 
 public class VerifyOtpFragment extends BaseFragment implements View.OnClickListener{
 
     private FragmentVerifyOtpBinding fragmentVerifyOtpBinding;
     private BasicDetails basicDetails;
+    private CommonViewModel commonViewModel;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentVerifyOtpBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_verify_otp,container,false);
         fragmentVerifyOtpBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentVerifyOtpBinding).getRoot();
+        final View view = fragmentVerifyOtpBinding.getRoot();
 
         initViews(view);
 
@@ -50,7 +53,10 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
     {
         fragmentVerifyOtpBinding.btnVerifyOtp.setOnClickListener(this);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        commonViewModel=new ViewModelProvider(this).get(CommonViewModel.class);
+        fragmentVerifyOtpBinding.setCommonViewModel(commonViewModel);
+
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
         basicDetails=new BasicDetails();
         enableSoftKeyboard();
 
@@ -77,18 +83,19 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
 
     private void enableSoftKeyboard()
     {
-        InputMethodManager imgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     @Override
     public void onClick(View v) {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
         hideKeyBoard(requireActivity());
         Bundle bundle=this.getArguments();
         if(bundle!=null)
         {
-            basicDetails.setOtp(fragmentVerifyOtpBinding.etOtp.getText().toString());
+            basicDetails.setOtp(Objects.requireNonNull(fragmentVerifyOtpBinding.etOtp.getText()).toString());
+            commonViewModel.otp.setValue(basicDetails.getOtp());
             int errorCodeForOtp=basicDetails.isValidOtp();
             if(errorCodeForOtp==0)
             {

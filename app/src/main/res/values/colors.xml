@@ -19,6 +19,9 @@
     <color name="color10">#BB2913</color>
     <color name="color13">#53B175</color>
     <color name="color14">#464A43</color>
+    <color name="color15">#424242</color>
+    <color name="color16">#E2E2E2</color>
+    <color name="color17">#7C7C7C</color>
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
@@ -43,11 +46,12 @@
 
     <!--Verify OTP fragment colors-->
     <color name="clr_enter_otp">#181725</color>
-    <color name="clr_we_have_sent_otp">#7C7C7C</color>
     <color name="clr_resend_otp">#53B175</color>
     <color name="clr_verify_otp_btn">#86C11F</color>
     <color name="clr_verify_otp_text">#FFF9FF</color>
-    <color name="clr_custom_edit_text_otp">#E2E2E2</color>
+
+    <!--Addresses fragment-->
+    <color name="clr_check_availabilty_bg">#EFF7E2</color>
 
 
 </resources>

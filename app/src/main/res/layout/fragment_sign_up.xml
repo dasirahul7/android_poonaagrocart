@@ -8,17 +8,14 @@
             name="commonViewModel"
             type="com.poona.agrocart.ui.login.CommonViewModel" />
     </data>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        tools:context=".ui.sign_up.SignUpFragment"
-        android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".ui.sign_up.SignUpFragment">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -64,7 +61,7 @@
                         android:layout_below="@+id/tv_loging"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/enter_your_credentials"
-                        android:textColor="@color/clr_we_have_sent_otp"
+                        android:textColor="@color/color17"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -76,7 +73,7 @@
                         android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/username"
-                        android:textColor="@color/clr_we_have_sent_otp"
+                        android:textColor="@color/color17"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -86,12 +83,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textColor="@color/clr_enter_otp"
+                        android:text="@{commonViewModel.userName}"
                         android:layout_below="@+id/tv_username"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@drawable/ll_login_signup_bg"
+                        android:background="@drawable/bg_login_et_fields"
                         android:inputType="textCapWords"
-                        android:padding="@dimen/_2sdp"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -103,7 +100,7 @@
                         android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/mobile_no"
-                        android:textColor="@color/clr_we_have_sent_otp"
+                        android:textColor="@color/color17"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -125,20 +122,21 @@
                             app:ccp_textSize="@dimen/_16sp"
                             app:ccp_showArrow="false"
                             app:ccp_clickable="false"
-                            android:background="@drawable/ll_login_signup_bg"/>
+                            android:background="@drawable/bg_login_et_fields"/>
 
 
 
                         <com.poona.agrocart.widgets.CustomEditText
                             android:id="@+id/et_phone_no"
                             android:layout_width="0dp"
+                            android:text="@{commonViewModel.mobileNo}"
                             android:layout_height="match_parent"
                             android:layout_weight="65"
                             android:textSize="@dimen/_16sp"
                             android:textColor="@color/clr_enter_otp"
                             android:enabled="false"
                             android:maxLength="10"
-                            android:background="@drawable/ll_login_signup_bg"
+                            android:background="@drawable/bg_login_et_fields"
                             android:inputType="phone"
                             app:setCustomFont="@string/font_poppins_regular" />
 
@@ -148,9 +146,9 @@
                             android:layout_marginTop="@dimen/_1sdp"
                             android:layout_weight="10"
                             android:textColor="@color/clr_enter_otp"
-                            android:padding="@dimen/_2sdp"
+                            android:padding="@dimen/_4sdp"
                             android:src="@drawable/ic_sign_up_mobile_check"
-                            android:background="@drawable/ll_login_signup_bg"
+                            android:background="@drawable/bg_login_et_fields"
                             android:id="@+id/iv_sign_up"
                             />
 
@@ -165,7 +163,7 @@
                         android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/email_id_optional"
-                        android:textColor="@color/clr_we_have_sent_otp"
+                        android:textColor="@color/color17"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -177,8 +175,8 @@
                         android:layout_below="@+id/tv_email_optional"
                         android:layout_marginLeft="@dimen/_4sdp"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@drawable/ll_login_signup_bg"
-                        android:padding="@dimen/_2sdp"
+                        android:text="@{commonViewModel.emailId}"
+                        android:background="@drawable/bg_login_et_fields"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -203,11 +201,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/color13"
-                            android:textStyle="bold"
                             android:textSize="@dimen/_14sp"
                             android:drawablePadding="@dimen/alerter_padding_half"
                             android:text="@string/terms_of_service"
-                            app:setCustomFont="@string/font_poppins_regular" />
+                            app:setCustomFont="@string/font_poppins_semi_bold" />
 
 
                     </LinearLayout>
@@ -237,8 +234,7 @@
                             android:text="@string/privacy_policy"
                             android:textColor="@color/color13"
                             android:textSize="@dimen/_14sp"
-                            android:textStyle="bold"
-                            app:setCustomFont="@string/font_poppins_regular" />
+                            app:setCustomFont="@string/font_poppins_semi_bold" />
 
 
                     </LinearLayout>
@@ -264,5 +260,4 @@
             </FrameLayout>
         </RelativeLayout>
     </ScrollView>
-    </RelativeLayout>
 </layout>

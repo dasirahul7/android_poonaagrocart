@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,6 +26,8 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
 
+import java.util.Objects;
+
 public class SignInFragment extends BaseFragment implements View.OnClickListener{
 
     private FragmentSignInBinding fragmentSignInBinding;
@@ -32,13 +35,14 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     private BasicDetails basicDetails;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentSignInBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false);
         fragmentSignInBinding.setLifecycleOwner(this);
 
         final View view = (fragmentSignInBinding).getRoot();
 
         initView(view);
+
         return view;
     }
 
@@ -51,7 +55,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
         fragmentSignInBinding.setCommonViewModel(commonViewModel);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
 
         //set up country code spinner
         setUpCountryCodePicker();
@@ -64,8 +68,10 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     {
         Typeface typeFace=Typeface.createFromAsset(requireContext().getAssets(),getString(R.string.font_poppins_regular));
         fragmentSignInBinding.countryCodePicker.setTypeFace(typeFace);
+
         basicDetails.setCountryCode(fragmentSignInBinding.countryCodePicker.getDefaultCountryCodeWithPlus());
         commonViewModel.countryCode.setValue(basicDetails.getCountryCode());
+
         fragmentSignInBinding.countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
             @Override
             public void onCcpDialogOpen(Dialog dialog) {
@@ -78,12 +84,9 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
             public void onCcpDialogCancel(DialogInterface dialogInterface) { }
         });
 
-        fragmentSignInBinding.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                basicDetails.setCountryCode(fragmentSignInBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
-                commonViewModel.countryCode.setValue(basicDetails.getCountryCode());
-            }
+        fragmentSignInBinding.countryCodePicker.setOnCountryChangeListener(() -> {
+            basicDetails.setCountryCode(fragmentSignInBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
+            commonViewModel.countryCode.setValue(basicDetails.getCountryCode());
         });
     }
 
@@ -108,19 +111,12 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View v)
     {
-        switch (v.getId())
-        {
-            case R.id.iv_sign_up:
-                signInAndRedirectToVerifyOtp(v);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + v.getId());
-        }
+        signInAndRedirectToVerifyOtp(v);
     }
 
     private void signInAndRedirectToVerifyOtp(View v)
     {
-        basicDetails.setMobileNumber(fragmentSignInBinding.etPhoneNo.getText().toString());
+        basicDetails.setMobileNumber(Objects.requireNonNull(fragmentSignInBinding.etPhoneNo.getText()).toString());
         commonViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
 
         int errorCodeForMobileNumber=basicDetails.isValidMobileNumber();

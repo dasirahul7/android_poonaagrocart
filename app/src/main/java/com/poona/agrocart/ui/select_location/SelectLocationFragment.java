@@ -4,6 +4,7 @@ import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
@@ -22,6 +23,8 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
 
+import java.util.Objects;
+
 public class SelectLocationFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentSelectLocationBinding fragmentSelectLocationBinding;
@@ -29,8 +32,9 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
     private String[] areas={"Vishrantwadi", "Khadki"};
     private BasicDetails basicDetails;
     private CommonViewModel commonViewModel;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentSelectLocationBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_select_location, container, false);
         fragmentSelectLocationBinding.setLifecycleOwner(this);
@@ -51,33 +55,44 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
         fragmentSelectLocationBinding.setCommonViewModel(commonViewModel);
 
-        fragmentSelectLocationBinding.cbtnSubmit.setOnClickListener(this);
+        fragmentSelectLocationBinding.btnSubmit.setOnClickListener(this);
         fragmentSelectLocationBinding.ivPoonaAgroMainLogo.bringToFront();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
 
         basicDetails=new BasicDetails();
 
-        ArrayAdapter arrayAdapterCity = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,cities);
-        arrayAdapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        fragmentSelectLocationBinding.spinnerCity.setAdapter(arrayAdapterCity);
+        setUpSpinnerCity();
+        setUpSpinnerArea();
+    }
 
+    private void setUpSpinnerArea()
+    {
         ArrayAdapter arrayAdapterArea=new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,areas);
         arrayAdapterArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fragmentSelectLocationBinding.spinnerArea.setAdapter(arrayAdapterArea);
-
-        fragmentSelectLocationBinding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                basicDetails.setCity(parent.getItemAtPosition(position).toString());
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
 
         fragmentSelectLocationBinding.spinnerArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 basicDetails.setArea(parent.getItemAtPosition(position).toString());
+                commonViewModel.area.setValue(basicDetails.getArea());
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+    }
+
+    private void setUpSpinnerCity()
+    {
+        ArrayAdapter arrayAdapterCity = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,cities);
+        arrayAdapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fragmentSelectLocationBinding.spinnerCity.setAdapter(arrayAdapterCity);
+
+        fragmentSelectLocationBinding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                basicDetails.setCity(parent.getItemAtPosition(position).toString());
+                commonViewModel.city.setValue(basicDetails.getCity());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
@@ -87,12 +102,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
     @Override
     public void onClick(View v)
     {
-        switch (v.getId())
-        {
-            case R.id.cbtn_submit:
-                redirectToLoginFragment(v);
-                break;
-        }
+        redirectToLoginFragment(v);
     }
 
     private void redirectToLoginFragment(View v)

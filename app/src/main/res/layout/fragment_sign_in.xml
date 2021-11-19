@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_8sdp"
-            android:background="@drawable/ll_login_signup_bg"
+            android:background="@drawable/bg_login_et_fields"
             android:padding="@dimen/alerter_padding_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,6 +83,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_weight="25"
                 app:ccp_showArrow="false"
+                app:ccp_textSize="@dimen/_16sp"
                 android:background="@drawable/et_login_signup_bg"
                 app:ccp_showNameCode="false" />
 
@@ -96,7 +97,7 @@
                 android:background="@drawable/et_login_signup_bg"
                 android:inputType="phone"
                 android:maxLength="10"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="@dimen/_16sp"
                 app:setCustomFont="@string/font_poppins_regular" />
 
             <ImageView
