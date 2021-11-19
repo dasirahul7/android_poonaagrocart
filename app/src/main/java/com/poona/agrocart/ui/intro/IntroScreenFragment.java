@@ -81,7 +81,7 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
         } else {
             NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.introScreenFragment, true).build();
             NavHostFragment.findNavController(IntroScreenFragment.this)
-                    .navigate(R.id.action_SplashScreenFragment_to_LoginFragment, null, navOptions);
+                    .navigate(R.id.action_SplashScreenFragment_to_signInFragment, null, navOptions);
         }
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override

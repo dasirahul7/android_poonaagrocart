@@ -20,8 +20,6 @@
 
 
         <action
-            android:id="@+id/action_SplashScreenFragment_to_LoginFragment"
-            app:destination="@id/LoginFragment"
             android:id="@+id/action_SplashScreenFragment_to_signInFragment"
             app:destination="@id/signInFragment"
             app:enterAnim="@anim/fade_in"
@@ -37,6 +35,7 @@
         android:id="@+id/LoginFragment"
         android:name="com.poona.agrocart.ui.login.LogInFragment"
         tools:layout="@layout/fragment_log_in"/>
+
     <fragment
         android:id="@+id/introScreenFragment"
         android:name="com.poona.agrocart.ui.intro.IntroScreenFragment"
@@ -63,7 +62,6 @@
             app:destination="@id/forgotPasswordFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out" />
-    </fragment>
     <fragment
         android:id="@+id/verifyOtpFragment"
         android:name="com.poona.agrocart.ui.verify_otp.VerifyOtpFragment"

@@ -89,7 +89,9 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
 //                }
 //                else
 //                {
-                    NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signInFragment);
+                if (!preferences.getIsLoggedIn())
+                    NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_introScreenFragment);
+                    else NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signInFragment);
 //                }
             }
             else {
