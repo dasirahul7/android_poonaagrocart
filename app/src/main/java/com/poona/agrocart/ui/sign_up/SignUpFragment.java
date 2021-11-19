@@ -4,6 +4,7 @@ import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -25,6 +26,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentSignUpBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.dashboard.DashBoardActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
 
@@ -160,7 +162,9 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 commonViewModel.countryCode.setValue(basicDetails.getCountryCode());
                 commonViewModel.userName.setValue(basicDetails.getUserName());
                 commonViewModel.emailId.setValue(basicDetails.getEmailId());
-                Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_selectLocationFragment);
+                successToast(context,"DONE");
+                Intent intent = new Intent(context, DashBoardActivity.class);
+                startActivity(intent);
             }
             else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

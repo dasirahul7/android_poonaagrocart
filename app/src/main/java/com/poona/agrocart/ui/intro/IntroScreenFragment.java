@@ -90,7 +90,7 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
                     vpIntro.setCurrentItem(vpIntro.getCurrentItem() + 1);
                 }
                 else {
-                    preferences.setIsLoggedIn(true);
+                    preferences.setIsIntroRead(true);
                     NavHostFragment.findNavController(IntroScreenFragment.this).navigate(R.id.action_introScreenFragment_to_LoginFragment);
                 }
             }
