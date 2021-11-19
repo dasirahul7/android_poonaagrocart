@@ -15,7 +15,6 @@ import android.view.animation.Animation;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.firebase.installations.FirebaseInstallations;
@@ -26,7 +25,6 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.poona.agrocart.ui.intro.IntroScreenFragment;
 import com.poona.agrocart.widgets.progressbar.DotProgressBar;
 
 /**
@@ -82,13 +80,16 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
         getFirebaseToken();
         new Handler().postDelayed(() -> {
             if (isConnectingToInternet(context)) {
-//                try {
-                    if (preferences.getIsLoggedIn())
-                        NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_LoginFragment);
-                    else
-                        NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_introScreenFragment);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
+//                if (preferences.getIsLoggedIn())
+//                {
+//                    Intent intent = new Intent(context, DashboardActivity.class);
+//                    startActivity(intent);
+//                    (requireActivity()).finish();
+//                    (requireActivity()).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//                }
+//                else
+//                {
+                    NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signInFragment);
 //                }
             }
             else {

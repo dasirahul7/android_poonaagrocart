@@ -18,11 +18,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/iv_background"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                app:srcCompat="@drawable/ic_background" />
+                android:id="@+id/iv_background_main"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_250sdp"
+                android:background="@drawable/img_agro_main_background"
+                android:adjustViewBounds="true"
+                android:layout_gravity="end" />
 
             <ImageView
                 android:id="@+id/iv_logo"

@@ -17,13 +17,19 @@
             app:exitAnim="@anim/fade_out"
             app:popUpToInclusive="true"
             app:popUpTo="@id/SplashScreenFragment"/>
+
+
         <action
             android:id="@+id/action_SplashScreenFragment_to_LoginFragment"
             app:destination="@id/LoginFragment"
+            android:id="@+id/action_SplashScreenFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/SplashScreenFragment"/>
+            app:launchSingleTop="true"
+            app:popUpTo="@id/SplashScreenFragment"
+            app:popUpToInclusive="true" />
+
     </fragment>
 
     <!-- Login Fragment-->
@@ -44,6 +50,72 @@
             app:popUpToInclusive="true"
             app:popUpTo="@id/introScreenFragment"
             tools:layout="@layout/fragment_intro_screen"/>
+    </fragment>
+        tools:layout="@layout/fragment_log_in">
+        <action
+            android:id="@+id/action_LogInFragment_to_SignInFragment"
+            app:destination="@id/signInFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_LoginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/verifyOtpFragment"
+        android:name="com.poona.agrocart.ui.verify_otp.VerifyOtpFragment"
+        android:label="fragment_verify_otp"
+        tools:layout="@layout/fragment_verify_otp" >
+        <action
+            android:id="@+id/action_verifyOtpFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/fade_in"
+            app:popUpTo="@id/verifyOtpFragment"
+            app:popUpToInclusive="true"
+            app:exitAnim="@anim/fade_out"/>
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.poona.agrocart.ui.sign_up.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_selectLocationFragment"
+            app:destination="@id/selectLocationFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectLocationFragment"
+        android:name="com.poona.agrocart.ui.select_location.SelectLocationFragment"
+        android:label="fragment_select_location"
+        tools:layout="@layout/fragment_select_location" >
+        <action
+            android:id="@+id/action_selectLocationFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.poona.agrocart.ui.sign_in.SignInFragment"
+        android:label="SignInFragment" >
+        <action
+            android:id="@+id/action_signInFragment_to_verifyOtpFragment"
+            app:destination="@id/verifyOtpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.poona.agrocart.ui.forgot_password.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment" >
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:popUpTo="@id/forgotPasswordFragment"
+            app:popUpToInclusive="true"
+            app:exitAnim="@anim/fade_out" />
     </fragment>
 
 </navigation>
