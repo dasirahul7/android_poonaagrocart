@@ -30,6 +30,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="str_get_started">Get started</string>
+    <string name="str_next">Next</string>
 
     <!--login fragment strings-->
     <string name="get_ur_groceries">Get your groceries \nwith Poona Agrocart</string>

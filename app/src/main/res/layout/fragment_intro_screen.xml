@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/introLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAppBackground">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vpIntro"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <me.huseyinozer.TooltipIndicator
+            android:id="@+id/tl_indicators"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_8sdp"
+            android:layout_above="@+id/ll_next"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="95dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:ti_lineHeight="6dp"
+            app:ti_lineMargin="4dp"
+            app:ti_lineWidth="8dp"
+            app:ti_lineWidthSelected="@dimen/_15sdp"
+            app:ti_selectedLineDrawable="@drawable/ic_selected_dot"
+            app:ti_unselectedLineDrawable="@drawable/ic_unselected_dot" />
+
+        <LinearLayout
+            android:id="@+id/ll_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/_20sdp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/vpIntro"
+            tools:layout_editor_absoluteX="26dp">
+
+            <Button
+                android:id="@+id/btNext"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_43sdp"
+                android:layout_gravity="center"
+                android:background="@drawable/green_btn"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="@string/str_next"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
