@@ -1,42 +1,25 @@
 package com.poona.agrocart.ui.intro;
 
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
-
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
-
-import android.os.Handler;
-import android.text.Html;
-import android.util.AndroidException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.google.android.material.tabs.TabLayout;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.Intro;
-import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.FragmentIntroScreenBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.splash_screen.OnBackPressedListener;
-import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 
 import java.util.ArrayList;
 
 import me.huseyinozer.TooltipIndicator;
+
 
 public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapter.OnChangeButtonCaptionListener, OnBackPressedListener {
 

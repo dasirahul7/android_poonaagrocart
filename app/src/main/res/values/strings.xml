@@ -70,6 +70,7 @@
     <string name="mobile_number_should_not_be_empty">Mobile Number should not be empty!</string>
     <string name="enter_valid_mobile_number">Please enter valid mobile number!</string>
     <string name="please_select_country_code">Please select country code!</string>
+    <string name="select_country">Select country</string>
 
     <!--Verify OTP fragment-->
     <string name="enter_otp">Enter your 4-digit code</string>
