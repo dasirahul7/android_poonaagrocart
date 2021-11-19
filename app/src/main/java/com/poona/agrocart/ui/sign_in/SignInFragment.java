@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.sign_in;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
@@ -52,21 +53,24 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
-        setUpCountryCodePciker();
+        //set up country code spinner
+        setUpCountryCodePicker();
 
+        //hide keyboard after entering mobile number
         setUpTextWatcher();
     }
 
-    public void setUpCountryCodePciker()
+    public void setUpCountryCodePicker()
     {
-        Typeface typeFace=Typeface.createFromAsset(getContext().getAssets(),"fonts/poppins/poppins_regular.ttf");
+        Typeface typeFace=Typeface.createFromAsset(requireContext().getAssets(),getString(R.string.font_poppins_regular));
         fragmentSignInBinding.countryCodePicker.setTypeFace(typeFace);
-        commonViewModel.countryCode.setValue(fragmentSignInBinding.countryCodePicker.getDefaultCountryCodeWithPlus());
+        basicDetails.setCountryCode(fragmentSignInBinding.countryCodePicker.getDefaultCountryCodeWithPlus());
+        commonViewModel.countryCode.setValue(basicDetails.getCountryCode());
         fragmentSignInBinding.countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
             @Override
             public void onCcpDialogOpen(Dialog dialog) {
                 TextView title=dialog.findViewById(R.id.textView_title);
-                title.setText("Select country");
+                title.setText(R.string.select_country);
             }
             @Override
             public void onCcpDialogDismiss(DialogInterface dialogInterface) { }
@@ -77,7 +81,8 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         fragmentSignInBinding.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
-                commonViewModel.countryCode.setValue(fragmentSignInBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
+                basicDetails.setCountryCode(fragmentSignInBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
+                commonViewModel.countryCode.setValue(basicDetails.getCountryCode());
             }
         });
     }
@@ -99,6 +104,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         });
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v)
     {
@@ -114,10 +120,8 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
     private void signInAndRedirectToVerifyOtp(View v)
     {
-        commonViewModel.mobileNo.setValue(fragmentSignInBinding.etPhoneNo.getText().toString());
-
-        basicDetails.setMobileNumber(commonViewModel.mobileNo.getValue());
-        basicDetails.setCountryCode(commonViewModel.countryCode.getValue());
+        basicDetails.setMobileNumber(fragmentSignInBinding.etPhoneNo.getText().toString());
+        commonViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
 
         int errorCodeForMobileNumber=basicDetails.isValidMobileNumber();
         int errorCoedForCountryCode=basicDetails.isValidCountryCode();

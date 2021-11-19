@@ -27,7 +27,7 @@
         <entry key="app/src/main/res/layout/fragment_forgot_password.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_log_in.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.27245508982035926" />
         <entry key="app/src/main/res/layout/fragment_splash_screen.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/fragment_verify_otp.xml" value="0.25" />
