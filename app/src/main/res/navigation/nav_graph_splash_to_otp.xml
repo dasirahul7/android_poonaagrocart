@@ -42,8 +42,8 @@
         android:label="fragment_intro_screen"
         tools:layout="@layout/fragment_intro_screen" >
         <action
-            android:id="@+id/action_introScreenFragment_to_LoginFragment"
-            app:destination="@id/LoginFragment"
+            android:id="@+id/action_introScreenFragment_to_SignInFragment"
+            app:destination="@id/signInFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popUpToInclusive="true"
