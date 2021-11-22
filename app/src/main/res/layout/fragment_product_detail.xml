@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/ll_viewpager_tooltip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_viewpager_product_imgs"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vp_product_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp" />
+
+                <me.huseyinozer.TooltipIndicator
+                    android:id="@+id/tl_indicators"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_8sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintTop_toBottomOf="@+id/vp_product_images"
+                    app:ti_lineHeight="6dp"
+                    app:ti_lineMargin="4dp"
+                    app:ti_lineWidth="8dp"
+                    app:ti_lineWidthSelected="@dimen/_15sdp"
+                    app:ti_selectedLineDrawable="@drawable/ic_selected_img"
+                    app:ti_unselectedLineDrawable="@drawable/ic_not_selected_img" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:weightSum="100"
+                app:layout_constraintTop_toBottomOf="@+id/ll_viewpager_tooltip">
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/tv_product_name"
+                    android:layout_width="0dp"
+                    android:layout_weight="98"
+                    android:layout_height="wrap_content"
+                    android:text="Naturel Red Apple"
+                    android:textColor="@color/clr_enter_otp"
+                    android:textSize="@dimen/_24sp"
+                    app:setCustomFont="@string/font_poppins_bold" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_heart_without_colour" />
+
+            </LinearLayout>
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:text="1kg"
+                android:textColor="@color/color17"
+                android:textSize="@dimen/_18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ll_product_name"
+                app:setCustomFont="@string/font_poppins_regular" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_weight">
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:text="Rs. 150"
+                    android:textColor="@color/clr_enter_otp"
+                    android:textSize="@dimen/_24sp"
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:gravity="end">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:src="@drawable/ic_minus" />
+
+                    <com.poona.agrocart.widgets.CustomEditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_four_rounded_corners"
+                        android:text="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/clr_enter_otp"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:src="@drawable/ic_plus" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>

@@ -22,6 +22,7 @@
         <entry key="app/src/main/res/drawable/ic_password_hide.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/ic_password_show.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/ic_password_show_hide.xml" value="0.17777777777777778" />
+        <entry key="app/src/main/res/drawable/ic_selected_dot.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/ic_sign_up.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/ll_login_signup_bg.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/text_color_verify_otp_btn.xml" value="0.17777777777777778" />
@@ -34,9 +35,13 @@
         <entry key="app/src/main/res/layout/dialog_logout.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/fragment_addresses_form.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_forgot_password.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_intro_screen.xml" value="0.1703125" />
+        <entry key="app/src/main/res/layout/fragment_intro_screen_item.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/fragment_log_in.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.22724113968033358" />
+        <entry key="app/src/main/res/layout/fragment_product_image.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.27245508982035926" />
