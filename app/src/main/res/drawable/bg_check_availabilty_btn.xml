@@ -4,5 +4,7 @@
 
     <corners android:radius="@dimen/_7sdp"/>
     <solid android:color="@color/clr_check_availabilty_bg"/>
+    <stroke android:color="@color/colorPrimary"
+        android:width="@dimen/_1sdp"/>
 
 </shape>

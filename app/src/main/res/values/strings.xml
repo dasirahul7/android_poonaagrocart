@@ -123,5 +123,31 @@
     <string name="use_current_location">Use Current Location</string>
     <string name="add_address">Add Address</string>
 
+    <!--Order view fragment-->
+    <string name="date_sep_30_2021_20_15_am">DATE : Sep 30, 2021 20:15 AM</string>
+    <string name="in_transit">In Transit</string>
+    <string name="order_status">Order Status</string>
+    <string name="order_id_paac001">Order ID - PAAC001</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="ayush_shah">Ayush Shah</string>
+    <string name="_91_986_095_3315">+91 986 095 3315</string>
+    <string name="nand_nivas_building_floor_3_b_3_lane_no_13_bhatrau_nivas_vishrantwadi_pune_411015">Nand Nivas Building floor 3 B-3, Lane No. 13 Bhatrau Nivas Vishrantwadi Pune -411015.</string>
+    <string name="payment_type">Payment Type-</string>
+    <string name="upi">UPI</string>
+    <string name="remark">Remark-</string>
+    <string name="test_order_cancelled">Test Order Cancelled</string>
+    <string name="expected_delivery_date">Expected Delivery Date:</string>
+    <string name="sep_30_2021_9_00_am_12_00pm">Sep 30, 2021 9:00 am - 12:00pm</string>
+    <string name="basket_details">Basket Details</string>
+    <string name="sub_total">Sub Total</string>
+    <string name="rs_800">Rs. 800</string>
+    <string name="discount">Discount</string>
+    <string name="rs_80">Rs. 80</string>
+    <string name="delivery_charges">Delivery Charges</string>
+    <string name="rs_20">Rs. 20</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="rs_740">Rs. 740</string>
+    <string name="you_will_save_rs_80">You will save Rs. 80</string>
+
 
 </resources>

@@ -53,5 +53,12 @@
     <!--Addresses fragment-->
     <color name="clr_check_availabilty_bg">#EFF7E2</color>
 
+    <!--Order View fragment-->
+    <color name="color_order_date_and_time">#5B5B5B</color>
+    <color name="color_order_view_username">#272727</color>
+    <color name="color_horizontal_line">#B3B3B3</color>
+    <color name="color_rv_basket_price">#787878</color>
+    <color name="color_discount_text">#4C4C4C</color>
+
 
 </resources>

@@ -27,6 +27,9 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/SplashScreenFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_SplashScreenFragment_to_orderViewFragment"
+            app:destination="@id/orderViewFragment" />
 
     </fragment>
 
@@ -115,5 +118,9 @@
             app:popUpToInclusive="true"
             app:exitAnim="@anim/fade_out" />
     </fragment>
+    <fragment
+        android:id="@+id/orderViewFragment"
+        android:name="com.poona.agrocart.ui.order_view.OrderViewFragment"
+        android:label="OrderViewFragment" />
 
 </navigation>

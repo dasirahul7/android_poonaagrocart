@@ -25,13 +25,6 @@ public class MyProfileFragment extends Fragment {
 
         final View view=fragmentMyProfileBinding.getRoot();
 
-        initView(view);
-
         return view;
-    }
-
-    private void initView(View view)
-    {
-
     }
 }

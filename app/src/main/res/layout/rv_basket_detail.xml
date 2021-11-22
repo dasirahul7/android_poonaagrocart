@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="basketItemModel"
+            type="com.poona.agrocart.ui.order_view.BasketItem" />
+    </data>
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/color_horizontal_line"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:weightSum="100"
+        >
+
+        <ImageView
+            android:id="@+id/img_product"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="25"
+            android:src="@drawable/img_vegetable_basket"/>
+
+        <LinearLayout
+            android:id="@+id/ll_basket_description"
+            android:layout_width="0dp"
+            android:layout_weight="55"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{basketItemModel.nameOfProduct}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sp"
+                android:layout_marginTop="@dimen/_8sdp" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_weight"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_height="wrap_content"
+                android:text="@{basketItemModel.weight}"
+                android:textColor="@color/color17"
+                android:textSize="@dimen/_12sp" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_date_and_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@{basketItemModel.date.concat(basketItemModel.time)}"
+                android:textColor="@color/color17"
+                android:textSize="@dimen/_12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical"
+            >
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_order_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delivered"
+                android:gravity="end"
+                android:textColor="@color/colorPrimary"
+                app:setCustomFont="@string/font_poppins_bold"
+                android:textSize="@dimen/_14sp"
+                android:layout_marginTop="@dimen/_8sdp" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_order_price"
+                android:layout_width="match_parent"
+                android:text="@{basketItemModel.price}"
+                android:gravity="end"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_rv_basket_price"
+                app:setCustomFont="@string/font_poppins_bold"
+                android:textSize="@dimen/_14sp"
+                android:layout_marginTop="@dimen/_16sdp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+</layout>
