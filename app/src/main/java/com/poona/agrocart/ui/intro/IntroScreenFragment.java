@@ -74,7 +74,7 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
                 }
                 else {
                     preferences.setIsIntroRead(true);
-                    NavHostFragment.findNavController(IntroScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signInFragment);
+                    NavHostFragment.findNavController(IntroScreenFragment.this).navigate(R.id.action_introScreenFragment_to_SignInFragment);
                 }
             }
         });

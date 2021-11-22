@@ -88,4 +88,5 @@ public class AppConstants
     /*SignInFragment keys*/
     public static final String MOBILE_NO = "MOBILE_NO";
     public static final String COUNTRY_CODE ="COUNTRY_CODE";
+    public static final Object IS_NOTIFICATION_RECEIVED = "IS_NOTIFICATION_RECEIVED";
 }

@@ -23,7 +23,6 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentVerifyOtpBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.dashboard.DashBoardActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 
 public class VerifyOtpFragment extends BaseFragment implements View.OnClickListener{

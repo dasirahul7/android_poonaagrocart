@@ -25,7 +25,9 @@
         <item name="android:background">@android:color/transparent</item>
 
     </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="AlertStyle" parent="@android:style/Widget">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -60,8 +62,11 @@
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
     </style>
 
-
-
+    <style name="menu_text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@string/font_poppins_semi_bold</item>
+    </style>
 
 
 </resources>

@@ -26,7 +26,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentSignUpBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.dashboard.DashBoardActivity;
+import com.poona.agrocart.ui.dashboard.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
 
@@ -162,8 +162,12 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 commonViewModel.countryCode.setValue(basicDetails.getCountryCode());
                 commonViewModel.userName.setValue(basicDetails.getUserName());
                 commonViewModel.emailId.setValue(basicDetails.getEmailId());
-                successToast(context,"DONE");
-                Intent intent = new Intent(context, DashBoardActivity.class);
+                successToast(context,"Login Success");
+                preferences.setIsLoggedIn(true);
+                Intent intent = new Intent(context, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                requireActivity().finish();
                 startActivity(intent);
             }
             else {

@@ -26,7 +26,7 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.poona.agrocart.ui.dashboard.DashBoardActivity;
+import com.poona.agrocart.ui.dashboard.HomeActivity;
 import com.poona.agrocart.widgets.progressbar.DotProgressBar;
 
 /**
@@ -106,9 +106,10 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void startDashBoard() {
-        Intent intent = new Intent(requireActivity(), DashBoardActivity.class);
+        Intent intent = new Intent(requireActivity(), HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        requireActivity().finish();
         startActivity(intent);
     }
 

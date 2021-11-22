@@ -24,7 +24,7 @@ import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentLogInBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.dashboard.DashBoardActivity;
+import com.poona.agrocart.ui.dashboard.HomeActivity;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -143,7 +143,7 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
             if (isConnectingToInternet(context)) {
                 //add API call here
                 successToast(context,"DONE");
-                Intent intent = new Intent(context, DashBoardActivity.class);
+                Intent intent = new Intent(context, HomeActivity.class);
                 startActivity(intent);
             }
             else {
