@@ -2,7 +2,15 @@ package com.poona.agrocart.ui.order_view;
 
 public class BasketItem
 {
-    private String imageUrl,nameOfProduct,weight,date,time,deliveryStatus,price;
+    private String imageUrl,nameOfProduct,weight,date,time,deliveryStatus,price,discountedPrice;
+
+    public String getDiscountedPrice() {
+        return discountedPrice;
+    }
+
+    public void setDiscountedPrice(String discountedPrice) {
+        this.discountedPrice = discountedPrice;
+    }
 
     public String getImageUrl() {
         return imageUrl;

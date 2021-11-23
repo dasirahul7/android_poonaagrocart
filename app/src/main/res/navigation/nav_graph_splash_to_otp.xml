@@ -27,8 +27,8 @@
             app:popUpTo="@id/SplashScreenFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_SplashScreenFragment_to_productDetailFragment"
-            app:destination="@id/productDetailFragment" />
+            android:id="@+id/action_SplashScreenFragment_to_orderViewFragment"
+            app:destination="@id/orderViewFragment" />
 
     </fragment>
 
@@ -52,7 +52,6 @@
             app:popUpTo="@id/introScreenFragment"
             tools:layout="@layout/fragment_intro_screen"/>
     </fragment>
-        tools:layout="@layout/fragment_log_in">
         <action
             android:id="@+id/action_LogInFragment_to_SignInFragment"
             app:destination="@id/signInFragment"
@@ -118,8 +117,12 @@
             app:exitAnim="@anim/fade_out" />
     </fragment>
     <fragment
-        android:id="@+id/productDetailFragment"
-        android:name="com.poona.agrocart.ui.product_detail.ProductDetailFragment"
-        android:label="ProductDetailFragment" />
+        android:id="@+id/favouriteItemsFragment3"
+        android:name="com.poona.agrocart.ui.favourites.FavouriteItemsFragment"
+        android:label="FavouriteItemsFragment" />
+    <fragment
+        android:id="@+id/orderViewFragment"
+        android:name="com.poona.agrocart.ui.order_view.OrderViewFragment"
+        android:label="OrderViewFragment" />
 
 </navigation>

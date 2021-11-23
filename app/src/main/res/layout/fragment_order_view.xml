@@ -20,7 +20,7 @@
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:elevation="@dimen/_6sdp"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="@dimen/_16sdp"
             app:cardElevation="3dp"
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/_10sdp"
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:elevation="@dimen/_6sdp"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="@dimen/_16sdp"
             app:cardElevation="3dp"
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/_10sdp"
@@ -134,7 +134,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:drawableStart="@drawable/ic_mobile"
-                    android:drawablePadding="@dimen/_4sdp"
+                    android:drawablePadding="@dimen/_7sdp"
+                    android:layout_marginStart="@dimen/_3sdp"
                     android:text="@string/_91_986_095_3315"
                     android:textColor="@color/color_order_view_username"
                     android:textSize="@dimen/_14sp"
@@ -145,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:drawableStart="@drawable/ic_location"
-                    android:drawablePadding="@dimen/_4sdp"
+                    android:drawablePadding="@dimen/_2sdp"
                     android:text="@string/nand_nivas_building_floor_3_b_3_lane_no_13_bhatrau_nivas_vishrantwadi_pune_411015"
                     android:textColor="@color/color_order_view_username"
                     android:textSize="@dimen/_14sp"
@@ -189,7 +190,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginHorizontal="@dimen/_24sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -219,7 +220,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_24sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:text="@string/expected_delivery_date"
             android:textColor="@color/black"
             android:textSize="@dimen/_16sp"
@@ -259,7 +260,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_24sdp"
-            android:layout_marginTop="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_basket_details"/>
@@ -268,7 +268,7 @@
             android:id="@+id/line1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:background="@color/color_horizontal_line"
             android:layout_marginHorizontal="@dimen/_24sdp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -282,9 +282,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="100"
+            android:layout_marginVertical="@dimen/_4sdp"
             android:layout_marginHorizontal="@dimen/_24sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/line2"
             app:layout_constraintTop_toBottomOf="@+id/line1">
 
             <com.poona.agrocart.widgets.CustomTextView
@@ -304,7 +306,7 @@
                 android:text="@string/rs_800"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sp"
-                app:setCustomFont="@string/font_poppins_semi_bold" />
+                app:setCustomFont="@string/font_poppins_bold" />
         </LinearLayout>
 
         <View
@@ -313,6 +315,7 @@
             android:layout_height="1dp"
             android:background="@color/color_horizontal_line"
             android:layout_marginHorizontal="@dimen/_24sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_sub_total"
@@ -324,6 +327,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="100"
+            android:layout_marginVertical="@dimen/_4sdp"
             android:layout_marginHorizontal="@dimen/_24sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -346,7 +350,7 @@
                 android:text="@string/rs_80"
                 android:textColor="@color/color_discount_text"
                 android:textSize="@dimen/_14sp"
-                app:setCustomFont="@string/font_poppins_semi_bold" />
+                app:setCustomFont="@string/font_poppins_regular" />
         </LinearLayout>
 
         <LinearLayout
@@ -355,9 +359,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="100"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginHorizontal="@dimen/_24sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/line3"
             app:layout_constraintTop_toBottomOf="@+id/ll_discount">
 
             <com.poona.agrocart.widgets.CustomTextView
@@ -377,7 +383,7 @@
                 android:text="@string/rs_20"
                 android:textColor="@color/color_discount_text"
                 android:textSize="@dimen/_14sp"
-                app:setCustomFont="@string/font_poppins_semi_bold" />
+                app:setCustomFont="@string/font_poppins_regular" />
         </LinearLayout>
 
         <View
@@ -385,6 +391,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/color_horizontal_line"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginHorizontal="@dimen/_24sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -397,6 +404,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="100"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginHorizontal="@dimen/_24sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -428,6 +436,7 @@
             android:layout_height="1dp"
             android:background="@color/color_horizontal_line"
             android:layout_marginHorizontal="@dimen/_24sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_total_amount"
@@ -438,14 +447,14 @@
             android:layout_height="wrap_content"
             android:text="@string/you_will_save_rs_80"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_16sp"
+            android:textSize="@dimen/_18sp"
             android:layout_marginVertical="@dimen/_10sdp"
             android:layout_marginHorizontal="@dimen/_24sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line4"
-            app:setCustomFont="@string/font_poppins_semi_bold" />
+            app:setCustomFont="@string/font_poppins_bold" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

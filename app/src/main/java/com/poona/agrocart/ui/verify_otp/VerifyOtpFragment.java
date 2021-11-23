@@ -104,7 +104,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
             }
             else if(errorCodeForOtp==1)
             {
-                infoToast(requireActivity(),getString(R.string.please_enter_valid_otp));
+                errorToast(requireActivity(),getString(R.string.please_enter_valid_otp));
             }
             else
             {

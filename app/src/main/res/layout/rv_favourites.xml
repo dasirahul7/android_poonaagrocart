@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="favouriteItem"
+            type="com.poona.agrocart.ui.favourites.FavouriteItem" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_6sdp"
+        android:padding="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_15sdp"
+        app:cardElevation="3dp"
+        android:background="@color/white"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100"
+            android:orientation="horizontal"
+            >
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_10sdp"
+                app:cardCornerRadius="@dimen/_15sdp"
+                app:cardElevation="0dp"
+                android:layout_weight="30"
+                app:cardUseCompatPadding="true">
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_bell_pepper_red"
+                />
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="55"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:orientation="vertical">
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_product_name"
+                    android:text="Bell Pepper Red"
+                    android:textColor="@color/color_basket_name"
+                    app:setCustomFont="@string/font_poppins_bold"
+                    android:textSize="@dimen/_16sp"
+                    />
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_product_weight"
+                    android:text="@string/_1kg"
+                    android:textColor="@color/color17"
+                    app:setCustomFont="@string/font_poppins_regular"
+                    android:textSize="@dimen/_14sp"
+                    />
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_price"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/rs_20"
+                    android:textColor="@color/clr_enter_otp"
+                    app:setCustomFont="@string/font_poppins_semi_bold"
+                    android:textSize="@dimen/_14sp"
+                    />
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="15"
+            android:weightSum="100"
+            android:layout_marginVertical="@dimen/_8sdp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="50"
+                android:scaleType="centerInside"
+                android:paddingBottom="@dimen/_10sdp"
+                android:src="@drawable/ic_red_heart"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="50"
+                android:scaleType="centerInside"
+                android:src="@drawable/bg_green_add_cart_btn"/>
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

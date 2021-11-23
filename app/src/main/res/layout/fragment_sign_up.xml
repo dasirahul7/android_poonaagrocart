@@ -82,13 +82,14 @@
                         android:id="@+id/et_username"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textColor="@color/clr_enter_otp"
-                        android:text="@{commonViewModel.userName}"
                         android:layout_below="@+id/tv_username"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/bg_login_et_fields"
                         android:inputType="textCapWords"
+                        android:digits="@string/all_letters_and_digits"
+                        android:text="@{commonViewModel.userName}"
+                        android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 

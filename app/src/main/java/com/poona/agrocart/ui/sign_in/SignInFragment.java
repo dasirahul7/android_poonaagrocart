@@ -125,7 +125,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
             errorToast(requireActivity(),getString(R.string.mobile_number_should_not_be_empty));
         }
         else if(errorCodeForMobileNumber==1){
-            infoToast(requireActivity(),getString(R.string.enter_valid_mobile_number));
+            errorToast(requireActivity(),getString(R.string.enter_valid_mobile_number));
         }
         else if(errorCoedForCountryCode==0){
             errorToast(requireActivity(),getString(R.string.please_select_country_code));

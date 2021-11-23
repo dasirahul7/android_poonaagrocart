@@ -161,7 +161,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             errorToast(requireActivity(),getString(R.string.username_should_not_be_empty));
         }
         else if(errorCodeEmailId==1){
-            infoToast(requireActivity(),getString(R.string.please_enter_valid_email_id));
+            errorToast(requireActivity(),getString(R.string.please_enter_valid_email_id));
         }
         else {
             if (isConnectingToInternet(context)) {

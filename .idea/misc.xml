@@ -25,16 +25,19 @@
         <entry key="app/src/main/res/drawable/ic_default_profile_img.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/drawable/ic_explore.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_home.xml" value="0.17592592592592593" />
+        <entry key="app/src/main/res/drawable/ic_location.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/ic_mobile.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/drawable/ic_next_arrow.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/drawable/ic_offers.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_orders.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_poona_agrocart_logo_final.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.17592592592592593" />
+        <entry key="app/src/main/res/drawable/ic_rectangle_63__1_.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/ic_selected_dot.xml" value="0.15648148148148147" />
         <entry key="app/src/main/res/drawable/ic_store.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_terms__condition.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_unselected_dot.xml" value="0.15648148148148147" />
+        <entry key="app/src/main/res/drawable/ic_user.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/icon_menu_shop.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/infi_img.xml" value="0.1037037037037037" />
         <entry key="app/src/main/res/drawable/info_img.xml" value="0.1037037037037037" />
@@ -58,21 +61,28 @@
         <entry key="app/src/main/res/layout/content_dash_board.xml" value="0.1" />
         <entry key="app/src/main/res/layout/content_home.xml" value="0.12001811594202899" />
         <entry key="app/src/main/res/layout/content_splash_activity.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/delete.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/fragment_app_info.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_basket_page.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_dash_board.xml" value="0.21" />
         <entry key="app/src/main/res/layout/fragment_dash_board2.xml" value="0.1431159420289855" />
+        <entry key="app/src/main/res/layout/fragment_favourite_items.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.13269927536231885" />
         <entry key="app/src/main/res/layout/fragment_intro.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_intro_item.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_intro_screen.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_intro_screen_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_log_in.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.31902439024390244" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.13269927536231885" />
-        <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.13269927536231885" />
-        <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.13269927536231885" />
+        <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_splash_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/menu_item.xml" value="0.16259057971014493" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.17074275362318841" />
+        <entry key="app/src/main/res/layout/rv_basket_detail.xml" value="0.1703125" />
+        <entry key="app/src/main/res/layout/rv_basket_page_cardview.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/rv_favourites.xml" value="0.67" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.21" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.19322916666666667" />
