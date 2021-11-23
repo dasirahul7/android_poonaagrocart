@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dashboard.HomeActivity">
+    tools:context=".ui.home.HomeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -22,17 +22,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <ImageView
+                    android:id="@+id/back_img"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_back" />
 
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/textTitle"
+                    android:visibility="gone"
+                    android:paddingEnd="@dimen/_50sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:singleLine="true"
+                    android:gravity="center"
+                    android:text="@string/my_orders"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_15sdp" />
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
-                    android:singleLine="true"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:layout_toStartOf="@+id/img_Toolbar_menu"
                     android:drawableStart="@drawable/ic_baseline_location_on_24"
                     android:drawableTint="@color/colorGrey"
+                    android:singleLine="true"
                     android:text="@string/address_location"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13sdp" />

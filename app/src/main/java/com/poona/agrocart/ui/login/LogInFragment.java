@@ -24,7 +24,7 @@ import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentLogInBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.dashboard.HomeActivity;
+import com.poona.agrocart.ui.home.HomeActivity;
 
 /**
  * Created by Rahul Dasi on 6/10/2020

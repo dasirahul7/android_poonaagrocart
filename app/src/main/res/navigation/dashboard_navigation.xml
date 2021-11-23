@@ -5,21 +5,24 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
+<!--  Home Fragment-->
     <fragment
         android:id="@+id/nav_home"
         android:name="com.poona.agrocart.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
-    <fragment
-        android:id="@+id/nav_profile"
-        android:name="com.poona.agrocart.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
+<!--    MyOrdersFragment-->
     <fragment
         android:id="@+id/nav_orders"
-        android:name="com.poona.agrocart.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="com.poona.agrocart.ui.my_orders.MyOrdersFragment"
+        android:label="@string/my_orders"
+        tools:layout="@layout/fragment_my_orders" />
+
+<!--    MyProfileFragment-->
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.poona.agrocart.ui.my_profile.MyProfileFragment"
+        android:label="@string/my_profile"
+        tools:layout="@layout/fragment_my_profile" />
 </navigation>

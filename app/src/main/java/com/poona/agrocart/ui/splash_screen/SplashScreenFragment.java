@@ -26,8 +26,7 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.poona.agrocart.ui.dashboard.HomeActivity;
-import com.poona.agrocart.widgets.progressbar.DotProgressBar;
+import com.poona.agrocart.ui.home.HomeActivity;
 
 /**
  * Created by Rahul Dasi on 6/10/2020

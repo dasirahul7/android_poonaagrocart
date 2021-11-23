@@ -1,12 +1,18 @@
-package com.poona.agrocart.ui.dashboard;
+package com.poona.agrocart.ui.home;
 
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -18,15 +24,20 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.ActivityHomeBinding;
+import com.poona.agrocart.ui.BaseActivity;
 
 import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityHomeBinding binding;
+    public ActivityHomeBinding binding;
     private DrawerLayout drawer;
     private NavigationView navigationView;
+    private NavController navController;
+    public Toolbar toolbar;
+    public ImageView backBtn;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +45,22 @@ public class HomeActivity extends AppCompatActivity {
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        toolbar = binding.appBarHome.toolbar;
+        backBtn = binding.appBarHome.backImg;
         initToolbar();
         initNavigation();
         setCustomDrawerIconInFragments();
-
+        checkForAppUpdate();
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
     }
 
     private void initToolbar() {
         setSupportActionBar(binding.appBarHome.toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        binding.appBarHome.backImg.setVisibility(View.GONE);
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
@@ -76,7 +92,6 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-
     private void setCustomDrawerIconInFragments() {
         binding.appBarHome.toolbar.post(() -> {
             Drawable d = ResourcesCompat.getDrawable(getResources(),
@@ -92,6 +107,15 @@ public class HomeActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.home, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_home:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

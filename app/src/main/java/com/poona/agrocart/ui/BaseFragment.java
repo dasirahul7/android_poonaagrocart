@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -30,8 +31,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.squareup.picasso.Callback;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.firebase.PushNotification;
@@ -90,6 +93,28 @@ public abstract class BaseFragment extends Fragment
         permissions.add(WRITE_EXTERNAL_STORAGE);
         ////////////////////list of permissions////////////////////////////
     }
+
+
+//    Title and app logo on actionBar
+protected void initTitleBar(String title) {
+    ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
+        Drawable d = ResourcesCompat.getDrawable(getResources(),
+                R.drawable.ic_back, null);
+        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationIcon(d);
+        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setPadding(0,0,0,0);
+        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        requireActivity().onBackPressed();
+                    }
+                }
+        );
+    });
+    ((HomeActivity)requireActivity()).binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
+    ((HomeActivity)requireActivity()).binding.appBarHome.textView.setVisibility(View.GONE);
+    ((HomeActivity)requireActivity()).binding.appBarHome.textTitle.setText(title);
+}
 
     public void loadingImage(Context context, String url, ImageView imageView)
     {
