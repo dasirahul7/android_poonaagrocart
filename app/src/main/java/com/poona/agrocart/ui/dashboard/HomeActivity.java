@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
 
         initToolbar();
         initNavigation();
-//        setCustomDrawerIconInFragments();
+        setCustomDrawerIconInFragments();
 
     }
 
@@ -66,12 +66,12 @@ public class HomeActivity extends AppCompatActivity {
         binding.appBarHome.toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        if (!HomeActivity.this.binding.drawerLayout.isDrawerOpen((int) GravityCompat.START)) {
-                            HomeActivity.this.binding.drawerLayout.openDrawer((int) GravityCompat.START);
+                if (!HomeActivity.this.binding.drawerLayout.isDrawerOpen((int) GravityCompat.START)) {
+                    HomeActivity.this.binding.drawerLayout.openDrawer((int) GravityCompat.START);
 
-                        } else {
-                            HomeActivity.this.binding.drawerLayout.closeDrawer((View) binding.drawerLayout);
-                        }
+                } else {
+                    HomeActivity.this.binding.drawerLayout.closeDrawer((View) binding.drawerLayout);
+                }
             }
         });
     }
@@ -80,12 +80,11 @@ public class HomeActivity extends AppCompatActivity {
     private void setCustomDrawerIconInFragments() {
         binding.appBarHome.toolbar.post(() -> {
             Drawable d = ResourcesCompat.getDrawable(getResources(),
-                    R.drawable.menu_icon_toggle, null);
+                    R.drawable.ic_poona_agrocart_logo_final, null);
             binding.appBarHome.toolbar.setNavigationIcon(d);
-            binding.appBarHome.toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.menu_icon_toggle));
+            binding.appBarHome.toolbar.setPadding(30, 0, 0, 0);
         });
     }
-
 
 
     @Override
@@ -100,5 +99,15 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

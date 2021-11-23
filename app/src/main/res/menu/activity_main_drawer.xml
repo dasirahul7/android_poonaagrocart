@@ -17,7 +17,7 @@
             android:icon="@drawable/ic_orders"
             android:title="@string/my_orders" />
         <item
-            android:id="@+id/nam_addresses"
+            android:id="@+id/nav_address"
             android:icon="@drawable/ic_address"
             android:title="@string/my_addresses" />
         <item

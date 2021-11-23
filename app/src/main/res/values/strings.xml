@@ -124,5 +124,6 @@
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="our_store">Our Store</string>
     <string name="logout">Logout</string>
+    <string name="shop">Shop</string>
 
 </resources>
