@@ -60,6 +60,7 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".ui.dashboard.HomeActivity" />
 
         <service
             android:name=".data.firebase.PoonaAgroCartFirebaseMessagingService"

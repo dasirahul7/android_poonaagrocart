@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.login;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -23,6 +24,7 @@ import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentLogInBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.dashboard.HomeActivity;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -140,6 +142,9 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
             hideKeyBoard(requireActivity());
             if (isConnectingToInternet(context)) {
                 //add API call here
+                successToast(context,"DONE");
+                Intent intent = new Intent(context, HomeActivity.class);
+                startActivity(intent);
             }
             else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

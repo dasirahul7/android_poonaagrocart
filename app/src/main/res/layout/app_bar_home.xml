@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.dashboard.HomeActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.PoonaAgroCart.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:popupTheme="@style/Theme.PoonaAgroCart.PopupOverlay">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:singleLine="true"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_toStartOf="@+id/img_Toolbar_menu"
+                    android:drawableStart="@drawable/ic_baseline_location_on_24"
+                    android:drawableTint="@color/colorGrey"
+                    android:text="@string/address_location"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13sdp" />
+
+                <ImageView
+                    android:id="@+id/img_Toolbar_menu"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/menu_icon_toggle" />
+
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_home" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/ll_bottom_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_gravity="bottom">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/colorGrey"/>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:elevation="@dimen/_40sdp"
+            app:setCustomFont="@string/font_poppins_bold"
+            app:elevation="@dimen/_16sdp"
+            android:fitsSystemWindows="true"
+            app:itemIconTint="@drawable/bottom_menu_item_color"
+            app:itemTextColor="@color/black"
+            app:labelVisibilityMode="labeled"
+            app:itemRippleColor="@color/white"
+            app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+            app:itemTextAppearanceInactive="@style/BottomNavigationView"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+            android:background="@drawable/background_bottom_navigation_screen"
+            app:menu="@menu/bottom_menu"/>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

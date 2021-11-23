@@ -3,6 +3,7 @@ package com.poona.agrocart.ui.splash_screen;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.poona.agrocart.ui.dashboard.HomeActivity;
 import com.poona.agrocart.widgets.progressbar.DotProgressBar;
 
 /**
@@ -89,18 +91,26 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
 //                }
 //                else
 //                {
+                if (preferences.getIsLoggedIn()){
+                    startDashBoard();
+                }else if (preferences.getIsIntroRead())
+                    NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signInFragment);
+                else NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_introScreenFragment);
 
-                //NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_productDetailFragment);
-                if (!preferences.getIsLoggedIn())
-                    NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_introScreenFragment);
-                    else
-                        NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signInFragment);
 //                }
             }
             else {
                 fragmentSplashScreenBinding.linearLayoutNoInternet.setVisibility(View.VISIBLE);
             }
         }, SPLASH_TIME_OUT);
+    }
+
+    private void startDashBoard() {
+        Intent intent = new Intent(requireActivity(), HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        requireActivity().finish();
+        startActivity(intent);
     }
 
     private void getFirebaseToken() {

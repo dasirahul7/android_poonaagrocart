@@ -11,6 +11,7 @@ import static com.poona.agrocart.app.AppConstants.AUTHORIZATION_TOKEN;
 import static com.poona.agrocart.app.AppConstants.FCM_TOKEN;
 import static com.poona.agrocart.app.AppConstants.FROM_LOG_OUT;
 import static com.poona.agrocart.app.AppConstants.IS_LOGGED_IN;
+import static com.poona.agrocart.app.AppConstants.IS_READ_INTRO;
 import static com.poona.agrocart.app.AppConstants.PREFERENCES_NAME;
 
 /**
@@ -29,7 +30,7 @@ public class AppSharedPreferences
 
     private String fireBaseToken, authorizationToken,uid, baseAuthUsername, baseAuthPassword;
     private int newOrderCount;
-    private boolean isLoggedIn, fromLogOut, isSkipBankForm;
+    private boolean isLoggedIn,isIntroRead, fromLogOut, isSkipBankForm;
     private String userType;
 
     //Constructor
@@ -58,6 +59,15 @@ public class AppSharedPreferences
     public void setIsLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn = isLoggedIn;
         this.editor.putBoolean(IS_LOGGED_IN, isLoggedIn);
+        this.editor.commit();
+    }
+    public boolean getIsIntroRead() {
+        return this.preferences.getBoolean(IS_READ_INTRO, false);
+    }
+
+    public void setIsIntroRead(boolean isIntroRead) {
+        this.isIntroRead = isIntroRead;
+        this.editor.putBoolean(IS_READ_INTRO, isIntroRead);
         this.editor.commit();
     }
 

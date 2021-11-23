@@ -25,6 +25,7 @@ public class AppConstants
     public static final String ANDROID_ID = "android_id";
     public static final String FCM_TOKEN = "fcm_token";
     public static final String IS_LOGGED_IN = "isLoggedIn";
+    public static final String IS_READ_INTRO = "isIntroRead";
     public static final String FROM_LOG_OUT = "fromLogOut";
     public static final String IS_SKIP_BANK_DETAILS = "isSkippedBankDetails";
     public static final String IS_REMEMBER = "isRemember";
@@ -87,4 +88,5 @@ public class AppConstants
     /*SignInFragment keys*/
     public static final String MOBILE_NO = "MOBILE_NO";
     public static final String COUNTRY_CODE ="COUNTRY_CODE";
+    public static final Object IS_NOTIFICATION_RECEIVED = "IS_NOTIFICATION_RECEIVED";
 }
