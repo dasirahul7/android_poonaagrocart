@@ -60,6 +60,12 @@
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
     </style>
 
+    <!--rating bar-->
+    <style name="theme_rating_bar">
+        <item name="colorControlActivated">@color/color_star_rating</item>
+        <item name="colorControlNormal">@color/color_star_rating_unselected</item>
+    </style>
+
 
 
 

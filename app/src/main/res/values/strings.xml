@@ -149,5 +149,16 @@
     <string name="rs_740">Rs. 740</string>
     <string name="you_will_save_rs_80">You will save Rs. 80</string>
 
+    <!--products detail fragment-->
+    <string name="naturel_red_apple">Naturel Red Apple</string>
+    <string name="rs_150">Rs. 150</string>
+    <string name="_1kg">1kg</string>
+    <string name="_1">1</string>
+    <string name="product_detail">Product Detail</string>
+    <string name="add_to_basket">Add To Basket</string>
+    <string name="quantity_less_than_one">Quantity can\'t be less than one</string>
+    <string name="apples_are_nutritious_apples_may_be_good_for_weight_loss_apples_may_be_good_for_your_heart_as_part_of_a_healtful_and_varied_diet">Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.</string>
+    <string name="nutritions">Nutritions</string>
+
 
 </resources>

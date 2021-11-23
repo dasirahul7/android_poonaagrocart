@@ -18,12 +18,14 @@
         <entry key="app/src/main/res/drawable/bg_my_profile_spinner.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/et_login_signup_bg.xml" value="0.18055555555555555" />
         <entry key="app/src/main/res/drawable/green_btn.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/drawable/ic_heart_without_colour.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/ic_logo.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/ic_password_hide.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/ic_password_show.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/ic_password_show_hide.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/ic_selected_dot.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/ic_sign_up.xml" value="0.17777777777777778" />
+        <entry key="app/src/main/res/drawable/ic_spinner.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/ll_login_signup_bg.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/text_color_verify_otp_btn.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/drawable/toolbar_bg.xml" value="0.17777777777777778" />
@@ -40,7 +42,7 @@
         <entry key="app/src/main/res/layout/fragment_log_in.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.22724113968033358" />
+        <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_product_image.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.33" />

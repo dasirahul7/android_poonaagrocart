@@ -2,18 +2,13 @@ package com.poona.agrocart.ui.product_detail;
 
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
 import com.poona.agrocart.R;
-import com.poona.agrocart.ui.intro.IntroPagerAdapter;
-
 import java.util.ArrayList;
-
 
 public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener
 {
@@ -21,7 +16,6 @@ public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPa
     private FragmentManager fragmentManager;
     private int lastPosition = 0;
     private ArrayList<Integer> imgsList;
-
 
     public ProductImagesAdapter(ProductDetailFragment context, FragmentManager fm, ArrayList<Integer> imgsList) {
         super(fm);
@@ -42,7 +36,6 @@ public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPa
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override
@@ -55,19 +48,19 @@ public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPa
         lastPosition = position;
 
         System.out.println("Last Position: "+lastPosition);
-
-        //onChangeButtonCaptionListener.onAddText(position);
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
 
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        super.destroyItem(container, position, object);
+    }
 
-    @SuppressWarnings("ConstantConditions")
+    /*@SuppressWarnings("ConstantConditions")
     public LinearLayout getRootView(int position) {
-
         LinearLayout carouselLinearLayout = (LinearLayout) fragmentManager.findFragmentByTag(this.getFragmentTag(position))
                 .getView().findViewById(R.id.itemLayout);
 
@@ -76,10 +69,5 @@ public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPa
 
     private String getFragmentTag(int position) {
         return "android:switcher:" + context.vpImages.getId() + ":" + position;
-    }
-
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        super.destroyItem(container, position, object);
-    }
+    }*/
 }
