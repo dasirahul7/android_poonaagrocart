@@ -182,6 +182,7 @@
     <string name="total_amount">Total Amount</string>
     <string name="rs_740">Rs. 740</string>
     <string name="you_will_save_rs_80">You will save Rs. 80</string>
+    <string name="invoice">Invoice</string>
 
     <!--products detail fragment-->
     <string name="naturel_red_apple">Naturel Red Apple</string>
@@ -194,6 +195,7 @@
     <string name="apples_are_nutritious_apples_may_be_good_for_weight_loss_apples_may_be_good_for_your_heart_as_part_of_a_healtful_and_varied_diet">Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.</string>
     <string name="nutritions">Nutritions</string>
     <string name="search_store">Search Store</string>
+    <string name="bell_pepper_red">Bell Pepper Red</string>
 
 
 </resources>

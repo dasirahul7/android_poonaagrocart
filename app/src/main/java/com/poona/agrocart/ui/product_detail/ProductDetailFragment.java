@@ -1,23 +1,28 @@
 package com.poona.agrocart.ui.product_detail;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
+
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.login.CommonViewModel;
-
 import java.util.ArrayList;
 import me.huseyinozer.TooltipIndicator;
 
-public class ProductDetailFragment extends BaseFragment implements View.OnClickListener {
-
+public class ProductDetailFragment extends BaseFragment implements View.OnClickListener
+{
     public int count=0;
     private FragmentProductDetailBinding fragmentProductDetailBinding;
     private ProductDetailViewModel productDetailViewModel;
@@ -30,8 +35,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private boolean isFavourite=false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         fragmentProductDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false);
         fragmentProductDetailBinding.setLifecycleOwner(this);
         final View view = fragmentProductDetailBinding.getRoot();
@@ -43,8 +48,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void initView()
     {
-        fragmentProductDetailBinding.ivProductDetailHideShow.setOnClickListener(this);
-        fragmentProductDetailBinding.ivNutritionDetailHideShow.setOnClickListener(this);
+        fragmentProductDetailBinding.llProductDetails.setOnClickListener(this);
+        fragmentProductDetailBinding.llNutritions.setOnClickListener(this);
         fragmentProductDetailBinding.ivPlus.setOnClickListener(this);
         fragmentProductDetailBinding.ivMinus.setOnClickListener(this);
         fragmentProductDetailBinding.ivFavourite.setOnClickListener(this);
@@ -61,7 +66,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
         count=imgsList.size();
 
-        if(count>0) {
+        if(count>0)
+        {
             setViewPagerAdapterItems();
         }
     }
@@ -93,10 +99,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     {
         switch (v.getId())
         {
-            case R.id.iv_product_detail_hide_show:
+            case R.id.ll_product_details:
                 hideOrShowProductDetails();
                 break;
-            case R.id.iv_nutrition_detail_hide_show:
+            case R.id.ll_nutritions:
                 hideOrShowNutritionDetails();
                 break;
             case R.id.iv_minus:
@@ -135,7 +141,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     {
         if(quantity==1)
         {
-            infoToast(requireActivity(),getString(R.string.quantity_less_than_one));
+            errorToast(requireActivity(),getString(R.string.quantity_less_than_one));
         }
         else
         {
@@ -148,11 +154,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     {
         if(isNutritionDetailsVisible)
         {
-            fragmentProductDetailBinding.tvNutritionsBrief.setVisibility(View.GONE);
+            new ProductDetailFragment().collapse(fragmentProductDetailBinding.tvNutritionsBrief);
         }
         else
         {
-            fragmentProductDetailBinding.tvNutritionsBrief.setVisibility(View.VISIBLE);
+            new ProductDetailFragment().expand(fragmentProductDetailBinding.tvNutritionsBrief);
         }
         isNutritionDetailsVisible=!isNutritionDetailsVisible;
     }
@@ -161,11 +167,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     {
         if(isProductDetailsVisible)
         {
-            fragmentProductDetailBinding.tvProductDetailBrief.setVisibility(View.GONE);
+            new ProductDetailFragment().collapse(fragmentProductDetailBinding.tvProductDetailBrief);
         }
         else
         {
-            fragmentProductDetailBinding.tvProductDetailBrief.setVisibility(View.VISIBLE);
+            new ProductDetailFragment().expand(fragmentProductDetailBinding.tvProductDetailBrief);
         }
         isProductDetailsVisible=!isProductDetailsVisible;
     }

@@ -18,37 +18,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/ll_viewpager_tooltip"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardview_images"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_viewpager_product_imgs"
-                android:orientation="vertical"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.Cut"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:elevation="@dimen/_6sdp"
+                android:padding="@dimen/_10sdp"
+                app:cardElevation="3dp">
 
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/vp_product_images"
+                <LinearLayout
+                    android:id="@+id/ll_viewpager_tooltip"
                     android:layout_width="match_parent"
-                    android:layout_height="350dp" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <me.huseyinozer.TooltipIndicator
-                    android:id="@+id/tl_indicators"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:background="@android:color/transparent"
-                    app:layout_constraintTop_toBottomOf="@+id/vp_product_images"
-                    app:ti_lineHeight="6dp"
-                    app:ti_lineMargin="4dp"
-                    app:ti_lineWidth="8dp"
-                    app:ti_lineWidthSelected="@dimen/_15sdp"
-                    app:ti_selectedLineDrawable="@drawable/ic_selected_img"
-                    app:ti_unselectedLineDrawable="@drawable/ic_not_selected_img" />
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/vp_product_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="350dp" />
 
-            </LinearLayout>
+                    <me.huseyinozer.TooltipIndicator
+                        android:id="@+id/tl_indicators"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_8sdp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:background="@android:color/transparent"
+                        app:layout_constraintTop_toBottomOf="@+id/vp_product_images"
+                        app:ti_lineHeight="6dp"
+                        app:ti_lineMargin="4dp"
+                        app:ti_lineWidth="8dp"
+                        app:ti_lineWidthSelected="@dimen/_15sdp"
+                        app:ti_selectedLineDrawable="@drawable/ic_selected_img"
+                        app:ti_unselectedLineDrawable="@drawable/ic_not_selected_img" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
                 android:id="@+id/ll_product_name"
@@ -58,7 +67,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:weightSum="100"
-                app:layout_constraintTop_toBottomOf="@+id/ll_viewpager_tooltip">
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@+id/cardview_images">
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_product_name"
@@ -136,6 +146,7 @@
                         android:background="@drawable/bg_four_rounded_corners"
                         android:text="@string/_1"
                         android:textAlignment="center"
+                        android:enabled="false"
                         android:textColor="@color/clr_enter_otp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -167,20 +178,24 @@
                     android:id="@+id/tv_product_detail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="95"
+                    android:layout_weight="90"
                     android:text="@string/product_detail"
                     android:textColor="@color/clr_enter_otp"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
-                <ImageView
+                <com.poona.agrocart.widgets.ExpandIconView
                     android:id="@+id/iv_product_detail_hide_show"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="5"
+                    android:layout_width="0dp"
                     android:scaleType="centerInside"
+                    android:layout_weight="10"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_spinner_black" />
+                    app:eiv_animationDuration="300"
+                    app:eiv_colorLess="@color/white"
+                    app:eiv_colorMore="@color/black"
+                    app:eiv_roundedCorners="true"
+                    app:eiv_switchColor="true"/>
 
             </LinearLayout>
 
@@ -224,20 +239,23 @@
                     android:id="@+id/tv_nutritions"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="95"
+                    android:layout_weight="90"
                     android:text="@string/nutritions"
                     android:textColor="@color/clr_enter_otp"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
-                <ImageView
+                <com.poona.agrocart.widgets.ExpandIconView
                     android:id="@+id/iv_nutrition_detail_hide_show"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="5"
-                    android:scaleType="centerInside"
+                    android:layout_width="0dp"
+                    android:layout_weight="10"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_spinner_black" />
+                    app:eiv_animationDuration="300"
+                    app:eiv_colorLess="@color/black"
+                    app:eiv_colorMore="@color/black"
+                    app:eiv_roundedCorners="true"
+                    app:eiv_switchColor="true"/>
 
             </LinearLayout>
 

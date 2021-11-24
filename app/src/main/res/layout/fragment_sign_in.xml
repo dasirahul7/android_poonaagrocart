@@ -8,10 +8,20 @@
             name="commonViewModel"
             type="com.poona.agrocart.ui.login.CommonViewModel" />
     </data>
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:background="@color/colorAppBackground"
+        android:layout_width="match_parent"
+        android:fillViewport="true"
+        android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_gravity="center"
         android:background="@color/colorAppBackground"
-        android:layout_height="match_parent">
+        android:id="@+id/constraint_layout"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/iv_background_main"
@@ -178,5 +188,7 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </layout>

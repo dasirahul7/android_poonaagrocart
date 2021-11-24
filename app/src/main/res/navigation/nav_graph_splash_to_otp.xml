@@ -6,7 +6,7 @@
     app:startDestination="@id/SplashScreenFragment">
 
     <!-- Splash Screen Fragment-->
-    <fragment
+     <fragment
         android:id="@+id/SplashScreenFragment"
         android:name="com.poona.agrocart.ui.splash_screen.SplashScreenFragment"
         tools:layout="@layout/fragment_splash_screen" >
@@ -26,11 +26,11 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/SplashScreenFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_SplashScreenFragment_to_orderViewFragment"
-            app:destination="@id/orderViewFragment" />
+         <action
+             android:id="@+id/action_SplashScreenFragment_to_addressesFormFragment"
+             app:destination="@id/addressesFormFragment" />
 
-    </fragment>
+     </fragment>
 
     <!-- Login Fragment-->
     <fragment
@@ -124,5 +124,21 @@
         android:id="@+id/orderViewFragment"
         android:name="com.poona.agrocart.ui.order_view.OrderViewFragment"
         android:label="OrderViewFragment" />
+    <fragment
+        android:id="@+id/myCartFragment"
+        android:name="com.poona.agrocart.ui.my_cart.MyCartFragment"
+        android:label="MyCartFragment" />
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.poona.agrocart.ui.product_detail.ProductDetailFragment"
+        android:label="ProductDetailFragment" />
+    <fragment
+        android:id="@+id/basketPageFragment"
+        android:name="com.poona.agrocart.ui.basket_page.BasketPageFragment"
+        android:label="BasketPageFragment" />
+    <fragment
+        android:id="@+id/addressesFormFragment"
+        android:name="com.poona.agrocart.ui.addresses_form.AddressesFormFragment"
+        android:label="AddressesFormFragment" />
 
 </navigation>

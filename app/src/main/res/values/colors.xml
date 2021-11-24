@@ -62,6 +62,7 @@
     <color name="color_horizontal_line">#B3B3B3</color>
     <color name="color_rv_basket_price">#787878</color>
     <color name="color_discount_text">#4C4C4C</color>
+    <color name="color_invoice_btn">#18A0FB</color>
 
     <!--Product detail-->
     <color name="color_star_rating">#F3603F</color>

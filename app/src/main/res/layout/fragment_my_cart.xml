@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.my_cart.MyCartFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="100">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_cart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="85"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:layout_marginVertical="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="15"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="100"
+                    android:background="@color/colorSecondary">
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:textAlignment="textStart"
+                        android:text="Total"
+                        android:textSize="@dimen/_14sp"
+                        android:textColor="@color/white"
+                        android:paddingHorizontal="@dimen/_28sdp"
+                        android:paddingVertical="@dimen/_2sdp"
+                        app:setCustomFont="@string/font_poppins_semi_bold"
+                        />
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:textAlignment="textEnd"
+                        android:text="3 item"
+                        android:textSize="@dimen/_14sp"
+                        android:textColor="@color/white"
+                        android:paddingHorizontal="@dimen/_25sdp"
+                        android:paddingVertical="@dimen/_2sdp"
+                        app:setCustomFont="@string/font_poppins_regular"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="100"
+                    android:orientation="horizontal"
+                    android:background="@color/colorPrimary">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:paddingHorizontal="@dimen/_15sdp"
+                        android:background="@color/colorPrimary">
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50"
+                            android:textAlignment="textStart"
+                            android:text="Rs.190"
+                            android:textSize="@dimen/_18sp"
+                            android:textColor="@color/white"
+                            android:paddingHorizontal="@dimen/_15sdp"
+                            app:setCustomFont="@string/font_poppins_bold"
+                            />
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:textAlignment="textStart"
+                        android:text="saved Rs. 20"
+                        android:textSize="@dimen/_14sp"
+                        android:textColor="@color/white"
+                        android:paddingHorizontal="@dimen/_15sdp"
+                        app:setCustomFont="@string/font_poppins_regular"
+                        />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center |end"
+                        android:layout_weight="50">
+
+                    <com.poona.agrocart.widgets.CustomButton
+                        android:id="@+id/btn_place_order"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:background="@drawable/bg_button_dark_green"
+                        android:textAlignment="center"
+                        android:text="Place Order"
+                        android:textAllCaps="false"
+                        android:paddingHorizontal="@dimen/_25sdp"
+                        android:textColor="@color/background_button_selector_green"
+                        android:textSize="@dimen/_16sp"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,6 +117,8 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
     private void signInAndRedirectToVerifyOtp(View v)
     {
+        //scrollview.fullScroll(View.FOCUS_UP);
+
         basicDetails.setMobileNumber(Objects.requireNonNull(fragmentSignInBinding.etPhoneNo.getText()).toString());
         commonViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
 

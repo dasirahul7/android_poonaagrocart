@@ -16,7 +16,8 @@ public class ProductDetailViewModel extends AndroidViewModel
     public MutableLiveData<String> nutritionDetailBrief;
     public MutableLiveData<String> ratings;
 
-    public ProductDetailViewModel(@NonNull Application application) {
+    public ProductDetailViewModel(@NonNull Application application)
+    {
         super(application);
 
         productName=new MutableLiveData<>();
