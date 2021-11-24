@@ -14,7 +14,7 @@
             android:title="@string/my_profile" />
         <item
             android:id="@+id/nav_orders"
-            android:icon="@drawable/ic_orders"
+            android:icon="@drawable/ic_my_orders"
             android:title="@string/my_orders" />
         <item
             android:id="@+id/nav_address"
@@ -30,7 +30,7 @@
             android:title="@string/wallet_payments" />
         <item
             android:id="@+id/nav_offer"
-            android:icon="@drawable/ic_offers"
+            android:icon="@drawable/ic_coupons_offers"
             android:title="@string/offer_coupons" />
         <item
             android:id="@+id/nav_notification"
@@ -50,7 +50,7 @@
             android:title="@string/privacy_policy" />
         <item
             android:id="@+id/nav_terms"
-            android:icon="@drawable/ic_terms__condition"
+            android:icon="@drawable/ic_terms_condition"
             android:title="@string/terms_conditions" />
         <item
             android:id="@+id/nav_setting"
@@ -58,7 +58,7 @@
             android:title="@string/action_settings" />
         <item
             android:id="@+id/nav_store"
-            android:icon="@drawable/ic_store"
+            android:icon="@drawable/ic_stores"
             android:title="@string/our_store" />
         <item
             android:id="@+id/nav_logout"

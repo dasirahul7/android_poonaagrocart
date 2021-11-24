@@ -50,6 +50,10 @@
     <color name="clr_custom_edit_text_otp">#E2E2E2</color>
     <color name="colorGrey">#999999</color>
     <color name="colorLightGrey">#D5D5D5</color>
+    <color name="txt_cat_name_color">#456304</color>
+    <color name="bg_offer_color">#AB1E1D</color>
+    <color name="selling_txt_color">#575574</color>
+    <color name="lightBlack">#3E423F</color>
 
 
 </resources>
