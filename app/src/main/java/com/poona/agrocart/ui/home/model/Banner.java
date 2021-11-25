@@ -1,10 +1,9 @@
 package com.poona.agrocart.ui.home.model;
 
 public class Banner {
-    String id ,Name;
-    int Image;
+    String id ,Name,Image;
 
-    public Banner(String id, String name, int image) {
+    public Banner(String id, String name, String image) {
         this.id = id;
         Name = name;
         Image = image;
@@ -26,11 +25,11 @@ public class Banner {
         Name = name;
     }
 
-    public int getImage() {
+    public String getImage() {
         return Image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         Image = image;
     }
 }

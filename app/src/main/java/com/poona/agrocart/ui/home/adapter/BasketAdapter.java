@@ -10,17 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.HomeBasketItemBinding;
-import com.poona.agrocart.databinding.HomeBestSellingItemBinding;
+import com.poona.agrocart.databinding.RowBasketItemBinding;
+import com.poona.agrocart.databinding.RowBestSellingItemBinding;
 import com.poona.agrocart.ui.home.model.Basket;
-import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHolder> {
     private ArrayList<Basket> baskets = new ArrayList<>();
     private Context bContext;
-    private HomeBasketItemBinding basketItemBinding;
+    private RowBasketItemBinding basketItemBinding;
 
     public BasketAdapter(ArrayList<Basket> baskets, Context context) {
         this.baskets = baskets;
@@ -29,7 +28,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
 
     @Override
     public BasketHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        basketItemBinding = DataBindingUtil.inflate(LayoutInflater.from(bContext), R.layout.home_basket_item, parent, false);
+        basketItemBinding = DataBindingUtil.inflate(LayoutInflater.from(bContext), R.layout.row_basket_item, parent, false);
         return new BasketHolder(basketItemBinding);
     }
 
@@ -46,7 +45,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
     }
 
     public class BasketHolder extends RecyclerView.ViewHolder {
-        public BasketHolder(HomeBasketItemBinding basketItemBinding) {
+        public BasketHolder(RowBasketItemBinding basketItemBinding) {
             super(basketItemBinding.getRoot());
         }
 

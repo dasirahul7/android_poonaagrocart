@@ -1,5 +1,8 @@
 package com.poona.agrocart.ui.home;
 
+import static com.poona.agrocart.app.AppConstants.LANDSCAPE;
+import static com.poona.agrocart.app.AppConstants.PORTRAIT;
+
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +26,8 @@ import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.my_cart.CartItem;
+import com.poona.agrocart.ui.my_cart.CartItemsAdapter;
 
 import java.util.ArrayList;
 
@@ -40,7 +45,9 @@ public class HomeFragment extends BaseFragment {
     private BasketAdapter basketAdapter;
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Product> offerProducts = new ArrayList<>();
+    private ArrayList<Product> productLists = new ArrayList<>();
     private ArrayList<Basket> baskets = new ArrayList<>();
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -53,84 +60,110 @@ public class HomeFragment extends BaseFragment {
             e.printStackTrace();
         }
 
-        addBannersView();
-        addCategories();
-        addProducts();
-        addOfferProduct();
-        addBasketItems();
+        setBannersView();
+        setShopByCategory();
+        setBestSellings();
+        setOfferProduct();
+        setBasketItems();
+        setCartItems();
         return root;
     }
 
-    private void addBasketItems() {
+    private void setCartItems() {
+        productLists.clear();
+        for(int i = 0; i < 4; i++)
+        {
+            Product product = new Product("0","Potatos","1kg","10% Off","Rs 65","Rs 35","https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png");
+            productLists.add(product);
+        }
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+        fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
+        fragmentHomeBinding.recProduct.setHasFixedSize(true);
+        fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
+        productListAdapter = new ProductListAdapter(productLists,getActivity(),LANDSCAPE);
+        fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
+    }
+
+    private void setBasketItems() {
+        baskets.clear();
         Basket basket = new Basket("Fruit\n" +
-                "Baskets","Rs 15000",R.drawable.basket_item);
+                "Baskets","Rs 15000","https://www.linkpicture.com/q/1-200284.png");
         for (int i=0;i<4;i++)
             baskets.add(basket);
         basketAdapter = new BasketAdapter(baskets,getActivity());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false);
+        fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
         fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
     }
 
-    private void addOfferProduct() {
+    private void setOfferProduct() {
+        offerProducts.clear();
         Product offerProduct = new Product("1","Red Apple","1Kg"
-                ,"10% Off","Rs150","Rs. 140", R.drawable.apple);
+                ,"10% Off","Rs150","Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png");
         Product offerProduct1 = new Product("2","Organic Bananas","12 pcs"
-                ,"10% Off","Rs 45","Rs. 35", R.drawable.banana);
+                ,"10% Off","Rs 45","Rs. 35", "https://www.linkpicture.com/q/banana_2.png");
         Product offerProduct2 = new Product("3","BRed Apple","1Kg"
-                ,"10% Off","Rs150","Rs. 140", R.drawable.apple);
+                ,"10% Off","Rs150","Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png");
         Product offerProduct3 = new Product("4","Organic Bananas","12 pcs"
-                ,"10% Off","Rs 45","Rs. 35", R.drawable.banana);
+                ,"10% Off","Rs 45","Rs. 35", "https://www.linkpicture.com/q/banana_2.png");
 
         offerProducts.add(offerProduct);
         offerProducts.add(offerProduct1);
         offerProducts.add(offerProduct2);
         offerProducts.add(offerProduct3);
-        offerListAdapter = new ProductListAdapter(offerProducts,getActivity());
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireActivity(),RecyclerView.HORIZONTAL,false);
+        offerListAdapter = new ProductListAdapter(offerProducts,getActivity(),PORTRAIT);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(),RecyclerView.HORIZONTAL,false);
+        fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
         fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
     }
 
-    private void addProducts() {
+    private void setBestSellings() {
+        products.clear();
             Product product = new Product("1","Bell Pepper Red","1Kg"
-                    ,"10% Off","Rs25","Rs. 15", R.drawable.capsicon);
+                    ,"10% Off","Rs25","Rs. 15", "https://www.linkpicture.com/q/capsicon.png");
             Product product1 = new Product("2","Ginger","250 gms"
-                    ,"10% Off","","Rs. 140", R.drawable.ginger);
+                    ,"","","Rs. 140", "https://www.linkpicture.com/q/ginger.png");
             Product product2 = new Product("3","Bell Pepper Red","1Kg"
-                    ,"10% Off","Rs25","Rs. 15", R.drawable.capsicon);
+                    ,"10% Off","Rs25","Rs. 15", "https://www.linkpicture.com/q/capsicon.png");
             Product product3 = new Product("4","Ginger","500 gms"
-                    ,"10% Off","Rs280","Rs. 250", R.drawable.ginger);
+                    ,"10% Off","Rs280","Rs. 250", "https://www.linkpicture.com/q/ginger.png");
 
             products.add(product);
             products.add(product1);
             products.add(product2);
             products.add(product3);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireActivity(),RecyclerView.HORIZONTAL,false);
-        productListAdapter = new ProductListAdapter(products,requireActivity());
-        fragmentHomeBinding.recProduct.setLayoutManager(layoutManager);
-        fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(),RecyclerView.HORIZONTAL,false);
+        productListAdapter = new ProductListAdapter(products,requireActivity(),PORTRAIT);
+        fragmentHomeBinding.recOfferProduct.setNestedScrollingEnabled(false);
+        fragmentHomeBinding.recOfferProduct.setLayoutManager(layoutManager);
+        fragmentHomeBinding.recOfferProduct.setAdapter(productListAdapter);
     }
 
-    private void addCategories() {
-        Category category = new Category("1","Green Vegetables",R.drawable.green_leafy_vegetable);
-        Category category1 = new Category("2","Fruit Vegetables",R.drawable.tomato);
-        Category category2 = new Category("3","Green Vegetables",R.drawable.green_leafy_vegetable);
-        Category category3 = new Category("4","Fruit Vegetables",R.drawable.tomato);
+    private void setShopByCategory() {
+        categories.clear();
+        Category category = new Category("1","Green Vegetables","https://www.linkpicture.com/q/green_leafy_vegetable.png");
+        Category category1 = new Category("2","Fruit Vegetables","https://www.linkpicture.com/q/tomato_1.png");
+        Category category2 = new Category("3","Green Vegetables","https://www.linkpicture.com/q/green_leafy_vegetable.png");
+        Category category3 = new Category("4","Fruit Vegetables","https://www.linkpicture.com/q/tomato_1.png");
 
         categories.add(category);
         categories.add(category1);
         categories.add(category2);
         categories.add(category3);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireActivity(),RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(),RecyclerView.HORIZONTAL,false);
         categoryAdapter = new CategoryAdapter(categories,requireActivity());
+        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
         fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
     }
 
-    private void addBannersView() {
-        Banner banner = new Banner("1","Banner1",R.drawable.banner_img);
+    private void setBannersView() {
+        banners.clear();
+        Banner banner = new Banner("1","Banner1","https://www.linkpicture.com/q/banner_img.jpg");
         for (int i=0;i<3;i++){
             banners.add(banner);
         }
@@ -150,12 +183,6 @@ public class HomeFragment extends BaseFragment {
         // enable recycling using true
         fragmentHomeBinding.viewPagerBanner.setCycle(true);
 
-
-//        bannerAdapter = new BannerAdapter(banners,requireActivity());
-//        binding.viewPagerBanner.setAdapter(bannerAdapter);
-//        bannerAdapter.notifyDataSetChanged();
-
-//        binding.viewPagerBanner.addOnPageChangeListener(bannerAdapter);
     }
 
     @Override

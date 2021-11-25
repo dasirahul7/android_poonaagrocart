@@ -44,7 +44,6 @@ public class BannerAdapter extends PagerAdapter {
         Glide.with(context)
                 .load(banner.get(position).getImage())
                 .placeholder(R.drawable.banner_img)
-//                .error(R.drawable.ic_banner_bg)
                 .into(imageView);
         container.addView(view);
         return view;

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.HomeCatItemBinding;
+import com.poona.agrocart.databinding.RowCategoryItemBinding;
 import com.poona.agrocart.ui.home.model.Category;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     private ArrayList<Category> categories = new ArrayList<>();
     private Context context;
-    private HomeCatItemBinding categoryBinding;
+    private RowCategoryItemBinding categoryBinding;
 
     public CategoryAdapter(ArrayList<Category> categories, Context context) {
         this.categories = categories;
@@ -29,7 +29,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @NonNull
     @Override
     public CategoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        categoryBinding = DataBindingUtil.inflate(LayoutInflater.from(context),R.layout.home_cat_item,parent,false);
+        categoryBinding = DataBindingUtil.inflate(LayoutInflater.from(context),R.layout.row_category_item,parent,false);
         return new CategoryHolder(categoryBinding);
     }
 
@@ -46,7 +46,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     public class CategoryHolder extends RecyclerView.ViewHolder {
-        public CategoryHolder(HomeCatItemBinding binding) {
+        public CategoryHolder(RowCategoryItemBinding binding) {
             super(binding.getRoot());
         }
 
