@@ -1,19 +1,24 @@
 package com.poona.agrocart.ui.home;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+import com.poona.agrocart.ui.home.model.Banner;
+import com.poona.agrocart.ui.home.model.Product;
 
-    private MutableLiveData<String> mText;
+import java.util.ArrayList;
+import java.util.List;
 
-    public HomeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
-    }
 
-    public LiveData<String> getText() {
-        return mText;
+public class HomeViewModel extends AndroidViewModel {
+    private MutableLiveData<List<Banner>> banners;
+    private MutableLiveData<List<Product>> products;
+
+    public HomeViewModel(@NonNull Application application) {
+        super(application);
     }
 }

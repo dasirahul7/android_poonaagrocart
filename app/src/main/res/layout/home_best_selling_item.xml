@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="productModule"
+            type="com.poona.agrocart.ui.home.model.Product" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_220sdp"
+        android:elevation="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/clr_custom_edit_text_otp"
+        app:strokeWidth="1dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_10sdp">
+
+            <TextView
+                android:id="@+id/txt_item_offer"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/bg_offer_red"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text="@{productModule.offer}"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/offer_txt_size" />
+
+            <ImageView
+                android:id="@+id/itemImg"
+                setPImage="@{productModule.img}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:layout_marginBottom="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/txt_item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/itemImg"
+                android:gravity="start"
+                android:singleLine="true"
+                android:text="@{productModule.name}"
+                android:textColor="@color/selling_txt_color"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_item_qty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_item_name"
+                android:gravity="start"
+                android:text="@{productModule.qty}"
+                android:textColor="#7C7C7C"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/txt_item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_item_qty"
+                android:background="@drawable/strike_through"
+                android:gravity="center"
+                android:text="@{productModule.price}"
+                android:textColor="#7C7C7C"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/txt_item_offer_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_item_price"
+                android:gravity="center"
+                android:text="@{productModule.offerPrice}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15sdp" />
+
+            <ImageView
+                android:id="@+id/img_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/bg_plus_btn"
+                android:scaleType="center"
+                android:src="@drawable/ic_plus" />
+
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

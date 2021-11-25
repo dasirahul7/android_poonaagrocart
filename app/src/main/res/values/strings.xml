@@ -127,6 +127,16 @@
     <string name="our_store">Our Store</string>
     <string name="logout">Logout</string>
     <string name="shop">Shop</string>
+    <string name="shop_by_category">Shop by Category</string>
+    <string name="see_all">See all</string>
+    <string name="best_selling">Best Selling</string>
+    <string name="exclusive_offer">Exclusive Offers</string>
+    <string name="basket">Basket</string>
+    <string name="green_vegetables">Green Vegetables</string>
+    <string name="_10_off">10% Off</string>
+    <string name="bell_pepper_red">Bell Pepper Red</string>
+    <string name="one_kg">1Kg</string>
+    <string name="rs">Rs25</string>
 
     <!--My profile screen-->
     <string name="name">Name</string>

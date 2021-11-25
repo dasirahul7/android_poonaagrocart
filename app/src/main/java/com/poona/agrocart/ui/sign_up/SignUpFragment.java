@@ -28,7 +28,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentSignUpBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.dashboard.HomeActivity;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
 

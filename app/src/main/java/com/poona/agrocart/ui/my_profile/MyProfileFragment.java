@@ -2,8 +2,7 @@ package com.poona.agrocart.ui.my_profile;
 
 import android.os.Bundle;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,20 +10,33 @@ import android.view.ViewGroup;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentMyProfileBinding;
+import com.poona.agrocart.ui.BaseFragment;
 
-public class MyProfileFragment extends Fragment {
+public class MyProfileFragment extends BaseFragment {
 
-    private FragmentMyProfileBinding fragmentMyProfileBinding;
+  private FragmentMyProfileBinding binding;
+  private MyProfileViewModel myProfileViewModel;
+
+    public MyProfileFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+         //   mParam1 = getArguments().getString(ARG_PARAM1);
+          //  mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
-        fragmentMyProfileBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_my_profile, container, false);
-        fragmentMyProfileBinding.setLifecycleOwner(this);
-
-        final View view=fragmentMyProfileBinding.getRoot();
-
-        return view;
+                             Bundle savedInstanceState) {
+        myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
+        binding = FragmentMyProfileBinding.inflate(inflater,container,false);
+        View root = binding.getRoot();
+        initTitleBar(getString(R.string.my_profile));
+        return root;
     }
 }
