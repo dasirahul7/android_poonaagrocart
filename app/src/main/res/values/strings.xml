@@ -134,7 +134,6 @@
     <string name="basket">Basket</string>
     <string name="green_vegetables">Green Vegetables</string>
     <string name="_10_off">10% Off</string>
-    <string name="bell_pepper_red">Bell Pepper Red</string>
     <string name="one_kg">1Kg</string>
     <string name="rs">Rs25</string>
 
@@ -206,6 +205,13 @@
     <string name="nutritions">Nutritions</string>
     <string name="search_store">Search Store</string>
     <string name="bell_pepper_red">Bell Pepper Red</string>
+    <string name="sprouts_basket">Sprouts Basket</string>
+    <string name="rs_1500">Rs. 1500</string>
+    <string name="moong">Moong</string>
+    <string name="_500gm">500gm</string>
+
+    <!--Vegetables-->
+    <string name="search_vegetables">Search Vegetables</string>
 
 
 </resources>
