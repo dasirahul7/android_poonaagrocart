@@ -46,7 +46,7 @@ public class Category {
 
         Glide.with(view.getContext())
                 .load(imageUrl)
-                .placeholder(R.drawable.green_leafy_vegetable)
-                .error(R.drawable.green_leafy_vegetable).into(view);
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder).into(view);
     }
 }

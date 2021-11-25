@@ -44,7 +44,7 @@ public class Basket {
     public static void loadBImage(ImageView view, String img){
         Glide.with(view.getContext())
                 .load(img)
-                .placeholder(R.drawable.capsicon)
+                .placeholder(R.drawable.placeholder)
                 .error(R.drawable.capsicon).into(view);
     }
 }

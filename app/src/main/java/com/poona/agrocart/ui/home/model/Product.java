@@ -82,7 +82,7 @@ public class Product {
     public static void loadPImage(ImageView view,String img){
         Glide.with(view.getContext())
                 .load(img)
-                .placeholder(R.drawable.capsicon)
-                .error(R.drawable.capsicon).into(view);
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder).into(view);
     }
 }

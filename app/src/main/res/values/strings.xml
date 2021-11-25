@@ -117,7 +117,7 @@
     <string name="cart">Cart</string>
     <string name="my_profile">My Profile</string>
     <string name="my_orders">My Orders</string>
-    <string name="my_addresses">My Addresses</string>
+    <string name="addresses">Addresses</string>
     <string name="my_basket">My Basket</string>
     <string name="wallet_payments"><![CDATA[Wallet & Payments]]></string>
     <string name="offer_coupons"><![CDATA[Offers & Coupons]]></string>
