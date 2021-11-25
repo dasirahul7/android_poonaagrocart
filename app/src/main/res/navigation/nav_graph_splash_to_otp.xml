@@ -27,8 +27,8 @@
             app:popUpTo="@id/SplashScreenFragment"
             app:popUpToInclusive="true" />
          <action
-             android:id="@+id/action_SplashScreenFragment_to_addressesFormFragment"
-             app:destination="@id/addressesFormFragment" />
+             android:id="@+id/action_SplashScreenFragment_to_basketPageFragment"
+             app:destination="@id/basketPageFragment" />
 
      </fragment>
 

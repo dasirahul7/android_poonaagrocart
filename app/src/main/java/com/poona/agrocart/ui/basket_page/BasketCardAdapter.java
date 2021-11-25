@@ -1,7 +1,9 @@
 package com.poona.agrocart.ui.basket_page;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -49,7 +51,6 @@ public class BasketCardAdapter extends RecyclerView.Adapter<BasketCardAdapter.Ba
         public BasketCardViewholder(RvBasketPageCardviewBinding rvBasketPageCardviewBinding) {
             super(rvBasketPageCardviewBinding.getRoot());
             this.rvBasketPageCardviewBinding=rvBasketPageCardviewBinding;
-
         }
 
         public void bind(BasketCard basketCard)
