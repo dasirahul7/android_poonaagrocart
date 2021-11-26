@@ -214,5 +214,34 @@
     <!--Vegetables-->
     <string name="search_vegetables">Search Vegetables</string>
 
+    <!--address fragment-->
+    <string name="ayush">Ayush</string>
+    <string name="add_new_address">Add New Address</string>
+    <string name="default_address">Default</string>
+
+    <!--Basket Orders-->
+    <string name="order_id">Order ID -</string>
+    <string name="_12_september_2021">12 September 2021</string>
+    <string name="diet_basket">Diet Basket</string>
+    <string name="rs_200_x_4">Rs.200 x 4</string>
+    <string name="transaction_id">Transaction Id</string>
+    <string name="_1200283e">1200283E</string>
+    <string name="payment_mode">Payment Mode -</string>
+    <string name="qr">QR</string>
+    <string name="_paac002">PAAC002</string>
+
+    <!--our stores-->
+    <string name="poona_agro_center">POONA AGRO CENTER</string>
+    <string name="vishrantwadi_pune">Vishrantwadi Pune</string>
+
+    <!--My orders-->
+    <string name="sep_30_2021_20_15_am">Sep 30, 2021 20:15 AM</string>
+    <string name="in_process">In Process</string>
+    <string name="delivered">Delievered</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="status">Status</string>
+    <string name="total_quantity">Total Quantity</string>
+    <string name="_25">25</string>
 
 </resources>

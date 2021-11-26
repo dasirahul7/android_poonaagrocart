@@ -1,25 +1,17 @@
 package com.poona.agrocart.ui.our_stores;
 
 import android.os.Bundle;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
 import com.poona.agrocart.databinding.FragmentOurStoresBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.favourites.FavouriteItem;
-import com.poona.agrocart.ui.favourites.FavouriteItemAdapter;
 import com.poona.agrocart.ui.our_stores.model.Store;
-
 import java.util.ArrayList;
 
 public class OurStoresFragment extends BaseFragment
@@ -61,8 +53,8 @@ public class OurStoresFragment extends BaseFragment
         for(int i = 0; i < 3; i++)
         {
             Store store = new Store();
-            store.setName("POONA AGRO CENTER");
-            store.setLocation("Vishwrantwadi Pune");
+            store.setName(getString(R.string.poona_agro_center));
+            store.setLocation(getString(R.string.vishrantwadi_pune));
             storeArrayList.add(store);
         }
     }

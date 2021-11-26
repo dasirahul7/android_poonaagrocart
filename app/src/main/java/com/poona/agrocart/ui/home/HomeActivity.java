@@ -82,7 +82,9 @@ public class HomeActivity extends BaseActivity {
                 R.id.nav_cart,
                 R.id.nav_favourite,
                 R.id.nav_profile,
-                R.id.nav_store)
+                R.id.nav_store,
+                R.id.nav_basket,
+                R.id.nav_address)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);

@@ -206,6 +206,7 @@
 
                 <!--Our Shop-->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardview_our_shops"
                     android:layout_margin="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:elevation="@dimen/_10sdp"

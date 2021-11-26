@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,6 +61,10 @@ public class HomeFragment extends BaseFragment {
             e.printStackTrace();
         }
 
+        fragmentHomeBinding.cardviewOurShops.setOnClickListener(v->{
+            redirectToOurShops(root);
+        });
+
         setBannersView();
         setShopByCategory(root);
         setBestSellings();
@@ -67,6 +72,11 @@ public class HomeFragment extends BaseFragment {
         setBasketItems(root);
         setCartItems();
         return root;
+    }
+
+    private void redirectToOurShops(View v)
+    {
+        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_our_stores);
     }
 
     private void setCartItems() {
