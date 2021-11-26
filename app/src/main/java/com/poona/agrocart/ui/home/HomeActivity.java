@@ -1,7 +1,6 @@
 package com.poona.agrocart.ui.home;
 
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,9 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
@@ -48,7 +45,7 @@ public class HomeActivity extends BaseActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         toolbar = binding.appBarHome.toolbar;
-        backBtn = binding.appBarHome.backImg;
+//        backBtn = binding.appBarHome.backImg;
         initToolbar();
         initNavigation();
         setCustomDrawerIconInFragments();
@@ -60,7 +57,7 @@ public class HomeActivity extends BaseActivity {
 
     private void initToolbar() {
         setSupportActionBar(binding.appBarHome.toolbar);
-        binding.appBarHome.backImg.setVisibility(View.GONE);
+//        binding.appBarHome.backImg.setVisibility(View.GONE);
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -78,11 +75,23 @@ public class HomeActivity extends BaseActivity {
                 R.id.nav_home,
                 R.id.nav_profile,
                 R.id.nav_orders,
+                R.id.nav_address,
+                R.id.nav_basket,
+                R.id.nav_wallet,
+                R.id.nav_offer,
+                R.id.nav_notification,
+                R.id.nav_about,
+                R.id.nav_help_center,
+                R.id.nav_privacy,
+                R.id.nav_terms,
+                R.id.nav_setting,
+                R.id.nav_store,
+                R.id.nav_signout,
+                //Bottom New Menus
                 R.id.nav_explore,
                 R.id.nav_cart,
-                R.id.nav_favourite,
-                R.id.nav_profile,
-                R.id.nav_store)
+                R.id.nav_favourite
+                )
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
@@ -106,9 +115,9 @@ public class HomeActivity extends BaseActivity {
     private void setCustomDrawerIconInFragments() {
         binding.appBarHome.toolbar.post(() -> {
             Drawable d = ResourcesCompat.getDrawable(getResources(),
-                    R.drawable.ic_poona_agrocart_logo_final, null);
+                    R.drawable.menu_icon_toggle, null);
             binding.appBarHome.toolbar.setNavigationIcon(d);
-            binding.appBarHome.toolbar.setPadding(30, 0, 0, 0);
+            binding.appBarHome.toolbar.setPadding(10, 0, 0, 0);
         });
     }
 

@@ -15,12 +15,13 @@ import android.view.ViewGroup;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
 import com.poona.agrocart.databinding.FragmentMyCartBinding;
+import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.favourites.FavouriteItem;
 import com.poona.agrocart.ui.favourites.FavouriteItemAdapter;
 
 import java.util.ArrayList;
 
-public class MyCartFragment extends Fragment
+public class MyCartFragment extends BaseFragment
 {
     private FragmentMyCartBinding fragmentMyCartBinding;
     private RecyclerView rvCart;
@@ -35,6 +36,7 @@ public class MyCartFragment extends Fragment
         fragmentMyCartBinding.setLifecycleOwner(this);
         final View view = ((ViewDataBinding) fragmentMyCartBinding).getRoot();
 
+        initTitleBar(getString(R.string.my_basket));
         initView();
         setRvAdapter();
 

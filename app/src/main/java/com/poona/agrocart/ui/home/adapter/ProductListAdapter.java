@@ -70,13 +70,18 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         public void bind(Product product) {
             if (product.getOffer().isEmpty())
+            {
                 rowItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
+                rowItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
+            }
             rowItemBinding.setVariable(BR.productModule,product);
             rowItemBinding.executePendingBindings();
         }
         public void bindProduct(Product product) {
-            if (product.getOffer().isEmpty())
+            if (product.getOffer().isEmpty()){
                 rowProductItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
+                rowItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
+            }
             rowProductItemBinding.setVariable(BR.productModule,product);
             rowProductItemBinding.executePendingBindings();
         }

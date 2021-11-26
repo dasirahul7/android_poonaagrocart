@@ -101,20 +101,13 @@ public abstract class BaseFragment extends Fragment
 protected void initTitleBar(String title) {
     ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
         Drawable d = ResourcesCompat.getDrawable(getResources(),
-                R.drawable.ic_back, null);
+                R.drawable.menu_icon_toggle, null);
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationIcon(d);
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setPadding(0,0,0,0);
-        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        requireActivity().onBackPressed();
-                    }
-                }
-        );
     });
     ((HomeActivity)requireActivity()).binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
     ((HomeActivity)requireActivity()).binding.appBarHome.textView.setVisibility(View.GONE);
+    ((HomeActivity)requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
     ((HomeActivity)requireActivity()).binding.appBarHome.textTitle.setText(title);
 }
 

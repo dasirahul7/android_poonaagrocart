@@ -61,7 +61,7 @@
             android:icon="@drawable/ic_our_store"
             android:title="@string/our_store" />
         <item
-            android:id="@+id/nav_logout"
+            android:id="@+id/nav_signout"
             android:icon="@drawable/ic_signout"
             android:title="@string/sign_out" />
     </group>
