@@ -39,7 +39,7 @@
 
                 <ImageView
                     android:id="@+id/itemImg"
-                    setPImage="@{productModule.img}"
+                    setImage="@{productModule.img}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"

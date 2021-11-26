@@ -78,8 +78,8 @@ public class Product {
         this.img = img;
     }
 
-    @BindingAdapter("setPImage")
-    public static void loadPImage(ImageView view,String img){
+    @BindingAdapter("setImage")
+    public static void loadImage(ImageView view,String img){
         Glide.with(view.getContext())
                 .load(img)
                 .placeholder(R.drawable.placeholder)

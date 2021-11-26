@@ -14,7 +14,7 @@
             android:title="@string/my_profile" />
         <item
             android:id="@+id/nav_orders"
-            android:icon="@drawable/ic_my_orders"
+            android:icon="@drawable/ic_orders"
             android:title="@string/my_orders" />
         <item
             android:id="@+id/nav_address"
@@ -30,7 +30,7 @@
             android:title="@string/wallet_payments" />
         <item
             android:id="@+id/nav_offer"
-            android:icon="@drawable/ic_coupons_offers"
+            android:icon="@drawable/ic_offers"
             android:title="@string/offer_coupons" />
         <item
             android:id="@+id/nav_notification"

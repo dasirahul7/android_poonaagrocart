@@ -33,8 +33,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
+                android:singleLine="true"
                 android:text="@{categoryModule.name}"
-                android:textColor="@color/txt_cat_name_color"
+                android:textColor="@color/green_txt_color"
                 android:textSize="@dimen/cat_txt_size"
                 app:setCustomFont="@string/font_poppins_semi_bold" />
 

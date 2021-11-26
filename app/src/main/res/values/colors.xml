@@ -52,9 +52,10 @@
     <color name="clr_custom_edit_text_otp">#E2E2E2</color>
     <color name="colorGrey">#999999</color>
     <color name="colorLightGrey">#D5D5D5</color>
-    <color name="txt_cat_name_color">#456304</color>
+    <!-- Home Fragment color-->
+    <color name="green_txt_color">#456304</color>
     <color name="bg_offer_color">#AB1E1D</color>
-    <color name="selling_txt_color">#575574</color>
+    <color name="blue_txt_color">#575574</color>
     <color name="lightBlack">#3E423F</color>
 
     <!--Addresses fragment-->
@@ -76,5 +77,11 @@
     <color name="color_basket_name">#575574</color>
     <color name="color_price">#737373</color>
     <color name="drawer_selected_bg_color">#F2F2F2</color>
+
+    <!--Explore screen colors-->
+    <color name="exp_card_color1">#FBFFED</color>
+    <color name="exp_card_color2">#EEF0E7</color>
+    <color name="exp_border1">#E5F2CF</color>
+    <color name="exp_border2">#FDDEBE</color>
 
 </resources>
