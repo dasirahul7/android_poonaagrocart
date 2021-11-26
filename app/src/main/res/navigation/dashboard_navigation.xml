@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_our_stores"
             app:destination="@id/nav_our_stores" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_explore"
+            app:destination="@id/nav_explore" />
     </fragment>
 
 <!--    MyOrdersFragment-->
@@ -72,4 +75,10 @@
         android:id="@+id/nav_our_stores"
         android:name="com.poona.agrocart.ui.our_stores.OurStoresFragment"
         android:label="OurStoresFragment" />
+
+    <!--Explore Fragment-->
+    <fragment
+        android:id="@+id/nav_explore"
+        android:name="com.poona.agrocart.ui.explore.ExploreFragment"
+        android:label="Explore"/>
 </navigation>

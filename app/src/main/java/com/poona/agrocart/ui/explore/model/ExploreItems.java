@@ -9,6 +9,23 @@ import com.poona.agrocart.R;
 
 public class ExploreItems {
     String id,name,img;
+    int border,background;
+
+    public int getBorder() {
+        return border;
+    }
+
+    public void setBorder(int border) {
+        this.border = border;
+    }
+
+    public int getBackground() {
+        return background;
+    }
+
+    public void setBackground(int background) {
+        this.background = background;
+    }
 
     public ExploreItems(String id, String name, String img) {
         this.id = id;

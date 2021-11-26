@@ -22,42 +22,24 @@
                 android:orientation="vertical">
 
                 <!--Search View Layout-->
-                <RelativeLayout
+                <com.poona.agrocart.widgets.CustomEditText
+                    android:id="@+id/et_search"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:background="@drawable/gray_curv_background"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_et_search"
+                    android:drawableStart="@drawable/ic_search"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:drawablePadding="@dimen/_8sdp"
+                    app:setCustomFont="@string/font_poppins_regular"
+                    android:textColor="@color/color17"
+                    android:textSize="@dimen/_16sp"
+                    android:hint="@string/search_store"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/_10sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/img_search"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:src="@drawable/ic_search" />
-
-
-                    <EditText
-                        android:id="@+id/edt_search"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="23dp"
-                        android:layout_toEndOf="@+id/img_search"
-                        android:backgroundTint="@android:color/transparent"
-                        android:hint="@string/search_hint"
-                        android:padding="0dp"
-                        android:paddingStart="@dimen/_10sdp"
-                        android:singleLine="true"
-                        android:textColor="@color/colorGrey"
-                        android:textSize="@dimen/normal" />
-
-                </RelativeLayout>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <!-- Banner Layout -->
                 <androidx.appcompat.widget.LinearLayoutCompat

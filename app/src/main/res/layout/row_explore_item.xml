@@ -6,24 +6,27 @@
             type="com.poona.agrocart.ui.explore.model.ExploreItems" />
     </data>
 <com.google.android.material.card.MaterialCardView
-    android:layout_margin="@dimen/_5sdp"
+    android:id="@+id/itemCard"
+    android:elevation="@dimen/_8sdp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/_150sdp"
-    android:layout_height="@dimen/_170sdp"
-    app:cardCornerRadius="@dimen/_18sdp"
+    android:layout_width="@dimen/_130sdp"
+    android:layout_height="@dimen/_150sdp"
+    android:layout_margin="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/_15sdp"
     app:strokeColor="@color/exp_border1"
     app:strokeWidth="1dp">
     <LinearLayout
+        android:id="@+id/itemLayout"
         android:background="@color/exp_card_color1"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/itemImgLayout"
-            android:layout_margin="@dimen/_10sdp"
             android:layout_gravity="center"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
+            android:background="@android:color/transparent"
             android:padding="@dimen/_10sdp"
             app:cardCornerRadius="@dimen/_12sdp"
             app:cardElevation="0dp"
@@ -48,7 +51,7 @@
             android:text="@{exploreModules.name}"
             android:singleLine="true"
             android:textColor="@color/green_txt_color"
-            android:textSize="@dimen/cat_txt_size"
+            android:textSize="@dimen/_16sp"
             app:setCustomFont="@string/font_poppins_semi_bold" />/>
     </LinearLayout>
 

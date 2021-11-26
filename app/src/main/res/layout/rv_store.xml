@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{store.name}"
-                    android:textColor="@color/selling_txt_color"
+                    android:textColor="@color/blue_txt_color"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
