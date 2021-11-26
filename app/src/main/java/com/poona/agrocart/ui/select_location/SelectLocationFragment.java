@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.select_location;
 
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import android.widget.ArrayAdapter;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentSelectLocationBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
 
@@ -128,7 +130,12 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         {
             if (isConnectingToInternet(context)) {
                 //add API call here
-                Navigation.findNavController(v).navigate(R.id.action_selectLocationFragment_to_LoginFragment);
+                preferences.setIsLoggedIn(true);
+                Intent intent = new Intent(context, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                requireActivity().finish();
+                startActivity(intent);
             }
             else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

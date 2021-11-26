@@ -26,9 +26,6 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/SplashScreenFragment"
             app:popUpToInclusive="true" />
-         <action
-             android:id="@+id/action_SplashScreenFragment_to_vegetablesFragment"
-             app:destination="@id/vegetablesFragment" />
 
      </fragment>
 

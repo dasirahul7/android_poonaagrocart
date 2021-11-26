@@ -171,12 +171,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 commonViewModel.userName.setValue(basicDetails.getUserName());
                 commonViewModel.emailId.setValue(basicDetails.getEmailId());
                 successToast(context,"Login Success");
-                preferences.setIsLoggedIn(true);
-                Intent intent = new Intent(context, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                requireActivity().finish();
-                startActivity(intent);
+                Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_selectLocationFragment);
+
             }
             else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
