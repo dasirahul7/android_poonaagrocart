@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="basketContent"
+            type="com.poona.agrocart.ui.basket_product_detail.BasketContent" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        android:layout_marginVertical="@dimen/_5sdp"
+        >
+
+        <com.poona.agrocart.widgets.CustomTextView
+            android:id="@+id/tv_content_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="@{basketContent.contentName}"
+            android:textSize="@dimen/_14sp"
+            app:setCustomFont="@string/font_poppins_semi_bold"
+            android:textColor="@color/black"
+            />
+
+        <com.poona.agrocart.widgets.CustomTextView
+            android:id="@+id/tv_content_weight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="@{basketContent.contentWeight}"
+            android:gravity="end"
+            android:textSize="@dimen/_14sp"
+            app:setCustomFont="@string/font_poppins_regular"
+            android:textColor="@color/color_basket_content_weight"
+            />
+
+    </LinearLayout>
+
+</layout>

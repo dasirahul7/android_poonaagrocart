@@ -1,18 +1,13 @@
 package com.poona.agrocart.ui.basket_page;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RvBasketPageCardviewBinding;
-
 import java.util.ArrayList;
 
 public class BasketCardAdapter extends RecyclerView.Adapter<BasketCardAdapter.BasketCardViewholder>
@@ -25,30 +20,33 @@ public class BasketCardAdapter extends RecyclerView.Adapter<BasketCardAdapter.Ba
 
     @NonNull
     @Override
-    public BasketCardViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RvBasketPageCardviewBinding binding = DataBindingUtil.inflate
-                (LayoutInflater.from(parent.getContext()),
+    public BasketCardViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
+        RvBasketPageCardviewBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                         R.layout.rv_basket_page_cardview, parent, false);
         return new BasketCardAdapter.BasketCardViewholder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BasketCardViewholder holder, int position) {
+    public void onBindViewHolder(@NonNull BasketCardViewholder holder, int position)
+    {
         final BasketCard basketCard = basketCards.get(position);
         holder.rvBasketPageCardviewBinding.setBasketCard(basketCard);
         holder.bind(basketCard);
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return basketCards.size();
     }
 
-    public static class BasketCardViewholder extends RecyclerView.ViewHolder {
-
+    public static class BasketCardViewholder extends RecyclerView.ViewHolder
+    {
         RvBasketPageCardviewBinding rvBasketPageCardviewBinding;
 
-        public BasketCardViewholder(RvBasketPageCardviewBinding rvBasketPageCardviewBinding) {
+        public BasketCardViewholder(RvBasketPageCardviewBinding rvBasketPageCardviewBinding)
+        {
             super(rvBasketPageCardviewBinding.getRoot());
             this.rvBasketPageCardviewBinding=rvBasketPageCardviewBinding;
         }

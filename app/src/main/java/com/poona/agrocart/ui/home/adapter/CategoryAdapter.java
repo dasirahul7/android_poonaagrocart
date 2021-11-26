@@ -2,10 +2,12 @@ package com.poona.agrocart.ui.home.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
@@ -20,10 +22,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private ArrayList<Category> categories = new ArrayList<>();
     private Context context;
     private RowCategoryItemBinding categoryBinding;
+    private View view;
 
-    public CategoryAdapter(ArrayList<Category> categories, Context context) {
+    public CategoryAdapter(ArrayList<Category> categories, Context context,View view) {
         this.categories = categories;
         this.context = context;
+        this.view=view;
     }
 
     @NonNull
@@ -37,7 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
         Category category = categories.get(position);
         categoryBinding.setCategoryModule(category);
-        holder.bind(category);
+        holder.bind(category,view);
     }
 
     @Override
@@ -50,9 +54,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             super(binding.getRoot());
         }
 
-        public void bind(Category category) {
+        public void bind(Category category,View view) {
             categoryBinding.setVariable(BR.categoryModule,category);
             categoryBinding.executePendingBindings();
+
+            categoryBinding.cardviewCategory.setOnClickListener(v -> {
+                redirectToProductsList(view);
+            });
         }
+    }
+
+    private void redirectToProductsList(View v)
+    {
+        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list);
     }
 }

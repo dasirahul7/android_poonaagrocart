@@ -61,10 +61,10 @@ public class HomeFragment extends BaseFragment {
         }
 
         setBannersView();
-        setShopByCategory();
+        setShopByCategory(root);
         setBestSellings();
         setOfferProduct();
-        setBasketItems();
+        setBasketItems(root);
         setCartItems();
         return root;
     }
@@ -85,13 +85,13 @@ public class HomeFragment extends BaseFragment {
         fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
     }
 
-    private void setBasketItems() {
+    private void setBasketItems(View view) {
         baskets.clear();
         Basket basket = new Basket("Fruit\n" +
                 "Baskets","Rs 15000","https://www.linkpicture.com/q/1-200284.png");
         for (int i=0;i<4;i++)
             baskets.add(basket);
-        basketAdapter = new BasketAdapter(baskets,getActivity());
+        basketAdapter = new BasketAdapter(baskets,getActivity(),view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false);
         fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
@@ -143,7 +143,7 @@ public class HomeFragment extends BaseFragment {
         fragmentHomeBinding.recOfferProduct.setAdapter(productListAdapter);
     }
 
-    private void setShopByCategory() {
+    private void setShopByCategory(View view) {
         categories.clear();
         Category category = new Category("1","Green Vegetables","https://www.linkpicture.com/q/green_leafy_vegetable.png");
         Category category1 = new Category("2","Fruit Vegetables","https://www.linkpicture.com/q/tomato_1.png");
@@ -155,7 +155,7 @@ public class HomeFragment extends BaseFragment {
         categories.add(category2);
         categories.add(category3);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(),RecyclerView.HORIZONTAL,false);
-        categoryAdapter = new CategoryAdapter(categories,requireActivity());
+        categoryAdapter = new CategoryAdapter(categories,requireActivity(),view);
         fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
         fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);

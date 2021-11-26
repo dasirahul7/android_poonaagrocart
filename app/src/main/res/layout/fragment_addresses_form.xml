@@ -46,6 +46,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/home"
                     style="@style/RadioButtonAddress"
+                    android:paddingStart="@dimen/_4sdp"
+                    android:textStyle="bold"
+                    app:fontFamily="@string/font_poppins_semi_bold"
                     android:checked="true"
                     android:layout_margin="@dimen/_2sdp"
                     android:textSize="@dimen/_14sp" />
@@ -57,6 +60,9 @@
                     android:layout_height="wrap_content"
                     style="@style/RadioButtonAddress"
                     android:text="@string/office"
+                    android:textStyle="bold"
+                    app:fontFamily="@string/font_poppins_semi_bold"
+                    android:paddingStart="@dimen/_4sdp"
                     android:layout_margin="@dimen/_2sdp"
                     android:textSize="@dimen/_14sp" />
 
@@ -66,7 +72,10 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="@string/other"
+                    android:textStyle="bold"
+                    app:fontFamily="@string/font_poppins_semi_bold"
                     style="@style/RadioButtonAddress"
+                    android:paddingStart="@dimen/_4sdp"
                     android:layout_margin="@dimen/_2sdp"
                     android:textSize="@dimen/_14sp" />
 
@@ -97,6 +106,7 @@
                 android:background="@drawable/bg_dashboard_et_layout"
                 android:elevation="@dimen/_6sdp"
                 android:padding="@dimen/_8sdp"
+                android:text="@{addressFormViewModel.name}"
                 android:textColor="@color/color17"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name_text"
@@ -125,6 +135,7 @@
                 android:background="@drawable/bg_dashboard_et_layout"
                 android:elevation="@dimen/_6sdp"
                 android:padding="@dimen/_8sdp"
+                android:text="@{addressFormViewModel.mobile}"
                 android:textColor="@color/color17"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_mobile_no_text"
@@ -339,6 +350,7 @@
                         android:layout_marginStart="@dimen/_15sdp"
                         android:layout_marginEnd="@dimen/_20sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
+                        android:text="@{addressFormViewModel.houseNumber}"
                         android:background="@drawable/bg_dashboard_et_layout"
                         android:elevation="@dimen/_6sdp"
                         android:paddingStart="@dimen/_15sdp"
@@ -379,6 +391,7 @@
                         android:background="@drawable/bg_dashboard_et_layout"
                         android:elevation="@dimen/_6sdp"
                         android:paddingStart="@dimen/_15sdp"
+                        android:text="@{addressFormViewModel.apartmentNumber}"
                         android:paddingBottom="@dimen/_6sdp"
                         android:textColor="@color/color17"
                         android:textSize="@dimen/_14sp"
@@ -412,6 +425,7 @@
                 android:background="@drawable/bg_dashboard_et_layout"
                 android:elevation="@dimen/_6sdp"
                 android:paddingStart="@dimen/_15sdp"
+                android:text="@{addressFormViewModel.street}"
                 android:paddingBottom="@dimen/_6sdp"
                 android:textColor="@color/color17"
                 android:textSize="@dimen/_14sp"
@@ -441,6 +455,7 @@
                 android:layout_marginBottom="@dimen/_15sdp"
                 android:background="@drawable/bg_dashboard_et_layout"
                 android:elevation="@dimen/_6sdp"
+                android:text="@{addressFormViewModel.landmark}"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingBottom="@dimen/_6sdp"
                 android:textColor="@color/color17"
@@ -463,27 +478,41 @@
                 app:layout_constraintTop_toBottomOf="@id/et_landmark"
                 app:setCustomFont="@string/font_poppins_bold" />
 
-            <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/tv_use_current_location"
+            <LinearLayout
+                android:id="@+id/ll_use_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_14sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_16sdp"
-                android:padding="@dimen/alerter_padding_half"
-                android:text="@string/use_current_location"
+                android:orientation="horizontal"
                 android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@id/tv_or">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_location"/>
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_use_current_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingStart="@dimen/_2sdp"
+                android:text="@string/use_current_location"
                 android:textColor="@color/color15"
                 android:textSize="@dimen/_14sp"
-                app:layout_constraintTop_toBottomOf="@id/tv_or"
                 app:setCustomFont="@string/font_poppins_regular" />
+
+            </LinearLayout>
 
             <com.poona.agrocart.widgets.CustomButton
                 android:id="@+id/btn_add_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:background="@drawable/background_verify_otp_btn"
                 android:padding="@dimen/alerter_padding_small"
@@ -494,7 +523,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_use_current_location"
+                app:layout_constraintTop_toBottomOf="@+id/ll_use_location"
                 app:setCustomFont="@string/font_poppins_regular" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

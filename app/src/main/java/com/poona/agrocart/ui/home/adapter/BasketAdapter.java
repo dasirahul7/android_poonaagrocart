@@ -2,10 +2,12 @@ package com.poona.agrocart.ui.home.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
@@ -20,16 +22,18 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
     private ArrayList<Basket> baskets = new ArrayList<>();
     private Context bContext;
     private RowBasketItemBinding basketItemBinding;
+    private View view;
 
-    public BasketAdapter(ArrayList<Basket> baskets, Context context) {
+    public BasketAdapter(ArrayList<Basket> baskets, Context context, View view) {
         this.baskets = baskets;
         this.bContext = context;
+        this.view=view;
     }
 
     @Override
     public BasketHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         basketItemBinding = DataBindingUtil.inflate(LayoutInflater.from(bContext), R.layout.row_basket_item, parent, false);
-        return new BasketHolder(basketItemBinding);
+        return new BasketHolder(basketItemBinding,view);
     }
 
     @Override
@@ -45,8 +49,17 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
     }
 
     public class BasketHolder extends RecyclerView.ViewHolder {
-        public BasketHolder(RowBasketItemBinding basketItemBinding) {
+        public BasketHolder(RowBasketItemBinding basketItemBinding,View view) {
             super(basketItemBinding.getRoot());
+
+            basketItemBinding.cardviewBasketItem.setOnClickListener(v->{
+                redirectToBasketDetailFragment(view);
+            });
+        }
+
+        private void redirectToBasketDetailFragment(View v)
+        {
+            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_basketProductDetailFragment2);
         }
 
         public void bind(Basket basket) {

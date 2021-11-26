@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.product_detail;
+package com.poona.agrocart.ui.basket_product_detail;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,26 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.FragmentProductImageBinding;
-import com.poona.agrocart.ui.basket_product_detail.BasketProductDetailFragment;
-import com.poona.agrocart.ui.basket_product_detail.BasketProductImgFragment;
-
+import com.poona.agrocart.databinding.FragmentBasketProductImgBinding;
 import java.util.ArrayList;
 
-public class ProductImageFragment extends Fragment
+public class BasketProductImgFragment extends Fragment
 {
     private static Context context;
     private static ArrayList<Integer> productImgsList;
-    private FragmentProductImageBinding fragmentProductImageBinding;
+    private FragmentBasketProductImgBinding fragmentBasketProductImgBinding;
     private View view;
     private static final String POSITION = "position";
     private ImageView productImg;
 
-    public static ProductImageFragment newInstance(ProductDetailFragment productDetailFragment, int pos, ArrayList<Integer> imgs)
+    public static BasketProductImgFragment newInstance(BasketProductDetailFragment basketProductDetailFragment, int pos, ArrayList<Integer> imgs)
     {
-        context = productDetailFragment.getContext();
+        context = basketProductDetailFragment.getContext();
         productImgsList = imgs;
-        ProductImageFragment fragment = new ProductImageFragment();
+        BasketProductImgFragment fragment = new BasketProductImgFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(POSITION, pos);
         fragment.setArguments(bundle);
@@ -39,10 +36,10 @@ public class ProductImageFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final int position = this.getArguments().getInt(POSITION);
-        fragmentProductImageBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_image,container,false);
-        fragmentProductImageBinding.setLifecycleOwner(this);
-        view = fragmentProductImageBinding.getRoot();
-        productImg = fragmentProductImageBinding.ivProduct;
+        fragmentBasketProductImgBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_basket_product_img,container,false);
+        fragmentBasketProductImgBinding.setLifecycleOwner(this);
+        view = fragmentBasketProductImgBinding.getRoot();
+        productImg = fragmentBasketProductImgBinding.ivProduct;
         productImg.setImageResource(productImgsList.get(position));
         return view;
     }

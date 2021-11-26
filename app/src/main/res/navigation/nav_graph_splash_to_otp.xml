@@ -26,9 +26,6 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/SplashScreenFragment"
             app:popUpToInclusive="true" />
-         <action
-             android:id="@+id/action_SplashScreenFragment_to_basketPageFragment"
-             app:destination="@id/basketPageFragment" />
 
      </fragment>
 
@@ -91,11 +88,7 @@
         android:id="@+id/selectLocationFragment"
         android:name="com.poona.agrocart.ui.select_location.SelectLocationFragment"
         android:label="fragment_select_location"
-        tools:layout="@layout/fragment_select_location" >
-        <action
-            android:id="@+id/action_selectLocationFragment_to_LoginFragment"
-            app:destination="@id/LoginFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_select_location" />
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.poona.agrocart.ui.sign_in.SignInFragment"
@@ -140,5 +133,17 @@
         android:id="@+id/addressesFormFragment"
         android:name="com.poona.agrocart.ui.addresses_form.AddressesFormFragment"
         android:label="AddressesFormFragment" />
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="com.poona.agrocart.ui.my_profile.MyProfileFragment"
+        android:label="MyProfileFragment" />
+    <fragment
+        android:id="@+id/basketProductDetailFragment"
+        android:name="com.poona.agrocart.ui.basket_product_detail.BasketProductDetailFragment"
+        android:label="BasketProductDetailFragment" />
+    <fragment
+        android:id="@+id/vegetablesFragment"
+        android:name="com.poona.agrocart.ui.products_list.ProductListFragment"
+        android:label="VegetablesFragment" />
 
 </navigation>

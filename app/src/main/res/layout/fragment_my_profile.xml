@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="myProfileViewModel"
+            type="com.poona.agrocart.ui.my_profile.MyProfileViewModel" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,6 +79,7 @@
             android:textColor="@color/color17"
             android:padding="@dimen/_8sdp"
             android:textSize="@dimen/_14sp"
+            android:text="@{myProfileViewModel.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_name_text"
@@ -103,6 +110,7 @@
             android:background="@drawable/bg_dashboard_et_layout"
             android:elevation="@dimen/_6sdp"
             android:textColor="@color/color17"
+            android:text="@{myProfileViewModel.mobileNo}"
             android:padding="@dimen/_8sdp"
             android:textSize="@dimen/_14sp"
             android:inputType="number"
@@ -139,6 +147,7 @@
             android:textColor="@color/color17"
             android:padding="@dimen/_8sdp"
             android:textSize="@dimen/_14sp"
+            android:text="@{myProfileViewModel.alternateMobileNo}"
             android:inputType="number"
             android:maxLength="10"
             app:layout_constraintEnd_toEndOf="parent"
@@ -174,6 +183,7 @@
             android:textColor="@color/color17"
             android:padding="@dimen/_8sdp"
             android:textSize="@dimen/_14sp"
+            android:text="@{myProfileViewModel.emailId}"
             android:inputType="number"
             android:maxLength="10"
             app:layout_constraintEnd_toEndOf="parent"

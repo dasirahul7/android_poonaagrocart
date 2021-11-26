@@ -21,6 +21,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.ActivityHomeBinding;
@@ -38,6 +39,7 @@ public class HomeActivity extends BaseActivity {
     public Toolbar toolbar;
     public ImageView backBtn;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +70,26 @@ public class HomeActivity extends BaseActivity {
     private void initNavigation() {
         drawer = binding.drawerLayout;
         navigationView = binding.navView;
+        bottomNavigationView=binding.appBarHome.bottomNavigationView;
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home,
                 R.id.nav_profile,
-                R.id.nav_orders)
+                R.id.nav_orders,
+                R.id.nav_explore,
+                R.id.nav_cart,
+                R.id.nav_favourite,
+                R.id.nav_profile,
+                R.id.nav_store)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        NavigationUI.setupWithNavController(bottomNavigationView,navController);
+
         binding.appBarHome.toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

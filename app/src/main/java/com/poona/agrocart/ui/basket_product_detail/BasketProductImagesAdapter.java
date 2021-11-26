@@ -1,20 +1,19 @@
-package com.poona.agrocart.ui.product_detail;
+package com.poona.agrocart.ui.basket_product_detail;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
 import java.util.ArrayList;
 
-public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener
+public class BasketProductImagesAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener
 {
-    private ProductDetailFragment context;
+    private BasketProductDetailFragment context;
     private FragmentManager fragmentManager;
     private int lastPosition = 0;
     private ArrayList<Integer> imgsList;
 
-    public ProductImagesAdapter(ProductDetailFragment context, FragmentManager fm, ArrayList<Integer> imgsList)
+    public BasketProductImagesAdapter(BasketProductDetailFragment context, FragmentManager fm, ArrayList<Integer> imgsList)
     {
         super(fm);
         this.fragmentManager = fm;
@@ -25,7 +24,7 @@ public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPa
     @Override
     public Fragment getItem(int position)
     {
-        return ProductImageFragment.newInstance(context, position,imgsList);
+        return BasketProductImgFragment.newInstance(context, position,imgsList);
     }
 
     @Override
