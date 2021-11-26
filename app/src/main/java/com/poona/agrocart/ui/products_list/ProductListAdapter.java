@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.HomeBestSellingItemBinding;
+import com.poona.agrocart.databinding.RowBestSellingItemBinding;
 import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
@@ -25,9 +25,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @NonNull
     @Override
     public ProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        HomeBestSellingItemBinding binding = DataBindingUtil.inflate
+        RowBestSellingItemBinding binding = DataBindingUtil.inflate
                 (LayoutInflater.from(parent.getContext()),
-                        R.layout.home_best_selling_item, parent, false);
+                        R.layout.row_best_selling_item, parent, false);
         return new ProductsViewHolder(binding);
     }
 
@@ -45,9 +45,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public static class ProductsViewHolder extends RecyclerView.ViewHolder
     {
-        HomeBestSellingItemBinding homeBestSellingItemBinding;
+        RowBestSellingItemBinding homeBestSellingItemBinding;
 
-        public ProductsViewHolder(HomeBestSellingItemBinding homeBestSellingItemBinding) {
+        public ProductsViewHolder(RowBestSellingItemBinding homeBestSellingItemBinding) {
             super(homeBestSellingItemBinding.getRoot());
             this.homeBestSellingItemBinding=homeBestSellingItemBinding;
         }
