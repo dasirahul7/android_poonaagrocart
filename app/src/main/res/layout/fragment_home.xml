@@ -62,6 +62,7 @@
 
                 <!-- Banner Layout -->
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_margin="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -69,7 +70,7 @@
                     <com.github.demono.AutoScrollViewPager
                         android:id="@+id/view_pager_banner"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp" />
+                        android:layout_height="@dimen/_110sdp" />
                     <!--Banner dots-->
                     <me.huseyinozer.TooltipIndicator
                         android:id="@+id/tl_indicators"
@@ -106,7 +107,7 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/shop_by_category"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_18sdp"
+                        android:textSize="@dimen/_16sdp"
                         app:fontFamily="@font/poppins" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -118,11 +119,13 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/see_all"
                         android:textColor="@color/colorGreenButton"
-                        android:textSize="@dimen/_15sdp" />
+                        android:textSize="@dimen/_14sdp"
+                        app:setCustomFont="@string/font_poppins_regular" />
 
                 </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:layout_margin="@dimen/_5sdp"
                     android:id="@+id/rec_category"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -142,7 +145,7 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/best_selling"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_18sdp"
+                        android:textSize="@dimen/_16sdp"
                         app:fontFamily="@font/poppins" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -154,47 +157,15 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/see_all"
                         android:textColor="@color/colorGreenButton"
-                        android:textSize="@dimen/_15sdp" />
+                        android:textSize="@dimen/_14sdp" />
 
                 </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rec_product"
+                   android:layout_margin="@dimen/_5sdp"
+                    android:id="@+id/rec_offer_product"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-
-<!--                Our Shop Layout-->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_margin="@dimen/_10sdp"
-                    android:layout_width="match_parent"
-                    android:elevation="@dimen/_10sdp"
-                    app:cardCornerRadius="@dimen/_10sdp"
-                    android:layout_height="wrap_content">
-                    <RelativeLayout
-                        android:padding="@dimen/_10sdp"
-                        android:background="@drawable/green_cart_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:id="@+id/tv_shop"
-                            android:text="Our Shop"
-                            android:textSize="@dimen/_18sdp"
-                            android:textStyle="bold"
-                            android:textColor="@color/white"
-                            android:layout_alignParentTop="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tv_shop"
-                            android:layout_alignParentRight="true"
-                            android:src="@drawable/basket_item" />
-
-                    </RelativeLayout>
-
-                </com.google.android.material.card.MaterialCardView>
 
                 <!--Exclusive Offers-->
                 <RelativeLayout
@@ -211,7 +182,7 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/exclusive_offer"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_18sdp"
+                        android:textSize="@dimen/_16sdp"
                         app:fontFamily="@font/poppins" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -223,14 +194,50 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/see_all"
                         android:textColor="@color/colorGreenButton"
-                        android:textSize="@dimen/_15sdp" />
+                        android:textSize="@dimen/_14sdp" />
 
                 </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:layout_margin="@dimen/_5sdp"
                     android:id="@+id/rec_offers"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+
+                <!--Our Shop-->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:elevation="@dimen/_10sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:padding="@dimen/_10sdp"
+                        android:background="@drawable/green_cart_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_shop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:text="Our shop"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_16sdp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_shop"
+                            android:layout_alignParentEnd="true"
+                            android:src="@drawable/basket_item" />
+
+                    </RelativeLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
 
                 <!--Basket-->
@@ -248,11 +255,18 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/basket"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_18sdp"
+                        android:textSize="@dimen/_16sdp"
                         app:fontFamily="@font/poppins" />
                 </RelativeLayout>
                 <androidx.recyclerview.widget.RecyclerView
+                    android:layout_margin="@dimen/_5sdp"
                     android:id="@+id/rec_basket"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_margin="@dimen/_10sdp"
+                    android:id="@+id/rec_product"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </LinearLayout>

@@ -75,6 +75,7 @@
     <!--basket page-->
     <color name="color_basket_name">#575574</color>
     <color name="color_price">#737373</color>
+    <color name="drawer_selected_bg_color">#F2F2F2</color>
     <color name="color_basket_content_weight">#9D9D9D</color>
 
 </resources>

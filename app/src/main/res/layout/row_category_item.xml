@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data >
         <variable
@@ -7,9 +8,8 @@
             type="com.poona.agrocart.ui.home.model.Category" />
     </data>
     <com.google.android.material.card.MaterialCardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_150sdp"
+        android:layout_height="@dimen/_120sdp"
         android:elevation="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardUseCompatPadding="true"
@@ -23,19 +23,20 @@
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/catImg"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_70sdp"
+                app:setImage="@{categoryModule.img}"/>
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/txt_cat_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
-                app:setImage="@{categoryModule.img}"/>
-            <TextView
-                android:padding="@dimen/_5sdp"
                 android:gravity="center"
-                android:id="@+id/txt_cat_name"
+                android:padding="@dimen/_5sdp"
                 android:text="@{categoryModule.name}"
-                android:textSize="@dimen/cat_txt_size"
                 android:textColor="@color/txt_cat_name_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textSize="@dimen/cat_txt_size"
+                app:setCustomFont="@string/font_poppins_semi_bold" />
 
         </LinearLayout>
 

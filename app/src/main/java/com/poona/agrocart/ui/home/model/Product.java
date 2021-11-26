@@ -8,12 +8,11 @@ import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 
 public class Product {
-    String id, name, qty,offer, price, offerPrice;
-    int img;
+    String id, name, qty,offer, price, offerPrice,img;
 
     public Product(String id, String name,
                    String qty, String offer, String price,
-                   String offerPrice, int img) {
+                   String offerPrice, String img) {
         this.id = id;
         this.name = name;
         this.qty = qty;
@@ -71,19 +70,19 @@ public class Product {
         this.name = name;
     }
 
-    public int getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(int img) {
+    public void setImg(String img) {
         this.img = img;
     }
 
     @BindingAdapter("setPImage")
-    public static void loadPImage(ImageView view,int img){
+    public static void loadPImage(ImageView view,String img){
         Glide.with(view.getContext())
                 .load(img)
-                .placeholder(R.drawable.capsicon)
-                .error(R.drawable.capsicon).into(view);
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder).into(view);
     }
 }

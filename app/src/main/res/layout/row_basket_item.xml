@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="basketModule"
+            type="com.poona.agrocart.ui.home.model.Basket" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_margin="@dimen/_5sdp"
+        android:elevation="@dimen/_10sdp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/clr_custom_edit_text_otp"
+        app:cardCornerRadius="@dimen/_12sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#E5F4EA"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/basketImg"
+                setBImage="@{basketModule.img}"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_alignParentStart="true"/>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_toEndOf="@id/basketImg">
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{basketModule.name}"
+                    android:textColor="@color/lightBlack"
+                    android:textSize="@dimen/large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_name"
+                    android:text="@{basketModule.price}"
+                    android:textColor="@color/lightBlack"
+                    android:textSize="@dimen/normal" />
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

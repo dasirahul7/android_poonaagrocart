@@ -33,6 +33,8 @@ public class AppConstants
     public static final String BASE_AUTH_PASSWORD = "BaseAuthPassword";
     public static final String AUTHORIZATION_TOKEN = "AuthorizationToken";
     public static final String USER_TYPE = "user_type";
+    public static final String PORTRAIT = "portrait";
+    public static final String LANDSCAPE = "landscape";
 
     /*
     * api header parameters

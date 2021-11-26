@@ -10,7 +10,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="@dimen/_150sdp"
+        android:layout_width="@dimen/_140sdp"
         android:layout_height="@dimen/_220sdp"
         android:elevation="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_10sdp"
@@ -21,28 +21,29 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/_10sdp">
+            android:layout_margin="@dimen/_5sdp">
 
             <TextView
                 android:id="@+id/txt_item_offer"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/bg_offer_red"
                 android:gravity="center"
-                android:padding="@dimen/_5sdp"
                 android:text="@{productModule.offer}"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="@dimen/offer_txt_size" />
+                android:textSize="@dimen/offer_txt_size"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/itemImg"
                 setPImage="@{productModule.img}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_below="@+id/txt_item_offer"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp" />
 
             <TextView
@@ -51,13 +52,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/itemImg"
                 android:gravity="start"
+                android:paddingStart="@dimen/_5sdp"
                 android:singleLine="true"
                 android:text="@{productModule.name}"
                 android:textColor="@color/selling_txt_color"
-                android:textSize="@dimen/_15sdp"
+                android:textSize="@dimen/_14sdp"
                 android:textStyle="bold" />
 
             <TextView
+                android:singleLine="true"
+                android:paddingStart="@dimen/_5sdp"
                 android:id="@+id/txt_item_qty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,9 +69,10 @@
                 android:gravity="start"
                 android:text="@{productModule.qty}"
                 android:textColor="#7C7C7C"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_13sdp" />
 
             <TextView
+                android:paddingStart="@dimen/_5sdp"
                 android:id="@+id/txt_item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,9 +81,10 @@
                 android:gravity="center"
                 android:text="@{productModule.price}"
                 android:textColor="#7C7C7C"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_13sdp" />
 
             <TextView
+                android:paddingStart="@dimen/_5sdp"
                 android:id="@+id/txt_item_offer_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -86,7 +92,7 @@
                 android:gravity="center"
                 android:text="@{productModule.offerPrice}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_14sdp" />
 
             <ImageView
                 android:id="@+id/img_plus"
@@ -94,9 +100,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/bg_plus_btn"
                 android:scaleType="center"
-                android:src="@drawable/ic_plus" />
+                android:src="@drawable/ic_plus_with_sqaure_bg" />
 
 
         </RelativeLayout>
