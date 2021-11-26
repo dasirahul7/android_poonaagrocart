@@ -126,7 +126,7 @@
     <string name="help_center">Help Center</string>
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="our_store">Our Store</string>
-    <string name="logout">Logout</string>
+    <string name="sign_out">SignOut</string>
     <string name="shop">Shop</string>
     <string name="shop_by_category">Shop by Category</string>
     <string name="see_all">See all</string>
