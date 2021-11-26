@@ -8,6 +8,7 @@
             type="com.poona.agrocart.ui.home.model.Category" />
     </data>
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardview_category"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_120sdp"
         android:elevation="@dimen/_10sdp"

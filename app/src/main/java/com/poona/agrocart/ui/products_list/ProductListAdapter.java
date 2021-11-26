@@ -1,10 +1,12 @@
 package com.poona.agrocart.ui.products_list;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
@@ -17,9 +19,11 @@ import java.util.ArrayList;
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductsViewHolder>
 {
     private ArrayList<Product> vegetableArrayList;
+    private View view;
 
-    public ProductListAdapter(ArrayList<Product> vegetableArrayList) {
+    public ProductListAdapter(ArrayList<Product> vegetableArrayList, View view) {
         this.vegetableArrayList = vegetableArrayList;
+        this.view=view;
     }
 
     @NonNull
@@ -28,7 +32,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         RowBestSellingItemBinding binding = DataBindingUtil.inflate
                 (LayoutInflater.from(parent.getContext()),
                         R.layout.row_best_selling_item, parent, false);
-        return new ProductsViewHolder(binding);
+        return new ProductsViewHolder(binding,view);
     }
 
     @Override
@@ -47,9 +51,18 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     {
         RowBestSellingItemBinding homeBestSellingItemBinding;
 
-        public ProductsViewHolder(RowBestSellingItemBinding homeBestSellingItemBinding) {
+        public ProductsViewHolder(RowBestSellingItemBinding homeBestSellingItemBinding,View view) {
             super(homeBestSellingItemBinding.getRoot());
             this.homeBestSellingItemBinding=homeBestSellingItemBinding;
+
+            homeBestSellingItemBinding.cardviewProduct.setOnClickListener(v -> {
+                redirectToProductsDetail(view);
+            });
+        }
+
+        private void redirectToProductsDetail(View v)
+        {
+            Navigation.findNavController(v).navigate(R.id.action_nav_products_list_to_productDetailFragment2);
         }
 
         public void bind(Product product)

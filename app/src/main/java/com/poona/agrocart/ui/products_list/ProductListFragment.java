@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.products_list;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
@@ -25,7 +26,7 @@ public class ProductListFragment extends Fragment
     private ArrayList<Product> vegetableArrayList;
     private ArrayList<Product> fruitsArrayList;
     private ProductListAdapter productListAdapter;
-    private String isVegetablesOrFruits="fruits";
+    private String isVegetablesOrFruits="vegetable";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -35,12 +36,12 @@ public class ProductListFragment extends Fragment
         final View view = ((ViewDataBinding) fragmentProductListBinding).getRoot();
 
         initView();
-        setRVAdapter();
+        setRVAdapter(view);
 
         return view;
     }
 
-    private void setRVAdapter()
+    private void setRVAdapter(View view)
     {
         vegetableArrayList =new ArrayList<>();
         fruitsArrayList=new ArrayList<>();
@@ -54,7 +55,7 @@ public class ProductListFragment extends Fragment
         rvVegetables.setHasFixedSize(true);
         rvVegetables.setLayoutManager(gridLayoutManager);
 
-        productListAdapter = new ProductListAdapter(vegetableArrayList);
+        productListAdapter = new ProductListAdapter(vegetableArrayList,view);
 
         rvVegetables.setAdapter(productListAdapter);
     }
