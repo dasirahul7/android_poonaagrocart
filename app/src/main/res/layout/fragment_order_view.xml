@@ -264,7 +264,7 @@
                     <com.poona.agrocart.widgets.CustomButton
                         android:id="@+id/btn_track_order"
                         android:layout_width="@dimen/_60sdp"
-                        android:layout_height="@dimen/_16sdp"
+                        android:layout_height="@dimen/_28sdp"
                         android:text="Track Order"
                         android:background="@drawable/bg_check_availabilty_btn"
                         android:textAlignment="center"
