@@ -42,7 +42,7 @@
                     android:singleLine="true"
                     android:text="@string/my_orders"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_18sdp"
+                    android:textSize="@dimen/_14sdp"
                     android:visibility="gone"
                     app:setCustomFont="@string/font_poppins_regular" />
 

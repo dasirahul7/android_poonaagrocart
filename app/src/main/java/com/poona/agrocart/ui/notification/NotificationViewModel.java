@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class NotificationViewModel extends ViewModel {
     private final String sample_notification= "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi semper egestas at cursus maecenas duis enim sit ipsum. Ri amet tristique comm.";
     private final String sample_date= "12 September 2021";
-    // TODO: Implement the ViewModel
     MutableLiveData<ArrayList<Notification>> arrayListMutableLiveData=new MutableLiveData<>();
 
     public NotificationViewModel() {
