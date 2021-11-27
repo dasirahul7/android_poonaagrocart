@@ -23,8 +23,8 @@ public class OrderViewFragment extends Fragment {
     private boolean isBasketVisible=true;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         fragmentOrderViewBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_order_view, container, false);
         fragmentOrderViewBinding.setLifecycleOwner(this);
         final View view = ((ViewDataBinding) fragmentOrderViewBinding).getRoot();
@@ -42,16 +42,27 @@ public class OrderViewFragment extends Fragment {
         rvBasketListItems=fragmentOrderViewBinding.rvBasketItems;
         if(isBasketVisible)
         {
-            fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.VISIBLE);
-            fragmentOrderViewBinding.tvProductDetails.setVisibility(View.GONE);
-            fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
+            setBasketContentsVisible();
         }
         else
         {
-            fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.GONE);
-            fragmentOrderViewBinding.tvProductDetails.setVisibility(View.VISIBLE);
-            fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.VISIBLE);
+            showProductDetails();
         }
+    }
+
+    private void showProductDetails()
+    {
+        fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.GONE);
+        fragmentOrderViewBinding.tvProductDetails.setVisibility(View.VISIBLE);
+        fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.VISIBLE);
+    }
+
+    private void setBasketContentsVisible()
+    {
+
+        fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.VISIBLE);
+        fragmentOrderViewBinding.tvProductDetails.setVisibility(View.GONE);
+        fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
     }
 
     private void setRVAdapter()
