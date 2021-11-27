@@ -30,7 +30,11 @@
         android:id="@+id/nav_orders"
         android:name="com.poona.agrocart.ui.my_orders.MyOrdersFragment"
         android:label="@string/my_orders"
-        tools:layout="@layout/fragment_my_orders" />
+        tools:layout="@layout/fragment_my_orders" >
+        <action
+            android:id="@+id/action_nav_orders_to_orderViewFragment2"
+            app:destination="@id/orderViewFragment2" />
+    </fragment>
 
 <!--    MyProfileFragment-->
     <fragment
@@ -105,4 +109,16 @@
         android:id="@+id/orderViewFragment2"
         android:name="com.poona.agrocart.ui.order_view.OrderViewFragment"
         android:label="OrderViewFragment" />
+    <fragment
+        android:id="@+id/nav_help_center"
+        android:name="com.poona.agrocart.ui.help_center.HelpCenterFragment"
+        android:label="HelpCenterFragment" >
+        <action
+            android:id="@+id/action_nav_help_center_to_nav_ticket_detail"
+            app:destination="@id/nav_ticket_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_ticket_detail"
+        android:name="com.poona.agrocart.ui.ticket_details.TicketDetailFragment"
+        android:label="TicketDetailFragment" />
 </navigation>

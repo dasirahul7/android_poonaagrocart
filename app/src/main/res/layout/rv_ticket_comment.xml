@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="comment"
+            type="com.poona.agrocart.ui.ticket_details.model.Comment" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardview_ticket_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_6sdp"
+        app:cardCornerRadius="@dimen/_12sdp"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:src="@drawable/img_profile_picture"/>
+
+                <LinearLayout
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:gravity="start"
+                        android:text="Johnson Doe"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16sp"
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="100">
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            android:gravity="start"
+                            android:text="Replied-"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_16sp"
+                            app:setCustomFont="@string/font_poppins_regular" />
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            android:gravity="start"
+                            android:text="12 Jan 2021"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_16sp"
+                            app:setCustomFont="@string/font_poppins_regular" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/white"
+                />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="start"
+                android:text="@string/lorem_ipsum_dolor_sit_amet_consectetur_adipiscing"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sp"
+                app:setCustomFont="@string/font_poppins_bold" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

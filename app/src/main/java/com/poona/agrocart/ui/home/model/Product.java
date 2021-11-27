@@ -7,7 +7,8 @@ import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 
-public class Product {
+public class Product
+{
     String id, name, qty,offer, price, offerPrice,img;
 
     public Product(String id, String name,

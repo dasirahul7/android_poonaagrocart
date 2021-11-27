@@ -3,6 +3,7 @@ package com.poona.agrocart.ui.select_location;
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -63,13 +64,17 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
 
         basicDetails=new BasicDetails();
 
+        /*Typeface poppinsRegularFont = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_medium));
+        fragmentSelectLocationBinding.spinnerArea.setTypeface(poppinsRegularFont);
+        fragmentSelectLocationBinding.spinnerCity.setTypeface(poppinsRegularFont);*/
+
         setUpSpinnerCity();
         setUpSpinnerArea();
     }
 
     private void setUpSpinnerArea()
     {
-        ArrayAdapter arrayAdapterArea=new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,areas);
+        ArrayAdapter arrayAdapterArea=new ArrayAdapter(getActivity(),R.layout.text_spinner,areas);
         arrayAdapterArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fragmentSelectLocationBinding.spinnerArea.setAdapter(arrayAdapterArea);
 
@@ -86,7 +91,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
 
     private void setUpSpinnerCity()
     {
-        ArrayAdapter arrayAdapterCity = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,cities);
+        ArrayAdapter arrayAdapterCity = new ArrayAdapter(getActivity(),R.layout.text_spinner,cities);
         arrayAdapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fragmentSelectLocationBinding.spinnerCity.setAdapter(arrayAdapterCity);
 

@@ -243,7 +243,7 @@
                 android:padding="@dimen/alerter_padding_small"
                 android:text="@string/sign_up"
                 android:id="@+id/tv_sign_up"
-                android:textColor="@color/color9"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:textSize="@dimen/_14sp"
                 app:setCustomFont="@string/font_poppins_regular" />

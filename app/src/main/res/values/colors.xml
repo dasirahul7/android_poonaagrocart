@@ -8,9 +8,7 @@
     <color name="color1">#FF6B06</color>
     <color name="color2">#FFAF10</color>
     <color name="color11">#849A31</color>
-    <color name="color12">#86C11F</color>
     <color name="color8">#456304</color>
-    <color name="color9">#86C11F</color>
     <color name="color3">#81C654</color>
     <color name="color6">#3E9420</color>
     <color name="color5">#A97C50</color>
@@ -47,7 +45,6 @@
     <!--Verify OTP fragment colors-->
     <color name="clr_enter_otp">#181725</color>
     <color name="clr_resend_otp">#53B175</color>
-    <color name="clr_verify_otp_btn">#86C11F</color>
     <color name="clr_verify_otp_text">#FFF9FF</color>
     <color name="clr_custom_edit_text_otp">#E2E2E2</color>
     <color name="colorGrey">#999999</color>
@@ -68,6 +65,7 @@
     <color name="color_rv_basket_price">#787878</color>
     <color name="color_discount_text">#4C4C4C</color>
     <color name="color_invoice_btn">#18A0FB</color>
+    <color name="color_track_order">#626A55</color>
 
     <!--Product detail-->
     <color name="color_star_rating">#F3603F</color>
@@ -96,5 +94,9 @@
     <color name="color_type_of_address">#5E5E5E</color>
     <color name="color_type_of_address_bg">#CCCCCC</color>
     <color name="color_default_address">#4A4A4A</color>
+
+    <!--help center-->
+    <color name="color_pending">#FF3636</color>
+    <color name="color_ongoing">#FF8F27</color>
 
 </resources>

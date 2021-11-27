@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.my_basket;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,9 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
 
         private void redirectToBasketOrderView(View v)
         {
-            Navigation.findNavController(v).navigate(R.id.action_nav_basket_to_orderViewFragment2);
+            Bundle bundle=new Bundle();
+            bundle.putBoolean("isBasketVisible",true);
+            Navigation.findNavController(v).navigate(R.id.action_nav_basket_to_orderViewFragment2,bundle);
         }
 
         public void bind(BasketOrder basketOrder)

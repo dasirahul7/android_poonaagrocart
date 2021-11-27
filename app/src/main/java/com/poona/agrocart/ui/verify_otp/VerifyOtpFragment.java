@@ -4,6 +4,7 @@ import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,9 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
 
     private void initViews(View view)
     {
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_regular));
+        fragmentVerifyOtpBinding.etOtp.setTypeface(font);
+
         fragmentVerifyOtpBinding.btnVerifyOtp.setOnClickListener(this);
 
         commonViewModel=new ViewModelProvider(this).get(CommonViewModel.class);
