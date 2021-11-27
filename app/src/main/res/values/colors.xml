@@ -85,4 +85,16 @@
     <color name="exp_border1">#E5F2CF</color>
     <color name="exp_border2">#FDDEBE</color>
 
+    <!--My orders-->
+    <color name="color_total_amount">#6F6F6F</color>
+    <color name="color_in_process">#E7BC4E</color>
+    <color name="color_delivered">#456305</color>
+    <color name="color_confirmed">#3782A8</color>
+    <color name="color_cancelled">#A31E00</color>
+
+    <!--Address-->
+    <color name="color_type_of_address">#5E5E5E</color>
+    <color name="color_type_of_address_bg">#CCCCCC</color>
+    <color name="color_default_address">#4A4A4A</color>
+
 </resources>

@@ -97,9 +97,4 @@
         <item name="android:fontFamily">@font/poppins</item>
     </style>
 
-    <!--Checkbox-->
-    <style name="checkboxCustom">
-        <item name="colorAccent">@color/color_checkbox_addresses</item>
-    </style>
-
 </resources>
