@@ -109,4 +109,9 @@
         android:id="@+id/nav_about"
         android:name="com.poona.agrocart.ui.about_us.AboutUsFragment"
         android:label="AboutUsFragment" />
+    <fragment
+        android:id="@+id/nav_notification"
+        android:name="com.poona.agrocart.ui.notification.NotificationFragment"
+        android:label="@string/notification"
+        tools:layout="@layout/fragment_notification" />
 </navigation>

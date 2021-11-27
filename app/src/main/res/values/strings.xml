@@ -248,6 +248,10 @@
     <string name="_25">25</string>
 
     <string name="lorem_ipsum_dolor_sit_amet_consectetur_adipiscing">Lorem ipsum dolor sit amet, consectetur adipiscing.</string>
+<!--    About screen string-->
     <string name="about_str">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor \n\n\nper praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.\n\n Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . ridiculus velit at sodales. Ornare enim tempus hendrerit</string>
+<!--    Notification screen string-->
+    <string name="sample_date">12 September 2021</string>
+    <string name="sample_notification">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi semper egestas at cursus maecenas duis enim sit ipsum. Ri amet tristique comm.</string>
 
 </resources>

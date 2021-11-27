@@ -106,6 +106,7 @@ protected void initTitleBar(String title) {
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setPadding(0,0,0,0);
     });
     ((HomeActivity)requireActivity()).binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
+    ((HomeActivity)requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
     ((HomeActivity)requireActivity()).binding.appBarHome.textView.setVisibility(View.GONE);
     ((HomeActivity)requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
     ((HomeActivity)requireActivity()).binding.appBarHome.textTitle.setText(title);
