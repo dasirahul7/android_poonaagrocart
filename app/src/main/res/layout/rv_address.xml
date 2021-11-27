@@ -123,7 +123,9 @@
                     <CheckBox
                         android:id="@+id/cb_default"
                         android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"/>
+                        android:layout_height="@dimen/_20sdp"
+                        android:buttonTint="@color/color_checkbox_addresses"
+                        />
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="wrap_content"

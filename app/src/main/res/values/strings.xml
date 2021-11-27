@@ -166,6 +166,7 @@
     <string name="or">OR</string>
     <string name="use_current_location">Use Current Location</string>
     <string name="add_address">Add Address</string>
+    <string name="addresses_form">Addresses Form</string>
 
     <!--Order view fragment-->
     <string name="date_sep_30_2021_20_15_am">DATE : Sep 30, 2021 20:15 AM</string>
@@ -233,6 +234,7 @@
     <!--our stores-->
     <string name="poona_agro_center">POONA AGRO CENTER</string>
     <string name="vishrantwadi_pune">Vishrantwadi Pune</string>
+    <string name="our_stores">Our Stores</string>
 
     <!--My orders-->
     <string name="sep_30_2021_20_15_am">Sep 30, 2021 20:15 AM</string>

@@ -62,5 +62,6 @@ public class OurStoresFragment extends BaseFragment
     private void initView()
     {
         rvOurStores=fragmentOurStoresBinding.rvOurStores;
+        initTitleBar(getString(R.string.our_stores));
     }
 }

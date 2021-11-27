@@ -98,7 +98,7 @@
                 android:textColor="@color/color15"
                 android:textSize="@dimen/_18sp"
                 app:layout_constraintTop_toBottomOf="@+id/ll_radio_goup"
-                app:setCustomFont="@string/font_poppins_bold" />
+                app:setCustomFont="@string/font_poppins_semi_bold" />
 
             <com.poona.agrocart.widgets.CustomEditText
                 android:id="@+id/et_username"
@@ -127,7 +127,7 @@
                 android:textColor="@color/color15"
                 android:textSize="@dimen/_18sp"
                 app:layout_constraintTop_toBottomOf="@+id/et_username"
-                app:setCustomFont="@string/font_poppins_bold" />
+                app:setCustomFont="@string/font_poppins_semi_bold" />
 
             <com.poona.agrocart.widgets.CustomEditText
                 android:id="@+id/et_mobile_no"
@@ -172,7 +172,7 @@
                         android:text="@string/city"
                         android:textColor="@color/color15"
                         android:textSize="@dimen/_18sp"
-                        app:setCustomFont="@string/font_poppins_bold" />
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <Spinner
                         android:id="@+id/spinner_city"
@@ -208,7 +208,7 @@
                         android:text="@string/area"
                         android:textColor="@color/color15"
                         android:textSize="@dimen/_18sp"
-                        app:setCustomFont="@string/font_poppins_bold" />
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <Spinner
                         android:id="@+id/spinner_area"
@@ -257,7 +257,7 @@
                         android:text="@string/pincode"
                         android:textColor="@color/color15"
                         android:textSize="@dimen/_18sp"
-                        app:setCustomFont="@string/font_poppins_bold" />
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <com.poona.agrocart.widgets.CustomEditText
                         android:id="@+id/et_pincode"
@@ -296,7 +296,7 @@
                         android:textColor="@color/color9"
                         android:textSize="@dimen/_16sp"
                         android:textAlignment="center"
-                        app:setCustomFont="@string/font_poppins_regular" />
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 </LinearLayout>
 
@@ -312,7 +312,7 @@
                 android:padding="@dimen/alerter_padding_half"
                 android:text="@string/detail_address"
                 android:textColor="@color/color15"
-                android:textSize="@dimen/_20sdp"
+                android:textSize="@dimen/_18sdp"
                 app:layout_constraintTop_toBottomOf="@+id/ll_pincode_and_check_availabilty"
                 app:setCustomFont="@string/font_poppins_bold" />
 
@@ -344,7 +344,7 @@
                         android:text="@string/house_no"
                         android:textColor="@color/color15"
                         android:textSize="@dimen/_18sp"
-                        app:setCustomFont="@string/font_poppins_bold" />
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <com.poona.agrocart.widgets.CustomEditText
                         android:id="@+id/et_house_number"
@@ -382,7 +382,7 @@
                         android:text="@string/apartment_no"
                         android:textColor="@color/color15"
                         android:textSize="@dimen/_18sp"
-                        app:setCustomFont="@string/font_poppins_bold" />
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <com.poona.agrocart.widgets.CustomEditText
                         android:id="@+id/et_apartment_number"
@@ -416,7 +416,7 @@
                 android:textColor="@color/color15"
                 android:textSize="@dimen/_18sp"
                 app:layout_constraintTop_toBottomOf="@id/ll_house_and_apartment_number"
-                app:setCustomFont="@string/font_poppins_bold" />
+                app:setCustomFont="@string/font_poppins_semi_bold" />
 
             <com.poona.agrocart.widgets.CustomEditText
                 android:id="@+id/et_street"
@@ -447,7 +447,7 @@
                 android:textColor="@color/color15"
                 android:textSize="@dimen/_18sp"
                 app:layout_constraintTop_toBottomOf="@id/et_street"
-                app:setCustomFont="@string/font_poppins_bold" />
+                app:setCustomFont="@string/font_poppins_semi_bold" />
 
             <com.poona.agrocart.widgets.CustomEditText
                 android:id="@+id/et_landmark"

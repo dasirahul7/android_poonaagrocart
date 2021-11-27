@@ -1,25 +1,20 @@
 package com.poona.agrocart.ui.products_list;
 
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentProductListBinding;
+import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.model.Product;
-
 import java.util.ArrayList;
 
-public class ProductListFragment extends Fragment
+public class ProductListFragment extends BaseFragment
 {
     private FragmentProductListBinding fragmentProductListBinding;
     private RecyclerView rvVegetables;
@@ -37,6 +32,8 @@ public class ProductListFragment extends Fragment
 
         initView();
         setRVAdapter(view);
+
+        initTitleBar(getString(R.string.green_vegetables));
 
         return view;
     }
