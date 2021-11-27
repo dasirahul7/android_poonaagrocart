@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="exploreModules"
+            type="com.poona.agrocart.ui.explore.model.ExploreItems" />
+    </data>
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/itemCard"
+    android:elevation="@dimen/_8sdp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_130sdp"
+    android:layout_height="@dimen/_150sdp"
+    android:layout_margin="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/_15sdp"
+    app:strokeColor="@color/exp_border1"
+    app:strokeWidth="1dp">
+    <LinearLayout
+        android:id="@+id/itemLayout"
+        android:background="@color/exp_card_color1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/itemImgLayout"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_12sdp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true">
+
+            <ImageView
+                android:id="@+id/itemImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                setImage="@{exploreModules.img}"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.poona.agrocart.widgets.CustomTextView
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:text="@{exploreModules.name}"
+            android:singleLine="true"
+            android:textColor="@color/green_txt_color"
+            android:textSize="@dimen/_16sp"
+            app:setCustomFont="@string/font_poppins_semi_bold" />/>
+    </LinearLayout>
+
+
+</com.google.android.material.card.MaterialCardView>
+</layout>

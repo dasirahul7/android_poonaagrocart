@@ -14,7 +14,7 @@
             android:title="@string/my_profile" />
         <item
             android:id="@+id/nav_orders"
-            android:icon="@drawable/ic_my_orders"
+            android:icon="@drawable/ic_my_order"
             android:title="@string/my_orders" />
         <item
             android:id="@+id/nav_address"
@@ -22,7 +22,7 @@
             android:title="@string/addresses" />
         <item
             android:id="@+id/nav_basket"
-            android:icon="@drawable/ic_basket"
+            android:icon="@drawable/ic_my_basket"
             android:title="@string/my_basket" />
         <item
             android:id="@+id/nav_wallet"
@@ -30,11 +30,11 @@
             android:title="@string/wallet_payments" />
         <item
             android:id="@+id/nav_offer"
-            android:icon="@drawable/ic_coupons_offers"
+            android:icon="@drawable/ic_offers"
             android:title="@string/offer_coupons" />
         <item
             android:id="@+id/nav_notification"
-            android:icon="@drawable/ic_notification"
+            android:icon="@drawable/ic_notifications"
             android:title="@string/notification" />
         <item
             android:id="@+id/nav_about"
@@ -54,15 +54,15 @@
             android:title="@string/terms_conditions" />
         <item
             android:id="@+id/nav_setting"
-            android:icon="@drawable/ic_settings"
+            android:icon="@drawable/ic_setting"
             android:title="@string/action_settings" />
         <item
             android:id="@+id/nav_store"
-            android:icon="@drawable/ic_stores"
+            android:icon="@drawable/ic_our_store"
             android:title="@string/our_store" />
         <item
-            android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_logout"
-            android:title="@string/logout" />
+            android:id="@+id/nav_signout"
+            android:icon="@drawable/ic_signout"
+            android:title="@string/sign_out" />
     </group>
 </menu>

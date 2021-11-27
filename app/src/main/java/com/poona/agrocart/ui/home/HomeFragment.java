@@ -27,8 +27,6 @@ import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.home.model.Product;
-import com.poona.agrocart.ui.my_cart.CartItem;
-import com.poona.agrocart.ui.my_cart.CartItemsAdapter;
 
 import java.util.ArrayList;
 
@@ -56,7 +54,7 @@ public class HomeFragment extends BaseFragment {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = fragmentHomeBinding.getRoot();
         try {
-            initHomeTitleBar();
+//            initHomeTitleBar();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -198,31 +196,24 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onResume() {
         try {
-            initHomeTitleBar();
+            activeHomeTitleBar();
         } catch (Exception e) {
             e.printStackTrace();
         }
         super.onResume();
     }
 
-    private void initHomeTitleBar() {
+    private void activeHomeTitleBar() {
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
             Drawable d = ResourcesCompat.getDrawable(getResources(),
-                    R.drawable.ic_poona_agrocart_logo_final, null);
+                    R.drawable.menu_icon_toggle, null);
             ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationIcon(d);
-            ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setPadding(30,0,0,0);
-            ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            requireActivity().onBackPressed();
-                        }
-                    }
-            );
+            ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setPadding(10,0,0,0);
         });
         if (((HomeActivity)requireActivity()).binding.appBarHome.textTitle.getVisibility()==View.VISIBLE)
         ((HomeActivity)requireActivity()).binding.appBarHome.textTitle.setVisibility(View.GONE);
         ((HomeActivity)requireActivity()).binding.appBarHome.textView.setVisibility(View.VISIBLE);
+        ((HomeActivity)requireActivity()).binding.appBarHome.logImg.setVisibility(View.VISIBLE);
     }
 
     @Override

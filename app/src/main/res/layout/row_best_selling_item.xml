@@ -39,7 +39,7 @@
 
             <ImageView
                 android:id="@+id/itemImg"
-                setPImage="@{productModule.img}"
+                setImage="@{productModule.img}"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_70sdp"
                 android:layout_below="@+id/txt_item_offer"
@@ -56,7 +56,7 @@
                 android:paddingStart="@dimen/_5sdp"
                 android:singleLine="true"
                 android:text="@{productModule.name}"
-                android:textColor="@color/selling_txt_color"
+                android:textColor="@color/blue_txt_color"
                 android:textSize="@dimen/_14sdp"
                 android:textStyle="bold" />
 

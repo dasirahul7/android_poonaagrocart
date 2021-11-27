@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
+import com.poona.agrocart.ui.BaseFragment;
+
 import java.util.ArrayList;
 
-public class FavouriteItemsFragment extends Fragment
+public class FavouriteItemsFragment extends BaseFragment
 {
     private FragmentFavouriteItemsBinding fragmentFavouriteItemsBinding;
     private RecyclerView rvFavouriteItems;
@@ -28,6 +30,7 @@ public class FavouriteItemsFragment extends Fragment
         fragmentFavouriteItemsBinding.setLifecycleOwner(this);
         final View view = ((ViewDataBinding) fragmentFavouriteItemsBinding).getRoot();
 
+        initTitleBar(getString(R.string.favourite));
         initView();
         setRvAdapter();
 

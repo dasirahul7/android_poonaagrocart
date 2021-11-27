@@ -24,7 +24,7 @@ public class MyProfileFragment extends BaseFragment
         fragmentMyProfileBinding.setLifecycleOwner(this);
 
         final View view=fragmentMyProfileBinding.getRoot();
-
+        initTitleBar(getString(R.string.my_profile));
         initView(view);
 
         return view;

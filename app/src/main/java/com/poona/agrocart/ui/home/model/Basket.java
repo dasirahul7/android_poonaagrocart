@@ -40,8 +40,8 @@ public class Basket {
         this.img = img;
     }
 
-    @BindingAdapter("setBImage")
-    public static void loadBImage(ImageView view, String img){
+    @BindingAdapter("setImage")
+    public static void loadImage(ImageView view, String img){
         Glide.with(view.getContext())
                 .load(img)
                 .placeholder(R.drawable.placeholder)
