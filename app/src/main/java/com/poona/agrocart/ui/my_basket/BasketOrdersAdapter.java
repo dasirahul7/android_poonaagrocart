@@ -62,7 +62,7 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
 
         private void redirectToBasketOrderView(View v)
         {
-            //Navigation.findNavController(v).navigate(R.id.action_nav_basket_to_orderViewFragment2);
+            Navigation.findNavController(v).navigate(R.id.action_nav_basket_to_orderViewFragment2);
         }
 
         public void bind(BasketOrder basketOrder)
