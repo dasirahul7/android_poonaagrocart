@@ -105,4 +105,8 @@
         android:id="@+id/orderViewFragment2"
         android:name="com.poona.agrocart.ui.order_view.OrderViewFragment"
         android:label="OrderViewFragment" />
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.poona.agrocart.ui.about_us.AboutUsFragment"
+        android:label="AboutUsFragment" />
 </navigation>

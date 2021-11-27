@@ -96,5 +96,6 @@
     <color name="color_type_of_address">#5E5E5E</color>
     <color name="color_type_of_address_bg">#CCCCCC</color>
     <color name="color_default_address">#4A4A4A</color>
+    <color name="about_txt_color">#4D4D4D</color>
 
 </resources>

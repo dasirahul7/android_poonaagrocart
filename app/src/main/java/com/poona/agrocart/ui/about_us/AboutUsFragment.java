@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.about_us;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -13,10 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.databinding.FragmentAboutUsBinding;
+import com.poona.agrocart.ui.BaseFragment;
 
-public class AboutUsFragment extends Fragment {
+public class AboutUsFragment extends BaseFragment {
 
     private AboutUsViewModel mViewModel;
+    private FragmentAboutUsBinding aboutUsBinding;
 
     public static AboutUsFragment newInstance() {
         return new AboutUsFragment();
@@ -25,7 +29,11 @@ public class AboutUsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.about_us_fragment, container, false);
+        aboutUsBinding = FragmentAboutUsBinding.inflate(getLayoutInflater());
+        aboutUsBinding.setLifecycleOwner(this);
+        View view = aboutUsBinding.getRoot();
+        initTitleBar(getString(R.string.about_us));
+        return view;
     }
 
     @Override
