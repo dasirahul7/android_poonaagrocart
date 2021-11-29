@@ -3,12 +3,15 @@ package com.poona.agrocart.ui.my_orders;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
@@ -20,11 +23,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 {
     private ArrayList<Order> orderArrayList;
     private Context context;
+    private View view;
 
-    public OrdersAdapter(ArrayList<Order> orderArrayList, Context context)
+    public OrdersAdapter(ArrayList<Order> orderArrayList, Context context,View view)
     {
         this.orderArrayList = orderArrayList;
         this.context=context;
+        this.view=view;
     }
 
     @NonNull
@@ -33,7 +38,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     {
         RvOrderBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_order, parent, false);
-        return new OrdersAdapter.OrdersViewHolder(binding);
+        return new OrdersAdapter.OrdersViewHolder(binding,view);
     }
 
     @Override
@@ -54,10 +59,20 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     {
         RvOrderBinding rvOrderBinding;
 
-        public OrdersViewHolder(RvOrderBinding rvOrderBinding)
+        public OrdersViewHolder(RvOrderBinding rvOrderBinding, View view)
         {
             super(rvOrderBinding.getRoot());
             this.rvOrderBinding=rvOrderBinding;
+            rvOrderBinding.cardviewOrder.setOnClickListener(v -> {
+                redirectToBasketOrderView(view);
+            });
+        }
+
+        private void redirectToBasketOrderView(View view)
+        {
+            Bundle bundle=new Bundle();
+            bundle.putBoolean("isBasketVisible",false);
+            Navigation.findNavController(view).navigate(R.id.action_nav_orders_to_orderViewFragment2,bundle);
         }
 
         @SuppressLint("ResourceType")

@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.addresses_form;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
@@ -31,6 +32,10 @@ public class AddressesFormFragment extends BaseFragment
 
     private void initView()
     {
+        Typeface poppinsRegularFont = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_medium));
+        fragmentAddressesFormBinding.rbHome.setTypeface(poppinsRegularFont);
+        fragmentAddressesFormBinding.rbOffice.setTypeface(poppinsRegularFont);
+        fragmentAddressesFormBinding.rbOther.setTypeface(poppinsRegularFont);
         addressFormViewModel = new ViewModelProvider(this).get(AddressFormViewModel.class);
         fragmentAddressesFormBinding.setAddressFormViewModel(addressFormViewModel);
         initTitleBar(getString(R.string.addresses_form));

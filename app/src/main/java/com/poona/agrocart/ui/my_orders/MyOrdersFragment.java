@@ -30,13 +30,13 @@ public class MyOrdersFragment extends BaseFragment {
         View root = fragmentMyOrdersBinding.getRoot();
 
         initView();
-        setRvAdapter();
+        setRvAdapter(root);
 
         initTitleBar(getString(R.string.my_orders));
         return root;
     }
 
-    private void setRvAdapter()
+    private void setRvAdapter(View view)
     {
         orderArrayList=new ArrayList<>();
         prepareListingData();
@@ -45,7 +45,7 @@ public class MyOrdersFragment extends BaseFragment {
         rvOrders.setHasFixedSize(true);
         rvOrders.setLayoutManager(linearLayoutManager);
 
-        ordersAdapter = new OrdersAdapter(orderArrayList,context);
+        ordersAdapter = new OrdersAdapter(orderArrayList,context,view);
         rvOrders.setAdapter(ordersAdapter);
     }
 

@@ -91,4 +91,11 @@ public class AppConstants
     public static final String MOBILE_NO = "MOBILE_NO";
     public static final String COUNTRY_CODE ="COUNTRY_CODE";
     public static final Object IS_NOTIFICATION_RECEIVED = "IS_NOTIFICATION_RECEIVED";
+
+    //Help center
+    public static final String TICKET_ID="TICKET_ID";
+    public static final String STATUS="STATUS";
+    public static final String REMARK="REMARK";
+    public static final String DATE="DATE";
+    public static final String SUBJECT="SUBJECT";
 }

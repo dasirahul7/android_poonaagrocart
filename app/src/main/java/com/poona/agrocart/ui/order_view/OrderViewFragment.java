@@ -20,10 +20,11 @@ public class OrderViewFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private BasketItemsAdapter basketItemsAdapter;
     private ArrayList<BasketItem> basketItemList;
+    private boolean isBasketVisible=true;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         fragmentOrderViewBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_order_view, container, false);
         fragmentOrderViewBinding.setLifecycleOwner(this);
         final View view = ((ViewDataBinding) fragmentOrderViewBinding).getRoot();
@@ -36,7 +37,32 @@ public class OrderViewFragment extends Fragment {
 
     private void initView()
     {
+        Bundle bundle=this.getArguments();
+        isBasketVisible=bundle.getBoolean("isBasketVisible");
         rvBasketListItems=fragmentOrderViewBinding.rvBasketItems;
+        if(isBasketVisible)
+        {
+            setBasketContentsVisible();
+        }
+        else
+        {
+            showProductDetails();
+        }
+    }
+
+    private void showProductDetails()
+    {
+        fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.GONE);
+        fragmentOrderViewBinding.tvProductDetails.setVisibility(View.VISIBLE);
+        fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.VISIBLE);
+    }
+
+    private void setBasketContentsVisible()
+    {
+
+        fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.VISIBLE);
+        fragmentOrderViewBinding.tvProductDetails.setVisibility(View.GONE);
+        fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
     }
 
     private void setRVAdapter()
@@ -48,7 +74,7 @@ public class OrderViewFragment extends Fragment {
         rvBasketListItems.setHasFixedSize(true);
         rvBasketListItems.setLayoutManager(linearLayoutManager);
 
-        basketItemsAdapter = new BasketItemsAdapter(basketItemList);
+        basketItemsAdapter = new BasketItemsAdapter(basketItemList,isBasketVisible);
         rvBasketListItems.setAdapter(basketItemsAdapter);
     }
 

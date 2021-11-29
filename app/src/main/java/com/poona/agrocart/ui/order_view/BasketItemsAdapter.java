@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.order_view;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -13,10 +14,12 @@ import java.util.ArrayList;
 public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.BasketItemViewHolder>
 {
     private ArrayList<BasketItem> basketItems;
+    private boolean isBasketVisible;
 
-    public BasketItemsAdapter(ArrayList<BasketItem> basketItems)
+    public BasketItemsAdapter(ArrayList<BasketItem> basketItems,boolean isBasketVisible)
     {
         this.basketItems = basketItems;
+        this.isBasketVisible=isBasketVisible;
     }
 
     @NonNull
@@ -25,7 +28,7 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
     {
         RvBasketDetailBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                         R.layout.rv_basket_detail, parent, false);
-        return new BasketItemViewHolder(binding);
+        return new BasketItemViewHolder(binding,isBasketVisible);
     }
 
     @Override
@@ -46,11 +49,29 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
     {
 
         RvBasketDetailBinding rvBasketDetailBinding;
+        boolean isBasketVisible;
 
-        public BasketItemViewHolder(RvBasketDetailBinding rvBasketDetailBinding)
+        public BasketItemViewHolder(RvBasketDetailBinding rvBasketDetailBinding,boolean isBasketVisible)
         {
             super(rvBasketDetailBinding.getRoot());
             this.rvBasketDetailBinding=rvBasketDetailBinding;
+            this.isBasketVisible=isBasketVisible;
+            if(this.isBasketVisible)
+            {
+                rvBasketDetailBinding.tvDateAndTime.setVisibility(View.VISIBLE);
+                rvBasketDetailBinding.tvQuantity.setVisibility(View.GONE);
+                rvBasketDetailBinding.tvOrderStatus.setVisibility(View.VISIBLE);
+                rvBasketDetailBinding.tvOrderPrice.setVisibility(View.VISIBLE);
+                rvBasketDetailBinding.tvProductOrderPrice.setVisibility(View.GONE);
+            }
+            else
+            {
+                rvBasketDetailBinding.tvDateAndTime.setVisibility(View.INVISIBLE);
+                rvBasketDetailBinding.tvQuantity.setVisibility(View.VISIBLE);
+                rvBasketDetailBinding.tvOrderStatus.setVisibility(View.GONE);
+                rvBasketDetailBinding.tvOrderPrice.setVisibility(View.INVISIBLE);
+                rvBasketDetailBinding.tvProductOrderPrice.setVisibility(View.VISIBLE);
+            }
         }
 
         public void bind(BasketItem basketItem)
