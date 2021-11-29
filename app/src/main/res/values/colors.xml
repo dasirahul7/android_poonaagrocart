@@ -53,6 +53,7 @@
     <color name="green_txt_color">#456304</color>
     <color name="bg_offer_color">#AB1E1D</color>
     <color name="blue_txt_color">#575574</color>
+    <color name="dark_blue_color">#012F59</color>
     <color name="lightBlack">#3E423F</color>
 
     <!--Addresses fragment-->
@@ -94,6 +95,8 @@
     <color name="color_type_of_address">#5E5E5E</color>
     <color name="color_type_of_address_bg">#CCCCCC</color>
     <color name="color_default_address">#4A4A4A</color>
+    <color name="about_txt_color">#4D4D4D</color>
+    <color name="ticket_color">#E3FFB1</color>
 
     <!--help center-->
     <color name="color_pending">#FF3636</color>

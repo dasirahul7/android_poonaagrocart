@@ -212,6 +212,8 @@ public class HomeFragment extends BaseFragment {
         });
         if (((HomeActivity)requireActivity()).binding.appBarHome.textTitle.getVisibility()==View.VISIBLE)
         ((HomeActivity)requireActivity()).binding.appBarHome.textTitle.setVisibility(View.GONE);
+        if (((HomeActivity)requireActivity()).binding.appBarHome.imgDelete.getVisibility()==View.VISIBLE)
+        ((HomeActivity)requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
         ((HomeActivity)requireActivity()).binding.appBarHome.textView.setVisibility(View.VISIBLE);
         ((HomeActivity)requireActivity()).binding.appBarHome.logImg.setVisibility(View.VISIBLE);
     }
