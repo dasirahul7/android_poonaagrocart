@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +22,7 @@ import com.poona.agrocart.ui.favourites.FavouriteItemAdapter;
 
 import java.util.ArrayList;
 
-public class MyCartFragment extends BaseFragment
+public class MyCartFragment extends BaseFragment implements View.OnClickListener
 {
     private FragmentMyCartBinding fragmentMyCartBinding;
     private RecyclerView rvCart;
@@ -43,7 +44,10 @@ public class MyCartFragment extends BaseFragment
         return view;
     }
 
-    private void initView() {
+    private void initView()
+    {
+        fragmentMyCartBinding.btnPlaceOrder.setOnClickListener(this);
+
         rvCart=fragmentMyCartBinding.rvCart;
     }
 
@@ -71,5 +75,21 @@ public class MyCartFragment extends BaseFragment
             cartItem.setFinalPrice("RS.25");
             cartItemArrayList.add(cartItem);
         }
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.btn_place_order:
+                redirectToOrderSummary(v);
+                break;
+        }
+    }
+
+    private void redirectToOrderSummary(View v)
+    {
+        Navigation.findNavController(v).navigate(R.id.action_nav_cart_to_nav_order_summary);
     }
 }

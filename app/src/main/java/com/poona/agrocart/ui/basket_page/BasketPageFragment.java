@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentBasketPageBinding;
+import com.poona.agrocart.ui.BaseFragment;
+
 import java.util.ArrayList;
 
-public class BasketPageFragment extends Fragment
+public class BasketPageFragment extends BaseFragment
 {
     private FragmentBasketPageBinding fragmentBasketPageBinding;
     private RecyclerView rvBasketCards;
@@ -29,6 +31,8 @@ public class BasketPageFragment extends Fragment
 
         initView();
         setRVAdapter();
+
+        initTitleBar(getString(R.string.basket));
 
         return view;
     }

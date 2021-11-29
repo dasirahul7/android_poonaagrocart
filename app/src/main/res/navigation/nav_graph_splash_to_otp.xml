@@ -109,41 +109,5 @@
             app:popUpToInclusive="true"
             app:exitAnim="@anim/fade_out" />
     </fragment>
-    <fragment
-        android:id="@+id/favouriteItemsFragment3"
-        android:name="com.poona.agrocart.ui.favourites.FavouriteItemsFragment"
-        android:label="FavouriteItemsFragment" />
-    <fragment
-        android:id="@+id/orderViewFragment"
-        android:name="com.poona.agrocart.ui.order_view.OrderViewFragment"
-        android:label="OrderViewFragment" />
-    <fragment
-        android:id="@+id/myCartFragment"
-        android:name="com.poona.agrocart.ui.my_cart.MyCartFragment"
-        android:label="MyCartFragment" />
-    <fragment
-        android:id="@+id/productDetailFragment"
-        android:name="com.poona.agrocart.ui.product_detail.ProductDetailFragment"
-        android:label="ProductDetailFragment" />
-    <fragment
-        android:id="@+id/basketPageFragment"
-        android:name="com.poona.agrocart.ui.basket_page.BasketPageFragment"
-        android:label="BasketPageFragment" />
-    <fragment
-        android:id="@+id/addressesFormFragment"
-        android:name="com.poona.agrocart.ui.addresses_form.AddressesFormFragment"
-        android:label="AddressesFormFragment" />
-    <fragment
-        android:id="@+id/myProfileFragment"
-        android:name="com.poona.agrocart.ui.my_profile.MyProfileFragment"
-        android:label="MyProfileFragment" />
-    <fragment
-        android:id="@+id/basketProductDetailFragment"
-        android:name="com.poona.agrocart.ui.basket_product_detail.BasketProductDetailFragment"
-        android:label="BasketProductDetailFragment" />
-    <fragment
-        android:id="@+id/vegetablesFragment"
-        android:name="com.poona.agrocart.ui.products_list.ProductListFragment"
-        android:label="VegetablesFragment" />
 
 </navigation>

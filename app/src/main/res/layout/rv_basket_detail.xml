@@ -66,6 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
+                android:singleLine="true"
                 android:text="@{basketItemModel.date.concat(basketItemModel.time)}"
                 android:textColor="@color/color17"
                 android:textSize="@dimen/_12sp" />
@@ -95,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/delivered"
                 android:gravity="end"
+                android:singleLine="true"
                 android:textColor="@color/colorPrimary"
                 app:setCustomFont="@string/font_poppins_bold"
                 android:textSize="@dimen/_14sp"

@@ -49,6 +49,8 @@ public class BasketProductDetailFragment extends BaseFragment implements View.On
 
     private void initView()
     {
+        initTitleBar("");
+
         fragmentBasketProductDetailBinding.llProductDetails.setOnClickListener(this);
         fragmentBasketProductDetailBinding.llNutritions.setOnClickListener(this);
         fragmentBasketProductDetailBinding.llProductList.setOnClickListener(this);

@@ -265,7 +265,7 @@
                         android:id="@+id/btn_track_order"
                         android:layout_width="@dimen/_60sdp"
                         android:layout_height="@dimen/_20sdp"
-                        android:text="Track Order"
+                        android:text="@string/track_order"
                         android:background="@drawable/bg_track_order_btn"
                         android:textAlignment="center"
                         android:textAllCaps="false"

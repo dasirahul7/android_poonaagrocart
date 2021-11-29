@@ -31,6 +31,8 @@ public class ProductListFragment extends BaseFragment
         final View view = ((ViewDataBinding) fragmentProductListBinding).getRoot();
 
         Bundle bundle=this.getArguments();
+
+        if(bundle!=null)
         isVegetablesOrFruits=bundle.getString("ProductCategory");
 
         initView();
@@ -44,7 +46,7 @@ public class ProductListFragment extends BaseFragment
     private void setTitleBar()
     {
         if(isVegetablesOrFruits.equals("vegetable"))
-            initTitleBar(getString(R.string.green_vegetables));
+            initTitleBar(getString(R.string.vegetables));
         else
             initTitleBar(getString(R.string.fruits));
     }

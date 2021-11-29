@@ -201,7 +201,7 @@
                             android:id="@+id/tv_terms_of_service"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/color13"
+                            android:textColor="@color/clr_resend_otp"
                             android:textSize="@dimen/_14sp"
                             android:drawablePadding="@dimen/alerter_padding_half"
                             android:text="@string/terms_of_service"
@@ -233,7 +233,7 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/alerter_padding_half"
                             android:text="@string/privacy_policy"
-                            android:textColor="@color/color13"
+                            android:textColor="@color/clr_resend_otp"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
 

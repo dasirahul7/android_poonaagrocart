@@ -133,7 +133,6 @@
     <string name="best_selling">Best Selling</string>
     <string name="exclusive_offer">Exclusive Offers</string>
     <string name="basket">Basket</string>
-    <string name="green_vegetables">Green Vegetables</string>
     <string name="_10_off">10% Off</string>
     <string name="one_kg">1Kg</string>
     <string name="rs">Rs25</string>
@@ -181,7 +180,7 @@
     <string name="upi">UPI</string>
     <string name="remark">Remark-</string>
     <string name="test_order_cancelled">Test Order Cancelled</string>
-    <string name="expected_delivery_date">Expected Delivery Date:</string>
+    <string name="expected_delivery_date">Expected Delivery Date: </string>
     <string name="sep_30_2021_9_00_am_12_00pm">Sep 30, 2021 9:00 am - 12:00pm</string>
     <string name="basket_details">Basket Details</string>
     <string name="sub_total">Sub Total</string>
@@ -195,6 +194,8 @@
     <string name="you_will_save_rs_80">You will save Rs. 80</string>
     <string name="invoice">Invoice</string>
     <string name="product_details">Product Details</string>
+    <string name="track_order">Track Order</string>
+    <string name="order_view">Order view</string>
 
     <!--products detail fragment-->
     <string name="naturel_red_apple">Naturel Red Apple</string>
@@ -223,7 +224,6 @@
     <string name="default_address">Default</string>
 
     <!--Basket Orders-->
-    <string name="order_id">Order ID -</string>
     <string name="_12_september_2021">12 September 2021</string>
     <string name="diet_basket">Diet Basket</string>
     <string name="rs_200_x_4">Rs.200 x 4</string>
@@ -250,9 +250,9 @@
 
     <!--Support ticker-->
     <string name="lorem_ipsum_dolor_sit_amet_consectetur_adipiscing">Lorem ipsum dolor sit amet, consectetur adipiscing.</string>
-<!--    About screen string-->
+    <!--    About screen string-->
     <string name="about_str">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor \n\n\nper praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.\n\n Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . ridiculus velit at sodales. Ornare enim tempus hendrerit</string>
-<!--    Notification screen string-->
+    <!--    Notification screen string-->
     <string name="sample_date">12 September 2021</string>
     <string name="sample_notification">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi semper egestas at cursus maecenas duis enim sit ipsum. Ri amet tristique comm.</string>
     <string name="sample_policy">"Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor  per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean  at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.  Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . Ridiculus velit at sodales. Ornare enim tempus hendrerit     "</string>
@@ -265,5 +265,40 @@
     <string name="pending">Pending</string>
     <string name="ongoing">Ongoing</string>
     <string name="fruits">Fruits</string>
+    <string name="order_id">Order ID - </string>
+
+    <!--Track order-->
+    <string name="order_placed">Order placed</string>
+    <string name="we_have_received_your_order">We have received your order.</string>
+    <string name="order_confirmed">Order Confirmed</string>
+    <string name="your_order_is_confirmed">Your order is confirmed.</string>
+    <string name="order_packaging">Order Packaging</string>
+    <string name="we_are_prepairing_your_order">We are prepairing your order .</string>
+    <string name="dispatched">Dispatched</string>
+    <string name="your_order_has_been_dispached">Your order has been dispached.</string>
+    <string name="we_have_delieverd_package_successfully">We have delieverd package successfully.</string>
+    <string name="order_track">Order Track</string>
+    <string name="vegetables">Vegetables</string>
+
+    <!--Order Summary-->
+    <string name="address">Address</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="payment">Payment</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="home_address">Home Address</string>
+    <string name="expected_delivery">Expected Delivery</string>
+    <string name="date_25_nov_2021">Date: 25 Nov 2021</string>
+    <string name="slot_9_00_am_12_00_pm">Slot: 9:00 am - 12:00 pm</string>
+    <string name="available_coupon_code">Available Coupon Code</string>
+    <string name="get_code">Get Code</string>
+    <string name="enter_coupon_code">Enter Coupon Code</string>
+    <string name="remove">Remove</string>
+    <string name="congratulations">Congratulations!!</string>
+    <string name="_10_discount_applied_successfully">10% Discount applied successfully.</string>
+    <string name="product_amp_price_details"><![CDATA[Product & Price Details]]></string>
+    <string name="mode_of_payment">Mode of Payment-</string>
+    <string name="wallet_balance">Wallet Balance</string>
+    <string name="make_payment">Make Payment</string>
+    <string name="bell_pepper_red_1kg">Bell Pepper Red - 1kg</string>
 
 </resources>

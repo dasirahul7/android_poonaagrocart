@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_explore"
             app:destination="@id/nav_explore" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_product_details"
+            app:destination="@id/nav_product_details" />
     </fragment>
 
 <!--    MyOrdersFragment-->
@@ -47,7 +50,11 @@
     <fragment
         android:id="@+id/nav_cart"
         android:name="com.poona.agrocart.ui.my_cart.MyCartFragment"
-        android:label="MyCartFragment" />
+        android:label="MyCartFragment" >
+        <action
+            android:id="@+id/action_nav_cart_to_nav_order_summary"
+            app:destination="@id/nav_order_summary" />
+    </fragment>
 
     <!-- Favouirtes fragment-->
     <fragment
@@ -61,11 +68,11 @@
         android:label="ProductListFragment" >
         <action
             android:id="@+id/action_nav_products_list_to_productDetailFragment2"
-            app:destination="@id/productDetailFragment2" />
+            app:destination="@id/nav_product_details" />
     </fragment>
 
     <fragment
-        android:id="@+id/productDetailFragment2"
+        android:id="@+id/nav_product_details"
         android:name="com.poona.agrocart.ui.product_detail.ProductDetailFragment"
         android:label="ProductDetailFragment" />
 
@@ -115,7 +122,11 @@
     <fragment
         android:id="@+id/orderViewFragment2"
         android:name="com.poona.agrocart.ui.order_view.OrderViewFragment"
-        android:label="OrderViewFragment" />
+        android:label="OrderViewFragment" >
+        <action
+            android:id="@+id/action_orderViewFragment2_to_nav_order_track"
+            app:destination="@id/nav_order_track" />
+    </fragment>
     <fragment
         android:id="@+id/nav_about"
         android:name="com.poona.agrocart.ui.about_us.AboutUsFragment"
@@ -153,4 +164,12 @@
         android:id="@+id/nav_explore_baskets"
         android:name="com.poona.agrocart.ui.basket_page.BasketPageFragment"
         android:label="BasketPageFragment" />
+    <fragment
+        android:id="@+id/nav_order_track"
+        android:name="com.poona.agrocart.ui.order_track.OrderTrackFragment"
+        android:label="OrderTrackFragment" />
+    <fragment
+        android:id="@+id/nav_order_summary"
+        android:name="com.poona.agrocart.ui.order_summary.OrderSummaryFragment"
+        android:label="OrderSummaryFragment" />
 </navigation>

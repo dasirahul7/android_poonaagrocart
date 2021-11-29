@@ -41,6 +41,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void initView()
     {
+        initTitleBar("");
+
         fragmentProductDetailBinding.llProductDetails.setOnClickListener(this);
         fragmentProductDetailBinding.llNutritions.setOnClickListener(this);
         fragmentProductDetailBinding.ivPlus.setOnClickListener(this);
