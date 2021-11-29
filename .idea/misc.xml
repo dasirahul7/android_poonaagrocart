@@ -123,6 +123,7 @@
         <entry key="app/src/main/res/layout/row_basket_item.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/row_best_selling_item.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/row_category_item.xml" value="0.1703125" />
+        <entry key="app/src/main/res/layout/row_explore_item.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/rv_address.xml" value="0.340625" />
         <entry key="app/src/main/res/layout/rv_basket_contents_list.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/rv_basket_detail.xml" value="0.1703125" />

@@ -257,5 +257,6 @@
     <string name="_12_jan_2021">12  Jan 2021</string>
     <string name="pending">Pending</string>
     <string name="ongoing">Ongoing</string>
+    <string name="fruits">Fruits</string>
 
 </resources>

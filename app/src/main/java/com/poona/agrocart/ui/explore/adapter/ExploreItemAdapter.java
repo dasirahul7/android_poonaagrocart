@@ -3,6 +3,7 @@ package com.poona.agrocart.ui.explore.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
@@ -49,12 +51,40 @@ public class ExploreItemAdapter extends RecyclerView.Adapter<ExploreItemAdapter.
         return exploreItems.size();
     }
 
-    public class ExploreItemHolder extends RecyclerView.ViewHolder {
-        public ExploreItemHolder(RowExploreItemBinding binding) {
+    public class ExploreItemHolder extends RecyclerView.ViewHolder
+    {
+        RowExploreItemBinding rowExploreItemBinding;
+        public ExploreItemHolder(RowExploreItemBinding binding)
+        {
             super(binding.getRoot());
+
+            this.rowExploreItemBinding=binding;
+            rowExploreItemBinding.itemCard.setOnClickListener(v -> {
+                redirectToRequiredProductsPage(rootView,getAdapterPosition());
+            });
         }
 
-        public void bind(ExploreItems items) {
+        private void redirectToRequiredProductsPage(View view,int adapterPosition)
+        {
+            Bundle bundle=new Bundle();
+            switch (adapterPosition)
+            {
+                case 0:
+                    Navigation.findNavController(view).navigate(R.id.action_nav_explore_to_nav_explore_baskets);
+                    break;
+                case 1:
+                    bundle.putString("ProductCategory","vegetable");
+                    Navigation.findNavController(view).navigate(R.id.action_nav_explore_to_nav_products_list,bundle);
+                    break;
+                default:
+                    bundle.putString("ProductCategory","fruits");
+                    Navigation.findNavController(view).navigate(R.id.action_nav_explore_to_nav_products_list,bundle);
+                    break;
+            }
+        }
+
+        public void bind(ExploreItems items)
+        {
             exploreItemBinding.setVariable(BR.exploreModules,items);
             exploreItemBinding.executePendingBindings();
         }

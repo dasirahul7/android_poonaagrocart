@@ -84,7 +84,14 @@
     <fragment
         android:id="@+id/nav_explore"
         android:name="com.poona.agrocart.ui.explore.ExploreFragment"
-        android:label="Explore"/>
+        android:label="Explore">
+        <action
+            android:id="@+id/action_nav_explore_to_nav_explore_baskets"
+            app:destination="@id/nav_explore_baskets" />
+        <action
+            android:id="@+id/action_nav_explore_to_nav_products_list"
+            app:destination="@id/nav_products_list" />
+    </fragment>
     <fragment
         android:id="@+id/nav_basket"
         android:name="com.poona.agrocart.ui.my_basket.MyBasketFragment"
@@ -121,4 +128,8 @@
         android:id="@+id/nav_ticket_detail"
         android:name="com.poona.agrocart.ui.ticket_details.TicketDetailFragment"
         android:label="TicketDetailFragment" />
+    <fragment
+        android:id="@+id/nav_explore_baskets"
+        android:name="com.poona.agrocart.ui.basket_page.BasketPageFragment"
+        android:label="BasketPageFragment" />
 </navigation>
