@@ -70,6 +70,7 @@
     <!--Product detail-->
     <color name="color_star_rating">#F3603F</color>
     <color name="color_star_rating_unselected">#8D8D8D</color>
+    <color name="color_subscription_plan">#F9FFEF</color>
 
     <!--basket page-->
     <color name="color_basket_name">#575574</color>
@@ -106,5 +107,14 @@
 
     <!--Order Summary-->
     <color name="color_coupon_code_et">#524F4F</color>
+
+    <!--wallet and transactions-->
+    <color name="color_spinner">#989898</color>
+
+    <!--settings-->
+    <color name="color_inactive_switch">#FF848A</color>
+    <color name="color_setting_description">#525252</color>
+    <color name="color_setting_horizontal_line">#D2D2D2</color>
+
 
 </resources>

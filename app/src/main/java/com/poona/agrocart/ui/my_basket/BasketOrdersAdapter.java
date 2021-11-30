@@ -18,11 +18,13 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
 {
     private ArrayList<BasketOrder> basketOrderArrayList;
     private View view;
+    private boolean isWallet;
 
-    public BasketOrdersAdapter(ArrayList<BasketOrder> basketOrderArrayList, View view)
+    public BasketOrdersAdapter(ArrayList<BasketOrder> basketOrderArrayList, View view,boolean isWallet)
     {
         this.basketOrderArrayList = basketOrderArrayList;
         this.view=view;
+        this.isWallet=isWallet;
     }
 
     @NonNull
@@ -31,7 +33,7 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
     {
         RvOrdersBasketBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_orders_basket, parent, false);
-        return new BasketOrdersAdapter.BasketOrdersViewHolder(binding,view);
+        return new BasketOrdersAdapter.BasketOrdersViewHolder(binding,view,isWallet);
     }
 
     @Override
@@ -52,13 +54,20 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
     {
         RvOrdersBasketBinding rvOrdersBasketBinding;
 
-        public BasketOrdersViewHolder(RvOrdersBasketBinding rvOrdersBasketBinding,View view)
+        public BasketOrdersViewHolder(RvOrdersBasketBinding rvOrdersBasketBinding,View view,boolean isWallet)
         {
             super(rvOrdersBasketBinding.getRoot());
             this.rvOrdersBasketBinding=rvOrdersBasketBinding;
-            rvOrdersBasketBinding.cardviewOrder.setOnClickListener(v -> {
+            if(!isWallet)
+                rvOrdersBasketBinding.cardviewOrder.setOnClickListener(v -> {
                 redirectToBasketOrderView(view);
             });
+
+            if(isWallet)
+                rvOrdersBasketBinding.tvBasketName.setVisibility(View.INVISIBLE);
+            else
+                rvOrdersBasketBinding.tvBasketName.setVisibility(View.VISIBLE);
+
         }
 
         private void redirectToBasketOrderView(View v)

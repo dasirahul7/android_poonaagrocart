@@ -229,8 +229,7 @@
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:background="@drawable/bg_my_profile_spinner"
-                    android:paddingStart="@dimen/_15sdp"
-                    android:paddingBottom="@dimen/_6sdp"
+                    android:paddingStart="@dimen/_5sdp"
                     android:textColor="@color/color17"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -263,8 +262,7 @@
                     android:layout_marginEnd="@dimen/_18sdp"
                     android:layout_marginBottom="@dimen/_15sdp"
                     android:background="@drawable/bg_my_profile_spinner"
-                    android:paddingStart="@dimen/_15sdp"
-                    android:paddingBottom="@dimen/_6sdp"
+                    android:paddingStart="@dimen/_5sdp"
                     android:textColor="@color/color17"
                     android:elevation="@dimen/_6sdp"
                     android:textSize="@dimen/_14sp"
@@ -297,7 +295,6 @@
             android:layout_marginEnd="@dimen/_20sdp"
             android:background="@drawable/bg_my_profile_spinner"
             android:paddingStart="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_6sdp"
             android:textColor="@color/color17"
             android:elevation="@dimen/_6sdp"
             android:textSize="@dimen/_14sp"
@@ -336,6 +333,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="33"
                 android:textSize="@dimen/_14sp"
+                style="@style/RadioButtonAddress"
                 android:text="@string/male"
                 />
 
@@ -345,6 +343,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="34"
                 android:textSize="@dimen/_14sp"
+                style="@style/RadioButtonAddress"
                 android:text="@string/female"
                 />
 
@@ -354,24 +353,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="33"
                 android:textSize="@dimen/_14sp"
+                style="@style/RadioButtonAddress"
                 android:text="@string/other"
                 />
 
         </RadioGroup>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/ll_date_of_birth"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            app:layout_constraintTop_toBottomOf="@id/rg_gender"
-            android:weightSum="100"
-            >
+
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_text_date_of_birth"
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_14sdp"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -380,12 +371,13 @@
                 android:text="@string/date_of_birth"
                 android:textColor="@color/color15"
                 android:textSize="@dimen/_18sp"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@id/rg_gender"
                 app:setCustomFont="@string/font_poppins_bold" />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_date_of_birth_input"
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_14sdp"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -396,8 +388,9 @@
                 android:background="@drawable/bg_my_profile_dob"
                 android:textSize="@dimen/_18sp"
                 android:textColor="@color/color17"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@id/tv_text_date_of_birth"
                 app:setCustomFont="@string/font_poppins_regular" />
-        </LinearLayout>
 
         <com.poona.agrocart.widgets.CustomButton
             android:id="@+id/btn_save"
@@ -415,7 +408,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_date_of_birth"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date_of_birth_input"
             app:setCustomFont="@string/font_poppins_regular" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

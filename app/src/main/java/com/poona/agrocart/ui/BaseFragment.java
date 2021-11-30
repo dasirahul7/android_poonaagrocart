@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,12 +8,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.ParseException;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -57,8 +60,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import static android.Manifest.permission.CAMERA;
@@ -98,6 +103,7 @@ public abstract class BaseFragment extends Fragment
 
 
 //    Title and app logo on actionBar
+@SuppressLint("ResourceType")
 protected void initTitleBar(String title) {
     ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
         Drawable d = ResourcesCompat.getDrawable(getResources(),
@@ -110,7 +116,22 @@ protected void initTitleBar(String title) {
     ((HomeActivity)requireActivity()).binding.appBarHome.textView.setVisibility(View.GONE);
     ((HomeActivity)requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
     ((HomeActivity)requireActivity()).binding.appBarHome.textTitle.setText(title);
+    ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
+    ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
 }
+
+    @SuppressLint("ResourceType")
+    protected void initGreenTitleBar(String title)
+    {
+        initTitleBar(title);
+        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.colorPrimary);
+        ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.white)));
+        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
+            Drawable d = ResourcesCompat.getDrawable(getResources(),
+                    R.drawable.menu_icon_toggle_white, null);
+            ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationIcon(d);
+        });
+    }
 
     public void loadingImage(Context context, String url, ImageView imageView)
     {
@@ -186,6 +207,33 @@ protected void initTitleBar(String title) {
                 .setDuration(5000)
                 .setText(dialogMessage)
                 .show();
+    }
+
+    // Date and time format exchange
+    public String formatDate(String enterDate, String initDateFormat, String endDateFormat) throws ParseException, java.text.ParseException {
+        Date initDate = new SimpleDateFormat(initDateFormat).parse(enterDate);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat(endDateFormat);
+        String parsedDate = formatter.format(initDate);
+        return parsedDate;
+    }
+
+    protected String getCurrentDate() {
+        SimpleDateFormat formDate = new SimpleDateFormat("dd-MM-yyyy");
+        String strDate = formDate.format(new Date()); // option 2
+        return strDate;
+    }
+
+    public static String get_24_to_12_time(String temp_date) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy, hh:mm a");
+        Date date = null;
+        try {
+            date = inputFormat.parse(temp_date);
+        } catch (ParseException | java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        String date_time=outputFormat.format(date);
+        return date_time;
     }
 
     public void hideKeyBoard(Activity activity)
@@ -338,10 +386,10 @@ protected void initTitleBar(String title) {
             permissionsToRequest = findUnAskedPermissions(permissions);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (permissionsToRequest.size() > 0) {
-                    requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), MY_GALLERY_REQUEST);
+                    requireActivity().requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), MY_GALLERY_REQUEST);
                 }
                 if (permissionsRejected.size() > 0) {
-                    requestPermissions(permissionsRejected.toArray(new String[permissionsRejected.size()]), MY_GALLERY_REQUEST);
+                    requireActivity().requestPermissions(permissionsRejected.toArray(new String[permissionsRejected.size()]), MY_GALLERY_REQUEST);
                 }
                 if (permissionsToRequest.size() == 0 && permissionsRejected.size() == 0) {
                     galleryIntent();
@@ -403,6 +451,7 @@ protected void initTitleBar(String title) {
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
+        Toast.makeText(getActivity(), "IN gallery intent", Toast.LENGTH_SHORT).show();
         try {
             startActivityForResult(Intent.createChooser(intent, getString(R.string.select_file)), SELECT_IMAGE_FROM_GALLERY);
         } catch (Exception e) {

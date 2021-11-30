@@ -172,4 +172,12 @@
         android:id="@+id/nav_order_summary"
         android:name="com.poona.agrocart.ui.order_summary.OrderSummaryFragment"
         android:label="OrderSummaryFragment" />
+    <fragment
+        android:id="@+id/nav_wallet"
+        android:name="com.poona.agrocart.ui.wallet_and_transaction.WalletTransactionFragment"
+        android:label="WalletTransactionFragment" />
+    <fragment
+        android:id="@+id/nav_setting"
+        android:name="com.poona.agrocart.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

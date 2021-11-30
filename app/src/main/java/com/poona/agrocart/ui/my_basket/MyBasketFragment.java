@@ -52,7 +52,7 @@ public class MyBasketFragment extends BaseFragment
         rvBasketItems.setHasFixedSize(true);
         rvBasketItems.setLayoutManager(linearLayoutManager);
 
-        basketOrdersAdapter = new BasketOrdersAdapter(basketOrderArrayList,view);
+        basketOrdersAdapter = new BasketOrdersAdapter(basketOrderArrayList,view,false);
         rvBasketItems.setAdapter(basketOrdersAdapter);
     }
 

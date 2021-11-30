@@ -212,7 +212,19 @@
     <string name="sprouts_basket">Sprouts Basket</string>
     <string name="rs_1500">Rs. 1500</string>
     <string name="moong">Moong</string>
-    <string name="_500gm">500gm</string>
+    <string name="_500gm">500gms</string>
+    <string name="about_this_product">About this Product</string>
+    <string name="benefits">Benefits</string>
+    <string name="storage_and_uses">Storage and Uses</string>
+    <string name="variable_weight_policy">Variable weight policy</string>
+    <string name="other_product_info">Other Product Info</string>
+    <string name="review">Review</string>
+    <string name="your_ratings">Your Ratings</string>
+    <string name="your_feedback">Your Feedback</string>
+    <string name="_250gms">250gms</string>
+    <string name="_1pc">1pc</string>
+    <string name="notify_me">Notify Me</string>
+    <string name="out_of_stock">Out of Stock</string>
 
     <!--Vegetables-->
     <string name="search_vegetables">Search Vegetables</string>
@@ -300,5 +312,20 @@
     <string name="wallet_balance">Wallet Balance</string>
     <string name="make_payment">Make Payment</string>
     <string name="bell_pepper_red_1kg">Bell Pepper Red - 1kg</string>
+
+    <!--Wallet and transactions-->
+    <string name="my_wallet_amount">My Wallet Amount</string>
+    <string name="add">Add</string>
+    <string name="from">From</string>
+    <string name="to_date">To Date</string>
+    <string name="wallet_and_transaction"><![CDATA[Wallet & Transaction]]></string>
+
+    <!--settings-->
+    <string name="app_notification">App Notification</string>
+    <string name="enable_app">Enable or disable the notifications coming up.</string>
+    <string name="email_notifications">Email Notification</string>
+    <string name="enable_notification">Enable or disable  the  Email notifications</string>
+    <string name="app_version_1_0_12">App Version - 1.0.12</string>
+    <string name="settings">Settings</string>
 
 </resources>

@@ -35,9 +35,8 @@
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:background="@drawable/ic_green_circle_with_white_border"
-                        android:padding="@dimen/_6sdp"
-                        android:src="@drawable/ic_white_tick" />
+                        android:padding="@dimen/_2sdp"
+                        android:src="@drawable/ic_tick_mark_white_border" />
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="wrap_content"
@@ -69,9 +68,7 @@
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:background="@drawable/ic_circle_dark_green"
-                        android:padding="@dimen/_8sdp"
-                        android:src="@drawable/ic_digit_2"/>
+                        android:src="@drawable/ic_step_two"/>
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="wrap_content"
@@ -103,9 +100,7 @@
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:background="@drawable/ic_green_circle_with_white_border"
-                        android:padding="@dimen/_8sdp"
-                        android:src="@drawable/ic_digit_three" />
+                        android:src="@drawable/ic_step_three" />
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="wrap_content"
@@ -288,8 +283,7 @@
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:layout_width="@dimen/_25sdp"
                                 android:layout_height="@dimen/_25sdp"
-                                android:background="@drawable/ic_grey_circular_border"
-                                android:src="@drawable/ic_pencil_grey" />
+                                android:src="@drawable/ic_pencil_grey_border" />
 
                         </LinearLayout>
 
