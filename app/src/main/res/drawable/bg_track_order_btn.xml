@@ -3,11 +3,11 @@
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <solid android:color="@color/white"/>
-            <stroke android:color="@color/clr_check_availabilty_bg"
+            <stroke android:color="@color/colorPrimary"
                 android:width="@dimen/_1sdp"/>
 
             <!--corners allow us to make the rounded corners button-->
-            <corners android:radius="@dimen/_6sdp"/>
+            <corners android:radius="@dimen/_3sdp"/>
 
         </shape>
     </item>
@@ -19,7 +19,7 @@
                 android:width="@dimen/_1sdp"/>
 
             <!--corners allow us to make the rounded corners button-->
-            <corners android:radius="@dimen/_6sdp"/>
+            <corners android:radius="@dimen/_3sdp"/>
 
         </shape>
     </item>

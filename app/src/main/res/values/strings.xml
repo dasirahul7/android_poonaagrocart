@@ -176,12 +176,13 @@
     <string name="ayush_shah">Ayush Shah</string>
     <string name="_91_986_095_3315">+91 986 095 3315</string>
     <string name="nand_nivas_building_floor_3_b_3_lane_no_13_bhatrau_nivas_vishrantwadi_pune_411015">Nand Nivas Building floor 3 B-3, Lane No. 13 Bhatrau Nivas Vishrantwadi Pune -411015.</string>
-    <string name="payment_type">Payment Type-</string>
+    <string name="payment_type">Payment Type : UPI</string>
+    <string name="trasaction_id_sjgsh4841156">Trasaction ID : SJGSH4841156</string>
     <string name="upi">UPI</string>
     <string name="remark">Remark-</string>
     <string name="test_order_cancelled">Test Order Cancelled</string>
-    <string name="expected_delivery_date">Expected Delivery Date: </string>
-    <string name="sep_30_2021_9_00_am_12_00pm">Sep 30, 2021 9:00 am - 12:00pm</string>
+    <string name="expected_delivery_date">Expected Delivery Date : </string>
+    <string name="sep_30_2021_9_00_am_12_00pm"> Sep 30, 2021 9:00 am - 12:00pm</string>
     <string name="basket_details">Basket Details</string>
     <string name="sub_total">Sub Total</string>
     <string name="rs_800">Rs. 800</string>
@@ -196,6 +197,7 @@
     <string name="product_details">Product Details</string>
     <string name="track_order">Track Order</string>
     <string name="order_view">Order view</string>
+    <string name="rs_20_x_3">Rs. 20 x 3</string>
 
     <!--products detail fragment-->
     <string name="naturel_red_apple">Naturel Red Apple</string>
@@ -225,6 +227,15 @@
     <string name="_1pc">1pc</string>
     <string name="notify_me">Notify Me</string>
     <string name="out_of_stock">Out of Stock</string>
+    <string name="subscription_plan">Subscription Plan</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="how_many_times">How many times you want?</string>
+    <string name="per_basket">Per Basket</string>
+    <string name="_rs_7500">Rs. 7500</string>
+    <string name="rs_1500_x_5">Rs. 1500 x 5</string>
+    <string name="subscribe_now">Subscribe Now</string>
 
     <!--Vegetables-->
     <string name="search_vegetables">Search Vegetables</string>
@@ -309,9 +320,11 @@
     <string name="_10_discount_applied_successfully">10% Discount applied successfully.</string>
     <string name="product_amp_price_details"><![CDATA[Product & Price Details]]></string>
     <string name="mode_of_payment">Mode of Payment-</string>
-    <string name="wallet_balance">Wallet Balance</string>
+    <string name="wallet_balance">Wallet</string>
     <string name="make_payment">Make Payment</string>
     <string name="bell_pepper_red_1kg">Bell Pepper Red - 1kg</string>
+    <string name="cash_on_delivery">Cash On Delivery</string>
+    <string name="online">Online</string>
 
     <!--Wallet and transactions-->
     <string name="my_wallet_amount">My Wallet Amount</string>

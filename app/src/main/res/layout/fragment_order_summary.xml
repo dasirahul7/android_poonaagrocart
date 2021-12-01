@@ -44,7 +44,8 @@
                         android:layout_marginTop="@dimen/_2sdp"
                         android:text="@string/address"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_16sp" />
+                        android:textSize="@dimen/_12sp"
+                        app:setCustomFont="@string/font_poppins_regular"/>
 
                 </LinearLayout>
 
@@ -76,7 +77,8 @@
                         android:layout_marginTop="@dimen/_2sdp"
                         android:text="@string/order_summary"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_16sp"/>
+                        android:textSize="@dimen/_12sp"
+                        app:setCustomFont="@string/font_poppins_regular"/>
 
                 </LinearLayout>
 
@@ -108,7 +110,8 @@
                         android:layout_marginTop="@dimen/_2sdp"
                         android:text="@string/payment"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_16sp" />
+                        android:textSize="@dimen/_12sp"
+                        app:setCustomFont="@string/font_poppins_regular"/>
 
                 </LinearLayout>
 
@@ -119,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:text="@string/delivery_address"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_18sp"
@@ -272,7 +275,7 @@
                             android:text="@string/date_25_nov_2021"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_16sp"
-                            app:setCustomFont="@string/font_poppins_bold" />
+                            app:setCustomFont="@string/font_poppins_semi_bold" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -295,10 +298,10 @@
                         android:layout_height="wrap_content"
                         android:text="@string/slot_9_00_am_12_00_pm"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14sp"
+                        android:textSize="@dimen/_16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cardview_shpping_address"
-                        app:setCustomFont="@string/font_poppins_bold" />
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 </LinearLayout>
 
@@ -324,10 +327,10 @@
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:background="@drawable/bg_track_order_btn"
+                android:textColor="@color/background_button_selector_light_greeen"
                 android:text="@string/get_code"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@color/background_button_selector_light_greeen"
                 android:textSize="@dimen/_12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardview_expected_delivery"
@@ -420,7 +423,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:text="@string/product_amp_price_details"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_18sp"
@@ -434,6 +437,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_product_and_price_details" />
 
@@ -442,10 +446,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginVertical="@dimen/_4sdp"
                 android:orientation="horizontal"
                 android:weightSum="100"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_14sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_products_and_prices">
@@ -465,9 +468,9 @@
                     android:layout_weight="30"
                     android:gravity="end"
                     android:text="@string/rs_800"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_discount_text"
                     android:textSize="@dimen/_14sp"
-                    app:setCustomFont="@string/font_poppins_bold" />
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
             </LinearLayout>
 
             <View
@@ -486,7 +489,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginVertical="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="horizontal"
                 android:weightSum="100"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -509,7 +512,7 @@
                     android:gravity="end"
                     android:text="@string/rs_80"
                     android:textColor="@color/color_discount_text"
-                    android:textSize="@dimen/_14sp"
+                    android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_regular" />
             </LinearLayout>
 
@@ -518,11 +521,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_4sdp"
                 android:orientation="horizontal"
                 android:weightSum="100"
-                app:layout_constraintBottom_toBottomOf="@id/line3"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_2sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_discount">
 
@@ -542,7 +543,7 @@
                     android:gravity="end"
                     android:text="@string/rs_20"
                     android:textColor="@color/color_discount_text"
-                    android:textSize="@dimen/_14sp"
+                    android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_regular" />
             </LinearLayout>
 
@@ -551,7 +552,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:background="@color/color_horizontal_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -574,7 +575,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="70"
                     android:text="@string/total_amount"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_discount_text"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_bold" />
 
@@ -584,7 +585,7 @@
                     android:layout_weight="30"
                     android:gravity="end"
                     android:text="@string/rs_740"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_discount_text"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_bold" />
             </LinearLayout>
@@ -648,45 +649,47 @@
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/rb_home"
+                        android:id="@+id/rb_cod"
                         android:layout_width="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.9"
                         android:layout_height="wrap_content"
-                        android:text="@string/home"
+                        android:text="@string/cash_on_delivery"
                         app:useMaterialThemeColors="false"
+                        android:singleLine="true"
                         style="@style/RadioButtonAddress"
                         android:paddingStart="@dimen/_4sdp"
-                        android:textStyle="bold"
-                        app:fontFamily="@string/font_poppins_semi_bold"
+                        app:fontFamily="@string/font_poppins_medium"
+                        android:minHeight="@dimen/_10sdp"
                         android:checked="true"
                         android:layout_margin="@dimen/_2sdp"
                         android:textSize="@dimen/_14sp" />
 
                     <RadioButton
-                        android:id="@+id/rb_office"
+                        android:id="@+id/rb_online"
                         android:layout_width="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="1.1"
                         android:layout_height="wrap_content"
                         style="@style/RadioButtonAddress"
-                        android:text="@string/office"
-                        android:textStyle="bold"
+                        android:text="@string/online"
                         app:useMaterialThemeColors="false"
-                        app:fontFamily="@string/font_poppins_semi_bold"
+                        app:fontFamily="@string/font_poppins_medium"
                         android:paddingStart="@dimen/_4sdp"
-                        android:layout_margin="@dimen/_2sdp"
+                        android:minHeight="@dimen/_10sdp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
                         android:textSize="@dimen/_14sp" />
 
                     <RadioButton
-                        android:id="@+id/rb_other"
+                        android:id="@+id/rb_wallet"
                         android:layout_width="match_parent"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="@string/other"
-                        android:textStyle="bold"
+                        android:text="@string/wallet_balance"
                         app:useMaterialThemeColors="false"
-                        app:fontFamily="@string/font_poppins_semi_bold"
+                        app:fontFamily="@string/font_poppins_medium"
                         style="@style/RadioButtonAddress"
                         android:paddingStart="@dimen/_4sdp"
+                        android:singleLine="true"
+                        android:minHeight="@dimen/_10sdp"
                         android:layout_margin="@dimen/_2sdp"
                         android:textSize="@dimen/_14sp" />
 
@@ -699,37 +702,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="100"
-                android:background="@drawable/bg_coupon_code"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_6sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_radio_goup">
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_wallet_balance"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="50"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/wallet_balance"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_16sp"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:layout_marginStart="@dimen/_4sdp"
-                    app:setCustomFont="@string/font_poppins_semi_bold" />
-
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/tv_balance"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="50"
-                    android:layout_height="wrap_content"
-                    android:text="@string/rs_1500"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_16sp"
+                    android:text="@string/_rs_7500"
+                    android:textColor="@color/color_wallet_balance"
                     android:gravity="end"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:textSize="@dimen/_12sp"
+                    android:layout_marginEnd="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
             </LinearLayout>
@@ -738,17 +725,17 @@
                 android:id="@+id/btn_make_payment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/background_verify_otp_btn"
+                android:textColor="@color/background_button_selector_green"
                 android:text="@string/make_payment"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
                 android:textSize="@dimen/_16sp"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_wallet_balance"
-                app:setCustomFont="@string/font_poppins_regular" />
+                app:setCustomFont="@string/font_poppins_semi_bold" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

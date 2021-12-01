@@ -250,10 +250,10 @@
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_15sdp"
                         android:background="@drawable/background_verify_otp_btn"
+                        android:textColor="@color/background_button_selector_green"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/sign_up_btn_text"
                         android:textAllCaps="false"
-                        android:textColor="@color/background_button_selector_green"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
                 </RelativeLayout>

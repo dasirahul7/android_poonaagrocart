@@ -36,10 +36,10 @@
                 <com.poona.agrocart.widgets.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
                     android:text="@string/my_wallet_amount"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sp"
+                    android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 <LinearLayout

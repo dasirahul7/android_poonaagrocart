@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.order_summary;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,5 +65,9 @@ public class OrderSummaryFragment extends BaseFragment
     private void initView()
     {
         rvProductsAndPrices=fragmentOrderSummaryBinding.rvProductsAndPrices;
+        Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_regular));
+        fragmentOrderSummaryBinding.rbCod.setTypeface(font);
+        fragmentOrderSummaryBinding.rbOnline.setTypeface(font);
+        fragmentOrderSummaryBinding.rbWallet.setTypeface(font);
     }
 }

@@ -185,7 +185,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         isBenefitsVisible=!isBenefitsVisible;
     }
 
-
     private void hideOrShowAboutThisProduct()
     {
         if(isAboutThisProductVisible)

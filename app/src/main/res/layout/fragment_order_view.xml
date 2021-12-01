@@ -44,6 +44,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="70"
                             android:text="@string/order_id_paac001"
+                            android:singleLine="true"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_16sp"
                             app:setCustomFont="@string/font_poppins_bold" />
@@ -54,6 +55,7 @@
                             android:layout_weight="30"
                             android:gravity="end"
                             android:text="@string/order_status"
+                            android:singleLine="true"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
@@ -71,6 +73,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="70"
                             android:text="@string/date_sep_30_2021_20_15_am"
+                            android:singleLine="true"
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -81,6 +84,7 @@
                             android:layout_weight="30"
                             android:gravity="end"
                             android:text="@string/in_transit"
+                            android:singleLine="true"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -171,6 +175,7 @@
                 android:id="@+id/ll_payment_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:weightSum="100"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="horizontal"
@@ -178,6 +183,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardview_shpping_address">
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="70"
+                    android:orientation="vertical">
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:layout_width="wrap_content"
@@ -185,20 +195,25 @@
                     android:text="@string/payment_type"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16sp"
-                    app:setCustomFont="@string/font_poppins_bold" />
+                    android:singleLine="true"
+                    app:setCustomFont="@string/font_poppins_regular" />
 
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/upi"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_14sp"
-                    app:setCustomFont="@string/font_poppins_semi_bold" />
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/trasaction_id_sjgsh4841156"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16sp"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+                </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
+                    android:layout_width="0dp"
+                    android:layout_weight="30"
+                    android:layout_height="match_parent"
+                    android:gravity="end |center_vertical"
                     android:orientation="horizontal">
 
                     <com.poona.agrocart.widgets.CustomButton
@@ -239,6 +254,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/expected_delivery_date"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_bold" />
@@ -248,6 +264,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/sep_30_2021_9_00_am_12_00pm"
+                        android:singleLine="true"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
@@ -490,6 +507,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/ll_total_amount" />
 
             <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_savings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
@@ -497,11 +515,90 @@
                 android:text="@string/you_will_save_rs_80"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/_18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line4"
                 app:setCustomFont="@string/font_poppins_bold" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_your_ratings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:text="@string/your_ratings"
+                android:textColor="@color/clr_enter_otp"
+                android:textSize="@dimen/_16sp"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_savings"
+                app:setCustomFont="@string/font_poppins_semi_bold" />
+
+            <RatingBar
+                android:id="@+id/rating_bar_input"
+                android:layout_width="wrap_content"
+                android:rating="3.5"
+                android:theme="@style/theme_rating_bar"
+                android:layout_height="match_parent"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_your_ratings"/>
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_your_feedback"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:text="@string/your_feedback"
+                android:textColor="@color/clr_enter_otp"
+                android:textSize="@dimen/_16sp"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rating_bar_input"
+                app:setCustomFont="@string/font_poppins_semi_bold" />
+
+            <com.poona.agrocart.widgets.CustomEditText
+                android:id="@+id/et_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp"
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:padding="@dimen/_6sdp"
+                android:minLines="6"
+                android:scrollbars="vertical"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:gravity="top|start"
+                android:textSize="@dimen/_14sp"
+                android:background="@drawable/bg_feedback"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:setCustomFont="@string/font_poppins_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_your_feedback"
+                android:maxLines="10"
+                />
+
+            <com.poona.agrocart.widgets.CustomButton
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_verify_otp_btn"
+                android:padding="@dimen/alerter_padding_small"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@color/background_button_selector_green"
+                android:textSize="@dimen/_18sp"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_feedback"
+                app:setCustomFont="@string/font_poppins_semi_bold"
+                tools:layout_editor_absoluteX="16dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

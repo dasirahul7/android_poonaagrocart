@@ -4,6 +4,7 @@ import static android.app.Activity.RESULT_OK;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -78,6 +79,10 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private void initView(View view)
     {
         initTitleBar(getString(R.string.my_profile));
+        Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_regular));
+        fragmentMyProfileBinding.rbMale.setTypeface(font);
+        fragmentMyProfileBinding.rbFemale.setTypeface(font);
+        fragmentMyProfileBinding.rbOther.setTypeface(font);
 
         fragmentMyProfileBinding.tvDateOfBirthInput.setOnClickListener(this);
         fragmentMyProfileBinding.frameLayout.setOnClickListener(this);

@@ -79,6 +79,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:singleLine="true"
+                            android:paddingStart="@dimen/_2sdp"
                             android:text="@{orderTrackViewModel.expectedDeliveryDate}"
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_14sp"
@@ -245,7 +246,7 @@
                             android:text="@string/we_have_received_your_order"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"
-                            app:setCustomFont="@string/font_poppins_semi_bold" />
+                            app:setCustomFont="@string/font_poppins_medium" />
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="wrap_content"
@@ -255,7 +256,7 @@
                             android:text="@string/sep_30_2021_9_00_am_12_00pm"
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_14sp"
-                            app:setCustomFont="@string/font_poppins_semi_bold" />
+                            app:setCustomFont="@string/font_poppins_medium" />
 
                     </LinearLayout>
 
@@ -306,7 +307,7 @@
                             android:text="@string/your_order_is_confirmed"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"
-                            app:setCustomFont="@string/font_poppins_semi_bold" />
+                            app:setCustomFont="@string/font_poppins_medium" />
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="wrap_content"
@@ -317,7 +318,7 @@
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_14sp"
                             android:visibility="gone"
-                            app:setCustomFont="@string/font_poppins_semi_bold" />
+                            app:setCustomFont="@string/font_poppins_medium" />
 
                     </LinearLayout>
 
@@ -368,7 +369,7 @@
                             android:text="@string/we_are_prepairing_your_order"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"
-                            app:setCustomFont="@string/font_poppins_semi_bold" />
+                            app:setCustomFont="@string/font_poppins_medium" />
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="wrap_content"
@@ -379,7 +380,7 @@
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_14sp"
                             android:visibility="gone"
-                            app:setCustomFont="@string/font_poppins_semi_bold" />
+                            app:setCustomFont="@string/font_poppins_medium" />
 
                     </LinearLayout>
 
@@ -430,7 +431,7 @@
                             android:text="@string/your_order_has_been_dispached"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"
-                            app:setCustomFont="@string/font_poppins_semi_bold" />
+                            app:setCustomFont="@string/font_poppins_medium" />
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="wrap_content"
@@ -441,7 +442,7 @@
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_14sp"
                             android:visibility="gone"
-                            app:setCustomFont="@string/font_poppins_semi_bold" />
+                            app:setCustomFont="@string/font_poppins_medium" />
 
                     </LinearLayout>
 
@@ -486,7 +487,7 @@
                             android:text="@string/we_have_delieverd_package_successfully"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"
-                            app:setCustomFont="@string/font_poppins_semi_bold" />
+                            app:setCustomFont="@string/font_poppins_medium" />
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="wrap_content"
@@ -497,7 +498,7 @@
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_14sp"
                             android:visibility="gone"
-                            app:setCustomFont="@string/font_poppins_semi_bold" />
+                            app:setCustomFont="@string/font_poppins_medium" />
 
                     </LinearLayout>
 
