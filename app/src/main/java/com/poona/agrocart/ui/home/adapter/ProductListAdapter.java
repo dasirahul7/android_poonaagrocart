@@ -79,7 +79,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         public BestSellingHolder(RowProductItemBinding rowProductItemBinding) {
             super(rowProductItemBinding.getRoot());
-            rowProductItemBinding.cardviewMain.setOnClickListener(v -> {
+            rowProductItemBinding.cardviewProduct.setOnClickListener(v -> {
                 redirectToProductDetails(v);
             });
         }
@@ -112,6 +112,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     private void gotoProductDetails(View v) {
-        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_productDetailFragment);
+        Navigation.findNavController(v).navigate(R.id.action_nav_products_list_to_productDetailFragment2);
     }
 }
