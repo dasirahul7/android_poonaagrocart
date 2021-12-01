@@ -3,6 +3,7 @@ package com.poona.agrocart.ui.explore.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
@@ -57,6 +59,15 @@ public class ExploreItemAdapter extends RecyclerView.Adapter<ExploreItemAdapter.
         public void bind(ExploreItems items) {
             exploreItemBinding.setVariable(BR.exploreModules,items);
             exploreItemBinding.executePendingBindings();
+            exploreItemBinding.itemLayout.setOnClickListener(v -> {
+                gotoExploreItems(v,items.getName());
+            });
         }
+    }
+
+    private void gotoExploreItems(View v, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString("Title",name);
+        Navigation.findNavController(v).navigate(R.id.action_nav_explore_to_basketPageFragment,bundle);
     }
 }

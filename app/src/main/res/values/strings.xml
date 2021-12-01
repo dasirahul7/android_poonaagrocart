@@ -241,7 +241,7 @@
     <!--My orders-->
     <string name="sep_30_2021_20_15_am">Sep 30, 2021 20:15 AM</string>
     <string name="in_process">In Process</string>
-    <string name="delivered">Delievered</string>
+    <string name="delivered">Delivered</string>
     <string name="confirmed">Confirmed</string>
     <string name="cancelled">Cancelled</string>
     <string name="status">Status</string>
@@ -264,5 +264,10 @@
     <string name="_12_jan_2021">12  Jan 2021</string>
     <string name="pending">Pending</string>
     <string name="ongoing">Ongoing</string>
+    <string name="filter">Filter</string>
+    <string name="category">Category</string>
+    <string name="sort_by_filter">Sort By / Filter</string>
+    <string name="brand">Brand</string>
+    <string name="apply_filter">Apply Filter</string>
 
 </resources>

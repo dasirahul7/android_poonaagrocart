@@ -34,6 +34,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         fragmentProductDetailBinding.setLifecycleOwner(this);
         final View view = fragmentProductDetailBinding.getRoot();
 
+        initTitleBar("");
         initView();
 
         return view;

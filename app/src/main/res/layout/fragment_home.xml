@@ -111,6 +111,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
+                <!--Basket-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:orientation="horizontal">
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/txt_basket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/basket"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16sdp"
+                        app:fontFamily="@font/poppins" />
+                </RelativeLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_margin="@dimen/_5sdp"
+                    android:id="@+id/rec_basket"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+
                 <!--Best Selling-->
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -221,30 +246,6 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-
-                <!--Basket-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:orientation="horizontal">
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/txt_basket"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentStart="true"
-                        android:fontFamily="@font/poppins"
-                        android:text="@string/basket"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_16sdp"
-                        app:fontFamily="@font/poppins" />
-                </RelativeLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_margin="@dimen/_5sdp"
-                    android:id="@+id/rec_basket"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_margin="@dimen/_10sdp"

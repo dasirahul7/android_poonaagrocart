@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            app:navigationIcon="@drawable/menu_icon_toggle"
             app:popupTheme="@style/Theme.PoonaAgroCart.PopupOverlay">
 
             <RelativeLayout
@@ -52,8 +51,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_toStartOf="@+id/img_Toolbar_menu"
+                    android:layout_marginEnd="@dimen/_20sdp"
                     android:drawableStart="@drawable/ic_baseline_location_on_24"
                     android:drawableTint="@color/colorGrey"
                     android:singleLine="true"
@@ -70,17 +68,15 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:src="@drawable/ic_delete_black"/>
-
                 <ImageView
-                    android:id="@+id/img_Toolbar_menu"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:visibility="gone"
+                    android:id="@+id/basket_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/menu_icon_toggle"
-                    android:visibility="gone" />
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:src="@drawable/basket_menu"/>
 
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>

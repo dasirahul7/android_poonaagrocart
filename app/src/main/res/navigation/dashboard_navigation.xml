@@ -5,12 +5,12 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
-<!--  Home Fragment-->
+    <!--  Home Fragment-->
     <fragment
         android:id="@+id/nav_home"
         android:name="com.poona.agrocart.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_home_to_nav_products_list"
             app:destination="@id/nav_products_list" />
@@ -23,20 +23,23 @@
         <action
             android:id="@+id/action_nav_home_to_nav_explore"
             app:destination="@id/nav_explore" />
+        <action
+            android:id="@+id/action_nav_home_to_productDetailFragment"
+            app:destination="@id/productDetailFragment2" />
     </fragment>
 
-<!--    MyOrdersFragment-->
+    <!--    MyOrdersFragment-->
     <fragment
         android:id="@+id/nav_orders"
         android:name="com.poona.agrocart.ui.my_orders.MyOrdersFragment"
         android:label="@string/my_orders"
-        tools:layout="@layout/fragment_my_orders" >
+        tools:layout="@layout/fragment_my_orders">
         <action
             android:id="@+id/action_nav_orders_to_orderViewFragment2"
             app:destination="@id/orderViewFragment2" />
     </fragment>
 
-<!--    MyProfileFragment-->
+    <!--    MyProfileFragment-->
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.poona.agrocart.ui.my_profile.MyProfileFragment"
@@ -58,7 +61,7 @@
     <fragment
         android:id="@+id/nav_products_list"
         android:name="com.poona.agrocart.ui.products_list.ProductListFragment"
-        android:label="ProductListFragment" >
+        android:label="ProductListFragment">
         <action
             android:id="@+id/action_nav_products_list_to_productDetailFragment2"
             app:destination="@id/productDetailFragment2" />
@@ -84,11 +87,15 @@
     <fragment
         android:id="@+id/nav_explore"
         android:name="com.poona.agrocart.ui.explore.ExploreFragment"
-        android:label="Explore"/>
+        android:label="Explore" >
+        <action
+            android:id="@+id/action_nav_explore_to_basketPageFragment"
+            app:destination="@id/basketPageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_basket"
         android:name="com.poona.agrocart.ui.my_basket.MyBasketFragment"
-        android:label="MyBasketFragment" >
+        android:label="MyBasketFragment">
         <action
             android:id="@+id/action_nav_basket_to_orderViewFragment2"
             app:destination="@id/orderViewFragment2" />
@@ -96,7 +103,7 @@
     <fragment
         android:id="@+id/nav_address"
         android:name="com.poona.agrocart.ui.addresses.AddressesFragment"
-        android:label="AddressesFragment" >
+        android:label="AddressesFragment">
         <action
             android:id="@+id/action_nav_address_to_addressesFormFragment2"
             app:destination="@id/addressesFormFragment2" />
@@ -133,7 +140,7 @@
     <fragment
         android:id="@+id/nav_help_center"
         android:name="com.poona.agrocart.ui.help_center.HelpCenterFragment"
-        android:label="HelpCenterFragment" >
+        android:label="HelpCenterFragment">
         <action
             android:id="@+id/action_nav_help_center_to_nav_ticket_detail"
             app:destination="@id/nav_ticket_detail" />
@@ -142,4 +149,9 @@
         android:id="@+id/nav_ticket_detail"
         android:name="com.poona.agrocart.ui.ticket_details.TicketDetailFragment"
         android:label="TicketDetailFragment" />
+<!--   Explore Basket Fragment-->
+    <fragment
+        android:id="@+id/basketPageFragment"
+        android:name="com.poona.agrocart.ui.basket_page.BasketPageFragment"
+        android:label="BasketPageFragment" />
 </navigation>

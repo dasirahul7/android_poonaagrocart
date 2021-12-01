@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="moduleFilter"
+            type="com.poona.agrocart.ui.explore.model.FilterItem" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/check_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="6dip">
+
+        <com.poona.agrocart.widgets.CustomCheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_centerVertical="true"
+            android:button="@drawable/check_box_selector"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <com.poona.agrocart.widgets.CustomTextView
+            android:id="@+id/tv_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_toEndOf="@+id/checkbox"
+            android:gravity="start"
+            android:paddingStart="@dimen/_3sdp"
+            android:text="@{moduleFilter.name}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            app:setCustomFont="@string/font_poppins_regular" />
+    </RelativeLayout>
+</layout>
