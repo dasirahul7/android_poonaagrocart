@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="productAndPrice"
+            type="com.poona.agrocart.ui.order_summary.model.ProductAndPrice" />
+    </data>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/_2sdp"
+    android:weightSum="100">
+
+    <com.poona.agrocart.widgets.CustomTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="50"
+        android:text="@{productAndPrice.productName}"
+        android:textColor="@color/black"
+        android:singleLine="true"
+        android:textSize="@dimen/_16sp"
+        app:setCustomFont="@string/font_poppins_regular" />
+
+    <com.poona.agrocart.widgets.CustomTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="25"
+        android:text="@{productAndPrice.dividedPrice}"
+        android:textColor="@color/black"
+        android:singleLine="true"
+        android:textSize="@dimen/_16sp"
+        app:setCustomFont="@string/font_poppins_regular" />
+
+    <com.poona.agrocart.widgets.CustomTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="25"
+        android:text="@{productAndPrice.finalPrice}"
+        android:textColor="@color/color_discount_text"
+        android:textSize="@dimen/_16sp"
+        android:singleLine="true"
+        android:gravity="end"
+        app:setCustomFont="@string/font_poppins_regular" />
+
+</LinearLayout>
+
+</layout>

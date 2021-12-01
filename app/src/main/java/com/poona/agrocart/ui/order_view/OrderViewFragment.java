@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentOrderViewBinding;
+import com.poona.agrocart.ui.BaseFragment;
+
 import java.util.ArrayList;
 
-public class OrderViewFragment extends Fragment {
+public class OrderViewFragment extends BaseFragment implements View.OnClickListener{
 
     private FragmentOrderViewBinding fragmentOrderViewBinding;
     private RecyclerView rvBasketListItems;
@@ -32,11 +35,15 @@ public class OrderViewFragment extends Fragment {
         initView();
         setRVAdapter();
 
+        initTitleBar(getString(R.string.order_view));
+
         return view;
     }
 
     private void initView()
     {
+        fragmentOrderViewBinding.btnTrackOrder.setOnClickListener(this);
+
         Bundle bundle=this.getArguments();
         isBasketVisible=bundle.getBoolean("isBasketVisible");
         rvBasketListItems=fragmentOrderViewBinding.rvBasketItems;
@@ -55,6 +62,8 @@ public class OrderViewFragment extends Fragment {
         fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.GONE);
         fragmentOrderViewBinding.tvProductDetails.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.VISIBLE);
+        fragmentOrderViewBinding.llSubTotal.setVisibility(View.GONE);
+        fragmentOrderViewBinding.line2.setVisibility(View.GONE);
     }
 
     private void setBasketContentsVisible()
@@ -63,6 +72,8 @@ public class OrderViewFragment extends Fragment {
         fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.tvProductDetails.setVisibility(View.GONE);
         fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
+        fragmentOrderViewBinding.llSubTotal.setVisibility(View.VISIBLE);
+        fragmentOrderViewBinding.line2.setVisibility(View.VISIBLE);
     }
 
     private void setRVAdapter()
@@ -91,5 +102,20 @@ public class OrderViewFragment extends Fragment {
             basketItem.setPrice("Rs.200");
             basketItemList.add(basketItem);
         }
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.btn_track_order:
+                redirectToTrackOrderFragment(v);
+        }
+    }
+
+    private void redirectToTrackOrderFragment(View view)
+    {
+        Navigation.findNavController(view).navigate(R.id.action_orderViewFragment2_to_nav_order_track);
     }
 }

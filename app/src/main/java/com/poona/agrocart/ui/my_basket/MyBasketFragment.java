@@ -11,10 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentMyBasketBinding;
+import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.my_basket.model.BasketOrder;
 import java.util.ArrayList;
 
-public class MyBasketFragment extends Fragment
+public class MyBasketFragment extends BaseFragment
 {
     private FragmentMyBasketBinding fragmentMyBasketBinding;
     private RecyclerView rvBasketItems;
@@ -31,6 +32,8 @@ public class MyBasketFragment extends Fragment
 
         initView();
         setRvAdapter(view);
+
+        initTitleBar(getString(R.string.my_basket));
 
         return view;
     }
@@ -49,7 +52,7 @@ public class MyBasketFragment extends Fragment
         rvBasketItems.setHasFixedSize(true);
         rvBasketItems.setLayoutManager(linearLayoutManager);
 
-        basketOrdersAdapter = new BasketOrdersAdapter(basketOrderArrayList,view);
+        basketOrdersAdapter = new BasketOrdersAdapter(basketOrderArrayList,view,false);
         rvBasketItems.setAdapter(basketOrdersAdapter);
     }
 

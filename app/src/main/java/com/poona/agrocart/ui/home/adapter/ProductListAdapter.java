@@ -66,9 +66,22 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public class BestSellingHolder extends RecyclerView.ViewHolder {
         public BestSellingHolder(RowBestSellingItemBinding rowItemBinding) {
             super(rowItemBinding.getRoot());
+
+            rowItemBinding.cardviewProduct.setOnClickListener(v -> {
+                redirectToProductDetails(v);
+            });
         }
+
+        private void redirectToProductDetails(View v)
+        {
+            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details);
+        }
+
         public BestSellingHolder(RowProductItemBinding rowProductItemBinding) {
             super(rowProductItemBinding.getRoot());
+            rowProductItemBinding.cardviewProduct.setOnClickListener(v -> {
+                redirectToProductDetails(v);
+            });
         }
 
 
@@ -83,10 +96,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
             rowItemBinding.cardviewProduct.setOnClickListener(ProductListAdapter.this::gotoProductDetails);
         }
-        public void bindProduct(Product product) {
+        public void bindProduct(Product product)
+        {
             if (product.getOffer().isEmpty()){
                 rowProductItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
                 rowProductItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
+                rowItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
+
+
             }
             rowProductItemBinding.setVariable(BR.productModule,product);
             rowProductItemBinding.executePendingBindings();
@@ -95,6 +112,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     private void gotoProductDetails(View v) {
-        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_productDetailFragment);
+        Navigation.findNavController(v).navigate(R.id.action_nav_products_list_to_productDetailFragment2);
     }
 }

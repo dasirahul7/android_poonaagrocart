@@ -59,13 +59,14 @@
                 android:layout_height="wrap_content"
                 android:text="@{basketItemModel.weight}"
                 android:textColor="@color/color17"
-                android:textSize="@dimen/_12sp" />
+                android:textSize="@dimen/_14sp" />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_date_and_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
+                android:singleLine="true"
                 android:text="@{basketItemModel.date.concat(basketItemModel.time)}"
                 android:textColor="@color/color17"
                 android:textSize="@dimen/_12sp" />
@@ -76,9 +77,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:setCustomFont="@string/font_poppins_medium"
-                android:text="Rs. 20 x 3"
+                android:text="@string/rs_20_x_3"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sp" />
+                android:textSize="@dimen/_14sp" />
 
         </LinearLayout>
 
@@ -95,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/delivered"
                 android:gravity="end"
+                android:singleLine="true"
                 android:textColor="@color/colorPrimary"
                 app:setCustomFont="@string/font_poppins_bold"
                 android:textSize="@dimen/_14sp"
@@ -107,7 +109,7 @@
                 android:gravity="end"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_rv_basket_price"
-                app:setCustomFont="@string/font_poppins_bold"
+                app:setCustomFont="@string/font_poppins_medium"
                 android:textSize="@dimen/_14sp"
                 android:layout_marginTop="@dimen/_16sdp" />
 
@@ -119,9 +121,9 @@
                 android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                app:setCustomFont="@string/font_poppins_semi_bold"
+                app:setCustomFont="@string/font_poppins_medium"
                 android:textSize="@dimen/_14sp"
-                android:layout_marginTop="@dimen/_16sdp" />
+                android:layout_marginTop="@dimen/_20sdp" />
 
         </LinearLayout>
 

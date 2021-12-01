@@ -38,6 +38,8 @@ public class TicketDetailFragment extends BaseFragment
         fragmentTicketDetailBinding.setLifecycleOwner(this);
         final View view = ((ViewDataBinding) fragmentTicketDetailBinding).getRoot();
 
+        initTitleBar(getString(R.string.help_center));
+
         Bundle bundle=this.getArguments();
         Ticket ticket=new Ticket();
         ticket.setTicketId(bundle.getString(AppConstants.TICKET_ID));

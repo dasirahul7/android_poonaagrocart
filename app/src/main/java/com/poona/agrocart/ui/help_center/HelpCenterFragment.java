@@ -32,6 +32,8 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
         initView();
         setRvAdapter();
 
+        initTitleBar(getString(R.string.help_center));
+
         return view;
     }
 

@@ -51,12 +51,40 @@ public class ExploreItemAdapter extends RecyclerView.Adapter<ExploreItemAdapter.
         return exploreItems.size();
     }
 
-    public class ExploreItemHolder extends RecyclerView.ViewHolder {
-        public ExploreItemHolder(RowExploreItemBinding binding) {
+    public class ExploreItemHolder extends RecyclerView.ViewHolder
+    {
+        RowExploreItemBinding rowExploreItemBinding;
+        public ExploreItemHolder(RowExploreItemBinding binding)
+        {
             super(binding.getRoot());
+
+            this.rowExploreItemBinding=binding;
+            rowExploreItemBinding.itemCard.setOnClickListener(v -> {
+                redirectToRequiredProductsPage(rootView,getAdapterPosition());
+            });
         }
 
-        public void bind(ExploreItems items) {
+        private void redirectToRequiredProductsPage(View view,int adapterPosition)
+        {
+            Bundle bundle=new Bundle();
+            switch (adapterPosition)
+            {
+                case 0:
+                    Navigation.findNavController(view).navigate(R.id.action_nav_explore_to_nav_explore_baskets);
+                    break;
+                case 1:
+                    bundle.putString("ProductCategory","vegetable");
+                    Navigation.findNavController(view).navigate(R.id.action_nav_explore_to_nav_products_list,bundle);
+                    break;
+                default:
+                    bundle.putString("ProductCategory","fruits");
+                    Navigation.findNavController(view).navigate(R.id.action_nav_explore_to_nav_products_list,bundle);
+                    break;
+            }
+        }
+
+        public void bind(ExploreItems items)
+        {
             exploreItemBinding.setVariable(BR.exploreModules,items);
             exploreItemBinding.executePendingBindings();
             exploreItemBinding.itemLayout.setOnClickListener(v -> {
@@ -68,6 +96,6 @@ public class ExploreItemAdapter extends RecyclerView.Adapter<ExploreItemAdapter.
     private void gotoExploreItems(View v, String name) {
         Bundle bundle = new Bundle();
         bundle.putString("Title",name);
-        Navigation.findNavController(v).navigate(R.id.action_nav_explore_to_basketPageFragment,bundle);
+        Navigation.findNavController(v).navigate(R.id.action_nav_explore_to_nav_explore_baskets,bundle);
     }
 }

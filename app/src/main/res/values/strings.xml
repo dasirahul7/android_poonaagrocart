@@ -133,7 +133,6 @@
     <string name="best_selling">Best Selling</string>
     <string name="exclusive_offer">Exclusive Offers</string>
     <string name="basket">Basket</string>
-    <string name="green_vegetables">Green Vegetables</string>
     <string name="_10_off">10% Off</string>
     <string name="one_kg">1Kg</string>
     <string name="rs">Rs25</string>
@@ -181,8 +180,8 @@
     <string name="upi">UPI</string>
     <string name="remark">Remark-</string>
     <string name="test_order_cancelled">Test Order Cancelled</string>
-    <string name="expected_delivery_date">Expected Delivery Date:</string>
-    <string name="sep_30_2021_9_00_am_12_00pm">Sep 30, 2021 9:00 am - 12:00pm</string>
+    <string name="expected_delivery_date">Expected Delivery Date : </string>
+    <string name="sep_30_2021_9_00_am_12_00pm"> Sep 30, 2021 9:00 am - 12:00pm</string>
     <string name="basket_details">Basket Details</string>
     <string name="sub_total">Sub Total</string>
     <string name="rs_800">Rs. 800</string>
@@ -195,6 +194,9 @@
     <string name="you_will_save_rs_80">You will save Rs. 80</string>
     <string name="invoice">Invoice</string>
     <string name="product_details">Product Details</string>
+    <string name="track_order">Track Order</string>
+    <string name="order_view">Order view</string>
+    <string name="rs_20_x_3">Rs. 20 x 3</string>
 
     <!--products detail fragment-->
     <string name="naturel_red_apple">Naturel Red Apple</string>
@@ -211,7 +213,28 @@
     <string name="sprouts_basket">Sprouts Basket</string>
     <string name="rs_1500">Rs. 1500</string>
     <string name="moong">Moong</string>
-    <string name="_500gm">500gm</string>
+    <string name="_500gm">500gms</string>
+    <string name="about_this_product">About this Product</string>
+    <string name="benefits">Benefits</string>
+    <string name="storage_and_uses">Storage and Uses</string>
+    <string name="variable_weight_policy">Variable weight policy</string>
+    <string name="other_product_info">Other Product Info</string>
+    <string name="review">Review</string>
+    <string name="your_ratings">Your Ratings</string>
+    <string name="your_feedback">Your Feedback</string>
+    <string name="_250gms">250gms</string>
+    <string name="_1pc">1pc</string>
+    <string name="notify_me">Notify Me</string>
+    <string name="out_of_stock">Out of Stock</string>
+    <string name="subscription_plan">Subscription Plan</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="how_many_times">How many times you want?</string>
+    <string name="per_basket">Per Basket</string>
+    <string name="_rs_7500">Rs. 7500</string>
+    <string name="rs_1500_x_5">Rs. 1500 x 5</string>
+    <string name="subscribe_now">Subscribe Now</string>
 
     <!--Vegetables-->
     <string name="search_vegetables">Search Vegetables</string>
@@ -269,5 +292,58 @@
     <string name="sort_by_filter">Sort By / Filter</string>
     <string name="brand">Brand</string>
     <string name="apply_filter">Apply Filter</string>
+
+    <!--Order Summary-->
+    <string name="address">Address</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="payment">Payment</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="home_address">Home Address</string>
+    <string name="expected_delivery">Expected Delivery</string>
+    <string name="date_25_nov_2021">Date: 25 Nov 2021</string>
+    <string name="slot_9_00_am_12_00_pm">Slot: 9:00 am - 12:00 pm</string>
+    <string name="available_coupon_code">Available Coupon Code</string>
+    <string name="get_code">Get Code</string>
+    <string name="enter_coupon_code">Enter Coupon Code</string>
+    <string name="remove">Remove</string>
+    <string name="congratulations">Congratulations!!</string>
+    <string name="_10_discount_applied_successfully">10% Discount applied successfully.</string>
+    <string name="product_amp_price_details"><![CDATA[Product & Price Details]]></string>
+    <string name="mode_of_payment">Mode of Payment-</string>
+    <string name="wallet_balance">Wallet</string>
+    <string name="make_payment">Make Payment</string>
+    <string name="bell_pepper_red_1kg">Bell Pepper Red - 1kg</string>
+    <string name="cash_on_delivery">Cash On Delivery</string>
+    <string name="online">Online</string>
+
+    <!--Track order-->
+    <string name="order_placed">Order placed</string>
+    <string name="we_have_received_your_order">We have received your order.</string>
+    <string name="order_confirmed">Order Confirmed</string>
+    <string name="your_order_is_confirmed">Your order is confirmed.</string>
+    <string name="order_packaging">Order Packaging</string>
+    <string name="we_are_prepairing_your_order">We are prepairing your order .</string>
+    <string name="dispatched">Dispatched</string>
+    <string name="your_order_has_been_dispached">Your order has been dispached.</string>
+    <string name="we_have_delieverd_package_successfully">We have delieverd package successfully.</string>
+    <string name="order_track">Order Track</string>
+    <string name="vegetables">Vegetables</string>
+
+    <!--Wallet and transactions-->
+    <string name="my_wallet_amount">My Wallet Amount</string>
+    <string name="add">Add</string>
+    <string name="from">From</string>
+    <string name="to_date">To Date</string>
+    <string name="wallet_and_transaction"><![CDATA[Wallet & Transaction]]></string>
+
+    <!--settings-->
+    <string name="app_notification">App Notification</string>
+    <string name="enable_app">Enable or disable the notifications coming up.</string>
+    <string name="email_notifications">Email Notification</string>
+    <string name="enable_notification">Enable or disable  the  Email notifications</string>
+    <string name="app_version_1_0_12">App Version - 1.0.12</string>
+    <string name="settings">Settings</string>
+    <string name="trasaction_id_sjgsh4841156">Transaction ID : sjgsh4841156</string>
+    <string name="fruits">Fruits</string>
 
 </resources>

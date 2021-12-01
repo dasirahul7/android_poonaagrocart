@@ -61,6 +61,7 @@
                         android:gravity="start"
                         android:text="@{basketOrder.orderId}"
                         android:textColor="@color/black"
+                        android:singleLine="true"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_bold" />
 
@@ -189,6 +190,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="start"
+                            android:singleLine="true"
                             android:text="@{basketOrder.paymentMode}"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"

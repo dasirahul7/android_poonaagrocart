@@ -30,12 +30,25 @@ public class ProductListFragment extends BaseFragment
         fragmentProductListBinding.setLifecycleOwner(this);
         final View view = ((ViewDataBinding) fragmentProductListBinding).getRoot();
 
+        Bundle bundle=this.getArguments();
+
+        if(bundle!=null)
+        isVegetablesOrFruits=bundle.getString("ProductCategory");
+
         initView();
         setRVAdapter(view);
 
-        initTitleBar(getString(R.string.green_vegetables));
+        setTitleBar();
 
         return view;
+    }
+
+    private void setTitleBar()
+    {
+        if(isVegetablesOrFruits.equals("vegetable"))
+            initTitleBar(getString(R.string.vegetables));
+        else
+            initTitleBar(getString(R.string.fruits));
     }
 
     private void setRVAdapter(View view)

@@ -21,7 +21,9 @@ public class BasketProductDetailFragment extends BaseFragment implements View.On
 {
     public int count=0,quantity=1;
     private boolean isProductDetailsVisible=true,isNutritionDetailsVisible=true,
-            isBasketContentsVisible=true,isFavourite=false;
+            isBasketContentsVisible=true,isFavourite=false,isAboutThisProductVisible=true,
+            isBenefitsVisible=true,isStorageVisible=true,isOtherProductInfo=true,
+            isVariableWtPolicyVisible=true;
     private FragmentBasketProductDetailBinding fragmentBasketProductDetailBinding;
     private BasketProductImagesAdapter productImagesAdapter;  //for images
     private BasketContentsAdapter basketContentsAdapter;     //for basket contents like various n no. of sprouts
@@ -49,9 +51,16 @@ public class BasketProductDetailFragment extends BaseFragment implements View.On
 
     private void initView()
     {
+        initTitleBar("");
+
         fragmentBasketProductDetailBinding.llProductDetails.setOnClickListener(this);
         fragmentBasketProductDetailBinding.llNutritions.setOnClickListener(this);
         fragmentBasketProductDetailBinding.llProductList.setOnClickListener(this);
+        fragmentBasketProductDetailBinding.llAboutThisProduct.setOnClickListener(this);
+        fragmentBasketProductDetailBinding.llBenefits.setOnClickListener(this);
+        fragmentBasketProductDetailBinding.llStorageAndUse.setOnClickListener(this);
+        fragmentBasketProductDetailBinding.llOtherProductInfo.setOnClickListener(this);
+        fragmentBasketProductDetailBinding.llVariableWeightPolicy.setOnClickListener(this);
         fragmentBasketProductDetailBinding.ivPlus.setOnClickListener(this);
         fragmentBasketProductDetailBinding.ivMinus.setOnClickListener(this);
         fragmentBasketProductDetailBinding.ivFavourite.setOnClickListener(this);
@@ -130,6 +139,21 @@ public class BasketProductDetailFragment extends BaseFragment implements View.On
             case R.id.ll_product_details:
                 hideOrShowProductDetails();
                 break;
+            case R.id.ll_about_this_product:
+                hideOrShowAboutThisProduct();
+                break;
+            case R.id.ll_benefits:
+                hideOrShowBenefits();
+                break;
+            case R.id.ll_storage_and_use:
+                hideOrShowStorageAndUses();
+                break;
+            case R.id.ll_other_product_info:
+                hideOrShowOtherProductInfo();
+                break;
+            case R.id.ll_variable_weight_policy:
+                hideOrShowVariableWeightPolicy();
+                break;
             case R.id.ll_nutritions:
                 hideOrShowNutritionDetails();
                 break;
@@ -146,6 +170,72 @@ public class BasketProductDetailFragment extends BaseFragment implements View.On
                 addOrRemoveFromFavourite();
                 break;
         }
+    }
+
+
+    private void hideOrShowVariableWeightPolicy()
+    {
+        if(isVariableWtPolicyVisible)
+        {
+            new ProductDetailFragment().collapse(fragmentBasketProductDetailBinding.tvVariableWeightPolicyBreif);
+        }
+        else
+        {
+            new ProductDetailFragment().expand(fragmentBasketProductDetailBinding.tvVariableWeightPolicyBreif);
+        }
+        isVariableWtPolicyVisible=!isVariableWtPolicyVisible;
+    }
+
+    private void hideOrShowOtherProductInfo()
+    {
+        if(isOtherProductInfo)
+        {
+            new ProductDetailFragment().collapse(fragmentBasketProductDetailBinding.tvOtherProductInfoBrief);
+        }
+        else
+        {
+            new ProductDetailFragment().expand(fragmentBasketProductDetailBinding.tvOtherProductInfoBrief);
+        }
+        isOtherProductInfo=!isOtherProductInfo;
+    }
+
+    private void hideOrShowStorageAndUses()
+    {
+        if(isStorageVisible)
+        {
+            new ProductDetailFragment().collapse(fragmentBasketProductDetailBinding.tvStorageAndUseBrief);
+        }
+        else
+        {
+            new ProductDetailFragment().expand(fragmentBasketProductDetailBinding.tvStorageAndUseBrief);
+        }
+        isStorageVisible=!isStorageVisible;
+    }
+
+    private void hideOrShowBenefits()
+    {
+        if(isBenefitsVisible)
+        {
+            new ProductDetailFragment().collapse(fragmentBasketProductDetailBinding.tvBenefitsBrief);
+        }
+        else
+        {
+            new ProductDetailFragment().expand(fragmentBasketProductDetailBinding.tvBenefitsBrief);
+        }
+        isBenefitsVisible=!isBenefitsVisible;
+    }
+
+    private void hideOrShowAboutThisProduct()
+    {
+        if(isAboutThisProductVisible)
+        {
+            new ProductDetailFragment().collapse(fragmentBasketProductDetailBinding.tvAboutThisProductBrief);
+        }
+        else
+        {
+            new ProductDetailFragment().expand(fragmentBasketProductDetailBinding.tvAboutThisProductBrief);
+        }
+        isAboutThisProductVisible=!isAboutThisProductVisible;
     }
 
     private void addOrRemoveFromFavourite()

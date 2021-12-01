@@ -15,6 +15,6 @@
         android:width="@dimen/_10sdp"
         android:height="@dimen/_5sdp"
         android:gravity="end |center_vertical"
-        android:end="@dimen/_5sdp"/>
+        android:end="@dimen/_10sdp"/>
 
 </layer-list>
