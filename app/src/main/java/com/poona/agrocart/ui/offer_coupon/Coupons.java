@@ -1,14 +1,24 @@
 package com.poona.agrocart.ui.offer_coupon;
 
 public class Coupons {
+    int id;
     String couponCode,discount,validDate,type,minimumAmount;
 
-    public Coupons(String couponCode, String discount, String validDate, String type, String minimumAmount) {
+    public Coupons(int id, String couponCode, String discount, String validDate, String type, String minimumAmount) {
+        this.id = id;
         this.couponCode = couponCode;
         this.discount = discount;
         this.validDate = validDate;
         this.type = type;
         this.minimumAmount = minimumAmount;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCouponCode() {
