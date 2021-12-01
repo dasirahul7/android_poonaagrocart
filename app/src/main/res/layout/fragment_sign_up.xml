@@ -201,7 +201,7 @@
                             android:id="@+id/tv_terms_of_service"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/clr_resend_otp"
+                            android:textColor="@color/selectedGreen"
                             android:textSize="@dimen/_14sp"
                             android:drawablePadding="@dimen/alerter_padding_half"
                             android:text="@string/terms_of_service"
@@ -233,7 +233,7 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/alerter_padding_half"
                             android:text="@string/privacy_policy"
-                            android:textColor="@color/clr_resend_otp"
+                            android:textColor="@color/selectedGreen"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
 
@@ -250,10 +250,10 @@
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_15sdp"
                         android:background="@drawable/background_verify_otp_btn"
-                        android:textColor="@color/background_button_selector_green"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/sign_up_btn_text"
                         android:textAllCaps="false"
+                        android:textColor="@color/background_button_selector_green"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
                 </RelativeLayout>

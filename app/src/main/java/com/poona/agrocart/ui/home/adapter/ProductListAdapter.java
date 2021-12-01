@@ -27,11 +27,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private RowBestSellingItemBinding rowItemBinding;
     private RowProductItemBinding rowProductItemBinding;
     private String ListType;
+    private View view;
 
-    public ProductListAdapter(ArrayList<Product> products, FragmentActivity context, String listType) {
+    public ProductListAdapter(ArrayList<Product> products, FragmentActivity context, String listType,View view) {
         this.products = products;
         this.bdContext = context;
         this.ListType = listType;
+        this.view = view;
     }
 
 
@@ -82,6 +84,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             });
         }
 
+
         public void bind(Product product) {
             if (product.getOffer().isEmpty())
             {
@@ -90,17 +93,25 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             }
             rowItemBinding.setVariable(BR.productModule,product);
             rowItemBinding.executePendingBindings();
+
+            rowItemBinding.cardviewProduct.setOnClickListener(ProductListAdapter.this::gotoProductDetails);
         }
         public void bindProduct(Product product)
         {
             if (product.getOffer().isEmpty()){
                 rowProductItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
+                rowProductItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
                 rowItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
 
 
             }
             rowProductItemBinding.setVariable(BR.productModule,product);
             rowProductItemBinding.executePendingBindings();
+            rowProductItemBinding.cardviewProduct.setOnClickListener(ProductListAdapter.this::gotoProductDetails);
         }
+    }
+
+    private void gotoProductDetails(View v) {
+        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_productDetailFragment);
     }
 }

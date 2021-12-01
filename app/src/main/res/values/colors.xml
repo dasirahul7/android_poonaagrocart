@@ -15,6 +15,7 @@
     <color name="color7">#603913</color>
     <color name="color4">#F23900</color>
     <color name="color10">#BB2913</color>
+    <color name="selectedGreen">#53B175</color>
     <color name="color14">#464A43</color>
     <color name="color15">#424242</color>
     <color name="color16">#E2E2E2</color>
@@ -101,6 +102,8 @@
     <!--help center-->
     <color name="color_pending">#FF3636</color>
     <color name="color_ongoing">#FF8F27</color>
+<!--    Filter screen color-->
+    <color name="filter_line_color">#D1D1D1</color>
 
     <!--track order-->
     <color name="color_vertical_line">#C4C4C4</color>

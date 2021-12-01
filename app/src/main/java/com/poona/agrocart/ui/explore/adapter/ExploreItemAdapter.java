@@ -87,6 +87,15 @@ public class ExploreItemAdapter extends RecyclerView.Adapter<ExploreItemAdapter.
         {
             exploreItemBinding.setVariable(BR.exploreModules,items);
             exploreItemBinding.executePendingBindings();
+            exploreItemBinding.itemLayout.setOnClickListener(v -> {
+                gotoExploreItems(v,items.getName());
+            });
         }
+    }
+
+    private void gotoExploreItems(View v, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString("Title",name);
+        Navigation.findNavController(v).navigate(R.id.action_nav_explore_to_basketPageFragment,bundle);
     }
 }

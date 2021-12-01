@@ -65,10 +65,10 @@ public class HomeFragment extends BaseFragment {
 
         setBannersView();
         setShopByCategory(root);
-        setBestSellings();
-        setOfferProduct();
+        setBestSellings(root);
+        setOfferProduct(root);
         setBasketItems(root);
-        setCartItems();
+        setCartItems(root);
         return root;
     }
 
@@ -77,7 +77,7 @@ public class HomeFragment extends BaseFragment {
         Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_our_stores);
     }
 
-    private void setCartItems() {
+    private void setCartItems(View root) {
         productLists.clear();
         for(int i = 0; i < 4; i++)
         {
@@ -89,7 +89,7 @@ public class HomeFragment extends BaseFragment {
         fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recProduct.setHasFixedSize(true);
         fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
-        productListAdapter = new ProductListAdapter(productLists,getActivity(),LANDSCAPE);
+        productListAdapter = new ProductListAdapter(productLists,getActivity(),LANDSCAPE,root);
         fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
     }
 
@@ -106,7 +106,7 @@ public class HomeFragment extends BaseFragment {
         fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
     }
 
-    private void setOfferProduct() {
+    private void setOfferProduct(View root) {
         offerProducts.clear();
         Product offerProduct = new Product("1","Red Apple","1Kg"
                 ,"10% Off","Rs150","Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png");
@@ -121,14 +121,14 @@ public class HomeFragment extends BaseFragment {
         offerProducts.add(offerProduct1);
         offerProducts.add(offerProduct2);
         offerProducts.add(offerProduct3);
-        offerListAdapter = new ProductListAdapter(offerProducts,getActivity(),PORTRAIT);
+        offerListAdapter = new ProductListAdapter(offerProducts,getActivity(),PORTRAIT,root);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(),RecyclerView.HORIZONTAL,false);
         fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
         fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
     }
 
-    private void setBestSellings() {
+    private void setBestSellings(View root) {
         products.clear();
             Product product = new Product("1","Bell Pepper Red","1Kg"
                     ,"10% Off","Rs25","Rs. 15", "https://www.linkpicture.com/q/capsicon.png");
@@ -145,7 +145,7 @@ public class HomeFragment extends BaseFragment {
             products.add(product3);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(),RecyclerView.HORIZONTAL,false);
-        productListAdapter = new ProductListAdapter(products,requireActivity(),PORTRAIT);
+        productListAdapter = new ProductListAdapter(products,requireActivity(),PORTRAIT,root);
         fragmentHomeBinding.recOfferProduct.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recOfferProduct.setLayoutManager(layoutManager);
         fragmentHomeBinding.recOfferProduct.setAdapter(productListAdapter);
