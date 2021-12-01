@@ -284,9 +284,9 @@
                         android:layout_height="@dimen/_20sdp"
                         android:text="@string/track_order"
                         android:background="@drawable/bg_track_order_btn"
+                        android:textColor="@color/color_track_order"
                         android:textAlignment="center"
                         android:textAllCaps="false"
-                        android:textColor="@color/color_track_order"
                         android:textSize="@dimen/_12sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 

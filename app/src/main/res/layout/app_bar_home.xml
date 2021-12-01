@@ -52,7 +52,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_20sdp"
-                    android:drawableStart="@drawable/ic_baseline_location_on_24"
+                    android:drawableStart="@drawable/ic_location"
                     android:drawableTint="@color/colorGrey"
                     android:singleLine="true"
                     android:text="@string/address_location"

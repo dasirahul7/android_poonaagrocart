@@ -57,8 +57,6 @@ public class TicketDetailFragment extends BaseFragment
         }
         fragmentTicketDetailBinding.setTicket(ticket);
 
-        initTitleBar(getString(R.string.favourite));
-
         initView();
         setRvAdapter();
 

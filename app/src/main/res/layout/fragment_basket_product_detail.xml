@@ -180,7 +180,7 @@
                             app:setCustomFont="@string/font_poppins_regular"
                             android:text="@string/daily"
                             android:textAllCaps="false"
-                            android:textColor="@color/clr_resend_otp"
+                            android:textColor="@color/selectedGreen"
                             android:textSize="@dimen/_14sp"
                             />
 
@@ -866,25 +866,31 @@
                     android:layout_weight="50"
                     android:gravity="end">
 
-                    <RatingBar
-                        android:id="@+id/ratingBar"
+                    <ImageView
                         android:layout_width="wrap_content"
-                        android:rating="3.5"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:theme="@style/theme_rating_bar"
-                        android:layout_height="match_parent"
-                        android:numStars="5"
-                        android:stepSize="0.5"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_star" />
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rating"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textSize="@dimen/_14sp"
+                        app:setCustomFont="@string/font_poppins_regular"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:textColor="@color/black"
+                        android:text="@string/_5_0"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_right_arrow" />
+                        android:src="@drawable/ic_right_arrow"
+                        android:rotation="90"/>
 
                 </LinearLayout>
 
@@ -970,16 +976,39 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_verify_otp_btn"
                 android:padding="@dimen/alerter_padding_small"
-                android:text="@string/add_to_basket"
+                android:text="@string/submit"
                 android:textAllCaps="false"
                 android:textColor="@color/background_button_selector_green"
-                android:textSize="@dimen/_16sp"
+                android:textSize="@dimen/_18sp"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginVertical="@dimen/_10sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_feedback"
-                app:setCustomFont="@string/font_poppins_regular"
+                app:setCustomFont="@string/font_poppins_semi_bold"
                 tools:layout_editor_absoluteX="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_product_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_submit" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_14sp"
+                android:text="@string/see_more"
+                android:textColor="@color/selectedGreen"
+                android:layout_marginEnd="@dimen/_24sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_product_comment"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

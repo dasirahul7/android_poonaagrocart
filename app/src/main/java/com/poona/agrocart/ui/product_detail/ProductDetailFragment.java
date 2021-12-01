@@ -3,6 +3,8 @@ package com.poona.agrocart.ui.product_detail;
 import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.view.ViewGroup;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
+import com.poona.agrocart.ui.product_detail.model.ProductComment;
 import java.util.ArrayList;
 import me.huseyinozer.TooltipIndicator;
 
@@ -26,6 +30,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                     isBenefitsVisible=true,isStorageVisible=true,isOtherProductInfo=true,
                     isVariableWtPolicyVisible=true,isFavourite=false;
     private int quantity=1;
+    private RecyclerView rvProductComment;
+    private LinearLayoutManager linearLayoutManager;
+    private ProductCommentsAdapter productCommentsAdapter;
+    private ArrayList<ProductComment> commentArrayList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -36,8 +44,34 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
         initTitleBar("");
         initView();
+        setRvAdapter();
 
         return view;
+    }
+
+    private void setRvAdapter()
+    {
+        commentArrayList=new ArrayList<>();
+        prepareListingData();
+
+        linearLayoutManager = new LinearLayoutManager(requireContext());
+        rvProductComment.setHasFixedSize(true);
+        rvProductComment.setLayoutManager(linearLayoutManager);
+
+        productCommentsAdapter = new ProductCommentsAdapter(commentArrayList);
+        rvProductComment.setAdapter(productCommentsAdapter);
+    }
+
+    private void prepareListingData()
+    {
+        for(int i = 0; i < 2; i++)
+        {
+            ProductComment comment = new ProductComment();
+            comment.setUserName(getString(R.string.johnson_doe));
+            comment.setDate(getString(R.string._12_jan_2021));
+            comment.setComment(getString(R.string.lorem_ipsum_dolor_sit_amet_consectetur_adipiscing));
+            commentArrayList.add(comment);
+        }
     }
 
     private void initView()
@@ -59,6 +93,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
         vpImages=fragmentProductDetailBinding.vpProductImages;
         tbIndicator = fragmentProductDetailBinding.tlIndicators;
+        rvProductComment=fragmentProductDetailBinding.rvProductComment;
 
         imgsList=new ArrayList<>();
         imgsList.add(R.drawable.img_apple);

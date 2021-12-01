@@ -2,32 +2,28 @@ package com.poona.agrocart.ui.wallet_and_transaction;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentWalletTransactionBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.my_basket.BasketOrdersAdapter;
 import com.poona.agrocart.ui.my_basket.model.BasketOrder;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class WalletTransactionFragment extends BaseFragment implements View.OnClickListener {
+public class WalletTransactionFragment extends BaseFragment implements View.OnClickListener
+{
     private FragmentWalletTransactionBinding fragmentWalletTransactionBinding;
     private RecyclerView rvTransactions;
     private LinearLayoutManager linearLayoutManager;
@@ -35,8 +31,9 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
     private ArrayList<BasketOrder> transactionsArrayList;
     private boolean isWallet = true;
     private String[] status = {"Paid", "Refund", "Added"};
-    private Calendar calendar;
-    private int mYear, mMonth, mDay;
+    private Calendar calendarFrom,calendarTo;
+    long fromTime = 0;
+    private DatePickerDialog datePickerDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,16 +47,34 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         return view;
     }
 
-    private void initView() {
+    private void initView()
+    {
         fragmentWalletTransactionBinding.tvFromDate.setOnClickListener(this);
         fragmentWalletTransactionBinding.tvToDate.setOnClickListener(this);
+
+        initCalendarVars();
 
         initGreenTitleBar(getString(R.string.wallet_and_transaction));
         rvTransactions = fragmentWalletTransactionBinding.rvTransactions;
         setupSpinner();
     }
 
-    private void setRvAdapter(View view) {
+    private void initCalendarVars()
+    {
+        DatePickerDialog datePickerDialog = null;
+
+        calendarTo = Calendar.getInstance();
+        calendarFrom = Calendar.getInstance();
+
+        Calendar mcurrentDate = Calendar.getInstance();
+        /*mYear = mcurrentDate.get(Calendar.YEAR);
+        mMonth = mcurrentDate.get(Calendar.MONTH);
+        mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);*/
+
+    }
+
+    private void setRvAdapter(View view)
+    {
         transactionsArrayList = new ArrayList<>();
         prepareListingData();
 
@@ -71,7 +86,8 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         rvTransactions.setAdapter(basketOrdersAdapter);
     }
 
-    private void prepareListingData() {
+    private void prepareListingData()
+    {
         for (int i = 0; i < 2; i++) {
             BasketOrder basketOrder = new BasketOrder();
             basketOrder.setOrderId(getString(R.string._paac002));
@@ -84,7 +100,8 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         }
     }
 
-    private void setupSpinner() {
+    private void setupSpinner()
+    {
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, status);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
         fragmentWalletTransactionBinding.spinnerPaid.setAdapter(arrayAdapter);
@@ -99,30 +116,46 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         switch (v.getId()) {
             case R.id.tv_from_date:
-                showCalendar("FROM DATE");
+                showFromCalendar();
                 break;
             case R.id.tv_to_date:
-                showCalendar("TO DATE");
+                showToCalendar();
                 break;
         }
     }
 
-    public void showCalendar(String fromOrTo) {
-        //showing date picker dialog
-        DatePickerDialog dpd;
-        calendar = Calendar.getInstance();
-        Calendar mcurrentDate = Calendar.getInstance();
-        mYear = mcurrentDate.get(Calendar.YEAR);
-        mMonth = mcurrentDate.get(Calendar.MONTH);
-        mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
-        dpd = new DatePickerDialog(requireContext(), R.style.datepicker, new DatePickerDialog.OnDateSetListener() {
+    private void showToCalendar()
+    {
+        datePickerDialog = new DatePickerDialog(requireContext(), R.style.datepicker, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                if (fromOrTo.equals("FROM DATE")) {
+                String txtDisplayDate = null;
+                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                try {
+                    txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                fragmentWalletTransactionBinding.tvToDate.setText(txtDisplayDate);
+                calendarTo.set(year, month, dayOfMonth);
+            }
+        },
+                calendarTo.get(Calendar.YEAR), calendarTo.get(Calendar.MONTH), calendarTo.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.getDatePicker().setMaxDate(calendarTo.getTimeInMillis());
+        datePickerDialog.getDatePicker().setMinDate(fromTime);
+        datePickerDialog.show();
+    }
+
+    public void showFromCalendar()
+    {
+        datePickerDialog = new DatePickerDialog(requireContext(), R.style.datepicker, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     String txtDisplayDate = null;
                     String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
                     try {
@@ -131,22 +164,34 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
                         e.printStackTrace();
                     }
                     fragmentWalletTransactionBinding.tvFromDate.setText(txtDisplayDate);
-                } else {
-                    String txtDisplayDate = null;
-                    String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
-                    try {
-                        txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    fragmentWalletTransactionBinding.tvToDate.setText(txtDisplayDate);
-                }
-                calendar.set(year, month, dayOfMonth);
+                    fragmentWalletTransactionBinding.tvToDate.setEnabled(true);
+
+                    fromTime=getTimeInMillies(txtDisplayDate);
+
+                calendarFrom.set(year, month, dayOfMonth);
             }
         },
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
+                calendarFrom.get(Calendar.YEAR), calendarFrom.get(Calendar.MONTH), calendarFrom.get(Calendar.DAY_OF_MONTH)
         );
-        dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-        dpd.show();
+        datePickerDialog.getDatePicker().setMaxDate(calendarFrom.getTimeInMillis());
+        datePickerDialog.show();
     }
+
+    private long getTimeInMillies(String txtDisplayDate)
+    {
+        long timeInLong=0;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+        try
+        {
+            Date mDate = sdf.parse(txtDisplayDate);
+            timeInLong = mDate.getTime();
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return timeInLong;
+    }
+
 }
