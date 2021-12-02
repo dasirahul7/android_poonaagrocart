@@ -21,14 +21,16 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private ArrayList<Product> vegetableArrayList;
     private View view;
 
-    public ProductListAdapter(ArrayList<Product> vegetableArrayList, View view) {
+    public ProductListAdapter(ArrayList<Product> vegetableArrayList, View view)
+    {
         this.vegetableArrayList = vegetableArrayList;
         this.view=view;
     }
 
     @NonNull
     @Override
-    public ProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         RowBestSellingItemBinding binding = DataBindingUtil.inflate
                 (LayoutInflater.from(parent.getContext()),
                         R.layout.row_best_selling_item, parent, false);
@@ -36,7 +38,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position)
+    {
         final Product vegetable = vegetableArrayList.get(position);
         holder.homeBestSellingItemBinding.setProductModule(vegetable);
         holder.bind(vegetable);
@@ -58,6 +61,15 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             homeBestSellingItemBinding.cardviewProduct.setOnClickListener(v -> {
                 redirectToProductsDetail(view);
             });
+
+            homeBestSellingItemBinding.imgPlus.setOnClickListener(v -> {
+                redirectToCartScreen(view);
+            });
+        }
+
+        private void redirectToCartScreen(View view)
+        {
+            Navigation.findNavController(view).navigate(R.id.action_nav_products_list_to_nav_cart);
         }
 
         private void redirectToProductsDetail(View v)

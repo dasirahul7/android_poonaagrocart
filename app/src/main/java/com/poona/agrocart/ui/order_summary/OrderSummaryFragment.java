@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +24,38 @@ public class OrderSummaryFragment extends BaseFragment
     private LinearLayoutManager linearLayoutManager;
     private ProductAndPriceAdapter productAndPriceAdapter;
     private ArrayList<ProductAndPrice> productAndPriceArrayList;
+
+    private View navHostFragment;
+    private ViewGroup.MarginLayoutParams navHostMargins;
+    private float scale;
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.VISIBLE);
+        setBottomMarginInDps(50);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.VISIBLE);
+        setBottomMarginInDps(50);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+        setBottomMarginInDps(0);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+        setBottomMarginInDps(0);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -62,12 +96,29 @@ public class OrderSummaryFragment extends BaseFragment
         }
     }
 
+    private void setBottomMarginInDps(int i)
+    {
+        int dpAsPixels = (int) (i*scale + 0.5f);/*
+        if(i==0)
+            navHostMargins.bottomMargin = 0;
+        else*/
+            navHostMargins.bottomMargin=dpAsPixels;
+    }
+
     private void initView()
     {
         rvProductsAndPrices=fragmentOrderSummaryBinding.rvProductsAndPrices;
         Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_regular));
         fragmentOrderSummaryBinding.rbCod.setTypeface(font);
         fragmentOrderSummaryBinding.rbOnline.setTypeface(font);
-        fragmentOrderSummaryBinding.rbWallet.setTypeface(font);
+        fragmentOrderSummaryBinding.rbWalletBalace.setTypeface(font);
+
+        scale = getResources().getDisplayMetrics().density;
+
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+
+        navHostFragment=((AppCompatActivity) requireActivity()).findViewById(R.id.nav_host_fragment_content_home);
+        navHostMargins = (ViewGroup.MarginLayoutParams) navHostFragment.getLayoutParams();
+        navHostMargins.bottomMargin = 0;
     }
 }

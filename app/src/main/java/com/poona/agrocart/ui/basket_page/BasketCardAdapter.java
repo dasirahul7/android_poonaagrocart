@@ -1,9 +1,11 @@
 package com.poona.agrocart.ui.basket_page;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
@@ -49,6 +51,24 @@ public class BasketCardAdapter extends RecyclerView.Adapter<BasketCardAdapter.Ba
         {
             super(rvBasketPageCardviewBinding.getRoot());
             this.rvBasketPageCardviewBinding=rvBasketPageCardviewBinding;
+
+            rvBasketPageCardviewBinding.basketCardview.setOnClickListener(v -> {
+                redirectToBasketDetails(v);
+            });
+
+            rvBasketPageCardviewBinding.imgPlus.setOnClickListener(v -> {
+                redirectToCart(v);
+            });
+        }
+
+        private void redirectToCart(View v)
+        {
+            Navigation.findNavController(v).navigate(R.id.action_nav_explore_baskets_to_nav_cart);
+        }
+
+        private void redirectToBasketDetails(View v)
+        {
+            Navigation.findNavController(v).navigate(R.id.action_nav_explore_baskets_to_basketProductDetailFragment2);
         }
 
         public void bind(BasketCard basketCard)

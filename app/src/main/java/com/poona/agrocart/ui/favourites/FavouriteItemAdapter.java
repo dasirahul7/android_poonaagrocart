@@ -1,9 +1,11 @@
 package com.poona.agrocart.ui.favourites;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
@@ -51,6 +53,24 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
         {
             super(rvFavouritesBinding.getRoot());
             this.rvFavouritesBinding=rvFavouritesBinding;
+
+            rvFavouritesBinding.cardviewFavourite.setOnClickListener(v -> {
+                goToProductDetails(v);
+            });
+
+            rvFavouritesBinding.imgPlus.setOnClickListener(v -> {
+                goToCart(v);
+            });
+        }
+
+        private void goToCart(View v)
+        {
+            Navigation.findNavController(v).navigate(R.id.action_nav_favourite_to_nav_cart);
+        }
+
+        private void goToProductDetails(View v)
+        {
+            Navigation.findNavController(v).navigate(R.id.action_nav_favourite_to_nav_product_details);
         }
 
         public void bind(FavouriteItem favouriteItem)

@@ -312,7 +312,7 @@
     <string name="_10_discount_applied_successfully">10% Discount applied successfully.</string>
     <string name="product_amp_price_details"><![CDATA[Product & Price Details]]></string>
     <string name="mode_of_payment">Mode of Payment-</string>
-    <string name="wallet_balance">Wallet</string>
+    <string name="wallet_balance">Wallet Balance</string>
     <string name="make_payment">Make Payment</string>
     <string name="bell_pepper_red_1kg">Bell Pepper Red - 1kg</string>
     <string name="cash_on_delivery">Cash On Delivery</string>
@@ -350,5 +350,8 @@
     <string name="fruits">Fruits</string>
     <string name="_5_0">5.0</string>
     <string name="see_more">See more</string>
+
+    <!--Cart-->
+    <string name="my_cart">My Cart</string>
 
 </resources>

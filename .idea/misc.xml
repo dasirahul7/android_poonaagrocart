@@ -40,6 +40,7 @@
         <entry key="app/src/main/res/drawable/bg_plus_btn.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/bg_radio_button.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/bg_radio_button_sign_up.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/drawable/bg_signup_rb_selected.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/bg_strikethrough.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/bg_track_order_btn.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/bg_type_of_address_tag.xml" value="0.18645833333333334" />
@@ -163,7 +164,7 @@
         <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.19616076784643072" />
         <entry key="app/src/main/res/layout/fragment_our_stores.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/fragment_out_stores.xml" value="0.1703125" />
-        <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.24079528718703977" />
+        <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_product_image.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/fragment_product_list.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.13269927536231885" />
