@@ -66,7 +66,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public class BestSellingHolder extends RecyclerView.ViewHolder {
         public BestSellingHolder(RowBestSellingItemBinding rowItemBinding) {
             super(rowItemBinding.getRoot());
-
             rowItemBinding.cardviewProduct.setOnClickListener(v -> {
                 redirectToProductDetails(v);
             });
@@ -88,6 +87,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         public void bind(Product product) {
             if (product.getOffer().isEmpty())
             {
+                if (product.isOrganic())
+                rowItemBinding.txtOrganic.setVisibility(View.VISIBLE);
                 rowItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
                 rowItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
             }

@@ -10,10 +10,12 @@ import android.net.NetworkInfo;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.view.ContextThemeWrapper;
 
+import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 import com.poona.agrocart.widgets.custom_alert.Alerter;
 import com.poona.agrocart.widgets.toast.CustomToast;
@@ -112,6 +114,17 @@ public class AppUtils {
         {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public static void setImage(ImageView view, String img){
+        try {
+            Glide.with(view.getContext())
+                    .load(img)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder).into(view);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

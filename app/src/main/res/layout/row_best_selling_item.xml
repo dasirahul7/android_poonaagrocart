@@ -25,6 +25,19 @@
             android:layout_margin="@dimen/_5sdp">
 
             <TextView
+                android:visibility="gone"
+                android:id="@+id/txt_organic"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/green_rectangle"
+                android:gravity="center"
+                android:text="@string/o3"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sp"
+                android:textStyle="bold" />
+            <TextView
                 android:id="@+id/txt_item_offer"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_20sdp"
