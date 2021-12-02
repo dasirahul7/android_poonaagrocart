@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
+    <multipleDevicesSelectedInDropDown value="true" />
     <runningDeviceTargetsSelectedWithDialog>
       <Target>
         <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
             <type value="SERIAL_NUMBER" />
-            <value value="5d64c6857d23" />
+            <value value="ZF6226XWJR" />
           </Key>
         </deviceKey>
       </Target>
@@ -16,7 +17,7 @@
         <deviceKey>
           <Key>
             <type value="SERIAL_NUMBER" />
-            <value value="ZF6226XWJR" />
+            <value value="5d64c6857d23" />
           </Key>
         </deviceKey>
       </Target>

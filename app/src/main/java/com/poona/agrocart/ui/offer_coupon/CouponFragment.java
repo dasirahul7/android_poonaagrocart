@@ -34,7 +34,6 @@ public class CouponFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         fragmentCouponBinding = FragmentCouponBinding.inflate(getLayoutInflater());
-//        fragmentCouponBinding.setLifecycleOwner(this);
         mViewModel = new ViewModelProvider(this).get(CouponViewModel.class);
         initTitleBar(getString(R.string.offer_coupons));
         setCoupons();
@@ -44,7 +43,7 @@ public class CouponFragment extends BaseFragment {
 
     private void setCoupons() {
         mViewModel.liveCoupons.observe(requireActivity(),coupons -> {
-            couponAdapter = new CouponAdapter(coupons,getActivity());
+            couponAdapter = new CouponAdapter(coupons,requireActivity());
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false);
             fragmentCouponBinding.rvCoupons.setLayoutManager(layoutManager);
             fragmentCouponBinding.rvCoupons.setAdapter(couponAdapter);

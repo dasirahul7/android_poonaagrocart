@@ -5,8 +5,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:fitsSystemWindows="true"
+    android:background="@drawable/bottom_menu_shadow"
     tools:openDrawer="start">
 
     <include
