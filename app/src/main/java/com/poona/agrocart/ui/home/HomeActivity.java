@@ -1,5 +1,7 @@
 package com.poona.agrocart.ui.home;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -20,6 +23,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.ActivityHomeBinding;
 import com.poona.agrocart.ui.BaseActivity;
@@ -68,6 +74,15 @@ public class HomeActivity extends BaseActivity {
         drawer = binding.drawerLayout;
         navigationView = binding.navView;
         bottomNavigationView=binding.appBarHome.bottomNavigationView;
+//        float radius = 50f;
+//        ShapeAppearanceModel shapeAppearanceModel = new ShapeAppearanceModel()
+//                .toBuilder()
+//                .setTopLeftCorner(CornerFamily.ROUNDED,radius)
+//                .setTopRightCorner(CornerFamily.ROUNDED,radius)
+//                .build();
+//        MaterialShapeDrawable shapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+//        ViewCompat.setBackground(bottomNavigationView,shapeDrawable);
+//        shapeDrawable.setFillColor(ColorStateList.valueOf(Color.WHITE));
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
