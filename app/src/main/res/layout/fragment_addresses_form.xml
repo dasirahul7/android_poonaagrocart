@@ -290,7 +290,7 @@
                         android:layout_marginBottom="@dimen/_12sdp"
                         android:elevation="@dimen/_6sdp"
                         android:text="@string/check_availabilty"
-                        android:background="@drawable/bg_track_order_btn"
+                        android:background="@drawable/bg_check_availablity_btn"
                         android:textColor="@color/color_track_order"
                         android:textAllCaps="false"
                         android:textSize="@dimen/_16sp"

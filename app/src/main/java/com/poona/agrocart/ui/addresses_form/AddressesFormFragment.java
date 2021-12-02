@@ -56,7 +56,7 @@ public class AddressesFormFragment extends BaseFragment implements View.OnClickL
         fragmentAddressesFormBinding.rbOther.setTypeface(poppinsRegularFont);
         addressFormViewModel = new ViewModelProvider(this).get(AddressFormViewModel.class);
         fragmentAddressesFormBinding.setAddressFormViewModel(addressFormViewModel);
-        initTitleBar(getString(R.string.addresses_form));
+        initTitleWithBackBtn(getString(R.string.addresses_form));
     }
 
     @Override

@@ -36,6 +36,18 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
     private DatePickerDialog datePickerDialog;
 
     @Override
+    public void onStop() {
+        super.onStop();
+        initTitleBar(getString(R.string.wallet_and_transaction));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        initTitleBar(getString(R.string.wallet_and_transaction));
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentWalletTransactionBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_wallet_transaction, container, false);
         fragmentWalletTransactionBinding.setLifecycleOwner(this);
@@ -130,7 +142,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
 
     private void showToCalendar()
     {
-        datePickerDialog = new DatePickerDialog(requireContext(), R.style.datepicker, new DatePickerDialog.OnDateSetListener() {
+        datePickerDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 String txtDisplayDate = null;
@@ -153,7 +165,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
 
     public void showFromCalendar()
     {
-        datePickerDialog = new DatePickerDialog(requireContext(), R.style.datepicker, new DatePickerDialog.OnDateSetListener() {
+        datePickerDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     String txtDisplayDate = null;

@@ -64,7 +64,7 @@ public class OrderSummaryFragment extends BaseFragment
         fragmentOrderSummaryBinding.setLifecycleOwner(this);
         final View view = ((ViewDataBinding) fragmentOrderSummaryBinding).getRoot();
 
-        initTitleBar(getString(R.string.order_summary));
+        initTitleWithBackBtn(getString(R.string.order_summary));
         initView();
         setRvAdapter();
 
@@ -98,17 +98,14 @@ public class OrderSummaryFragment extends BaseFragment
 
     private void setBottomMarginInDps(int i)
     {
-        int dpAsPixels = (int) (i*scale + 0.5f);/*
-        if(i==0)
-            navHostMargins.bottomMargin = 0;
-        else*/
-            navHostMargins.bottomMargin=dpAsPixels;
+        int dpAsPixels = (int) (i*scale + 0.5f);
+        navHostMargins.bottomMargin=dpAsPixels;
     }
 
     private void initView()
     {
         rvProductsAndPrices=fragmentOrderSummaryBinding.rvProductsAndPrices;
-        Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_regular));
+        Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_medium));
         fragmentOrderSummaryBinding.rbCod.setTypeface(font);
         fragmentOrderSummaryBinding.rbOnline.setTypeface(font);
         fragmentOrderSummaryBinding.rbWalletBalace.setTypeface(font);

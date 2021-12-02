@@ -226,8 +226,11 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/color_subscription_plan"
                         android:layout_marginTop="@dimen/_4sdp"
                         app:cardCornerRadius="@dimen/_6sdp"
+                        app:strokeColor="@color/colorLightGrey"
+                        app:strokeWidth="@dimen/_1sdp"
                         app:contentPadding="@dimen/_4sdp">
 
                     <LinearLayout
@@ -244,13 +247,13 @@
                             android:id="@+id/et_quantity"
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
-                            android:background="@color/white"
                             android:text="@string/_1"
                             android:textSize="@dimen/_14sp"
                             android:layout_marginHorizontal="@dimen/_4sdp"
                             android:enabled="false"
                             android:textAlignment="center"
                             android:textColor="@color/black"
+                            android:background="@color/color_subscription_plan"
                             app:setCustomFont="@string/font_poppins_regular" />
 
                         <ImageView

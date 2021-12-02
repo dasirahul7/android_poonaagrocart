@@ -13,7 +13,8 @@
             tools:context=".ui.order_summary.OrderSummaryFragment">
 
             <!--Order Summary states-->
-            <LinearLayout
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_order_summary_states"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -22,14 +23,20 @@
                 android:paddingVertical="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
+                    android:id="@+id/linearLayout3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/_30sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="@dimen/_25sdp"
@@ -50,53 +57,63 @@
 
                 <View
                     android:id="@+id/line1"
-                    android:layout_width="@dimen/_40sdp"
+                    android:layout_width="@dimen/_65sdp"
                     android:layout_height="@dimen/_4sdp"
                     android:layout_marginHorizontal="@dimen/_4sdp"
-                    android:layout_marginBottom="@dimen/_6sdp"
                     android:background="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_order_status" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/_16sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+                    app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/circleImageView"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:src="@drawable/ic_step_two"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+                    app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/customTextView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:src="@drawable/ic_step_two" />
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:text="@string/order_summary"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12sp"
-                        app:setCustomFont="@string/font_poppins_regular" />
-
-                </LinearLayout>
+                    android:text="@string/order_summary"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+                    app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+                    app:layout_constraintTop_toBottomOf="@+id/circleImageView"
+                    app:setCustomFont="@string/font_poppins_regular" />
 
                 <View
                     android:id="@+id/line2"
-                    android:layout_width="@dimen/_40sdp"
+                    android:layout_width="@dimen/_65sdp"
                     android:layout_height="@dimen/_4sdp"
                     android:layout_marginHorizontal="@dimen/_4sdp"
-                    android:layout_marginBottom="@dimen/_6sdp"
                     android:background="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_order_status" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    app:layout_constraintEnd_toStartOf="@+id/circleImageView"
+                    app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
+                    android:id="@+id/linearLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginEnd="@dimen/_30sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="@dimen/_25sdp"
@@ -114,7 +131,7 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_delivery_address"
@@ -668,13 +685,14 @@
 
                     <RadioButton
                         android:id="@+id/rb_wallet_balace"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/_25sdp"
                         android:layout_marginTop="40dp"
                         android:layout_marginStart="-292dp"
                         android:text="@string/wallet_balance"
                         app:useMaterialThemeColors="false"
                         android:singleLine="true"
+                        android:paddingTop="@dimen/_4sdp"
                         android:paddingStart="@dimen/_4sdp"
                         style="@style/RadioButtonAddress" />
 
@@ -696,7 +714,7 @@
                     android:id="@+id/tv_wallet_balance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_24sdp"
+                    android:layout_marginStart="@dimen/_26sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:gravity="start"
                     android:text="@string/_rs_7500"

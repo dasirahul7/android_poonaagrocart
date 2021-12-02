@@ -7,6 +7,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -49,6 +50,7 @@
             app:layout_constraintTop_toBottomOf="@+id/et_search" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
         <RelativeLayout
             android:id="@+id/rl_container"
             android:layout_width="match_parent"
@@ -59,13 +61,14 @@
 
         <!--Bottom Sheet layout used-->
         <RelativeLayout
-            android:visibility="gone"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             app:behavior_peekHeight="@dimen/_440sdp"
             android:id="@+id/bottom_view"
             android:layout_gravity="bottom"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <include
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_440sdp"
@@ -75,7 +78,5 @@
         </RelativeLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
 
 </layout>

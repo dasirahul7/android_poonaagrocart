@@ -30,7 +30,6 @@ public class OrderTrackFragment extends BaseFragment
         initView();
         setValues();
 
-
         return root;
     }
 
@@ -47,6 +46,6 @@ public class OrderTrackFragment extends BaseFragment
 
     private void initView()
     {
-        initTitleBar(getString(R.string.order_track));
+        initTitleWithBackBtn(getString(R.string.order_track));
     }
 }
