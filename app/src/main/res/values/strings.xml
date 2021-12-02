@@ -106,6 +106,8 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="all_letters_and_digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="business">Business</string>
+    <string name="individual">Individual</string>
 
     <!--    Home Screen-->
     <string name="menu_home">Home</string>
