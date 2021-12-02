@@ -5,21 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
-import com.poona.agrocart.app.Intro;
 import com.poona.agrocart.ui.home.model.Banner;
-import com.poona.agrocart.ui.intro.IntroItemFragment;
-import com.poona.agrocart.ui.intro.IntroScreenFragment;
 
 import java.util.ArrayList;
 

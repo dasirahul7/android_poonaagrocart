@@ -46,9 +46,9 @@ public class ProductListFragment extends BaseFragment
     private void setTitleBar()
     {
         if(isVegetablesOrFruits.equals("vegetable"))
-            initTitleBar(getString(R.string.vegetables));
+            initTitleWithBackBtn(getString(R.string.vegetables));
         else
-            initTitleBar(getString(R.string.fruits));
+            initTitleWithBackBtn(getString(R.string.fruits));
     }
 
     private void setRVAdapter(View view)

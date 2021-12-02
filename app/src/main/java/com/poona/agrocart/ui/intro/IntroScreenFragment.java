@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.poona.agrocart.R;
-import com.poona.agrocart.app.Intro;
 import com.poona.agrocart.databinding.FragmentIntroScreenBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.splash_screen.OnBackPressedListener;

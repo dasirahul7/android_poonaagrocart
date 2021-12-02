@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDex;
 
 import java.io.IOException;
@@ -76,6 +77,5 @@ public class PoonaAgroCartApplication extends Application
             }
             Log.w("Undeliverable exception", e);
         });
-
     }
 }

@@ -112,6 +112,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     private void gotoProductDetails(View v) {
-        Navigation.findNavController(v).navigate(R.id.action_nav_products_list_to_productDetailFragment2);
+        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details);
     }
 }
