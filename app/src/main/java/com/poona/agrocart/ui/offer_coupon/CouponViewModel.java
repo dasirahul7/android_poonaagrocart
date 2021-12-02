@@ -10,9 +10,10 @@ MutableLiveData<ArrayList<Coupons>> liveCoupons = new MutableLiveData<>();
 
     public CouponViewModel() {
         ArrayList<Coupons> coupons = new ArrayList<>();
-        Coupons coupon = new Coupons("OFF250","10%","25 November 2021","Order min Rs. 500 ","Order min Rs. 500 ");
-    for (int i=0;i<5;i++)
+    for (int i=0;i<20;i++){
+        Coupons coupon = new Coupons(i,"OFF250","10%","25 November 2021","Order min Rs. 500 ","Order min Rs. 500 ");
         coupons.add(coupon);
-    liveCoupons.setValue(coupons);
+    }
+        liveCoupons.setValue(coupons);
     }
 }

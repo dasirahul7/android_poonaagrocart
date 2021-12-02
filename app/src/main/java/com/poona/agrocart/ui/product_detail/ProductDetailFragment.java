@@ -42,7 +42,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         fragmentProductDetailBinding.setLifecycleOwner(this);
         final View view = fragmentProductDetailBinding.getRoot();
 
-        initTitleBar("");
+        initTitleWithBackBtn("");
         initView();
         setRvAdapter();
 
@@ -76,8 +76,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void initView()
     {
-        initTitleBar("");
-
         fragmentProductDetailBinding.llProductDetails.setOnClickListener(this);
         fragmentProductDetailBinding.llNutritions.setOnClickListener(this);
         fragmentProductDetailBinding.llAboutThisProduct.setOnClickListener(this);

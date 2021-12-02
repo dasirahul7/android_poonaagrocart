@@ -16,8 +16,8 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignTop="@+id/cv_document_card"
-            android:layout_alignBottom="@+id/cv_document_card"
+            android:layout_alignTop="@+id/cv_notification"
+            android:layout_alignBottom="@+id/cv_notification"
             android:elevation="@dimen/_15sdp"
             app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="@dimen/_10sdp"
@@ -26,7 +26,7 @@
             app:strokeWidth="1dp" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_document_card"
+            android:id="@+id/cv_notification"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/_6sdp"
@@ -36,7 +36,6 @@
 
 
             <LinearLayout
-                android:id="@+id/ll_upload_document"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -66,7 +65,7 @@
                     android:orientation="vertical">
 
                     <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/document_name"
+                        android:id="@+id/tv_content"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_gravity="center_vertical"

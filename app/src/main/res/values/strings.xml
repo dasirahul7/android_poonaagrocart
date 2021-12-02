@@ -350,6 +350,9 @@
     <string name="fruits">Fruits</string>
     <string name="_5_0">5.0</string>
     <string name="see_more">See more</string>
+    <string name="sample_content">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used.</string>
+    <string name="o3"><b>O</b><sub>3</sub></string>
+    <string name="o_three_content">Lorem ipsum, or lipsum as it is hhggf</string>
 
     <!--Cart-->
     <string name="my_cart">My Cart</string>

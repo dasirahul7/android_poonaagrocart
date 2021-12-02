@@ -10,6 +10,7 @@ import com.poona.agrocart.R;
 public class Product
 {
     String id, name, qty,offer, price, offerPrice,img;
+    boolean organic;
 
     public Product(String id, String name,
                    String qty, String offer, String price,
@@ -77,6 +78,14 @@ public class Product
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public boolean isOrganic() {
+        return organic;
+    }
+
+    public void setOrganic(boolean organic) {
+        this.organic = organic;
     }
 
     @BindingAdapter("setImage")

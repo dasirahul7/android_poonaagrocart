@@ -27,6 +27,7 @@
             android:weightSum="100">
 
             <com.google.android.material.card.MaterialCardView
+                app:cardBackgroundColor="@color/white"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="30"

@@ -14,7 +14,6 @@
         android:id="@+id/cardview_product"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_110sdp"
-        android:background="@color/white"
         android:elevation="@dimen/_10sdp"
         android:padding="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_10sdp"

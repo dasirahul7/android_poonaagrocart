@@ -1,11 +1,13 @@
 package com.poona.agrocart.ui.offer_coupon;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +23,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     private Context context;
     private RowCouponItemBinding binding;
 
+
     public CouponAdapter(ArrayList<Coupons> coupons, Context context) {
         this.coupons = coupons;
         this.context = context;
@@ -29,7 +32,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     @NonNull
     @Override
     public CouponHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.row_coupon_item,parent,false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.row_coupon_item, parent, false);
         return new CouponHolder(binding);
     }
 
@@ -37,6 +40,12 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     public void onBindViewHolder(@NonNull CouponHolder holder, int position) {
         Coupons coupon = coupons.get(position);
         binding.setModuleCoupon(coupon);
+        if (coupon.getId() % 3 == 1)
+            binding.couponRow.setBackground(ContextCompat.getDrawable(context, R.drawable.coupon_green));
+        if (coupon.getId() % 3 == 2)
+            binding.couponRow.setBackground(ContextCompat.getDrawable(context, R.drawable.coupon_blue));
+        if (coupon.getId() % 3 == 0)
+            binding.couponRow.setBackground(ContextCompat.getDrawable(context, R.drawable.coupon_pink));
         holder.bind(coupon);
     }
 
@@ -51,7 +60,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
         }
 
         public void bind(Coupons coupon) {
-            binding.setVariable(BR.moduleCoupon,coupon);
+            binding.setVariable(BR.moduleCoupon, coupon);
             binding.executePendingBindings();
         }
     }

@@ -171,11 +171,18 @@ public class BasketPageFragment extends BaseFragment {
         this.rvBasketCards = fragmentBasketPageBinding.rvBasketCards;
         bottomSheetBehavior = BottomSheetBehavior.from(fragmentBasketPageBinding.bottomView);
         fragmentBasketPageBinding.filterView.closeBtn.setOnClickListener(v -> {
-            fragmentBasketPageBinding.rlContainer.setVisibility(View.GONE);
-            fragmentBasketPageBinding.bottomView.setVisibility(View.GONE);
-            bottomSheetBehavior.setState(STATE_COLLAPSED);
-            fragmentBasketPageBinding.etSearch.setEnabled(false);
+            closeFilter();
         });
+        fragmentBasketPageBinding.filterView.applyBtn.setOnClickListener(v -> {
+            closeFilter();
+        });
+    }
+
+    private void closeFilter() {
+        fragmentBasketPageBinding.rlContainer.setVisibility(View.GONE);
+        fragmentBasketPageBinding.bottomView.setVisibility(View.GONE);
+        bottomSheetBehavior.setState(STATE_COLLAPSED);
+        fragmentBasketPageBinding.etSearch.setEnabled(false);
     }
 
     private void prepareListingData() {

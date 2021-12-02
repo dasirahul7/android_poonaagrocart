@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.poona.agrocart.R;
-import com.poona.agrocart.app.Intro;
 
 import java.util.ArrayList;
 

@@ -75,17 +75,16 @@ import static com.poona.agrocart.app.AppConstants.LOGOUT;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public abstract class BaseFragment extends Fragment
-{
+public abstract class BaseFragment extends Fragment {
     private static final String TAG = BaseFragment.class.getSimpleName();
     public Context context;
 
     public AppSharedPreferences preferences;
 
     private PushNotification pushNotification;
+
     @Override
-    public void onAttach(@NonNull Context context)
-    {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
 
@@ -102,28 +101,42 @@ public abstract class BaseFragment extends Fragment
     }
 
 
-//    Title and app logo on actionBar
-@SuppressLint("ResourceType")
-protected void initTitleBar(String title) {
-    ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
-        Drawable d = ResourcesCompat.getDrawable(getResources(),
-                R.drawable.menu_icon_toggle, null);
-        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationIcon(d);
-        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setPadding(0,0,0,0);
-    });
-    ((HomeActivity)requireActivity()).binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
-    ((HomeActivity)requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
-    ((HomeActivity)requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);
-    ((HomeActivity)requireActivity()).binding.appBarHome.textView.setVisibility(View.GONE);
-    ((HomeActivity)requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
-    ((HomeActivity)requireActivity()).binding.appBarHome.textTitle.setText(title);
-    ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
-    ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
-}
+    //    Title and app logo on actionBar
+    protected void initTitleBar(String title) {
+        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
+            Drawable d = ResourcesCompat.getDrawable(getResources(),
+                    R.drawable.menu_icon_toggle, null);
+            ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationIcon(d);
+            ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setPadding(0, 0, 0, 0);
+        });
+        ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.textView.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);
+        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
+        ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
+    }
+    protected void initTitleWithBackBtn(String title) {
+        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
+            Drawable d = ResourcesCompat.getDrawable(getResources(),
+                    R.drawable.ic_back, null);
+            ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationIcon(d);
+            ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setPadding(0, 0, 0, 0);
+        });
+        ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.textView.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);
+        ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
+        ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
+    }
 
     @SuppressLint("ResourceType")
-    protected void initGreenTitleBar(String title)
-    {
+    protected void initGreenTitleBar(String title) {
         initTitleBar(title);
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.colorPrimary);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.white)));
@@ -134,8 +147,7 @@ protected void initTitleBar(String title) {
         });
     }
 
-    public void loadingImage(Context context, String url, ImageView imageView)
-    {
+    public void loadingImage(Context context, String url, ImageView imageView) {
         Transformation blurTransformation = new Transformation() {
             @Override
             public Bitmap transform(Bitmap source) {
@@ -169,32 +181,28 @@ protected void initTitleBar(String title) {
                 });
     }
 
-    protected void successToast(Context context, String message)
-    {
+    protected void successToast(Context context, String message) {
         CustomToast.Config.getInstance()
                 .setToastTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/poppins/poppins_regular.ttf"))
                 .apply();
         CustomToast.success(context, message, Toast.LENGTH_SHORT, true).show();
     }
 
-    protected void errorToast(Context context, String message)
-    {
+    protected void errorToast(Context context, String message) {
         CustomToast.Config.getInstance()
                 .setToastTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/poppins/poppins_regular.ttf"))
                 .apply();
         CustomToast.error(context, message, Toast.LENGTH_LONG, true).show();
     }
 
-    protected void infoToast(Context context, String message)
-    {
+    protected void infoToast(Context context, String message) {
         CustomToast.Config.getInstance()
                 .setToastTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/poppins/poppins_regular.ttf"))
                 .apply();
         CustomToast.info(context, message, Toast.LENGTH_LONG, true).show();
     }
 
-    protected void warningToast(Context context, String message)
-    {
+    protected void warningToast(Context context, String message) {
         CustomToast.Config.getInstance()
                 .setToastTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/poppins/poppins_regular.ttf"))
                 .apply();
@@ -233,29 +241,23 @@ protected void initTitleBar(String title) {
         } catch (ParseException | java.text.ParseException e) {
             e.printStackTrace();
         }
-        String date_time=outputFormat.format(date);
+        String date_time = outputFormat.format(date);
         return date_time;
     }
 
-    public void hideKeyBoard(Activity activity)
-    {
+    public void hideKeyBoard(Activity activity) {
         View view = activity.getCurrentFocus();
-        if (view != null)
-        {
+        if (view != null) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    public ProgressDialog showCircleProgressDialog(Context context, String message)
-    {
+    public ProgressDialog showCircleProgressDialog(Context context, String message) {
         ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(context, R.style.CustomProgressDialog));
-        try
-        {
+        try {
             dialog.show();
-        }
-        catch (WindowManager.BadTokenException e)
-        {
+        } catch (WindowManager.BadTokenException e) {
 
         }
         dialog.setCancelable(false);
@@ -299,7 +301,7 @@ protected void initTitleBar(String title) {
 
         return dialog;
     }
-    
+
     /**
      * Method checks for Internet connectivity
      *
@@ -330,8 +332,7 @@ protected void initTitleBar(String title) {
         return checkConnection;
     }
 
-    protected void goToAskSignInSignUpScreen()
-    {
+    protected void goToAskSignInSignUpScreen() {
         preferences.clearSharedPreferences(context);
         preferences.setFromLogOut(true);
 
@@ -342,9 +343,9 @@ protected void initTitleBar(String title) {
     }
 
     private LocationManager locationManager;
-    protected boolean checkGpsStatus()
-    {
-        locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+
+    protected boolean checkGpsStatus() {
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
@@ -413,29 +414,24 @@ protected void initTitleBar(String title) {
                 if (permissionsRejected.size() > 0) {
                     requestPermissions(permissionsRejected.toArray(new String[permissionsRejected.size()]), MY_GALLERY_REQUEST);
                 }
-                if (permissionsToRequest.size() == 0 && permissionsRejected.size() == 0)
-                {
-                    if(type.equals("photo"))
+                if (permissionsToRequest.size() == 0 && permissionsRejected.size() == 0) {
+                    if (type.equals("photo"))
                         imageIntent();
-                    else if(type.equals("pdf"))
+                    else if (type.equals("pdf"))
                         pdfIntent();
                 }
-            }
-            else
-            {
-                if(type.equals("photo"))
+            } else {
+                if (type.equals("photo"))
                     imageIntent();
-                else if(type.equals("pdf"))
+                else if (type.equals("pdf"))
                     pdfIntent();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected void cameraIntent(){
+    protected void cameraIntent() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
             fileName = String.valueOf(Calendar.getInstance().getTimeInMillis());
@@ -510,6 +506,7 @@ protected void initTitleBar(String title) {
     }
 
     public String displayFileName = null;
+
     protected File onSelectImageFCResult(Intent data) {
         Bitmap bm = null;
         String path = "";
@@ -546,8 +543,7 @@ protected void initTitleBar(String title) {
         return f;
     }
 
-    protected File onSelectPdfFCResult(Intent data)
-    {
+    protected File onSelectPdfFCResult(Intent data) {
         File myFile = null;
 
         // Get the Uri of the selected file
@@ -557,8 +553,7 @@ protected void initTitleBar(String title) {
         String path = getRealPathFromURI(uri.toString());
         myFile = new File(uriString);
 
-        if (uriString.startsWith("content://"))
-        {
+        if (uriString.startsWith("content://")) {
             Cursor cursor = null;
             try {
                 cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
@@ -568,9 +563,7 @@ protected void initTitleBar(String title) {
             } finally {
                 cursor.close();
             }
-        }
-        else if (uriString.startsWith("file://"))
-        {
+        } else if (uriString.startsWith("file://")) {
             displayFileName = myFile.getName();
         }
 
@@ -596,7 +589,9 @@ protected void initTitleBar(String title) {
             Uri selectedImage = Uri.fromFile(f);
             gotoCropImageActivity(selectedImage, Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString(), outputFileName)));
             /*Cropping image End*/
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {
@@ -645,18 +640,18 @@ protected void initTitleBar(String title) {
                 int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
                 return cursor.getString(index);
             }
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return contentURI;
     }
 
-    protected Uri getFilePathFromUri(Uri uri) throws IOException
-    {
+    protected Uri getFilePathFromUri(Uri uri) throws IOException {
         String fileName = getFileName(uri);
         File file = new File(getActivity().getExternalCacheDir(), fileName);
         file.createNewFile();
         try (OutputStream outputStream = new FileOutputStream(file);
-             InputStream inputStream = getActivity().getContentResolver().openInputStream(uri))
-        {
+             InputStream inputStream = getActivity().getContentResolver().openInputStream(uri)) {
             IOUtils.copy(inputStream, outputStream); //Simply reads input to output stream
             outputStream.flush();
         }
@@ -693,8 +688,7 @@ protected void initTitleBar(String title) {
     }
 
 
-    private void gotoCropImageActivity(Uri sourceUri, Uri destinationUri)
-    {
+    private void gotoCropImageActivity(Uri sourceUri, Uri destinationUri) {
         /*********This is code for fragment*********/
         UCrop.of(sourceUri, destinationUri)
                 .withAspectRatio(3, 2)
@@ -709,7 +703,6 @@ protected void initTitleBar(String title) {
     /***********************************************************************************************/
     /*******Upload Camera and Gallery Image Code End*************************************************/
     /************************************************************************************************/
-
 
 
     /*******************************************************************************************/
@@ -729,8 +722,7 @@ protected void initTitleBar(String title) {
         //displayFileOnWebView(uri, webView);
     }*/
 
-    protected void displayFileOnWebView(Uri uri, WebView webView)
-    {
+    protected void displayFileOnWebView(Uri uri, WebView webView) {
         WebSettings settings = webView.getSettings();
         settings.setAllowContentAccess(true);
         settings.setAllowFileAccess(true);
@@ -753,15 +745,14 @@ protected void initTitleBar(String title) {
         // Older versions of android (pre API 21) cancel animations for views with a height of 0.
         v.getLayoutParams().height = 1;
         v.setVisibility(View.VISIBLE);
-        Animation a = new Animation()
-        {
+        Animation a = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, android.view.animation.Transformation t) {
                 super.applyTransformation(interpolatedTime, t);
 
                 v.getLayoutParams().height = interpolatedTime == 1
                         ? ViewGroup.LayoutParams.WRAP_CONTENT
-                        : (int)(targetHeight * interpolatedTime);
+                        : (int) (targetHeight * interpolatedTime);
                 v.requestLayout();
             }
 
@@ -772,23 +763,22 @@ protected void initTitleBar(String title) {
         };
 
         // Expansion speed of 1dp/ms
-        a.setDuration((int)(targetHeight / v.getContext().getResources().getDisplayMetrics().density + 300));
+        a.setDuration((int) (targetHeight / v.getContext().getResources().getDisplayMetrics().density + 300));
         v.startAnimation(a);
     }
 
     /*animated collapse view VISIBILITY GONE*/
     public void collapse(final View v) {
         final int initialHeight = v.getMeasuredHeight();
-        Animation a = new Animation()
-        {
+        Animation a = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, android.view.animation.Transformation t) {
                 super.applyTransformation(interpolatedTime, t);
 
-                if(interpolatedTime == 1){
+                if (interpolatedTime == 1) {
                     v.setVisibility(View.GONE);
-                }else{
-                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
+                } else {
+                    v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
                     v.requestLayout();
                 }
             }
@@ -800,7 +790,7 @@ protected void initTitleBar(String title) {
         };
 
         // Collapse speed of 1dp/ms
-        a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density + 300));
+        a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density + 300));
         v.startAnimation(a);
     }
 

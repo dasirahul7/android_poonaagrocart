@@ -1,4 +1,4 @@
-package com.poona.agrocart.app;
+package com.poona.agrocart.ui.intro;
 
 public class Intro {
     String id, Title,Description;
