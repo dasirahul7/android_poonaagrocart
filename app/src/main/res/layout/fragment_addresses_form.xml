@@ -11,13 +11,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        tools:context=".ui.addresses_form.AddressesFormFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.addresses_form.AddressesFormFragment">
-
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/ll_radio_goup"
@@ -140,6 +140,7 @@
                 android:padding="@dimen/_8sdp"
                 android:inputType="phone"
                 android:maxLength="10"
+                android:digits="0123456789"
                 android:text="@{addressFormViewModel.mobile}"
                 android:textColor="@color/color17"
                 android:textSize="@dimen/_14sp"
@@ -185,8 +186,6 @@
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:background="@drawable/bg_my_profile_spinner"
                         android:elevation="@dimen/_2sdp"
-                        android:paddingStart="@dimen/_15sdp"
-                        android:paddingBottom="@dimen/_6sdp"
                         android:textColor="@color/color17"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -221,8 +220,6 @@
                         android:layout_marginBottom="@dimen/_15sdp"
                         android:background="@drawable/bg_my_profile_spinner"
                         android:elevation="@dimen/_2sdp"
-                        android:paddingStart="@dimen/_15sdp"
-                        android:paddingBottom="@dimen/_6sdp"
                         android:textColor="@color/color17"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -268,7 +265,7 @@
                         android:layout_marginStart="@dimen/_15sdp"
                         android:layout_marginEnd="@dimen/_19sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
-                        android:background="@drawable/bg_my_profile_spinner"
+                        android:background="@drawable/bg_dashboard_et_layout"
                         android:elevation="@dimen/_2sdp"
                         android:paddingStart="@dimen/_15sdp"
                         android:paddingBottom="@dimen/_6sdp"
@@ -293,9 +290,9 @@
                         android:layout_marginBottom="@dimen/_12sdp"
                         android:elevation="@dimen/_6sdp"
                         android:text="@string/check_availabilty"
-                        android:background="@drawable/bg_check_availabilty_btn"
+                        android:background="@drawable/bg_track_order_btn"
+                        android:textColor="@color/color_track_order"
                         android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_16sp"
                         android:textAlignment="center"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
@@ -355,6 +352,8 @@
                         android:layout_marginStart="@dimen/_15sdp"
                         android:layout_marginEnd="@dimen/_20sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
+                        android:inputType="number"
+                        android:digits="0123456789"
                         android:text="@{addressFormViewModel.houseNumber}"
                         android:background="@drawable/bg_dashboard_et_layout"
                         android:elevation="@dimen/_2sdp"

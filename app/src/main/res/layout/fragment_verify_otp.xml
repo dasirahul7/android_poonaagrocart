@@ -86,7 +86,7 @@
                     android:layout_marginTop="@dimen/_2sdp"
                     android:padding="@dimen/alerter_padding_small"
                     android:text="@string/resend_code"
-                    android:textColor="@color/clr_resend_otp"
+                    android:textColor="@color/selectedGreen"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_regular" />
 

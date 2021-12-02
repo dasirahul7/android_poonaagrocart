@@ -64,7 +64,7 @@
 
     <!--rating bar-->
     <style name="theme_rating_bar">
-        <item name="colorControlActivated">@color/color_star_rating</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="colorControlNormal">@color/color_star_rating_unselected</item>
     </style>
 
@@ -106,6 +106,11 @@
     <!--Style for address radio buttons-->
     <style name="RadioButtonAddress" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/bg_radio_button</item>
+    </style>
+
+    <!--Style for sign up radio buttons-->
+    <style name="RadioButtonSignup" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/bg_radio_button_sign_up</item>
     </style>
 
     <style name="NavigationDrawerStyle">

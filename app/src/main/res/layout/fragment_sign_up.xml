@@ -8,6 +8,7 @@
             name="commonViewModel"
             type="com.poona.agrocart.ui.login.CommonViewModel" />
     </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -65,11 +66,47 @@
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
+                    <RadioGroup
+                        android:id="@+id/rg_individual_business"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="100"
+                        android:layout_below="@+id/tv_enter_credentials"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_individual"
+                            android:layout_width="0dp"
+                            android:layout_weight="50"
+                            android:layout_height="@dimen/_30sdp"
+                            android:text="@string/individual"
+                            android:textColor="@color/color17"
+                            android:background="@drawable/bg_signup_rb_selected"
+                            app:fontFamily="@string/font_poppins_regular"
+                            android:checked="true"
+                            android:layout_margin="@dimen/_2sdp"
+                            android:textSize="@dimen/_14sp" />
+
+                        <RadioButton
+                            android:id="@+id/rb_business"
+                            android:layout_width="0dp"
+                            android:layout_weight="50"
+                            android:layout_height="@dimen/_30sdp"
+                            android:text="@string/business"
+                            android:textColor="@color/color17"
+                            app:fontFamily="@string/font_poppins_regular"
+                            android:background="@drawable/bg_signup_rb_unselected"
+                            android:paddingStart="@dimen/_4sdp"
+                            android:layout_margin="@dimen/_2sdp"
+                            android:textSize="@dimen/_14sp" />
+
+                    </RadioGroup>
+
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_enter_credentials"
+                        android:layout_below="@+id/rg_individual_business"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/username"

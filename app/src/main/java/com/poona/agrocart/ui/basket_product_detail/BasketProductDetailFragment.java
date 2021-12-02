@@ -14,6 +14,9 @@ import com.poona.agrocart.databinding.FragmentBasketProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.basket_product_detail.view_model.BasketProductViewModel;
 import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
+import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
+import com.poona.agrocart.ui.product_detail.model.ProductComment;
+
 import java.util.ArrayList;
 import me.huseyinozer.TooltipIndicator;
 
@@ -37,6 +40,11 @@ public class BasketProductDetailFragment extends BaseFragment implements View.On
     private TooltipIndicator tbIndicator;
     private BasketProductViewModel basketProductViewModel;
 
+
+    private RecyclerView rvProductComment;
+    private ProductCommentsAdapter productCommentsAdapter;
+    private ArrayList<ProductComment> commentArrayList;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -45,8 +53,35 @@ public class BasketProductDetailFragment extends BaseFragment implements View.On
         final View view = fragmentBasketProductDetailBinding.getRoot();
 
         initView();
+        setRvAdapter();
+        setRvAdapterForComments();
 
         return view;
+    }
+
+    private void setRvAdapterForComments()
+    {
+        commentArrayList=new ArrayList<>();
+        prepareCommentsList();
+
+        linearLayoutManager = new LinearLayoutManager(requireContext());
+        rvProductComment.setHasFixedSize(true);
+        rvProductComment.setLayoutManager(linearLayoutManager);
+
+        productCommentsAdapter = new ProductCommentsAdapter(commentArrayList);
+        rvProductComment.setAdapter(productCommentsAdapter);
+    }
+
+    private void prepareCommentsList()
+    {
+        for(int i = 0; i < 2; i++)
+        {
+            ProductComment comment = new ProductComment();
+            comment.setUserName(getString(R.string.johnson_doe));
+            comment.setDate(getString(R.string._12_jan_2021));
+            comment.setComment(getString(R.string.lorem_ipsum_dolor_sit_amet_consectetur_adipiscing));
+            commentArrayList.add(comment);
+        }
     }
 
     private void initView()
@@ -68,6 +103,7 @@ public class BasketProductDetailFragment extends BaseFragment implements View.On
         vpImages=fragmentBasketProductDetailBinding.vpProductImages;
         tbIndicator = fragmentBasketProductDetailBinding.tlIndicators;
         rvBasketContent=fragmentBasketProductDetailBinding.rvBasketContents;
+        rvProductComment=fragmentBasketProductDetailBinding.rvProductComment;
 
         imgsList=new ArrayList<>();
         imgsList.add(R.drawable.img_basket);
@@ -81,12 +117,11 @@ public class BasketProductDetailFragment extends BaseFragment implements View.On
             setViewPagerAdapterItems();
         }
 
-        setRvAdapter();
-        setValues();
     }
 
     private void setRvAdapter()
     {
+        setValues();
         basketContentArrayList=new ArrayList<>();
         prepareListingData();
 
