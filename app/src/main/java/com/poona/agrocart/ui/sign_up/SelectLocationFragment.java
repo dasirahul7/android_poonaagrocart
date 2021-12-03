@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.select_location;
+package com.poona.agrocart.ui.sign_up;
 
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 

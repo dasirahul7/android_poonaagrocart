@@ -142,6 +142,7 @@
         <entry key="app/src/main/res/layout/fragment_intro_item.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_intro_screen.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_intro_screen_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_location.xml" value="0.14130434782608695" />
         <entry key="app/src/main/res/layout/fragment_log_in.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_my_basket.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_my_cart.xml" value="0.15489130434782608" />
@@ -155,7 +156,7 @@
         <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_product_list.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.13269927536231885" />
-        <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.13269927536231885" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.13269927536231885" />
         <entry key="app/src/main/res/layout/fragment_splash_screen.xml" value="0.1" />
@@ -165,7 +166,7 @@
         <entry key="app/src/main/res/layout/home_best_selling_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/home_cat_item.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/menu_item.xml" value="0.16259057971014493" />
-        <entry key="app/src/main/res/layout/nav_header_home.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/nav_header_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/privacy_fragment.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/row_banner.xml" value="0.14356884057971014" />
@@ -187,6 +188,7 @@
         <entry key="app/src/main/res/layout/rv_store.xml" value="0.22" />
         <entry key="app/src/main/res/layout/rv_ticket.xml" value="0.18" />
         <entry key="app/src/main/res/layout/rv_ticket_comment.xml" value="0.15534420289855072" />
+        <entry key="app/src/main/res/layout/toast_layout.xml" value="0.9" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.21" />
         <entry key="app/src/main/res/layout/toolbar_splash_screen_act.xml" value="0.14356884057971014" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.33" />
