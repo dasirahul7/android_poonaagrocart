@@ -29,9 +29,9 @@ android {
 
     buildTypes {
         release {
+            minifyEnabled true
+            shrinkResources true
             //manifestPlaceholders = [ mapsApiKey: "AIzaSyDHYoOXbCOt_AgEbUXbj0DSowKgHFwtdGA" ] //production key
-
-            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             android.applicationVariants.all { variant ->
                 variant.outputs.all {
@@ -47,7 +47,8 @@ android {
             }
         }
         debug {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             android.applicationVariants.all { variant ->
                 variant.outputs.all {

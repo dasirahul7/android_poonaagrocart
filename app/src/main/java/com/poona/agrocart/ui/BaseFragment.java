@@ -102,6 +102,7 @@ public abstract class BaseFragment extends Fragment {
 
 
     //    Title and app logo on actionBar
+    @SuppressLint("ResourceType")
     protected void initTitleBar(String title) {
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
             Drawable d = ResourcesCompat.getDrawable(getResources(),
@@ -118,6 +119,7 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
     }
+    @SuppressLint("ResourceType")
     protected void initTitleWithBackBtn(String title) {
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
             Drawable d = ResourcesCompat.getDrawable(getResources(),
@@ -507,6 +509,7 @@ public abstract class BaseFragment extends Fragment {
 
     public String displayFileName = null;
 
+    @SuppressLint("Range")
     protected File onSelectImageFCResult(Intent data) {
         Bitmap bm = null;
         String path = "";
@@ -543,6 +546,7 @@ public abstract class BaseFragment extends Fragment {
         return f;
     }
 
+    @SuppressLint("Range")
     protected File onSelectPdfFCResult(Intent data) {
         File myFile = null;
 
