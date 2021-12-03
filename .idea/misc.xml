@@ -107,6 +107,7 @@
         <entry key="app/src/main/res/drawable/tab_color.xml" value="0.17222222222222222" />
         <entry key="app/src/main/res/drawable/unselected_dot.xml" value="0.20462962962962963" />
         <entry key="app/src/main/res/drawable/viewpager_tab_selector.xml" value="0.20462962962962963" />
+        <entry key="app/src/main/res/font/adamina.xml" value="0.11927083333333334" />
         <entry key="app/src/main/res/layout/about_us_fragment.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/activity_dash_board.xml" value="0.1431159420289855" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.13269927536231885" />
