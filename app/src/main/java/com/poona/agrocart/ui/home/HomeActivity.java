@@ -74,15 +74,6 @@ public class HomeActivity extends BaseActivity {
         drawer = binding.drawerLayout;
         navigationView = binding.navView;
         bottomNavigationView=binding.appBarHome.bottomNavigationView;
-//        float radius = 50f;
-//        ShapeAppearanceModel shapeAppearanceModel = new ShapeAppearanceModel()
-//                .toBuilder()
-//                .setTopLeftCorner(CornerFamily.ROUNDED,radius)
-//                .setTopRightCorner(CornerFamily.ROUNDED,radius)
-//                .build();
-//        MaterialShapeDrawable shapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
-//        ViewCompat.setBackground(bottomNavigationView,shapeDrawable);
-//        shapeDrawable.setFillColor(ColorStateList.valueOf(Color.WHITE));
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -119,7 +110,6 @@ public class HomeActivity extends BaseActivity {
             public void onClick(View v) {
                 if (!HomeActivity.this.binding.drawerLayout.isDrawerOpen((int) GravityCompat.START)) {
                     HomeActivity.this.binding.drawerLayout.openDrawer((int) GravityCompat.START);
-
                 } else {
                     HomeActivity.this.binding.drawerLayout.closeDrawer((View) binding.drawerLayout);
                 }
