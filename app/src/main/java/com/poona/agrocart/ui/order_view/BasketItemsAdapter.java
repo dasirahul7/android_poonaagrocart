@@ -1,5 +1,8 @@
 package com.poona.agrocart.ui.order_view;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +18,13 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
 {
     private ArrayList<BasketItem> basketItems;
     private boolean isBasketVisible;
+    private Context context;
 
-    public BasketItemsAdapter(ArrayList<BasketItem> basketItems,boolean isBasketVisible)
+    public BasketItemsAdapter(ArrayList<BasketItem> basketItems,boolean isBasketVisible,Context context)
     {
         this.basketItems = basketItems;
         this.isBasketVisible=isBasketVisible;
+        this.context=context;
     }
 
     @NonNull
@@ -36,7 +41,7 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
     {
         final BasketItem basketItem = basketItems.get(position);
         holder.rvBasketDetailBinding.setBasketItemModel(basketItem);
-        holder.bind(basketItem);
+        holder.bind(basketItem,context);
     }
 
     @Override
@@ -74,9 +79,25 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
             }
         }
 
-        public void bind(BasketItem basketItem)
+        @SuppressLint("ResourceType")
+        public void bind(BasketItem basketItem, Context context)
         {
             rvBasketDetailBinding.setVariable(BR.basketItemModel,basketItem);
+
+            if(this.isBasketVisible)
+            {
+                if (basketItem.getDeliveryStatus().equals("Delivered")) {
+                    rvBasketDetailBinding.tvOrderStatus.setText(context.getString(R.string.delivered));
+                    rvBasketDetailBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_in_process)));
+                } else if (basketItem.getDeliveryStatus().equals("In transist")) {
+                    rvBasketDetailBinding.btnTrackOrder.setVisibility(View.VISIBLE);
+                    rvBasketDetailBinding.tvOrderStatus.setVisibility(View.GONE);
+                } else {
+                    rvBasketDetailBinding.tvOrderStatus.setText(context.getString(R.string.confirmed));
+                    rvBasketDetailBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_invoice_btn)));
+                }
+            }
+
             rvBasketDetailBinding.executePendingBindings();
         }
     }

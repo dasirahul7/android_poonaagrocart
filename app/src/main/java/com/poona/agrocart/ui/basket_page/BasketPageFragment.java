@@ -54,7 +54,7 @@ public class BasketPageFragment extends BaseFragment {
         final View view = ((ViewDataBinding) fragmentBasketPageBinding).getRoot();
         if ((getArguments() != null ? getArguments().getString("Title") : null) != null)
             BasketType = getArguments().getString("Title");
-        initTitleBar(BasketType);
+        initTitleWithBackBtn(getString(R.string.basket));
 
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setOnClickListener(v -> {
@@ -169,6 +169,7 @@ public class BasketPageFragment extends BaseFragment {
 
     private void initView() {
         this.rvBasketCards = fragmentBasketPageBinding.rvBasketCards;
+
         bottomSheetBehavior = BottomSheetBehavior.from(fragmentBasketPageBinding.bottomView);
         fragmentBasketPageBinding.filterView.closeBtn.setOnClickListener(v -> {
             closeFilter();

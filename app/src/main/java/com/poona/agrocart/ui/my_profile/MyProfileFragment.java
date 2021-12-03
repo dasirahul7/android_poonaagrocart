@@ -101,7 +101,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         mMonth = mcurrentDate.get(Calendar.MONTH);
         mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-        dpd = new DatePickerDialog(requireContext(), R.style.datepicker, new DatePickerDialog.OnDateSetListener() {
+        dpd = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     String txtDisplayDate = null;

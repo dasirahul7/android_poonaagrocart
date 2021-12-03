@@ -537,7 +537,6 @@
             <RatingBar
                 android:id="@+id/rating_bar_input"
                 android:layout_width="wrap_content"
-                android:rating="3.5"
                 android:theme="@style/theme_rating_bar"
                 android:layout_height="match_parent"
                 android:numStars="5"
@@ -595,10 +594,112 @@
                 android:textSize="@dimen/_18sp"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginVertical="@dimen/_10sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_feedback"
                 app:setCustomFont="@string/font_poppins_semi_bold"
                 tools:layout_editor_absoluteX="16dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardview_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_2sdp"
+                app:cardCornerRadius="@dimen/_12sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginVertical="@dimen/_8sdp"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/colorLightGrey"
+                app:strokeWidth="@dimen/_1sdp"
+                app:contentPadding="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@+id/btn_submit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="100">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:src="@drawable/img_profile_picture"/>
+
+                        <LinearLayout
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="100">
+
+                                <com.poona.agrocart.widgets.CustomTextView
+                                    android:layout_width="0dp"
+                                    android:layout_weight="70"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_3sdp"
+                                    android:gravity="start"
+                                    android:text="@string/johnson_doe"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_16sp"
+                                    app:setCustomFont="@string/font_poppins_semi_bold" />
+
+                                <com.poona.agrocart.widgets.CustomTextView
+                                    android:layout_width="0dp"
+                                    android:layout_weight="70"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_3sdp"
+                                    android:layout_marginEnd="@dimen/_4sdp"
+                                    android:gravity="end"
+                                    android:text="@string/_30_11_12"
+                                    android:textColor="@color/color17"
+                                    android:textSize="@dimen/_16sp"
+                                    app:setCustomFont="@string/font_poppins_regular" />
+
+                            </LinearLayout>
+
+                            <RatingBar
+                                android:id="@+id/rating_bar"
+                                android:layout_width="wrap_content"
+                                android:theme="@style/theme_rating_bar"
+                                style="@style/Widget.AppCompat.RatingBar.Indicator"
+                                android:layout_height="match_parent"
+                                android:numStars="5"
+                                android:stepSize="0.5"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@color/color17"
+                        />
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:gravity="start"
+                        android:text="@string/lorem_ipsum_dolor_sit_amet_consectetur_adipiscing"
+                        android:textColor="@color/color17"
+                        android:textSize="@dimen/_16sp"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

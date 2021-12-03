@@ -97,8 +97,10 @@
 
     <!--Calender style-->
     <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
-        <!--item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item-->
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:colorAccent">@color/colorPrimary</item>
+        <!--item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item-->
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
@@ -106,11 +108,6 @@
     <!--Style for address radio buttons-->
     <style name="RadioButtonAddress" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/bg_radio_button</item>
-    </style>
-
-    <!--Style for sign up radio buttons-->
-    <style name="RadioButtonSignup" parent="@android:style/Widget.CompoundButton.RadioButton">
-        <item name="android:button">@drawable/bg_radio_button_sign_up</item>
     </style>
 
     <style name="NavigationDrawerStyle">

@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.my_cart;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ import com.poona.agrocart.ui.favourites.FavouriteItem;
 import com.poona.agrocart.ui.favourites.FavouriteItemAdapter;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MyCartFragment extends BaseFragment implements View.OnClickListener
 {
@@ -29,6 +31,37 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     private LinearLayoutManager linearLayoutManager;
     private CartItemsAdapter cartItemsAdapter;
     private ArrayList<CartItem> cartItemArrayList;
+    private View navHostFragment;
+    private ViewGroup.MarginLayoutParams navHostMargins;
+    private float scale;
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.VISIBLE);
+        setBottomMarginInDps(50);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.VISIBLE);
+        setBottomMarginInDps(50);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+        setBottomMarginInDps(0);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+        setBottomMarginInDps(0);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -37,7 +70,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         fragmentMyCartBinding.setLifecycleOwner(this);
         final View view = ((ViewDataBinding) fragmentMyCartBinding).getRoot();
 
-        initTitleBar(getString(R.string.my_basket));
         initView();
         setRvAdapter();
 
@@ -47,8 +79,21 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     private void initView()
     {
         fragmentMyCartBinding.btnPlaceOrder.setOnClickListener(this);
-
+        initTitleBar(getString(R.string.my_cart));
         rvCart=fragmentMyCartBinding.rvCart;
+        scale = getResources().getDisplayMetrics().density;
+
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+
+        navHostFragment=((AppCompatActivity) requireActivity()).findViewById(R.id.nav_host_fragment_content_home);
+        navHostMargins = (ViewGroup.MarginLayoutParams) navHostFragment.getLayoutParams();
+        navHostMargins.bottomMargin = 0;
+    }
+
+    private void setBottomMarginInDps(int i)
+    {
+        int dpAsPixels = (int) (i*scale + 0.5f);
+        navHostMargins.bottomMargin = dpAsPixels;
     }
 
     private void setRvAdapter()

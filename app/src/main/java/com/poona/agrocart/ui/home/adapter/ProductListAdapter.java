@@ -67,7 +67,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         public BestSellingHolder(RowBestSellingItemBinding rowItemBinding) {
             super(rowItemBinding.getRoot());
             rowItemBinding.cardviewProduct.setOnClickListener(v -> {
-                redirectToProductDetails(v);
+                redirectToProductDetails(view);
+            });
+
+            rowItemBinding.imgPlus.setOnClickListener(v -> {
+                gotoCart(view);
             });
         }
 
@@ -76,13 +80,18 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details);
         }
 
-        public BestSellingHolder(RowProductItemBinding rowProductItemBinding) {
+        public BestSellingHolder(RowProductItemBinding rowProductItemBinding)
+        {
             super(rowProductItemBinding.getRoot());
+
             rowProductItemBinding.cardviewProduct.setOnClickListener(v -> {
-                redirectToProductDetails(v);
+                redirectToProductDetails(view);
+            });
+
+            rowProductItemBinding.imgPlus.setOnClickListener(v -> {
+                gotoCart(view);
             });
         }
-
 
         public void bind(Product product) {
             if (product.getOffer().isEmpty())
@@ -94,8 +103,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             }
             rowItemBinding.setVariable(BR.productModule,product);
             rowItemBinding.executePendingBindings();
-
-            rowItemBinding.cardviewProduct.setOnClickListener(ProductListAdapter.this::gotoProductDetails);
         }
         public void bindProduct(Product product)
         {
@@ -103,16 +110,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 rowProductItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
                 rowProductItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
                 rowItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
-
-
             }
             rowProductItemBinding.setVariable(BR.productModule,product);
             rowProductItemBinding.executePendingBindings();
-            rowProductItemBinding.cardviewProduct.setOnClickListener(ProductListAdapter.this::gotoProductDetails);
         }
     }
 
-    private void gotoProductDetails(View v) {
-        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details);
+    private void gotoCart(View v)
+    {
+        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_cart);
     }
 }

@@ -35,7 +35,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         initView();
         setRVAdapter();
 
-        initTitleBar(getString(R.string.order_view));
+        initTitleWithBackBtn(getString(R.string.order_view));
 
         return view;
     }
@@ -68,7 +68,6 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
     private void setBasketContentsVisible()
     {
-
         fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.tvProductDetails.setVisibility(View.GONE);
         fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
@@ -85,7 +84,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         rvBasketListItems.setHasFixedSize(true);
         rvBasketListItems.setLayoutManager(linearLayoutManager);
 
-        basketItemsAdapter = new BasketItemsAdapter(basketItemList,isBasketVisible);
+        basketItemsAdapter = new BasketItemsAdapter(basketItemList,isBasketVisible,getContext());
         rvBasketListItems.setAdapter(basketItemsAdapter);
     }
 
@@ -98,7 +97,12 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             basketItem.setWeight("250gms");
             basketItem.setDate("22nd Sept 2021");
             basketItem.setTime("9.00 am to 9.00 pm");
-            basketItem.setDeliveryStatus("Delivered");
+            if(i==0)
+                basketItem.setDeliveryStatus("Delivered");
+            else if(i==2 || i==3)
+                basketItem.setDeliveryStatus("Confirmed");
+            else
+                basketItem.setDeliveryStatus("In transist");
             basketItem.setPrice("Rs.200");
             basketItemList.add(basketItem);
         }

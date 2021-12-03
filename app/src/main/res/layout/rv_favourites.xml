@@ -11,6 +11,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardview_favourite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -104,6 +105,7 @@
                     android:src="@drawable/ic_red_heart" />
 
                 <ImageView
+                    android:id="@+id/img_plus"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="50"
