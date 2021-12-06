@@ -6,14 +6,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentCouponBinding;
@@ -35,7 +33,7 @@ public class CouponFragment extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         fragmentCouponBinding = FragmentCouponBinding.inflate(getLayoutInflater());
         mViewModel = new ViewModelProvider(this).get(CouponViewModel.class);
-        initTitleBar(getString(R.string.offer_coupons));
+        initTitleBar(getString(R.string.menu_offer_coupons));
         setCoupons();
         View view = fragmentCouponBinding.getRoot();
         return view;

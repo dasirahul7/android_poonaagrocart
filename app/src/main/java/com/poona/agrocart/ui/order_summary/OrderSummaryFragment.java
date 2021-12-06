@@ -32,28 +32,28 @@ public class OrderSummaryFragment extends BaseFragment
     @Override
     public void onPause() {
         super.onPause();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.VISIBLE);
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_navigation_view).setVisibility(View.VISIBLE);
         setBottomMarginInDps(50);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.VISIBLE);
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_navigation_view).setVisibility(View.VISIBLE);
         setBottomMarginInDps(50);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_navigation_view).setVisibility(View.GONE);
         setBottomMarginInDps(0);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_navigation_view).setVisibility(View.GONE);
         setBottomMarginInDps(0);
     }
 
@@ -112,7 +112,7 @@ public class OrderSummaryFragment extends BaseFragment
 
         scale = getResources().getDisplayMetrics().density;
 
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_navigation_view).setVisibility(View.GONE);
 
         navHostFragment=((AppCompatActivity) requireActivity()).findViewById(R.id.nav_host_fragment_content_home);
         navHostMargins = (ViewGroup.MarginLayoutParams) navHostFragment.getLayoutParams();

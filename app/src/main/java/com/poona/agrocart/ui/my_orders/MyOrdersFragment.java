@@ -32,7 +32,7 @@ public class MyOrdersFragment extends BaseFragment {
         initView();
         setRvAdapter(root);
 
-        initTitleBar(getString(R.string.my_orders));
+        initTitleBar(getString(R.string.menu_my_orders));
         return root;
     }
 

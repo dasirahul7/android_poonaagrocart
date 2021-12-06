@@ -3,7 +3,6 @@ package com.poona.agrocart.ui.my_basket;
 import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,7 +32,7 @@ public class MyBasketFragment extends BaseFragment
         initView();
         setRvAdapter(view);
 
-        initTitleBar(getString(R.string.my_basket));
+        initTitleBar(getString(R.string.menu_my_basket));
 
         return view;
     }

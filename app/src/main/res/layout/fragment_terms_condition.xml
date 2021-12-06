@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:text="@string/sample_terms"
             android:padding="@dimen/_5sdp"
-            android:textSize="@dimen/_13sdp"
+            android:textSize="@dimen/_12sp"
             android:fontFamily="@font/poppins"
             android:textColor="@color/about_txt_color"
             android:layout_height="wrap_content"/>

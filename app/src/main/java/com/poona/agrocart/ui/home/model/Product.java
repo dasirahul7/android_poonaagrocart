@@ -9,12 +9,15 @@ import com.poona.agrocart.R;
 
 public class Product
 {
-    String id, name, qty,offer, price, offerPrice,img;
+    String id, name, qty,offer, price, offerPrice,img,location,weight,quantity;
     boolean organic;
+
+    public Product() {
+    }
 
     public Product(String id, String name,
                    String qty, String offer, String price,
-                   String offerPrice, String img) {
+                   String offerPrice, String img, String location) {
         this.id = id;
         this.name = name;
         this.qty = qty;
@@ -22,6 +25,15 @@ public class Product
         this.price = price;
         this.offerPrice = offerPrice;
         this.img = img;
+        this.location = location;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getQty() {

@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
@@ -23,7 +22,6 @@ import android.widget.Toast;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentMyProfileBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.login.CommonViewModel;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -78,7 +76,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
     private void initView(View view)
     {
-        initTitleBar(getString(R.string.my_profile));
+        initTitleBar(getString(R.string.menu_my_profile));
         Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_regular));
         fragmentMyProfileBinding.rbMale.setTypeface(font);
         fragmentMyProfileBinding.rbFemale.setTypeface(font);

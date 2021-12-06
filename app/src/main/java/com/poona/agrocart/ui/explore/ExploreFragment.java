@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.view.LayoutInflater;
@@ -18,9 +17,6 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.ExploreFragmentBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.explore.adapter.ExploreItemAdapter;
-import com.poona.agrocart.ui.explore.model.ExploreItems;
-
-import java.util.ArrayList;
 
 public class ExploreFragment extends BaseFragment {
 
@@ -39,7 +35,7 @@ public class ExploreFragment extends BaseFragment {
         exploreFragmentBinding.setLifecycleOwner(this);
         View root = exploreFragmentBinding.getRoot();
         mViewModel = new ViewModelProvider(this).get(ExploreViewModel.class);
-        initTitleBar(getString(R.string.explore));
+        initTitleBar(getString(R.string.menu_explore));
         setExploreList(root);
         return root;
     }

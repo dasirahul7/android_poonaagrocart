@@ -88,8 +88,11 @@ public class HomeFragment extends BaseFragment {
     private void setCartItems(View root) {
         productLists.clear();
         for (int i = 0; i < 4; i++) {
-            Product product = new Product("0", "Potatos", "1kg", "10% Off", "Rs 65", "Rs 35", "https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png");
+            Product product = new Product("0", "Potatos", "1kg", "10% Off", "Rs 65", "Rs 35", "https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png","Pune");
             productLists.add(product);
+            if (i == 3){
+                product.setOrganic(true);
+            }
         }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
@@ -116,14 +119,14 @@ public class HomeFragment extends BaseFragment {
     private void setOfferProduct(View root) {
         offerProducts.clear();
         Product offerProduct = new Product("1", "Red Apple", "1Kg"
-                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png");
+                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png","Pune");
         Product offerProduct1 = new Product("2", "Organic Bananas", "12 pcs"
-                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png");
+                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png","Pune");
         offerProduct1.setOrganic(true);
         Product offerProduct2 = new Product("3", "Red Apple", "1Kg"
-                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png");
+                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png","Pune");
         Product offerProduct3 = new Product("4", "Organic Bananas", "12 pcs"
-                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png");
+                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png","Pune");
         offerProduct3.setOrganic(true);
         offerProducts.add(offerProduct);
         offerProducts.add(offerProduct1);
@@ -139,14 +142,14 @@ public class HomeFragment extends BaseFragment {
     private void setBestSellings(View root) {
         products.clear();
         Product product = new Product("1", "Bell Pepper Red", "1Kg"
-                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png");
+                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png","Pune");
         Product product1 = new Product("2", "Ginger", "250 gms"
-                , "", "", "Rs. 140", "https://www.linkpicture.com/q/ginger.png");
+                , "", "", "Rs. 140", "https://www.linkpicture.com/q/ginger.png","Pune");
         product1.setOrganic(true);
         Product product2 = new Product("3", "Bell Pepper Red", "1Kg"
-                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png");
+                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png","Pune");
         Product product3 = new Product("4", "Ginger", "500 gms"
-                , "10% Off", "Rs280", "Rs. 250", "https://www.linkpicture.com/q/ginger.png");
+                , "10% Off", "Rs280", "Rs. 250", "https://www.linkpicture.com/q/ginger.png","Pune");
 
         products.add(product);
         products.add(product1);

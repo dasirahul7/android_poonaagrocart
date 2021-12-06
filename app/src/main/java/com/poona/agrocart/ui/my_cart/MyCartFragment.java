@@ -20,6 +20,7 @@ import com.poona.agrocart.databinding.FragmentMyCartBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.favourites.FavouriteItem;
 import com.poona.agrocart.ui.favourites.FavouriteItemAdapter;
+import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     private RecyclerView rvCart;
     private LinearLayoutManager linearLayoutManager;
     private CartItemsAdapter cartItemsAdapter;
-    private ArrayList<CartItem> cartItemArrayList;
+    private ArrayList<Product> cartItemArrayList;
     private View navHostFragment;
     private ViewGroup.MarginLayoutParams navHostMargins;
     private float scale;
@@ -38,28 +39,28 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.VISIBLE);
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
         setBottomMarginInDps(50);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.VISIBLE);
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
         setBottomMarginInDps(50);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
         setBottomMarginInDps(0);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
         setBottomMarginInDps(0);
     }
 
@@ -83,7 +84,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         rvCart=fragmentMyCartBinding.rvCart;
         scale = getResources().getDisplayMetrics().density;
 
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.ll_bottom_navigation_view).setVisibility(View.GONE);
+        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
 
         navHostFragment=((AppCompatActivity) requireActivity()).findViewById(R.id.nav_host_fragment_content_home);
         navHostMargins = (ViewGroup.MarginLayoutParams) navHostFragment.getLayoutParams();
@@ -111,13 +112,26 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
     private void prepareListingData()
     {
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < 10; i++)
         {
-            CartItem cartItem = new CartItem();
+            Product cartItem = new Product();
             cartItem.setName("Bell Pepper Red");
-            cartItem.setWeight("1kg");
+            cartItem.setQty("1kg");
             cartItem.setPrice("Rs.30");
-            cartItem.setFinalPrice("RS.25");
+            cartItem.setOfferPrice("RS.25");
+            cartItem.setImg("https://www.linkpicture.com/q/capsicon.png");
+            cartItem.setLocation("Vishrantwadi");
+            if (i==3){
+                cartItem.setName("Potato");
+                cartItem.setQty("2kg");
+                cartItem.setPrice("Rs.50");
+                cartItem.setOfferPrice("RS.40");
+            } if (i==5){
+                cartItem.setName("Potato");
+                cartItem.setQty("2kg");
+                cartItem.setPrice("Rs.50");
+                cartItem.setOfferPrice("RS.40");
+            }
             cartItemArrayList.add(cartItem);
         }
     }

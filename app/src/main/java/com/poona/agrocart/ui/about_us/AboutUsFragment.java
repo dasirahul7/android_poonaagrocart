@@ -1,13 +1,11 @@
 package com.poona.agrocart.ui.about_us;
 
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +30,7 @@ public class AboutUsFragment extends BaseFragment {
         aboutUsBinding = FragmentAboutUsBinding.inflate(getLayoutInflater());
         aboutUsBinding.setLifecycleOwner(this);
         View view = aboutUsBinding.getRoot();
-        initTitleBar(getString(R.string.about_us));
+        initTitleBar(getString(R.string.menu_about_us));
         return view;
     }
 

@@ -33,11 +33,11 @@
 
         <com.poona.agrocart.widgets.CustomTextView
             android:textColor="@color/black"
-            android:text="@string/about_us"
+            android:text="@string/menu_about_us"
             android:textStyle="bold"
             app:setCustomFont="@string/font_poppins_semi_bold"
             android:layout_marginStart="@dimen/_10sdp"
-            android:textSize="@dimen/_16sdp"
+            android:textSize="@dimen/_16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <View
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:text="@string/about_str"
             android:padding="@dimen/_5sdp"
-            android:textSize="@dimen/_13sdp"
+            android:textSize="@dimen/_12sp"
             android:fontFamily="@font/poppins"
             android:textColor="@color/about_txt_color"
             android:layout_height="wrap_content"/>

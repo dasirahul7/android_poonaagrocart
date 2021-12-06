@@ -48,7 +48,7 @@
                             android:padding="@dimen/_5sdp"
                             android:text="@string/filter"
                             android:textColor="@color/clr_enter_otp"
-                            android:textSize="@dimen/_14sdp"
+                            android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
 
                         <ImageView
@@ -93,7 +93,7 @@
                                     android:gravity="center_vertical"
                                     android:text="@string/category"
                                     android:textColor="@color/clr_enter_otp"
-                                    android:textSize="@dimen/_14sdp"
+                                    android:textSize="@dimen/_14sp"
                                     app:setCustomFont="@string/font_poppins_regular" />
 
                                 <com.poona.agrocart.widgets.ExpandIconView
@@ -141,7 +141,7 @@
                                     android:gravity="center_vertical"
                                     android:text="@string/sort_by_filter"
                                     android:textColor="@color/clr_enter_otp"
-                                    android:textSize="@dimen/_14sdp"
+                                    android:textSize="@dimen/_14sp"
                                     app:setCustomFont="@string/font_poppins_regular" />
 
                                 <com.poona.agrocart.widgets.ExpandIconView
@@ -187,7 +187,7 @@
                                     android:gravity="center_vertical"
                                     android:text="@string/brand"
                                     android:textColor="@color/clr_enter_otp"
-                                    android:textSize="@dimen/_14sdp"
+                                    android:textSize="@dimen/_14sp"
                                     app:setCustomFont="@string/font_poppins_regular" />
 
                                 <com.poona.agrocart.widgets.ExpandIconView
@@ -234,7 +234,7 @@
                     android:text="@string/apply_filter"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_bold" />
 
             </RelativeLayout>

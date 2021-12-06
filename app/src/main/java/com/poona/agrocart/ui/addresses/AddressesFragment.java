@@ -66,7 +66,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
     {
         rvAddress=fragmentAddressesBinding.rvAddress;
         fragmentAddressesBinding.btnAddAddress.setOnClickListener(this);
-        initTitleBar(getString(R.string.addresses));
+        initTitleBar(getString(R.string.menu_addresses));
     }
 
     @Override

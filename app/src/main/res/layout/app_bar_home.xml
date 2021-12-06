@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:elevation="4dp"
     tools:context=".ui.home.HomeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foregroundTint="@color/black"
         android:background="@null"
+        android:foregroundTint="@color/black"
         android:theme="@style/Theme.PoonaAgroCart.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -26,10 +29,9 @@
 
                 <ImageView
                     android:id="@+id/logImg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:src="@drawable/ic_poona_agrocart_logo_final" />
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:src="@drawable/poona_logo" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/textTitle"
@@ -40,7 +42,7 @@
                     android:gravity="center"
                     android:paddingEnd="@dimen/_50sdp"
                     android:singleLine="true"
-                    android:text="@string/my_orders"
+                    android:text="@string/menu_my_orders"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp"
                     android:visibility="gone"
@@ -58,26 +60,27 @@
                     android:singleLine="true"
                     android:text="@string/address_location"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_13sdp" />
+                    android:textSize="@dimen/_14sp" />
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/img_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:src="@drawable/ic_delete_black"/>
+                    android:src="@drawable/ic_delete_black"
+                    android:visibility="gone" />
+
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/basket_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_20sdp"
-                    android:src="@drawable/basket_menu"/>
+                    android:src="@drawable/basket_menu"
+                    android:visibility="gone" />
 
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -86,33 +89,46 @@
 
     <include layout="@layout/content_home" />
 
-    <LinearLayout
-        android:id="@+id/ll_bottom_navigation_view"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bottom_menu_card"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:orientation="vertical"
+        android:paddingVertical="@dimen/_10sdp"
+        app:cardUseCompatPadding="true"
+        android:elevation="0dp"
+        app:cardElevation="@dimen/_20sdp"
+        android:layout_marginBottom="-40dp"
+        android:layout_marginLeft="-30dp"
+        android:layout_marginRight="-30dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.top"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation_view"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:background="@drawable/background_bottom_navigation_screen"
-            android:elevation="@dimen/_40sdp"
-            android:fitsSystemWindows="true"
-            app:elevation="@dimen/_16sdp"
-            app:itemIconTint="@drawable/bottom_menu_item_color"
-            app:itemRippleColor="@color/white"
-            app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
-            app:itemTextAppearanceInactive="@style/BottomNavigationView"
-            app:itemTextColor="@color/black"
-            app:labelVisibilityMode="labeled"
-            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
-            app:menu="@menu/bottom_menu"
-            app:setCustomFont="@string/font_poppins_bold" />
-    </LinearLayout>
+            android:layout_height="match_parent">
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:itemIconTint="@drawable/bottom_menu_item_color"
+                app:itemRippleColor="@color/white"
+                app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+                app:itemTextAppearanceInactive="@style/BottomNavigationView"
+                app:itemTextColor="@color/black"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/bottom_menu"
+                app:setCustomFont="@string/font_poppins_bold" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

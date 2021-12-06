@@ -166,7 +166,7 @@ public class ProductListFragment extends BaseFragment
     {
         for(int i = 0; i < 6; i++) {
             Product fruit = new Product("123","Apple","1kg",
-                    "10% Off","Rs.40","Rs.36","https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png");
+                    "10% Off","Rs.40","Rs.36","https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png","Pune");
             fruitsArrayList.add(fruit);
         }
     }
@@ -175,7 +175,7 @@ public class ProductListFragment extends BaseFragment
     {
         for(int i = 0; i < 6; i++) {
             Product vegetable = new Product("123","Ginger","1kg",
-                    "10% Off","Rs.40","Rs.36","https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png");
+                    "10% Off","Rs.40","Rs.36","https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png","Pune");
             vegetableArrayList.add(vegetable);
         }
     }

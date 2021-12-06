@@ -3,7 +3,6 @@ package com.poona.agrocart.ui.favourites;
 import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,7 +29,7 @@ public class FavouriteItemsFragment extends BaseFragment
         fragmentFavouriteItemsBinding.setLifecycleOwner(this);
         final View view = ((ViewDataBinding) fragmentFavouriteItemsBinding).getRoot();
 
-        initTitleBar(getString(R.string.favourite));
+        initTitleBar(getString(R.string.menu_favourite));
         initView();
         setRvAdapter();
 

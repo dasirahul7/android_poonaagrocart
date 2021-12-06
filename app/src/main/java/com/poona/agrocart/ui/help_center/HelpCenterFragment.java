@@ -32,7 +32,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
         initView();
         setRvAdapter();
 
-        initTitleBar(getString(R.string.help_center));
+        initTitleBar(getString(R.string.menu_help_center));
 
         return view;
     }
@@ -41,7 +41,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
     {
         rvTickets=fragmentHelpCenterBinding.rvTickets;
         fragmentHelpCenterBinding.btnCreateNewTicket.setOnClickListener(this);
-        initTitleBar(getString(R.string.addresses));
+        initTitleBar(getString(R.string.menu_addresses));
     }
 
     private void setRvAdapter()

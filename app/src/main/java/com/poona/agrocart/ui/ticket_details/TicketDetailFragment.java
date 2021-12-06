@@ -38,7 +38,7 @@ public class TicketDetailFragment extends BaseFragment
         fragmentTicketDetailBinding.setLifecycleOwner(this);
         final View view = ((ViewDataBinding) fragmentTicketDetailBinding).getRoot();
 
-        initTitleWithBackBtn(getString(R.string.help_center));
+        initTitleWithBackBtn(getString(R.string.menu_help_center));
 
         Bundle bundle=this.getArguments();
         Ticket ticket=new Ticket();

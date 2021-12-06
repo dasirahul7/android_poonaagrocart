@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +34,7 @@ public class NotificationFragment extends BaseFragment {
         notificationBinding = FragmentNotificationBinding.inflate(getLayoutInflater());
         mViewModel = new ViewModelProvider(this).get(NotificationViewModel.class);
         View view = notificationBinding.getRoot();
-        initTitleBar(getString(R.string.notification));
+        initTitleBar(getString(R.string.menu_notification));
         ((HomeActivity)requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.VISIBLE);
         setNotificationItems();
         return view;

@@ -11,35 +11,39 @@
         <item
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_my_order"
-            android:title="@string/my_orders" />
+            android:title="@string/menu_my_orders" />
         <item
             android:id="@+id/nav_address"
             android:icon="@drawable/ic_address"
-            android:title="@string/addresses" />
+            android:title="@string/menu_addresses" />
         <item
             android:id="@+id/nav_basket"
             android:icon="@drawable/ic_my_basket"
-            android:title="@string/my_basket" />
+            android:title="@string/menu_my_basket" />
         <item
             android:id="@+id/nav_wallet"
             android:icon="@drawable/ic_wallet"
-            android:title="@string/wallet_payments" />
+            android:title="@string/menu_wallet_payments" />
         <item
             android:id="@+id/nav_offer"
             android:icon="@drawable/ic_offers"
-            android:title="@string/offer_coupons" />
+            android:title="@string/menu_offer_coupons" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_gallery_icon"
+            android:title="@string/menu_gallery" />
         <item
             android:id="@+id/nav_notification"
             android:icon="@drawable/ic_notifications"
-            android:title="@string/notification" />
+            android:title="@string/menu_notification" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_about_us"
-            android:title="@string/about_us" />
+            android:title="@string/menu_about_us" />
         <item
             android:id="@+id/nav_help_center"
             android:icon="@drawable/ic_help_center"
-            android:title="@string/help_center" />
+            android:title="@string/menu_help_center" />
         <item
             android:id="@+id/nav_privacy"
             android:icon="@drawable/ic_privacy_policy"
@@ -47,18 +51,18 @@
         <item
             android:id="@+id/nav_terms"
             android:icon="@drawable/ic_terms_condition"
-            android:title="@string/terms_conditions" />
+            android:title="@string/menu_terms_conditions" />
         <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_setting"
-            android:title="@string/action_settings" />
+            android:title="@string/menu_settings" />
         <item
             android:id="@+id/nav_store"
             android:icon="@drawable/ic_our_store"
-            android:title="@string/our_store" />
+            android:title="@string/menu_our_store" />
         <item
             android:id="@+id/nav_signout"
             android:icon="@drawable/ic_signout"
-            android:title="@string/sign_out" />
+            android:title="@string/menu_sign_out" />
     </group>
 </menu>

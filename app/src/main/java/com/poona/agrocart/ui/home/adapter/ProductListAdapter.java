@@ -29,7 +29,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private String ListType;
     private View view;
 
-    public ProductListAdapter(ArrayList<Product> products, FragmentActivity context, String listType,View view) {
+    public ProductListAdapter(ArrayList<Product> products, FragmentActivity context, String listType, View view) {
         this.products = products;
         this.bdContext = context;
         this.ListType = listType;
@@ -40,19 +40,19 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public BestSellingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         rowItemBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_best_selling_item, parent, false);
-        rowProductItemBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext),R.layout.row_product_item,parent,false);
+        rowProductItemBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_product_item, parent, false);
         if (ListType.equalsIgnoreCase(PORTRAIT))
-        return new BestSellingHolder(rowItemBinding);
+            return new BestSellingHolder(rowItemBinding);
         else return new BestSellingHolder(rowProductItemBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BestSellingHolder holder, int position) {
         Product product = products.get(position);
-        if (ListType.equalsIgnoreCase(PORTRAIT)){
+        if (ListType.equalsIgnoreCase(PORTRAIT)) {
             rowItemBinding.setProductModule(product);
             holder.bind(product);
-        }else {
+        } else {
             rowProductItemBinding.setProductModule(product);
             holder.bindProduct(product);
         }
@@ -75,13 +75,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             });
         }
 
-        private void redirectToProductDetails(View v)
-        {
+        private void redirectToProductDetails(View v) {
             Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details);
         }
 
-        public BestSellingHolder(RowProductItemBinding rowProductItemBinding)
-        {
+        public BestSellingHolder(RowProductItemBinding rowProductItemBinding) {
             super(rowProductItemBinding.getRoot());
 
             rowProductItemBinding.cardviewProduct.setOnClickListener(v -> {
@@ -94,30 +92,30 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }
 
         public void bind(Product product) {
-            if (product.getOffer().isEmpty())
-            {
+            if (product.getOffer().isEmpty()) {
                 if (product.isOrganic())
-                rowItemBinding.txtOrganic.setVisibility(View.VISIBLE);
+                    rowItemBinding.txtOrganic.setVisibility(View.VISIBLE);
                 rowItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
                 rowItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
             }
-            rowItemBinding.setVariable(BR.productModule,product);
+            rowItemBinding.setVariable(BR.productModule, product);
             rowItemBinding.executePendingBindings();
         }
-        public void bindProduct(Product product)
-        {
-            if (product.getOffer().isEmpty()){
+
+        public void bindProduct(Product product) {
+            if (product.getOffer().isEmpty()) {
+                if (product.isOrganic())
+                    rowProductItemBinding.txtOrganic.setVisibility(View.VISIBLE);
                 rowProductItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
                 rowProductItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
                 rowItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
             }
-            rowProductItemBinding.setVariable(BR.productModule,product);
+            rowProductItemBinding.setVariable(BR.productModule, product);
             rowProductItemBinding.executePendingBindings();
         }
     }
 
-    private void gotoCart(View v)
-    {
+    private void gotoCart(View v) {
         Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_cart);
     }
 }
