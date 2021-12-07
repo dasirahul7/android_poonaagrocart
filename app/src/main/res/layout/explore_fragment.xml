@@ -24,7 +24,7 @@
         android:hint="@string/search_store"
         android:paddingStart="@dimen/_8sdp"
         android:paddingTop="@dimen/_2sdp"
-        android:textColor="@color/color17"
+        android:textColor="@color/color_grey_txt"
         android:textSize="@dimen/_16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

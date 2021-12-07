@@ -59,7 +59,7 @@
                     android:lineSpacingExtra="@dimen/_8sdp"
                     android:padding="@dimen/alerter_padding_small"
                     android:text="@string/otp_sent"
-                    android:textColor="@color/color17"
+                    android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
 

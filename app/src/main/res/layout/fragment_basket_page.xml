@@ -28,7 +28,7 @@
             android:paddingStart="@dimen/_8sdp"
             android:drawablePadding="@dimen/_8sdp"
             app:setCustomFont="@string/font_poppins_regular"
-            android:textColor="@color/color17"
+            android:textColor="@color/color_grey_txt"
             android:textSize="@dimen/_16sp"
             android:hint="@string/search_store"
             android:paddingTop="@dimen/_2sdp"

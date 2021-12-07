@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        app:cardCornerRadius="@dimen/_6sdp"
+        android:id="@+id/cv_weight"
+        android:paddingHorizontal="@dimen/_5sdp"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="@dimen/_5sdp"
+        app:strokeWidth="@dimen/_1sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RadioButton
+            app:useMaterialThemeColors="false"
+            android:id="@+id/radio"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_10sdp"/>
+        <com.poona.agrocart.widgets.CustomTextView
+            android:id="@+id/tv_weight"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_4sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:text="@string/_250gms"
+            android:textAllCaps="false"
+            android:textColor="@color/color_grey_txt"
+            android:textSize="@dimen/_14sp"/>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

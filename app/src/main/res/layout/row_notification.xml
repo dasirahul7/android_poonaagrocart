@@ -71,7 +71,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="0.3"
                         android:text="@{moduleNotification.content}"
-                        android:textColor="@color/color17"
+                        android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 

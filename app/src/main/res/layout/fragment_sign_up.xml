@@ -62,7 +62,7 @@
                         android:layout_below="@+id/tv_loging"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/enter_your_credentials"
-                        android:textColor="@color/color17"
+                        android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -80,7 +80,7 @@
                             android:layout_weight="50"
                             android:layout_height="@dimen/_30sdp"
                             android:text="@string/individual"
-                            android:textColor="@color/color17"
+                            android:textColor="@color/color_grey_txt"
                             android:background="@drawable/bg_signup_rb_selected"
                             app:fontFamily="@string/font_poppins_regular"
                             android:checked="true"
@@ -93,7 +93,7 @@
                             android:layout_weight="50"
                             android:layout_height="@dimen/_30sdp"
                             android:text="@string/business"
-                            android:textColor="@color/color17"
+                            android:textColor="@color/color_grey_txt"
                             app:fontFamily="@string/font_poppins_regular"
                             android:background="@drawable/bg_signup_rb_unselected"
                             android:paddingStart="@dimen/_4sdp"
@@ -110,7 +110,7 @@
                         android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/username"
-                        android:textColor="@color/color17"
+                        android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -138,7 +138,7 @@
                         android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/mobile_no"
-                        android:textColor="@color/color17"
+                        android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -201,7 +201,7 @@
                         android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/email_id_optional"
-                        android:textColor="@color/color17"
+                        android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 

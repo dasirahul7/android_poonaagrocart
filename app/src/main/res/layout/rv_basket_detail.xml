@@ -59,7 +59,7 @@
                 android:layout_marginTop="@dimen/_4sdp"
                 android:layout_height="wrap_content"
                 android:text="@{basketItemModel.weight}"
-                android:textColor="@color/color17"
+                android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp" />
 
             <com.poona.agrocart.widgets.CustomTextView
@@ -69,7 +69,7 @@
                 android:layout_marginTop="@dimen/_4sdp"
                 android:singleLine="true"
                 android:text="@{basketItemModel.date.concat(basketItemModel.time)}"
-                android:textColor="@color/color17"
+                android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_12sp" />
 
             <com.poona.agrocart.widgets.CustomTextView

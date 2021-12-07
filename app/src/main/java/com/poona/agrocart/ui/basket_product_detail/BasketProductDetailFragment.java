@@ -231,23 +231,23 @@ public class BasketProductDetailFragment extends BaseFragment implements View.On
                 fragmentBasketProductDetailBinding.btnWeekly.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
                 fragmentBasketProductDetailBinding.btnMonthly.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
                 fragmentBasketProductDetailBinding.btnDaily.setTextColor(Color.parseColor(getString(R.color.selectedGreen)));
-                fragmentBasketProductDetailBinding.btnWeekly.setTextColor(Color.parseColor(getString(R.color.color17)));
-                fragmentBasketProductDetailBinding.btnMonthly.setTextColor(Color.parseColor(getString(R.color.color17)));
+                fragmentBasketProductDetailBinding.btnWeekly.setTextColor(Color.parseColor(getString(R.color.color_grey_txt)));
+                fragmentBasketProductDetailBinding.btnMonthly.setTextColor(Color.parseColor(getString(R.color.color_grey_txt)));
                 break;
             case R.id.btn_weekly:
                 fragmentBasketProductDetailBinding.btnDaily.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
                 fragmentBasketProductDetailBinding.btnWeekly.setBackgroundResource(R.drawable.bg_btn_weight_selected);
                 fragmentBasketProductDetailBinding.btnMonthly.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentBasketProductDetailBinding.btnDaily.setTextColor(Color.parseColor(getString(R.color.color17)));
+                fragmentBasketProductDetailBinding.btnDaily.setTextColor(Color.parseColor(getString(R.color.color_grey_txt)));
                 fragmentBasketProductDetailBinding.btnWeekly.setTextColor(Color.parseColor(getString(R.color.selectedGreen)));
-                fragmentBasketProductDetailBinding.btnMonthly.setTextColor(Color.parseColor(getString(R.color.color17)));
+                fragmentBasketProductDetailBinding.btnMonthly.setTextColor(Color.parseColor(getString(R.color.color_grey_txt)));
                 break;
             case R.id.btn_monthly:
                 fragmentBasketProductDetailBinding.btnDaily.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
                 fragmentBasketProductDetailBinding.btnWeekly.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
                 fragmentBasketProductDetailBinding.btnMonthly.setBackgroundResource(R.drawable.bg_btn_weight_selected);
-                fragmentBasketProductDetailBinding.btnDaily.setTextColor(Color.parseColor(getString(R.color.color17)));
-                fragmentBasketProductDetailBinding.btnWeekly.setTextColor(Color.parseColor(getString(R.color.color17)));
+                fragmentBasketProductDetailBinding.btnDaily.setTextColor(Color.parseColor(getString(R.color.color_grey_txt)));
+                fragmentBasketProductDetailBinding.btnWeekly.setTextColor(Color.parseColor(getString(R.color.color_grey_txt)));
                 fragmentBasketProductDetailBinding.btnMonthly.setTextColor(Color.parseColor(getString(R.color.selectedGreen)));
                 break;
         }

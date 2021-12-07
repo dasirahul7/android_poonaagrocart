@@ -27,7 +27,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_margin="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="-5dp"
                     android:text="@{productModule.location}"
-                    android:textColor="@color/color17"
+                    android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:drawableStartCompat="@drawable/ic_location_small"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -82,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{productModule.qty}"
-                    android:textColor="@color/color17"
+                    android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
 
@@ -107,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_strikethrough"
                         android:text="@{productModule.price}"
-                        android:textColor="@color/color17"
+                        android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 

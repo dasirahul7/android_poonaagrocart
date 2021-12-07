@@ -15,6 +15,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
+import com.poona.agrocart.ui.product_detail.adapter.WeightAdapter;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
 import java.util.ArrayList;
 import me.huseyinozer.TooltipIndicator;
@@ -88,10 +89,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         fragmentProductDetailBinding.ivPlus.setOnClickListener(this);
         fragmentProductDetailBinding.ivMinus.setOnClickListener(this);
         fragmentProductDetailBinding.ivFavourite.setOnClickListener(this);
-        fragmentProductDetailBinding.btn250gms.setOnClickListener(this);
-        fragmentProductDetailBinding.btn1kg.setOnClickListener(this);
-        fragmentProductDetailBinding.btn500gms.setOnClickListener(this);
-        fragmentProductDetailBinding.btn1pc.setOnClickListener(this);
+//        fragmentProductDetailBinding.btn250gms.setOnClickListener(this);
+//        fragmentProductDetailBinding.btn1kg.setOnClickListener(this);
+//        fragmentProductDetailBinding.btn500gms.setOnClickListener(this);
+//        fragmentProductDetailBinding.btn1pc.setOnClickListener(this);
 
         setValues();
 
@@ -114,13 +115,32 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void setValues()
     {
+        ArrayList<String> weight = new ArrayList<>();
+        weight.add("1kg");
+        weight.add("250gms");
+        weight.add("500gms");
+        weight.add("1pc");
         productDetailViewModel = new ViewModelProvider(this).get(ProductDetailViewModel.class);
         fragmentProductDetailBinding.setProductDetailViewModel(productDetailViewModel);
         productDetailViewModel.productName.setValue(getString(R.string.naturel_red_apple));
-        productDetailViewModel.weightOfProduct.setValue(getString(R.string._1kg));
+        productDetailViewModel.productLocation.setValue("Vishrantwadi");
+        productDetailViewModel.weightOfProduct.setValue(weight);
         productDetailViewModel.price.setValue(getString(R.string.rs_150));
         productDetailViewModel.productDetailBrief.setValue(getString(R.string.apples_are_nutritious_apples_may_be_good_for_weight_loss_apples_may_be_good_for_your_heart_as_part_of_a_healtful_and_varied_diet));
         productDetailViewModel.nutritionDetailBrief.setValue(getString(R.string.apples_are_nutritious_apples_may_be_good_for_weight_loss_apples_may_be_good_for_your_heart_as_part_of_a_healtful_and_varied_diet));
+
+        WeightAdapter weightAdapter = new WeightAdapter(weight,getActivity());
+        fragmentProductDetailBinding.rvWeights.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        fragmentProductDetailBinding.rvWeights.setHasFixedSize(true);
+        fragmentProductDetailBinding.rvWeights.setAdapter(weightAdapter);
+
+        //hide all expanded views initially
+        hideOrShowAboutThisProduct();
+        hideOrShowBenefits();
+        hideOrShowStorageAndUses();
+        hideOrShowOtherProductInfo();
+        hideOrShowVariableWeightPolicy();
+        hideOrShowNutritionDetails();
     }
 
     private void setViewPagerAdapterItems()
@@ -169,18 +189,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             case R.id.iv_favourite:
                 addOrRemoveFromFavourite();
                 break;
-            case R.id.btn_250gms:
-                changeBgOfWeightBtns(R.id.btn_250gms);
-                break;
-            case R.id.btn_500gms:
-                changeBgOfWeightBtns(R.id.btn_500gms);
-                break;
-            case R.id.btn_1kg:
-                changeBgOfWeightBtns(R.id.btn_1kg);
-                break;
-            case R.id.btn_1pc:
-                changeBgOfWeightBtns(R.id.btn_1pc);
-                break;
         }
 
     }
@@ -188,49 +196,49 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     @SuppressLint("ResourceType")
     private void changeBgOfWeightBtns(int id)
     {
-        switch (id)
-        {
-            case R.id.btn_250gms:
-                fragmentProductDetailBinding.btn250gms.setBackgroundResource(R.drawable.bg_btn_weight_selected);
-                fragmentProductDetailBinding.btn500gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn1kg.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn1pc.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn250gms.setTextColor(Color.parseColor(getString(R.color.selectedGreen)));
-                fragmentProductDetailBinding.btn500gms.setTextColor(Color.parseColor(getString(R.color.color17)));
-                fragmentProductDetailBinding.btn1kg.setTextColor(Color.parseColor(getString(R.color.color17)));
-                fragmentProductDetailBinding.btn1pc.setTextColor(Color.parseColor(getString(R.color.color17)));
-                break;
-            case R.id.btn_500gms:
-                fragmentProductDetailBinding.btn250gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn500gms.setBackgroundResource(R.drawable.bg_btn_weight_selected);
-                fragmentProductDetailBinding.btn1kg.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn1pc.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn250gms.setTextColor(Color.parseColor(getString(R.color.color17)));
-                fragmentProductDetailBinding.btn500gms.setTextColor(Color.parseColor(getString(R.color.selectedGreen)));
-                fragmentProductDetailBinding.btn1kg.setTextColor(Color.parseColor(getString(R.color.color17)));
-                fragmentProductDetailBinding.btn1pc.setTextColor(Color.parseColor(getString(R.color.color17)));
-                break;
-            case R.id.btn_1kg:
-                fragmentProductDetailBinding.btn250gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn500gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn1kg.setBackgroundResource(R.drawable.bg_btn_weight_selected);
-                fragmentProductDetailBinding.btn1pc.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn250gms.setTextColor(Color.parseColor(getString(R.color.color17)));
-                fragmentProductDetailBinding.btn500gms.setTextColor(Color.parseColor(getString(R.color.color17)));
-                fragmentProductDetailBinding.btn1kg.setTextColor(Color.parseColor(getString(R.color.selectedGreen)));
-                fragmentProductDetailBinding.btn1pc.setTextColor(Color.parseColor(getString(R.color.color17)));
-                break;
-            case R.id.btn_1pc:
-                fragmentProductDetailBinding.btn250gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn500gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn1kg.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
-                fragmentProductDetailBinding.btn1pc.setBackgroundResource(R.drawable.bg_btn_weight_selected);
-                fragmentProductDetailBinding.btn250gms.setTextColor(Color.parseColor(getString(R.color.color17)));
-                fragmentProductDetailBinding.btn500gms.setTextColor(Color.parseColor(getString(R.color.color17)));
-                fragmentProductDetailBinding.btn1kg.setTextColor(Color.parseColor(getString(R.color.color17)));
-                fragmentProductDetailBinding.btn1pc.setTextColor(Color.parseColor(getString(R.color.drawer_selected_bg_color)));
-                break;
-        }
+//        switch (id)
+//        {
+//            case R.id.btn_250gms:
+//                fragmentProductDetailBinding.btn250gms.setBackgroundResource(R.drawable.bg_btn_weight_selected);
+//                fragmentProductDetailBinding.btn500gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn1kg.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn1pc.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn250gms.setTextColor(Color.parseColor(getString(R.color.selectedGreen)));
+//                fragmentProductDetailBinding.btn500gms.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                fragmentProductDetailBinding.btn1kg.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                fragmentProductDetailBinding.btn1pc.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                break;
+//            case R.id.btn_500gms:
+//                fragmentProductDetailBinding.btn250gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn500gms.setBackgroundResource(R.drawable.bg_btn_weight_selected);
+//                fragmentProductDetailBinding.btn1kg.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn1pc.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn250gms.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                fragmentProductDetailBinding.btn500gms.setTextColor(Color.parseColor(getString(R.color.selectedGreen)));
+//                fragmentProductDetailBinding.btn1kg.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                fragmentProductDetailBinding.btn1pc.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                break;
+//            case R.id.btn_1kg:
+//                fragmentProductDetailBinding.btn250gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn500gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn1kg.setBackgroundResource(R.drawable.bg_btn_weight_selected);
+//                fragmentProductDetailBinding.btn1pc.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn250gms.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                fragmentProductDetailBinding.btn500gms.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                fragmentProductDetailBinding.btn1kg.setTextColor(Color.parseColor(getString(R.color.selectedGreen)));
+//                fragmentProductDetailBinding.btn1pc.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                break;
+//            case R.id.btn_1pc:
+//                fragmentProductDetailBinding.btn250gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn500gms.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn1kg.setBackgroundResource(R.drawable.bg_btn_weight_unselected);
+//                fragmentProductDetailBinding.btn1pc.setBackgroundResource(R.drawable.bg_btn_weight_selected);
+//                fragmentProductDetailBinding.btn250gms.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                fragmentProductDetailBinding.btn500gms.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                fragmentProductDetailBinding.btn1kg.setTextColor(Color.parseColor(getString(R.color.color17)));
+//                fragmentProductDetailBinding.btn1pc.setTextColor(Color.parseColor(getString(R.color.drawer_selected_bg_color)));
+//                break;
+//        }
     }
 
     private void hideOrShowVariableWeightPolicy()

@@ -660,7 +660,7 @@
                                     android:layout_marginEnd="@dimen/_4sdp"
                                     android:gravity="end"
                                     android:text="@string/_30_11_12"
-                                    android:textColor="@color/color17"
+                                    android:textColor="@color/color_grey_txt"
                                     android:textSize="@dimen/_16sp"
                                     app:setCustomFont="@string/font_poppins_regular" />
 
@@ -683,7 +683,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_1sdp"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:background="@color/color17"
+                        android:background="@color/color_grey_txt"
                         />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -693,7 +693,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:gravity="start"
                         android:text="@string/lorem_ipsum_dolor_sit_amet_consectetur_adipiscing"
-                        android:textColor="@color/color17"
+                        android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 

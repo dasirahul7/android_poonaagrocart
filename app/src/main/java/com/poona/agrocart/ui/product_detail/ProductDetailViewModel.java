@@ -6,10 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.List;
+
 public class ProductDetailViewModel extends AndroidViewModel
 {
     public MutableLiveData<String> productName;
-    public MutableLiveData<String> weightOfProduct;
+    public MutableLiveData<String> productLocation;
+    public MutableLiveData<List<String>> weightOfProduct;
     public MutableLiveData<String> price;
     public MutableLiveData<String> quantity;
     public MutableLiveData<String> productDetailBrief;
@@ -21,6 +24,7 @@ public class ProductDetailViewModel extends AndroidViewModel
         super(application);
 
         productName=new MutableLiveData<>();
+        productLocation=new MutableLiveData<>();
         weightOfProduct=new MutableLiveData<>();
         price=new MutableLiveData<>();
         quantity=new MutableLiveData<>();
@@ -29,7 +33,8 @@ public class ProductDetailViewModel extends AndroidViewModel
         ratings=new MutableLiveData<>();
 
         productName.setValue("");
-        weightOfProduct.setValue("");
+        productLocation.setValue("");
+        weightOfProduct.setValue(null);
         price.setValue("");
         quantity.setValue("");
         productDetailBrief.setValue("");
