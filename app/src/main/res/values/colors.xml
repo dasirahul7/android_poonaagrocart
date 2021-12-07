@@ -125,5 +125,6 @@
     <color name="green_bottom_color" tools:keep="@color/green_bottom_color">#FFCFFA73</color>
     <color name="blue_top_color" tools:keep="@color/blue_top_color">#C8EEFE</color>
     <color name="blue_bottom_color" tools:keep="@color/blue_bottom_color">#A3D2FE</color>
+    <color name="red_text_color">#F3603F</color>
 
 </resources>

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.BestSellingHolder> {
     private ArrayList<Product> products = new ArrayList<>();
     private Context bdContext;
-    private RowBestSellingItemBinding rowItemBinding;
+    private RowBestSellingItemBinding rowBestSellingItemBinding;
     private RowProductItemBinding rowProductItemBinding;
     private String ListType;
     private View view;
@@ -39,10 +39,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public BestSellingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        rowItemBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_best_selling_item, parent, false);
+        rowBestSellingItemBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_best_selling_item, parent, false);
         rowProductItemBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_product_item, parent, false);
         if (ListType.equalsIgnoreCase(PORTRAIT))
-            return new BestSellingHolder(rowItemBinding);
+            return new BestSellingHolder(rowBestSellingItemBinding);
         else return new BestSellingHolder(rowProductItemBinding);
     }
 
@@ -50,7 +50,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void onBindViewHolder(@NonNull BestSellingHolder holder, int position) {
         Product product = products.get(position);
         if (ListType.equalsIgnoreCase(PORTRAIT)) {
-            rowItemBinding.setProductModule(product);
+            rowBestSellingItemBinding.setProductModule(product);
             holder.bind(product);
         } else {
             rowProductItemBinding.setProductModule(product);
@@ -92,24 +92,30 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }
 
         public void bind(Product product) {
-            if (product.getOffer().isEmpty()) {
-                if (product.isOrganic())
-                    rowItemBinding.txtOrganic.setVisibility(View.VISIBLE);
-                rowItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
-                rowItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
+            if (product.getOffer().isEmpty())
+                rowBestSellingItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
+            if (product.getOfferPrice().isEmpty())
+                rowBestSellingItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
+            if (product.isOrganic())
+                rowBestSellingItemBinding.txtOrganic.setVisibility(View.VISIBLE);
+            if (product.getQty().equals("0")){
+                rowBestSellingItemBinding.txtItemQty.setVisibility(View.INVISIBLE);
+                rowBestSellingItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
+                rowBestSellingItemBinding.txtItemOfferPrice.setVisibility(View.INVISIBLE);
+                rowBestSellingItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
+                rowBestSellingItemBinding.txtOutOfStock.setVisibility(View.VISIBLE);
             }
-            rowItemBinding.setVariable(BR.productModule, product);
-            rowItemBinding.executePendingBindings();
+            rowBestSellingItemBinding.setVariable(BR.productModule, product);
+            rowBestSellingItemBinding.executePendingBindings();
         }
 
         public void bindProduct(Product product) {
-            if (product.getOffer().isEmpty()) {
-                if (product.isOrganic())
-                    rowProductItemBinding.txtOrganic.setVisibility(View.VISIBLE);
+            if (product.getOffer().isEmpty())
                 rowProductItemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
+            if (product.getPrice().isEmpty())
                 rowProductItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
-                rowItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
-            }
+            if (product.isOrganic())
+                rowProductItemBinding.txtOrganic.setVisibility(View.VISIBLE);
             rowProductItemBinding.setVariable(BR.productModule, product);
             rowProductItemBinding.executePendingBindings();
         }

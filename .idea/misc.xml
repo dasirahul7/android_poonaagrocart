@@ -51,6 +51,7 @@
         <entry key="app/src/main/res/drawable/green_bg.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/green_btn.xml" value="0.15462962962962962" />
         <entry key="app/src/main/res/drawable/green_cart_bg.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/drawable/green_rectangle.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_about_us.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/ic_address.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.19814814814814816" />
@@ -159,7 +160,7 @@
         <entry key="app/src/main/res/layout/fragment_order_track.xml" value="0.15534420289855072" />
         <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.12907608695652173" />
         <entry key="app/src/main/res/layout/fragment_privacy_policy.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_product_list.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.13269927536231885" />
         <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.14" />
