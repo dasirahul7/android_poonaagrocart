@@ -12,9 +12,9 @@ public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPa
     private ProductDetailFragment context;
     private FragmentManager fragmentManager;
     private int lastPosition = 0;
-    private ArrayList<Integer> imgsList;
+    private ArrayList<String> imgsList;
 
-    public ProductImagesAdapter(ProductDetailFragment context, FragmentManager fm, ArrayList<Integer> imgsList)
+    public ProductImagesAdapter(ProductDetailFragment context, FragmentManager fm, ArrayList<String> imgsList)
     {
         super(fm);
         this.fragmentManager = fm;

@@ -3,6 +3,7 @@ package com.poona.agrocart.ui.home.adapter;
 import static com.poona.agrocart.app.AppConstants.PORTRAIT;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }
 
         private void redirectToProductDetails(View v) {
+            Bundle bundle = new Bundle();
+            bundle.putString("name",products.get(getAdapterPosition()).getName());
+            bundle.putString("image",products.get(getAdapterPosition()).getImg());
+            bundle.putString("price",products.get(getAdapterPosition()).getPrice());
             Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details);
         }
 

@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.products_list;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         return vegetableArrayList.size();
     }
 
-    public static class ProductsViewHolder extends RecyclerView.ViewHolder
+    public class ProductsViewHolder extends RecyclerView.ViewHolder
     {
         RowBestSellingItemBinding homeBestSellingItemBinding;
 
@@ -74,6 +75,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         private void redirectToProductsDetail(View v)
         {
+            Bundle bundle = new Bundle();
+            bundle.putString("name",vegetableArrayList.get(getAdapterPosition()).getName());
+            bundle.putString("image",vegetableArrayList.get(getAdapterPosition()).getImg());
+            bundle.putString("price",vegetableArrayList.get(getAdapterPosition()).getPrice());
             Navigation.findNavController(v).navigate(R.id.action_nav_products_list_to_productDetailFragment2);
         }
 

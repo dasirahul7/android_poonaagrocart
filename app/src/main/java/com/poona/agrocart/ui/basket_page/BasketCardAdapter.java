@@ -44,7 +44,7 @@ public class BasketCardAdapter extends RecyclerView.Adapter<BasketCardAdapter.Ba
         return basketCards.size();
     }
 
-    public static class BasketCardViewholder extends RecyclerView.ViewHolder
+    public class BasketCardViewholder extends RecyclerView.ViewHolder
     {
         RvBasketPageCardviewBinding rvBasketPageCardviewBinding;
 
@@ -71,6 +71,9 @@ public class BasketCardAdapter extends RecyclerView.Adapter<BasketCardAdapter.Ba
         {
             Bundle bundle = new Bundle();
             bundle.putString("Product","Basket");
+           bundle.putString("name",basketCards.get(getAdapterPosition()).getProductName());
+           bundle.putString("image",basketCards.get(getAdapterPosition()).getImgUrl());
+           bundle.putString("price",basketCards.get(getAdapterPosition()).getPrice());
             Navigation.findNavController(v).navigate(R.id.action_nav_explore_baskets_to_nav_product_details,bundle);
         }
 
