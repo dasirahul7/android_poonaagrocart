@@ -14,10 +14,12 @@ import java.util.ArrayList;
 public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductCommentsAdapter.CommentViewHolder>
 {
     private ArrayList<ProductComment> commentArrayList;
+    private boolean full;
 
-    public ProductCommentsAdapter(ArrayList<ProductComment> commentArrayList)
+    public ProductCommentsAdapter(ArrayList<ProductComment> commentArrayList, boolean full)
     {
         this.commentArrayList = commentArrayList;
+        this.full = full;
     }
 
     @NonNull
@@ -39,7 +41,9 @@ public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductComments
 
     @Override
     public int getItemCount() {
-        return commentArrayList.size();
+        if (full)
+            return commentArrayList.size();
+        else return 3;
     }
 
     public static class CommentViewHolder extends RecyclerView.ViewHolder
@@ -54,6 +58,7 @@ public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductComments
 
         public void bind(ProductComment comment)
         {
+            rvProductCommentBinding.ratingBar.setRating(comment.getRating());
             rvProductCommentBinding.setVariable(BR.productComment,comment);
             rvProductCommentBinding.executePendingBindings();
         }

@@ -1,8 +1,16 @@
 package com.poona.agrocart.ui.product_detail.model;
 
+import android.widget.ImageView;
+
+import androidx.databinding.BindingAdapter;
+
+import com.bumptech.glide.Glide;
+import com.poona.agrocart.R;
+
 public class ProductComment
 {
-    private String userName,date,rating,comment;
+    private String userName,date,comment,userImg;
+    private float rating;
 
     public String getUserName() {
         return userName;
@@ -20,12 +28,20 @@ public class ProductComment
         this.date = date;
     }
 
-    public String getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    public String getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
     }
 
     public String getComment() {
@@ -34,5 +50,13 @@ public class ProductComment
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @BindingAdapter("setImage")
+    public static void loadImage(ImageView view, String img){
+        Glide.with(view.getContext())
+                .load(img).circleCrop()
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder).into(view);
     }
 }

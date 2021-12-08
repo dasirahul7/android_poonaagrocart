@@ -1,7 +1,6 @@
 package com.poona.agrocart.ui.product_detail;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -61,17 +60,20 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         rvProductComment.setHasFixedSize(true);
         rvProductComment.setLayoutManager(linearLayoutManager);
 
-        productCommentsAdapter = new ProductCommentsAdapter(commentArrayList);
+        productCommentsAdapter = new ProductCommentsAdapter(commentArrayList, false);
         rvProductComment.setAdapter(productCommentsAdapter);
     }
 
     private void prepareCommentsListingData()
     {
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 5; i++)
         {
             ProductComment comment = new ProductComment();
+            comment.setUserImg("https://www.linkpicture.com/q/pngfuel-1-1.png");
+//            comment.setUserImg("https://ibb.co/YXPmn4v");
             comment.setUserName(getString(R.string.johnson_doe));
             comment.setDate(getString(R.string._12_jan_2021));
+            comment.setRating(2.5f);
             comment.setComment(getString(R.string.lorem_ipsum_dolor_sit_amet_consectetur_adipiscing));
             commentArrayList.add(comment);
         }

@@ -70,17 +70,19 @@ public class BasketProductDetailFragment extends BaseFragment implements View.On
         rvProductComment.setHasFixedSize(true);
         rvProductComment.setLayoutManager(linearLayoutManager);
 
-        productCommentsAdapter = new ProductCommentsAdapter(commentArrayList);
+        productCommentsAdapter = new ProductCommentsAdapter(commentArrayList,true);
         rvProductComment.setAdapter(productCommentsAdapter);
     }
 
     private void prepareCommentsList()
     {
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 5; i++)
         {
             ProductComment comment = new ProductComment();
+            comment.setUserImg("https://www.linkpicture.com/q/pngfuel-1-1.png");
             comment.setUserName(getString(R.string.johnson_doe));
             comment.setDate(getString(R.string._12_jan_2021));
+            comment.setRating(3.5f);
             comment.setComment(getString(R.string.lorem_ipsum_dolor_sit_amet_consectetur_adipiscing));
             commentArrayList.add(comment);
         }
