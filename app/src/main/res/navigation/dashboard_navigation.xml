@@ -15,9 +15,6 @@
             android:id="@+id/action_nav_home_to_nav_products_list"
             app:destination="@id/nav_products_list" />
         <action
-            android:id="@+id/action_nav_home_to_basketProductDetailFragment2"
-            app:destination="@id/basketProductDetailFragment2" />
-        <action
             android:id="@+id/action_nav_home_to_nav_our_stores"
             app:destination="@id/nav_store" />
         <action
@@ -91,11 +88,6 @@
         android:id="@+id/nav_product_details"
         android:name="com.poona.agrocart.ui.product_detail.ProductDetailFragment"
         android:label="ProductDetailFragment" />
-
-    <fragment
-        android:id="@+id/basketProductDetailFragment2"
-        android:name="com.poona.agrocart.ui.basket_product_detail.BasketProductDetailFragment"
-        android:label="BasketProductDetailFragment" />
 
     <!--Our stores fragment-->
     <fragment
@@ -181,11 +173,11 @@
         android:name="com.poona.agrocart.ui.basket_page.BasketPageFragment"
         android:label="BasketPageFragment" >
         <action
-            android:id="@+id/action_nav_explore_baskets_to_basketProductDetailFragment2"
-            app:destination="@id/basketProductDetailFragment2" />
-        <action
             android:id="@+id/action_nav_explore_baskets_to_nav_cart"
             app:destination="@id/nav_cart" />
+        <action
+            android:id="@+id/action_nav_explore_baskets_to_nav_product_details"
+            app:destination="@id/nav_product_details" />
     </fragment>
     <fragment
         android:id="@+id/nav_order_track"

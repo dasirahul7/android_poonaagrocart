@@ -55,7 +55,7 @@ public class ProductComment
     @BindingAdapter("setImage")
     public static void loadImage(ImageView view, String img){
         Glide.with(view.getContext())
-                .load(img).circleCrop()
+                .load(img)
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder).into(view);
     }

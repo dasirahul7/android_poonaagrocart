@@ -59,7 +59,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
 
         private void redirectToBasketDetailFragment(View v)
         {
-            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_basketProductDetailFragment2);
+            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details);
         }
 
         public void bind(Basket basket) {

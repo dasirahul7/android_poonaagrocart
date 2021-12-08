@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentOrderTrackBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.basket_product_detail.view_model.BasketProductViewModel;
 
 public class OrderTrackFragment extends BaseFragment
 {

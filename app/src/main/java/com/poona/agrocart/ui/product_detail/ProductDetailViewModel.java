@@ -18,12 +18,14 @@ public class ProductDetailViewModel extends AndroidViewModel
     public MutableLiveData<String> productDetailBrief;
     public MutableLiveData<String> nutritionDetailBrief;
     public MutableLiveData<String> ratings;
+    public MutableLiveData<Boolean> basket;
 
     public ProductDetailViewModel(@NonNull Application application)
     {
         super(application);
 
         productName=new MutableLiveData<>();
+        basket=new MutableLiveData<>();
         productLocation=new MutableLiveData<>();
         weightOfProduct=new MutableLiveData<>();
         price=new MutableLiveData<>();
@@ -32,6 +34,7 @@ public class ProductDetailViewModel extends AndroidViewModel
         nutritionDetailBrief=new MutableLiveData<>();
         ratings=new MutableLiveData<>();
 
+        basket.setValue(null);
         productName.setValue("");
         productLocation.setValue("");
         weightOfProduct.setValue(null);

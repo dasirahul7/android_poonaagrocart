@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.basket_product_detail;
+package com.poona.agrocart.ui.product_detail.model;
 
 public class BasketContent
 {

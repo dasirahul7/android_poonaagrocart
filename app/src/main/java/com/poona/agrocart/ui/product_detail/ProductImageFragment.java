@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentProductImageBinding;
-import com.poona.agrocart.ui.basket_product_detail.BasketProductDetailFragment;
-import com.poona.agrocart.ui.basket_product_detail.BasketProductImgFragment;
 
 import java.util.ArrayList;
 

@@ -1,13 +1,17 @@
-package com.poona.agrocart.ui.basket_product_detail;
+package com.poona.agrocart.ui.product_detail.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RvBasketContentsListBinding;
+import com.poona.agrocart.ui.product_detail.model.BasketContent;
+
 import java.util.ArrayList;
 
 public class BasketContentsAdapter extends RecyclerView.Adapter<BasketContentsAdapter.BasketContentsViewHolder>
@@ -25,7 +29,7 @@ public class BasketContentsAdapter extends RecyclerView.Adapter<BasketContentsAd
     {
         RvBasketContentsListBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_basket_contents_list, parent, false);
-        return new BasketContentsAdapter.BasketContentsViewHolder(binding);
+        return new BasketContentsViewHolder(binding);
     }
 
     @Override
