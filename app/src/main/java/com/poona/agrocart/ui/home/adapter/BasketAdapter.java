@@ -1,6 +1,8 @@
 package com.poona.agrocart.ui.home.adapter;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +43,11 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
     public void onBindViewHolder(@NonNull BasketHolder holder, int position) {
         Basket basket = baskets.get(position);
         basketItemBinding.setBasketModule(basket);
+        int mPosition = position;
+        if (mPosition % 2 == 1)
+            basketItemBinding.basketView.setBackgroundColor(bContext.getColor(R.color.basket_color_honey_dew));
+        else
+            basketItemBinding.basketView.setBackgroundColor(bContext.getColor(R.color.basket_color_old_lace));
         holder.bind(basket);
     }
 

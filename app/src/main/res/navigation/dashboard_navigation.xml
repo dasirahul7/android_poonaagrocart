@@ -93,7 +93,11 @@
     <fragment
         android:id="@+id/nav_store"
         android:name="com.poona.agrocart.ui.our_stores.OurStoresFragment"
-        android:label="OurStoresFragment" />
+        android:label="OurStoresFragment" >
+        <action
+            android:id="@+id/action_nav_store_to_storeLocationFragment"
+            app:destination="@id/storeLocationFragment" />
+    </fragment>
 
     <!--Explore Fragment-->
     <fragment
@@ -195,4 +199,9 @@
         android:id="@+id/nav_setting"
         android:name="com.poona.agrocart.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/storeLocationFragment"
+        android:name="com.poona.agrocart.ui.our_stores.StoreDetailFragment"
+        android:label="store_location_fragment"
+        tools:layout="@layout/fragment_store_detail" />
 </navigation>

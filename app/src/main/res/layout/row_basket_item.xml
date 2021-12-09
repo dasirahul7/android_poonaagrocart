@@ -8,7 +8,8 @@
             type="com.poona.agrocart.ui.home.model.Basket" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/cardview_basket_item"
         android:layout_width="@dimen/_180sdp"
         android:layout_height="@dimen/_80sdp"
@@ -19,9 +20,10 @@
         app:cardCornerRadius="@dimen/_12sdp">
 
         <RelativeLayout
+            android:id="@+id/basket_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#E5F4EA"
+            android:background="@color/basket_color_honey_dew"
             android:gravity="center">
 
             <ImageView

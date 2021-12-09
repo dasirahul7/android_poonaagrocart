@@ -1,9 +1,11 @@
 package com.poona.agrocart.ui.our_stores;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
@@ -44,7 +46,9 @@ public class OurStoreAdapter extends RecyclerView.Adapter<OurStoreAdapter.OurSto
         return ourStoresList.size();
     }
 
-    public static class OurStoreViewHolder extends RecyclerView.ViewHolder
+
+
+    public class OurStoreViewHolder extends RecyclerView.ViewHolder
     {
         RvStoreBinding rvStoreBinding;
 
@@ -52,6 +56,12 @@ public class OurStoreAdapter extends RecyclerView.Adapter<OurStoreAdapter.OurSto
         {
             super(rvStoreBinding.getRoot());
             this.rvStoreBinding=rvStoreBinding;
+            this.rvStoreBinding.storeView.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("store",ourStoresList.get(getAdapterPosition()));
+                StoreDetailFragment.newInstance(ourStoresList.get(getAdapterPosition()));
+                Navigation.findNavController(v).navigate(R.id.action_nav_store_to_storeLocationFragment,bundle);
+            });
         }
 
         public void bind(Store store)

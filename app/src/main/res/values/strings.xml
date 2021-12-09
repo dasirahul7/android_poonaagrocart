@@ -353,6 +353,7 @@
     <string name="_5_0">5.0</string>
     <string name="see_more">See more</string>
     <string name="sample_content">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used.</string>
+    <string name="sample_contact">+91 986 095 3315</string>
     <string name="o3"><b><big>O</big></b><sub>3</sub></string>
     <string name="o_three_content">Lorem ipsum, or lipsum as it is hhggf</string>
 
@@ -368,4 +369,9 @@
     <string name="img_red_apple">https://www.linkpicture.com/q/pngfuel-1-1.png</string>
     <string name="img_banana">https://www.linkpicture.com/q/banana_2.png</string>
     <string name="img_potato">https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png</string>
+    <string name="img_sample_store">https://www.linkpicture.com/q/unsplash_SsKf1L6rWJk-1.png</string>
+    <string name="about_store">About Store</string>
+    <string name="sample_about_store">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper \n\n\nsed aliquam volutpat. Suscipit sem ullamcor per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
+    <string name="store_location">Store Location</string>
+    <string name="sample_address">Nand Nivas  Bhatrau Nivas Vishrantwadi \nPune - 411015.</string>
 </resources>

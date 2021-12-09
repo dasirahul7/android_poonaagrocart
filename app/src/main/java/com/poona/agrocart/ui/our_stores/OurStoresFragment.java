@@ -12,6 +12,9 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentOurStoresBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.our_stores.model.Store;
+import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
+import com.poona.agrocart.ui.product_detail.ProductImageFragment;
+
 import java.util.ArrayList;
 
 public class OurStoresFragment extends BaseFragment
@@ -38,7 +41,7 @@ public class OurStoresFragment extends BaseFragment
     private void setRvAdapter()
     {
         storeArrayList=new ArrayList<>();
-        prepareListingData();
+        storeListData();
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvOurStores.setHasFixedSize(true);
@@ -48,13 +51,17 @@ public class OurStoresFragment extends BaseFragment
         rvOurStores.setAdapter(ourStoreAdapter);
     }
 
-    private void prepareListingData()
+    private void storeListData()
     {
         for(int i = 0; i < 3; i++)
         {
             Store store = new Store();
+            store.setImg(getString(R.string.img_sample_store));
             store.setName(getString(R.string.poona_agro_center));
             store.setLocation(getString(R.string.vishrantwadi_pune));
+            store.setContact(getString(R.string.sample_contact));
+            store.setAbout(getString(R.string.sample_about_store));
+            store.setAddress(getString(R.string.sample_address));
             storeArrayList.add(store);
         }
     }

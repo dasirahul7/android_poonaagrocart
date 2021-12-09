@@ -160,7 +160,8 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="-5dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                >
 
                 <ImageView
                     android:id="@+id/iv_cross"
@@ -173,8 +174,8 @@
 
                 <ImageView
                     android:id="@+id/iv_plus"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:src="@drawable/ic_plus_with_sqaure_bg"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -183,7 +184,7 @@
                 <com.poona.agrocart.widgets.CustomEditText
                     android:id="@+id/et_quantity"
                     android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:background="@color/white"
                     android:enabled="false"
                     android:text="@string/_1"
@@ -197,8 +198,8 @@
 
                 <ImageView
                     android:id="@+id/iv_minus"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/ic_minus_with_square_bg"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/et_quantity" />

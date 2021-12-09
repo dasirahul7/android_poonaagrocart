@@ -9,6 +9,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/store_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -22,15 +23,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
+            android:layout_height="@dimen/_100sdp"
+            android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
                 app:cardBackgroundColor="@color/white"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="30"
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_100sdp"
                 android:padding="@dimen/_10sdp"
                 app:cardCornerRadius="@dimen/_15sdp"
                 app:cardElevation="0dp"
@@ -41,16 +40,15 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/img_shop" />
+                    setStoreImage="@{store.img}" />
 
             </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_8sdp"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:layout_weight="55"
                 android:orientation="vertical">
 
                 <com.poona.agrocart.widgets.CustomTextView
@@ -62,37 +60,22 @@
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:layout_marginBottom="@dimen/_30sdp"
-                    android:gravity="start"
-                    android:weightSum="100">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                        android:src="@drawable/ic_location"
-                        />
                 <com.poona.agrocart.widgets.CustomTextView
+                    android:drawableStart="@drawable/ic_blue_map"
                     android:id="@+id/tv_product_weight"
-                    android:layout_width="0dp"
-                    android:layout_weight="92"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingVertical="@dimen/_2sdp"
-                    android:paddingStart="@dimen/_4sdp"
+                    android:gravity="center_vertical"
+                    android:drawablePadding="@dimen/_2sdp"
                     android:text="@{store.location}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
-
-                </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginVertical="@dimen/_8sdp"
