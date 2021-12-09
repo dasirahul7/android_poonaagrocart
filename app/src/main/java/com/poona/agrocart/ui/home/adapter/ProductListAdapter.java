@@ -81,7 +81,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             bundle.putString("name",products.get(getAdapterPosition()).getName());
             bundle.putString("image",products.get(getAdapterPosition()).getImg());
             bundle.putString("price",products.get(getAdapterPosition()).getPrice());
-            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details);
+            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
         }
 
         public BestSellingHolder(RowProductItemBinding rowProductItemBinding) {

@@ -57,13 +57,6 @@ public class HomeFragment extends BaseFragment {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = fragmentHomeBinding.getRoot();
-        try {
-//            initHomeTitleBar();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
         setBannersView();
         setShopByCategory(root);
         setBestSellings(root);

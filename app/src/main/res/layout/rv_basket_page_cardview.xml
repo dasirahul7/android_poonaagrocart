@@ -31,7 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:src="@drawable/img_diet_basket" />
+                setImage="@{basketCard.imgUrl}"
+                />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_basket_name"

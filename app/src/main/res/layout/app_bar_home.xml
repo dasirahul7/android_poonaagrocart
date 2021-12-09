@@ -58,6 +58,7 @@
                     android:drawableStart="@drawable/ic_location"
                     android:drawableTint="@color/colorGrey"
                     android:singleLine="true"
+                    android:gravity="center_vertical"
                     android:text="@string/address_location"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sp" />

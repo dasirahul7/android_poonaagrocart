@@ -79,7 +79,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             bundle.putString("name",vegetableArrayList.get(getAdapterPosition()).getName());
             bundle.putString("image",vegetableArrayList.get(getAdapterPosition()).getImg());
             bundle.putString("price",vegetableArrayList.get(getAdapterPosition()).getPrice());
-            Navigation.findNavController(v).navigate(R.id.action_nav_products_list_to_productDetailFragment2);
+            Navigation.findNavController(v).navigate(R.id.action_nav_products_list_to_productDetailFragment2,bundle);
         }
 
         public void bind(Product product)

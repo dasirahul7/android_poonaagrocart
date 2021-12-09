@@ -359,4 +359,13 @@
     <!--Cart-->
     <string name="my_cart">My Cart</string>
 
+<!--    Images Urls-->
+
+    <string name="img_bell_pepper_red">https://www.linkpicture.com/q/capsicon.png</string>
+    <string name="img_ginger">https://www.linkpicture.com/q/ginger.png</string>
+    <string name="img_green_leafy">https://www.linkpicture.com/q/green_leafy_vegetable.png</string>
+    <string name="img_tomato">https://www.linkpicture.com/q/tomato_1.png</string>
+    <string name="img_red_apple">https://www.linkpicture.com/q/pngfuel-1-1.png</string>
+    <string name="img_banana">https://www.linkpicture.com/q/banana_2.png</string>
+    <string name="img_potato">https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png</string>
 </resources>

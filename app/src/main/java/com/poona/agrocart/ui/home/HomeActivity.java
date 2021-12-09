@@ -107,7 +107,7 @@ public class HomeActivity extends BaseActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        binding.appBarHome.toolbar.setOnClickListener(new View.OnClickListener() {
+        binding.appBarHome.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!HomeActivity.this.binding.drawerLayout.isDrawerOpen((int) GravityCompat.START)) {
@@ -172,6 +172,17 @@ public class HomeActivity extends BaseActivity {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (binding.appBarHome.basketMenu.getVisibility()==View.VISIBLE)
+                binding.appBarHome.basketMenu.setVisibility(View.GONE);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

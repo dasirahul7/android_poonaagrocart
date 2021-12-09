@@ -54,6 +54,7 @@ public class FavouriteItemsFragment extends BaseFragment
         for(int i = 0; i < 3; i++)
         {
             FavouriteItem favouriteItem = new FavouriteItem();
+            favouriteItem.setImgUrl(getString(R.string.img_bell_pepper_red));
             favouriteItem.setName("Bell Pepper Red");
             favouriteItem.setWeight("1kg");
             favouriteItem.setPrice("RS.30");

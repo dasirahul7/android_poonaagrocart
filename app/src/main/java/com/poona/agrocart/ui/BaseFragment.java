@@ -127,6 +127,7 @@ public abstract class BaseFragment extends Fragment {
             ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationIcon(d);
             ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setPadding(0, 0, 0, 0);
         });
+        ((HomeActivity) requireActivity()).setSupportActionBar(((HomeActivity) requireActivity()).binding.appBarHome.toolbar);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);

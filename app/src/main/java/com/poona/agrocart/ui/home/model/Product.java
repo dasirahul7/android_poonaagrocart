@@ -1,5 +1,7 @@
 package com.poona.agrocart.ui.home.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
@@ -7,8 +9,7 @@ import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 
-public class Product
-{
+public class Product implements Parcelable {
     String id, name, qty,offer, price, offerPrice,img,location,weight,quantity;
     boolean organic;
 
@@ -27,6 +28,32 @@ public class Product
         this.img = img;
         this.location = location;
     }
+
+    protected Product(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        qty = in.readString();
+        offer = in.readString();
+        price = in.readString();
+        offerPrice = in.readString();
+        img = in.readString();
+        location = in.readString();
+        weight = in.readString();
+        quantity = in.readString();
+        organic = in.readByte() != 0;
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 
     public String getLocation() {
         return location;
@@ -106,5 +133,25 @@ public class Product
                 .load(img)
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder).into(view);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(qty);
+        dest.writeString(offer);
+        dest.writeString(price);
+        dest.writeString(offerPrice);
+        dest.writeString(img);
+        dest.writeString(location);
+        dest.writeString(weight);
+        dest.writeString(quantity);
+        dest.writeByte((byte) (organic ? 1 : 0));
     }
 }

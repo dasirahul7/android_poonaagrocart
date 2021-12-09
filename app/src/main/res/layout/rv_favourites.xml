@@ -44,7 +44,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:scaleType="fitXY"
-                    android:src="@drawable/img_bell_pepper_red" />
+                    setImage="@{favouriteItem.imgUrl}"/>
 
             </com.google.android.material.card.MaterialCardView>
 

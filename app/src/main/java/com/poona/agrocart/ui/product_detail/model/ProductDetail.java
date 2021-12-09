@@ -10,6 +10,7 @@ public class ProductDetail {
     public String productLocation;
     public ArrayList<String> weightOfProduct;
     public ArrayList<String> productImages;
+    public String productImage;
     public String price;
     public String quantity;
     public String productDetailBrief;
@@ -23,6 +24,61 @@ public class ProductDetail {
     public String ratings;
     public Boolean basket;
 
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
+
+    public String getAboutProduct() {
+        return aboutProduct;
+    }
+
+    public void setAboutProduct(String aboutProduct) {
+        this.aboutProduct = aboutProduct;
+    }
+
+    public String getBenefitProduct() {
+        return benefitProduct;
+    }
+
+    public void setBenefitProduct(String benefitProduct) {
+        this.benefitProduct = benefitProduct;
+    }
+
+    public String getStorageUses() {
+        return storageUses;
+    }
+
+    public void setStorageUses(String storageUses) {
+        this.storageUses = storageUses;
+    }
+
+    public String getOtherProductInfo() {
+        return otherProductInfo;
+    }
+
+    public void setOtherProductInfo(String otherProductInfo) {
+        this.otherProductInfo = otherProductInfo;
+    }
+
+    public String getValidityWeightPolicy() {
+        return validityWeightPolicy;
+    }
+
+    public void setValidityWeightPolicy(String validityWeightPolicy) {
+        this.validityWeightPolicy = validityWeightPolicy;
+    }
+
+    public String getProductReview() {
+        return productReview;
+    }
+
+    public void setProductReview(String productReview) {
+        this.productReview = productReview;
+    }
 
     public String getProductName() {
         return productName;
