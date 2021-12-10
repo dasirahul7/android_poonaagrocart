@@ -29,7 +29,7 @@ import com.poona.agrocart.ui.login.CommonViewModel;
 
 import java.util.Objects;
 
-public class SignInFragment extends BaseFragment implements View.OnClickListener{
+public class SignInFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentSignInBinding fragmentSignInBinding;
     private CommonViewModel commonViewModel;
@@ -47,11 +47,10 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         return view;
     }
 
-    private void initView(View view)
-    {
+    private void initView(View view) {
         fragmentSignInBinding.ivSignUp.setOnClickListener(this);
 
-        basicDetails=new BasicDetails();
+        basicDetails = new BasicDetails();
 
         commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
         fragmentSignInBinding.setCommonViewModel(commonViewModel);
@@ -65,9 +64,8 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         setUpTextWatcher();
     }
 
-    public void setUpCountryCodePicker()
-    {
-        Typeface typeFace=Typeface.createFromAsset(requireContext().getAssets(),getString(R.string.font_poppins_regular));
+    public void setUpCountryCodePicker() {
+        Typeface typeFace = Typeface.createFromAsset(requireContext().getAssets(), getString(R.string.font_poppins_regular));
         fragmentSignInBinding.countryCodePicker.setTypeFace(typeFace);
 
         basicDetails.setCountryCode(fragmentSignInBinding.countryCodePicker.getDefaultCountryCodeWithPlus());
@@ -76,13 +74,17 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         fragmentSignInBinding.countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
             @Override
             public void onCcpDialogOpen(Dialog dialog) {
-                TextView title=dialog.findViewById(R.id.textView_title);
+                TextView title = dialog.findViewById(R.id.textView_title);
                 title.setText(R.string.select_country);
             }
+
             @Override
-            public void onCcpDialogDismiss(DialogInterface dialogInterface) { }
+            public void onCcpDialogDismiss(DialogInterface dialogInterface) {
+            }
+
             @Override
-            public void onCcpDialogCancel(DialogInterface dialogInterface) { }
+            public void onCcpDialogCancel(DialogInterface dialogInterface) {
+            }
         });
 
         fragmentSignInBinding.countryCodePicker.setOnCountryChangeListener(() -> {
@@ -91,17 +93,19 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         });
     }
 
-    private void setUpTextWatcher()
-    {
+    private void setUpTextWatcher() {
         fragmentSignInBinding.etPhoneNo.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length()==10)
-                {
+                if (s.length() == 10) {
                     hideKeyBoard(requireActivity());
                 }
             }
@@ -110,39 +114,46 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
     @SuppressLint("NonConstantResourceId")
     @Override
-    public void onClick(View v)
-    {
-        signInAndRedirectToVerifyOtp(v);
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.iv_sign_up:
+                signInAndRedirectToVerifyOtp(v);
+                break;
+            case R.id.tv_terms_of_service:
+                signInAndRedirectToTerMs(v);
+                break;
+        }
     }
 
-    private void signInAndRedirectToVerifyOtp(View v)
-    {
+    private void signInAndRedirectToTerMs(View v) {
+        Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_privacyFragment);
+
+    }
+
+    private void signInAndRedirectToVerifyOtp(View v) {
         //scrollview.fullScroll(View.FOCUS_UP);
 
         basicDetails.setMobileNumber(Objects.requireNonNull(fragmentSignInBinding.etPhoneNo.getText()).toString());
         commonViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
 
-        int errorCodeForMobileNumber=basicDetails.isValidMobileNumber();
-        int errorCoedForCountryCode=basicDetails.isValidCountryCode();
-        if(errorCodeForMobileNumber==0){
-            errorToast(requireActivity(),getString(R.string.mobile_number_should_not_be_empty));
-        }
-        else if(errorCodeForMobileNumber==1){
-            errorToast(requireActivity(),getString(R.string.enter_valid_mobile_number));
-        }
-        else if(errorCoedForCountryCode==0){
-            errorToast(requireActivity(),getString(R.string.please_select_country_code));
-        }
-        else{
+        int errorCodeForMobileNumber = basicDetails.isValidMobileNumber();
+        int errorCoedForCountryCode = basicDetails.isValidCountryCode();
+        if (errorCodeForMobileNumber == 0) {
+            errorToast(requireActivity(), getString(R.string.mobile_number_should_not_be_empty));
+        } else if (errorCodeForMobileNumber == 1) {
+            errorToast(requireActivity(), getString(R.string.enter_valid_mobile_number));
+        } else if (errorCoedForCountryCode == 0) {
+            errorToast(requireActivity(), getString(R.string.please_select_country_code));
+        } else {
             hideKeyBoard(requireActivity());
             if (isConnectingToInternet(context)) {
                 //add API call here
-                Bundle bundle=new Bundle();
-                bundle.putString(AppConstants.MOBILE_NO,basicDetails.getMobileNumber());
-                bundle.putString(AppConstants.COUNTRY_CODE,basicDetails.getCountryCode());
-                Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_verifyOtpFragment,bundle);
-            }
-            else {
+                Bundle bundle = new Bundle();
+                bundle.putString(AppConstants.MOBILE_NO, basicDetails.getMobileNumber());
+                bundle.putString(AppConstants.COUNTRY_CODE, basicDetails.getCountryCode());
+                Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_verifyOtpFragment, bundle);
+            } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         }

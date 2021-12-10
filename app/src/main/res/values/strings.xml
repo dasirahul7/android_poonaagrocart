@@ -75,7 +75,7 @@
 
     <!--Verify OTP fragment-->
     <string name="enter_otp">Enter your 4-digit code</string>
-    <string name="otp_sent">We have sent OTP code via SMS to 986 XXX XX XX</string>
+    <string name="otp_sent">We have sent OTP code via SMS to </string>
     <string name="resend_code">Resend Code</string>
     <string name="verify_otp_btn">Verify OTP</string>
     <string name="otp_should_not_be_empty">OTP should not be empty!</string>

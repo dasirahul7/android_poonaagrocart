@@ -141,4 +141,7 @@
         <item name="colorSwitchThumbNormal">@color/color_inactive_switch</item>
     </style>
 
+    <style name="button_style">
+    </style>
+
 </resources>
