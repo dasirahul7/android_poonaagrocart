@@ -47,7 +47,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/vpIntro"
             tools:layout_editor_absoluteX="26dp">
 
-            <Button
+            <com.poona.agrocart.widgets.CustomButton
                 android:id="@+id/btNext"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_43sdp"
@@ -55,8 +55,12 @@
                 android:background="@drawable/green_btn"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
-                android:text="@string/str_next"
-                android:textColor="@color/white" />
+                android:textAllCaps="false"
+                android:text="@string/str_get_started"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textSize="@dimen/_18sp"
+                app:setCustomFont="@string/font_poppins_semi_bold"/>
 
         </LinearLayout>
 
