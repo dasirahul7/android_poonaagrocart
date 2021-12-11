@@ -67,7 +67,6 @@ android {
     buildFeatures {
         dataBinding true
         viewBinding true
-        //viewBinding true
     }
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
@@ -139,10 +138,11 @@ dependencies {
 
     /*Country code spinner*/
     implementation 'com.hbb20:ccp:2.3.1'
+
     /*AutoScroll viewpager*/
     implementation 'com.github.demoNo:AutoScrollViewPager:v1.0.2'
-    //glide
+
+    /*glide*/
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-
 }
