@@ -9,7 +9,7 @@
     android:orientation="horizontal"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.poona.agrocart.widgets.imageview.CircularImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_60sdp"

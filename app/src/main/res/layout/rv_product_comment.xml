@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:weightSum="100">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <com.poona.agrocart.widgets.imageview.CircularImageView
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     setImage="@{productComment.userImg}"/>

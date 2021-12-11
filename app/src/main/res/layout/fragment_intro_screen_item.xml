@@ -27,36 +27,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:background="@drawable/bottom_shadow">
-            <TextView
+
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/introTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:text="Title"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:text="Welcome To Poona Agrocart Welcome To Poona Agrocart"
                 android:textAlignment="center"
-                android:padding="@dimen/_5sdp"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_20sdp"
-                />
+                android:textColor="@color/white"
+                android:textSize="@dimen/_24sp"
+                app:setCustomFont="@string/font_poppins_regular"/>
 
             <TextView
                 android:id="@+id/introDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="120dp"
                 android:gravity="center"
-                android:text="Description"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/_15sdp"
-                />
+                android:textSize="@dimen/_16sp"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:text="Welcome To Poona Agrocart Welcome To Poona Agrocart Welcome To Poona Agrocart Welcome To Poona Agrocart"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:layout_marginBottom="@dimen/_100sdp"/>
 
         </LinearLayout>
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </layout>

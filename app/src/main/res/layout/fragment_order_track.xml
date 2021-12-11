@@ -211,7 +211,7 @@
                         android:layout_height="@dimen/_80sdp"
                         android:orientation="vertical">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
+                        <com.poona.agrocart.widgets.imageview.CircularImageView
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:src="@drawable/ic_tick_green_bg" />
@@ -271,7 +271,7 @@
                         android:layout_height="@dimen/_80sdp"
                         android:orientation="vertical">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
+                        <com.poona.agrocart.widgets.imageview.CircularImageView
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@drawable/ic_grey_circle"
@@ -333,7 +333,7 @@
                         android:layout_height="@dimen/_80sdp"
                         android:orientation="vertical">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
+                        <com.poona.agrocart.widgets.imageview.CircularImageView
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@drawable/ic_grey_circle"
@@ -395,7 +395,7 @@
                         android:layout_height="@dimen/_80sdp"
                         android:orientation="vertical">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
+                        <com.poona.agrocart.widgets.imageview.CircularImageView
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@drawable/ic_grey_circle"
@@ -457,7 +457,7 @@
                         android:layout_height="@dimen/_80sdp"
                         android:orientation="vertical">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
+                        <com.poona.agrocart.widgets.imageview.CircularImageView
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@drawable/ic_grey_circle"

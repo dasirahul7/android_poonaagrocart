@@ -28,11 +28,8 @@ import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.home.model.Product;
-import com.vipulasri.ticketview.Utils;
 
 import java.util.ArrayList;
-
-import okhttp3.internal.Util;
 
 public class HomeFragment extends BaseFragment {
 
@@ -191,7 +188,7 @@ public class HomeFragment extends BaseFragment {
         BannerAdapter bannerAdapter = new BannerAdapter(banners, requireActivity());
 
         fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
-        fragmentHomeBinding.tlIndicators.setupViewPager(fragmentHomeBinding.viewPagerBanner);
+        //fragmentHomeBinding.tlIndicators.setupViewPager(fragmentHomeBinding.viewPagerBanner);
         // tabs.setupWithViewPager(autoScrollViewPager);
 
         // start auto scroll

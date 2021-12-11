@@ -61,7 +61,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_200sdp" />
 
-                    <me.huseyinozer.TooltipIndicator
+                    <!--<me.huseyinozer.TooltipIndicator
                         android:id="@+id/tl_indicators"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                         app:ti_lineWidth="8dp"
                         app:ti_lineWidthSelected="@dimen/_15sdp"
                         app:ti_selectedLineDrawable="@drawable/ic_selected_img"
-                        app:ti_unselectedLineDrawable="@drawable/ic_not_selected_img" />
+                        app:ti_unselectedLineDrawable="@drawable/ic_not_selected_img" />-->
 
 
                 </LinearLayout>
@@ -179,10 +179,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_20sdp"
                         android:layout_margin="@dimen/_4sdp"
-                        android:background="@drawable/background_verify_otp_btn"
+                        android:background="@drawable/background_color_green"
                         android:text="@string/notify_me"
                         android:textAllCaps="false"
-                        android:textColor="@color/background_button_selector_green"
+                        android:textColor="@color/background_color_white_green"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -807,11 +807,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginVertical="@dimen/_10sdp"
-                android:background="@drawable/background_verify_otp_btn"
+                android:background="@drawable/background_color_green"
                 android:padding="@dimen/alerter_padding_small"
                 android:text="@string/submit"
                 android:textAllCaps="false"
-                android:textColor="@color/background_button_selector_green"
+                android:textColor="@color/background_color_white_green"
                 android:textSize="@dimen/_18sp"
                 app:layout_constraintTop_toBottomOf="@+id/et_feedback"
                 app:setCustomFont="@string/font_poppins_regular"
