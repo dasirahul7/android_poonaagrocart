@@ -290,10 +290,14 @@
                         android:background="@drawable/background_color_green"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/sign_up_btn_text"
-                        android:textAllCaps="false"
                         android:textColor="@color/background_color_white_green"
-                        android:textSize="@dimen/_16sp"
-                        app:setCustomFont="@string/font_poppins_regular" />
+                        android:textAllCaps="false"
+                        android:includeFontPadding="false"
+                        android:layout_gravity="center|center_vertical"
+                        android:gravity="center|center_vertical"
+                        android:textSize="@dimen/_18sp"
+                        style="?android:attr/borderlessButtonStyle"
+                        app:setCustomFont="@string/font_poppins_semi_bold"/>
                 </RelativeLayout>
 
             </FrameLayout>

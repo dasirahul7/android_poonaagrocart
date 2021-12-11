@@ -345,12 +345,16 @@
                 android:background="@drawable/bg_track_order_btn"
                 android:text="@string/get_code"
                 android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/background_button_selector_light_greeen"
-                android:textSize="@dimen/_12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardview_expected_delivery"
-                app:setCustomFont="@string/font_poppins_regular" />
+                android:textColor="@color/background_color_white_green"
+                android:textAllCaps="false"
+                android:includeFontPadding="false"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center|center_vertical"
+                android:textSize="@dimen/_18sp"
+                style="?android:attr/borderlessButtonStyle"
+                app:setCustomFont="@string/font_poppins_semi_bold"/>
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_enter_coupon_code"
@@ -401,9 +405,12 @@
                         android:background="@drawable/background_color_green"
                         android:text="@string/remove"
                         android:textAllCaps="false"
-                        android:textColor="@color/background_color_white_green"
-                        android:textSize="@dimen/_12sp"
-                        app:setCustomFont="@string/font_poppins_regular" />
+                        android:includeFontPadding="false"
+                        android:layout_gravity="center|center_vertical"
+                        android:gravity="center|center_vertical"
+                        android:textSize="@dimen/_18sp"
+                        style="?android:attr/borderlessButtonStyle"
+                        app:setCustomFont="@string/font_poppins_semi_bold"/>
 
                 </LinearLayout>
 
@@ -735,15 +742,18 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/background_color_green"
                 android:text="@string/make_payment"
-                android:textAllCaps="false"
-                android:textColor="@color/background_color_white_green"
-                android:textSize="@dimen/_16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_wallet_balance"
-                app:setCustomFont="@string/font_poppins_semi_bold" />
-
+                android:textColor="@color/background_color_white_green"
+                android:textAllCaps="false"
+                android:includeFontPadding="false"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center|center_vertical"
+                android:textSize="@dimen/_18sp"
+                style="?android:attr/borderlessButtonStyle"
+                app:setCustomFont="@string/font_poppins_semi_bold"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

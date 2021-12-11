@@ -211,10 +211,14 @@
                             android:background="@drawable/bg_invoice_btn"
                             android:text="@string/invoice"
                             android:textAlignment="center"
+                            android:textColor="@color/background_color_white_green"
                             android:textAllCaps="false"
-                            android:textColor="@color/background_button_selector_blue"
-                            android:textSize="@dimen/_12sp"
-                            app:setCustomFont="@string/font_poppins_regular" />
+                            android:includeFontPadding="false"
+                            android:layout_gravity="center|center_vertical"
+                            android:gravity="center|center_vertical"
+                            android:textSize="@dimen/_18sp"
+                            style="?android:attr/borderlessButtonStyle"
+                            app:setCustomFont="@string/font_poppins_semi_bold"/>
 
                     </LinearLayout>
 

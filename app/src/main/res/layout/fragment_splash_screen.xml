@@ -67,7 +67,13 @@
                     android:background="@color/colorOrange"
                     android:text="@string/dialog_cancel"
                     android:textColor="@color/white"
-                    app:setCustomFont="@string/font_poppins_regular"/>
+                    app:setCustomFont="@string/font_poppins_regular"
+                    android:textAllCaps="false"
+                    android:includeFontPadding="false"
+                    android:layout_gravity="center|center_vertical"
+                    android:gravity="center|center_vertical"
+                    android:textSize="@dimen/_18sp"
+                    style="?android:attr/borderlessButtonStyle" />
 
                 <com.poona.agrocart.widgets.CustomButton
                     android:id="@+id/btnRetry"
@@ -77,7 +83,14 @@
                     android:background="@color/colorOrange"
                     android:text="@string/retry"
                     android:textColor="@color/white"
-                    app:setCustomFont="@string/font_poppins_regular"/>
+                    app:setCustomFont="@string/font_poppins_regular"
+                    android:textAllCaps="false"
+                    android:includeFontPadding="false"
+                    android:layout_gravity="center|center_vertical"
+                    android:gravity="center|center_vertical"
+                    android:textSize="@dimen/_18sp"
+                    style="?android:attr/borderlessButtonStyle"
+                    />
 
             </LinearLayout>
 

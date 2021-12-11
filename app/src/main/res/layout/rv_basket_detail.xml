@@ -110,12 +110,16 @@
                 android:layout_height="@dimen/_20sdp"
                 android:text="@string/track_order"
                 android:background="@drawable/bg_track_order_btn"
-                android:textColor="@color/color_track_order"
-                android:textAllCaps="false"
-                android:textSize="@dimen/_12sp"
                 android:visibility="gone"
                 android:layout_marginTop="@dimen/_8sdp"
-                app:setCustomFont="@string/font_poppins_regular" />
+                android:textColor="@color/background_color_white_green"
+                android:textAllCaps="false"
+                android:includeFontPadding="false"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center|center_vertical"
+                android:textSize="@dimen/_18sp"
+                style="?android:attr/borderlessButtonStyle"
+                app:setCustomFont="@string/font_poppins_semi_bold"/>
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_order_price"

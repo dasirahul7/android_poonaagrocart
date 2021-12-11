@@ -24,14 +24,18 @@
                 android:padding="@dimen/alerter_padding_small"
                 android:paddingStart="@dimen/_20sdp"
                 android:text="@string/add_new_address"
-                android:textAllCaps="false"
-                android:textColor="@color/background_color_white_green"
-                android:textSize="@dimen/_18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="RtlSymmetry"
-                app:setCustomFont="@string/font_poppins_regular" />
+                android:textColor="@color/background_color_white_green"
+                android:textAllCaps="false"
+                android:includeFontPadding="false"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center|center_vertical"
+                android:textSize="@dimen/_18sp"
+                style="?android:attr/borderlessButtonStyle"
+                app:setCustomFont="@string/font_poppins_semi_bold"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_address"

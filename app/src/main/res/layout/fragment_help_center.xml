@@ -25,11 +25,15 @@
             android:textAllCaps="false"
             android:paddingStart="@dimen/_20sdp"
             android:textColor="@color/background_color_white_green"
-            android:textSize="@dimen/_16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:setCustomFont="@string/font_poppins_semi_bold" />
+            android:includeFontPadding="false"
+            android:layout_gravity="center|center_vertical"
+            android:gravity="center|center_vertical"
+            android:textSize="@dimen/_18sp"
+            style="?android:attr/borderlessButtonStyle"
+            app:setCustomFont="@string/font_poppins_semi_bold"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_tickets"

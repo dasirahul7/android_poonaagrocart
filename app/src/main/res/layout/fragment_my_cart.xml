@@ -123,11 +123,14 @@
                         android:background="@drawable/bg_button_dark_green"
                         android:textAlignment="center"
                         android:text="Place Order"
-                        android:textAllCaps="false"
                         android:paddingHorizontal="@dimen/_25sdp"
-                        android:textColor="@color/background_color_white_green"
-                        android:textSize="@dimen/_16sp"
-                        app:setCustomFont="@string/font_poppins_regular" />
+                        android:textAllCaps="false"
+                        android:includeFontPadding="false"
+                        android:layout_gravity="center|center_vertical"
+                        android:gravity="center|center_vertical"
+                        android:textSize="@dimen/_18sp"
+                        style="?android:attr/borderlessButtonStyle"
+                        app:setCustomFont="@string/font_poppins_semi_bold"/>
 
                     </LinearLayout>
 

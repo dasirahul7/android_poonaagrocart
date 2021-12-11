@@ -67,8 +67,14 @@
                         android:layout_weight="20"
                         android:background="@drawable/bg_add_wallet_amount_btn"
                         android:text="@string/add"
+                        android:textColor="@color/background_color_white_green"
                         android:textAllCaps="false"
-                        android:textColor="@color/background_button_selector_white" />
+                        android:includeFontPadding="false"
+                        android:layout_gravity="center|center_vertical"
+                        android:gravity="center|center_vertical"
+                        android:textSize="@dimen/_18sp"
+                        style="?android:attr/borderlessButtonStyle"
+                        app:setCustomFont="@string/font_poppins_semi_bold"/>
 
                 </LinearLayout>
 

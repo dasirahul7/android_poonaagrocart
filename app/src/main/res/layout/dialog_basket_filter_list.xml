@@ -232,10 +232,14 @@
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:background="@drawable/green_btn"
                     android:text="@string/apply_filter"
+                    android:textColor="@color/background_color_white_green"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14sp"
-                    app:setCustomFont="@string/font_poppins_bold" />
+                    android:includeFontPadding="false"
+                    android:layout_gravity="center|center_vertical"
+                    android:gravity="center|center_vertical"
+                    android:textSize="@dimen/_18sp"
+                    style="?android:attr/borderlessButtonStyle"
+                    app:setCustomFont="@string/font_poppins_semi_bold"/>
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>

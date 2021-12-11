@@ -108,10 +108,13 @@
                     android:background="@drawable/background_color_green"
                     android:padding="@dimen/alerter_padding_small"
                     android:text="@string/verify_otp_btn"
-                    android:textAllCaps="false"
-                    android:textColor="@color/background_color_white_green"
                     android:textSize="@dimen/_16sp"
-                    app:setCustomFont="@string/font_poppins_regular" />
+                    android:textColor="@color/background_color_white_green"
+                    android:textAllCaps="false"
+                    android:includeFontPadding="false"
+                    android:layout_gravity="center|center_vertical"
+                    android:gravity="center|center_vertical"
+                    style="?android:attr/borderlessButtonStyle" />
             </RelativeLayout>
 
         </FrameLayout>
