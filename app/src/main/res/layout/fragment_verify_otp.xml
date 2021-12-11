@@ -32,7 +32,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_18sdp"
                 android:layout_marginTop="@dimen/_40sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:paddingStart="@dimen/alerter_padding_half"
@@ -58,7 +58,8 @@
                     android:layout_marginEnd="@dimen/_80sdp"
                     android:lineSpacingExtra="@dimen/_8sdp"
                     android:padding="@dimen/alerter_padding_small"
-                    android:text="@string/otp_sent"
+                    android:text="@{commonViewModel.otpMobileMsg}"
+                    android:textAllCaps="false"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -70,13 +71,17 @@
                     android:layout_below="@+id/tv_otp_sent"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_80sdp"
+                    android:cursorVisible="false"
                     android:focusable="true"
                     android:inputType="number"
                     android:maxLength="4"
                     android:text="@{commonViewModel.otp}"
                     android:textColor="@color/clr_enter_otp"
+                    android:textCursorDrawable="@color/black"
                     android:textSize="@dimen/_18sp"
-                    android:windowSoftInputMode="stateVisible"/>
+                    android:windowSoftInputMode="stateVisible" />
+
+                <requestFocus/>
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_resend_otp"
@@ -94,16 +99,18 @@
                     android:id="@+id/btn_verify_otp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_resend_otp"
-                    android:layout_marginTop="@dimen/_35sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
                     android:background="@drawable/background_verify_otp_btn"
                     android:padding="@dimen/alerter_padding_small"
                     android:text="@string/verify_otp_btn"
                     android:textAllCaps="false"
+                    android:layout_below="@+id/tv_resend_otp"
+                    android:layout_marginTop="@dimen/_35sdp"
                     android:textColor="@color/background_button_selector_green"
-                    android:textSize="@dimen/_14sp"
+                    android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_regular" />
-
             </RelativeLayout>
 
         </FrameLayout>

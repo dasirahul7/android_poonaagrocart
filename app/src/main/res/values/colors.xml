@@ -46,6 +46,7 @@
     <color name="clr_enter_otp">#181725</color>
     <color name="clr_verify_otp_text">#FFF9FF</color>
     <color name="clr_custom_edit_text_otp">#E2E2E2</color>
+    <color name="color_action_bar">#E5E5E5</color>
     <color name="colorGrey">#999999</color>
     <color name="colorLightGrey">#D5D5D5</color>
     <!-- Home Fragment color-->

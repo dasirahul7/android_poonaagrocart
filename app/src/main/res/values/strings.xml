@@ -75,7 +75,7 @@
 
     <!--Verify OTP fragment-->
     <string name="enter_otp">Enter your 4-digit code</string>
-    <string name="otp_sent">We have sent OTP code via SMS to 986 XXX XX XX</string>
+    <string name="otp_sent">We have sent OTP code via SMS to </string>
     <string name="resend_code">Resend Code</string>
     <string name="verify_otp_btn">Verify OTP</string>
     <string name="otp_should_not_be_empty">OTP should not be empty!</string>
@@ -374,4 +374,7 @@
     <string name="sample_about_store">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper \n\n\nsed aliquam volutpat. Suscipit sem ullamcor per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="store_location">Store Location</string>
     <string name="sample_address">Nand Nivas  Bhatrau Nivas Vishrantwadi \nPune - 411015.</string>
+
+<!--    MAP KEY-->
+    <string name="map_key">AIzaSyDi2KxP5vuvOxYO1qA2i5Ehx-yXY7hcN1Q</string>
 </resources>

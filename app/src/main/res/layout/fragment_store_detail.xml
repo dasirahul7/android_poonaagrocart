@@ -110,7 +110,7 @@
                 android:padding="@dimen/_5sdp"
                 android:text="@{storeDetailViewModel.storeMutableLiveData.about}"
                 android:textColor="@color/about_txt_color"
-                android:textSize="@dimen/_12sp"
+                android:textSize="@dimen/_14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view1"
                 app:setCustomFont="@string/font_poppins_regular" />
@@ -143,7 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_10sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:drawableStart="@drawable/ic_location"
                 android:drawablePadding="@dimen/_5sdp"
                 android:padding="@dimen/_10sdp"
@@ -163,8 +163,11 @@
 
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/mapView"
+                    android:clickable="true"
                     android:layout_height="match_parent"
-                    android:layout_width="match_parent"/>
+                    android:layout_width="match_parent"
+                    android:focusable="true"
+                    class="com.google.android.gms.maps.SupportMapFragment"/>
             </androidx.cardview.widget.CardView>
 
 

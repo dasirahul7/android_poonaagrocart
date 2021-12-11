@@ -68,13 +68,8 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!btnNext.getText().toString().equalsIgnoreCase(getString(R.string.str_get_started))){
-                    vpIntro.setCurrentItem(vpIntro.getCurrentItem() + 1);
-                }
-                else {
                     preferences.setIsIntroRead(true);
                     NavHostFragment.findNavController(IntroScreenFragment.this).navigate(R.id.action_introScreenFragment_to_SignInFragment);
-                }
             }
         });
 
@@ -95,12 +90,7 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
 
     @Override
     public void onAddText(int position) {
-        Log.d(TAG, "onAddText: " + position);
-        if (position == introList.size()-1){
-            btnNext.setText(R.string.str_get_started);
-        }
-        else btnNext.setText(R.string.str_next);
-
+//            btnNext.setText(R.string.str_get_started);
     }
 
     @Override

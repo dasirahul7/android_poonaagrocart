@@ -83,6 +83,12 @@
             app:destination="@id/selectLocationFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_signUpFragment_to_privacyFragment"
+            app:destination="@id/privacyFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_termsConditionFragment"
+            app:destination="@id/termsConditionFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectLocationFragment"
@@ -109,5 +115,13 @@
             app:popUpToInclusive="true"
             app:exitAnim="@anim/fade_out" />
     </fragment>
+    <fragment
+        android:id="@+id/privacyFragment"
+        android:name="com.poona.agrocart.ui.privacy_policy.PrivacyFragment"
+        android:label="PrivacyFragment" />
+    <fragment
+        android:id="@+id/termsConditionFragment"
+        android:name="com.poona.agrocart.ui.terms_conditions.TermsConditionFragment"
+        android:label="TermsConditionFragment" />
 
 </navigation>
