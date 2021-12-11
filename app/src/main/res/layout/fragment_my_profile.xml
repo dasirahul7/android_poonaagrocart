@@ -29,7 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.poona.agrocart.widgets.imageview.CircularImageView
                 android:id="@+id/iv_profile_picture"
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_100sdp"
@@ -410,11 +410,11 @@
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_25sdp"
             android:layout_marginBottom="@dimen/_20sdp"
-            android:background="@drawable/background_verify_otp_btn"
+            android:background="@drawable/background_color_green"
             android:padding="@dimen/alerter_padding_small"
             android:text="@string/save"
             android:textAllCaps="false"
-            android:textColor="@color/background_button_selector_green"
+            android:textColor="@color/background_color_white_green"
             android:textSize="@dimen/_18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

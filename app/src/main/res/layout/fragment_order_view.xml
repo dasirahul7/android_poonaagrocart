@@ -586,11 +586,11 @@
                 android:id="@+id/btn_submit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_verify_otp_btn"
+                android:background="@drawable/background_color_green"
                 android:padding="@dimen/alerter_padding_small"
                 android:text="@string/submit"
                 android:textAllCaps="false"
-                android:textColor="@color/background_button_selector_green"
+                android:textColor="@color/background_color_white_green"
                 android:textSize="@dimen/_18sp"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginVertical="@dimen/_10sdp"
@@ -625,7 +625,7 @@
                         android:layout_height="wrap_content"
                         android:weightSum="100">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
+                        <com.poona.agrocart.widgets.imageview.CircularImageView
                             android:layout_width="@dimen/_40sdp"
                             android:layout_height="@dimen/_40sdp"
                             android:src="@drawable/img_profile_picture"/>

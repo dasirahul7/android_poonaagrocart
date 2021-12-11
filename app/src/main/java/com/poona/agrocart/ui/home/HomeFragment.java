@@ -31,8 +31,6 @@ import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 
-import okhttp3.internal.Util;
-
 public class HomeFragment extends BaseFragment {
 
     private static final int AUTO_SCROLL_THRESHOLD_IN_MILLI = 3000;
@@ -190,7 +188,7 @@ public class HomeFragment extends BaseFragment {
         BannerAdapter bannerAdapter = new BannerAdapter(banners, requireActivity());
 
         fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
-        fragmentHomeBinding.tlIndicators.setupViewPager(fragmentHomeBinding.viewPagerBanner);
+        //fragmentHomeBinding.tlIndicators.setupViewPager(fragmentHomeBinding.viewPagerBanner);
         // tabs.setupWithViewPager(autoScrollViewPager);
 
         // start auto scroll

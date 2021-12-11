@@ -25,14 +25,11 @@ import com.poona.agrocart.widgets.CustomEditText;
 
 import java.util.ArrayList;
 
-import me.huseyinozer.TooltipIndicator;
-
 public class ProductDetailFragment extends BaseFragment implements View.OnClickListener {
     public int count = 0;
     private FragmentProductDetailBinding fragmentProductDetailBinding;
     private ProductDetailViewModel productDetailViewModel;
     public ViewPager vpImages;
-    private TooltipIndicator tbIndicator;
     private ProductImagesAdapter productImagesAdapter;
     private boolean isProductDetailsVisible = true, isNutritionDetailsVisible = true, isAboutThisProductVisible = true,
             isBasketContentsVisible = true, isBenefitsVisible = true, isStorageVisible = true, isOtherProductInfo = true,
@@ -112,7 +109,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
 
         vpImages = fragmentProductDetailBinding.vpProductImages;
-        tbIndicator = fragmentProductDetailBinding.tlIndicators;
+        //tbIndicator = fragmentProductDetailBinding.tlIndicators;
         rvProductComment = fragmentProductDetailBinding.rvProductComment;
 
         setValues();
@@ -202,7 +199,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         vpImages.setAdapter(productImagesAdapter);
         productImagesAdapter.notifyDataSetChanged();
         vpImages.addOnPageChangeListener(productImagesAdapter);
-        tbIndicator.setupViewPager(vpImages);
+        //tbIndicator.setupViewPager(vpImages);
     }
 
     @Override
