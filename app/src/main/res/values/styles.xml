@@ -124,6 +124,11 @@
     <style name="RadioButtonAddress" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/bg_radio_button</item>
     </style>
+    <!--Style for SignUp radio buttons-->
+    <style name="RadioButtonSignUp" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/bg_radio_sing_up</item>
+        <item name="android:layout_margin">@dimen/_10sdp</item>
+    </style>
 
     <style name="NavigationDrawerStyle">
         <item name="android:textSize">16sp</item>
