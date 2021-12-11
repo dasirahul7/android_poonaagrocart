@@ -28,7 +28,6 @@ import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.home.model.Product;
-import com.vipulasri.ticketview.Utils;
 
 import java.util.ArrayList;
 
@@ -226,7 +225,7 @@ public class HomeFragment extends BaseFragment {
             ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setVisibility(View.GONE);
         if (((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.getVisibility() == View.VISIBLE)
             ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
-        ((HomeActivity) requireActivity()).binding.appBarHome.textView.setVisibility(View.VISIBLE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.VISIBLE);
     }
 

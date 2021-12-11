@@ -116,7 +116,7 @@
 
             </LinearLayout>
 
-            <TextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_organic"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_20sdp"
@@ -131,7 +131,7 @@
                 android:visibility="gone" />
 
 
-            <TextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_item_offer"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_20sdp"

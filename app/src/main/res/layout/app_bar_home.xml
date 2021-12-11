@@ -41,15 +41,15 @@
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:gravity="center"
                     android:paddingEnd="@dimen/_50sdp"
+                    android:paddingStart="@dimen/_50sdp"
                     android:singleLine="true"
-                    android:text="@string/menu_my_orders"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp"
                     android:visibility="gone"
                     app:setCustomFont="@string/font_poppins_regular" />
 
                 <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/textView"
+                    android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
@@ -57,8 +57,8 @@
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:drawableStart="@drawable/ic_location"
                     android:drawableTint="@color/colorGrey"
-                    android:singleLine="true"
                     android:gravity="center_vertical"
+                    android:singleLine="true"
                     android:text="@string/address_location"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sp" />
@@ -95,24 +95,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:paddingVertical="@dimen/_10sdp"
-        app:cardUseCompatPadding="true"
-        android:elevation="0dp"
-        app:cardElevation="@dimen/_20sdp"
-        android:layout_marginBottom="-40dp"
         android:layout_marginLeft="-30dp"
         android:layout_marginRight="-30dp"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.top"
+        android:layout_marginBottom="-40dp"
+        android:elevation="0dp"
+        android:paddingVertical="@dimen/_10sdp"
+        app:cardElevation="@dimen/_20sdp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.top">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:orientation="vertical">
+
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navigation_view"
                 android:layout_width="match_parent"

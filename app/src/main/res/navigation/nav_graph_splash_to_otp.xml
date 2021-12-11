@@ -83,12 +83,6 @@
             app:destination="@id/selectLocationFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out" />
-        <action
-            android:id="@+id/action_signUpFragment_to_privacyFragment"
-            app:destination="@id/privacyFragment" />
-        <action
-            android:id="@+id/action_signUpFragment_to_termsConditionFragment"
-            app:destination="@id/termsConditionFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectLocationFragment"
@@ -102,6 +96,12 @@
         <action
             android:id="@+id/action_signInFragment_to_verifyOtpFragment"
             app:destination="@id/verifyOtpFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_signInPrivacyFragment"
+            app:destination="@id/signInPrivacyFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_signInTermsFragment"
+            app:destination="@id/signInTermsFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -116,12 +116,12 @@
             app:exitAnim="@anim/fade_out" />
     </fragment>
     <fragment
-        android:id="@+id/privacyFragment"
-        android:name="com.poona.agrocart.ui.privacy_policy.PrivacyFragment"
-        android:label="PrivacyFragment" />
+        android:id="@+id/signInTermsFragment"
+        android:name="com.poona.agrocart.ui.sign_in.SignInTermsFragment"
+        android:label="SignInTermsFragment" />
     <fragment
-        android:id="@+id/termsConditionFragment"
-        android:name="com.poona.agrocart.ui.terms_conditions.TermsConditionFragment"
-        android:label="TermsConditionFragment" />
+        android:id="@+id/signInPrivacyFragment"
+        android:name="com.poona.agrocart.ui.sign_in.SignInPrivacyFragment"
+        android:label="SignInPrivacyFragment" />
 
 </navigation>

@@ -30,6 +30,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.appbar.AppBarLayout;
 import com.poona.agrocart.R;
 import com.poona.agrocart.ui.BaseActivity;
+import com.poona.agrocart.widgets.CustomTextView;
 
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LOGOUT;
@@ -46,6 +47,7 @@ public class SplashScreenActivity extends BaseActivity
 
     Toolbar toolbar;
     public static ImageView ivBack;
+    public static CustomTextView title;
     private AppBarLayout appBarLayout;
 
 
@@ -106,6 +108,7 @@ public class SplashScreenActivity extends BaseActivity
     private void findCompo()
     {
         ivBack=findViewById(R.id.iv_back);
+        title=findViewById(R.id.tv_title);
         toolbar=findViewById(R.id.toolbar_login);
         appBarLayout=findViewById(R.id.app_bar_layout);
 

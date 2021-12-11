@@ -26,6 +26,7 @@
             android:background="@drawable/bg_et_search"
             android:drawableStart="@drawable/ic_search"
             android:paddingStart="@dimen/_8sdp"
+            tools:ignore="RtlSymmetry"
             android:drawablePadding="@dimen/_8sdp"
             app:setCustomFont="@string/font_poppins_regular"
             android:textColor="@color/color_grey_txt"

@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,9 @@ import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
+import com.poona.agrocart.ui.privacy_policy.PrivacyFragment;
+import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
+import com.poona.agrocart.ui.splash_screen.SplashScreenFragment;
 
 import java.util.Objects;
 
@@ -49,6 +51,8 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
     private void initView(View view) {
         fragmentSignInBinding.ivSignUp.setOnClickListener(this);
+        fragmentSignInBinding.tvTermsOfService.setOnClickListener(this);
+        fragmentSignInBinding.tvPrivacyPolicy.setOnClickListener(this);
 
         basicDetails = new BasicDetails();
 
@@ -121,14 +125,26 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                 signInAndRedirectToVerifyOtp(v);
                 break;
             case R.id.tv_terms_of_service:
-                signInAndRedirectToTerMs(v);
+                redirectToTermsAndCondtn(v);
+                break;
+            case R.id.tv_privacy_policy:
+                redirectToPrivacyPolicy(v);
                 break;
         }
     }
 
-    private void signInAndRedirectToTerMs(View v) {
-        Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_privacyFragment);
+    private void redirectToPrivacyPolicy(View v) {
+        Bundle bundle = new Bundle();
+        bundle.putString("from","SignIn");
+        bundle.putString("title",getString(R.string.privacy_policy));
+        Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_signInPrivacyFragment,bundle);
+    }
 
+    private void redirectToTermsAndCondtn(View v) {
+        Bundle bundle = new Bundle();
+        bundle.putString("from","SignIn");
+        bundle.putString("title",getString(R.string.menu_terms_conditions));
+        Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_signInTermsFragment,bundle);
     }
 
     private void signInAndRedirectToVerifyOtp(View v) {

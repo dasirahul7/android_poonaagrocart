@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_toEndOf="@id/basketImg">
-                <TextView
+                <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,11 +49,10 @@
                     android:textSize="@dimen/large"
                     android:textStyle="bold" />
 
-                <TextView
+                <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_name"
                     android:text="@{basketModule.price}"
                     android:textColor="@color/lightBlack"
                     android:textSize="@dimen/normal" />

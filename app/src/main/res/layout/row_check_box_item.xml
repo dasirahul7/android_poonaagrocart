@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -34,6 +35,7 @@
             android:layout_toEndOf="@+id/checkbox"
             android:gravity="start"
             android:paddingStart="@dimen/_3sdp"
+            tools:ignore="RtlSymmetry"
             android:text="@{moduleFilter.name}"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sp"

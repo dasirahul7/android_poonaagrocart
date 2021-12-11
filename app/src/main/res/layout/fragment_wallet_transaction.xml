@@ -83,6 +83,7 @@
             android:background="@drawable/bg_my_profile_spinner"
             android:elevation="@dimen/_6sdp"
             android:paddingStart="@dimen/_6sdp"
+            tools:ignore="RtlSymmetry"
             android:layout_marginTop="@dimen/_14sdp"
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:textSize="@dimen/_14sp"

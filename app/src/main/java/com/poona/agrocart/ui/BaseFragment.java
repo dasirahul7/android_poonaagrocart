@@ -37,10 +37,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.databinding.BindingAdapter;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.squareup.picasso.Callback;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.firebase.PushNotification;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
@@ -48,8 +49,6 @@ import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.blurimage.Blur;
 import com.poona.agrocart.widgets.custom_alert.Alerter;
 import com.poona.agrocart.widgets.toast.CustomToast;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 import com.yalantis.ucrop.UCrop;
 
 import org.apache.commons.io.IOUtils;
@@ -113,7 +112,7 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);
-        ((HomeActivity) requireActivity()).binding.appBarHome.textView.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
@@ -131,7 +130,7 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);
-        ((HomeActivity) requireActivity()).binding.appBarHome.textView.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
@@ -151,37 +150,11 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void loadingImage(Context context, String url, ImageView imageView) {
-        Transformation blurTransformation = new Transformation() {
-            @Override
-            public Bitmap transform(Bitmap source) {
-                Bitmap blurred = Blur.fastblur(context, source, 10);
-                source.recycle();
-                return blurred;
-            }
-
-            @Override
-            public String key() {
-                return "blur()";
-            }
-        };
-
-        Picasso.get()
+        Glide.with(context)
                 .load(url)
-                .transform(blurTransformation)
-                .into(imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        Picasso.get()
-                                .load(url) // image url goes here
-                                .placeholder(imageView.getDrawable())
-                                .into(imageView);
-                    }
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.img_bell_pepper_red).into(imageView);
 
-                    @Override
-                    public void onError(Exception e) {
-
-                    }
-                });
     }
 
     protected void successToast(Context context, String message) {

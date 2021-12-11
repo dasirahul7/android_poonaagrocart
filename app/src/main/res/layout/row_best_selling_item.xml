@@ -40,7 +40,7 @@
                 android:textStyle="bold"
                 android:visibility="gone" />
 
-            <TextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_item_offer"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_20sdp"
@@ -63,7 +63,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp" />
 
-            <TextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_item_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,9 +74,10 @@
                 android:text="@{productModule.name}"
                 android:textColor="@color/blue_txt_color"
                 android:textSize="@dimen/_16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
 
-            <TextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_item_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +91,7 @@
                 app:drawableStartCompat="@drawable/ic_location_small"
                 tools:ignore="RtlSymmetry" />
 
-            <TextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_item_qty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,9 +101,10 @@
                 android:singleLine="true"
                 android:text="@{productModule.qty}"
                 android:textColor="#7C7C7C"
-                android:textSize="@dimen/_12sp" />
+                android:textSize="@dimen/_12sp"
+                tools:ignore="RtlSymmetry"/>
 
-            <TextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -112,9 +114,10 @@
                 android:paddingStart="@dimen/_5sdp"
                 android:text="@{productModule.price}"
                 android:textColor="#7C7C7C"
-                android:textSize="@dimen/_12sp" />
+                android:textSize="@dimen/_12sp"
+                tools:ignore="RtlSymmetry"/>
 
-            <TextView
+            <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_item_offer_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -123,8 +126,9 @@
                 android:paddingStart="@dimen/_5sdp"
                 android:text="@{productModule.offerPrice}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp" />
-            <TextView
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="RtlSymmetry"/>
+            <com.poona.agrocart.widgets.CustomTextView
                 android:visibility="gone"
                 android:id="@+id/txt_out_of_stock"
                 android:layout_width="wrap_content"
@@ -134,7 +138,8 @@
                 android:paddingStart="@dimen/_5sdp"
                 android:text="@string/out_of_stock"
                 android:textColor="@color/red_text_color"
-                android:textSize="@dimen/_14sp" />
+                android:textSize="@dimen/_14sp"
+                tools:ignore="RtlSymmetry"/>
 
             <ImageView
                 android:id="@+id/img_plus"

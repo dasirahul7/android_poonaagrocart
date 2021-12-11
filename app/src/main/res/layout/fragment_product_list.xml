@@ -28,6 +28,7 @@
                     android:drawablePadding="@dimen/_8sdp"
                     android:hint="@string/search_vegetables"
                     android:paddingStart="@dimen/_8sdp"
+                    tools:ignore="RtlSymmetry"
                     android:paddingTop="@dimen/_2sdp"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_16sp"

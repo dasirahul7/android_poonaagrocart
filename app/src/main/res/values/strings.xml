@@ -35,7 +35,7 @@
 
     <!--login fragment strings-->
     <string name="get_ur_groceries">Get your groceries \nwith Poona Agrocart</string>
-    <string name="fast_fresh_healthy">Fast, Fresh &amp; \nHealthy...</string>
+    <string name="fast_fresh_healthy"><![CDATA[Fast, Fresh & \nHealthy…]]></string>
     <string name="privacy_policy_terms_n_conditions">By continuing you agree to our Terms of Service and Privacy Policy</string>
 
     <!--Location screen-->
@@ -276,13 +276,13 @@
 
     <!--Support ticker-->
     <string name="lorem_ipsum_dolor_sit_amet_consectetur_adipiscing">Lorem ipsum dolor sit amet, consectetur adipiscing.</string>
-<!--    About screen string-->
+    <!--    About screen string-->
     <string name="about_str">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor \n\n\nper praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.\n\n Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . ridiculus velit at sodales. Ornare enim tempus hendrerit</string>
-<!--    Notification screen string-->
+    <!--    Notification screen string-->
     <string name="sample_date">12 September 2021</string>
     <string name="sample_notification">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi semper egestas at cursus maecenas duis enim sit ipsum. Ri amet tristique comm.</string>
-    <string name="sample_policy">"Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor  per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean  at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.  Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . Ridiculus velit at sodales. Ornare enim tempus hendrerit     "</string>
-    <string name="sample_terms">"Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor  per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean  at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.  Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . ridiculus velit at sodales. Ornare enim tempus hendrerit     "</string>
+    <string name="sample_policy">"Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor  per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean  at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.  Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . Ridiculus velit at sodales. Ornare enim tempus hendrerit    "</string>
+    <string name="sample_terms">"Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor  per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean  at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.  Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . ridiculus velit at sodales. Ornare enim tempus hendrerit\n\n <b>100% refundable policy</b> \n   per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aeneanat. "</string>
     <string name="subject">Subject</string>
     <string name="ticket_id">Ticket Id-</string>
     <string name="create_new_ticket">Create New Ticket</string>
@@ -360,13 +360,13 @@
     <!--Cart-->
     <string name="my_cart">My Cart</string>
 
-<!--    Images Urls-->
+    <!--    Images Urls-->
 
     <string name="img_bell_pepper_red">https://www.linkpicture.com/q/capsicon.png</string>
     <string name="img_ginger">https://www.linkpicture.com/q/ginger.png</string>
     <string name="img_green_leafy">https://www.linkpicture.com/q/green_leafy_vegetable.png</string>
     <string name="img_tomato">https://www.linkpicture.com/q/tomato_1.png</string>
-    <string name="img_red_apple">https://www.linkpicture.com/q/pngfuel-1-1.png</string>
+    <string name="img_red_apple">https://www.linkpicture.com/q/pngfuel–1–1.png</string>
     <string name="img_banana">https://www.linkpicture.com/q/banana_2.png</string>
     <string name="img_potato">https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png</string>
     <string name="img_sample_store">https://www.linkpicture.com/q/unsplash_SsKf1L6rWJk-1.png</string>
@@ -375,6 +375,6 @@
     <string name="store_location">Store Location</string>
     <string name="sample_address">Nand Nivas  Bhatrau Nivas Vishrantwadi \nPune - 411015.</string>
 
-<!--    MAP KEY-->
+    <!--    MAP KEY-->
     <string name="map_key">AIzaSyDi2KxP5vuvOxYO1qA2i5Ehx-yXY7hcN1Q</string>
 </resources>

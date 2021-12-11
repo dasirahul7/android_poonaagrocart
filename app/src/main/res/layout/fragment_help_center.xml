@@ -24,6 +24,7 @@
             android:text="@string/create_new_ticket"
             android:textAllCaps="false"
             android:paddingStart="@dimen/_20sdp"
+            tools:ignore="RtlSymmetry"
             android:textColor="@color/background_button_selector_green"
             android:textSize="@dimen/_16sp"
             app:layout_constraintEnd_toEndOf="parent"

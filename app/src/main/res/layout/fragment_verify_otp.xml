@@ -36,6 +36,7 @@
                 android:layout_marginTop="@dimen/_40sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:paddingStart="@dimen/alerter_padding_half"
+                tools:ignore="RtlSymmetry"
                 android:paddingEnd="@dimen/alerter_padding_half">
 
                 <com.poona.agrocart.widgets.CustomTextView

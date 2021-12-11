@@ -97,6 +97,7 @@
                             app:fontFamily="@string/font_poppins_regular"
                             android:background="@drawable/bg_signup_rb_unselected"
                             android:paddingStart="@dimen/_4sdp"
+                            tools:ignore="RtlSymmetry"
                             android:layout_margin="@dimen/_2sdp"
                             android:textSize="@dimen/_14sp" />
 

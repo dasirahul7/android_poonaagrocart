@@ -184,7 +184,7 @@
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_splash_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_store_detail.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_terms_condition.xml" value="0.11684782608695653" />
+        <entry key="app/src/main/res/layout/fragment_terms_condition.xml" value="0.285" />
         <entry key="app/src/main/res/layout/fragment_ticket_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_verify_otp.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_wallet_transaction.xml" value="0.14673913043478262" />

@@ -78,12 +78,12 @@
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="end"
                         android:drawableStart="@drawable/ic_calender"
                         android:gravity="center"
                         android:text="@{moduleNotification.date}"
                         android:textColor="@color/color_order_date_and_time"
-                        android:textSize="@dimen/_12sdp"
+                        android:textSize="@dimen/_12sp"
                         app:setCustomFont="@string/font_poppins_regular" />
                 </LinearLayout>
 
