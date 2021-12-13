@@ -13,6 +13,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentHelpCenterBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.help_center.model.Ticket;
+import com.poona.agrocart.ui.home.HomeActivity;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
         rvTickets=fragmentHelpCenterBinding.rvTickets;
         fragmentHelpCenterBinding.btnCreateNewTicket.setOnClickListener(this);
         initTitleBar(getString(R.string.menu_addresses));
+        fragmentHelpCenterBinding.btnCreateNewTicket.setOnClickListener(this);
     }
 
     private void setRvAdapter()
@@ -83,6 +85,10 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.btn_create_new_ticket:
+                ((HomeActivity) context).raiseNewTicketDialog();
+                break;
+        }
     }
 }

@@ -53,8 +53,25 @@
                     <com.github.demono.AutoScrollViewPager
                         android:id="@+id/view_pager_banner"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_110sdp" />
+                        android:layout_height="@dimen/_130sdp" />
                     <!--Banner dots-->
+                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/dots_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:dotsColor="@color/colorGrey"
+                        app:dotsCornerRadius="@dimen/_3sdp"
+                        app:dotsSize="@dimen/_6sdp"
+                        app:dotsSpacing="@dimen/_4sdp"
+                        app:dotsWidthFactor="3.0"
+                        app:progressMode="true"
+                        android:layout_marginTop="-20dp"
+                        app:selectedDotColor="@color/colorPrimary"
+                        app:layout_constraintBottom_toTopOf="@+id/ll_next"
+                        app:layout_constraintEnd_toEndOf="@+id/vpIntro"
+                        app:layout_constraintStart_toStartOf="@+id/vpIntro" />
+
                     <!--<me.huseyinozer.TooltipIndicator
                         android:id="@+id/tl_indicators"
                         android:layout_width="match_parent"

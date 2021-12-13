@@ -377,4 +377,11 @@
 
     <!--    MAP KEY-->
     <string name="map_key">AIzaSyDi2KxP5vuvOxYO1qA2i5Ehx-yXY7hcN1Q</string>
+    //delete is later
+    <string name="sample_coupon_terms"><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit nunc, netus ac vulputate sed purus.</b> \n\nper praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean
+at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
+    <string name="raised_new_ticket">Raised New Ticket</string>
+    <string name="description">Description</string>
+    <string name="Pay">pay</string>
+    <string name="entr_amount">Enter Amount</string>
 </resources>

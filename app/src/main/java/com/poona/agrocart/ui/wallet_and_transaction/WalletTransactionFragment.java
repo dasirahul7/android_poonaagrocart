@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentWalletTransactionBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.my_basket.BasketOrdersAdapter;
 import com.poona.agrocart.ui.my_basket.model.BasketOrder;
 
@@ -65,6 +66,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
     {
         fragmentWalletTransactionBinding.tvFromDate.setOnClickListener(this);
         fragmentWalletTransactionBinding.tvToDate.setOnClickListener(this);
+        fragmentWalletTransactionBinding.btnAdd.setOnClickListener(this);
 
         initCalendarVars();
 
@@ -138,6 +140,9 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
                 break;
             case R.id.tv_to_date:
                 showToCalendar();
+                break;
+            case R.id.btn_add:
+                ((HomeActivity) context).openSmallDialog(true);
                 break;
         }
     }

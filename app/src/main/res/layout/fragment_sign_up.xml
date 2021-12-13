@@ -85,6 +85,7 @@
                             <com.poona.agrocart.widgets.CustomRadioButton
                                 android:id="@+id/rb_individual"
                                 android:text="@string/individual"
+                                android:checked="true"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_30sdp"
                                 app:useMaterialThemeColors="false"

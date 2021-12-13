@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RowCouponItemBinding;
+import com.poona.agrocart.ui.home.HomeActivity;
 
 import java.util.ArrayList;
 
@@ -61,6 +62,9 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
         public void bind(Coupons coupon) {
             rowCouponItemBinding.setVariable(BR.moduleCoupon, coupon);
             rowCouponItemBinding.executePendingBindings();
+            rowCouponItemBinding.imgInfo.setOnClickListener(v -> {
+                ((HomeActivity) context).openSmallDialog(false);
+            });
         }
     }
 }

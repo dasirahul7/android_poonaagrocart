@@ -42,32 +42,36 @@
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
-                <LinearLayout
+
+                <com.google.android.material.card.MaterialCardView
+                    app:cardCornerRadius="@dimen/_10sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_24sdp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginVertical="@dimen/_8sdp"
-                    android:weightSum="100">
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_24sdp">
 
                     <com.poona.agrocart.widgets.CustomTextView
-                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/_24sdp"
-                        android:layout_weight="80"
                         android:text="@string/rs_1500"
-                        android:textColor="@color/white"
+                        android:textColor="@color/txt_dark_green"
                         android:textSize="@dimen/_20sp"
-                        android:paddingEnd="@dimen/_16sdp"
-                        android:drawableBottom="@drawable/bg_horizontal_bottom_line"
-                        app:setCustomFont="@string/font_poppins_regular" />
+                        android:paddingStart="@dimen/_16sdp"
+                        android:textStyle="bold"
+                        />
 
                     <com.poona.agrocart.widgets.CustomButton
+                        android:layout_margin="@dimen/_5sdp"
                         android:id="@+id/btn_add"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_24sdp"
-                        android:layout_weight="20"
                         android:background="@drawable/bg_add_wallet_amount_btn"
                         android:text="@string/add"
-                        android:textColor="@color/background_color_white_green"
+                        android:textColor="@color/white"
                         android:textAllCaps="false"
                         android:includeFontPadding="false"
                         android:layout_gravity="center|center_vertical"
@@ -76,8 +80,9 @@
                         style="?android:attr/borderlessButtonStyle"
                         app:setCustomFont="@string/font_poppins_semi_bold"/>
 
-                </LinearLayout>
+                    </LinearLayout>
 
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>

@@ -185,20 +185,12 @@ public class HomeFragment extends BaseFragment {
             banners.add(banner);
         }
         System.out.println(banners.size());
-        BannerAdapter bannerAdapter = new BannerAdapter(banners, requireActivity());
+        bannerAdapter = new BannerAdapter(banners, requireActivity());
 
         fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
-        //fragmentHomeBinding.tlIndicators.setupViewPager(fragmentHomeBinding.viewPagerBanner);
-        // tabs.setupWithViewPager(autoScrollViewPager);
+        // Set up tab indicators
+        fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
 
-        // start auto scroll
-        fragmentHomeBinding.viewPagerBanner.startAutoScroll();
-
-        // set auto scroll time in mili
-        fragmentHomeBinding.viewPagerBanner.setSlideInterval(AUTO_SCROLL_THRESHOLD_IN_MILLI);
-
-        // enable recycling using true
-        fragmentHomeBinding.viewPagerBanner.setCycle(true);
 
     }
 
