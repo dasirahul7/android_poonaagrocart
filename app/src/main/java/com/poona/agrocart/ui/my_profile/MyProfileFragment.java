@@ -7,17 +7,16 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentMyProfileBinding;
@@ -32,9 +31,9 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private MyProfileViewModel myProfileViewModel;
     private Calendar calendar;
     private int mYear, mMonth, mDay;
-    private String[] cities={"Pune"};
-    private String[] areas={"Vishrantwadi", "Khadki"};
-    private String[] states={"Maharashtra"};
+    private final String[] cities={"Pune"};
+    private final String[] areas={"Vishrantwadi", "Khadki"};
+    private final String[] states={"Maharashtra"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

@@ -1,18 +1,20 @@
 package com.poona.agrocart.ui.addresses;
 
 import android.os.Bundle;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentAddressesBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.addresses.model.Address;
+
 import java.util.ArrayList;
 
 public class AddressesFragment extends BaseFragment implements View.OnClickListener
@@ -28,7 +30,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
     {
         fragmentAddressesBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_addresses, container, false);
         fragmentAddressesBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentAddressesBinding).getRoot();
+        final View view = fragmentAddressesBinding.getRoot();
 
         initView();
         setRvAdapter();

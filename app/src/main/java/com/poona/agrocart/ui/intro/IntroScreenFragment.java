@@ -1,14 +1,16 @@
 package com.poona.agrocart.ui.intro;
 
 import android.os.Bundle;
-import androidx.databinding.DataBindingUtil;
-import androidx.navigation.NavOptions;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentIntroScreenBinding;
 import com.poona.agrocart.ui.BaseFragment;

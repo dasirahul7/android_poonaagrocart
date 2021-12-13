@@ -20,9 +20,9 @@ import java.util.ArrayList;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder> {
 
     private ArrayList<Category> categories = new ArrayList<>();
-    private Context context;
+    private final Context context;
     private RowCategoryItemBinding categoryBinding;
-    private View view;
+    private final View view;
 
     public CategoryAdapter(ArrayList<Category> categories, Context context,View view) {
         this.categories = categories;

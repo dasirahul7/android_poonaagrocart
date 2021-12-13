@@ -2,18 +2,17 @@ package com.poona.agrocart.ui.products_list;
 
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.poona.agrocart.R;
@@ -23,6 +22,7 @@ import com.poona.agrocart.ui.explore.adapter.FilterItemAdapter;
 import com.poona.agrocart.ui.explore.model.FilterItem;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.model.Product;
+
 import java.util.ArrayList;
 
 public class ProductListFragment extends BaseFragment
@@ -45,7 +45,7 @@ public class ProductListFragment extends BaseFragment
     {
         fragmentProductListBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_product_list, container, false);
         fragmentProductListBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentProductListBinding).getRoot();
+        final View view = fragmentProductListBinding.getRoot();
 
         Bundle bundle=this.getArguments();
 

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.CartItemsViewHolder>
 {
-    private ArrayList<Product> cartItemArrayList;
+    private final ArrayList<Product> cartItemArrayList;
 
     public CartItemsAdapter(ArrayList<Product> cartItemArrayList) {
         this.cartItemArrayList = cartItemArrayList;

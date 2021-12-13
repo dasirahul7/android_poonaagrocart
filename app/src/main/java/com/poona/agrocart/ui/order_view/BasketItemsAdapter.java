@@ -6,19 +6,22 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RvBasketDetailBinding;
+
 import java.util.ArrayList;
 
 public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.BasketItemViewHolder>
 {
-    private ArrayList<BasketItem> basketItems;
-    private boolean isBasketVisible;
-    private Context context;
+    private final ArrayList<BasketItem> basketItems;
+    private final boolean isBasketVisible;
+    private final Context context;
 
     public BasketItemsAdapter(ArrayList<BasketItem> basketItems,boolean isBasketVisible,Context context)
     {

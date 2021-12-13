@@ -15,17 +15,16 @@ import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.installations.InstallationTokenResult;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentSplashScreenBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.poona.agrocart.ui.home.HomeActivity;
 
 /**
@@ -49,7 +48,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
         fragmentSplashScreenBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_splash_screen, container, false);
         fragmentSplashScreenBinding.setLifecycleOwner(this);
 
-        final View view = ((ViewDataBinding) fragmentSplashScreenBinding).getRoot();
+        final View view = fragmentSplashScreenBinding.getRoot();
 
         //if(preferences.getFromLogOut())
         //{

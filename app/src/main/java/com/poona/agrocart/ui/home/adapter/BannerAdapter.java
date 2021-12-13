@@ -18,9 +18,9 @@ import java.util.ArrayList;
 
 public class BannerAdapter extends PagerAdapter {
 
-    private ArrayList<Banner> banner;
+    private final ArrayList<Banner> banner;
     private LayoutInflater layoutInflater;
-    private Context context;
+    private final Context context;
 
     public BannerAdapter(ArrayList<Banner> banner,Context context) {
         this.banner = banner;

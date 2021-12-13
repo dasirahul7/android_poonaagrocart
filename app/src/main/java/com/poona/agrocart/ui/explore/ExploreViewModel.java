@@ -3,11 +3,9 @@ package com.poona.agrocart.ui.explore;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.poona.agrocart.R;
 import com.poona.agrocart.ui.explore.model.ExploreItems;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ExploreViewModel extends ViewModel {
     MutableLiveData<ArrayList<ExploreItems>> exploreMutableLiveData = new MutableLiveData<>();

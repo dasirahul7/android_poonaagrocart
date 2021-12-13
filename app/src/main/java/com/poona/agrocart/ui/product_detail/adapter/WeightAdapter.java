@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class WeightAdapter extends RecyclerView.Adapter<WeightAdapter.WeightHolder> {
 
     private ArrayList<String> weight = new ArrayList<>();
-    private Context context;
+    private final Context context;
     private int mSelectedItem=-1;
 
     public WeightAdapter(ArrayList<String> weight, Context context) {

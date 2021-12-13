@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class BasketContentsAdapter extends RecyclerView.Adapter<BasketContentsAdapter.BasketContentsViewHolder>
 {
-    private ArrayList<BasketContent> basketContentArrayList;
+    private final ArrayList<BasketContent> basketContentArrayList;
 
     public BasketContentsAdapter(ArrayList<BasketContent> basketContentArrayList)
     {

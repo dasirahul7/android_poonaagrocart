@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener
 {
-    private ProductDetailFragment context;
-    private FragmentManager fragmentManager;
+    private final ProductDetailFragment context;
+    private final FragmentManager fragmentManager;
     private int lastPosition = 0;
-    private ArrayList<String> imgsList;
+    private final ArrayList<String> imgsList;
 
     public ProductImagesAdapter(ProductDetailFragment context, FragmentManager fm, ArrayList<String> imgsList)
     {

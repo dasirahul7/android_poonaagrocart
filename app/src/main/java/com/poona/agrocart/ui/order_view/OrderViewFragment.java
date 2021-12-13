@@ -1,15 +1,15 @@
 package com.poona.agrocart.ui.order_view;
 
 import android.os.Bundle;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentOrderViewBinding;
 import com.poona.agrocart.ui.BaseFragment;
@@ -30,7 +30,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     {
         fragmentOrderViewBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_order_view, container, false);
         fragmentOrderViewBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentOrderViewBinding).getRoot();
+        final View view = fragmentOrderViewBinding.getRoot();
 
         initView();
         setRVAdapter();

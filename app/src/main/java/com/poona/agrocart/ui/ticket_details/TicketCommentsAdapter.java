@@ -2,9 +2,11 @@ package com.poona.agrocart.ui.ticket_details;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RvTicketCommentBinding;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 
 public class TicketCommentsAdapter extends RecyclerView.Adapter<TicketCommentsAdapter.CommentViewHolder>
 {
-    private ArrayList<Comment> commentArrayList;
+    private final ArrayList<Comment> commentArrayList;
 
     public TicketCommentsAdapter(ArrayList<Comment> commentArrayList)
     {

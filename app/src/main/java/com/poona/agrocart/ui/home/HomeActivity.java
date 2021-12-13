@@ -1,25 +1,17 @@
 package com.poona.agrocart.ui.home;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -28,11 +20,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.shape.CornerFamily;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapeAppearanceModel;
 import com.poona.agrocart.R;
-import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.databinding.ActivityHomeBinding;
 import com.poona.agrocart.ui.BaseActivity;
 import com.poona.agrocart.widgets.CustomTextView;
@@ -119,17 +107,17 @@ public class HomeActivity extends BaseActivity {
         binding.appBarHome.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!HomeActivity.this.binding.drawerLayout.isDrawerOpen((int) GravityCompat.START)) {
-                    HomeActivity.this.binding.drawerLayout.openDrawer((int) GravityCompat.START);
+                if (!HomeActivity.this.binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    HomeActivity.this.binding.drawerLayout.openDrawer(GravityCompat.START);
                 } else {
-                    HomeActivity.this.binding.drawerLayout.closeDrawer((View) binding.drawerLayout);
+                    HomeActivity.this.binding.drawerLayout.closeDrawer(binding.drawerLayout);
                 }
             }
         });
 
         View headerView = navigationView.getHeaderView(0);
-        CustomTextView tvUserName = (CustomTextView) headerView.findViewById(R.id.tv_user_name);
-        ImageView editImg = (ImageView) headerView.findViewById(R.id.edit_img);
+        CustomTextView tvUserName = headerView.findViewById(R.id.tv_user_name);
+        ImageView editImg = headerView.findViewById(R.id.edit_img);
         tvUserName.setText("Hello ! Ranju");
         editImg.setOnClickListener(new View.OnClickListener() {
             @Override

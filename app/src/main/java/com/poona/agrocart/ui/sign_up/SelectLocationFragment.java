@@ -3,21 +3,18 @@ package com.poona.agrocart.ui.sign_up;
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentSelectLocationBinding;
@@ -31,8 +28,8 @@ import java.util.Objects;
 public class SelectLocationFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentSelectLocationBinding fragmentSelectLocationBinding;
-    private String[] cities={"Pune"};
-    private String[] areas={"Vishrantwadi", "Khadki"};
+    private final String[] cities={"Pune"};
+    private final String[] areas={"Vishrantwadi", "Khadki"};
     private BasicDetails basicDetails;
     private CommonViewModel commonViewModel;
 
@@ -41,7 +38,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                              Bundle savedInstanceState) {
         fragmentSelectLocationBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_select_location, container, false);
         fragmentSelectLocationBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentSelectLocationBinding).getRoot();
+        final View view = fragmentSelectLocationBinding.getRoot();
 
         initViews(view);
 

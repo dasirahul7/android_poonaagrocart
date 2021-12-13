@@ -1,14 +1,13 @@
 package com.poona.agrocart.ui.order_track;
 
 import android.os.Bundle;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentOrderTrackBinding;
 import com.poona.agrocart.ui.BaseFragment;

@@ -1,18 +1,18 @@
 package com.poona.agrocart.data.shared_preferences;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.poona.agrocart.R;
-
-import java.io.File;
-
 import static com.poona.agrocart.app.AppConstants.AUTHORIZATION_TOKEN;
 import static com.poona.agrocart.app.AppConstants.FCM_TOKEN;
 import static com.poona.agrocart.app.AppConstants.FROM_LOG_OUT;
 import static com.poona.agrocart.app.AppConstants.IS_LOGGED_IN;
 import static com.poona.agrocart.app.AppConstants.IS_READ_INTRO;
 import static com.poona.agrocart.app.AppConstants.PREFERENCES_NAME;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.poona.agrocart.R;
+
+import java.io.File;
 
 /**
  * Created by Rahul Dasi on 6/10/2020

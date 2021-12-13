@@ -5,13 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
@@ -19,6 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
@@ -40,7 +38,7 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentLogInBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_log_in, container, false);
         fragmentLogInBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentLogInBinding).getRoot();
+        final View view = fragmentLogInBinding.getRoot();
 
         initViews(view);
 
@@ -89,7 +87,7 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
         fragmentLogInBinding.countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
             @Override
             public void onCcpDialogOpen(Dialog dialog) {
-                TextView title =(TextView)  dialog.findViewById(R.id.textView_title);
+                TextView title = dialog.findViewById(R.id.textView_title);
                 title.setText("Select country");
             }
             @Override

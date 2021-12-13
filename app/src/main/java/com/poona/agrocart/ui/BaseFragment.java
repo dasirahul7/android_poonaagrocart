@@ -1,5 +1,11 @@
 package com.poona.agrocart.ui;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
+import static com.poona.agrocart.app.AppConstants.LOGOUT;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -37,16 +43,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.databinding.BindingAdapter;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.firebase.PushNotification;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
-import com.poona.agrocart.widgets.blurimage.Blur;
 import com.poona.agrocart.widgets.custom_alert.Alerter;
 import com.poona.agrocart.widgets.toast.CustomToast;
 import com.yalantis.ucrop.UCrop;
@@ -64,12 +68,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
-
-import static android.Manifest.permission.CAMERA;
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
-import static com.poona.agrocart.app.AppConstants.LOGOUT;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -690,7 +688,7 @@ public abstract class BaseFragment extends Fragment {
     /*protected PDFView pdfView = null;*/
     protected WebView webView = null;
     protected String pdfFileName = "Food Certificate.pdf";
-    private String pdfTempFilePath = "";
+    private final String pdfTempFilePath = "";
 
     /*public void saveFileAndDisplay(File file) {
         String filePath = saveTempFileToFile(file);

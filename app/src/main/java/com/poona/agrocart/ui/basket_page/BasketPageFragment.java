@@ -5,26 +5,18 @@ import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.Fade;
-import androidx.transition.Transition;
-import androidx.transition.TransitionManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.RelativeLayout;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.DialogBasketFilterListBinding;
 import com.poona.agrocart.databinding.FragmentBasketPageBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.explore.adapter.FilterItemAdapter;
@@ -51,7 +43,7 @@ public class BasketPageFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentBasketPageBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_basket_page, container, false);
         fragmentBasketPageBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentBasketPageBinding).getRoot();
+        final View view = fragmentBasketPageBinding.getRoot();
         if ((getArguments() != null ? getArguments().getString("Title") : null) != null)
             BasketType = getArguments().getString("Title");
         initTitleWithBackBtn(getString(R.string.basket));

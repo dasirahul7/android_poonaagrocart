@@ -4,21 +4,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RvOrdersBasketBinding;
 import com.poona.agrocart.ui.my_basket.model.BasketOrder;
+
 import java.util.ArrayList;
 
 public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapter.BasketOrdersViewHolder>
 {
-    private ArrayList<BasketOrder> basketOrderArrayList;
-    private View view;
-    private boolean isWallet;
+    private final ArrayList<BasketOrder> basketOrderArrayList;
+    private final View view;
+    private final boolean isWallet;
 
     public BasketOrdersAdapter(ArrayList<BasketOrder> basketOrderArrayList, View view,boolean isWallet)
     {

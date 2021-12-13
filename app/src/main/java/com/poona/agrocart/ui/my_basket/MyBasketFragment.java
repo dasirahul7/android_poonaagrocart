@@ -1,17 +1,19 @@
 package com.poona.agrocart.ui.my_basket;
 
 import android.os.Bundle;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentMyBasketBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.my_basket.model.BasketOrder;
+
 import java.util.ArrayList;
 
 public class MyBasketFragment extends BaseFragment
@@ -27,7 +29,7 @@ public class MyBasketFragment extends BaseFragment
     {
         fragmentMyBasketBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_my_basket, container, false);
         fragmentMyBasketBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentMyBasketBinding).getRoot();
+        final View view = fragmentMyBasketBinding.getRoot();
 
         initView();
         setRvAdapter(view);

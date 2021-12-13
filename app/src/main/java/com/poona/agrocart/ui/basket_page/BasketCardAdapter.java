@@ -4,18 +4,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RvBasketPageCardviewBinding;
+
 import java.util.ArrayList;
 
 public class BasketCardAdapter extends RecyclerView.Adapter<BasketCardAdapter.BasketCardViewholder>
 {
-    private ArrayList<BasketCard> basketCards;
+    private final ArrayList<BasketCard> basketCards;
 
     public BasketCardAdapter(ArrayList<BasketCard> basketCards) {
         this.basketCards = basketCards;

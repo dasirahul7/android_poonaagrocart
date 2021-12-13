@@ -1,9 +1,11 @@
 package com.poona.agrocart.data.network;
 
+import static com.poona.agrocart.app.AppConstants.AUTH_ACCESS_TOKEN;
+import static com.poona.agrocart.app.AppConstants.BASE_URL;
+
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-
 
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 
@@ -15,9 +17,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static com.poona.agrocart.app.AppConstants.AUTH_ACCESS_TOKEN;
-import static com.poona.agrocart.app.AppConstants.BASE_URL;
 
 /**
  * Created by Rahul Dasi on 6/10/2020

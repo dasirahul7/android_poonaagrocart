@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.FilterViewHolder> {
     private ArrayList<FilterItem> filterItems = new ArrayList<>();
-    private Context context;
+    private final Context context;
     private RowCheckBoxItemBinding itemBinding;
     private OnFilterClickListener onFilterClickListener;
 

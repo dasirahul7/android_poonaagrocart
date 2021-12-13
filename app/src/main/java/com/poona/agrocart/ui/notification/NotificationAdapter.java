@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationHolder> {
 
     private ArrayList<Notification> notifications = new ArrayList<>();
-    private Context context;
+    private final Context context;
     private RowNotificationBinding notificationBinding;
 
     public NotificationAdapter(ArrayList<Notification> notifications, Context context) {

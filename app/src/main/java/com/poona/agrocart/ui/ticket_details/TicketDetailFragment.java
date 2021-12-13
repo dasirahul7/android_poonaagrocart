@@ -3,15 +3,13 @@ package com.poona.agrocart.ui.ticket_details;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
@@ -36,7 +34,7 @@ public class TicketDetailFragment extends BaseFragment
     {
         fragmentTicketDetailBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_ticket_detail, container, false);
         fragmentTicketDetailBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentTicketDetailBinding).getRoot();
+        final View view = fragmentTicketDetailBinding.getRoot();
 
         initTitleWithBackBtn(getString(R.string.menu_help_center));
 

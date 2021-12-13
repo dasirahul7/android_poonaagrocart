@@ -1,15 +1,13 @@
 package com.poona.agrocart.ui.about_us;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentAboutUsBinding;
