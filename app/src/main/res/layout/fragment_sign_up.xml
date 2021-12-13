@@ -73,47 +73,54 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_enter_credentials"
-                        style="@style/RadioButtonAddress"
-                        android:orientation="horizontal"
-                        android:weightSum="100">
-
-                        <RadioButton
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:id="@+id/ll_rb_individual"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
                             android:background="@drawable/bg_signup_rb_selected"
-                            android:id="@+id/rb_individual"
-                            android:text="@string/individual"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_weight="50"
-                            app:useMaterialThemeColors="false"
-                            style="@style/RadioButtonAddress"
-                            android:paddingStart="@dimen/_4sdp"
-                            tools:ignore="RtlSymmetry"
-                            android:textStyle="bold"
-                            android:checked="false"
-                            app:fontFamily="@string/font_poppins_semi_bold"
-                            android:layout_margin="@dimen/_2sdp"
-                            android:textColor="@color/color_grey_txt"
-                            android:textSize="@dimen/_14sp" />
+                            android:paddingStart="@dimen/_10sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <com.poona.agrocart.widgets.CustomRadioButton
+                                android:id="@+id/rb_individual"
+                                android:text="@string/individual"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_30sdp"
+                                app:useMaterialThemeColors="false"
+                                style="@style/RadioButtonSignUp"
+                                android:layout_gravity="center"
+                                android:paddingStart="@dimen/_4sdp"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:textColor="@color/color_grey_txt"
+                                android:textSize="@dimen/_20sp"
+                                app:setCustomFont="@string/font_poppins_regular"/>
 
-                        <RadioButton
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_rb_business"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_weight="1"
                             android:background="@drawable/bg_signup_rb_unselected"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        <RadioButton
                             android:id="@+id/rb_business"
-                            android:text="@string/home"
-                            android:layout_width="0dp"
+                            android:text="@string/business"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/_30sdp"
-                            android:layout_weight="50"
                             app:useMaterialThemeColors="false"
-                            style="@style/RadioButtonAddress"
+                            style="@style/RadioButtonSignUp"
                             android:paddingStart="@dimen/_4sdp"
                             tools:ignore="RtlSymmetry"
-                            android:textStyle="bold"
-                            android:checked="false"
-                            app:fontFamily="@string/font_poppins_semi_bold"
                             android:layout_margin="@dimen/_2sdp"
                             android:textColor="@color/color_grey_txt"
-                            android:textSize="@dimen/_14sp" />
+                            android:textSize="@dimen/_20sp"
+                            app:setCustomFont="@string/font_poppins_regular"/>
 
-
+                        </LinearLayout>
                     </RadioGroup>
 
                     <com.poona.agrocart.widgets.CustomTextView

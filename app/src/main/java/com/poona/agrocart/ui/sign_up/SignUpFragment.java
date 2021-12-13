@@ -164,11 +164,11 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     private void changeBgs(boolean isIndividualSelected) {
         if (isIndividualSelected) {
-            fragmentSignUpBinding.rbIndividual.setBackgroundResource(R.drawable.bg_signup_rb_selected);
-            fragmentSignUpBinding.rbBusiness.setBackgroundResource(R.drawable.bg_signup_rb_unselected);
+            fragmentSignUpBinding.llRbIndividual.setBackgroundResource(R.drawable.bg_signup_rb_selected);
+            fragmentSignUpBinding.llRbBusiness.setBackgroundResource(R.drawable.bg_signup_rb_unselected);
         } else {
-            fragmentSignUpBinding.rbIndividual.setBackgroundResource(R.drawable.bg_signup_rb_unselected);
-            fragmentSignUpBinding.rbBusiness.setBackgroundResource(R.drawable.bg_signup_rb_selected);
+            fragmentSignUpBinding.llRbIndividual.setBackgroundResource(R.drawable.bg_signup_rb_unselected);
+            fragmentSignUpBinding.llRbBusiness.setBackgroundResource(R.drawable.bg_signup_rb_selected);
         }
     }
 

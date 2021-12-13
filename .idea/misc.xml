@@ -98,6 +98,8 @@
         <entry key="app/src/main/res/drawable/ic_poona_agrocart.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_poona_agrocart_logo_final.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.17592592592592593" />
+        <entry key="app/src/main/res/drawable/ic_radio_btn_selected.xml" value="0.13094462540716612" />
+        <entry key="app/src/main/res/drawable/ic_radio_btn_unselected.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_radio_tint.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_radio_unselected_tint.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_right_arrow.xml" value="0.19444444444444445" />
@@ -189,7 +191,7 @@
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.13269927536231885" />
         <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_splash_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_store_detail.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_terms_condition.xml" value="0.285" />

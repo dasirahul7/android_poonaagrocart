@@ -127,7 +127,7 @@
     <!--Style for SignUp radio buttons-->
     <style name="RadioButtonSignUp" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/bg_radio_sing_up</item>
-        <item name="android:layout_margin">@dimen/_10sdp</item>
+        <item name="fontStyle">normal</item>
     </style>
 
     <style name="NavigationDrawerStyle">
