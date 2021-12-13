@@ -3,8 +3,6 @@ package com.poona.agrocart.ui.notification;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.poona.agrocart.R;
-
 import java.util.ArrayList;
 
 public class NotificationViewModel extends ViewModel {

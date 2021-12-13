@@ -1,14 +1,15 @@
 package com.poona.agrocart.ui.favourites;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RvFavouritesBinding;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdapter.FavouriteItemViewHolder>
 {
-    private ArrayList<FavouriteItem> favouriteItemsList;
+    private final ArrayList<FavouriteItem> favouriteItemsList;
 
     public FavouriteItemAdapter(ArrayList<FavouriteItem> favouriteItemsList)
     {

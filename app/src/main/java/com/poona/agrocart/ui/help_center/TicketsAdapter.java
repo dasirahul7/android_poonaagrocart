@@ -6,21 +6,24 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.RvTicketBinding;
 import com.poona.agrocart.ui.help_center.model.Ticket;
+
 import java.util.ArrayList;
 
 public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketViewHolder>
 {
-    private ArrayList<Ticket> ticketArrayList;
-    private Context context;
+    private final ArrayList<Ticket> ticketArrayList;
+    private final Context context;
 
     public TicketsAdapter(ArrayList<Ticket> ticketArrayList,Context context)
     {
@@ -54,7 +57,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketVi
     public static class TicketViewHolder extends RecyclerView.ViewHolder
     {
         RvTicketBinding rvTicketBinding;
-        private ArrayList<Ticket> ticketArrayList;
+        private final ArrayList<Ticket> ticketArrayList;
 
         public TicketViewHolder(RvTicketBinding rvTicketBinding,ArrayList<Ticket> ticketArrayList)
         {

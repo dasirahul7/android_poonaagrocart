@@ -4,13 +4,11 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

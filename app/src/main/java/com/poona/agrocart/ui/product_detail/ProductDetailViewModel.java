@@ -8,9 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.poona.agrocart.ui.product_detail.model.ProductDetail;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProductDetailViewModel extends AndroidViewModel
 {
 //    public MutableLiveData<String> productImg;

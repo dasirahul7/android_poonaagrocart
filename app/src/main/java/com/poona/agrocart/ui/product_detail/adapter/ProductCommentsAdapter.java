@@ -2,19 +2,22 @@ package com.poona.agrocart.ui.product_detail.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RvProductCommentBinding;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
+
 import java.util.ArrayList;
 
 public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductCommentsAdapter.CommentViewHolder>
 {
-    private ArrayList<ProductComment> commentArrayList;
-    private boolean full;
+    private final ArrayList<ProductComment> commentArrayList;
+    private final boolean full;
 
     public ProductCommentsAdapter(ArrayList<ProductComment> commentArrayList, boolean full)
     {

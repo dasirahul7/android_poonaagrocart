@@ -1,9 +1,6 @@
 package com.poona.agrocart.ui.product_detail.model;
 
-import androidx.lifecycle.MutableLiveData;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class ProductDetail {
     public String productName;

@@ -1,13 +1,10 @@
 package com.poona.agrocart.ui.explore.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -22,10 +19,10 @@ import com.poona.agrocart.ui.explore.model.ExploreItems;
 import java.util.ArrayList;
 
 public class ExploreItemAdapter extends RecyclerView.Adapter<ExploreItemAdapter.ExploreItemHolder> {
-    private Context exContext;
+    private final Context exContext;
     private ArrayList<ExploreItems> exploreItems = new ArrayList<>();
     private RowExploreItemBinding exploreItemBinding;
-    private View rootView;
+    private final View rootView;
 
     public ExploreItemAdapter(Context exContext, ArrayList<ExploreItems> exploreItems,View view) {
         this.exContext = exContext;

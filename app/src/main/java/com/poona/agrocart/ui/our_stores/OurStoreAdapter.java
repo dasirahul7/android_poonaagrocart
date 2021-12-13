@@ -3,10 +3,12 @@ package com.poona.agrocart.ui.our_stores;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RvStoreBinding;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 
 public class OurStoreAdapter extends RecyclerView.Adapter<OurStoreAdapter.OurStoreViewHolder>
 {
-    private ArrayList<Store> ourStoresList;
+    private final ArrayList<Store> ourStoresList;
 
     public OurStoreAdapter(ArrayList<Store> ourStoresList)
     {

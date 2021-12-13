@@ -1,29 +1,21 @@
 package com.poona.agrocart.ui.my_cart;
 
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
 import com.poona.agrocart.databinding.FragmentMyCartBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.favourites.FavouriteItem;
-import com.poona.agrocart.ui.favourites.FavouriteItemAdapter;
 import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class MyCartFragment extends BaseFragment implements View.OnClickListener
 {
@@ -39,28 +31,28 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
+        requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
         setBottomMarginInDps(50);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
+        requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
         setBottomMarginInDps(50);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
+        requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
         setBottomMarginInDps(0);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
+        requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
         setBottomMarginInDps(0);
     }
 
@@ -69,7 +61,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     {
         fragmentMyCartBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_my_cart, container, false);
         fragmentMyCartBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentMyCartBinding).getRoot();
+        final View view = fragmentMyCartBinding.getRoot();
 
         initView();
         setRvAdapter();
@@ -84,9 +76,9 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         rvCart=fragmentMyCartBinding.rvCart;
         scale = getResources().getDisplayMetrics().density;
 
-        ((AppCompatActivity) requireActivity()).findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
+        requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
 
-        navHostFragment=((AppCompatActivity) requireActivity()).findViewById(R.id.nav_host_fragment_content_home);
+        navHostFragment= requireActivity().findViewById(R.id.nav_host_fragment_content_home);
         navHostMargins = (ViewGroup.MarginLayoutParams) navHostFragment.getLayoutParams();
         navHostMargins.bottomMargin = 0;
     }

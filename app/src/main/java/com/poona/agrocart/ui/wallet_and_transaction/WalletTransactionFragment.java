@@ -2,20 +2,22 @@ package com.poona.agrocart.ui.wallet_and_transaction;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentWalletTransactionBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.my_basket.BasketOrdersAdapter;
 import com.poona.agrocart.ui.my_basket.model.BasketOrder;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,8 +31,8 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
     private LinearLayoutManager linearLayoutManager;
     private BasketOrdersAdapter basketOrdersAdapter;
     private ArrayList<BasketOrder> transactionsArrayList;
-    private boolean isWallet = true;
-    private String[] status = {"Paid", "Refund", "Added"};
+    private final boolean isWallet = true;
+    private final String[] status = {"Paid", "Refund", "Added"};
     private Calendar calendarFrom,calendarTo;
     long fromTime = 0;
     private DatePickerDialog datePickerDialog;
@@ -51,7 +53,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentWalletTransactionBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_wallet_transaction, container, false);
         fragmentWalletTransactionBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentWalletTransactionBinding).getRoot();
+        final View view = fragmentWalletTransactionBinding.getRoot();
 
         initView();
         setRvAdapter(view);

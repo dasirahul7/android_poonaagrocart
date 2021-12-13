@@ -37,16 +37,16 @@ public class HomeFragment extends BaseFragment {
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding fragmentHomeBinding;
     private BannerAdapter bannerAdapter;
-    private ArrayList<Banner> banners = new ArrayList<>();
-    private ArrayList<Category> categories = new ArrayList<>();
+    private final ArrayList<Banner> banners = new ArrayList<>();
+    private final ArrayList<Category> categories = new ArrayList<>();
     private CategoryAdapter categoryAdapter;
     private ProductListAdapter productListAdapter;
     private ProductListAdapter offerListAdapter;
     private BasketAdapter basketAdapter;
-    private ArrayList<Product> products = new ArrayList<>();
-    private ArrayList<Product> offerProducts = new ArrayList<>();
-    private ArrayList<Product> productLists = new ArrayList<>();
-    private ArrayList<Basket> baskets = new ArrayList<>();
+    private final ArrayList<Product> products = new ArrayList<>();
+    private final ArrayList<Product> offerProducts = new ArrayList<>();
+    private final ArrayList<Product> productLists = new ArrayList<>();
+    private final ArrayList<Basket> baskets = new ArrayList<>();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,

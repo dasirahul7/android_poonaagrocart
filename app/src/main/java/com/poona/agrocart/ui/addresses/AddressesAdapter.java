@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.AddressViewHolder>
 {
-    private ArrayList<Address> addressArrayList;
+    private final ArrayList<Address> addressArrayList;
 
     public AddressesAdapter(ArrayList<Address> addressArrayList) {
         this.addressArrayList = addressArrayList;

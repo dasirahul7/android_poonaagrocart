@@ -15,11 +15,11 @@ import java.util.ArrayList;
 
 
 public class IntroPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
-    private IntroScreenFragment context;
+    private final IntroScreenFragment context;
 
-    private FragmentManager fragmentManager;
+    private final FragmentManager fragmentManager;
     private int lastPosition = 0;
-    private ArrayList<Intro> intros;
+    private final ArrayList<Intro> intros;
 
     public interface OnChangeButtonCaptionListener {
         void onAddText(int position);
@@ -74,7 +74,7 @@ public class IntroPagerAdapter extends FragmentPagerAdapter implements ViewPager
     @SuppressWarnings("ConstantConditions")
     public LinearLayout getRootView(int position) {
 
-        LinearLayout carouselLinearLayout = (LinearLayout) fragmentManager.findFragmentByTag(this.getFragmentTag(position))
+        LinearLayout carouselLinearLayout = fragmentManager.findFragmentByTag(this.getFragmentTag(position))
                 .getView().findViewById(R.id.itemLayout);
 
         return carouselLinearLayout;

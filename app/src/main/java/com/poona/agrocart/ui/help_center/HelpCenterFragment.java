@@ -1,17 +1,19 @@
 package com.poona.agrocart.ui.help_center;
 
 import android.os.Bundle;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentHelpCenterBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.help_center.model.Ticket;
+
 import java.util.ArrayList;
 
 public class HelpCenterFragment extends BaseFragment implements View.OnClickListener
@@ -27,7 +29,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
     {
         fragmentHelpCenterBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_help_center, container, false);
         fragmentHelpCenterBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentHelpCenterBinding).getRoot();
+        final View view = fragmentHelpCenterBinding.getRoot();
 
         initView();
         setRvAdapter();

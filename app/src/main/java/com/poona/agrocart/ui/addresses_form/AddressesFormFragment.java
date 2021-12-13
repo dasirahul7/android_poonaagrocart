@@ -2,13 +2,13 @@ package com.poona.agrocart.ui.addresses_form;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentAddressesFormBinding;
@@ -19,15 +19,15 @@ public class AddressesFormFragment extends BaseFragment implements View.OnClickL
 
     private FragmentAddressesFormBinding fragmentAddressesFormBinding;
     private AddressFormViewModel addressFormViewModel;
-    private String[] cities={"Pune"};
-    private String[] areas={"Vishrantwadi", "Khadki"};
+    private final String[] cities={"Pune"};
+    private final String[] areas={"Vishrantwadi", "Khadki"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         fragmentAddressesFormBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_addresses_form, container, false);
         fragmentAddressesFormBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentAddressesFormBinding).getRoot();
+        final View view = fragmentAddressesFormBinding.getRoot();
 
         initView();
         setupSpinners();

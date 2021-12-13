@@ -24,11 +24,11 @@ import java.util.ArrayList;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.BestSellingHolder> {
     private ArrayList<Product> products = new ArrayList<>();
-    private Context bdContext;
+    private final Context bdContext;
     private RowBestSellingItemBinding rowBestSellingItemBinding;
     private RowProductItemBinding rowProductItemBinding;
-    private String ListType;
-    private View view;
+    private final String ListType;
+    private final View view;
 
     public ProductListAdapter(ArrayList<Product> products, FragmentActivity context, String listType, View view) {
         this.products = products;

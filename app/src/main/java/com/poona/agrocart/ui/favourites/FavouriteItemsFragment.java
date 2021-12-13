@@ -1,13 +1,14 @@
 package com.poona.agrocart.ui.favourites;
 
 import android.os.Bundle;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
 import com.poona.agrocart.ui.BaseFragment;
@@ -27,7 +28,7 @@ public class FavouriteItemsFragment extends BaseFragment
     {
         fragmentFavouriteItemsBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_favourite_items, container, false);
         fragmentFavouriteItemsBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentFavouriteItemsBinding).getRoot();
+        final View view = fragmentFavouriteItemsBinding.getRoot();
 
         initTitleBar(getString(R.string.menu_favourite));
         initView();

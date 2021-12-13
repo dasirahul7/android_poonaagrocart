@@ -25,9 +25,6 @@ import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
-import com.poona.agrocart.ui.privacy_policy.PrivacyFragment;
-import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
-import com.poona.agrocart.ui.splash_screen.SplashScreenFragment;
 
 import java.util.Objects;
 

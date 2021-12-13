@@ -1,8 +1,6 @@
 package com.poona.agrocart.ui.home.adapter;
 
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RowBasketItemBinding;
-import com.poona.agrocart.databinding.RowBestSellingItemBinding;
 import com.poona.agrocart.ui.home.model.Basket;
 
 import java.util.ArrayList;
 
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHolder> {
     private ArrayList<Basket> baskets = new ArrayList<>();
-    private Context bContext;
+    private final Context bContext;
     private RowBasketItemBinding basketItemBinding;
-    private View view;
+    private final View view;
 
     public BasketAdapter(ArrayList<Basket> baskets, Context context, View view) {
         this.baskets = baskets;

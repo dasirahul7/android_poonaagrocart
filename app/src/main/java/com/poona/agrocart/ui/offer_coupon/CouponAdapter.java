@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHolder> {
 
     private ArrayList<Coupons> coupons = new ArrayList<>();
-    private Context context;
+    private final Context context;
     private RowCouponItemBinding rowCouponItemBinding;
 
 

@@ -1,39 +1,22 @@
 package com.poona.agrocart.ui.splash_screen;
 
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
+import static com.poona.agrocart.app.AppConstants.LOGOUT;
+
 import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
-import android.app.ActionBar;
-import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHost;
-import androidx.navigation.NavHostController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.poona.agrocart.R;
 import com.poona.agrocart.ui.BaseActivity;
 import com.poona.agrocart.widgets.CustomTextView;
-
-import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
-import static com.poona.agrocart.app.AppConstants.LOGOUT;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
