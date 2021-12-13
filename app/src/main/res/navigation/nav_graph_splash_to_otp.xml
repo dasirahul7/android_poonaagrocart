@@ -83,6 +83,12 @@
             app:destination="@id/selectLocationFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_signUpFragment_to_signInPrivacyFragment"
+            app:destination="@id/signInPrivacyFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_signInTermsFragment"
+            app:destination="@id/signInTermsFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectLocationFragment"

@@ -1,25 +1,23 @@
 package com.poona.agrocart.ui.sign_up;
 
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
 import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
@@ -27,7 +25,6 @@ import com.poona.agrocart.databinding.FragmentSignUpBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
-
 import java.util.Objects;
 
 public class SignUpFragment extends BaseFragment implements View.OnClickListener
@@ -41,7 +38,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         fragmentSignUpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false);
         fragmentSignUpBinding.setLifecycleOwner(this);
-        final View view = fragmentSignUpBinding.getRoot();
+        final View view = ((ViewDataBinding) fragmentSignUpBinding).getRoot();
 
         commonViewModel=new ViewModelProvider(this).get(CommonViewModel.class);
         fragmentSignUpBinding.setCommonViewModel(commonViewModel);
@@ -137,9 +134,11 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.tv_terms_of_service:
+                redirectToTermsAndCondtn(v);
                 break;
 
             case R.id.tv_privacy_policy:
+                redirectToPrivacyPolicy(v);
                 break;
 
             case R.id.btn_sign_up:
@@ -203,5 +202,19 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             }
         }
 
+    }
+
+    private void redirectToPrivacyPolicy(View v) {
+        Bundle bundle = new Bundle();
+        bundle.putString("from", "SignUp");
+        bundle.putString("title", getString(R.string.privacy_policy));
+        Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_signInPrivacyFragment, bundle);
+    }
+
+    private void redirectToTermsAndCondtn(View v) {
+        Bundle bundle = new Bundle();
+        bundle.putString("from", "SignUp");
+        bundle.putString("title", getString(R.string.menu_terms_conditions));
+        Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_signInTermsFragment, bundle);
     }
 }
