@@ -76,7 +76,7 @@
                         android:orientation="horizontal">
                         <LinearLayout
                             android:id="@+id/ll_rb_individual"
-                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_margin="@dimen/_2sdp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_signup_rb_selected"
                             android:paddingStart="@dimen/_10sdp"
@@ -91,16 +91,15 @@
                                 style="@style/RadioButtonSignUp"
                                 android:layout_gravity="center"
                                 android:paddingStart="@dimen/_4sdp"
-                                android:layout_margin="@dimen/_2sdp"
                                 android:textColor="@color/color_grey_txt"
-                                android:textSize="@dimen/_20sp"
+                                android:textSize="@dimen/_16sp"
                                 app:setCustomFont="@string/font_poppins_regular"/>
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/ll_rb_business"
-                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_margin="@dimen/_2sdp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_signup_rb_unselected"
                             android:paddingStart="@dimen/_5sdp"
@@ -117,7 +116,7 @@
                             tools:ignore="RtlSymmetry"
                             android:layout_margin="@dimen/_2sdp"
                             android:textColor="@color/color_grey_txt"
-                            android:textSize="@dimen/_20sp"
+                            android:textSize="@dimen/_16sp"
                             app:setCustomFont="@string/font_poppins_regular"/>
 
                         </LinearLayout>
