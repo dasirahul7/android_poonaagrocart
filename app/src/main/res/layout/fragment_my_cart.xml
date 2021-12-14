@@ -137,6 +137,26 @@
                 </LinearLayout>
 
             </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:id="@+id/empty_cart_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/empty_cart_img"/>
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:gravity="center"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:id="@+id/tv_oops"
+                    android:text="@string/oops_no_products"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
 
         </LinearLayout>
 

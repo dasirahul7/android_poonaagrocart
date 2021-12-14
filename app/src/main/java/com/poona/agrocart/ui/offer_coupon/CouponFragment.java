@@ -4,10 +4,12 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.databinding.DialogCouponTermsBinding;
 import com.poona.agrocart.databinding.FragmentCouponBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.widgets.CustomTextView;
@@ -56,16 +59,18 @@ public class CouponFragment extends BaseFragment {
     }
 
     public void termsDialog() {
-        Dialog dialog = new Dialog(getActivity());
-        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_coupon_terms);
-        ImageView closeImg = dialog.findViewById(R.id.close_btn);
-        LinearLayout walletDialog = dialog.findViewById(R.id.wallet_dialog);
-        CustomTextView tvContent = dialog.findViewById(R.id.tv_content);
-        CustomTextView tvTitle = dialog.findViewById(R.id.dialog_title);
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        DialogCouponTermsBinding binding = DialogCouponTermsBinding.inflate(LayoutInflater.from(context));
+        builder.setView(binding.getRoot());
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationDownUp;
 
-        tvTitle.setText(R.string.menu_terms_conditions);
+        ImageView closeImg = binding.closeBtn;
+        LinearLayout walletDialog = binding.walletDialog;
+        CustomTextView tvContent = binding.tvContent;
+        CustomTextView dialogTitle = binding.dialogTitle;
+        dialogTitle.setText(R.string.menu_terms_conditions);
         tvContent.setText(getString(R.string.sample_coupon_terms));
         walletDialog.setVisibility(View.GONE);
         tvContent.setVisibility(View.VISIBLE);
@@ -73,6 +78,22 @@ public class CouponFragment extends BaseFragment {
             dialog.dismiss();
         });
         dialog.show();
+
+        // Get screen width and height in pixels
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // The absolute width of the available display size in pixels.
+        int displayWidth = displayMetrics.widthPixels;
+        // The absolute height of the available display size in pixels.
+        int displayHeight = displayMetrics.heightPixels;
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        // Copy the alert dialog window attributes to new layout parameter instance
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+        // Set alert dialog width equal to screen width 100%
+        int dialogWindowWidth = (int) (displayWidth * 0.8f);
+        layoutParams.width = dialogWindowWidth;
+        dialog.getWindow().setAttributes(layoutParams);
     }
 
 
