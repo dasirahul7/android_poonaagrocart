@@ -21,11 +21,13 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     private ArrayList<Coupons> coupons = new ArrayList<>();
     private final Context context;
     private RowCouponItemBinding rowCouponItemBinding;
+    private CouponFragment couponFragment;
 
 
-    public CouponAdapter(ArrayList<Coupons> coupons, Context context) {
+    public CouponAdapter(ArrayList<Coupons> coupons, Context context, CouponFragment couponFragment) {
         this.coupons = coupons;
         this.context = context;
+        this.couponFragment = couponFragment;
     }
 
     @NonNull
@@ -63,7 +65,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
             rowCouponItemBinding.setVariable(BR.moduleCoupon, coupon);
             rowCouponItemBinding.executePendingBindings();
             rowCouponItemBinding.imgInfo.setOnClickListener(v -> {
-                ((HomeActivity) context).openSmallDialog(false);
+                couponFragment.termsDialog();
             });
         }
     }

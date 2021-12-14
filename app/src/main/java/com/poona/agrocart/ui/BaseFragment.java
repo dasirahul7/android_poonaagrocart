@@ -8,6 +8,7 @@ import static com.poona.agrocart.app.AppConstants.LOGOUT;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,7 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
@@ -51,6 +53,8 @@ import com.poona.agrocart.data.firebase.PushNotification;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
+import com.poona.agrocart.widgets.CustomButton;
+import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.custom_alert.Alerter;
 import com.poona.agrocart.widgets.toast.CustomToast;
 import com.yalantis.ucrop.UCrop;
@@ -72,6 +76,8 @@ import java.util.Objects;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
+
+
 public abstract class BaseFragment extends Fragment {
     private static final String TAG = BaseFragment.class.getSimpleName();
     public Context context;
@@ -191,6 +197,32 @@ public abstract class BaseFragment extends Fragment {
                 .setText(dialogMessage)
                 .show();
     }
+    protected void showConfirmPopup(Activity activity, String dialogMessage, CustomDialogInterface dialogInterface)
+    {
+        final boolean[] flag = new boolean[1];
+        Dialog dialog = new Dialog(activity);
+        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_logout);
+//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//        lp.copyFrom(dialog.getWindow().getAttributes());
+//        dialog.getWindow().setAttributes(lp);
+        CustomTextView tvTitle = dialog.findViewById(R.id.tv_heading);
+        CustomButton btnYes = dialog.findViewById(R.id.btn_yes);
+        CustomButton btnNo = dialog.findViewById(R.id.btn_no);
+        btnNo.setOnClickListener(v -> {
+            dialogInterface.onNoClick();
+            dialog.dismiss();
+        });
+        btnYes.setOnClickListener(v -> {
+            dialog.dismiss();
+            dialogInterface.onYesClick();
+        });
+        tvTitle.setText(dialogMessage);
+
+        dialog.show();
+    }
+
 
     // Date and time format exchange
     public String formatDate(String enterDate, String initDateFormat, String endDateFormat) throws ParseException, java.text.ParseException {

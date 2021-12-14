@@ -1,9 +1,16 @@
 package com.poona.agrocart.ui.help_center;
 
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -87,8 +94,29 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_create_new_ticket:
-                ((HomeActivity) context).raiseNewTicketDialog();
+               raiseNewTicketDialog();
                 break;
         }
     }
+
+    // Dialog for create ticket
+    public void raiseNewTicketDialog() {
+        Dialog dialog = new Dialog(new ContextThemeWrapper(getActivity(), R.style.DialogSlideUp));
+        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_new_ticket);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        ImageView closeImg = dialog.findViewById(R.id.close_btn);
+        closeImg.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
 }

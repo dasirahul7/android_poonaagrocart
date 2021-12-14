@@ -1,12 +1,17 @@
 package com.poona.agrocart.ui.wallet_and_transaction;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +23,7 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.my_basket.BasketOrdersAdapter;
 import com.poona.agrocart.ui.my_basket.model.BasketOrder;
+import com.poona.agrocart.widgets.CustomTextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -142,7 +148,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
                 showToCalendar();
                 break;
             case R.id.btn_add:
-                ((HomeActivity) context).openSmallDialog(true);
+                walletDialog();
                 break;
         }
     }
@@ -212,5 +218,24 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         }
         return timeInLong;
     }
+
+    public void walletDialog() {
+        Dialog dialog = new Dialog(getActivity());
+        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_coupon_terms);
+        ImageView closeImg = dialog.findViewById(R.id.close_btn);
+        LinearLayout walletDialog = dialog.findViewById(R.id.wallet_dialog);
+        CustomTextView tvContent = dialog.findViewById(R.id.tv_content);
+        CustomTextView tvTitle = dialog.findViewById(R.id.dialog_title);
+            tvTitle.setText(R.string.entr_amount);
+            walletDialog.setVisibility(View.VISIBLE);
+            tvContent.setVisibility(View.GONE);
+        closeImg.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
+
 
 }

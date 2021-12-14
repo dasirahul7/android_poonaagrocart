@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.my_cart;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentMyCartBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.CustomDialogInterface;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.widgets.custom_alert.Alert;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MyCartFragment extends BaseFragment implements View.OnClickListener
 {
@@ -73,6 +78,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     {
         fragmentMyCartBinding.btnPlaceOrder.setOnClickListener(this);
         initTitleBar(getString(R.string.my_cart));
+        ((HomeActivity)requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.VISIBLE);
+        ((HomeActivity)requireActivity()).binding.appBarHome.imgDelete.setOnClickListener(this::onClick);
         rvCart=fragmentMyCartBinding.rvCart;
         scale = getResources().getDisplayMetrics().density;
 
@@ -136,11 +143,34 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             case R.id.btn_place_order:
                 redirectToOrderSummary(v);
                 break;
+            case R.id.img_delete:
+                showConfirmPopup(requireActivity(), getString(R.string.confirm_delete), new CustomDialogInterface() {
+                    @Override
+                    public void onYesClick() {
+                        deleteAllItems();
+                    }
+
+                    @Override
+                    public void onNoClick() {
+
+                    }
+                });
+               break;
         }
+    }
+
+    private void deleteAllItems() {
+        cartItemArrayList.clear();
+        cartItemsAdapter.notifyDataSetChanged();
     }
 
     private void redirectToOrderSummary(View v)
     {
-        Navigation.findNavController(v).navigate(R.id.action_nav_cart_to_nav_order_summary);
+        if (isConnectingToInternet(context)) {
+            Navigation.findNavController(v).navigate(R.id.action_nav_cart_to_nav_order_summary);
+        }else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
     }
+
 }

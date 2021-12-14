@@ -17,23 +17,37 @@
         app:strokeColor="@color/clr_custom_edit_text_otp"
         app:strokeWidth="1dp">
         <LinearLayout
+            android:padding="@dimen/_5sdp"
             android:id="@+id/cat_row"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:orientation="vertical">
-            <ImageView
-                android:id="@+id/catImg"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_70sdp"
-                setImage="@{categoryModule.img}"/>
+                app:strokeColor="@color/white"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:strokeWidth="@dimen/_1sdp"
+                android:layout_height="@dimen/_70sdp">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white">
+                    <ImageView
+                        android:id="@+id/catImg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        setImage="@{categoryModule.img}"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_cat_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/_5sdp"
+                android:gravity="center_vertical"
                 android:singleLine="true"
                 android:text="@{categoryModule.name}"
                 android:textColor="@color/green_txt_color"

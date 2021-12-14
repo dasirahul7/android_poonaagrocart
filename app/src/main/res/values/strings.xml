@@ -384,4 +384,7 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="description">Description</string>
     <string name="Pay">pay</string>
     <string name="entr_amount">Enter Amount</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="place_order">Place Order</string>
+    <string name="confirm_delete">Are you sure you want to delete all items</string>
 </resources>

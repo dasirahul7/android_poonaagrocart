@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -29,6 +31,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.ActivityHomeBinding;
@@ -191,50 +194,6 @@ public class HomeActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-//    Dialog for Coupon info
-    public void openSmallDialog(boolean wallet) {
-        Dialog dialog = new Dialog(new ContextThemeWrapper(this,R.style.DialogSlideAnim));
-        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_coupon_terms);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        ImageView closeImg = dialog.findViewById(R.id.close_btn);
-        LinearLayout walletDialog = dialog.findViewById(R.id.wallet_dialog);
-        CustomTextView tvContent = dialog.findViewById(R.id.tv_content);
-        CustomTextView tvTitle = dialog.findViewById(R.id.dialog_title);
-        if (wallet){
-            tvTitle.setText(R.string.entr_amount);
-            walletDialog.setVisibility(View.VISIBLE);
-            tvContent.setVisibility(View.GONE);
-        }else {
-            tvTitle.setText(R.string.menu_terms_conditions);
-            walletDialog.setVisibility(View.GONE);
-            tvContent.setVisibility(View.VISIBLE);
-        }
-        closeImg.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
-        dialog.show();
-    }
-    //Dialog for top to center
-    public void raiseNewTicketDialog(){
-        Dialog dialog = new Dialog(new ContextThemeWrapper(this,R.style.DialogSlideUp));
-        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_new_ticket);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        dialog.getWindow().setAttributes(lp);
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-        ImageView closeImg = dialog.findViewById(R.id.close_btn);
-        closeImg.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
-        dialog.show();
     }
 
 }

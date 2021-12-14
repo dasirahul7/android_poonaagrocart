@@ -32,6 +32,7 @@
                     android:background="@drawable/bg_et_search"
                     android:drawableStart="@drawable/ic_search"
                     android:drawablePadding="@dimen/_8sdp"
+                    android:singleLine="true"
                     android:hint="@string/search_store"
                     android:paddingStart="@dimen/_8sdp"
                     tools:ignore="RtlSymmetry"
@@ -96,7 +97,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="horizontal">
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -128,13 +130,14 @@
                     android:id="@+id/rec_category"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/_5sdp" />
+                    android:layout_marginHorizontal="@dimen/_5sdp" />
 
                 <!--Basket-->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="horizontal">
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -153,14 +156,15 @@
                     android:id="@+id/rec_basket"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/_5sdp" />
+                    android:layout_marginHorizontal="@dimen/_5sdp" />
 
 
                 <!--Best Selling-->
                 <RelativeLayout
                     android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     android:orientation="horizontal">
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -191,13 +195,14 @@
                     android:id="@+id/rec_offer_product"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/_5sdp" />
+                    android:layout_marginHorizontal="@dimen/_5sdp" />
 
                 <!--Exclusive Offers-->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     android:orientation="horizontal">
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -228,7 +233,7 @@
                     android:id="@+id/rec_offers"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/_5sdp" />
+                    android:layout_marginHorizontal="@dimen/_5sdp" />
 
 
                 <!--Our Shop-->
@@ -348,7 +353,7 @@
                     android:id="@+id/rec_product"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/_10sdp" />
+                    android:layout_marginHorizontal="@dimen/_10sdp" />
             </LinearLayout>
 
 
