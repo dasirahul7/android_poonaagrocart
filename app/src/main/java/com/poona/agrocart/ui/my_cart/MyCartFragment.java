@@ -160,6 +160,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void deleteAllItems() {
+        fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
+        fragmentMyCartBinding.continueBtn.setVisibility(View.VISIBLE);
         cartItemArrayList.clear();
         cartItemsAdapter.notifyDataSetChanged();
     }

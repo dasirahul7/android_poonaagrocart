@@ -191,7 +191,7 @@
         <entry key="app/src/main/res/layout/fragment_location.xml" value="0.14130434782608695" />
         <entry key="app/src/main/res/layout/fragment_log_in.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_my_basket.xml" value="0.11684782608695653" />
-        <entry key="app/src/main/res/layout/fragment_my_cart.xml" value="0.15489130434782608" />
+        <entry key="app/src/main/res/layout/fragment_my_cart.xml" value="0.11" />
         <entry key="app/src/main/res/layout/fragment_my_orders.xml" value="0.14855072463768115" />
         <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.11684782608695653" />
