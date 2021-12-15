@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.order_view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +54,7 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
         return basketItems.size();
     }
 
-    public static class BasketItemViewHolder extends RecyclerView.ViewHolder
+    public class BasketItemViewHolder extends RecyclerView.ViewHolder
     {
 
         RvBasketDetailBinding rvBasketDetailBinding;
@@ -68,17 +69,13 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
             {
                 rvBasketDetailBinding.tvDateAndTime.setVisibility(View.VISIBLE);
                 rvBasketDetailBinding.tvQuantity.setVisibility(View.GONE);
-                rvBasketDetailBinding.tvOrderStatus.setVisibility(View.VISIBLE);
-                rvBasketDetailBinding.tvOrderPrice.setVisibility(View.VISIBLE);
-                rvBasketDetailBinding.tvProductOrderPrice.setVisibility(View.GONE);
+                rvBasketDetailBinding.tvOrderPrice.setTextColor(context.getColor(R.color.color_rv_basket_price));
             }
             else
             {
                 rvBasketDetailBinding.tvDateAndTime.setVisibility(View.INVISIBLE);
                 rvBasketDetailBinding.tvQuantity.setVisibility(View.VISIBLE);
                 rvBasketDetailBinding.tvOrderStatus.setVisibility(View.GONE);
-                rvBasketDetailBinding.tvOrderPrice.setVisibility(View.INVISIBLE);
-                rvBasketDetailBinding.tvProductOrderPrice.setVisibility(View.VISIBLE);
             }
         }
 

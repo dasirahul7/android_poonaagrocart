@@ -33,7 +33,7 @@
                 android:layout_alignParentStart="true"
                 android:background="@drawable/green_rectangle"
                 android:src="@drawable/ic_organic"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_item_offer"
@@ -172,7 +172,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:background="@drawable/bg_green_square"
-                android:scaleType="centerInside"
+                android:scaleType="center"
                 android:src="@drawable/ic_plus_white" />
 
 

@@ -168,9 +168,16 @@
         <item name="colorSwitchThumbNormal">@color/color_inactive_switch</item>
     </style>
 
+<!--     Organic button style-->
     <style name="organic_button_style" parent="Widget.AppCompat.ImageButton">
         <item name="android:paddingTop">@dimen/_1sdp</item>
         <item name="android:paddingStart">@dimen/_1sdp</item>
+    </style>
+<!--    Green plus button style-->
+    <style name="PlusButtonStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:scaleType">center</item>
+        <item name="android:background">@drawable/bg_green_square</item>
+        <item name="android:src">@drawable/ic_plus_white</item>
     </style>
 
 </resources>

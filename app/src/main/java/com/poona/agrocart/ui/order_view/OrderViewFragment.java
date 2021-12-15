@@ -95,6 +95,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             BasketItem basketItem = new BasketItem();
             basketItem.setNameOfProduct("ABC");
             basketItem.setWeight("250gms");
+            basketItem.setQuantity(getString(R.string.sample_unit));
             basketItem.setDate("22nd Sept 2021");
             basketItem.setTime("9.00 am to 9.00 pm");
             if(i==0)
