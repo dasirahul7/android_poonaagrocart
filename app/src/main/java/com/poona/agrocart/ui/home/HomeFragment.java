@@ -78,7 +78,7 @@ public class HomeFragment extends BaseFragment {
     private void setCartItems(View root) {
         productLists.clear();
         for (int i = 0; i < 4; i++) {
-            Product product = new Product("0", "Potatos", "1kg", "10% Off", "Rs 65", "Rs 35", "https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png","Pune");
+            Product product = new Product("0", "Vegetable", "1kg", "10% Off", "Rs 65", "Rs 35", getString(R.string.img_potato),"Pune");
             productLists.add(product);
             if (i == 3){
                 product.setOrganic(true);
@@ -162,7 +162,7 @@ public class HomeFragment extends BaseFragment {
 
     private void setShopByCategory(View view) {
         categories.clear();
-        Category category = new Category("1", "Green Vegetables", "https://www.linkpicture.com/q/green_leafy_vegetable.png");
+        Category category = new Category("1", "Green Vegetables", getString(R.string.jpg_vege));
         Category category1 = new Category("2", "Fruit Vegetables", "https://www.linkpicture.com/q/tomato_1.png");
         Category category2 = new Category("3", "Green Vegetables", "https://www.linkpicture.com/q/green_leafy_vegetable.png");
         Category category3 = new Category("4", "Fruit Vegetables", "https://www.linkpicture.com/q/tomato_1.png");

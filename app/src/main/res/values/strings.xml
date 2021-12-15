@@ -361,14 +361,14 @@
     <string name="my_cart">My Cart</string>
 
     <!--    Images Urls-->
-
     <string name="img_bell_pepper_red">https://www.linkpicture.com/q/capsicon.png</string>
     <string name="img_ginger">https://www.linkpicture.com/q/ginger.png</string>
     <string name="img_green_leafy">https://www.linkpicture.com/q/green_leafy_vegetable.png</string>
     <string name="img_tomato">https://www.linkpicture.com/q/tomato_1.png</string>
     <string name="img_red_apple">https://www.linkpicture.com/q/pngfuel–1–1.png</string>
     <string name="img_banana">https://www.linkpicture.com/q/banana_2.png</string>
-    <string name="img_potato">https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png</string>
+    <string name="img_potato">https://www.linkpicture.com/q/Potato-Free-Download-PNG-1_1.png</string>
+    <string name="img_beat">https://www.linkpicture.com/q/beat_1.png</string>
     <string name="img_sample_store">https://www.linkpicture.com/q/unsplash_SsKf1L6rWJk-1.png</string>
     <string name="about_store">About Store</string>
     <string name="sample_about_store">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper \n\n\nsed aliquam volutpat. Suscipit sem ullamcor per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
@@ -390,4 +390,5 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="oops_no_products">Oops! No Products</string>
     <string name="please_add_product">Please add product</string>
     <string name="continue_shopping">Continue shopping</string>
+    <string name="jpg_vege">https://www.linkpicture.com/q/green.jpeg</string>
 </resources>

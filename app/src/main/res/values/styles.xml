@@ -168,7 +168,9 @@
         <item name="colorSwitchThumbNormal">@color/color_inactive_switch</item>
     </style>
 
-    <style name="button_style">
+    <style name="organic_button_style" parent="Widget.AppCompat.ImageButton">
+        <item name="android:paddingTop">@dimen/_1sdp</item>
+        <item name="android:paddingStart">@dimen/_1sdp</item>
     </style>
 
 </resources>

@@ -24,10 +24,9 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <com.google.android.material.card.MaterialCardView
+                app:cardElevation="0dp"
                 android:layout_width="@dimen/_80sdp"
-                app:strokeColor="@color/white"
                 android:layout_marginTop="@dimen/_5sdp"
-                app:strokeWidth="@dimen/_1sdp"
                 android:layout_height="@dimen/_70sdp">
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
