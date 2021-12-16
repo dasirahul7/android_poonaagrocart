@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusableInTouchMode="true"
-        tools:context=".ui.wallet_and_transaction.WalletTransactionFragment">
+        tools:context=".ui.nav_wallet.WalletTransactionFragment">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_view_wallet_amount"

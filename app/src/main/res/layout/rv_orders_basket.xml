@@ -6,7 +6,7 @@
     <data>
         <variable
             name="basketOrder"
-            type="com.poona.agrocart.ui.my_basket.model.BasketOrder" />
+            type="com.poona.agrocart.ui.nav_my_basket.model.BasketOrder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

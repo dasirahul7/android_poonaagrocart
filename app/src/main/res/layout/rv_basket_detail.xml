@@ -7,7 +7,7 @@
 
         <variable
             name="basketItemModel"
-            type="com.poona.agrocart.ui.order_view.BasketItem" />
+            type="com.poona.agrocart.ui.nav_orders.order_view.BasketItem" />
     </data>
 
     <LinearLayout

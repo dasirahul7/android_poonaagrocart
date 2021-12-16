@@ -6,7 +6,7 @@
     android:layout_margin="@dimen/_10sdp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.explore.ExploreFragment">
+    tools:context=".ui.nav_explore.ExploreFragment">
 
     <!--Search View Layout-->
     <com.poona.agrocart.widgets.CustomEditText

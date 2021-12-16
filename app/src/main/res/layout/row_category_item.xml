@@ -10,7 +10,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardview_category"
         android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_120sdp"
+        android:layout_height="@dimen/_130sdp"
         android:elevation="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardUseCompatPadding="true"

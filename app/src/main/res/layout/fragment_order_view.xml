@@ -10,7 +10,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                tools:context=".ui.order_view.OrderViewFragment">
+                tools:context=".ui.nav_orders.order_view.OrderViewFragment">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardview_order_summary"

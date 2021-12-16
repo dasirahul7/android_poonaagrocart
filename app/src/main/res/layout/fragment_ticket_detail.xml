@@ -7,7 +7,7 @@
 
         <variable
             name="ticket"
-            type="com.poona.agrocart.ui.help_center.model.Ticket" />
+            type="com.poona.agrocart.ui.nav_help_center.model.Ticket" />
     </data>
 
     <ScrollView

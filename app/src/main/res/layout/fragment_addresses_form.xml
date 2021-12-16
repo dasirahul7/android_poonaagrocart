@@ -6,14 +6,14 @@
     <data>
         <variable
             name="addressFormViewModel"
-            type="com.poona.agrocart.ui.addresses_form.AddressFormViewModel" />
+            type="com.poona.agrocart.ui.nav_addresses.addresses_form.AddressFormViewModel" />
     </data>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        tools:context=".ui.addresses_form.AddressesFormFragment">
+        tools:context=".ui.nav_addresses.addresses_form.AddressesFormFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

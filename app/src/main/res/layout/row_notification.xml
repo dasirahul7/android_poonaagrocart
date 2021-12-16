@@ -5,7 +5,7 @@
     <data>
         <variable
             name="moduleNotification"
-            type="com.poona.agrocart.ui.notification.Notification" />
+            type="com.poona.agrocart.ui.nav_notification.Notification" />
     </data>
 
     <RelativeLayout

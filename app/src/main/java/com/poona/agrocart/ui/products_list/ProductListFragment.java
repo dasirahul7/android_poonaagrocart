@@ -18,8 +18,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentProductListBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.explore.adapter.FilterItemAdapter;
-import com.poona.agrocart.ui.explore.model.FilterItem;
+import com.poona.agrocart.ui.nav_explore.adapter.FilterItemAdapter;
+import com.poona.agrocart.ui.nav_explore.model.FilterItem;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.model.Product;
 

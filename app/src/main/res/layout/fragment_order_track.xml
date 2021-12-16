@@ -6,13 +6,13 @@
     <data>
         <variable
             name="orderTrackViewModel"
-            type="com.poona.agrocart.ui.order_track.OrderTrackViewModel" />
+            type="com.poona.agrocart.ui.nav_orders.track_order.OrderTrackViewModel" />
     </data>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.order_track.OrderTrackFragment">
+        tools:context=".ui.nav_orders.track_order.OrderTrackFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

@@ -6,7 +6,7 @@
 
         <variable
             name="basketCard"
-            type="com.poona.agrocart.ui.basket_page.BasketCard" />
+            type="com.poona.agrocart.ui.home.basket_page.BasketCard" />
 
     </data>
 

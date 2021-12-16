@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,8 +19,7 @@ import com.poona.agrocart.ui.order_summary.model.ProductAndPrice;
 
 import java.util.ArrayList;
 
-public class OrderSummaryFragment extends BaseFragment
-{
+public class OrderSummaryFragment extends BaseFragment implements View.OnClickListener {
     private FragmentOrderSummaryBinding fragmentOrderSummaryBinding;
     private RecyclerView rvProductsAndPrices;
     private LinearLayoutManager linearLayoutManager;
@@ -58,9 +59,8 @@ public class OrderSummaryFragment extends BaseFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        fragmentOrderSummaryBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_order_summary, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentOrderSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_summary, container, false);
         fragmentOrderSummaryBinding.setLifecycleOwner(this);
         final View view = fragmentOrderSummaryBinding.getRoot();
 
@@ -71,9 +71,8 @@ public class OrderSummaryFragment extends BaseFragment
         return view;
     }
 
-    private void setRvAdapter()
-    {
-        productAndPriceArrayList=new ArrayList<>();
+    private void setRvAdapter() {
+        productAndPriceArrayList = new ArrayList<>();
         prepareListingData();
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
@@ -84,10 +83,8 @@ public class OrderSummaryFragment extends BaseFragment
         rvProductsAndPrices.setAdapter(productAndPriceAdapter);
     }
 
-    private void prepareListingData()
-    {
-        for(int i = 0; i < 3; i++)
-        {
+    private void prepareListingData() {
+        for (int i = 0; i < 3; i++) {
             ProductAndPrice productAndPrice = new ProductAndPrice();
             productAndPrice.setProductName(getString(R.string.bell_pepper_red_1kg));
             productAndPrice.setDividedPrice(getString(R.string.rs_200_x_4));
@@ -96,15 +93,13 @@ public class OrderSummaryFragment extends BaseFragment
         }
     }
 
-    private void setBottomMarginInDps(int i)
-    {
-        int dpAsPixels = (int) (i*scale + 0.5f);
-        navHostMargins.bottomMargin=dpAsPixels;
+    private void setBottomMarginInDps(int i) {
+        int dpAsPixels = (int) (i * scale + 0.5f);
+        navHostMargins.bottomMargin = dpAsPixels;
     }
 
-    private void initView()
-    {
-        rvProductsAndPrices=fragmentOrderSummaryBinding.rvProductsAndPrices;
+    private void initView() {
+        rvProductsAndPrices = fragmentOrderSummaryBinding.rvProductsAndPrices;
         Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_medium));
         fragmentOrderSummaryBinding.rbCod.setTypeface(font);
         fragmentOrderSummaryBinding.rbOnline.setTypeface(font);
@@ -114,8 +109,30 @@ public class OrderSummaryFragment extends BaseFragment
 
         requireActivity().findViewById(R.id.bottom_navigation_view).setVisibility(View.GONE);
 
-        navHostFragment= requireActivity().findViewById(R.id.nav_host_fragment_content_home);
+        navHostFragment = requireActivity().findViewById(R.id.nav_host_fragment_content_home);
         navHostMargins = (ViewGroup.MarginLayoutParams) navHostFragment.getLayoutParams();
         navHostMargins.bottomMargin = 0;
+        fragmentOrderSummaryBinding.btnMakePayment.setOnClickListener(this::onClick);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_make_payment:
+                try {
+                    redirectToOrderDetails(v);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+
+    private void redirectToOrderDetails(View v) {
+        if (isConnectingToInternet(context)) {
+            Navigation.findNavController(v).navigate(R.id.action_nav_order_summary_to_orderDetailsFragment);
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
     }
 }
