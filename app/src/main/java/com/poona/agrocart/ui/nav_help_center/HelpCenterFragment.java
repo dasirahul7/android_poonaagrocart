@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +24,7 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_help_center.model.Ticket;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HelpCenterFragment extends BaseFragment implements View.OnClickListener
 {
@@ -111,6 +114,10 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
         dialog.getWindow().setAttributes(lp);
         dialog.getWindow().setGravity(Gravity.BOTTOM);
         ImageView closeImg = dialog.findViewById(R.id.close_btn);
+        Spinner spType = dialog.findViewById(R.id.sp_type);
+        ArrayList<String> typeList = new ArrayList<String>();
+//        typeList.addAll(R.array.type);
+//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),R.layout.text_spinner_wallet_transactions,)
         closeImg.setOnClickListener(v -> {
             dialog.dismiss();
         });

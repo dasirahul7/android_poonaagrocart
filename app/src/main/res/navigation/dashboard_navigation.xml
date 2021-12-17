@@ -135,7 +135,7 @@
         tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/nav_privacy"
-        android:name="com.poona.agrocart.ui.nav_privacy.PrivacyFragment"
+        android:name="com.poona.agrocart.ui.nav_our_privacy.PrivacyFragment"
         android:label="PrivacyFragment" />
     <fragment
         android:id="@+id/nav_terms"

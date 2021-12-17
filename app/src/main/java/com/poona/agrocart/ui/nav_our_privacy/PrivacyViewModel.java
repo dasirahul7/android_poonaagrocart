@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.nav_privacy;
+package com.poona.agrocart.ui.nav_our_privacy;
 
 import androidx.lifecycle.ViewModel;
 

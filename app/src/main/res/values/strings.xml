@@ -92,6 +92,7 @@
     <string name="terms_of_service">&#160;Terms of Service</string>
     <string name="and">and</string>
     <string name="privacy_policy"> &#160;Privacy Policy</string>
+    <string name="menu_our_policy">Our Privacy</string>
     <string name="username_should_not_be_empty">Username should not be empty!</string>
     <string name="please_enter_valid_email_id">Please enter valid Email ID!</string>
     <string name="address_location">Address , Location</string>
@@ -120,7 +121,7 @@
     <string name="menu_my_profile">My Profile</string>
     <string name="menu_my_orders">My Orders</string>
     <string name="menu_addresses">Addresses</string>
-    <string name="menu_my_basket">My Basket</string>
+    <string name="menu_my_basket_subs">My Basket Subscription</string>
     <string name="menu_wallet_payments"><![CDATA[Wallet & Payments]]></string>
     <string name="menu_offer_coupons"><![CDATA[Offers & Coupons]]></string>
     <string name="menu_notification">Notifications</string>
@@ -395,4 +396,18 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="order_placed_success">Your order has been placed successfully Please check order details.</string>
     <string name="back_to_home">Back to home</string>
     <string name="order_details">Order Details</string>
+
+<!--    Policy list-->
+    <string name="policy_r">Refund and Return Policies</string>
+    <string name="policy_p">Privacy Policy</string>
+    <string name="policy_t">Terms Conditions</string>
+    <string name="type">Type</string>
+
+<!--    type array-->
+    <string-array name="type">
+        <item>ordinary</item>
+        <item>special</item>
+        <item>subscription</item>
+        <item>issue</item>
+    </string-array>
 </resources>

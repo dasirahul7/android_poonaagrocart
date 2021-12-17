@@ -13,7 +13,8 @@
         android:drawable="@drawable/ic_calender"
         android:width="@dimen/_15sdp"
         android:height="@dimen/_15sdp"
-        android:gravity="end |center_vertical"
-        android:end="@dimen/_10sdp"/>
+        android:gravity="end|center_vertical"
+        android:end="@dimen/_10sdp"
+        android:start="@dimen/_10sdp"/>
 
 </layer-list>

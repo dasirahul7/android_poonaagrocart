@@ -34,7 +34,7 @@ public class MyBasketFragment extends BaseFragment
         initView();
         setRvAdapter(view);
 
-        initTitleBar(getString(R.string.menu_my_basket));
+        initTitleBar(getString(R.string.menu_my_basket_subs));
 
         return view;
     }
