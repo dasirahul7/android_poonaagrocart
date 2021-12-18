@@ -160,7 +160,7 @@
     <string name="office">Office</string>
     <string name="mobile">Mobile</string>
     <string name="pincode">Pincode</string>
-    <string name="check_availabilty">Check Availabilty</string>
+    <string name="check_availability">Check Availabilty</string>
     <string name="detail_address">Detail Address</string>
     <string name="house_no">House No.</string>
     <string name="apartment_no">Apartment no.</string>
@@ -404,7 +404,7 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="type">Type</string>
 
 <!--    type array-->
-    <string-array name="type">
+    <string-array name="type_array">
         <item>ordinary</item>
         <item>special</item>
         <item>subscription</item>

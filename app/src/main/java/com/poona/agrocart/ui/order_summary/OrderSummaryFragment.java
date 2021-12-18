@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -103,7 +102,10 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_medium));
         fragmentOrderSummaryBinding.rbCod.setTypeface(font);
         fragmentOrderSummaryBinding.rbOnline.setTypeface(font);
-        fragmentOrderSummaryBinding.rbWalletBalace.setTypeface(font);
+        fragmentOrderSummaryBinding.rbWalletBalance.setTypeface(font);
+        fragmentOrderSummaryBinding.rbCod.setOnClickListener(this);
+        fragmentOrderSummaryBinding.rbOnline.setOnClickListener(this);
+        fragmentOrderSummaryBinding.rbWalletBalance.setOnClickListener(this);
 
         scale = getResources().getDisplayMetrics().density;
 
@@ -125,7 +127,26 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                     e.printStackTrace();
                 }
                 break;
+            case R.id.rb_cod:
+            case R.id.rb_online:
+                summaryRadioAction(true);
+            case R.id.rb_wallet_balance:
+                summaryRadioAction(false);
+                break;
         }
+    }
+
+    private void summaryRadioAction(boolean group) {
+        if (group){
+            if (fragmentOrderSummaryBinding.rbCod.isChecked()||fragmentOrderSummaryBinding.rbOnline.isChecked()){
+                fragmentOrderSummaryBinding.rbWalletBalance.setChecked(false);
+            }
+        }else { if (fragmentOrderSummaryBinding.rbWalletBalance.isChecked()){
+                fragmentOrderSummaryBinding.rbCod.setChecked(false);
+                fragmentOrderSummaryBinding.rbOnline.setChecked(false);
+            }
+        }
+
     }
 
     private void redirectToOrderDetails(View v) {

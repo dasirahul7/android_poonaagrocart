@@ -103,7 +103,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
 
     // Dialog for create ticket
     public void raiseNewTicketDialog() {
-        Dialog dialog = new Dialog(new ContextThemeWrapper(getActivity(), R.style.DialogSlideUp));
+        Dialog dialog = new Dialog(new ContextThemeWrapper(getActivity(), R.style.DialogAnimationUp));
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_new_ticket);
@@ -116,8 +116,14 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
         ImageView closeImg = dialog.findViewById(R.id.close_btn);
         Spinner spType = dialog.findViewById(R.id.sp_type);
         ArrayList<String> typeList = new ArrayList<String>();
+        typeList.add("ordinary");
+        typeList.add("special");
+        typeList.add("subscription");
+        typeList.add("issue");
 //        typeList.addAll(R.array.type);
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),R.layout.text_spinner_wallet_transactions,)
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item,typeList);
+//        arrayAdapter.setDropDownViewResource(android.R.layout.test_list_item);
+        spType.setAdapter(arrayAdapter);
         closeImg.setOnClickListener(v -> {
             dialog.dismiss();
         });

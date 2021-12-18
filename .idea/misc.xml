@@ -4,10 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.20833333333333334" />
+        <entry key="../../.gradle/caches/transforms-3/10156c2a08ae00d705fbed3317280574/transformed/appcompat-1.4.0/res/layout/support_simple_spinner_dropdown_item.xml" value="0.1" />
         <entry key="../../.gradle/caches/transforms-3/74c8d3b93df5ec37a852dbd0ebdf6ff9/transformed/jetified-tooltipindicator-0.0.1/res/drawable/tooltip_indicator_rounded_line_selected.xml" value="0.1527777777777778" />
         <entry key="../../.gradle/caches/transforms-3/74c8d3b93df5ec37a852dbd0ebdf6ff9/transformed/jetified-tooltipindicator-0.0.1/res/drawable/tooltip_indicator_rounded_line_unselected.xml" value="0.1527777777777778" />
+        <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/expandable_list_content.xml" value="0.1" />
         <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_checked.xml" value="0.1" />
+        <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/simple_selectable_list_item.xml" value="0.1" />
         <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.1" />
+        <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_item.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-mdpi/strike_through.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable-v24/bg_green_rounded.xml" value="0.19814814814814816" />
         <entry key="app/src/main/res/drawable/alerter_ic_notifications.xml" value="0.20615384615384616" />
@@ -194,7 +198,7 @@
         <entry key="app/src/main/res/layout/explore_fragment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_about_us.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_addresses.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_addresses_form.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_addresses_form.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_app_info.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_basket_page.xml" value="0.1286231884057971" />
         <entry key="app/src/main/res/layout/fragment_basket_product_detail.xml" value="0.22" />

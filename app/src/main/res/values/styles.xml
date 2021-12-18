@@ -72,7 +72,8 @@
         <item name="android:windowExitAnimation">@anim/slide_up_dialog</item>
     </style>
     <style name="DialogAnimationUp">
-        <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
+        <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down_dialog</item>
     </style>
 
     <!-- Animation for dialog box -->
@@ -145,6 +146,10 @@
     <!--Style for address radio buttons-->
     <style name="RadioButtonAddress" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/bg_radio_button</item>
+        <item name="useMaterialThemeColors">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="paddingStart">@dimen/_4sdp</item>
+        <item name="android:textSize">@dimen/_14sp</item>
     </style>
     <!--Style for SignUp radio buttons-->
     <style name="RadioButtonSignUp" parent="@android:style/Widget.CompoundButton.RadioButton">
@@ -180,4 +185,67 @@
         <item name="android:src">@drawable/ic_plus_white</item>
     </style>
 
+<!--    Address TextView style-->
+    <style name="FormTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_marginStart">@dimen/_20sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_20sdp</item>
+        <item name="android:layout_marginTop">@dimen/_20sdp</item>
+        <item name="android:paddingTop">@dimen/alerter_padding_half</item>
+        <item name="android:paddingLeft">@dimen/alerter_padding_half</item>
+        <item name="android:paddingRight">@dimen/alerter_padding_half</item>
+        <item name="android:paddingBottom">@dimen/alerter_padding_small</item>
+        <item name="android:textColor">@color/color15</item>
+        <item name="android:textSize">@dimen/_14sp</item>
+        <item name="setCustomFont">@string/font_poppins_semi_bold</item>
+    </style>
+
+    <style name="FormShortTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_marginStart">@dimen/_15sdp</item>
+        <item name="android:layout_marginTop">@dimen/_8sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_20sdp</item>
+        <item name="android:paddingTop">@dimen/alerter_padding_half</item>
+        <item name="android:paddingLeft">@dimen/alerter_padding_half</item>
+        <item name="android:paddingRight">@dimen/alerter_padding_half</item>
+        <item name="android:paddingBottom">@dimen/alerter_padding_small</item>
+        <item name="android:textColor">@color/color15</item>
+        <item name="android:textSize">@dimen/_14sp</item>
+        <item name="setCustomFont">@string/font_poppins_semi_bold</item>
+    </style>
+    <style name="FormEdittextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_marginStart">@dimen/_20sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_20sdp</item>
+        <item name="android:layout_marginTop">@dimen/_2sdp</item>
+        <item name="android:background">@drawable/bg_dashboard_et_layout</item>
+        <item name="android:elevation">@dimen/_2sdp</item>
+        <item name="android:padding">@dimen/_8sdp</item>
+        <item name="android:textColor">@color/color_grey_txt</item>
+        <item name="android:textSize">@dimen/_14sp</item>
+        <item name="setCustomFont">@string/font_poppins_regular</item>
+    </style>
+
+    <style name="FormShortEdittextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_height">@dimen/_30sdp</item>
+        <item name="android:layout_marginStart">@dimen/_15sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_20sdp</item>
+        <item name="android:layout_marginBottom">@dimen/_10sdp</item>
+        <item name="android:background">@drawable/bg_dashboard_et_layout</item>
+        <item name="android:elevation">@dimen/_2sdp</item>
+        <item name="android:paddingStart">@dimen/_5sdp</item>
+        <item name="android:paddingEnd">@dimen/_5sdp</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:textColor">@color/color_grey_txt</item>
+        <item name="android:textSize">@dimen/_12sp</item>
+        <item name="setCustomFont">@string/font_poppins_regular</item>
+    </style>
+
+    <style name="FormTitleTxtStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_marginStart">@dimen/_20sdp</item>
+        <item name="android:layout_marginTop">@dimen/_20sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_20sdp</item>
+        <item name="android:padding">@dimen/alerter_padding_half</item>
+        <item name="android:text">@string/detail_address</item>
+        <item name="android:textColor">@color/color15</item>
+        <item name="android:textSize">@dimen/_18sp</item>
+        <item name="setCustomFont">@string/font_poppins_bold</item>
+    </style>
 </resources>
