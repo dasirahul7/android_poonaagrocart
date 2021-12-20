@@ -25,7 +25,6 @@
             android:id="@+id/tv_policy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_policy_item"
             android:gravity="start"
             android:text="@{modulePolicy.policyTitle}"
             android:padding="@dimen/_10sdp"

@@ -137,4 +137,7 @@
     <!--Store location screen colors-->
     <color name="light_black_txt">#1A1A1A</color>
     <color name="txt_dark_green">#5E8D0B</color>
+
+<!--    Gallery screen colors-->
+    <color name="bg_grey">#EFEFEF</color>
 </resources>

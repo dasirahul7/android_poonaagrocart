@@ -200,7 +200,7 @@
     </style>
 
     <style name="FormShortTextStyle" parent="Widget.AppCompat.TextView">
-        <item name="android:layout_marginStart">@dimen/_15sdp</item>
+        <item name="android:layout_marginStart">@dimen/_20sp</item>
         <item name="android:layout_marginTop">@dimen/_8sdp</item>
         <item name="android:layout_marginEnd">@dimen/_20sdp</item>
         <item name="android:paddingTop">@dimen/alerter_padding_half</item>
