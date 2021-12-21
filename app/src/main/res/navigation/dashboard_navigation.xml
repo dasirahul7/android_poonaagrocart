@@ -196,7 +196,7 @@
     <!--    Gallery Fragment-->
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.poona.agrocart.ui.nav_gallery.GalleryFragment"
+        android:name="com.poona.agrocart.ui.nav_gallery.fragment.GalleryFragment"
         android:label="GalleryFragment" />
 
     <!--    Fragment Order Detail-->

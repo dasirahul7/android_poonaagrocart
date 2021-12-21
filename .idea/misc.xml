@@ -110,6 +110,7 @@
         <entry key="app/src/main/res/drawable/ic_green_bell.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/ic_green_radio.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_green_radio_button.xml" value="0.13094462540716612" />
+        <entry key="app/src/main/res/drawable/ic_grey_circle.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_grey_down_arrow.xml" value="0.11666666666666667" />
         <entry key="app/src/main/res/drawable/ic_h.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/ic_h2.xml" value="0.1935185185185185" />
@@ -272,10 +273,10 @@
         <entry key="app/src/main/res/layout/row_explore_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/row_notification.xml" value="0.2324455205811138" />
         <entry key="app/src/main/res/layout/row_photo.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/row_photo_item.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/row_photo_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_policy_item.xml" value="0.15" />
         <entry key="app/src/main/res/layout/row_product_item.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/row_video_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/row_video_item.xml" value="0.12" />
         <entry key="app/src/main/res/layout/row_weight.xml" value="0.5" />
         <entry key="app/src/main/res/layout/rv_address.xml" value="0.15534420289855072" />
         <entry key="app/src/main/res/layout/rv_basket_contents_list.xml" value="0.15172101449275363" />

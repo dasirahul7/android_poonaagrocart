@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.nav_gallery;
+package com.poona.agrocart.ui.nav_gallery.model;
 
 public class Photos {
     String photo;

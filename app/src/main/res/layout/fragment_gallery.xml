@@ -7,11 +7,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.nav_gallery.GalleryFragment">
+    tools:context=".ui.nav_gallery.fragment.GalleryFragment">
     <FrameLayout
         android:layout_margin="@dimen/_10sdp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
+        android:background="@drawable/bg_et_search"
         android:layout_height="wrap_content"
         android:clipToPadding="false">
 
@@ -34,13 +35,13 @@
         app:tabRippleColor="@null"
         app:tabIndicatorHeight="0dp"
         android:padding="@dimen/_10sdp"
-        app:tabSelectedTextColor="#ffffff"
-        app:tabIconTint="@color/white"
         />
     </FrameLayout>
 
     <androidx.viewpager.widget.ViewPager
+        android:layout_margin="@dimen/_5sdp"
         android:id="@+id/vp_gallery"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

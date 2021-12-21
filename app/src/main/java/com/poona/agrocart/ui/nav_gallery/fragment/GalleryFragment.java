@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.nav_gallery;
+package com.poona.agrocart.ui.nav_gallery.fragment;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -18,8 +18,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentGalleryBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_gallery.gallery_photo.PhotoGalleryFragment;
-import com.poona.agrocart.ui.nav_gallery.gallery_video.VideoGalleryFragment;
+import com.poona.agrocart.ui.nav_gallery.viewModel.GalleryViewModel;
+import com.poona.agrocart.ui.nav_gallery.model.Photos;
+import com.poona.agrocart.ui.nav_gallery.model.Videos;
+import com.poona.agrocart.ui.nav_gallery.adapter.GalleryFragmentAdapter;
 import com.poona.agrocart.widgets.CustomTextView;
 
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class GalleryFragment extends BaseFragment {
         return fragmentView;
     }
 
+
     private void setTabsAction() {
         //Determine indicator width at runtime
         mTabs.post(new Runnable() {
@@ -60,17 +63,15 @@ public class GalleryFragment extends BaseFragment {
                 indicatorWidth = mTabs.getWidth() / mTabs.getTabCount();
                 //Assign new width
                 FrameLayout.LayoutParams indicatorParams = (FrameLayout.LayoutParams) mIndicator.getLayoutParams();
-                indicatorParams.width = indicatorWidth;
-                indicatorParams.setMargins(5, 5, 5, 5);
+                indicatorParams.width = indicatorWidth-30;
+                indicatorParams.setMargins(10, 5, 20, 5);
                 mIndicator.setLayoutParams(indicatorParams);
                 CustomTextView tabPhoto = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.gallery_tab_item, null);
                 tabPhoto.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gallery_photo, 0, 0, 0);
                 tabPhoto.setText(R.string.photo);
-                tabPhoto.setGravity(Gravity.CENTER_VERTICAL);
                 CustomTextView tabVideo = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.gallery_tab_item, null);
                 tabVideo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gallery_video, 0, 0, 0);
-                tabPhoto.setText(R.string.video);
-                tabVideo.setGravity(Gravity.CENTER_VERTICAL);
+                tabVideo.setText(R.string.video);
                 Objects.requireNonNull(mTabs.getTabAt(0)).setCustomView(tabPhoto);
                 Objects.requireNonNull(mTabs.getTabAt(1)).setCustomView(tabVideo);
 
@@ -86,8 +87,8 @@ public class GalleryFragment extends BaseFragment {
                 FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mIndicator.getLayoutParams();
                 //Multiply positionOffset with indicatorWidth to get translation
                 float translationOffset = (positionOffset + i) * indicatorWidth;
-                params.leftMargin = (int) translationOffset;
-                params.setMargins((int) translationOffset, 5, 5, 5);
+                params.leftMargin = (int) translationOffset+20;
+                params.setMargins((int) translationOffset+20, 5, 20, 5);
                 mIndicator.setLayoutParams(params);
             }
 
@@ -106,8 +107,8 @@ public class GalleryFragment extends BaseFragment {
     private void setFragmentItem() {
         //Set up the view pager and fragments
         GalleryFragmentAdapter adapter = new GalleryFragmentAdapter(getActivity().getSupportFragmentManager(), 1);
-        adapter.addFragment(PhotoGalleryFragment.newInstance(mViewModel.photoLiveData), getString(R.string.photo));
-        adapter.addFragment(VideoGalleryFragment.newInstance(mViewModel.videoLiveData), getString(R.string.video));
+        adapter.addFragment(PhotoGalleryFragment.newInstance(), getString(R.string.photo));
+        adapter.addFragment(VideoGalleryFragment.newInstance(), getString(R.string.video));
         mViewPager.setAdapter(adapter);
         mTabs.setupWithViewPager(mViewPager);
     }
@@ -121,43 +122,10 @@ public class GalleryFragment extends BaseFragment {
         mTabs = galleryBinding.tab;
         mIndicator = galleryBinding.indicator;
         mViewPager = galleryBinding.vpGallery;
-        makePhotoList();
-        makeVideoList();
+//        makePhotoList();
+//        makeVideoList();
         mViewModel.photoLiveData.setValue(photos);
         mViewModel.videoLiveData.setValue(videos);
     }
-
-    private void makeVideoList() {
-        Videos video = new Videos("https://www.linkpicture.com/q/unsplash_QvkAQTNj4zk_1.png");
-        videos.add(video);
-        videos.add(video);
-        videos.add(video);
-        videos.add(video);
-        videos.add(video);
-        videos.add(video);
-        videos.add(video);
-        videos.add(video);
-        videos.add(video);
-        videos.add(video);
-    }
-
-    private void makePhotoList() {
-        Photos photo = new Photos("https://www.linkpicture.com/q/unsplash_QvkAQTNj4zk_1.png");
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-        photos.add(photo);
-    }
-
 
 }

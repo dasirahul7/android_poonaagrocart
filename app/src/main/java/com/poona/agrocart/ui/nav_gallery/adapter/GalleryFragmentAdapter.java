@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.nav_gallery;
+package com.poona.agrocart.ui.nav_gallery.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

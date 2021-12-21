@@ -412,4 +412,7 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
         <item>subscription</item>
         <item>issue</item>
     </string-array>
+
+<!--    Gallery-->
+    <string name="sample_photo">https://www.linkpicture.com/q/unsplash_QvkAQTNj4zk_1.png</string>
 </resources>

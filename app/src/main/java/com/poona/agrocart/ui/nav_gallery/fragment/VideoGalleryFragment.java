@@ -1,18 +1,22 @@
-package com.poona.agrocart.ui.nav_gallery.gallery_video;
+package com.poona.agrocart.ui.nav_gallery.fragment;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.VideoGalleryFragmentBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_gallery.Videos;
+import com.poona.agrocart.ui.nav_gallery.adapter.PhotoAdapter;
+import com.poona.agrocart.ui.nav_gallery.adapter.VideoAdapter;
+import com.poona.agrocart.ui.nav_gallery.model.Videos;
+import com.poona.agrocart.ui.nav_gallery.viewModel.VideoViewModel;
 
 import java.util.ArrayList;
 
@@ -23,11 +27,15 @@ import java.util.ArrayList;
  */
 public class VideoGalleryFragment extends BaseFragment {
     private static ArrayList<Videos> videosList = new ArrayList<>();
-    private View videoView;
     private VideoGalleryFragmentBinding videoFragmentBinding;
-    public static VideoGalleryFragment newInstance(MutableLiveData<ArrayList<Videos>> videoLiveData) {
+    private VideoViewModel videoViewModel;
+    private View videoView;
+    private RecyclerView rvVideo;
+    private VideoAdapter videoAdapter;
+
+    public static VideoGalleryFragment newInstance() {
         VideoGalleryFragment fragment = new VideoGalleryFragment();
-        videosList = videoLiveData.getValue();
+//        videosList = videoLiveData.getValue();
         return fragment;
     }
 
@@ -44,8 +52,23 @@ public class VideoGalleryFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        videoFragmentBinding = VideoGalleryFragmentBinding.inflate(LayoutInflater.from(context));
-        videoView = videoFragmentBinding.getRoot();
+        initViews();
         return videoView;
     }
+
+    private void initViews() {
+        videoFragmentBinding = VideoGalleryFragmentBinding.inflate(LayoutInflater.from(context));
+        videoView = videoFragmentBinding.getRoot();
+        // Initialize ViewModel
+        videoViewModel = new ViewModelProvider(this).get(VideoViewModel.class);
+        //Initialize recyclerView
+        rvVideo = videoFragmentBinding.rvVideo;
+        //initialize Adapter
+        videoAdapter = new VideoAdapter(context,videoViewModel.videoLiveData.getValue());
+        // set Recycler with adapter
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2);
+        rvVideo.setLayoutManager(gridLayoutManager);
+        rvVideo.setAdapter(videoAdapter);
+    }
+
 }
