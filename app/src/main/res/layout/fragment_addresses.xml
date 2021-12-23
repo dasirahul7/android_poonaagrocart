@@ -22,6 +22,7 @@
                 android:background="@drawable/background_color_green"
                 android:drawableStart="@drawable/ic_plus_white"
                 android:padding="@dimen/alerter_padding_small"
+                android:drawableTint="@color/background_color_white_green"
                 android:paddingStart="@dimen/_20sdp"
                 android:text="@string/add_new_address"
                 app:layout_constraintEnd_toEndOf="parent"

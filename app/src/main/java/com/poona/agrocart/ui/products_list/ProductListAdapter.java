@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RowBestSellingItemBinding;
+import com.poona.agrocart.databinding.RowProductListItemBinding;
 import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
@@ -32,9 +33,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public ProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        RowBestSellingItemBinding binding = DataBindingUtil.inflate
+        RowProductListItemBinding binding = DataBindingUtil.inflate
                 (LayoutInflater.from(parent.getContext()),
-                        R.layout.row_best_selling_item, parent, false);
+                        R.layout.row_product_list_item, parent, false);
         return new ProductsViewHolder(binding,view);
     }
 
@@ -42,7 +43,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position)
     {
         final Product vegetable = vegetableArrayList.get(position);
-        holder.homeBestSellingItemBinding.setProductModule(vegetable);
+        holder.productListItemBinding.setProductModule(vegetable);
         holder.bind(vegetable);
     }
 
@@ -53,17 +54,17 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public class ProductsViewHolder extends RecyclerView.ViewHolder
     {
-        RowBestSellingItemBinding homeBestSellingItemBinding;
+        RowProductListItemBinding productListItemBinding;
 
-        public ProductsViewHolder(RowBestSellingItemBinding homeBestSellingItemBinding,View view) {
-            super(homeBestSellingItemBinding.getRoot());
-            this.homeBestSellingItemBinding=homeBestSellingItemBinding;
+        public ProductsViewHolder(RowProductListItemBinding productListItemBinding,View view) {
+            super(productListItemBinding.getRoot());
+            this.productListItemBinding=productListItemBinding;
 
-            homeBestSellingItemBinding.cardviewProduct.setOnClickListener(v -> {
+            productListItemBinding.cardviewProduct.setOnClickListener(v -> {
                 redirectToProductsDetail(view);
             });
 
-            homeBestSellingItemBinding.imgPlus.setOnClickListener(v -> {
+            productListItemBinding.imgPlus.setOnClickListener(v -> {
                 redirectToCartScreen(view);
             });
         }
@@ -84,8 +85,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         public void bind(Product product)
         {
-            homeBestSellingItemBinding.setVariable(BR.productModule,product);
-            homeBestSellingItemBinding.executePendingBindings();
+            productListItemBinding.setVariable(BR.productModule,product);
+            productListItemBinding.executePendingBindings();
         }
     }
 }

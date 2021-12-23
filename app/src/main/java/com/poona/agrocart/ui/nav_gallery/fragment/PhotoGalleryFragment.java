@@ -3,7 +3,6 @@ package com.poona.agrocart.ui.nav_gallery.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,8 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.PhotoGalleryFragmentBinding;
+import com.poona.agrocart.databinding.FragmentPhotoBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_gallery.model.Photos;
 import com.poona.agrocart.ui.nav_gallery.adapter.PhotoAdapter;
@@ -28,7 +26,7 @@ import java.util.ArrayList;
  */
 public class PhotoGalleryFragment extends BaseFragment {
     private static ArrayList<Photos> photoList = new ArrayList<>();
-    private PhotoGalleryFragmentBinding photoFragmentBinding;
+    private FragmentPhotoBinding fragmentPhotoBinding;
     private PhotoViewModel photoViewModel;
     private View photoView;
     private RecyclerView rvPhoto;
@@ -55,9 +53,9 @@ public class PhotoGalleryFragment extends BaseFragment {
     }
 
     private void initViews() {
-        photoFragmentBinding = PhotoGalleryFragmentBinding.inflate(LayoutInflater.from(context));
-        photoView = photoFragmentBinding.getRoot();
-        rvPhoto = photoFragmentBinding.rvPhoto;
+        fragmentPhotoBinding = FragmentPhotoBinding.inflate(LayoutInflater.from(context));
+        photoView = fragmentPhotoBinding.getRoot();
+        rvPhoto = fragmentPhotoBinding.rvPhoto;
         photoViewModel = new ViewModelProvider(this).get(PhotoViewModel.class);
     }
 

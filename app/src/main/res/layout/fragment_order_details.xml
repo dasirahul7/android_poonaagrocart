@@ -64,8 +64,8 @@
             android:includeFontPadding="false"
             android:padding="@dimen/alerter_padding_small"
             android:text="@string/track_order"
+            android:textColor="@color/background_color_white_green"
             android:textAllCaps="false"
-            android:textColor="@color/white"
             android:textSize="@dimen/_18sp"
             app:setCustomFont="@string/font_poppins_semi_bold" />
 

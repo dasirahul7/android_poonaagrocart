@@ -69,14 +69,14 @@
                         android:id="@+id/btn_add"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_24sdp"
-                        android:background="@drawable/bg_add_wallet_amount_btn"
+                        android:background="@drawable/background_light_green"
                         android:text="@string/add"
-                        android:textColor="@color/white"
+                        android:textColor="@color/background_color_white_green"
                         android:textAllCaps="false"
                         android:includeFontPadding="false"
                         android:layout_gravity="center|center_vertical"
                         android:gravity="center|center_vertical"
-                        android:textSize="@dimen/_18sp"
+                        android:textSize="@dimen/_16sp"
                         style="?android:attr/borderlessButtonStyle"
                         app:setCustomFont="@string/font_poppins_semi_bold"/>
 

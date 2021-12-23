@@ -155,9 +155,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_20sdp"
                         android:layout_margin="@dimen/_4sdp"
+                        android:includeFontPadding="false"
                         android:background="@drawable/bg_track_order_btn"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/_16sdp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="@dimen/_14sp"
                         android:text="@string/out_of_stock"
                         android:textColor="@color/color_track_order"
                         android:textSize="@dimen/_14sp"
@@ -179,7 +180,11 @@
                         android:text="@string/notify_me"
                         android:textAllCaps="false"
                         android:textColor="@color/background_color_white_green"
-                        android:textSize="@dimen/_14sp"
+                        android:textSize="@dimen/_12sp"
+                        android:includeFontPadding="false"
+                        android:layout_gravity="center|center_vertical"
+                        android:gravity="center|center_vertical"
+                        style="?android:attr/borderlessButtonStyle"
                         app:setCustomFont="@string/font_poppins_regular" />
 
                 </LinearLayout>
@@ -214,10 +219,9 @@
                     <ImageView
                         android:id="@+id/iv_minus"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:padding="@dimen/_2sdp"
-                        android:src="@drawable/ic_minus_with_square_bg" />
+                        style="@style/MinusButtonStyle" />
 
                     <com.poona.agrocart.widgets.CustomEditText
                         android:id="@+id/et_quantity"
@@ -234,10 +238,9 @@
                     <ImageView
                         android:id="@+id/iv_plus"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:padding="@dimen/_2sdp"
-                        android:src="@drawable/ic_plus_with_sqaure_bg" />
+                        style="@style/PlusButtonStyle"/>
 
                 </LinearLayout>
 

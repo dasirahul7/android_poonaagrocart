@@ -1,11 +1,13 @@
 package com.poona.agrocart.ui.nav_my_cart;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,10 +23,11 @@ import java.util.ArrayList;
 
 public class MyCartFragment extends BaseFragment implements View.OnClickListener {
     private FragmentMyCartBinding fragmentMyCartBinding;
+    private MyCartViewModel myCartViewModel;
     private RecyclerView rvCart;
     private LinearLayoutManager linearLayoutManager;
     private CartItemsAdapter cartItemsAdapter;
-    private ArrayList<Product> cartItemArrayList;
+    private ArrayList<Product> cartItemArrayList = new ArrayList<>();
     private View navHostFragment;
     private ViewGroup.MarginLayoutParams navHostMargins;
     private float scale;
@@ -62,10 +65,9 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         fragmentMyCartBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_cart, container, false);
         fragmentMyCartBinding.setLifecycleOwner(this);
         final View view = fragmentMyCartBinding.getRoot();
-
+        myCartViewModel = new ViewModelProvider(this).get(MyCartViewModel.class);
         initView();
         setRvAdapter();
-
         return view;
     }
 
@@ -90,16 +92,33 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         navHostMargins.bottomMargin = dpAsPixels;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void setRvAdapter() {
-        cartItemArrayList = new ArrayList<>();
-        prepareListingData();
+        myCartViewModel.getCartList().observe(getViewLifecycleOwner(), products -> {
+            cartItemArrayList = products;
+            cartItemsAdapter = new CartItemsAdapter(cartItemArrayList);
+            rvCart.setAdapter(cartItemsAdapter);
+            linearLayoutManager = new LinearLayoutManager(requireContext());
+            rvCart.setHasFixedSize(true);
+            rvCart.setLayoutManager(linearLayoutManager);
+            // adapter interface
+            cartItemsAdapter.setOnCartItemClick(position -> {
+                cartItemArrayList.remove(position);
+                cartItemsAdapter.notifyItemRemoved(position);
+                checkEmptyCart();
+            });
+        });
 
-        linearLayoutManager = new LinearLayoutManager(requireContext());
-        rvCart.setHasFixedSize(true);
-        rvCart.setLayoutManager(linearLayoutManager);
 
-        cartItemsAdapter = new CartItemsAdapter(cartItemArrayList);
-        rvCart.setAdapter(cartItemsAdapter);
+    }
+
+    private void checkEmptyCart() {
+        if (cartItemArrayList.size()>0)
+            return;
+        else {
+            fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
+            fragmentMyCartBinding.continueBtn.setVisibility(View.VISIBLE);
+        }
     }
 
     private void prepareListingData() {
@@ -123,7 +142,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 cartItem.setPrice("Rs.50");
                 cartItem.setOfferPrice("RS.40");
             }
-            cartItemArrayList.add(cartItem);
+//            cartItemArrayList.add(cartItem);
         }
     }
 
@@ -155,11 +174,11 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
     private void redirectToExplore(View v) {
         if (isConnectingToInternet(context)) {
-//            try {
+            try {
                 Navigation.findNavController(v).navigate(R.id.action_nav_cart_to_nav_explore);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.retry), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
@@ -171,6 +190,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         fragmentMyCartBinding.continueBtn.setVisibility(View.VISIBLE);
         cartItemArrayList.clear();
         cartItemsAdapter.notifyDataSetChanged();
+        setRvAdapter();
     }
 
     private void redirectToOrderSummary(View v) {

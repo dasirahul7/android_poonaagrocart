@@ -11,51 +11,43 @@
         app:cardCornerRadius="@dimen/_10sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-           android:paddingBottom="@dimen/_10sdp"
-            android:paddingTop="@dimen/_10sdp"
+
+            android:layout_margin="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:paddingTop="@dimen/_10sdp"
-                android:paddingLeft="@dimen/_10sdp"
-                android:paddingRight="@dimen/_10sdp"
-                android:id="@+id/ll_top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+            <ImageView
+                android:id="@+id/close_btn"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:src="@drawable/ic_cross"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_terms_conditions"
+                android:textColor="@color/clr_enter_otp"
+                android:textSize="@dimen/_14sdp"
+                android:padding="@dimen/_5sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:setCustomFont="@string/font_poppins_bold" />
 
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/dialog_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/menu_terms_conditions"
-                    android:textColor="@color/clr_enter_otp"
-                    android:textSize="@dimen/_14sdp"
-                    app:setCustomFont="@string/font_poppins_bold" />
 
-                <ImageView
-                    android:id="@+id/close_btn"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:src="@drawable/ic_cross" />
-
-            </RelativeLayout>
 
             <View
+                android:layout_marginTop="@dimen/_5sdp"
                 android:id="@+id/view_line"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:background="@color/filter_line_color"
-                app:layout_constraintTop_toBottomOf="@+id/ll_top" />
+                app:layout_constraintTop_toBottomOf="@+id/close_btn" />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_content"
@@ -102,13 +94,13 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="@dimen/_80sdp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:background="@drawable/orange_rectangle"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:background="@drawable/bg_button_orange_"
                     android:gravity="center|center_vertical"
                     android:includeFontPadding="false"
                     android:text="@string/Pay"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:textColor="@color/background_color_orange_white"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_bold" />
             </LinearLayout>

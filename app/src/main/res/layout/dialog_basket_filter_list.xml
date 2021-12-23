@@ -21,6 +21,7 @@
             app:cardCornerRadius="@dimen/_20sdp">
 
             <RelativeLayout
+                android:paddingBottom="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_26sdp">
@@ -48,8 +49,8 @@
                             android:padding="@dimen/_5sdp"
                             android:text="@string/filter"
                             android:textColor="@color/clr_enter_otp"
-                            android:textSize="@dimen/_14sp"
-                            app:setCustomFont="@string/font_poppins_regular" />
+                            android:textSize="@dimen/_16sp"
+                            app:setCustomFont="@string/font_poppins_semi_bold" />
 
                         <ImageView
                             android:id="@+id/close_btn"
@@ -93,8 +94,8 @@
                                     android:gravity="center_vertical"
                                     android:text="@string/category"
                                     android:textColor="@color/clr_enter_otp"
-                                    android:textSize="@dimen/_14sp"
-                                    app:setCustomFont="@string/font_poppins_regular" />
+                                    android:textSize="@dimen/_16sp"
+                                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
                                 <com.poona.agrocart.widgets.ExpandIconView
                                     android:id="@+id/iv_category"
@@ -122,7 +123,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="fill_parent"
                                 android:layout_marginStart="@dimen/_20sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_marginEnd="@dimen/_20sdp" />
 
 
@@ -141,8 +141,8 @@
                                     android:gravity="center_vertical"
                                     android:text="@string/sort_by_filter"
                                     android:textColor="@color/clr_enter_otp"
-                                    android:textSize="@dimen/_14sp"
-                                    app:setCustomFont="@string/font_poppins_regular" />
+                                    android:textSize="@dimen/_16sp"
+                                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
                                 <com.poona.agrocart.widgets.ExpandIconView
                                     android:id="@+id/iv_sort_by"
@@ -170,7 +170,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="fill_parent"
                                 android:layout_marginStart="@dimen/_20sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_marginEnd="@dimen/_20sdp" />
                             <!-- Brand Filter-->
                             <LinearLayout
@@ -187,8 +186,8 @@
                                     android:gravity="center_vertical"
                                     android:text="@string/brand"
                                     android:textColor="@color/clr_enter_otp"
-                                    android:textSize="@dimen/_14sp"
-                                    app:setCustomFont="@string/font_poppins_regular" />
+                                    android:textSize="@dimen/_16sp"
+                                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
                                 <com.poona.agrocart.widgets.ExpandIconView
                                     android:id="@+id/iv_brand"
@@ -216,30 +215,29 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_20sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_marginEnd="@dimen/_20sdp"
-                                android:layout_marginBottom="@dimen/_10sdp" />
+                                android:layout_marginBottom="@dimen/_10sdp"
+                                android:paddingBottom="@dimen/_10sdp" />
                         </LinearLayout>
                     </androidx.core.widget.NestedScrollView>
                 </LinearLayout>
-
                 <com.poona.agrocart.widgets.CustomButton
                     android:id="@+id/applyBtn"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    android:layout_gravity="center|center_vertical"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
-                    android:background="@drawable/green_btn"
-                    android:text="@string/apply_filter"
-                    android:textColor="@color/background_color_white_green"
-                    android:textAllCaps="false"
-                    android:includeFontPadding="false"
-                    android:layout_gravity="center|center_vertical"
+                    android:background="@drawable/background_color_green"
                     android:gravity="center|center_vertical"
-                    android:textSize="@dimen/_18sp"
-                    style="?android:attr/borderlessButtonStyle"
-                    app:setCustomFont="@string/font_poppins_semi_bold"/>
+                    android:includeFontPadding="false"
+                    android:text="@string/apply_filter"
+                    android:textAllCaps="false"
+                    android:textColor="@color/background_color_white_green"
+                    android:textSize="@dimen/_16sp"
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>

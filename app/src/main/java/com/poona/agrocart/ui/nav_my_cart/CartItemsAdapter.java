@@ -18,6 +18,15 @@ import java.util.ArrayList;
 public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.CartItemsViewHolder>
 {
     private final ArrayList<Product> cartItemArrayList;
+    private OnClickCart onCartItemClick;
+
+    public interface OnClickCart {
+        void onItemClick(int position);
+    }
+
+    public void setOnCartItemClick(OnClickCart onCartItemClick) {
+        this.onCartItemClick = onCartItemClick;
+    }
 
     public CartItemsAdapter(ArrayList<Product> cartItemArrayList) {
         this.cartItemArrayList = cartItemArrayList;
@@ -28,14 +37,14 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
     public CartItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RowProductItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.row_product_item, parent, false);
-        return new CartItemsAdapter.CartItemsViewHolder(binding);
+        return new CartItemsAdapter.CartItemsViewHolder(binding,onCartItemClick);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CartItemsViewHolder holder, int position) {
         final Product cartItem = cartItemArrayList.get(position);
         holder.rvCartItemBinding.setProductModule(cartItem);
-        holder.bind(cartItem);
+        holder.bind(cartItem,position);
     }
 
     @Override
@@ -45,10 +54,13 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
 
     public class CartItemsViewHolder extends RecyclerView.ViewHolder {
         RowProductItemBinding rvCartItemBinding;
+        OnClickCart onCartItemClick;
 
-        public CartItemsViewHolder(RowProductItemBinding rvCartItemBinding) {
+        public CartItemsViewHolder(RowProductItemBinding rvCartItemBinding,
+                                   OnClickCart onCartItemClick) {
             super(rvCartItemBinding.getRoot());
             this.rvCartItemBinding = rvCartItemBinding;
+            this.onCartItemClick = onCartItemClick;
             this.rvCartItemBinding.txtItemOffer.setVisibility(View.GONE);
             this.rvCartItemBinding.imgPlus.setVisibility(View.GONE);
             this.rvCartItemBinding.closeLayout.setVisibility(View.VISIBLE);
@@ -59,7 +71,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             rvCartItemBinding.ivMinus.setOnClickListener(v -> {
                 decreaseQuantity();
             });
-
+            rvCartItemBinding.ivCross.setOnClickListener(v -> {
+                    this.onCartItemClick.onItemClick(getAdapterPosition());
+            });
         }
 
 
@@ -68,6 +82,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             if (quantity > 1) {
                 quantity--;
                 rvCartItemBinding.etQuantity.setText(String.valueOf(quantity));
+                setMinus(quantity);
             }
         }
 
@@ -75,19 +90,23 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             int quantity = Integer.parseInt(rvCartItemBinding.etQuantity.getText().toString());
             quantity++;
             rvCartItemBinding.etQuantity.setText(String.valueOf(quantity));
+            setMinus(quantity);
         }
 
-        public void bind(Product cartItem) {
+        private void setMinus(int quantity) {
+            if (quantity>1){
+                rvCartItemBinding.ivMinus.setBackgroundResource(R.drawable.bg_green_square);
+            }else {
+                rvCartItemBinding.ivMinus.setBackgroundResource(R.drawable.bg_grey_square);
+            }
+        }
+
+        public void bind(Product cartItem, int position) {
             if (cartItem.getLocation().isEmpty())
                 rvCartItemBinding.tvLocation.setVisibility(View.INVISIBLE);
             rvCartItemBinding.setVariable(BR.cartItem, cartItem);
             rvCartItemBinding.executePendingBindings();
-            rvCartItemBinding.ivCross.setOnClickListener(v -> {
-                synchronized (cartItem){
-                    cartItemArrayList.remove(cartItem);
-                    notifyDataSetChanged();
-                }
-            });
         }
     }
+
 }

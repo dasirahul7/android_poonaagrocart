@@ -229,7 +229,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         CustomTextView tvTitle = dialog.findViewById(R.id.dialog_title);
             tvTitle.setText(R.string.entr_amount);
             walletDialog.setVisibility(View.VISIBLE);
-            tvContent.setVisibility(View.GONE);
+            tvContent.setVisibility(View.INVISIBLE);
         closeImg.setOnClickListener(v -> {
             dialog.dismiss();
         });

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.product_detail.adapter.BasketContentsAdapter;
@@ -305,15 +306,17 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private void increaseQuantity(CustomEditText etQuantity) {
         quantity++;
         etQuantity.setText(String.valueOf(quantity));
+        AppUtils.setMinusButton(quantity,fragmentProductDetailBinding.ivMinus);
     }
 
     private void decreaseQuantity(CustomEditText etQuantity) {
         if (quantity == 1) {
-            errorToast(requireActivity(), getString(R.string.quantity_less_than_one));
+            warningToast(requireActivity(), getString(R.string.quantity_less_than_one));
         } else {
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
         }
+        AppUtils.setMinusButton(quantity,fragmentProductDetailBinding.ivMinus);
     }
 
     private void hideOrShowNutritionDetails() {

@@ -412,7 +412,7 @@
                         android:includeFontPadding="false"
                         android:text="@string/remove"
                         android:textAllCaps="false"
-                        android:textColor="@color/white"
+                        android:textColor="@color/background_color_white_green"
                         android:textSize="@dimen/_12sp"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
 

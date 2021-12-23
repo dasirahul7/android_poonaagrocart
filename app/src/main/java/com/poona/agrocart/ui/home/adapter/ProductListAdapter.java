@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.databinding.RowBestSellingItemBinding;
 import com.poona.agrocart.databinding.RowProductItemBinding;
 import com.poona.agrocart.ui.home.model.Product;
@@ -87,14 +88,33 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         public BestSellingHolder(RowProductItemBinding rowProductItemBinding) {
             super(rowProductItemBinding.getRoot());
-
+            rowProductItemBinding.ivCross.setVisibility(View.INVISIBLE);
             rowProductItemBinding.cardviewProduct.setOnClickListener(v -> {
                 redirectToProductDetails(view);
             });
-
             rowProductItemBinding.imgPlus.setOnClickListener(v -> {
-                gotoCart(view);
+
+                increaseQuantity();
             });
+            rowProductItemBinding.ivMinus.setOnClickListener(v -> {
+                decreaseQuantity();
+            });
+        }
+
+        private void increaseQuantity() {
+            int quantity = Integer.parseInt(rowProductItemBinding.etQuantity.getText().toString());
+            quantity++;
+            rowProductItemBinding.etQuantity.setText(String.valueOf(quantity));
+//            AppUtils.setMinusButton(quantity,rowProductItemBinding.ivMinus);
+        }
+
+        private void decreaseQuantity() {
+            int quantity = Integer.parseInt(rowProductItemBinding.etQuantity.getText().toString());
+            if (quantity > 1) {
+                quantity--;
+                rowProductItemBinding.etQuantity.setText(String.valueOf(quantity));
+//                AppUtils.setMinusButton(quantity,rowProductItemBinding.ivMinus);
+            }
         }
 
         public void bind(Product product) {

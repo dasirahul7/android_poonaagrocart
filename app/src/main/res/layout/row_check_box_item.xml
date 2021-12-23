@@ -35,10 +35,10 @@
             android:layout_toEndOf="@+id/checkbox"
             android:gravity="start"
             android:paddingStart="@dimen/_3sdp"
-            tools:ignore="RtlSymmetry"
             android:text="@{moduleFilter.name}"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sp"
-            app:setCustomFont="@string/font_poppins_regular" />
+            android:textSize="@dimen/_14sp"
+            app:setCustomFont="@string/font_poppins_regular"
+            tools:ignore="RtlSymmetry" />
     </RelativeLayout>
 </layout>

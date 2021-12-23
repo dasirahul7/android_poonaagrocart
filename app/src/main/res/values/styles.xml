@@ -148,7 +148,7 @@
         <item name="android:button">@drawable/bg_radio_button</item>
         <item name="useMaterialThemeColors">false</item>
         <item name="android:textStyle">bold</item>
-        <item name="paddingStart">@dimen/_4sdp</item>
+        <item name="android:paddingStart">@dimen/_4sdp</item>
         <item name="android:textSize">@dimen/_14sp</item>
     </style>
     <!--Style for SignUp radio buttons-->
@@ -183,6 +183,12 @@
         <item name="android:scaleType">center</item>
         <item name="android:background">@drawable/bg_green_square</item>
         <item name="android:src">@drawable/ic_plus_white</item>
+    </style>
+    <!--    Green minus button style-->
+    <style name="MinusButtonStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:scaleType">center</item>
+        <item name="android:background">@drawable/bg_grey_square</item>
+        <item name="android:src">@drawable/ic_minus</item>
     </style>
 
 <!--    Address TextView style-->
@@ -220,6 +226,8 @@
         <item name="android:padding">@dimen/_8sdp</item>
         <item name="android:textColor">@color/color_grey_txt</item>
         <item name="android:textSize">@dimen/_14sp</item>
+        <item name="singleLine">true</item>
+        <item name="android:imeOptions">actionDone</item>
         <item name="setCustomFont">@string/font_poppins_regular</item>
     </style>
 

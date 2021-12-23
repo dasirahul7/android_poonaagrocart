@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.poona.agrocart.databinding.VideoGalleryFragmentBinding;
+import com.poona.agrocart.databinding.FragmentVideoBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_gallery.adapter.PhotoAdapter;
 import com.poona.agrocart.ui.nav_gallery.adapter.VideoAdapter;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
  */
 public class VideoGalleryFragment extends BaseFragment {
     private static ArrayList<Videos> videosList = new ArrayList<>();
-    private VideoGalleryFragmentBinding videoFragmentBinding;
+    private FragmentVideoBinding videoFragmentBinding;
     private VideoViewModel videoViewModel;
     private View videoView;
     private RecyclerView rvVideo;
@@ -57,7 +57,7 @@ public class VideoGalleryFragment extends BaseFragment {
     }
 
     private void initViews() {
-        videoFragmentBinding = VideoGalleryFragmentBinding.inflate(LayoutInflater.from(context));
+        videoFragmentBinding = FragmentVideoBinding.inflate(LayoutInflater.from(context));
         videoView = videoFragmentBinding.getRoot();
         // Initialize ViewModel
         videoViewModel = new ViewModelProvider(this).get(VideoViewModel.class);

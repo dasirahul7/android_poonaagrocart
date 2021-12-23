@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#86C11F</color>
     <color name="colorSecondary">#456304</color>
-    <color name="colorAccent">#FFAF10</color>
+    <color name="colorAccent">#7AAC22</color>
     <color name="colorAppBackground">#FCFCFC</color>
 
     <color name="color1" tools:keep="@color/color1">#FF6B06</color>
@@ -71,6 +71,7 @@
     <!--Product detail-->
     <color name="color_star_rating_unselected">#8D8D8D</color>
     <color name="color_subscription_plan">#F9FFEF</color>"
+    <color name="color_minus_button">#CECECE</color>"
 
     <!--basket page-->
     <color name="color_basket_name">#575574</color>

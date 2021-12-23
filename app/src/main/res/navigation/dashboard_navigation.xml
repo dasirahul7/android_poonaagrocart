@@ -20,7 +20,9 @@
         tools:layout="@layout/fragment_my_orders">
         <action
             android:id="@+id/action_nav_orders_to_orderViewFragment2"
-            app:destination="@id/orderViewFragment" />
+            app:destination="@id/orderViewFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
 
     <!--    MyProfileFragment-->
@@ -37,10 +39,14 @@
         android:label="MyCartFragment">
         <action
             android:id="@+id/action_nav_cart_to_nav_order_summary"
-            app:destination="@id/nav_order_summary" />
+            app:destination="@id/nav_order_summary"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
         <action
             android:id="@+id/action_nav_cart_to_nav_explore"
-            app:destination="@id/nav_explore" />
+            app:destination="@id/nav_explore"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
 
     <!-- Favourites fragment-->
@@ -51,10 +57,14 @@
     <!--    Favourites actions-->
     <action
         android:id="@+id/action_nav_favourite_to_nav_cart"
-        app:destination="@id/nav_cart" />
+        app:destination="@id/nav_cart"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
     <action
         android:id="@+id/action_nav_favourite_to_nav_product_details"
-        app:destination="@id/nav_product_details" />
+        app:destination="@id/nav_product_details"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
 
     <!--    Product List-->
     <fragment
@@ -64,10 +74,14 @@
     <!--    Product list actions-->
     <action
         android:id="@+id/action_nav_products_list_to_productDetailFragment2"
-        app:destination="@id/nav_product_details" />
+        app:destination="@id/nav_product_details"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
     <action
         android:id="@+id/action_nav_products_list_to_nav_cart"
-        app:destination="@id/nav_cart" />
+        app:destination="@id/nav_cart"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
     <fragment
         android:id="@+id/nav_product_details"
         android:name="com.poona.agrocart.ui.product_detail.ProductDetailFragment"
@@ -80,7 +94,9 @@
         android:label="OurStoresFragment">
         <action
             android:id="@+id/action_nav_store_to_storeLocationFragment"
-            app:destination="@id/storeLocationFragment" />
+            app:destination="@id/storeLocationFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
 
     <!--Explore Fragment-->
@@ -91,17 +107,23 @@
     <!--    Explore actions-->
     <action
         android:id="@+id/action_nav_explore_to_nav_explore_baskets"
-        app:destination="@id/nav_explore_baskets" />
+        app:destination="@id/nav_explore_baskets"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
     <action
         android:id="@+id/action_nav_explore_to_nav_products_list"
-        app:destination="@id/nav_products_list" />
+        app:destination="@id/nav_products_list"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
     <fragment
         android:id="@+id/nav_basket"
         android:name="com.poona.agrocart.ui.nav_my_basket.MyBasketFragment"
         android:label="MyBasketFragment">
         <action
             android:id="@+id/action_nav_basket_to_orderViewFragment2"
-            app:destination="@id/orderViewFragment" />
+            app:destination="@id/orderViewFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/nav_address"
@@ -109,7 +131,9 @@
         android:label="AddressesFragment">
         <action
             android:id="@+id/action_nav_address_to_addressesFormFragment2"
-            app:destination="@id/addressesFormFragment2" />
+            app:destination="@id/addressesFormFragment2"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/addressesFormFragment2"
@@ -121,7 +145,9 @@
         android:label="OrderViewFragment">
         <action
             android:id="@+id/action_orderViewFragment_to_nav_order_track"
-            app:destination="@id/nav_order_track" />
+            app:destination="@id/nav_order_track"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
 
     <fragment
@@ -151,7 +177,9 @@
         android:label="HelpCenterFragment">
         <action
             android:id="@+id/action_nav_help_center_to_nav_ticket_detail"
-            app:destination="@id/nav_ticket_detail" />
+            app:destination="@id/nav_ticket_detail"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/nav_ticket_detail"
@@ -166,7 +194,9 @@
 
         <action
             android:id="@+id/action_nav_explore_baskets_to_nav_product_details"
-            app:destination="@id/nav_product_details" />
+            app:destination="@id/nav_product_details"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/nav_order_track"
@@ -178,7 +208,9 @@
         android:label="OrderSummaryFragment">
         <action
             android:id="@+id/action_nav_order_summary_to_orderDetailsFragment"
-            app:destination="@id/orderDetailsFragment" />
+            app:destination="@id/orderDetailsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/nav_wallet"
@@ -209,34 +241,52 @@
             android:id="@+id/action_orderDetailsFragment_to_nav_home"
             app:destination="@id/nav_home"
             app:popUpTo="@+id/nav_home"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
 
     <!-- Home actions-->
     <action
         android:id="@+id/action_nav_home_to_nav_products_list"
-        app:destination="@id/nav_products_list" />
+        app:destination="@id/nav_products_list"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
     <action
         android:id="@+id/action_nav_home_to_nav_our_stores"
-        app:destination="@id/nav_store" />
+        app:destination="@id/nav_store"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
     <action
         android:id="@+id/action_nav_home_to_nav_explore"
-        app:destination="@id/nav_explore" />
+        app:destination="@id/nav_explore"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
     <action
         android:id="@+id/action_nav_home_to_nav_product_details"
-        app:destination="@id/nav_product_details" />
+        app:destination="@id/nav_product_details"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
     <action
         android:id="@+id/action_nav_home_to_nav_cart"
-        app:destination="@id/nav_cart" />
+        app:destination="@id/nav_cart"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
     <action
         android:id="@+id/action_nav_home_to_nav_profile"
-        app:destination="@id/nav_profile" />
+        app:destination="@id/nav_profile"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
     <action
         android:id="@+id/action_orderDetailsFragment_to_nav_order_track"
-        app:destination="@id/nav_order_track" />
+        app:destination="@id/nav_order_track"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
 
     <action
         android:id="@+id/action_nav_explore_baskets_to_nav_cart"
-        app:destination="@id/nav_cart" />
+        app:destination="@id/nav_cart"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
 
 </navigation>

@@ -53,7 +53,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_15sp"
                     android:drawableStart="@drawable/ic_location"
                     android:drawableTint="@color/colorGrey"
                     android:gravity="center_vertical"

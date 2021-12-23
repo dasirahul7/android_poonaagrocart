@@ -27,11 +27,11 @@
             android:textColor="@color/background_color_white_green"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:textSize="@dimen/_18sp"
             app:layout_constraintTop_toTopOf="parent"
             android:includeFontPadding="false"
             android:layout_gravity="center|center_vertical"
             android:gravity="center|center_vertical"
-            android:textSize="@dimen/_18sp"
             style="?android:attr/borderlessButtonStyle"
             app:setCustomFont="@string/font_poppins_semi_bold"/>
 

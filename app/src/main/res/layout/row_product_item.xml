@@ -52,9 +52,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="0dp"
-                android:layout_marginEnd="0dp"
                 android:layout_toStartOf="@+id/txt_item_offer"
                 android:layout_toEndOf="@+id/img_layout"
                 android:gravity="center_vertical"
@@ -64,6 +63,8 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_5sdp"
                     android:text="@{productModule.name}"
                     android:textColor="@color/color_basket_name"
                     android:textSize="@dimen/_16sp"
@@ -73,7 +74,9 @@
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
                     android:drawablePadding="-5dp"
+                    android:gravity="center_vertical"
                     android:text="@{productModule.location}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
@@ -84,6 +87,8 @@
                     android:id="@+id/tv_weight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_5sdp"
                     android:text="@{productModule.qty}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
@@ -92,7 +97,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_5sdp">
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_offerPrice"
@@ -159,7 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:visibility="gone">
+                >
 
                 <ImageView
                     android:id="@+id/iv_cross"
@@ -196,7 +203,7 @@
                     android:id="@+id/iv_minus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_minus_with_square_bg"
+                    style="@style/MinusButtonStyle"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/et_quantity" />
 
