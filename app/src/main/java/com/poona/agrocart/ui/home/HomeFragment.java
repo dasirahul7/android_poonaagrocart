@@ -37,16 +37,16 @@ public class HomeFragment extends BaseFragment {
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding fragmentHomeBinding;
     private BannerAdapter bannerAdapter;
-    private final ArrayList<Banner> banners = new ArrayList<>();
-    private final ArrayList<Category> categories = new ArrayList<>();
     private CategoryAdapter categoryAdapter;
     private ProductListAdapter productListAdapter;
     private ProductListAdapter offerListAdapter;
     private BasketAdapter basketAdapter;
-    private final ArrayList<Product> products = new ArrayList<>();
-    private final ArrayList<Product> offerProducts = new ArrayList<>();
-    private final ArrayList<Product> productLists = new ArrayList<>();
-    private final ArrayList<Basket> baskets = new ArrayList<>();
+    private ArrayList<Product> bestSellings = new ArrayList<>();
+    private ArrayList<Product> offerProducts = new ArrayList<>();
+    private ArrayList<Product> cartProductList = new ArrayList<>();
+    private ArrayList<Banner> banners = new ArrayList<>();
+    private ArrayList<Category> categories = new ArrayList<>();
+    private ArrayList<Basket> baskets = new ArrayList<>();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -76,120 +76,81 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void setCartItems(View root) {
-        productLists.clear();
-        for (int i = 0; i < 4; i++) {
-            Product product = new Product("0", "Vegetable", "1kg", "10% Off", "Rs 65", "Rs 35", getString(R.string.img_potato),"Pune");
-            productLists.add(product);
-            if (i == 3){
-                product.setOrganic(true);
-            }
-        }
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-        fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recProduct.setHasFixedSize(true);
-        fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
-        productListAdapter = new ProductListAdapter(productLists, getActivity(), LANDSCAPE, root);
-        fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
+        homeViewModel.getLiveDataCartProduct().observe(getViewLifecycleOwner(),cartProducts -> {
+            this.cartProductList = cartProducts;
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+            fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recProduct.setHasFixedSize(true);
+            fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
+            productListAdapter = new ProductListAdapter(cartProductList, getActivity(), LANDSCAPE, root);
+            fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
+        });
+
     }
 
     private void setBasketItems(View view) {
-        baskets.clear();
-        Basket basket = new Basket("Fruit\n" +
-                "Baskets", "Rs 15000", "https://www.linkpicture.com/q/1-200284.png");
-        for (int i = 0; i < 4; i++)
-            baskets.add(basket);
-        basketAdapter = new BasketAdapter(baskets, getActivity(), view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
-        fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
-        fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
+        homeViewModel.getLiveDataBaskets().observe(getViewLifecycleOwner(),baskets -> {
+            this.baskets = baskets;
+            basketAdapter = new BasketAdapter(this.baskets, getActivity(), view);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
+            fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
+            fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
+        });
+
     }
 
     private void setOfferProduct(View root) {
-        offerProducts.clear();
-        Product offerProduct = new Product("1", "Red Apple", "1Kg"
-                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png","Pune");
-        Product offerProduct1 = new Product("2", "Organic Bananas", "12 pcs"
-                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png","Pune");
-        offerProduct1.setOrganic(true);
-        Product offerProduct2 = new Product("3", "Red Apple", "1Kg"
-                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png","Pune");
-        Product offerProduct3 = new Product("4", "Organic Bananas", "12 pcs"
-                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png","Pune");
-        offerProduct3.setOrganic(true);
-        offerProducts.add(offerProduct);
-        offerProducts.add(offerProduct1);
-        offerProducts.add(offerProduct2);
-        offerProducts.add(offerProduct3);
-        offerListAdapter = new ProductListAdapter(offerProducts, getActivity(), PORTRAIT, root);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-        fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
-        fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
+        homeViewModel.getLiveDataOffer().observe(getViewLifecycleOwner(),offerProducts -> {
+            this.offerProducts = offerProducts;
+            offerListAdapter = new ProductListAdapter(this.offerProducts, getActivity(), PORTRAIT, root);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+            fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
+            fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
+        });
     }
 
     private void setBestSellings(View root) {
-        products.clear();
-        Product product = new Product("1", "Bell Pepper Red", "1Kg"
-                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png","Pune");
-        Product product1 = new Product("2", "Ginger", "250 gms"
-                , "10% Off", "Rs 110", "Rs. 140", "https://www.linkpicture.com/q/ginger.png","Pune");
-        product1.setOrganic(true);
-        Product product2 = new Product("3", "Bell Pepper Red", "1Kg"
-                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png","Pune");
-        Product product3 = new Product("4", "Ginger", "500 gms"
-                , "10% Off", "Rs280", "Rs. 250", "https://www.linkpicture.com/q/ginger.png","Pune");
-        Product product4 = new Product("4", "Ginger", ""
-                , "", "", "", "https://www.linkpicture.com/q/ginger.png","Pune");
-        product4.setQty("0");
-        Product product5 = new Product("4", "Ginger", ""
-                , "", "", "", "https://www.linkpicture.com/q/ginger.png","Pune");
-        product5.setQty("0");
-        products.add(product);
-        products.add(product1);
-        products.add(product2);
-        products.add(product3);
-        products.add(product4);
-        products.add(product5);
+        homeViewModel.getLiveDataBestSelling().observe(getViewLifecycleOwner(),bestSellings -> {
+            this.bestSellings = bestSellings;
+            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+            productListAdapter = new ProductListAdapter(this.bestSellings, requireActivity(), PORTRAIT, root);
+            fragmentHomeBinding.recOfferProduct.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recOfferProduct.setLayoutManager(layoutManager);
+            fragmentHomeBinding.recOfferProduct.setAdapter(productListAdapter);
+        });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-        productListAdapter = new ProductListAdapter(products, requireActivity(), PORTRAIT, root);
-        fragmentHomeBinding.recOfferProduct.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recOfferProduct.setLayoutManager(layoutManager);
-        fragmentHomeBinding.recOfferProduct.setAdapter(productListAdapter);
     }
 
     private void setShopByCategory(View view) {
-        categories.clear();
-        Category category = new Category("1", "Green Vegetables", getString(R.string.jpg_vege));
-        Category category1 = new Category("2", "Fruit Vegetables", "https://www.linkpicture.com/q/tomato_1.png");
-        Category category2 = new Category("3", "Green Vegetables", "https://www.linkpicture.com/q/green_leafy_vegetable.png");
-        Category category3 = new Category("4", "Fruit Vegetables", "https://www.linkpicture.com/q/tomato_1.png");
+        homeViewModel.getLiveDataCategory().observe(getViewLifecycleOwner(),categories1 -> {
+            categories = categories1;
+            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+            categoryAdapter = new CategoryAdapter(categories, requireActivity(), view);
+            fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
+            fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
+        });
 
-        categories.add(category);
-        categories.add(category1);
-        categories.add(category2);
-        categories.add(category3);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-        categoryAdapter = new CategoryAdapter(categories, requireActivity(), view);
-        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
-        fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
     }
 
     private void setBannersView() {
-        banners.clear();
-        Banner banner = new Banner("1", "Banner1", "https://www.linkpicture.com/q/banner_img.jpg");
-        for (int i = 0; i < 3; i++) {
-            banners.add(banner);
-        }
-        System.out.println(banners.size());
-        bannerAdapter = new BannerAdapter(banners, requireActivity());
+//        banners.clear();
+//        Banner banner = new Banner("1", "Banner1", "https://www.linkpicture.com/q/banner_img.jpg");
+//        for (int i = 0; i < 3; i++) {
+//            banners.add(banner);
+//        }
+//        System.out.println(banners.size());
+        homeViewModel.getLiveDataBanner().observe(getViewLifecycleOwner(), banners1 -> {
+            banners = banners1;
+            bannerAdapter = new BannerAdapter(banners, requireActivity());
 
-        fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
-        // Set up tab indicators
-        fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
+            fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
+            // Set up tab indicators
+            fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
+        });
 
 
     }

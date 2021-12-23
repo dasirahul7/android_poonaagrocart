@@ -284,7 +284,7 @@
         <entry key="app/src/main/res/layout/row_photo.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_photo_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_policy_item.xml" value="0.15" />
-        <entry key="app/src/main/res/layout/row_product_item.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/row_product_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/row_product_list_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_video_item.xml" value="0.12" />
         <entry key="app/src/main/res/layout/row_weight.xml" value="0.5" />

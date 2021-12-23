@@ -184,18 +184,18 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
-                <com.poona.agrocart.widgets.CustomEditText
+                <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/et_quantity"
                     android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:background="@color/white"
+                    android:layout_height="wrap_content"
                     android:enabled="false"
+                    android:gravity="center|center_vertical"
                     android:text="@string/_1"
-                    android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14sp"
+                    android:textSize="@dimen/_16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/iv_plus"
+                    app:layout_constraintTop_toTopOf="@+id/iv_minus"
                     app:setCustomFont="@string/font_poppins_regular" />
 
 
