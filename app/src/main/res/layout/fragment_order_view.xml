@@ -667,7 +667,8 @@
                                         android:layout_marginStart="@dimen/_3sdp"
                                         android:layout_marginEnd="@dimen/_4sdp"
                                         android:gravity="end"
-                                        android:text="@string/_30_11_12"
+                                        android:singleLine="true"
+                                        android:text="@string/sample_date"
                                         android:textColor="@color/color_grey_txt"
                                         android:textSize="@dimen/_16sp"
                                         app:setCustomFont="@string/font_poppins_regular" />

@@ -280,7 +280,7 @@
     <!--    About screen string-->
     <string name="about_str">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor \n\n\nper praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.\n\n Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . ridiculus velit at sodales. Ornare enim tempus hendrerit</string>
     <!--    Notification screen string-->
-    <string name="sample_date">12 September 2021</string>
+    <string name="sample_date">12 Sept 2021</string>
     <string name="sample_notification">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi semper egestas at cursus maecenas duis enim sit ipsum. Ri amet tristique comm.</string>
     <string name="sample_policy">"Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor  per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean  at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.  Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . Ridiculus velit at sodales. Ornare enim tempus hendrerit    "</string>
     <string name="sample_terms">"Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor  per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean  at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.  Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . ridiculus velit at sodales. Ornare enim tempus hendrerit\n\n <b>100% refundable policy</b> \n   per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aeneanat. "</string>
@@ -374,7 +374,9 @@
     <string name="about_store">About Store</string>
     <string name="sample_about_store">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper \n\n\nsed aliquam volutpat. Suscipit sem ullamcor per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="store_location">Store Location</string>
-    <string name="sample_address">Nand Nivas  Bhatrau Nivas Vishrantwadi \nPune - 411015.</string>
+    <string name="sample_address">Nand Nivas  Bhatrau Nivas Vishrantwadi Pune - 411015.</string>
+    <string name="sample_address1">V9 - Landmark 203, Second Floor, above HDFC Bank, Vishrantwadi, Maharashtra Pune- 411015.</string>
+    <string name="sample_address2">Nand Nivas Building floor 3 B-3, Lane No. 13 Bhatroa Nivas Vishrantwadi </string>
 
     <!--    MAP KEY-->
     <string name="map_key">AIzaSyDi2KxP5vuvOxYO1qA2i5Ehx-yXY7hcN1Q</string>
@@ -415,4 +417,5 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
 
 <!--    Gallery-->
     <string name="sample_photo">https://www.linkpicture.com/q/unsplash_QvkAQTNj4zk_1.png</string>
+    <string name="set_delivery_address">Set Delivery Address</string>
 </resources>

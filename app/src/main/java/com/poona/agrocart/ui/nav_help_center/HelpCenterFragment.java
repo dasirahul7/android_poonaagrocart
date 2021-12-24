@@ -114,7 +114,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
         dialog.getWindow().setAttributes(lp);
         dialog.getWindow().setGravity(Gravity.BOTTOM);
         ImageView closeImg = dialog.findViewById(R.id.close_btn);
-        Spinner spType = dialog.findViewById(R.id.sp_type);
+        RecyclerView rvAddress = dialog.findViewById(R.id.rv_address);
         ArrayList<String> typeList = new ArrayList<String>();
         typeList.add("ordinary");
         typeList.add("special");
@@ -123,7 +123,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
 //        typeList.addAll(R.array.type);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item,typeList);
 //        arrayAdapter.setDropDownViewResource(android.R.layout.test_list_item);
-        spType.setAdapter(arrayAdapter);
+//        spType.setAdapter(arrayAdapter);
         closeImg.setOnClickListener(v -> {
             dialog.dismiss();
         });

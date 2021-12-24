@@ -1,10 +1,17 @@
 package com.poona.agrocart.ui.order_summary;
 
+import android.app.Dialog;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
@@ -14,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentOrderSummaryBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.order_summary.adapter.AddressDialogAdapter;
+import com.poona.agrocart.ui.order_summary.model.Address;
 import com.poona.agrocart.ui.order_summary.model.ProductAndPrice;
 
 import java.util.ArrayList;
@@ -106,6 +115,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         fragmentOrderSummaryBinding.rbCod.setOnClickListener(this);
         fragmentOrderSummaryBinding.rbOnline.setOnClickListener(this);
         fragmentOrderSummaryBinding.rbWalletBalance.setOnClickListener(this);
+        fragmentOrderSummaryBinding.ivAddressOption.setOnClickListener(this);
 
         scale = getResources().getDisplayMetrics().density;
 
@@ -133,6 +143,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
             case R.id.rb_wallet_balance:
                 summaryRadioAction(false);
                 break;
+            case R.id.iv_address_option:
+                openAddressOptionsDialog();
+                break;
         }
     }
 
@@ -156,4 +169,36 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
     }
+
+    public void openAddressOptionsDialog() {
+        Dialog dialog = new Dialog(new ContextThemeWrapper(getActivity(), R.style.DialogAnimationUp));
+        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_order_summary);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        ImageView closeImg = dialog.findViewById(R.id.close_btn);
+        RecyclerView rvAddress = dialog.findViewById(R.id.rv_address);
+        ArrayList<Address> addresses = new ArrayList<Address>();
+        Address address = new Address("Home",getString(R.string.sample_address1));
+        Address address1 = new Address("Office",getString(R.string.sample_address2));
+        Address address2 = new Address("Others",getString(R.string.sample_address1));
+        addresses.add(address);
+        addresses.add(address1);
+        addresses.add(address2);
+        AddressDialogAdapter addressDialogAdapter = new AddressDialogAdapter(addresses,getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false);
+        rvAddress.setLayoutManager(layoutManager);
+        rvAddress.setAdapter(addressDialogAdapter);
+        closeImg.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
 }
