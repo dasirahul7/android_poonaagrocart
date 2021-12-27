@@ -89,7 +89,7 @@
     <style name="theme_rating_bar">
         <item name="android:layout_gravity">start</item>
         <item name="iconSize">@dimen/_5sdp</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorOrange</item>
         <item name="colorControlNormal">@color/color_star_rating_unselected</item>
     </style>
 

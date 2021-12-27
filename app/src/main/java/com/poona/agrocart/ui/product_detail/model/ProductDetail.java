@@ -9,6 +9,8 @@ public class ProductDetail {
     public ArrayList<String> productImages;
     public String productImage;
     public String price;
+    public String OfferPrice;
+    public String OfferValue;
     public String quantity;
     public String productDetailBrief;
     public String aboutProduct;
@@ -19,6 +21,7 @@ public class ProductDetail {
     public String nutritionDetailBrief;
     public String productReview;
     public String ratings;
+    public String productOfferMsg;
     public Boolean basket;
 
     public String getProductImage() {
@@ -155,5 +158,29 @@ public class ProductDetail {
 
     public void setBasket(Boolean basket) {
         this.basket = basket;
+    }
+
+    public String getOfferPrice() {
+        return OfferPrice;
+    }
+
+    public void setOfferPrice(String offerPrice) {
+        OfferPrice = offerPrice;
+    }
+
+    public String getOfferValue() {
+        return OfferValue;
+    }
+
+    public void setOfferValue(String offerValue) {
+        OfferValue = offerValue;
+    }
+
+    public String getProductOfferMsg() {
+        return productOfferMsg;
+    }
+
+    public void setProductOfferMsg(String productOfferMsg) {
+        this.productOfferMsg = productOfferMsg;
     }
 }

@@ -41,6 +41,7 @@ public class WeightAdapter extends RecyclerView.Adapter<WeightAdapter.WeightHold
             if (mSelectedItem == position) {
             holder.weightCard.setStrokeColor(ContextCompat.getColor(context,R.color.weight_border_color));
             holder.weightTxt.setBackgroundColor(ContextCompat.getColor(context,R.color.weight_fill_color));
+            holder.weightTxt.setTextColor(ContextCompat.getColor(context,R.color.weight_border_color));
             } else {
             holder.weightCard.setStrokeColor(ContextCompat.getColor(context,R.color.color_horizontal_line));
             holder.weightTxt.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
