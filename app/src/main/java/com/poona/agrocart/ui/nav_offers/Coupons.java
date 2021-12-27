@@ -2,7 +2,7 @@ package com.poona.agrocart.ui.nav_offers;
 
 public class Coupons {
     int id;
-    String couponCode,discount,validDate,type,minimumAmount;
+    String title,couponCode,discount,validDate,type,minimumAmount,validMsg;
 
     public Coupons(int id, String couponCode, String discount, String validDate, String type, String minimumAmount) {
         this.id = id;
@@ -11,6 +11,29 @@ public class Coupons {
         this.validDate = validDate;
         this.type = type;
         this.minimumAmount = minimumAmount;
+    }
+
+    public Coupons(int id, String title, String couponCode, String validMsg) {
+        this.id = id;
+        this.title = title;
+        this.couponCode = couponCode;
+        this.validMsg = validMsg;
+    }
+
+    public String getValidMsg() {
+        return validMsg;
+    }
+
+    public void setValidMsg(String validMsg) {
+        this.validMsg = validMsg;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getId() {

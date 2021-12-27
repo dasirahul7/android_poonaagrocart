@@ -11,7 +11,7 @@ import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.RowAddressItemBinding;
+import com.poona.agrocart.databinding.RowAddressRadioBinding;
 import com.poona.agrocart.ui.order_summary.model.Address;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdapter.AddressHolder> {
     private ArrayList<Address> addressList = new ArrayList<>();
     private Context adContext;
-    private RowAddressItemBinding addressItemBinding;
+    private RowAddressRadioBinding addressItemBinding;
     private int mSelectedItem = -1;
     private CompoundButton lastCheckedRB;
 
@@ -31,7 +31,7 @@ public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdap
     @NonNull
     @Override
     public AddressHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        addressItemBinding = RowAddressItemBinding.inflate(LayoutInflater.from(adContext), parent, false);
+        addressItemBinding = RowAddressRadioBinding.inflate(LayoutInflater.from(adContext), parent, false);
         return new AddressHolder(addressItemBinding);
     }
 
@@ -57,11 +57,11 @@ public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdap
                 }
                 //store the clicked radiobutton
                 lastCheckedRB =  holder.addressBinding.addRadio;
-                if (radioBoolean) {
-                    holder.addressBinding.itemCard.setStrokeColor(ContextCompat.getColor(adContext,R.color.colorPrimary));
-                } else {
-                    holder.addressBinding.itemCard.setStrokeColor(ContextCompat.getColor(adContext,R.color.colorGrey));
-                }
+//                if (radioBoolean) {
+//                    holder.addressBinding.itemCard.setStrokeColor(ContextCompat.getColor(adContext,R.color.colorPrimary));
+//                } else {
+//                    holder.addressBinding.itemCard.setStrokeColor(ContextCompat.getColor(adContext,R.color.colorGrey));
+//                }
             }
         });
         holder.addressBind(address);
@@ -73,9 +73,9 @@ public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdap
     }
 
     public class AddressHolder extends RecyclerView.ViewHolder {
-        private RowAddressItemBinding addressBinding;
+        private RowAddressRadioBinding addressBinding;
 
-        public AddressHolder(RowAddressItemBinding rowAddressItemBinding) {
+        public AddressHolder(RowAddressRadioBinding rowAddressItemBinding) {
             super(rowAddressItemBinding.getRoot());
             this.addressBinding = rowAddressItemBinding;
             itemView.setOnClickListener(v -> {
