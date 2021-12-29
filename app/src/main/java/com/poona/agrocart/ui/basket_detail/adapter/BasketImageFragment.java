@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.product_detail;
+package com.poona.agrocart.ui.basket_detail.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,10 +14,11 @@ import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentProductImageBinding;
 import com.poona.agrocart.ui.basket_detail.BasketDetailFragment;
+import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 
 import java.util.ArrayList;
 
-public class ProductImageFragment extends Fragment
+public class BasketImageFragment extends Fragment
 {
     private static Context context;
     private static ArrayList<String> productImgsList;
@@ -26,21 +27,21 @@ public class ProductImageFragment extends Fragment
     private static final String POSITION = "position";
     private ImageView productImg;
 
-    public static ProductImageFragment newInstance(ProductDetailFragment productDetailFragment, int pos, ArrayList<String> imgs)
+    public static BasketImageFragment newInstance(ProductDetailFragment productDetailFragment, int pos, ArrayList<String> imgs)
     {
         context = productDetailFragment.getContext();
         productImgsList = imgs;
-        ProductImageFragment fragment = new ProductImageFragment();
+        BasketImageFragment fragment = new BasketImageFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(POSITION, pos);
         fragment.setArguments(bundle);
         return fragment;
     }
-    public static ProductImageFragment newInstance(BasketDetailFragment productDetailFragment, int pos, ArrayList<String> imgs)
+    public static BasketImageFragment newInstance(BasketDetailFragment productDetailFragment, int pos, ArrayList<String> imgs)
     {
         context = productDetailFragment.getContext();
         productImgsList = imgs;
-        ProductImageFragment fragment = new ProductImageFragment();
+        BasketImageFragment fragment = new BasketImageFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(POSITION, pos);
         fragment.setArguments(bundle);

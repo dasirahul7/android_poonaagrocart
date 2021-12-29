@@ -301,7 +301,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         dialog.show();
     }
 
-    public void showCalendar(CustomTextView tvDate) {
+    private void showCalendar(CustomTextView tvDate) {
         //showing date picker dialog
         DatePickerDialog dpd;
         calendar = Calendar.getInstance();

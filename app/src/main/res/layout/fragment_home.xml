@@ -133,7 +133,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="@dimen/_5sdp" />
 
-                <!--Basket-->
+                <!--BasketDetail-->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

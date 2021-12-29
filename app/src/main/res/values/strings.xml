@@ -239,6 +239,10 @@
     <string name="_rs_7500">Rs. 7500</string>
     <string name="rs_1500_x_5">Rs. 1500 x 5</string>
     <string name="subscribe_now">Subscribe Now</string>
+    <string name="similar_products">Similar Products</string>
+    <string name="review_ratings"><![CDATA[Review & Ratings]]></string>
+    <string name="start_date_for_subscription">Start date for subscription</string>
+    <string name="select_date">Select date</string>
 
     <!--Vegetables-->
     <string name="search_vegetables">Search Vegetables</string>
@@ -249,7 +253,7 @@
     <string name="add_new_address">Add New Address</string>
     <string name="default_address">Default</string>
 
-    <!--Basket Orders-->
+    <!--BasketDetail Orders-->
     <string name="order_id">Order ID -</string>
     <string name="_12_september_2021">12 September 2021</string>
     <string name="diet_basket">Diet Basket</string>
@@ -423,6 +427,5 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="exp_date">EXPECTED DELIVERY DATE</string>
     <string name="exp_slot">EXPECTED DELIVERY SLOT</string>
     <string name="product_offer_msg">Buy 500gms for Rs. 280</string>
-    <string name="similar_products">Similar Products</string>
-    <string name="review_ratings"><![CDATA[Review & Ratings]]></string>
+
 </resources>

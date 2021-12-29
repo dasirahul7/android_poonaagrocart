@@ -73,7 +73,7 @@ public class BasketCardAdapter extends RecyclerView.Adapter<BasketCardAdapter.Ba
         private void redirectToBasketDetails(View v)
         {
             Bundle bundle = new Bundle();
-            bundle.putString("Product","Basket");
+            bundle.putString("Product","BasketDetail");
            bundle.putString("name",basketCards.get(getAdapterPosition()).getProductName());
            bundle.putString("image",basketCards.get(getAdapterPosition()).getImgUrl());
            bundle.putString("price",basketCards.get(getAdapterPosition()).getPrice());

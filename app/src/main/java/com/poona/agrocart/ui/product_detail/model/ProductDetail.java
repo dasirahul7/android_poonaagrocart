@@ -1,5 +1,8 @@
 package com.poona.agrocart.ui.product_detail.model;
 
+import com.poona.agrocart.ui.basket_detail.model.ProductItem;
+import com.poona.agrocart.ui.basket_detail.model.Subscription;
+
 import java.util.ArrayList;
 
 public class ProductDetail {
@@ -23,6 +26,43 @@ public class ProductDetail {
     public String ratings;
     public String productOfferMsg;
     public Boolean basket;
+    // Basket details
+    private Subscription subscription;
+    private ArrayList<ProductItem> productList;
+    private ArrayList<ProductComment> commentList;
+    private ArrayList<BasketContent> basketContents;
+
+    public ArrayList<BasketContent> getBasketContents() {
+        return basketContents;
+    }
+
+    public void setBasketContents(ArrayList<BasketContent> basketContents) {
+        this.basketContents = basketContents;
+    }
+
+    public ArrayList<ProductComment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(ArrayList<ProductComment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public ArrayList<ProductItem> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(ArrayList<ProductItem> productList) {
+        this.productList = productList;
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
+    }
 
     public String getProductImage() {
         return productImage;

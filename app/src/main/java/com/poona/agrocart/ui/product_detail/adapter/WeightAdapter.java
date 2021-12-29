@@ -21,7 +21,7 @@ public class WeightAdapter extends RecyclerView.Adapter<WeightAdapter.WeightHold
 
     private ArrayList<String> weight = new ArrayList<>();
     private final Context context;
-    private int mSelectedItem=-1;
+    private int mSelectedItem = -1;
 
     public WeightAdapter(ArrayList<String> weight, Context context) {
         this.weight = weight;
@@ -31,20 +31,22 @@ public class WeightAdapter extends RecyclerView.Adapter<WeightAdapter.WeightHold
     @NonNull
     @Override
     public WeightHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new WeightHolder(LayoutInflater.from(context).inflate(R.layout.row_weight,parent,false));
+        return new WeightHolder(LayoutInflater.from(context).inflate(R.layout.row_weight, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull WeightHolder holder, int position) {
         holder.weightTxt.setText(weight.get(position));
-            holder.radioButton.setChecked(mSelectedItem==position);
-            if (mSelectedItem == position) {
-            holder.weightCard.setStrokeColor(ContextCompat.getColor(context,R.color.weight_border_color));
-            holder.weightTxt.setBackgroundColor(ContextCompat.getColor(context,R.color.weight_fill_color));
-            holder.weightTxt.setTextColor(ContextCompat.getColor(context,R.color.weight_border_color));
-            } else {
-            holder.weightCard.setStrokeColor(ContextCompat.getColor(context,R.color.color_horizontal_line));
-            holder.weightTxt.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+        holder.radioButton.setChecked(mSelectedItem == position);
+        if (mSelectedItem == position) {
+            holder.weightCard.setStrokeColor(ContextCompat.getColor(context, R.color.weight_border_color));
+            holder.weightTxt.setBackgroundColor(ContextCompat.getColor(context, R.color.weight_fill_color));
+            holder.weightTxt.setTextColor(ContextCompat.getColor(context, R.color.weight_border_color));
+        } else {
+            holder.weightCard.setStrokeColor(ContextCompat.getColor(context, R.color.color_horizontal_line));
+            holder.weightTxt.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            holder.weightTxt.setTextColor(ContextCompat.getColor(context, R.color.color_grey_txt));
+
         }
     }
 
@@ -57,6 +59,7 @@ public class WeightAdapter extends RecyclerView.Adapter<WeightAdapter.WeightHold
         CustomTextView weightTxt;
         MaterialCardView weightCard;
         RadioButton radioButton;
+
         @SuppressLint("UseCompatLoadingForDrawables")
         public WeightHolder(@NonNull View itemView) {
             super(itemView);
