@@ -12,7 +12,7 @@
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_130sdp"
         android:elevation="@dimen/_10sdp"
-        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_15sdp"
         app:cardUseCompatPadding="true"
         app:strokeColor="@color/clr_custom_edit_text_otp"
         app:strokeWidth="1dp">
@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:singleLine="true"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:text="@{categoryModule.name}"
                 android:textColor="@color/green_txt_color"
                 android:textSize="@dimen/cat_txt_size"

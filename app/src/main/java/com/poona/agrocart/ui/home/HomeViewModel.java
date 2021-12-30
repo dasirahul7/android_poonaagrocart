@@ -114,10 +114,10 @@ public class HomeViewModel extends AndroidViewModel {
 
     private void initCategory() {
         ArrayList<Category> categories = new ArrayList<>();
-        Category category = new Category("1", "Green Vegetables", getApplication().getString(R.string.jpg_vege));
-        Category category1 = new Category("2", "Fruit Vegetables", "https://www.linkpicture.com/q/tomato_1.png");
-        Category category2 = new Category("3", "Green Vegetables", "https://www.linkpicture.com/q/green_leafy_vegetable.png");
-        Category category3 = new Category("4", "Fruit Vegetables", "https://www.linkpicture.com/q/tomato_1.png");
+        Category category = new Category("1", "Green Vegetables", getApplication().getString(R.string.img_green_leafy));
+        Category category1 = new Category("2", "Fruit Vegetables", getApplication().getString(R.string.img_tomato));
+        Category category2 = new Category("3", "Green Vegetables", getApplication().getString(R.string.img_green_leafy));
+        Category category3 = new Category("4", "Fruit Vegetables", getApplication().getString(R.string.img_tomato));
 
         categories.add(category);
         categories.add(category1);

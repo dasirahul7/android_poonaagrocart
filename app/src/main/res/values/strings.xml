@@ -7,6 +7,7 @@
     <string name="font_poppins_medium">fonts/poppins/poppins_medium.ttf</string>
     <string name="font_poppins_regular">fonts/poppins/poppins_regular.ttf</string>
     <string name="font_poppins_semi_bold">fonts/poppins/poppins_semi_bold.ttf</string>
+    <string name="font_montserrat_regular">fonts/montserrat/</string>
 
     <!--check internet connection dialog-->
     <string name="info">Information</string>
@@ -137,6 +138,7 @@
     <string name="best_selling">Best Selling</string>
     <string name="exclusive_offer">Exclusive Offers</string>
     <string name="basket">Basket</string>
+    <string name="baskets">Baskets</string>
     <string name="_10_off">10% Off</string>
     <string name="one_kg">1Kg</string>
     <string name="rs">Rs25</string>

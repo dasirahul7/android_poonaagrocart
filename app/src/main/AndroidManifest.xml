@@ -77,6 +77,9 @@
         </service>
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/map_key" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

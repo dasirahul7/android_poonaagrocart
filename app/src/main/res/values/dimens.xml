@@ -3,6 +3,7 @@
     <!--font sizes-->
     <dimen name="_10sp">10sp</dimen>
     <dimen name="_12sp">12sp</dimen>
+    <dimen name="_13sp">13sp</dimen>
     <dimen name="_14sp">14sp</dimen>
     <dimen name="_15sp">15sp</dimen>
     <dimen name="_16sp">16sp</dimen>
@@ -28,7 +29,7 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">140dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="cat_txt_size">16sp</dimen>
+    <dimen name="cat_txt_size">18sp</dimen>
     <dimen name="offer_txt_size">14sp</dimen>
     <dimen name="large">20sp</dimen>
 

@@ -22,6 +22,7 @@
     <color name="color_grey_txt">#7C7C7C</color>
 
     <color name="black">#000000</color>
+    <color name="title_black">#4C4F4D</color>
     <color name="white">#FFFFFF</color>
 
     <!--toast background colors-->
