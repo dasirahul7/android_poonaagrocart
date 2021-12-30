@@ -102,4 +102,8 @@ public class AppConstants
     public static final String REMARK="REMARK";
     public static final String DATE="DATE";
     public static final String SUBJECT="SUBJECT";
+
+    //SharedPreferences keys
+    public static String CART_LIST = "CART_LIST";
+
 }

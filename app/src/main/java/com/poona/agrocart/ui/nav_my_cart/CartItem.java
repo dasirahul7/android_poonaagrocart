@@ -1,6 +1,8 @@
 package com.poona.agrocart.ui.nav_my_cart;
 
-public class CartItem
+import com.poona.agrocart.ui.home.model.Product;
+
+public class CartItem extends Product
 {
     private String imgUrl,name,price,finalPrice,weight,quantity;
 

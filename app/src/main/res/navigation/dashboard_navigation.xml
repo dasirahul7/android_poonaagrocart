@@ -267,11 +267,11 @@
         app:destination="@id/nav_product_details"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"/>
-    <action
-        android:id="@+id/action_nav_home_to_nav_cart"
-        app:destination="@id/nav_cart"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+<!--    <action-->
+<!--        android:id="@+id/action_nav_home_to_nav_cart"-->
+<!--        app:destination="@id/nav_cart"-->
+<!--        app:enterAnim="@anim/fade_in"-->
+<!--        app:exitAnim="@anim/fade_out"/>-->
     <action
         android:id="@+id/action_nav_home_to_nav_profile"
         app:destination="@id/nav_profile"

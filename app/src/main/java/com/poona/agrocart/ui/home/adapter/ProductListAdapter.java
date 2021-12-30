@@ -31,6 +31,20 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private RowProductItemBinding productBinding;
     private final String ListType;
     private final View view;
+    private OnProductClick onProductClick;
+
+    public OnProductClick getOnAddClickListener() {
+        return onProductClick;
+    }
+
+    public void setOnAddClickListener(OnProductClick onProductClick) {
+        this.onProductClick = onProductClick;
+    }
+
+    public interface OnProductClick {
+        void OnAddClick(Product product);
+    }
+
 
     public ProductListAdapter(ArrayList<Product> products, FragmentActivity context, String listType, View view) {
         this.products = products;
@@ -45,8 +59,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         bestSellingBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_best_selling_item, parent, false);
         productBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_product_item, parent, false);
         if (ListType.equalsIgnoreCase(PORTRAIT))
-            return new BestSellingHolder(bestSellingBinding);
-        else return new BestSellingHolder(productBinding);
+            return new BestSellingHolder(bestSellingBinding,onProductClick);
+        else return new BestSellingHolder(productBinding,onProductClick);
     }
 
     @Override
@@ -67,17 +81,16 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     public class BestSellingHolder extends RecyclerView.ViewHolder {
-        public BestSellingHolder(RowBestSellingItemBinding bestSellingBinding) {
+        //The Portrait list holder
+        private OnProductClick onProductClick;
+        public BestSellingHolder(RowBestSellingItemBinding bestSellingBinding,OnProductClick onBestClick) {
             super(bestSellingBinding.getRoot());
+            this.onProductClick = onBestClick;
             // Redirect to product details from best selling item
             bestSellingBinding.cardviewProduct.setOnClickListener(v -> {
                 redirectToProductDetails(view);
             });
 
-            // Redirect to Cart from best selling items
-            bestSellingBinding.imgPlus.setOnClickListener(v -> {
-                gotoCart(view);
-            });
         }
 
         // Redirect to Product details
@@ -88,19 +101,19 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             bundle.putString("price",products.get(getAdapterPosition()).getPrice());
             Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
         }
-        // The Best selling Item Holder
-        public BestSellingHolder(RowProductItemBinding productBinding) {
+        // The Landscape Item Holder
+        public BestSellingHolder(RowProductItemBinding productBinding,OnProductClick onProductClick) {
             super(productBinding.getRoot());
+            this.onProductClick = onProductClick;
             productBinding.ivCross.setVisibility(View.INVISIBLE);
+            productBinding.ivMinus.setVisibility(View.INVISIBLE);
+            productBinding.etQuantity.setVisibility(View.INVISIBLE);
             // Redirect Product detail from bottom cart items
             productBinding.cardviewProduct.setOnClickListener(v -> {
                 redirectToProductDetails(view);
             });
             productBinding.ivPlus.setOnClickListener(v -> {
-                int quantity = Integer.parseInt(productBinding.etQuantity.getText().toString());
-                quantity++;
-                productBinding.etQuantity.setText(String.valueOf(quantity));
-                AppUtils.setMinusButton(quantity,productBinding.ivMinus);
+
             });
             productBinding.ivMinus.setOnClickListener(v -> {
                 int quantity = Integer.parseInt(productBinding.etQuantity.getText().toString());
@@ -128,6 +141,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             }
             bestSellingBinding.setVariable(BR.productModule, product);
             bestSellingBinding.executePendingBindings();
+
+            //Add to cart
+            bestSellingBinding.imgPlus.setOnClickListener(v -> {
+                addToCart(product);
+            });
         }
 
         //Only Product Item bind
@@ -142,10 +160,18 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 productBinding.txtOrganic.setVisibility(View.VISIBLE);
             productBinding.setVariable(BR.productModule, product);
             productBinding.executePendingBindings();
+
+            //Add to Cart
+            productBinding.ivPlus.setOnClickListener(v -> {
+                addToCart(product);
+            });
         }
+
     }
 
-    private void gotoCart(View v) {
-        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_cart);
+    private void addToCart(Product product) {
+        AppUtils.infoToast(bdContext,product.getName());
+        onProductClick.OnAddClick(product);
+//        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_cart);
     }
 }

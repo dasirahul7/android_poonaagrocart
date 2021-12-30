@@ -67,6 +67,14 @@ public class Product implements Parcelable {
         return qty;
     }
 
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
     public void setQty(String qty) {
         this.qty = qty;
     }
@@ -125,6 +133,14 @@ public class Product implements Parcelable {
 
     public void setOrganic(boolean organic) {
         this.organic = organic;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 
     @BindingAdapter("setImage")

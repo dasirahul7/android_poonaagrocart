@@ -52,22 +52,21 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="0dp"
-                android:layout_toStartOf="@+id/txt_item_offer"
+                android:layout_marginStart="-10dp"
+                android:layout_toStartOf="@+id/close_layout"
                 android:layout_toEndOf="@+id/img_layout"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_name"
+                    android:text="@{productModule.name}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
-                    android:text="@{productModule.name}"
                     android:textColor="@color/color_basket_name"
-                    android:textSize="@dimen/_16sp"
+                    android:textSize="@dimen/cat_txt_size"
                     app:setCustomFont="@string/font_poppins_bold" />
 
                 <com.poona.agrocart.widgets.CustomTextView
@@ -100,28 +99,30 @@
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp">
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_offerPrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{productModule.offerPrice}"
-                        android:textColor="@color/clr_enter_otp"
-                        android:textSize="@dimen/_16sp"
-                        app:setCustomFont="@string/font_poppins_regular" />
-
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/txt_item_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_4sdp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_strikethrough"
                         android:text="@{productModule.price}"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
+
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_offerPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:text="@{productModule.offerPrice}"
+                        android:textColor="@color/clr_enter_otp"
+                        android:textSize="@dimen/cat_txt_size"
+                        app:setCustomFont="@string/font_montserrat_regular"
+                        />
+
 
                 </LinearLayout>
 
@@ -171,7 +172,7 @@
                 <ImageView
                     android:id="@+id/iv_cross"
                     android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_height="@dimen/_13sdp"
                     android:src="@drawable/ic_cross"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -201,9 +202,9 @@
 
                 <ImageView
                     android:id="@+id/iv_minus"
+                    style="@style/MinusButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/MinusButtonStyle"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/et_quantity" />
 

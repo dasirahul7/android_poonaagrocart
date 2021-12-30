@@ -6,21 +6,27 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.poona.agrocart.app.AppConstants;
+import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 
 public class MyCartViewModel extends AndroidViewModel {
 
-    private MutableLiveData<ArrayList<Product>> liveProductList = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<Product>> liveProductList = new MutableLiveData<>();
+    private AppSharedPreferences mSessionManager;
 
     public MyCartViewModel(@NonNull Application application) {
         super(application);
-        init();
+//        liveProductList.setValue(null);
+//        init();
     }
 
     private void init() {
+        mSessionManager = new AppSharedPreferences(getApplication());
         ArrayList<Product> cartList = new ArrayList<>();
+//        cartList = mSessionManager.getArrayList(AppConstants.CART_LIST);
         for (int i = 0; i < 10; i++) {
             Product cartItem = new Product();
             cartItem.setName("Bell Pepper Red");

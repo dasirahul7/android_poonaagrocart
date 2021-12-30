@@ -292,7 +292,7 @@
         <entry key="app/src/main/res/layout/row_photo.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_photo_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_policy_item.xml" value="0.15" />
-        <entry key="app/src/main/res/layout/row_product_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/row_product_item.xml" value="0.2" />
         <entry key="app/src/main/res/layout/row_product_list_item.xml" value="0.16" />
         <entry key="app/src/main/res/layout/row_promo_code_radio.xml" value="0.22" />
         <entry key="app/src/main/res/layout/row_video_item.xml" value="0.12" />

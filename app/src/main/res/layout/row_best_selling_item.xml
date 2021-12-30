@@ -86,8 +86,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:paddingStart="@dimen/_5sdp"
-                    android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
                     android:text="@{productModule.name}"
                     android:textColor="@color/blue_txt_color"
@@ -99,10 +97,10 @@
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{productModule.location}"
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:drawablePadding="-5dp"
                     android:gravity="center_vertical"
-                    android:text="@{productModule.location}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:drawableStartCompat="@drawable/ic_location_small"
@@ -114,11 +112,12 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:paddingStart="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
                     android:text="@{productModule.qty}"
                     android:textColor="@color/color_grey_txt"
-                    android:textSize="@dimen/_12sp"
-                    tools:ignore="RtlSymmetry" />
+                    android:textSize="@dimen/_14sp"
+                     />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -135,7 +134,7 @@
                         android:gravity="center"
                         android:text="@{productModule.price}"
                         android:textColor="@color/color_grey_txt"
-                        android:textSize="@dimen/_13sp"
+                        android:textSize="@dimen/_14sp"
                         tools:ignore="RtlSymmetry"
                         app:setCustomFont="@string/font_poppins_regular"/>
 

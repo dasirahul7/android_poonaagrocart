@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppConstants;
+import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.FragmentMyCartBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.CustomDialogInterface;
@@ -28,9 +30,11 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     private LinearLayoutManager linearLayoutManager;
     private CartItemsAdapter cartItemsAdapter;
     private ArrayList<Product> cartItemArrayList = new ArrayList<>();
+    ArrayList<Product> cartList = new ArrayList<>();
     private View navHostFragment;
     private ViewGroup.MarginLayoutParams navHostMargins;
     private float scale;
+    private AppSharedPreferences mSessionManager;
 
     @Override
     public void onPause() {
@@ -66,6 +70,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         fragmentMyCartBinding.setLifecycleOwner(this);
         final View view = fragmentMyCartBinding.getRoot();
         myCartViewModel = new ViewModelProvider(this).get(MyCartViewModel.class);
+        mSessionManager = new AppSharedPreferences(requireActivity());
         initView();
         setRvAdapter();
         return view;
@@ -94,6 +99,11 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
     @SuppressLint("NotifyDataSetChanged")
     private void setRvAdapter() {
+        cartList = mSessionManager.getArrayList(AppConstants.CART_LIST);
+        for (int i=0;i<cartList.size();i++){
+            System.out.println("items:"+ cartList.get(1).getName());
+        }
+        myCartViewModel.liveProductList.setValue(cartList);
         myCartViewModel.getCartList().observe(getViewLifecycleOwner(), products -> {
             cartItemArrayList = products;
             cartItemsAdapter = new CartItemsAdapter(cartItemArrayList);
@@ -108,8 +118,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 checkEmptyCart();
             });
         });
-
-
     }
 
     private void checkEmptyCart() {
