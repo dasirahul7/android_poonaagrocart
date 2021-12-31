@@ -24,7 +24,7 @@ import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 
-public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.BestSellingHolder> {
+public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductHolder> {
     private ArrayList<Product> products = new ArrayList<>();
     private final Context bdContext;
     private RowBestSellingItemBinding bestSellingBinding;
@@ -42,7 +42,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     public interface OnProductClick {
-        void OnAddClick(Product product);
+        void OnAddClick(Product product, int position);
     }
 
 
@@ -55,23 +55,24 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
 
     @Override
-    public BestSellingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        bestSellingBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_best_selling_item, parent, false);
+    public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         productBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_product_item, parent, false);
-        if (ListType.equalsIgnoreCase(PORTRAIT))
-            return new BestSellingHolder(bestSellingBinding,onProductClick);
-        else return new BestSellingHolder(productBinding,onProductClick);
+        return new ProductHolder(productBinding, onProductClick);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BestSellingHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
         Product product = products.get(position);
         if (ListType.equalsIgnoreCase(PORTRAIT)) {
             bestSellingBinding.setProductModule(product);
-            holder.bind(product);
+            if (product.isInBasket())
+                    bestSellingBinding.imgPlus.setImageResource(R.drawable.ic_added);
+            holder.bind(product,position);
         } else {
             productBinding.setProductModule(product);
-            holder.bindProduct(product);
+            if (product.isInBasket())
+                productBinding.ivPlus.setImageResource(R.drawable.ic_added);
+            holder.bindProduct(product,position);
         }
     }
 
@@ -80,29 +81,30 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         return products.size();
     }
 
-    public class BestSellingHolder extends RecyclerView.ViewHolder {
+    public class ProductHolder extends RecyclerView.ViewHolder {
         //The Portrait list holder
         private OnProductClick onProductClick;
-        public BestSellingHolder(RowBestSellingItemBinding bestSellingBinding,OnProductClick onBestClick) {
-            super(bestSellingBinding.getRoot());
-            this.onProductClick = onBestClick;
-            // Redirect to product details from best selling item
-            bestSellingBinding.cardviewProduct.setOnClickListener(v -> {
-                redirectToProductDetails(view);
-            });
 
-        }
 
         // Redirect to Product details
         private void redirectToProductDetails(View v) {
             Bundle bundle = new Bundle();
-            bundle.putString("name",products.get(getAdapterPosition()).getName());
-            bundle.putString("image",products.get(getAdapterPosition()).getImg());
-            bundle.putString("price",products.get(getAdapterPosition()).getPrice());
-            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
+            bundle.putString("name", products.get(getAdapterPosition()).getName());
+            bundle.putString("image", products.get(getAdapterPosition()).getImg());
+            bundle.putString("price", products.get(getAdapterPosition()).getPrice());
+            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
         }
+
+        private void addToCart(Product product, int position) {
+            AppUtils.infoToast(bdContext, "Added in basket");
+            products.get(getAdapterPosition()).setInBasket(true);
+            notifyDataSetChanged();
+            onProductClick.OnAddClick(product,position);
+//        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_cart);
+        }
+
         // The Landscape Item Holder
-        public BestSellingHolder(RowProductItemBinding productBinding,OnProductClick onProductClick) {
+        public ProductHolder(RowProductItemBinding productBinding, OnProductClick onProductClick) {
             super(productBinding.getRoot());
             this.onProductClick = onProductClick;
             productBinding.ivCross.setVisibility(View.INVISIBLE);
@@ -112,27 +114,17 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productBinding.cardviewProduct.setOnClickListener(v -> {
                 redirectToProductDetails(view);
             });
-            productBinding.ivPlus.setOnClickListener(v -> {
-
-            });
-            productBinding.ivMinus.setOnClickListener(v -> {
-                int quantity = Integer.parseInt(productBinding.etQuantity.getText().toString());
-                if (quantity > 1) {
-                    quantity--;
-                    productBinding.etQuantity.setText(String.valueOf(quantity));
-                AppUtils.setMinusButton(quantity,productBinding.ivMinus);
-                }
-            });
         }
+
         //Best selling Item Bind
-        public void bind(Product product) {
+        public void bind(Product product, int i) {
             if (product.getOffer().isEmpty())
                 bestSellingBinding.txtItemOffer.setVisibility(View.INVISIBLE);
             if (product.getOfferPrice().isEmpty())
                 bestSellingBinding.txtItemPrice.setVisibility(View.INVISIBLE);
             if (product.isOrganic())
                 bestSellingBinding.txtOrganic.setVisibility(View.VISIBLE);
-            if (product.getQty().equals("0")){
+            if (product.getQty().equals("0")) {
                 bestSellingBinding.txtItemQty.setVisibility(View.INVISIBLE);
                 bestSellingBinding.txtItemPrice.setVisibility(View.INVISIBLE);
                 bestSellingBinding.txtItemOfferPrice.setVisibility(View.INVISIBLE);
@@ -144,34 +136,32 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
             //Add to cart
             bestSellingBinding.imgPlus.setOnClickListener(v -> {
-                addToCart(product);
+                addToCart(product, i);
             });
         }
 
         //Only Product Item bind
-        public void bindProduct(Product product) {
-            if(product.getImg().endsWith(".jpeg")||product.getImg().endsWith("jpg"))
-            productBinding.itemImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        public void bindProduct(Product product, int position) {
+            if (product.getImg().endsWith(".jpeg") || product.getImg().endsWith("jpg"))
+                productBinding.itemImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
             if (product.getOffer().isEmpty())
                 productBinding.txtItemOffer.setVisibility(View.INVISIBLE);
             if (product.getPrice().isEmpty())
                 productBinding.txtItemPrice.setVisibility(View.INVISIBLE);
             if (product.isOrganic())
                 productBinding.txtOrganic.setVisibility(View.VISIBLE);
+            if (product.isInBasket())
+                productBinding.ivPlus.setImageResource(R.drawable.ic_added);
             productBinding.setVariable(BR.productModule, product);
             productBinding.executePendingBindings();
 
             //Add to Cart
             productBinding.ivPlus.setOnClickListener(v -> {
-                addToCart(product);
+                addToCart(product,position);
             });
         }
 
     }
 
-    private void addToCart(Product product) {
-        AppUtils.infoToast(bdContext,product.getName());
-        onProductClick.OnAddClick(product);
-//        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_cart);
-    }
+
 }

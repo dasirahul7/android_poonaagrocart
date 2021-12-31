@@ -100,8 +100,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     @SuppressLint("NotifyDataSetChanged")
     private void setRvAdapter() {
         cartList = mSessionManager.getArrayList(AppConstants.CART_LIST);
-        for (int i=0;i<cartList.size();i++){
-            System.out.println("items:"+ cartList.get(1).getName());
+        for (Product product:cartList){
+            System.out.println("items:"+ product.getName());
         }
         myCartViewModel.liveProductList.setValue(cartList);
         myCartViewModel.getCartList().observe(getViewLifecycleOwner(), products -> {

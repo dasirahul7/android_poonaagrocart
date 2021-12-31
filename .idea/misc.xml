@@ -163,7 +163,10 @@
         <entry key="app/src/main/res/drawable/ic_subtract_1_.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/ic_terms__condition.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_tick_green_bg.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/drawable/ic_tick_mark.xml" value="0.13094462540716612" />
+        <entry key="app/src/main/res/drawable/ic_tick_mark_white_border.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_toast_check_white.xml" value="0.19444444444444445" />
+        <entry key="app/src/main/res/drawable/ic_uncheck_checkbox.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_unselected_dot.xml" value="0.15648148148148147" />
         <entry key="app/src/main/res/drawable/ic_wallet.xml" value="0.19907407407407407" />
         <entry key="app/src/main/res/drawable/icon_menu_account.xml" value="0.10520833333333333" />

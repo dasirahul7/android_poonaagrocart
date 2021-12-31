@@ -65,8 +65,10 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
+                    android:includeFontPadding="false"
+                    android:singleLine="true"
                     android:textColor="@color/color_basket_name"
-                    android:textSize="@dimen/cat_txt_size"
+                    android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_bold" />
 
                 <com.poona.agrocart.widgets.CustomTextView

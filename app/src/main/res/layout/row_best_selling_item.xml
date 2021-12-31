@@ -87,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:singleLine="true"
+                    android:paddingHorizontal="@dimen/_5sdp"
                     android:text="@{productModule.name}"
                     android:textColor="@color/blue_txt_color"
                     android:textSize="@dimen/cat_txt_size"
@@ -151,17 +152,18 @@
                         tools:ignore="RtlSymmetry" />
                 </LinearLayout>
 
-
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/txt_out_of_stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:visibility="gone"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:layout_marginTop="-15dp"
                     android:paddingStart="@dimen/_5sdp"
                     android:text="@string/out_of_stock"
                     android:textColor="@color/red_text_color"
                     android:textSize="@dimen/_14sp"
-                    android:visibility="gone"
                     tools:ignore="RtlSymmetry" />
             </LinearLayout>
 

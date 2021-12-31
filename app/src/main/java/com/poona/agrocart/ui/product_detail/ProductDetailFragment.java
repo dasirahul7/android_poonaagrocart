@@ -21,6 +21,7 @@ import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.basket_detail.model.Subscription;
+import com.poona.agrocart.ui.home.adapter.BestSellingOfferAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
 import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.product_detail.adapter.BasketContentsAdapter;
@@ -56,7 +57,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private ArrayList<Product> similarProducts;
     private BasketContentsAdapter basketContentsAdapter;
     private ProductDetail details;
-    private ProductListAdapter productListAdapter;
+    private BestSellingOfferAdapter productListAdapter;
     private View root;
     private boolean BasketType = false;
     private Calendar calendar;
@@ -79,7 +80,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         productDetailViewModel.getSimilarProductLiveData().observe(getViewLifecycleOwner(), similarItems -> {
             this.similarProducts = similarItems;
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-            productListAdapter = new ProductListAdapter(this.similarProducts, requireActivity(), PORTRAIT, root);
+            productListAdapter = new BestSellingOfferAdapter(this.similarProducts, requireActivity(), root);
             fragmentProductDetailBinding.rvSimilar.setNestedScrollingEnabled(false);
             fragmentProductDetailBinding.rvSimilar.setLayoutManager(layoutManager);
             fragmentProductDetailBinding.rvSimilar.setAdapter(productListAdapter);

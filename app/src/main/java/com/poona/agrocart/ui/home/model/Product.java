@@ -12,6 +12,23 @@ import com.poona.agrocart.R;
 public class Product implements Parcelable {
     String id, name, qty,offer, price, offerPrice,img,location,weight,quantity;
     boolean organic;
+    boolean inBasket=false,isFavorite=false;
+
+    public boolean isInBasket() {
+        return inBasket;
+    }
+
+    public void setInBasket(boolean inBasket) {
+        this.inBasket = inBasket;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 
     public Product() {
     }

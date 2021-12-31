@@ -429,5 +429,6 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="exp_date">EXPECTED DELIVERY DATE</string>
     <string name="exp_slot">EXPECTED DELIVERY SLOT</string>
     <string name="product_offer_msg">Buy 500gms for Rs. 280</string>
+    <string name="img_carrot">https://www.linkpicture.com/q/Carrot-Download-PNG-1-1.png</string>
 
 </resources>

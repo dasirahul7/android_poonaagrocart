@@ -24,13 +24,13 @@ import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
 import com.poona.agrocart.ui.home.adapter.BasketAdapter;
+import com.poona.agrocart.ui.home.adapter.BestSellingOfferAdapter;
 import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
 import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.home.model.Product;
-import com.poona.agrocart.ui.nav_my_cart.CartItem;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,8 @@ public class HomeFragment extends BaseFragment {
     private BannerAdapter bannerAdapter;
     private CategoryAdapter categoryAdapter;
     private ProductListAdapter productListAdapter;
-    private ProductListAdapter offerListAdapter;
+    private BestSellingOfferAdapter bestSellingOfferAdapter;
+    private BestSellingOfferAdapter offerListAdapter;
     private BasketAdapter basketAdapter;
     private ArrayList<Product> bestSellings = new ArrayList<>();
     private ArrayList<Product> offerProducts = new ArrayList<>();
@@ -52,6 +53,7 @@ public class HomeFragment extends BaseFragment {
     private ArrayList<Basket> baskets = new ArrayList<>();
     private AppSharedPreferences session;
     private final ArrayList<Product> mCartList = new ArrayList<Product>();
+    private ArrayList<String> BasketIds = new ArrayList<>();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -60,6 +62,7 @@ public class HomeFragment extends BaseFragment {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         session = new AppSharedPreferences(requireActivity());
         View root = fragmentHomeBinding.getRoot();
+        getBasketItems();
         setBannersView();
         setShopByCategory(root);
         setBestSellings(root);
@@ -68,6 +71,13 @@ public class HomeFragment extends BaseFragment {
         setCartItems(root);
         setStoreBanner(root);
         return root;
+    }
+
+    private void getBasketItems() {
+        homeViewModel.getSavesProductInBasket().observe(getViewLifecycleOwner(),products -> {
+            for (Product saved:products)
+            BasketIds.add(saved.getId());
+        });
     }
 
     private void setStoreBanner(View root) {
@@ -91,6 +101,8 @@ public class HomeFragment extends BaseFragment {
             fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
             productListAdapter = new ProductListAdapter(cartProductList, getActivity(), LANDSCAPE, root);
             fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
+            productListAdapter.setOnAddClickListener((item, position) -> addToBasket(item));
+
         });
 
     }
@@ -108,27 +120,48 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void setOfferProduct(View root) {
-        homeViewModel.getLiveDataOffer().observe(getViewLifecycleOwner(), offerProducts -> {
-            this.offerProducts = offerProducts;
-            offerListAdapter = new ProductListAdapter(this.offerProducts, getActivity(), PORTRAIT, root);
+        homeViewModel.getLiveDataOffer().observe(getViewLifecycleOwner(), liveProducts -> {
+            this.offerProducts = liveProducts;
+            offerListAdapter = new BestSellingOfferAdapter(this.offerProducts, getActivity(), root);
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
             fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
             fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
             fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
+            // Redirect to Product details
+            offerListAdapter.setOnProductClick(product -> {
+                toProductDetail(product,root);
+            });
+            offerListAdapter.setOnPlusClick((product, position) -> {
+                addToBasket(product);
+                offerProducts.get(position).setInBasket(true);
+                offerListAdapter.notifyItemChanged(position);
+            });
         });
     }
 
     private void setBestSellings(View root) {
-        homeViewModel.getLiveDataBestSelling().observe(getViewLifecycleOwner(), bestSellings -> {
-            this.bestSellings = bestSellings;
+        homeViewModel.getLiveDataBestSelling().observe(getViewLifecycleOwner(), liveList -> {
+            this.bestSellings = liveList;
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-            productListAdapter = new ProductListAdapter(this.bestSellings, requireActivity(), PORTRAIT, root);
+            bestSellingOfferAdapter = new BestSellingOfferAdapter(this.bestSellings, requireActivity(), root);
             fragmentHomeBinding.recOfferProduct.setNestedScrollingEnabled(false);
             fragmentHomeBinding.recOfferProduct.setLayoutManager(layoutManager);
-            fragmentHomeBinding.recOfferProduct.setAdapter(productListAdapter);
-            productListAdapter.setOnAddClickListener(product -> {
-                addToBasket(product);
+            fragmentHomeBinding.recOfferProduct.setAdapter(bestSellingOfferAdapter);
+            // Redirect to Product details
+            bestSellingOfferAdapter.setOnProductClick(product -> {
+               toProductDetail(product,root);
             });
+            bestSellingOfferAdapter.setOnPlusClick((product, position) -> {
+                addToBasket(product);
+                this.bestSellings.get(position).setInBasket(true);
+                bestSellingOfferAdapter.notifyItemChanged(position);
+            });
+
+//            bestSellingOfferAdapter.setOnAddClickListener((item, position) -> {
+//                addToBasket(item);
+//                bestSellings.get(position).setInBasket(true);
+//                productListAdapter.notifyItemChanged(position);
+//            });
         });
 
     }
@@ -200,17 +233,18 @@ public class HomeFragment extends BaseFragment {
     private void addToBasket(Product item) {
         if (item.getQuantity() == null)
             item.setQuantity("1");
-//        CartItem cartItem = new CartItem();
-//        cartItem.setImgUrl(item.getImg());
-//        cartItem.setName(item.getName());
-//        cartItem.setPrice(item.getOfferPrice());
-//        cartItem.setFinalPrice(item.getPrice());
-//        cartItem.setWeight(item.getWeight());
-//        cartItem.setQuantity(item.getQuantity());
         mCartList.add(item);
         session.saveArrayList(mCartList, AppConstants.CART_LIST);
-        for (int i=0;i<mCartList.size();i++){
-            System.out.println("Added: "+mCartList.get(i).getName());
+        for (int i = 0; i < mCartList.size(); i++) {
+            System.out.println("Added: " + mCartList.get(i).getName());
         }
     }
+    private void toProductDetail(Product product, View root){
+        Bundle bundle = new Bundle();
+        bundle.putString("name", product.getName());
+        bundle.putString("image",product.getImg());
+        bundle.putString("price",product.getPrice());
+        Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+    }
+
 }
