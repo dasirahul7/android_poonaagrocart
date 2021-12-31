@@ -20,6 +20,8 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.databinding.RowBestSellingItemBinding;
 import com.poona.agrocart.databinding.RowProductItemBinding;
+import com.poona.agrocart.ui.home.OnPlusClick;
+import com.poona.agrocart.ui.home.OnProductClick;
 import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
@@ -31,20 +33,16 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private RowProductItemBinding productBinding;
     private final String ListType;
     private final View view;
+    private OnPlusClick onPlusClick;
     private OnProductClick onProductClick;
 
-    public OnProductClick getOnAddClickListener() {
-        return onProductClick;
+    public void setOnPlusClick(OnPlusClick onPlusClick) {
+        this.onPlusClick = onPlusClick;
     }
 
-    public void setOnAddClickListener(OnProductClick onProductClick) {
+    public void setOnProductClick(OnProductClick onProductClick) {
         this.onProductClick = onProductClick;
     }
-
-    public interface OnProductClick {
-        void OnAddClick(Product product, int position);
-    }
-
 
     public ProductListAdapter(ArrayList<Product> products, FragmentActivity context, String listType, View view) {
         this.products = products;
@@ -57,23 +55,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         productBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_product_item, parent, false);
-        return new ProductHolder(productBinding, onProductClick);
+        return new ProductHolder(productBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
         Product product = products.get(position);
-        if (ListType.equalsIgnoreCase(PORTRAIT)) {
-            bestSellingBinding.setProductModule(product);
-            if (product.isInBasket())
-                    bestSellingBinding.imgPlus.setImageResource(R.drawable.ic_added);
-            holder.bind(product,position);
-        } else {
             productBinding.setProductModule(product);
-            if (product.isInBasket())
-                productBinding.ivPlus.setImageResource(R.drawable.ic_added);
             holder.bindProduct(product,position);
-        }
     }
 
     @Override
@@ -82,38 +71,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     public class ProductHolder extends RecyclerView.ViewHolder {
-        //The Portrait list holder
-        private OnProductClick onProductClick;
-
-
-        // Redirect to Product details
-        private void redirectToProductDetails(View v) {
-            Bundle bundle = new Bundle();
-            bundle.putString("name", products.get(getAdapterPosition()).getName());
-            bundle.putString("image", products.get(getAdapterPosition()).getImg());
-            bundle.putString("price", products.get(getAdapterPosition()).getPrice());
-            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
-        }
-
-        private void addToCart(Product product, int position) {
-            AppUtils.infoToast(bdContext, "Added in basket");
-            products.get(getAdapterPosition()).setInBasket(true);
-            notifyDataSetChanged();
-            onProductClick.OnAddClick(product,position);
-//        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_cart);
-        }
 
         // The Landscape Item Holder
-        public ProductHolder(RowProductItemBinding productBinding, OnProductClick onProductClick) {
+        public ProductHolder(RowProductItemBinding productBinding) {
             super(productBinding.getRoot());
-            this.onProductClick = onProductClick;
             productBinding.ivCross.setVisibility(View.INVISIBLE);
             productBinding.ivMinus.setVisibility(View.INVISIBLE);
             productBinding.etQuantity.setVisibility(View.INVISIBLE);
-            // Redirect Product detail from bottom cart items
-            productBinding.cardviewProduct.setOnClickListener(v -> {
-                redirectToProductDetails(view);
-            });
         }
 
         //Best selling Item Bind
@@ -124,6 +88,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 bestSellingBinding.txtItemPrice.setVisibility(View.INVISIBLE);
             if (product.isOrganic())
                 bestSellingBinding.txtOrganic.setVisibility(View.VISIBLE);
+            if (product.isInBasket())
+                bestSellingBinding.imgPlus.setImageResource(R.drawable.ic_added);
             if (product.getQty().equals("0")) {
                 bestSellingBinding.txtItemQty.setVisibility(View.INVISIBLE);
                 bestSellingBinding.txtItemPrice.setVisibility(View.INVISIBLE);
@@ -134,10 +100,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             bestSellingBinding.setVariable(BR.productModule, product);
             bestSellingBinding.executePendingBindings();
 
-            //Add to cart
-            bestSellingBinding.imgPlus.setOnClickListener(v -> {
-                addToCart(product, i);
-            });
         }
 
         //Only Product Item bind
@@ -154,11 +116,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 productBinding.ivPlus.setImageResource(R.drawable.ic_added);
             productBinding.setVariable(BR.productModule, product);
             productBinding.executePendingBindings();
-
-            //Add to Cart
-            productBinding.ivPlus.setOnClickListener(v -> {
-                addToCart(product,position);
-            });
         }
 
     }

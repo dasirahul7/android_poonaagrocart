@@ -74,9 +74,9 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void getBasketItems() {
-        homeViewModel.getSavesProductInBasket().observe(getViewLifecycleOwner(),products -> {
-            for (Product saved:products)
-            BasketIds.add(saved.getId());
+        homeViewModel.getSavesProductInBasket().observe(getViewLifecycleOwner(), products -> {
+            for (Product saved : products)
+                BasketIds.add(saved.getId());
         });
     }
 
@@ -101,8 +101,6 @@ public class HomeFragment extends BaseFragment {
             fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
             productListAdapter = new ProductListAdapter(cartProductList, getActivity(), LANDSCAPE, root);
             fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
-            productListAdapter.setOnAddClickListener((item, position) -> addToBasket(item));
-
         });
 
     }
@@ -129,7 +127,7 @@ public class HomeFragment extends BaseFragment {
             fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
             // Redirect to Product details
             offerListAdapter.setOnProductClick(product -> {
-                toProductDetail(product,root);
+                toProductDetail(product, root);
             });
             offerListAdapter.setOnPlusClick((product, position) -> {
                 addToBasket(product);
@@ -149,7 +147,7 @@ public class HomeFragment extends BaseFragment {
             fragmentHomeBinding.recOfferProduct.setAdapter(bestSellingOfferAdapter);
             // Redirect to Product details
             bestSellingOfferAdapter.setOnProductClick(product -> {
-               toProductDetail(product,root);
+                toProductDetail(product, root);
             });
             bestSellingOfferAdapter.setOnPlusClick((product, position) -> {
                 addToBasket(product);
@@ -239,11 +237,12 @@ public class HomeFragment extends BaseFragment {
             System.out.println("Added: " + mCartList.get(i).getName());
         }
     }
-    private void toProductDetail(Product product, View root){
+
+    private void toProductDetail(Product product, View root) {
         Bundle bundle = new Bundle();
         bundle.putString("name", product.getName());
-        bundle.putString("image",product.getImg());
-        bundle.putString("price",product.getPrice());
+        bundle.putString("image", product.getImg());
+        bundle.putString("price", product.getPrice());
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
 
