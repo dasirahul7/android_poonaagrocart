@@ -75,8 +75,10 @@ public class HomeFragment extends BaseFragment {
 
     private void getBasketItems() {
         homeViewModel.getSavesProductInBasket().observe(getViewLifecycleOwner(), products -> {
-            for (Product saved : products)
-                BasketIds.add(saved.getId());
+            if (products!=null){
+                for (Product saved : products)
+                    BasketIds.add(saved.getId());
+            }
         });
     }
 
@@ -99,8 +101,16 @@ public class HomeFragment extends BaseFragment {
             fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
             fragmentHomeBinding.recProduct.setHasFixedSize(true);
             fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
-            productListAdapter = new ProductListAdapter(cartProductList, getActivity(), LANDSCAPE, root);
+            productListAdapter = new ProductListAdapter(cartProductList, getActivity(), root);
             fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
+            productListAdapter.setOnProductClick(product -> {
+                toProductDetail(product, root);
+            });
+            productListAdapter.setOnPlusClick((product, position) -> {
+                addToBasket(product);
+                this.cartProductList.get(position).setInBasket(true);
+                productListAdapter.notifyItemChanged(position);
+            });
         });
 
     }
@@ -177,12 +187,6 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void setBannersView() {
-//        banners.clear();
-//        Banner banner = new Banner("1", "Banner1", "https://www.linkpicture.com/q/banner_img.jpg");
-//        for (int i = 0; i < 3; i++) {
-//            banners.add(banner);
-//        }
-//        System.out.println(banners.size());
         homeViewModel.getLiveDataBanner().observe(getViewLifecycleOwner(), banners1 -> {
             banners = banners1;
             bannerAdapter = new BannerAdapter(banners, requireActivity());

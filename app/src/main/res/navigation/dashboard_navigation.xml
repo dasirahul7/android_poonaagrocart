@@ -10,7 +10,8 @@
         android:id="@+id/nav_home"
         android:name="com.poona.agrocart.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+    </fragment>
 
     <!--    MyOrdersFragment-->
     <fragment
@@ -288,5 +289,16 @@
         app:destination="@id/nav_cart"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"/>
+    <fragment
+        android:id="@+id/nav_faq"
+        android:name="com.poona.agrocart.ui.nav_faq.FaQFragment"
+        android:label="fragment_faq"
+        tools:layout="@layout/fragment_faq" />
+    <action
+        android:id="@+id/action_nav_home_to_faQFragment"
+        app:destination="@id/nav_faq"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
+
 
 </navigation>

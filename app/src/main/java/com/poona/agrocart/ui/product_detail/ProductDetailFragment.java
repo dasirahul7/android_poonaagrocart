@@ -32,6 +32,7 @@ import com.poona.agrocart.ui.product_detail.model.ProductComment;
 import com.poona.agrocart.ui.product_detail.model.ProductDetail;
 import com.poona.agrocart.widgets.CustomEditText;
 import com.poona.agrocart.widgets.CustomTextView;
+import com.poona.agrocart.widgets.ExpandIconView;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.text.ParseException;
@@ -353,45 +354,55 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void hideOrShowVariableWeightPolicy() {
         if (isVariableWtPolicyVisible) {
-            new ProductDetailFragment().collapse(fragmentProductDetailBinding.tvVariableWeightPolicyBreif);
+            fragmentProductDetailBinding.ivVariableWeightPolicyShowHide.setState(ExpandIconView.MORE,true);
+            collapse(fragmentProductDetailBinding.tvVariableWeightPolicyBreif);
         } else {
-            new ProductDetailFragment().expand(fragmentProductDetailBinding.tvVariableWeightPolicyBreif);
+            fragmentProductDetailBinding.ivVariableWeightPolicyShowHide.setState(ExpandIconView.LESS,true);
+            expand(fragmentProductDetailBinding.tvVariableWeightPolicyBreif);
         }
         isVariableWtPolicyVisible = !isVariableWtPolicyVisible;
     }
 
     private void hideOrShowOtherProductInfo() {
         if (isOtherProductInfo) {
-            new ProductDetailFragment().collapse(fragmentProductDetailBinding.tvOtherProductInfoBrief);
+            fragmentProductDetailBinding.ivOtherProductInfoHideShow.setState(ExpandIconView.MORE,true);
+            collapse(fragmentProductDetailBinding.tvOtherProductInfoBrief);
         } else {
-            new ProductDetailFragment().expand(fragmentProductDetailBinding.tvOtherProductInfoBrief);
+            fragmentProductDetailBinding.ivOtherProductInfoHideShow.setState(ExpandIconView.LESS,true);
+            expand(fragmentProductDetailBinding.tvOtherProductInfoBrief);
         }
         isOtherProductInfo = !isOtherProductInfo;
     }
 
     private void hideOrShowStorageAndUses() {
         if (isStorageVisible) {
-            new ProductDetailFragment().collapse(fragmentProductDetailBinding.tvStorageAndUseBrief);
+            fragmentProductDetailBinding.ivStorageUseHideShow.setState(ExpandIconView.MORE,true);
+            collapse(fragmentProductDetailBinding.tvStorageAndUseBrief);
         } else {
-            new ProductDetailFragment().expand(fragmentProductDetailBinding.tvStorageAndUseBrief);
+            fragmentProductDetailBinding.ivStorageUseHideShow.setState(ExpandIconView.LESS,true);
+            expand(fragmentProductDetailBinding.tvStorageAndUseBrief);
         }
         isStorageVisible = !isStorageVisible;
     }
 
     private void hideOrShowBenefits() {
         if (isBenefitsVisible) {
-            new ProductDetailFragment().collapse(fragmentProductDetailBinding.tvBenefitsBrief);
+            fragmentProductDetailBinding.ivBenefitsHideShow.setState(ExpandIconView.MORE,true);
+            collapse(fragmentProductDetailBinding.tvBenefitsBrief);
         } else {
-            new ProductDetailFragment().expand(fragmentProductDetailBinding.tvBenefitsBrief);
+            fragmentProductDetailBinding.ivBenefitsHideShow.setState(ExpandIconView.LESS,true);
+            expand(fragmentProductDetailBinding.tvBenefitsBrief);
         }
         isBenefitsVisible = !isBenefitsVisible;
     }
 
     private void hideOrShowAboutThisProduct() {
         if (isAboutThisProductVisible) {
-            new ProductDetailFragment().collapse(fragmentProductDetailBinding.tvAboutThisProductBrief);
+            fragmentProductDetailBinding.ivAboutThisProductHideShow.setState(ExpandIconView.MORE,true);
+            collapse(fragmentProductDetailBinding.tvAboutThisProductBrief);
         } else {
-            new ProductDetailFragment().expand(fragmentProductDetailBinding.tvAboutThisProductBrief);
+            fragmentProductDetailBinding.ivAboutThisProductHideShow.setState(ExpandIconView.LESS,true);
+            expand(fragmentProductDetailBinding.tvAboutThisProductBrief);
         }
         isAboutThisProductVisible = !isAboutThisProductVisible;
     }
@@ -425,27 +436,33 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void hideOrShowNutritionDetails() {
         if (isNutritionDetailsVisible) {
-            new ProductDetailFragment().collapse(fragmentProductDetailBinding.tvNutritionsBrief);
+            fragmentProductDetailBinding.ivNutritionsShowHide.setState(ExpandIconView.MORE,true);
+            collapse(fragmentProductDetailBinding.tvNutritionsBrief);
         } else {
-            new ProductDetailFragment().expand(fragmentProductDetailBinding.tvNutritionsBrief);
+            fragmentProductDetailBinding.ivNutritionsShowHide.setState(ExpandIconView.LESS,true);
+            expand(fragmentProductDetailBinding.tvNutritionsBrief);
         }
         isNutritionDetailsVisible = !isNutritionDetailsVisible;
     }
 
     private void hideOrShowProductDetails() {
         if (isProductDetailsVisible) {
-            new ProductDetailFragment().collapse(fragmentProductDetailBinding.tvProductDetailBrief);
+            fragmentProductDetailBinding.ivProductDetailHideShow.setState(ExpandIconView.MORE,true);
+            collapse(fragmentProductDetailBinding.tvProductDetailBrief);
         } else {
-            new ProductDetailFragment().expand(fragmentProductDetailBinding.tvProductDetailBrief);
+            fragmentProductDetailBinding.ivProductDetailHideShow.setState(ExpandIconView.LESS,true);
+            expand(fragmentProductDetailBinding.tvProductDetailBrief);
         }
         isProductDetailsVisible = !isProductDetailsVisible;
     }
 
     private void hideOrShowBasketContentsList() {
         if (isBasketContentsVisible) {
-            new ProductDetailFragment().collapse(fragmentProductDetailBinding.layoutAdded.rvBasketContents);
+            fragmentProductDetailBinding.layoutAdded.ivProductLists.setState(ExpandIconView.MORE,true);
+            collapse(fragmentProductDetailBinding.layoutAdded.rvBasketContents);
         } else {
-            new ProductDetailFragment().expand(fragmentProductDetailBinding.layoutAdded.rvBasketContents);
+            fragmentProductDetailBinding.layoutAdded.ivProductLists.setState(ExpandIconView.LESS,true);
+            expand(fragmentProductDetailBinding.layoutAdded.rvBasketContents);
         }
         isBasketContentsVisible = !isBasketContentsVisible;
     }

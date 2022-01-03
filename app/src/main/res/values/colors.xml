@@ -144,4 +144,9 @@
 
 <!--    Gallery screen colors-->
     <color name="bg_grey">#EFEFEF</color>
+    
+<!--    FAQ"S Sreen colors-->
+    <color name="color_off_white">#FCFFF8</color>
+    <color name="color_off_white_border">#A6A6A6</color>
+    <color name="bold_txt_color">#3F3F3F</color>
 </resources>

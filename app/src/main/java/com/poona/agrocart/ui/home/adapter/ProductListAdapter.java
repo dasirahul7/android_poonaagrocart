@@ -31,7 +31,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private final Context bdContext;
     private RowBestSellingItemBinding bestSellingBinding;
     private RowProductItemBinding productBinding;
-    private final String ListType;
     private final View view;
     private OnPlusClick onPlusClick;
     private OnProductClick onProductClick;
@@ -44,10 +43,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         this.onProductClick = onProductClick;
     }
 
-    public ProductListAdapter(ArrayList<Product> products, FragmentActivity context, String listType, View view) {
+    public ProductListAdapter(ArrayList<Product> products, FragmentActivity context, View view) {
         this.products = products;
         this.bdContext = context;
-        this.ListType = listType;
         this.view = view;
     }
 
@@ -79,31 +77,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productBinding.ivMinus.setVisibility(View.INVISIBLE);
             productBinding.etQuantity.setVisibility(View.INVISIBLE);
         }
-
-        //Best selling Item Bind
-        public void bind(Product product, int i) {
-            if (product.getOffer().isEmpty())
-                bestSellingBinding.txtItemOffer.setVisibility(View.INVISIBLE);
-            if (product.getOfferPrice().isEmpty())
-                bestSellingBinding.txtItemPrice.setVisibility(View.INVISIBLE);
-            if (product.isOrganic())
-                bestSellingBinding.txtOrganic.setVisibility(View.VISIBLE);
-            if (product.isInBasket())
-                bestSellingBinding.imgPlus.setImageResource(R.drawable.ic_added);
-            if (product.getQty().equals("0")) {
-                bestSellingBinding.txtItemQty.setVisibility(View.INVISIBLE);
-                bestSellingBinding.txtItemPrice.setVisibility(View.INVISIBLE);
-                bestSellingBinding.txtItemOfferPrice.setVisibility(View.INVISIBLE);
-                bestSellingBinding.txtItemOffer.setVisibility(View.INVISIBLE);
-                bestSellingBinding.txtOutOfStock.setVisibility(View.VISIBLE);
-            }
-            bestSellingBinding.setVariable(BR.productModule, product);
-            bestSellingBinding.executePendingBindings();
-
-        }
-
         //Only Product Item bind
         public void bindProduct(Product product, int position) {
+            productBinding.setVariable(BR.productModule, product);
+            productBinding.executePendingBindings();
             if (product.getImg().endsWith(".jpeg") || product.getImg().endsWith("jpg"))
                 productBinding.itemImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
             if (product.getOffer().isEmpty())
@@ -114,8 +91,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 productBinding.txtOrganic.setVisibility(View.VISIBLE);
             if (product.isInBasket())
                 productBinding.ivPlus.setImageResource(R.drawable.ic_added);
-            productBinding.setVariable(BR.productModule, product);
-            productBinding.executePendingBindings();
+            productBinding.ivPlus.setOnClickListener(v -> {
+                onPlusClick.addToCart(product,position);
+            });
+            itemView.setOnClickListener(v -> {
+                onProductClick.toProductDetail(product);
+            });
+
         }
 
     }

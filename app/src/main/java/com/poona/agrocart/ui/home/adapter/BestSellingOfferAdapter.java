@@ -88,6 +88,7 @@ public class BestSellingOfferAdapter extends RecyclerView.Adapter<BestSellingOff
                 bestSellingBinding.txtItemPrice.setVisibility(View.INVISIBLE);
                 bestSellingBinding.txtItemOfferPrice.setVisibility(View.INVISIBLE);
                 bestSellingBinding.txtItemOffer.setVisibility(View.INVISIBLE);
+                bestSellingBinding.imgPlus.setVisibility(View.INVISIBLE);
                 bestSellingBinding.txtOutOfStock.setVisibility(View.VISIBLE);
             }
             bestSellingBinding.imgPlus.setOnClickListener(v -> {

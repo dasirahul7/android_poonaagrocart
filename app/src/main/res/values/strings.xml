@@ -429,6 +429,14 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="exp_date">EXPECTED DELIVERY DATE</string>
     <string name="exp_slot">EXPECTED DELIVERY SLOT</string>
     <string name="product_offer_msg">Buy 500gms for Rs. 280</string>
-    <string name="img_carrot">https://www.linkpicture.com/q/Carrot-Download-PNG-1-1.png</string>
+    <string name="img_carrot">https://www.linkpicture.com/q/Carrot–Download–PNG-1-1.png</string>
+<!--    String for FAQ's Fragment-->
+    <string name="menu_faq">FAQ\'s</string>
+    <string name="faq_heading">How do you prepare for Grocery shopping?</string>
+    <string name="faq_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultrices molestie mauris gravida ultrices in sed erat. Tortor viverra molestie scelerisque tincidunt. Lacus gravida dolor viverra in eleifend lobortis.</string>
+    <string name="where_do_you_deliver">Where do you deliver??</string>
+    <string name="how_do_i_order">How do I order at Grocery Application?</string>
+    <string name="how_do_i_cancel">How do I cancel an order?</string>
+    <string name="how_money_back">How I will get my money back if I cancelled  the order? </string>
 
 </resources>
