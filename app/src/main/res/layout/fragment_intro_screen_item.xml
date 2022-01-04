@@ -6,7 +6,7 @@
         android:id="@+id/itemLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAppBackground">
+        android:background="@drawable/bottom_shadow">
 
         <ImageView
             android:id="@+id/itemImg"
@@ -32,11 +32,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_16sdp"
-                android:paddingHorizontal="@dimen/_16sdp"
+                android:paddingHorizontal="@dimen/_20sdp"
                 android:text="Welcome To Poona Agrocart Welcome To Poona Agrocart"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_24sp"
+                android:textSize="@dimen/_28sdp"
                 app:setCustomFont="@string/font_poppins_regular"/>
 
             <TextView
@@ -48,7 +48,7 @@
                 android:paddingHorizontal="@dimen/_16sdp"
                 android:text="Welcome To Poona Agrocart Welcome To Poona Agrocart Welcome To Poona Agrocart Welcome To Poona Agrocart"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/colorAppBackground"
                 android:layout_marginBottom="@dimen/_100sdp"/>
 
         </LinearLayout>

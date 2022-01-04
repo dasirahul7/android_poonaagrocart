@@ -55,12 +55,12 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         fragmentSignUpBinding.tvTermsOfService.setOnClickListener(this);
         fragmentSignUpBinding.tvPrivacyPolicy.setOnClickListener(this);
         fragmentSignUpBinding.btnSignUp.setOnClickListener(this);
-        fragmentSignUpBinding.rbIndividual.setOnClickListener(this);
-        fragmentSignUpBinding.rbBusiness.setOnClickListener(this);
+//        fragmentSignUpBinding.rbIndividual.setOnClickListener(this);
+//        fragmentSignUpBinding.rbBusiness.setOnClickListener(this);
 
         Typeface poppinsRegularFont = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_regular));
-        fragmentSignUpBinding.rbIndividual.setTypeface(poppinsRegularFont);
-        fragmentSignUpBinding.rbBusiness.setTypeface(poppinsRegularFont);
+//        fragmentSignUpBinding.rbIndividual.setTypeface(poppinsRegularFont);
+//        fragmentSignUpBinding.rbBusiness.setTypeface(poppinsRegularFont);
 
         hideKeyBoard(requireActivity());
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
@@ -145,30 +145,10 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 RedirectToSelectLocationFragment(v);
                 break;
 
-            case R.id.rb_individual:
-                changeBgs(true);
-                break;
-
-            case R.id.rb_business:
-                changeBgs(false);
-                break;
         }
 
     }
 
-    private void changeBgs(boolean isIndividualSelected) {
-        if (isIndividualSelected) {
-            fragmentSignUpBinding.llRbIndividual.setBackgroundResource(R.drawable.bg_signup_rb_selected);
-            fragmentSignUpBinding.llRbBusiness.setBackgroundResource(R.drawable.bg_signup_rb_unselected);
-            fragmentSignUpBinding.rbIndividual.setChecked(true);
-            fragmentSignUpBinding.rbBusiness.setChecked(false);
-        } else {
-            fragmentSignUpBinding.llRbIndividual.setBackgroundResource(R.drawable.bg_signup_rb_unselected);
-            fragmentSignUpBinding.llRbBusiness.setBackgroundResource(R.drawable.bg_signup_rb_selected);
-            fragmentSignUpBinding.rbBusiness.setChecked(true);
-            fragmentSignUpBinding.rbIndividual.setChecked(false);
-        }
-    }
 
     private void RedirectToSelectLocationFragment(View v)
     {

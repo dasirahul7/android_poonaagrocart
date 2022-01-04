@@ -68,66 +68,12 @@
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
-                    <RadioGroup
-                        android:id="@+id/rg_individual_business"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_enter_credentials"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:id="@+id/ll_rb_individual"
-                            android:layout_margin="@dimen/_2sdp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_signup_rb_selected"
-                            android:paddingStart="@dimen/_10sdp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                            <com.poona.agrocart.widgets.CustomRadioButton
-                                android:id="@+id/rb_individual"
-                                android:text="@string/individual"
-                                android:checked="true"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_30sdp"
-                                app:useMaterialThemeColors="false"
-                                style="@style/RadioButtonSignUp"
-                                android:layout_gravity="center"
-                                android:paddingStart="@dimen/_4sdp"
-                                android:textColor="@color/color_grey_txt"
-                                android:textSize="@dimen/_16sp"
-                                app:setCustomFont="@string/font_poppins_regular"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/ll_rb_business"
-                            android:layout_margin="@dimen/_2sdp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_signup_rb_unselected"
-                            android:paddingStart="@dimen/_5sdp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                        <RadioButton
-                            android:id="@+id/rb_business"
-                            android:text="@string/business"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_30sdp"
-                            app:useMaterialThemeColors="false"
-                            style="@style/RadioButtonSignUp"
-                            android:paddingStart="@dimen/_4sdp"
-                            tools:ignore="RtlSymmetry"
-                            android:layout_margin="@dimen/_2sdp"
-                            android:textColor="@color/color_grey_txt"
-                            android:textSize="@dimen/_16sp"
-                            app:setCustomFont="@string/font_poppins_regular"/>
-
-                        </LinearLayout>
-                    </RadioGroup>
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/rg_individual_business"
+                        android:layout_below="@+id/tv_enter_credentials"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/username"
