@@ -1,7 +1,5 @@
 package com.poona.agrocart.ui.product_detail;
 
-import static com.poona.agrocart.app.AppConstants.PORTRAIT;
-
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +10,7 @@ import android.widget.ImageView;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -21,8 +20,8 @@ import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.basket_detail.model.Subscription;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.adapter.BestSellingOfferAdapter;
-import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
 import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.product_detail.adapter.BasketContentsAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
@@ -30,11 +29,11 @@ import com.poona.agrocart.ui.product_detail.adapter.WeightAdapter;
 import com.poona.agrocart.ui.product_detail.model.BasketContent;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
 import com.poona.agrocart.ui.product_detail.model.ProductDetail;
-import com.poona.agrocart.widgets.CustomEditText;
 import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.ExpandIconView;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,6 +62,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private boolean BasketType = false;
     private Calendar calendar;
     private int mYear, mMonth, mDay;
+    private ImageView txtOrganic;
+    private CustomTextView txtBrand;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,10 +86,16 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             fragmentProductDetailBinding.rvSimilar.setNestedScrollingEnabled(false);
             fragmentProductDetailBinding.rvSimilar.setLayoutManager(layoutManager);
             fragmentProductDetailBinding.rvSimilar.setAdapter(productListAdapter);
+            productListAdapter.setOnProductClick(product -> {
+                toProductDetail(product,root);
+            });
         });
     }
 
     private void initView() {
+        ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.VISIBLE);
+        txtOrganic = ((HomeActivity) requireActivity()).binding.appBarHome.txtOrganic;
+        txtBrand = ((HomeActivity) requireActivity()).binding.appBarHome.tvBrand;
         try {
             if (getArguments() != null) {
                 if (getArguments().get("Product").equals("BasketDetail")) {
@@ -96,6 +103,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                     setProductList();
                     makeItBasketDetails();
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,7 +157,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void makeItBasketDetails() {
         hideOrShowProductDetails();
-        fragmentProductDetailBinding.txtOrganic.setVisibility(View.INVISIBLE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
         fragmentProductDetailBinding.txtItemOffer.setVisibility(View.INVISIBLE);
         fragmentProductDetailBinding.cardOfferMsg.setVisibility(View.GONE);
         fragmentProductDetailBinding.tvLocation.setVisibility(View.GONE);
@@ -168,6 +176,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         // Set Product Details here
         productDetail.setProductLocation("Pune");
         productDetail.setPrice(getArguments() != null ? getArguments().getString("price") : null);
+        productDetail.setBrand(getArguments() != null ? getArguments().getString("brand") : null);
+        productDetail.setOrganic(getArguments() != null ? getArguments().getBoolean("organic") : null);
+        productDetail.setQuantity(getArguments() != null ? getArguments().getString("qty") : null);
+        productDetail.setBasket(getArguments() != null ? getArguments().getBoolean("isInBasket") : null);
         productDetail.setOfferPrice("Rs. 200");
         productDetail.setOfferValue("24% Off");
         productDetail.setProductOfferMsg(getString(R.string.product_offer_msg));
@@ -205,6 +217,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         fragmentProductDetailBinding.setProductDetailViewModel(productDetailViewModel);
         productDetailViewModel.productDetailMutableLiveData.setValue(productDetail);
         details = productDetailViewModel.productDetailMutableLiveData.getValue();
+
         setViewPagerAdapterItems();
         setCommentsAdapter();
         assert details != null;
@@ -212,6 +225,19 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         fragmentProductDetailBinding.rvWeights.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         fragmentProductDetailBinding.rvWeights.setHasFixedSize(true);
         fragmentProductDetailBinding.rvWeights.setAdapter(weightAdapter);
+        //set the top Tags
+        if (details.isOrganic())
+            txtOrganic.setVisibility(View.VISIBLE);
+        else txtOrganic.setVisibility(View.GONE);
+        if (details.getBrand()!=null)
+            txtBrand.setText(MessageFormat.format("Brand-{0}", details.getBrand()));
+        else txtBrand.setVisibility(View.INVISIBLE);
+        if (details.getQuantity()!=null && details.getQuantity().equals("0"))
+            outOfStockView();
+        if (details.getQuantity()!=null && details.getBasket()){
+            fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
+            fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
+        }
 
         //hide all expanded views initially
 //        show Subscription
@@ -222,6 +248,15 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         hideOrShowOtherProductInfo();
         hideOrShowVariableWeightPolicy();
         hideOrShowNutritionDetails();
+
+    }
+
+    private void outOfStockView() {
+        fragmentProductDetailBinding.llOutOfStock.setVisibility(View.VISIBLE);
+        fragmentProductDetailBinding.tvLocation.setVisibility(View.GONE);
+        fragmentProductDetailBinding.rvWeights.setVisibility(View.GONE);
+        fragmentProductDetailBinding.llPriceAndQty.setVisibility(View.GONE);
+        fragmentProductDetailBinding.cardOfferMsg.setVisibility(View.GONE);
 
     }
 
@@ -315,49 +350,49 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void showCalendar(CustomTextView tvDate) {
-            //showing date picker dialog
-            DatePickerDialog dpd;
-            calendar = Calendar.getInstance();
-            Calendar mcurrentDate = Calendar.getInstance();
-            mYear = mcurrentDate.get(Calendar.YEAR);
-            mMonth = mcurrentDate.get(Calendar.MONTH);
-            mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+        //showing date picker dialog
+        DatePickerDialog dpd;
+        calendar = Calendar.getInstance();
+        Calendar mcurrentDate = Calendar.getInstance();
+        mYear = mcurrentDate.get(Calendar.YEAR);
+        mMonth = mcurrentDate.get(Calendar.MONTH);
+        mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-            dpd = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    String txtDisplayDate = null;
-                    String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
-                    try {
-                        txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-
-                        if (tvDate!= null) {
-                            tvDate.setText(txtDisplayDate);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    calendar.set(year, month, dayOfMonth);
+        dpd = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String txtDisplayDate = null;
+                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                try {
+                    txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-            },
-                    calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
-            );
-            dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-            dpd.show();
+                try {
+
+                    if (tvDate != null) {
+                        tvDate.setText(txtDisplayDate);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                calendar.set(year, month, dayOfMonth);
+            }
+        },
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        dpd.show();
 
     }
 
 
     private void hideOrShowVariableWeightPolicy() {
         if (isVariableWtPolicyVisible) {
-            fragmentProductDetailBinding.ivVariableWeightPolicyShowHide.setState(ExpandIconView.MORE,true);
+            fragmentProductDetailBinding.ivVariableWeightPolicyShowHide.setState(ExpandIconView.MORE, true);
             collapse(fragmentProductDetailBinding.tvVariableWeightPolicyBreif);
         } else {
-            fragmentProductDetailBinding.ivVariableWeightPolicyShowHide.setState(ExpandIconView.LESS,true);
+            fragmentProductDetailBinding.ivVariableWeightPolicyShowHide.setState(ExpandIconView.LESS, true);
             expand(fragmentProductDetailBinding.tvVariableWeightPolicyBreif);
         }
         isVariableWtPolicyVisible = !isVariableWtPolicyVisible;
@@ -365,10 +400,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void hideOrShowOtherProductInfo() {
         if (isOtherProductInfo) {
-            fragmentProductDetailBinding.ivOtherProductInfoHideShow.setState(ExpandIconView.MORE,true);
+            fragmentProductDetailBinding.ivOtherProductInfoHideShow.setState(ExpandIconView.MORE, true);
             collapse(fragmentProductDetailBinding.tvOtherProductInfoBrief);
         } else {
-            fragmentProductDetailBinding.ivOtherProductInfoHideShow.setState(ExpandIconView.LESS,true);
+            fragmentProductDetailBinding.ivOtherProductInfoHideShow.setState(ExpandIconView.LESS, true);
             expand(fragmentProductDetailBinding.tvOtherProductInfoBrief);
         }
         isOtherProductInfo = !isOtherProductInfo;
@@ -376,10 +411,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void hideOrShowStorageAndUses() {
         if (isStorageVisible) {
-            fragmentProductDetailBinding.ivStorageUseHideShow.setState(ExpandIconView.MORE,true);
+            fragmentProductDetailBinding.ivStorageUseHideShow.setState(ExpandIconView.MORE, true);
             collapse(fragmentProductDetailBinding.tvStorageAndUseBrief);
         } else {
-            fragmentProductDetailBinding.ivStorageUseHideShow.setState(ExpandIconView.LESS,true);
+            fragmentProductDetailBinding.ivStorageUseHideShow.setState(ExpandIconView.LESS, true);
             expand(fragmentProductDetailBinding.tvStorageAndUseBrief);
         }
         isStorageVisible = !isStorageVisible;
@@ -387,10 +422,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void hideOrShowBenefits() {
         if (isBenefitsVisible) {
-            fragmentProductDetailBinding.ivBenefitsHideShow.setState(ExpandIconView.MORE,true);
+            fragmentProductDetailBinding.ivBenefitsHideShow.setState(ExpandIconView.MORE, true);
             collapse(fragmentProductDetailBinding.tvBenefitsBrief);
         } else {
-            fragmentProductDetailBinding.ivBenefitsHideShow.setState(ExpandIconView.LESS,true);
+            fragmentProductDetailBinding.ivBenefitsHideShow.setState(ExpandIconView.LESS, true);
             expand(fragmentProductDetailBinding.tvBenefitsBrief);
         }
         isBenefitsVisible = !isBenefitsVisible;
@@ -398,10 +433,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void hideOrShowAboutThisProduct() {
         if (isAboutThisProductVisible) {
-            fragmentProductDetailBinding.ivAboutThisProductHideShow.setState(ExpandIconView.MORE,true);
+            fragmentProductDetailBinding.ivAboutThisProductHideShow.setState(ExpandIconView.MORE, true);
             collapse(fragmentProductDetailBinding.tvAboutThisProductBrief);
         } else {
-            fragmentProductDetailBinding.ivAboutThisProductHideShow.setState(ExpandIconView.LESS,true);
+            fragmentProductDetailBinding.ivAboutThisProductHideShow.setState(ExpandIconView.LESS, true);
             expand(fragmentProductDetailBinding.tvAboutThisProductBrief);
         }
         isAboutThisProductVisible = !isAboutThisProductVisible;
@@ -436,10 +471,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void hideOrShowNutritionDetails() {
         if (isNutritionDetailsVisible) {
-            fragmentProductDetailBinding.ivNutritionsShowHide.setState(ExpandIconView.MORE,true);
+            fragmentProductDetailBinding.ivNutritionsShowHide.setState(ExpandIconView.MORE, true);
             collapse(fragmentProductDetailBinding.tvNutritionsBrief);
         } else {
-            fragmentProductDetailBinding.ivNutritionsShowHide.setState(ExpandIconView.LESS,true);
+            fragmentProductDetailBinding.ivNutritionsShowHide.setState(ExpandIconView.LESS, true);
             expand(fragmentProductDetailBinding.tvNutritionsBrief);
         }
         isNutritionDetailsVisible = !isNutritionDetailsVisible;
@@ -447,10 +482,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void hideOrShowProductDetails() {
         if (isProductDetailsVisible) {
-            fragmentProductDetailBinding.ivProductDetailHideShow.setState(ExpandIconView.MORE,true);
+            fragmentProductDetailBinding.ivProductDetailHideShow.setState(ExpandIconView.MORE, true);
             collapse(fragmentProductDetailBinding.tvProductDetailBrief);
         } else {
-            fragmentProductDetailBinding.ivProductDetailHideShow.setState(ExpandIconView.LESS,true);
+            fragmentProductDetailBinding.ivProductDetailHideShow.setState(ExpandIconView.LESS, true);
             expand(fragmentProductDetailBinding.tvProductDetailBrief);
         }
         isProductDetailsVisible = !isProductDetailsVisible;
@@ -458,14 +493,23 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void hideOrShowBasketContentsList() {
         if (isBasketContentsVisible) {
-            fragmentProductDetailBinding.layoutAdded.ivProductLists.setState(ExpandIconView.MORE,true);
+            fragmentProductDetailBinding.layoutAdded.ivProductLists.setState(ExpandIconView.MORE, true);
             collapse(fragmentProductDetailBinding.layoutAdded.rvBasketContents);
         } else {
-            fragmentProductDetailBinding.layoutAdded.ivProductLists.setState(ExpandIconView.LESS,true);
+            fragmentProductDetailBinding.layoutAdded.ivProductLists.setState(ExpandIconView.LESS, true);
             expand(fragmentProductDetailBinding.layoutAdded.rvBasketContents);
         }
         isBasketContentsVisible = !isBasketContentsVisible;
     }
 
-
+    private void toProductDetail(Product product, View root) {
+        Bundle bundle = new Bundle();
+        bundle.putString("name", product.getName());
+        bundle.putString("image", product.getImg());
+        bundle.putString("price", product.getPrice());
+        bundle.putString("brand", product.getBrand());
+        bundle.putString("qty", product.getQty());
+        bundle.putBoolean("organic", product.isOrganic());
+        Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+    }
 }

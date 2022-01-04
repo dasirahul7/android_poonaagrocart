@@ -59,11 +59,11 @@ public class HomeViewModel extends AndroidViewModel {
         for (int i = 0; i < 4; i++) {
             Product cartProduct = new Product(PID+i, "Vegetable", "1kg", "10% Off",
                     "Rs 65", "Rs 35", getApplication().getString(R.string.img_potato),
-                    "Pune");
+                    "Pune","Green");
             if (i==1)
                 cartProduct.setImg(getApplication().getString(R.string.img_beat));
             if (i==2)
-                cartProduct.setImg(getApplication().getString(R.string.img_carrot));
+                cartProduct.setImg(getApplication().getString(R.string.img_beat));
             cartItemList.add(cartProduct);
             if (i == 3) {
                 cartProduct.setOrganic(true);
@@ -88,14 +88,14 @@ public class HomeViewModel extends AndroidViewModel {
         String PID = AppConstants.pId+"OP";
         ArrayList<Product> offerProducts = new ArrayList<>();
         Product offerProduct = new Product(PID+"1", "Red Apple", "1Kg"
-                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png", "Pune");
+                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png", "Pune","Kashmir");
         Product offerProduct1 = new Product(PID+"2", "Organic Bananas", "12 pcs"
-                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png", "Pune");
+                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png", "Pune","Kashmir");
         offerProduct1.setOrganic(true);
         Product offerProduct2 = new Product(PID+"3", "Red Apple", "1Kg"
-                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png", "Pune");
+                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png", "Pune","Kashmir");
         Product offerProduct3 = new Product(PID+"4", "Organic Bananas", "12 pcs"
-                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png", "Pune");
+                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png", "Pune","Kashmir");
         offerProduct3.setOrganic(true);
         offerProducts.add(offerProduct);
         offerProducts.add(offerProduct1);
@@ -108,19 +108,19 @@ public class HomeViewModel extends AndroidViewModel {
         ArrayList<Product> sellingProducts = new ArrayList<>();
         String PID = AppConstants.pId+"BP";
         Product product = new Product(PID+"1", "Bell Pepper Red", "1Kg"
-                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png", "Pune");
+                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png", "Pune","Walmart");
         Product product1 = new Product(PID+"2", "Ginger", "250 gms"
-                , "10% Off", "Rs 110", "Rs. 140", "https://www.linkpicture.com/q/ginger.png", "Pune");
+                , "10% Off", "Rs 110", "Rs. 140", "https://www.linkpicture.com/q/ginger.png", "Pune","Walmart");
         product1.setOrganic(true);
         Product product2 = new Product(PID+"3", "Bell Pepper Red", "1Kg"
-                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png", "Pune");
+                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png", "Pune","Walmart");
         Product product3 = new Product(PID+"4", "Ginger", "500 gms"
-                , "10% Off", "Rs280", "Rs. 250", "https://www.linkpicture.com/q/ginger.png", "Pune");
+                , "10% Off", "Rs280", "Rs. 250", "https://www.linkpicture.com/q/ginger.png", "Pune","Walmart");
         Product product4 = new Product(PID+"5", "Ginger", ""
-                , "", "", "", "https://www.linkpicture.com/q/ginger.png", "Pune");
+                , "", "", "", "https://www.linkpicture.com/q/ginger.png", "Pune","Walmart");
         product4.setQty("0");
         Product product5 = new Product(PID+"6", "Ginger", ""
-                , "", "", "", "https://www.linkpicture.com/q/ginger.png", "Pune");
+                , "", "", "", "https://www.linkpicture.com/q/ginger.png", "Pune","Walmart");
         product5.setQty("0");
         sellingProducts.add(product);
         sellingProducts.add(product1);

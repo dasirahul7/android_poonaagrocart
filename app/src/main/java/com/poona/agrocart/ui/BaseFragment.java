@@ -118,6 +118,7 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
@@ -134,6 +135,7 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);

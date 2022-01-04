@@ -75,6 +75,7 @@
     <color name="color_minus_button">#CECECE</color>"
     <color name="orange_fill_color">#FFF8F3</color>"
     <color name="orange_border_color">#FFBA94</color>"
+    <color name="brand_tag_color">#FAA322</color>"
 
     <!--basket page-->
     <color name="color_basket_name">#575574</color>

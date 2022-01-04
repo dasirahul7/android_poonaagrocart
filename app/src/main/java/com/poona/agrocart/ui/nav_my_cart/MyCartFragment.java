@@ -100,24 +100,24 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     @SuppressLint("NotifyDataSetChanged")
     private void setRvAdapter() {
         cartList = mSessionManager.getArrayList(AppConstants.CART_LIST);
-        for (Product product:cartList){
-            System.out.println("items:"+ product.getName());
-        }
-        myCartViewModel.liveProductList.setValue(cartList);
-        myCartViewModel.getCartList().observe(getViewLifecycleOwner(), products -> {
-            cartItemArrayList = products;
-            cartItemsAdapter = new CartItemsAdapter(cartItemArrayList);
-            rvCart.setAdapter(cartItemsAdapter);
-            linearLayoutManager = new LinearLayoutManager(requireContext());
-            rvCart.setHasFixedSize(true);
-            rvCart.setLayoutManager(linearLayoutManager);
-            // adapter interface
-            cartItemsAdapter.setOnCartItemClick(position -> {
-                cartItemArrayList.remove(position);
-                cartItemsAdapter.notifyItemRemoved(position);
-                checkEmptyCart();
-            });
-        });
+            myCartViewModel.liveProductList.setValue(cartList);
+            if (cartList!=null&&cartList.size()>0) {
+                myCartViewModel.getCartList().observe(getViewLifecycleOwner(), products -> {
+                    cartItemArrayList = products;
+                    cartItemsAdapter = new CartItemsAdapter(cartItemArrayList);
+                    rvCart.setAdapter(cartItemsAdapter);
+                    linearLayoutManager = new LinearLayoutManager(requireContext());
+                    rvCart.setHasFixedSize(true);
+                    rvCart.setLayoutManager(linearLayoutManager);
+                    // adapter interface
+                    cartItemsAdapter.setOnCartItemClick(position -> {
+                        cartItemArrayList.remove(position);
+                        cartItemsAdapter.notifyItemRemoved(position);
+                        checkEmptyCart();
+                    });
+                });
+            }else checkEmptyCart();
+
     }
 
     private void checkEmptyCart() {

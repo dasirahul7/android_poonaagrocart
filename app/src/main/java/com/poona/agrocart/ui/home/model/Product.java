@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 
 public class Product implements Parcelable {
-    String id, name, qty,offer, price, offerPrice,img,location,weight,quantity;
+    String id, name, qty,offer, price, offerPrice,img,location,weight,quantity,brand;
     boolean organic;
     boolean inBasket=false,isFavorite=false;
 
@@ -35,6 +35,19 @@ public class Product implements Parcelable {
 
     public Product(String id, String name,
                    String qty, String offer, String price,
+                   String offerPrice, String img, String location,String brand) {
+        this.id = id;
+        this.name = name;
+        this.qty = qty;
+        this.offer = offer;
+        this.price = price;
+        this.offerPrice = offerPrice;
+        this.img = img;
+        this.location = location;
+        this.brand = brand;
+    }
+    public Product(String id, String name,
+                   String qty, String offer, String price,
                    String offerPrice, String img, String location) {
         this.id = id;
         this.name = name;
@@ -57,7 +70,16 @@ public class Product implements Parcelable {
         location = in.readString();
         weight = in.readString();
         quantity = in.readString();
+        brand = in.readString();
         organic = in.readByte() != 0;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {

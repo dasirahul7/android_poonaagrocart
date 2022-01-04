@@ -63,7 +63,44 @@
                     android:text="@string/address_location"
                     android:textColor="@color/title_black"
                     android:textSize="@dimen/_14sp"
-                    app:setCustomFont="@string/font_poppins_regular"/>
+                    app:setCustomFont="@string/font_poppins_regular" />
+                <RelativeLayout
+                    android:visibility="visible"
+                    android:id="@+id/rl_product_tag"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_brand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/txt_organic"
+                        android:background="@drawable/bg_offer_yellow"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:text="brand - name"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/offer_txt_size"
+                        android:textStyle="bold"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+                    <ImageView
+                        android:id="@+id/txt_organic"
+                        style="@style/organic_button_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:background="@drawable/bg_organic_sqaure"
+                        android:gravity="center"
+                        android:src="@drawable/ic_organic"
+                        tools:ignore="RtlHardcoded" />
+                </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/img_delete"

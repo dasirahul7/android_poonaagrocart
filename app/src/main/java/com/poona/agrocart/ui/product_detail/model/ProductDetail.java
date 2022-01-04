@@ -26,11 +26,29 @@ public class ProductDetail {
     public String ratings;
     public String productOfferMsg;
     public Boolean basket;
+    public Boolean organic;
+    public String brand;
     // Basket details
     private Subscription subscription;
     private ArrayList<ProductItem> productList;
     private ArrayList<ProductComment> commentList;
     private ArrayList<BasketContent> basketContents;
+
+    public Boolean isOrganic() {
+        return organic;
+    }
+
+    public void setOrganic(Boolean organic) {
+        this.organic = organic;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
     public ArrayList<BasketContent> getBasketContents() {
         return basketContents;

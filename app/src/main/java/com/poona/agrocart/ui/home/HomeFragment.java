@@ -109,6 +109,7 @@ public class HomeFragment extends BaseFragment {
             productListAdapter.setOnPlusClick((product, position) -> {
                 addToBasket(product);
                 this.cartProductList.get(position).setInBasket(true);
+                this.cartProductList.get(position).setQty("1");
                 productListAdapter.notifyItemChanged(position);
             });
         });
@@ -142,6 +143,7 @@ public class HomeFragment extends BaseFragment {
             offerListAdapter.setOnPlusClick((product, position) -> {
                 addToBasket(product);
                 offerProducts.get(position).setInBasket(true);
+                offerProducts.get(position).setQty("1");
                 offerListAdapter.notifyItemChanged(position);
             });
         });
@@ -162,6 +164,7 @@ public class HomeFragment extends BaseFragment {
             bestSellingOfferAdapter.setOnPlusClick((product, position) -> {
                 addToBasket(product);
                 this.bestSellings.get(position).setInBasket(true);
+                this.bestSellings.get(position).setQty("1");
                 bestSellingOfferAdapter.notifyItemChanged(position);
             });
 
@@ -222,6 +225,8 @@ public class HomeFragment extends BaseFragment {
             ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
         if (((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.getVisibility() == View.VISIBLE)
             ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);
+        if (((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.getVisibility() == View.VISIBLE)
+            ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.VISIBLE);
     }
@@ -247,6 +252,11 @@ public class HomeFragment extends BaseFragment {
         bundle.putString("name", product.getName());
         bundle.putString("image", product.getImg());
         bundle.putString("price", product.getPrice());
+        bundle.putString("brand", product.getBrand());
+        bundle.putString("qty", product.getQty());
+        bundle.putString("quantity", product.getQuantity());
+        bundle.putBoolean("organic", product.isOrganic());
+        bundle.putBoolean("isInBasket", product.isInBasket());
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
 

@@ -68,6 +68,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
             bundle.putString("name",baskets.get(getAdapterPosition()).getName());
             bundle.putString("image",baskets.get(getAdapterPosition()).getImg());
             bundle.putString("price",baskets.get(getAdapterPosition()).getPrice());
+            bundle.putString("Product","BasketDetail");
             Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
         }
 

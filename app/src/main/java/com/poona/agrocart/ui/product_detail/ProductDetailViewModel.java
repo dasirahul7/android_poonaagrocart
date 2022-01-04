@@ -13,13 +13,11 @@ import com.poona.agrocart.ui.product_detail.model.ProductDetail;
 
 import java.util.ArrayList;
 
-public class ProductDetailViewModel extends AndroidViewModel
-{
+public class ProductDetailViewModel extends AndroidViewModel {
     public MutableLiveData<ProductDetail> productDetailMutableLiveData;
     public MutableLiveData<ArrayList<Product>> similarProductLiveData;
 
-    public ProductDetailViewModel(@NonNull Application application)
-    {
+    public ProductDetailViewModel(@NonNull Application application) {
         super(application);
         productDetailMutableLiveData = new MutableLiveData<>();
         similarProductLiveData = new MutableLiveData<>();
