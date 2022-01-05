@@ -41,6 +41,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
         Category category = categories.get(position);
         categoryBinding.setCategoryModule(category);
+        if (position==0)
+            categoryBinding.cardviewCategory.setPadding(10,0,0,0);
         holder.bind(category,view);
     }
 

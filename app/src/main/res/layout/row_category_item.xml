@@ -9,7 +9,7 @@
     </data>
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardview_category"
-        android:layout_width="@dimen/_150sdp"
+        android:layout_width="@dimen/_155sdp"
         android:layout_height="@dimen/_130sdp"
         android:elevation="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_15sdp"
@@ -51,7 +51,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:text="@{categoryModule.name}"
                 android:textColor="@color/green_txt_color"
-                android:textSize="@dimen/cat_txt_size"
+                android:textSize="@dimen/category_txt_size"
                 app:setCustomFont="@string/font_poppins_semi_bold" />
 
         </LinearLayout>

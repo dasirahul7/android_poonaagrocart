@@ -256,7 +256,7 @@ public class HomeFragment extends BaseFragment {
         bundle.putString("qty", product.getQty());
         bundle.putString("quantity", product.getQuantity());
         bundle.putBoolean("organic", product.isOrganic());
-        bundle.putBoolean("isInBasket", product.isInBasket());
+        bundle.putBoolean(" ", product.isInBasket());
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
 

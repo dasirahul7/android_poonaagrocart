@@ -62,7 +62,7 @@
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/tv_product_weight"
+                    android:id="@+id/tv_store_location"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:drawableStart="@drawable/ic_blue_map"
