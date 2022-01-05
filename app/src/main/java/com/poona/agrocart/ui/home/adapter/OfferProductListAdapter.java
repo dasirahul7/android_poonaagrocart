@@ -2,30 +2,24 @@ package com.poona.agrocart.ui.home.adapter;
 
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentActivity;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.databinding.RowBestSellingItemBinding;
-import com.poona.agrocart.databinding.RowProductItemBinding;
 import com.poona.agrocart.ui.home.OnPlusClick;
 import com.poona.agrocart.ui.home.OnProductClick;
 import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 
-public class BestSellingOfferAdapter extends RecyclerView.Adapter<BestSellingOfferAdapter.BestSellingHolder> {
+public class OfferProductListAdapter extends RecyclerView.Adapter<OfferProductListAdapter.BestSellingHolder> {
     private ArrayList<Product> products = new ArrayList<>();
     private final Context bdContext;
     private RowBestSellingItemBinding bestSellingBinding;
@@ -41,7 +35,7 @@ public class BestSellingOfferAdapter extends RecyclerView.Adapter<BestSellingOff
         this.onProductClick = onProductClick;
     }
 
-    public BestSellingOfferAdapter(ArrayList<Product> products, Context bdContext, View view) {
+    public OfferProductListAdapter(ArrayList<Product> products, Context bdContext, View view) {
         this.products = products;
         this.bdContext = bdContext;
         this.view = view;
@@ -83,12 +77,12 @@ public class BestSellingOfferAdapter extends RecyclerView.Adapter<BestSellingOff
                 bestSellingBinding.txtOrganic.setVisibility(View.VISIBLE);
             if (product.isInBasket())
                 bestSellingBinding.imgPlus.setImageResource(R.drawable.ic_added);
-            if (product.getQty().equals("0")) {
+            if (product.getWeight().equals("0")) {
                 bestSellingBinding.txtItemQty.setVisibility(View.INVISIBLE);
-                bestSellingBinding.txtItemPrice.setVisibility(View.INVISIBLE);
-                bestSellingBinding.txtItemOfferPrice.setVisibility(View.INVISIBLE);
-                bestSellingBinding.txtItemOffer.setVisibility(View.INVISIBLE);
-                bestSellingBinding.imgPlus.setVisibility(View.INVISIBLE);
+                bestSellingBinding.txtItemPrice.setVisibility(View.GONE);
+                bestSellingBinding.txtItemOfferPrice.setVisibility(View.GONE);
+                bestSellingBinding.txtItemOffer.setVisibility(View.GONE);
+                bestSellingBinding.imgPlus.setVisibility(View.GONE);
                 bestSellingBinding.txtOutOfStock.setVisibility(View.VISIBLE);
             }
             bestSellingBinding.imgPlus.setOnClickListener(v -> {

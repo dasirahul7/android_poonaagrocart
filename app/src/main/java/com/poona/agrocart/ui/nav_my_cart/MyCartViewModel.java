@@ -30,7 +30,7 @@ public class MyCartViewModel extends AndroidViewModel {
         for (int i = 0; i < 10; i++) {
             Product cartItem = new Product();
             cartItem.setName("Bell Pepper Red");
-            cartItem.setQty("1kg");
+            cartItem.setWeight("1kg");
             cartItem.setPrice("Rs.30");
             cartItem.setOfferPrice("RS.25");
             cartItem.setImg("https://www.linkpicture.com/q/capsicon.png");

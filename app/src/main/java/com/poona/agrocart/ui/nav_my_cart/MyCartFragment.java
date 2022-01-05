@@ -133,20 +133,20 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         for (int i = 0; i < 10; i++) {
             Product cartItem = new Product();
             cartItem.setName("Bell Pepper Red");
-            cartItem.setQty("1kg");
+            cartItem.setWeight("1kg");
             cartItem.setPrice("Rs.30");
             cartItem.setOfferPrice("RS.25");
             cartItem.setImg("https://www.linkpicture.com/q/capsicon.png");
             cartItem.setLocation("Vishrantwadi");
             if (i == 3) {
                 cartItem.setName("Potato");
-                cartItem.setQty("2kg");
+                cartItem.setWeight("2kg");
                 cartItem.setPrice("Rs.50");
                 cartItem.setOfferPrice("RS.40");
             }
             if (i == 5) {
                 cartItem.setName("Potato");
-                cartItem.setQty("2kg");
+                cartItem.setWeight("2kg");
                 cartItem.setPrice("Rs.50");
                 cartItem.setOfferPrice("RS.40");
             }

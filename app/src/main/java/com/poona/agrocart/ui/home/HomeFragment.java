@@ -1,8 +1,5 @@
 package com.poona.agrocart.ui.home;
 
-import static com.poona.agrocart.app.AppConstants.LANDSCAPE;
-import static com.poona.agrocart.app.AppConstants.PORTRAIT;
-
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,7 +21,7 @@ import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
 import com.poona.agrocart.ui.home.adapter.BasketAdapter;
-import com.poona.agrocart.ui.home.adapter.BestSellingOfferAdapter;
+import com.poona.agrocart.ui.home.adapter.OfferProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
 import com.poona.agrocart.ui.home.model.Banner;
@@ -42,8 +39,8 @@ public class HomeFragment extends BaseFragment {
     private BannerAdapter bannerAdapter;
     private CategoryAdapter categoryAdapter;
     private ProductListAdapter productListAdapter;
-    private BestSellingOfferAdapter bestSellingOfferAdapter;
-    private BestSellingOfferAdapter offerListAdapter;
+    private OfferProductListAdapter horizontalProductListAdapter;
+    private OfferProductListAdapter offerListAdapter;
     private BasketAdapter basketAdapter;
     private ArrayList<Product> bestSellings = new ArrayList<>();
     private ArrayList<Product> offerProducts = new ArrayList<>();
@@ -109,7 +106,7 @@ public class HomeFragment extends BaseFragment {
             productListAdapter.setOnPlusClick((product, position) -> {
                 addToBasket(product);
                 this.cartProductList.get(position).setInBasket(true);
-                this.cartProductList.get(position).setQty("1");
+                this.cartProductList.get(position).setQuantity("1");
                 productListAdapter.notifyItemChanged(position);
             });
         });
@@ -131,7 +128,7 @@ public class HomeFragment extends BaseFragment {
     private void setOfferProduct(View root) {
         homeViewModel.getLiveDataOffer().observe(getViewLifecycleOwner(), liveProducts -> {
             this.offerProducts = liveProducts;
-            offerListAdapter = new BestSellingOfferAdapter(this.offerProducts, getActivity(), root);
+            offerListAdapter = new OfferProductListAdapter(this.offerProducts, getActivity(), root);
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
             fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
             fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
@@ -143,7 +140,7 @@ public class HomeFragment extends BaseFragment {
             offerListAdapter.setOnPlusClick((product, position) -> {
                 addToBasket(product);
                 offerProducts.get(position).setInBasket(true);
-                offerProducts.get(position).setQty("1");
+                offerProducts.get(position).setQuantity("1");
                 offerListAdapter.notifyItemChanged(position);
             });
         });
@@ -153,22 +150,22 @@ public class HomeFragment extends BaseFragment {
         homeViewModel.getLiveDataBestSelling().observe(getViewLifecycleOwner(), liveList -> {
             this.bestSellings = liveList;
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-            bestSellingOfferAdapter = new BestSellingOfferAdapter(this.bestSellings, requireActivity(), root);
+            horizontalProductListAdapter = new OfferProductListAdapter(this.bestSellings, requireActivity(), root);
             fragmentHomeBinding.recOfferProduct.setNestedScrollingEnabled(false);
             fragmentHomeBinding.recOfferProduct.setLayoutManager(layoutManager);
-            fragmentHomeBinding.recOfferProduct.setAdapter(bestSellingOfferAdapter);
+            fragmentHomeBinding.recOfferProduct.setAdapter(horizontalProductListAdapter);
             // Redirect to Product details
-            bestSellingOfferAdapter.setOnProductClick(product -> {
+            horizontalProductListAdapter.setOnProductClick(product -> {
                 toProductDetail(product, root);
             });
-            bestSellingOfferAdapter.setOnPlusClick((product, position) -> {
+            horizontalProductListAdapter.setOnPlusClick((product, position) -> {
                 addToBasket(product);
                 this.bestSellings.get(position).setInBasket(true);
-                this.bestSellings.get(position).setQty("1");
-                bestSellingOfferAdapter.notifyItemChanged(position);
+                this.bestSellings.get(position).setQuantity("1");
+                horizontalProductListAdapter.notifyItemChanged(position);
             });
 
-//            bestSellingOfferAdapter.setOnAddClickListener((item, position) -> {
+//            horizontalProductListAdapter.setOnAddClickListener((item, position) -> {
 //                addToBasket(item);
 //                bestSellings.get(position).setInBasket(true);
 //                productListAdapter.notifyItemChanged(position);
@@ -253,10 +250,10 @@ public class HomeFragment extends BaseFragment {
         bundle.putString("image", product.getImg());
         bundle.putString("price", product.getPrice());
         bundle.putString("brand", product.getBrand());
-        bundle.putString("qty", product.getQty());
         bundle.putString("quantity", product.getQuantity());
         bundle.putBoolean("organic", product.isOrganic());
-        bundle.putBoolean(" ", product.isInBasket());
+        bundle.putBoolean("isInBasket", product.isInBasket());
+        bundle.putString("Product", "Product");
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
 

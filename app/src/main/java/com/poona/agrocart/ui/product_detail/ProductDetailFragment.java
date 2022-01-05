@@ -21,7 +21,7 @@ import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.basket_detail.model.Subscription;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.home.adapter.BestSellingOfferAdapter;
+import com.poona.agrocart.ui.home.adapter.OfferProductListAdapter;
 import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.product_detail.adapter.BasketContentsAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
@@ -57,7 +57,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private ArrayList<Product> similarProducts;
     private BasketContentsAdapter basketContentsAdapter;
     private ProductDetail details;
-    private BestSellingOfferAdapter productListAdapter;
+    private OfferProductListAdapter productListAdapter;
     private View root;
     private boolean BasketType = false;
     private Calendar calendar;
@@ -82,12 +82,12 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         productDetailViewModel.getSimilarProductLiveData().observe(getViewLifecycleOwner(), similarItems -> {
             this.similarProducts = similarItems;
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-            productListAdapter = new BestSellingOfferAdapter(this.similarProducts, requireActivity(), root);
+            productListAdapter = new OfferProductListAdapter(this.similarProducts, requireActivity(), root);
             fragmentProductDetailBinding.rvSimilar.setNestedScrollingEnabled(false);
             fragmentProductDetailBinding.rvSimilar.setLayoutManager(layoutManager);
             fragmentProductDetailBinding.rvSimilar.setAdapter(productListAdapter);
             productListAdapter.setOnProductClick(product -> {
-                toProductDetail(product,root);
+                toProductDetail(product, root);
             });
         });
     }
@@ -229,12 +229,12 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         if (details.isOrganic())
             txtOrganic.setVisibility(View.VISIBLE);
         else txtOrganic.setVisibility(View.GONE);
-        if (details.getBrand()!=null)
+        if (details.getBrand() != null)
             txtBrand.setText(MessageFormat.format("Brand-{0}", details.getBrand()));
         else txtBrand.setVisibility(View.INVISIBLE);
-        if (details.getQuantity()!=null && details.getQuantity().equals("0"))
+        if (details.getQuantity() != null && details.getQuantity().equals("0"))
             outOfStockView();
-        if (details.getQuantity()!=null && details.getBasket()){
+        if (details.getQuantity() != null && details.getBasket()) {
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
         }
@@ -508,7 +508,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         bundle.putString("image", product.getImg());
         bundle.putString("price", product.getPrice());
         bundle.putString("brand", product.getBrand());
-        bundle.putString("qty", product.getQty());
+        bundle.putString("quantity", product.getQuantity());
         bundle.putBoolean("organic", product.isOrganic());
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }

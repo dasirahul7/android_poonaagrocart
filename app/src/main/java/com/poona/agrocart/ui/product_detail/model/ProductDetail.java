@@ -25,8 +25,8 @@ public class ProductDetail {
     public String productReview;
     public String ratings;
     public String productOfferMsg;
-    public Boolean basket;
-    public Boolean organic;
+    public Boolean basket=false;
+    public Boolean organic=false;
     public String brand;
     // Basket details
     private Subscription subscription;

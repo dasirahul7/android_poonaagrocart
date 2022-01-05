@@ -29,7 +29,6 @@ import java.util.ArrayList;
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductHolder> {
     private ArrayList<Product> products = new ArrayList<>();
     private final Context bdContext;
-    private RowBestSellingItemBinding bestSellingBinding;
     private RowProductItemBinding productBinding;
     private final View view;
     private OnPlusClick onPlusClick;
