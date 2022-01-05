@@ -128,9 +128,9 @@ public class Product implements Parcelable {
         if (this.price.equals(""))
             return "";
         else {
-            float price = Float.parseFloat(this.price);
-            float offer = Float.parseFloat(this.offer);
-            float offer_price = price-(price % offer);
+            int price = Integer.parseInt(this.price);
+            int offer = Integer.parseInt(this.offer);
+            int offer_price = price-(price % offer);
             this.offerPrice = "Rs."+ String.valueOf(offer_price);
         }
         return offerPrice;
