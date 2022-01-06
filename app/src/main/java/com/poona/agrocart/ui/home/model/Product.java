@@ -10,9 +10,9 @@ import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 
 public class Product implements Parcelable {
-    String id, name,offer, price, offerPrice,img,location,weight,quantity,brand;
-    boolean organic=false;
-    boolean inBasket=false,isFavorite=false;
+    String id, name, offer, price, offerPrice, img, location, weight, quantity, brand;
+    boolean organic = false;
+    boolean inBasket = false, isFavorite = false;
 
     public boolean isInBasket() {
         return inBasket;
@@ -35,7 +35,7 @@ public class Product implements Parcelable {
 
     public Product(String id, String name,
                    String weight, String offer, String price,
-                   String img, String location,String brand) {
+                   String img, String location, String brand) {
         this.id = id;
         this.name = name;
         this.weight = weight;
@@ -45,14 +45,15 @@ public class Product implements Parcelable {
         this.location = location;
         this.brand = brand;
     }
+
     public Product(String id, String name,
-                   String offer, String price,
-                   String offerPrice, String img, String location) {
+                   String weight, String offer,
+                   String price, String img, String location) {
         this.id = id;
         this.name = name;
+        this.weight = weight;
         this.offer = offer;
         this.price = price;
-        this.offerPrice = offerPrice;
         this.img = img;
         this.location = location;
     }
@@ -109,7 +110,7 @@ public class Product implements Parcelable {
 
 
     public String getOffer() {
-        return offer+"% Off";
+        return offer + "% Off";
     }
 
     public void setOffer(String offer) {
@@ -117,7 +118,7 @@ public class Product implements Parcelable {
     }
 
     public String getPrice() {
-        return "Rs."+price;
+        return "Rs." + price;
     }
 
     public void setPrice(String price) {
@@ -128,10 +129,11 @@ public class Product implements Parcelable {
         if (this.price.equals(""))
             return "";
         else {
-            int price = Integer.parseInt(this.price);
-            int offer = Integer.parseInt(this.offer);
-            int offer_price = price-(price % offer);
-            this.offerPrice = "Rs."+ String.valueOf(offer_price);
+            float price = Float.parseFloat(this.price);
+            float offer = Float.parseFloat(this.offer);
+            float off = (price/ 100.0f)*offer;
+            int offer_price =(int) (price - off);
+            this.offerPrice = "Rs." + String.valueOf(offer_price);
         }
         return offerPrice;
     }
@@ -181,7 +183,7 @@ public class Product implements Parcelable {
     }
 
     @BindingAdapter("setImage")
-    public static void loadImage(ImageView view,String img){
+    public static void loadImage(ImageView view, String img) {
         Glide.with(view.getContext())
                 .load(img)
                 .placeholder(R.drawable.placeholder)

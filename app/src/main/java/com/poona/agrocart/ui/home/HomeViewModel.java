@@ -108,19 +108,25 @@ public class HomeViewModel extends AndroidViewModel {
         ArrayList<Product> sellingProducts = new ArrayList<>();
         String PID = AppConstants.pId+"BP";
         Product product = new Product(PID+"1", "Bell Pepper Red", "1Kg"
-                , "10", "25", "https://www.linkpicture.com/q/capsicon.png", "Pune","Walmart");
+                , "10", "25", "https://www.linkpicture.com/q/capsicon.png",
+                "Pune","Walmart");
         Product product1 = new Product(PID+"2", "Ginger", "250 gms"
-                , "10", "110",  "https://www.linkpicture.com/q/ginger.png", "Pune","Walmart");
+                , "10", "110",  "https://www.linkpicture.com/q/ginger.png",
+                "Pune","Walmart");
         product1.setOrganic(true);
         Product product2 = new Product(PID+"3", "Bell Pepper Red", "1Kg"
-                , "10", "25",  "https://www.linkpicture.com/q/capsicon.png", "Pune","Walmart");
+                , "10", "25",  "https://www.linkpicture.com/q/capsicon.png",
+                "Pune","Walmart");
         Product product3 = new Product(PID+"4", "Ginger", "500 gms"
-                , "10", "280", "https://www.linkpicture.com/q/ginger.png", "Pune","Walmart");
+                , "10", "280", "https://www.linkpicture.com/q/ginger.png",
+                "Pune","Walmart");
         Product product4 = new Product(PID+"5", "Ginger", ""
-                , "", "", "https://www.linkpicture.com/q/ginger.png", "Pune","Walmart");
+                , "", "", "https://www.linkpicture.com/q/ginger.png",
+                "Pune","Walmart");
         product4.setWeight("0");
         Product product5 = new Product(PID+"6", "Ginger", ""
-                , "", "", "https://www.linkpicture.com/q/ginger.png", "Pune","Walmart");
+                , "", "", "https://www.linkpicture.com/q/ginger.png",
+                "Pune","Walmart");
         product5.setWeight("0");
         sellingProducts.add(product);
         sellingProducts.add(product1);

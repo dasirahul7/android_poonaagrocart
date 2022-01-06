@@ -43,4 +43,9 @@
     <dimen name="home_bottom_margin">@dimen/_15sdp</dimen>
     <dimen name="vertical_margin">@dimen/_10sdp</dimen>
     <dimen name="home_horizontal_padding">@dimen/_10sdp</dimen>
+    <dimen name="product_box_padding">@dimen/_8sdp</dimen>
+
+
+<!--    Product List Sizes-->
+    <dimen name="search_hint_size">@dimen/_14sp</dimen>
 </resources>

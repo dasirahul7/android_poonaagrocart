@@ -41,9 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
         Category category = categories.get(position);
         categoryBinding.setCategoryModule(category);
-        if (position==0)
-            categoryBinding.cardviewCategory.setPadding(10,0,0,0);
-        holder.bind(category,view);
+        holder.bind(category);
     }
 
     @Override
@@ -56,7 +54,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             super(binding.getRoot());
         }
 
-        public void bind(Category category,View view) {
+        public void bind(Category category) {
             categoryBinding.setVariable(BR.categoryModule,category);
             categoryBinding.executePendingBindings();
 

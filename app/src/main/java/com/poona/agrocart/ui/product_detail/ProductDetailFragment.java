@@ -178,7 +178,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         productDetail.setPrice(getArguments() != null ? getArguments().getString("price") : null);
         productDetail.setBrand(getArguments() != null ? getArguments().getString("brand") : null);
         productDetail.setOrganic(getArguments() != null ? getArguments().getBoolean("organic") : null);
-        productDetail.setQuantity(getArguments() != null ? getArguments().getString("qty") : null);
+        productDetail.setQuantity(getArguments() != null ? getArguments().getString("quantity") : null);
         productDetail.setBasket(getArguments() != null ? getArguments().getBoolean("isInBasket") : null);
         productDetail.setOfferPrice("Rs. 200");
         productDetail.setOfferValue("24% Off");

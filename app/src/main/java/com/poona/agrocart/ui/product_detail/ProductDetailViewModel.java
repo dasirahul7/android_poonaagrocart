@@ -28,20 +28,19 @@ public class ProductDetailViewModel extends AndroidViewModel {
     private void initSimilarItem() {
         ArrayList<Product> similarItems = new ArrayList<>();
         Product product = new Product("1", "Bell Pepper Red", "1Kg"
-                , "10% Off", "Rs25", "https://www.linkpicture.com/q/capsicon.png", "Pune");
+                , "10", "25",
+                "https://www.linkpicture.com/q/capsicon.png", "Pune");
         Product product1 = new Product("2", "Ginger", "250 gms"
-                , "10% Off",  "Rs. 140", "https://www.linkpicture.com/q/ginger.png", "Pune");
+                , "10",  "140", "https://www.linkpicture.com/q/ginger.png", "Pune");
         product1.setOrganic(true);
         Product product2 = new Product("3", "Bell Pepper Red", "1Kg"
-                , "10% Off", "Rs25", "https://www.linkpicture.com/q/capsicon.png", "Pune");
+                , "10", "25", "https://www.linkpicture.com/q/capsicon.png", "Pune");
         Product product3 = new Product("4", "Ginger", "500 gms"
-                , "10% Off", "Rs280", "https://www.linkpicture.com/q/ginger.png", "Pune");
-        Product product4 = new Product("4", "Ginger", ""
-                , "",  "", "https://www.linkpicture.com/q/ginger.png", "Pune");
-        product4.setQuantity("0");
-        Product product5 = new Product("4", "Ginger", ""
-                , "", "", "https://www.linkpicture.com/q/ginger.png", "Pune");
-        product5.setQuantity("0");
+                , "10", "280", "https://www.linkpicture.com/q/ginger.png", "Pune");
+        Product product4 = new Product("4", "Ginger", "250gm"
+                , "5",  "80", "https://www.linkpicture.com/q/ginger.png", "Pune");
+        Product product5 = new Product("4", "Ginger", "1kg"
+                , "5", "150", "https://www.linkpicture.com/q/ginger.png", "Pune");
         similarItems.add(product);
         similarItems.add(product1);
         similarItems.add(product2);

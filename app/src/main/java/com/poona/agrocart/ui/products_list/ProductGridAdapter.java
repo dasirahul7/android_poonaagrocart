@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.products_list;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,18 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.RowBestSellingItemBinding;
 import com.poona.agrocart.databinding.RowProductListItemBinding;
 import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 
-public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductsViewHolder>
+public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.ProductsViewHolder>
 {
     private final ArrayList<Product> vegetableArrayList;
     private final View view;
 
-    public ProductListAdapter(ArrayList<Product> vegetableArrayList, View view)
+    public ProductGridAdapter(ArrayList<Product> vegetableArrayList, View view)
     {
         this.vegetableArrayList = vegetableArrayList;
         this.view=view;
@@ -87,6 +87,19 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         {
             productListItemBinding.setVariable(BR.productModule,product);
             productListItemBinding.executePendingBindings();
+            if (product.isInBasket())
+                productListItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
+            if (product.isOrganic())
+                productListItemBinding.txtOrganic.setVisibility(View.VISIBLE);
+            if (product.getWeight().equals("0")) {
+                productListItemBinding.tvWeight.setVisibility(View.INVISIBLE);
+                productListItemBinding.llPrice.setVisibility(View.GONE);
+                productListItemBinding.txtOutOfStock.setVisibility(View.VISIBLE);
+                productListItemBinding.imgPlus.setVisibility(View.GONE);
+            }
+            if (Build.VERSION.SDK_INT<=Build.VERSION_CODES.M){
+                productListItemBinding.txtItemOfferPrice.setTextSize(14);
+            }
         }
     }
 }

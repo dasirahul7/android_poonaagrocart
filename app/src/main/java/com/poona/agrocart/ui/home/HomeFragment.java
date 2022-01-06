@@ -39,7 +39,7 @@ public class HomeFragment extends BaseFragment {
     private BannerAdapter bannerAdapter;
     private CategoryAdapter categoryAdapter;
     private ProductListAdapter productListAdapter;
-    private OfferProductListAdapter horizontalProductListAdapter;
+    private OfferProductListAdapter bestsellingAdapter;
     private OfferProductListAdapter offerListAdapter;
     private BasketAdapter basketAdapter;
     private ArrayList<Product> bestSellings = new ArrayList<>();
@@ -150,26 +150,21 @@ public class HomeFragment extends BaseFragment {
         homeViewModel.getLiveDataBestSelling().observe(getViewLifecycleOwner(), liveList -> {
             this.bestSellings = liveList;
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-            horizontalProductListAdapter = new OfferProductListAdapter(this.bestSellings, requireActivity(), root);
+            bestsellingAdapter = new OfferProductListAdapter(this.bestSellings, requireActivity(), root);
             fragmentHomeBinding.recOfferProduct.setNestedScrollingEnabled(false);
             fragmentHomeBinding.recOfferProduct.setLayoutManager(layoutManager);
-            fragmentHomeBinding.recOfferProduct.setAdapter(horizontalProductListAdapter);
+            fragmentHomeBinding.recOfferProduct.setAdapter(bestsellingAdapter);
             // Redirect to Product details
-            horizontalProductListAdapter.setOnProductClick(product -> {
+            bestsellingAdapter.setOnProductClick(product -> {
                 toProductDetail(product, root);
             });
-            horizontalProductListAdapter.setOnPlusClick((product, position) -> {
+            bestsellingAdapter.setOnPlusClick((product, position) -> {
                 addToBasket(product);
                 this.bestSellings.get(position).setInBasket(true);
                 this.bestSellings.get(position).setQuantity("1");
-                horizontalProductListAdapter.notifyItemChanged(position);
+                bestsellingAdapter.notifyItemChanged(position);
             });
 
-//            horizontalProductListAdapter.setOnAddClickListener((item, position) -> {
-//                addToBasket(item);
-//                bestSellings.get(position).setInBasket(true);
-//                productListAdapter.notifyItemChanged(position);
-//            });
         });
 
     }
@@ -250,6 +245,7 @@ public class HomeFragment extends BaseFragment {
         bundle.putString("image", product.getImg());
         bundle.putString("price", product.getPrice());
         bundle.putString("brand", product.getBrand());
+        bundle.putString("weight", product.getWeight());
         bundle.putString("quantity", product.getQuantity());
         bundle.putBoolean("organic", product.isOrganic());
         bundle.putBoolean("isInBasket", product.isInBasket());

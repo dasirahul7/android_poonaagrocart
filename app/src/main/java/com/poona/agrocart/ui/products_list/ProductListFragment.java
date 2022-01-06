@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,10 +29,11 @@ import java.util.ArrayList;
 public class ProductListFragment extends BaseFragment
 {
     private FragmentProductListBinding fragmentProductListBinding;
+    private ProductListViewModel productListViewModel;
     private RecyclerView rvVegetables;
     private ArrayList<Product> vegetableArrayList;
     private ArrayList<Product> fruitsArrayList;
-    private ProductListAdapter productListAdapter;
+    private ProductGridAdapter productGridAdapter;
     private String isVegetablesOrFruits="vegetable";
 
     private BottomSheetBehavior bottomSheetBehavior;
@@ -46,7 +48,7 @@ public class ProductListFragment extends BaseFragment
         fragmentProductListBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_product_list, container, false);
         fragmentProductListBinding.setLifecycleOwner(this);
         final View view = fragmentProductListBinding.getRoot();
-
+        productListViewModel = new ViewModelProvider(this).get(ProductListViewModel.class);
         Bundle bundle=this.getArguments();
 
         if(bundle!=null)
@@ -152,32 +154,24 @@ public class ProductListFragment extends BaseFragment
 
         if(isVegetablesOrFruits.equals("vegetable"))
         {
-            prepareListingDataForVegetables();
-            productListAdapter = new ProductListAdapter(vegetableArrayList,view);
+            //Listing Vegetables
+            productListViewModel.getVegesMutableLiveData().observe(getViewLifecycleOwner(),products -> {
+                vegetableArrayList = products;
+                productGridAdapter = new ProductGridAdapter(vegetableArrayList,view);
+                rvVegetables.setAdapter(productGridAdapter);
+            });
+
         }
         else {
-            prepareListingDataForFruits();
-            productListAdapter = new ProductListAdapter(fruitsArrayList,view);
-        }
-        rvVegetables.setAdapter(productListAdapter);
-    }
+            //Listing Fruits
+            productListViewModel.getFruitMutableLiveData().observe(getViewLifecycleOwner(),products -> {
+                fruitsArrayList = products;
+                productGridAdapter = new ProductGridAdapter(fruitsArrayList,view);
+                rvVegetables.setAdapter(productGridAdapter);
+            });
 
-    private void prepareListingDataForFruits()
-    {
-        for(int i = 0; i < 6; i++) {
-            Product fruit = new Product("123","Apple","1kg",
-                    "10% Off","Rs.40","https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png","Pune");
-            fruitsArrayList.add(fruit);
         }
-    }
 
-    private void prepareListingDataForVegetables()
-    {
-        for(int i = 0; i < 6; i++) {
-            Product vegetable = new Product("123","Ginger","1kg",
-                    "10% Off","Rs.40",getString(R.string.img_ginger),"Pune");
-            vegetableArrayList.add(vegetable);
-        }
     }
 
     private void initView()
