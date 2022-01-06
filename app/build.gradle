@@ -128,8 +128,8 @@ dependencies {
 
     /*for org.apache.commons.io*/
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
-    implementation 'androidx.navigation:navigation-fragment:2.3.5'
-    implementation 'androidx.navigation:navigation-ui:2.3.5'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
     /*dots indicator for intro screen*/
     implementation 'com.tbuonomo:dotsindicator:4.2'

@@ -3,12 +3,10 @@ package com.poona.agrocart.ui.home.basket_page;
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -19,6 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentBasketPageBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.bottom_sheet.BasketFilterFragment;
 import com.poona.agrocart.ui.nav_explore.adapter.FilterItemAdapter;
 import com.poona.agrocart.ui.nav_explore.model.FilterItem;
 import com.poona.agrocart.ui.home.HomeActivity;
@@ -31,7 +30,6 @@ public class BasketPageFragment extends BaseFragment {
     private ArrayList<BasketCard> basketCardsList;
     private BasketCardAdapter basketCardAdapter;
     private String BasketType;
-    private BottomSheetBehavior bottomSheetBehavior;
     FilterItemAdapter categoryAdapter, sortByAdapter, brandAdapter;
     private ArrayList<FilterItem> categoryItems;
     private ArrayList<FilterItem> filterItems;
@@ -54,17 +52,18 @@ public class BasketPageFragment extends BaseFragment {
 //            Transition transition = new Fade();
 //            transition.setDuration(400);
 //            transition.addTarget(R.id.image);
-            try {
-                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            fragmentBasketPageBinding.bottomView.setVisibility(View.VISIBLE);
-            fragmentBasketPageBinding.rlContainer.setVisibility(View.VISIBLE);
-            fragmentBasketPageBinding.rlContainer.setClickable(false);
-            fragmentBasketPageBinding.etSearch.setEnabled(false);
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//            try {
+//                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            fragmentBasketPageBinding.bottomView.setVisibility(View.VISIBLE);
+//            fragmentBasketPageBinding.rlContainer.setVisibility(View.VISIBLE);
+//            fragmentBasketPageBinding.rlContainer.setClickable(false);
+//            fragmentBasketPageBinding.etSearch.setEnabled(false);
+//            BasketFilterFragment fragment = new BasketFilterFragment();
+//            fragment.show(getParentFragmentManager(), "TAG");
 //            fragmentBasketPageBinding.bottomView.setAlpha(5.0f);
 //
 //        // Start the animation
@@ -72,67 +71,13 @@ public class BasketPageFragment extends BaseFragment {
 //                    .translationY(view.getHeight())
 //                    .alpha(1.0f)
 //                    .setListener(null);
+            BasketFilterFragment filterFragment = new BasketFilterFragment();
+            filterFragment.show(getChildFragmentManager(),"FilterFragment");
         });
-        setFilterAdapter();
+//        setFilterAdapter();
         initView();
         setRVAdapter();
         return view;
-    }
-
-    private void setFilterAdapter() {
-        categoryItems = new ArrayList<>();
-        filterItems = new ArrayList<>();
-        brandItems = new ArrayList<>();
-
-        //Sample categories
-        FilterItem category1 = new FilterItem("1", "Vegetable", false);
-        FilterItem category2 = new FilterItem("2", "Leafy Vegetables", false);
-        FilterItem category3 = new FilterItem("3", "Herbs", false);
-        FilterItem category4 = new FilterItem("4", "Fruits", false);
-        FilterItem category5 = new FilterItem("5", "Dry Fruits", false);
-        FilterItem category6 = new FilterItem("6", "Sprouts", false);
-
-        categoryItems.add(category1);
-        categoryItems.add(category2);
-        categoryItems.add(category3);
-        categoryItems.add(category4);
-        categoryItems.add(category5);
-
-        //Sample Sort By Filter
-        FilterItem filterItem1 = new FilterItem("1", "Low to High", false);
-        FilterItem filterItem2 = new FilterItem("2", "High to Low", false);
-        FilterItem filterItem3 = new FilterItem("3", "Newest Arrived", false);
-        filterItems.add(filterItem1);
-        filterItems.add(filterItem2);
-        filterItems.add(filterItem3);
-        filterItems.add(filterItem3);
-        filterItems.add(filterItem3);
-
-        // sample Brand Items
-
-        FilterItem brand1 = new FilterItem("1", "B&G Green", false);
-        FilterItem brand2 = new FilterItem("2", "Del Monte", false);
-        FilterItem brand3 = new FilterItem("3", "Fruttella", false);
-        brandItems.add(brand1);
-        brandItems.add(brand2);
-        brandItems.add(brand3);
-        brandItems.add(brand3);
-
-
-        categoryAdapter = new FilterItemAdapter(categoryItems, getActivity());
-        sortByAdapter = new FilterItemAdapter(filterItems, getActivity());
-        brandAdapter = new FilterItemAdapter(brandItems, getActivity());
-
-        fragmentBasketPageBinding.filterView.rvCategoryList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        fragmentBasketPageBinding.filterView.rvCategoryList.setHasFixedSize(true);
-        fragmentBasketPageBinding.filterView.rvSortList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        fragmentBasketPageBinding.filterView.rvSortList.setHasFixedSize(true);
-        fragmentBasketPageBinding.filterView.rvBrandList.setHasFixedSize(true);
-        fragmentBasketPageBinding.filterView.rvBrandList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        fragmentBasketPageBinding.filterView.rvCategoryList.setAdapter(categoryAdapter);
-        fragmentBasketPageBinding.filterView.rvSortList.setAdapter(sortByAdapter);
-        fragmentBasketPageBinding.filterView.rvBrandList.setAdapter(brandAdapter);
-
     }
 
 
@@ -152,19 +97,18 @@ public class BasketPageFragment extends BaseFragment {
     private void initView() {
         this.rvBasketCards = fragmentBasketPageBinding.rvBasketCards;
 
-        bottomSheetBehavior = BottomSheetBehavior.from(fragmentBasketPageBinding.bottomView);
-        fragmentBasketPageBinding.filterView.closeBtn.setOnClickListener(v -> {
-            closeFilter();
-        });
-        fragmentBasketPageBinding.filterView.applyBtn.setOnClickListener(v -> {
-            closeFilter();
-        });
+//        bottomSheetBehavior = BottomSheetBehavior.from(fragmentBasketPageBinding.bottomView);
+//        fragmentBasketPageBinding.filterView.closeBtn.setOnClickListener(v -> {
+//            closeFilter();
+//        });
+//        fragmentBasketPageBinding.filterView.applyBtn.setOnClickListener(v -> {
+//            closeFilter();
+//        });
     }
 
     private void closeFilter() {
-        fragmentBasketPageBinding.rlContainer.setVisibility(View.GONE);
-        fragmentBasketPageBinding.bottomView.setVisibility(View.GONE);
-        bottomSheetBehavior.setState(STATE_COLLAPSED);
+//        fragmentBasketPageBinding.rlContainer.setVisibility(View.GONE);
+//        fragmentBasketPageBinding.bottomView.setVisibility(View.GONE);
         fragmentBasketPageBinding.etSearch.setEnabled(false);
     }
 
