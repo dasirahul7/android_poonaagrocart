@@ -270,6 +270,12 @@
     <string name="poona_agro_center">Store Name</string>
     <string name="vishrantwadi_pune">Vishrantwadi Pune</string>
     <string name="our_stores">Our Stores</string>
+    <string name="about_store">About Store</string>
+    <string name="sample_about_store">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper \n\n\nsed aliquam volutpat. Suscipit sem ullamcor per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
+    <string name="store_location">Store Location</string>
+    <string name="sample_address">Nand Nivas  Bhatrau Nivas Vishrantwadi Pune - 411015.</string>
+    <string name="sample_address1">V9 - Landmark 203, Second Floor, above HDFC Bank, Vishrantwadi, Maharashtra Pune- 411015.</string>
+    <string name="sample_address2">Nand Nivas Building floor 3 B-3, Lane No. 13 Bhatroa Nivas Vishrantwadi </string>
 
     <!--My orders-->
     <string name="sep_30_2021_20_15_am">Sep 30, 2021 20:15 AM</string>
@@ -372,17 +378,16 @@
     <string name="img_ginger">https://www.linkpicture.com/q/ginger.png</string>
     <string name="img_green_leafy">https://www.linkpicture.com/q/green_leafy_vegetable.png</string>
     <string name="img_tomato">https://www.linkpicture.com/q/tomato_1.png</string>
-    <string name="img_red_apple">https://www.linkpicture.com/q/pngfuel–1–1.png</string>
+    <string name="img_red_apple">https://www.linkpicture.com/q/pngfuel-1-1.png</string>
     <string name="img_banana">https://www.linkpicture.com/q/banana_2.png</string>
     <string name="img_potato">https://www.linkpicture.com/q/Potato-Free-Download-PNG-1_1.png</string>
     <string name="img_beat">https://www.linkpicture.com/q/beat_1.png</string>
     <string name="img_sample_store">https://www.linkpicture.com/q/unsplash_SsKf1L6rWJk-1.png</string>
-    <string name="about_store">About Store</string>
-    <string name="sample_about_store">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper \n\n\nsed aliquam volutpat. Suscipit sem ullamcor per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
-    <string name="store_location">Store Location</string>
-    <string name="sample_address">Nand Nivas  Bhatrau Nivas Vishrantwadi Pune - 411015.</string>
-    <string name="sample_address1">V9 - Landmark 203, Second Floor, above HDFC Bank, Vishrantwadi, Maharashtra Pune- 411015.</string>
-    <string name="sample_address2">Nand Nivas Building floor 3 B-3, Lane No. 13 Bhatroa Nivas Vishrantwadi </string>
+
+    <string name="img_basket">https://www.linkpicture.com/q/Vegetables.png</string>
+    <string name="basket_sprout_img">https://www.linkpicture.com/q/sprout-basket.png</string>
+    <string name="basket_nutrition_img">https://www.linkpicture.com/q/nutritions.png</string>
+    <string name="basket_diet_img">https://www.linkpicture.com/q/dait-basket.png</string>
 
     <!--    MAP KEY-->
     <string name="map_key">AIzaSyDi2KxP5vuvOxYO1qA2i5Ehx-yXY7hcN1Q</string>

@@ -10,14 +10,14 @@
     android:elevation="@dimen/_8sdp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_150sdp"
-    android:layout_margin="@dimen/_10sdp"
+    android:layout_height="@dimen/_160sdp"
     android:background="@color/exp_card_color1"
     app:cardCornerRadius="@dimen/_15sdp"
+    app:cardUseCompatPadding="true"
     app:strokeColor="@color/exp_border1"
     app:strokeWidth="1dp">
     <LinearLayout
-        android:padding="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
         android:id="@+id/itemLayout"
         android:background="@color/exp_card_color1"
         android:orientation="vertical"
@@ -28,7 +28,6 @@
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp"
-            android:padding="@dimen/_10sdp"
             app:cardCornerRadius="@dimen/_12sdp"
             app:cardElevation="0dp"
             app:cardUseCompatPadding="true">
@@ -53,12 +52,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/_5sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
             android:text="@{exploreModules.name}"
-            android:singleLine="true"
-            android:textColor="@color/green_txt_color"
+            android:textColor="@color/blue_txt_color"
             android:textSize="@dimen/_16sp"
-            app:setCustomFont="@string/font_poppins_semi_bold" />/>
+            android:includeFontPadding="false"
+            app:setCustomFont="@string/font_poppins_semi_bold" />
     </LinearLayout>
 
 

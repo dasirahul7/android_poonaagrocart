@@ -55,7 +55,6 @@ public class ExploreItemAdapter extends RecyclerView.Adapter<ExploreItemAdapter.
         public ExploreItemHolder(RowExploreItemBinding binding)
         {
             super(binding.getRoot());
-
             this.rowExploreItemBinding=binding;
             rowExploreItemBinding.itemCard.setOnClickListener(v -> {
                 redirectToRequiredProductsPage(rootView,getAdapterPosition());
@@ -79,20 +78,7 @@ public class ExploreItemAdapter extends RecyclerView.Adapter<ExploreItemAdapter.
     private void gotoExploreItems(View v, String name,int adapterPosition)
     {
         Bundle bundle=new Bundle();
-        switch (adapterPosition)
-        {
-            case 0:
-                Navigation.findNavController(v).navigate(R.id.action_nav_explore_to_nav_explore_baskets);
-                break;
-            case 1:
-                bundle.putString("ProductCategory","vegetable");
-                Navigation.findNavController(v).navigate(R.id.action_nav_explore_to_nav_products_list,bundle);
-                break;
-            default:
-                bundle.putString("ProductCategory","fruits");
-                Navigation.findNavController(v).navigate(R.id.action_nav_explore_to_nav_products_list,bundle);
-                break;
-        }
-        //Navigation.findNavController(v).navigate(R.id.action_nav_explore_to_nav_explore_baskets,bundle);
+        bundle.putString("ProductCategory",name);
+        Navigation.findNavController(v).navigate(R.id.action_nav_explore_to_nav_products_list,bundle);
     }
 }

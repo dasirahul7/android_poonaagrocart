@@ -217,6 +217,7 @@
         <entry key="app/src/main/res/layout/app_bar_home.xml" value="0.16" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/best_selling_row_item.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/bottom_sheet_filter_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/cat_row_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/circular_progresbar.xml" value="0.1" />
         <entry key="app/src/main/res/layout/content_dash_board.xml" value="0.1" />
@@ -273,7 +274,7 @@
         <entry key="app/src/main/res/layout/fragment_privacy_policy.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_product_image.xml" value="0.14402173913043478" />
-        <entry key="app/src/main/res/layout/fragment_product_list.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_product_list.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.13269927536231885" />
         <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.22" />
@@ -296,10 +297,12 @@
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/photo_gallery_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/privacy_fragment.xml" value="0.11684782608695653" />
+        <entry key="app/src/main/res/layout/row_Basket_list_item.xml" value="0.22" />
         <entry key="app/src/main/res/layout/row_address_item.xml" value="0.13" />
         <entry key="app/src/main/res/layout/row_address_radio.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_banner.xml" value="0.14356884057971014" />
         <entry key="app/src/main/res/layout/row_basket_item.xml" value="0.15489130434782608" />
+        <entry key="app/src/main/res/layout/row_basket_list_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_best_selling_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/row_category_item.xml" value="0.22" />
         <entry key="app/src/main/res/layout/row_check_box_item.xml" value="0.2" />

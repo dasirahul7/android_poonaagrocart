@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.products_list;
+package com.poona.agrocart.ui.products_list.adapter;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -21,12 +21,10 @@ import java.util.ArrayList;
 public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.ProductsViewHolder>
 {
     private final ArrayList<Product> vegetableArrayList;
-    private final View view;
 
-    public ProductGridAdapter(ArrayList<Product> vegetableArrayList, View view)
+    public ProductGridAdapter(ArrayList<Product> vegetableArrayList)
     {
         this.vegetableArrayList = vegetableArrayList;
-        this.view=view;
     }
 
     @NonNull
@@ -36,7 +34,7 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
         RowProductListItemBinding binding = DataBindingUtil.inflate
                 (LayoutInflater.from(parent.getContext()),
                         R.layout.row_product_list_item, parent, false);
-        return new ProductsViewHolder(binding,view);
+        return new ProductsViewHolder(binding);
     }
 
     @Override
@@ -56,17 +54,17 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
     {
         RowProductListItemBinding productListItemBinding;
 
-        public ProductsViewHolder(RowProductListItemBinding productListItemBinding,View view) {
+        public ProductsViewHolder(RowProductListItemBinding productListItemBinding) {
             super(productListItemBinding.getRoot());
             this.productListItemBinding=productListItemBinding;
 
-            productListItemBinding.cardviewProduct.setOnClickListener(v -> {
-                redirectToProductsDetail(view);
-            });
+//            productListItemBinding.cardviewProduct.setOnClickListener(v -> {
+//                redirectToProductsDetail(view);
+//            });
 
-            productListItemBinding.imgPlus.setOnClickListener(v -> {
-                redirectToCartScreen(view);
-            });
+//            productListItemBinding.imgPlus.setOnClickListener(v -> {
+//                redirectToCartScreen(view);
+//            });
         }
 
         private void redirectToCartScreen(View view)

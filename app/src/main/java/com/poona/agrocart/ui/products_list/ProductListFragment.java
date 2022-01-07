@@ -15,7 +15,10 @@ import com.poona.agrocart.databinding.FragmentProductListBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.bottom_sheet.BottomSheetFilterFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.products_list.adapter.BasketGridAdapter;
+import com.poona.agrocart.ui.products_list.adapter.ProductGridAdapter;
 
 import java.util.ArrayList;
 
@@ -26,8 +29,10 @@ public class ProductListFragment extends BaseFragment
     private RecyclerView rvVegetables;
     private ArrayList<Product> vegetableArrayList;
     private ArrayList<Product> fruitsArrayList;
+    private ArrayList<Basket> basketArrayList;
     private ProductGridAdapter productGridAdapter;
-    private String isVegetablesOrFruits="vegetable";
+    private BasketGridAdapter basketGridAdapter;
+    private String isVegetablesOrFruits="Vegetable";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -51,10 +56,11 @@ public class ProductListFragment extends BaseFragment
 
     private void setTitleBar()
     {
-        if(isVegetablesOrFruits.equals("vegetable"))
+        if(isVegetablesOrFruits.equals("Vegetable"))
             initTitleWithBackBtn(getString(R.string.vegetables));
-        else
-            initTitleWithBackBtn(getString(R.string.fruits));
+        else if (isVegetablesOrFruits.equalsIgnoreCase("Basket"))
+            initTitleWithBackBtn(getString(R.string.basket));
+        else initTitleWithBackBtn(getString(R.string.fruits));
     }
 
     private void setRVAdapter(View view)
@@ -66,26 +72,43 @@ public class ProductListFragment extends BaseFragment
         rvVegetables.setHasFixedSize(true);
         rvVegetables.setLayoutManager(gridLayoutManager);
 
-        if(isVegetablesOrFruits.equals("vegetable"))
+        if(isVegetablesOrFruits.equals("Basket"))
         {
+            //Listing Baskets
+            makeBasketList();
+        }
+        else if (isVegetablesOrFruits.equals("Vegetable")){
             //Listing Vegetables
-            productListViewModel.getVegesMutableLiveData().observe(getViewLifecycleOwner(),products -> {
-                vegetableArrayList = products;
-                productGridAdapter = new ProductGridAdapter(vegetableArrayList,view);
-                rvVegetables.setAdapter(productGridAdapter);
-            });
-
-        }
-        else {
+            makeVegetableList(view);
+        }else {
             //Listing Fruits
-            productListViewModel.getFruitMutableLiveData().observe(getViewLifecycleOwner(),products -> {
-                fruitsArrayList = products;
-                productGridAdapter = new ProductGridAdapter(fruitsArrayList,view);
-                rvVegetables.setAdapter(productGridAdapter);
-            });
-
+            makeFruitList(view);
         }
 
+    }
+
+    private void makeBasketList() {
+        productListViewModel.getBasketMutableLiveData().observe(getViewLifecycleOwner(),baskets -> {
+            basketArrayList = baskets;
+            basketGridAdapter = new BasketGridAdapter(basketArrayList);
+            rvVegetables.setAdapter(basketGridAdapter);
+        });
+    }
+
+    private void makeFruitList(View view) {
+        productListViewModel.getFruitMutableLiveData().observe(getViewLifecycleOwner(),products -> {
+            fruitsArrayList = products;
+            productGridAdapter = new ProductGridAdapter(fruitsArrayList);
+            rvVegetables.setAdapter(productGridAdapter);
+        });
+    }
+
+    private void makeVegetableList(View view) {
+        productListViewModel.getVegesMutableLiveData().observe(getViewLifecycleOwner(),products -> {
+            vegetableArrayList = products;
+            productGridAdapter = new ProductGridAdapter(vegetableArrayList);
+            rvVegetables.setAdapter(productGridAdapter);
+        });
     }
 
     private void initView()

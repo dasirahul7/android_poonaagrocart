@@ -86,10 +86,13 @@
     <color name="basket_color_old_lace">#FEF2E4</color>
 
     <!--Explore screen colors-->
-    <color name="exp_card_color1">#FBFFED</color>
-    <color name="exp_card_color2" tools:keep="@color/exp_card_color2">#EEF0E7</color>
-    <color name="exp_border1">#E5F2CF</color>
-    <color name="exp_border2" tools:keep="@color/exp_border2">#FDDEBE</color>
+    <color name="exp_card_color1">#FFF6EE</color>
+    <color name="exp_border1">#FDDEBE</color>
+    <color name="exp_card_color2">#FBFFED</color>
+    <color name="exp_border2">#E5F2CF</color>
+    <color name="exp_card_color3">#FFF6EE</color>
+    <color name="exp_border3">#F9E9D9</color>
+
 
     <!--My orders-->
     <color name="color_total_amount">#6F6F6F</color>

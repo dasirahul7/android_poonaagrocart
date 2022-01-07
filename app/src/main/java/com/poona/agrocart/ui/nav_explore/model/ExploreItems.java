@@ -9,7 +9,7 @@ import com.poona.agrocart.R;
 
 public class ExploreItems {
     String id,name,img;
-    int border,background;
+    int border = R.color.exp_card_color1,background=R.color.exp_border1;
 
     public int getBorder() {
         return border;
