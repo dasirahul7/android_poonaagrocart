@@ -47,7 +47,7 @@ public class MyBasketFragment extends BaseFragment
     private void setRvAdapter(View view)
     {
         basketOrderArrayList=new ArrayList<>();
-        prepareListingData();
+        basketListingData();
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvBasketItems.setHasFixedSize(true);
@@ -57,7 +57,7 @@ public class MyBasketFragment extends BaseFragment
         rvBasketItems.setAdapter(basketOrdersAdapter);
     }
 
-    private void prepareListingData()
+    private void basketListingData()
     {
         for(int i = 0; i < 2; i++)
         {

@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/_5sdp">
+            android:paddingHorizontal="@dimen/_10sdp">
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_title"
@@ -55,30 +55,44 @@
             android:orientation="horizontal"
             android:padding="@dimen/_5sdp">
 
-            <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/tv_coupon_code"
+            <com.google.android.material.card.MaterialCardView
+
+                android:id="@+id/mcv_coupon_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_weight="1"
-                android:text="@{moduleCoupon.couponCode}"
-                android:textColor="@color/dark_blue_color"
-                android:textSize="@dimen/_18sp"
-                android:textStyle="bold"
-                app:setCustomFont="@string/font_poppins_bold" />
+                app:cardCornerRadius="@dimen/_8sdp"
+                app:strokeColor="@color/dark_blue_color"
+                app:strokeWidth="@dimen/_1sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp">
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/tv_coupon_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:text="@{moduleCoupon.couponCode}"
+                    android:background="@color/white"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:drawableEnd="@drawable/icon_copy"
+                    android:textColor="@color/dark_blue_color"
+                    android:textSize="@dimen/_18sp"
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
+
+            </com.google.android.material.card.MaterialCardView>
 
             <com.poona.agrocart.widgets.CustomTextView
+                android:layout_weight="1"
+                android:gravity="end"
                 android:id="@+id/tv_discount_value"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_weight=".1"
+                android:paddingEnd="@dimen/_10sdp"
+                android:paddingStart="@dimen/_10sdp"
                 android:text="@{moduleCoupon.discount}"
                 android:textColor="@color/dark_blue_color"
-                android:textSize="@dimen/_18sdp"
+                android:textSize="@dimen/xl_large_txt_size"
                 android:textStyle="bold"
-                app:setCustomFont="@string/font_poppins_bold" />
+                app:setCustomFont="@string/font_poppins_semi_bold" />
 
         </LinearLayout>
 

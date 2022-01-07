@@ -17,17 +17,20 @@
             android:id="@+id/cardview_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_8sdp"
             android:elevation="@dimen/_6sdp"
             app:cardCornerRadius="@dimen/_12sdp"
             app:cardElevation="3dp"
             app:cardUseCompatPadding="true"
-            app:contentPadding="@dimen/_10sdp"
+            app:contentPadding="@dimen/_5sdp"
+            app:strokeWidth="@dimen/_1sdp"
+            app:strokeColor="@color/color_border_light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
+                android:paddingHorizontal="@dimen/_5sdp"
+                android:paddingVertical="@dimen/_2sdp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -51,7 +54,7 @@
                             android:text="@string/order_id"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_16sp"
-                            app:setCustomFont="@string/font_poppins_bold" />
+                            app:fontFamily="@font/poppins_semibold" />
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_order_id"
@@ -63,7 +66,7 @@
                         android:textColor="@color/black"
                         android:singleLine="true"
                         android:textSize="@dimen/_16sp"
-                        app:setCustomFont="@string/font_poppins_bold" />
+                        app:fontFamily="@font/poppins_semibold" />
 
                     </LinearLayout>
 
@@ -80,7 +83,7 @@
                             android:gravity="end"
                             android:text="@{basketOrder.date}"
                             android:textColor="@color/color_order_date_and_time"
-                            android:textSize="@dimen/_14sp"
+                            android:textSize="@dimen/small_txt_size"
                             app:setCustomFont="@string/font_poppins_regular" />
 
                     </LinearLayout>
@@ -109,7 +112,7 @@
                             android:text="@{basketOrder.name}"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_16sp"
-                            app:setCustomFont="@string/font_poppins_bold" />
+                            app:fontFamily="@font/poppins_semibold"/>
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:id="@+id/tv_price"
@@ -119,8 +122,8 @@
                             android:gravity="start"
                             android:text="@{basketOrder.price}"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_16sp"
-                            app:setCustomFont="@string/font_poppins_semi_bold" />
+                            android:textSize="@dimen/_18sp"
+                            app:setCustomFont="@string/font_poppins_regular" />
 
                     </LinearLayout>
 
@@ -137,8 +140,8 @@
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="end"
                             android:text="@string/transaction_id"
-                            android:textColor="@color/color_order_date_and_time"
-                            android:textSize="@dimen/_14sp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/medium_txt_size"
                             app:setCustomFont="@string/font_poppins_regular" />
 
                         <com.poona.agrocart.widgets.CustomTextView
@@ -148,8 +151,8 @@
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="end"
                             android:text="@{basketOrder.transactionId}"
-                            android:textColor="@color/color_order_date_and_time"
-                            android:textSize="@dimen/_14sp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/medium_txt_size"
                             app:setCustomFont="@string/font_poppins_regular" />
 
                     </LinearLayout>
@@ -160,7 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:background="@color/colorLightGrey"
+                    android:background="@color/color_dark_divider"
                     />
 
                 <LinearLayout
@@ -206,19 +209,19 @@
 
                         <com.poona.agrocart.widgets.CustomButton
                             android:id="@+id/btn_sign_up"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_16sdp"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_18sdp"
+                            android:layout_gravity="center|center_vertical"
                             android:background="@drawable/bg_invoice_btn"
+                            android:gravity="center|center_vertical"
+                            android:includeFontPadding="false"
                             android:text="@string/invoice"
                             android:textAlignment="center"
-                            android:textColor="@color/background_button_selector_blue"
                             android:textAllCaps="false"
-                            android:includeFontPadding="false"
-                            android:layout_gravity="center|center_vertical"
-                            android:gravity="center|center_vertical"
+                            android:textColor="@color/background_button_selector_blue"
                             android:textSize="@dimen/_14sp"
-                            style="?android:attr/borderlessButtonStyle"
-                            app:setCustomFont="@string/font_poppins_semi_bold"/>
+                            app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     </LinearLayout>
 

@@ -158,4 +158,8 @@
 <!--    Dialog colors-->
     <color name="dialog_bg_color">#F2F3F2</color>
     <color name="filter_bg_color">#F2F3F2</color>
+
+<!--    My Basket Subscription color-->
+    <color name="color_border_light">#E2E2E2</color>
+    <color name="color_dark_divider">#C9C9C9</color>
 </resources>
