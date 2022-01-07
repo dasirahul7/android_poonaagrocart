@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/background_color_green"
+                android:background="@drawable/button_green"
                 android:drawableStart="@drawable/ic_plus_white"
                 android:padding="@dimen/alerter_padding_small"
                 android:drawableTint="@color/background_color_white_green"

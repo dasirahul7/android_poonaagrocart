@@ -7,7 +7,7 @@
                 android:width="@dimen/_1sdp"/>
 
             <!--corners allow us to make the rounded corners button-->
-            <corners android:radius="@dimen/_3sdp"/>
+            <corners android:radius="@dimen/_10sdp"/>
 
         </shape>
     </item>
@@ -19,7 +19,7 @@
                 android:width="@dimen/_1sdp"/>
 
             <!--corners allow us to make the rounded corners button-->
-            <corners android:radius="@dimen/_3sdp"/>
+            <corners android:radius="@dimen/_10sdp"/>
 
         </shape>
     </item>

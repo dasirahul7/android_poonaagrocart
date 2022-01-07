@@ -1,7 +1,5 @@
 package com.poona.agrocart.ui.home.basket_page;
 
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,16 +8,12 @@ import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentBasketPageBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.bottom_sheet.BasketFilterFragment;
-import com.poona.agrocart.ui.nav_explore.adapter.FilterItemAdapter;
-import com.poona.agrocart.ui.nav_explore.model.FilterItem;
+import com.poona.agrocart.ui.bottom_sheet.BottomSheetFilterFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 
 import java.util.ArrayList;
@@ -30,10 +24,6 @@ public class BasketPageFragment extends BaseFragment {
     private ArrayList<BasketCard> basketCardsList;
     private BasketCardAdapter basketCardAdapter;
     private String BasketType;
-    FilterItemAdapter categoryAdapter, sortByAdapter, brandAdapter;
-    private ArrayList<FilterItem> categoryItems;
-    private ArrayList<FilterItem> filterItems;
-    private ArrayList<FilterItem> brandItems;
 
 
     @SuppressLint("Range")
@@ -49,32 +39,9 @@ public class BasketPageFragment extends BaseFragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setOnClickListener(v -> {
             // Show the Filter Dialog
-//            Transition transition = new Fade();
-//            transition.setDuration(400);
-//            transition.addTarget(R.id.image);
-//            try {
-//                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            fragmentBasketPageBinding.bottomView.setVisibility(View.VISIBLE);
-//            fragmentBasketPageBinding.rlContainer.setVisibility(View.VISIBLE);
-//            fragmentBasketPageBinding.rlContainer.setClickable(false);
-//            fragmentBasketPageBinding.etSearch.setEnabled(false);
-//            BasketFilterFragment fragment = new BasketFilterFragment();
-//            fragment.show(getParentFragmentManager(), "TAG");
-//            fragmentBasketPageBinding.bottomView.setAlpha(5.0f);
-//
-//        // Start the animation
-//            fragmentBasketPageBinding.bottomView.animate()
-//                    .translationY(view.getHeight())
-//                    .alpha(1.0f)
-//                    .setListener(null);
-            BasketFilterFragment filterFragment = new BasketFilterFragment();
+            BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment();
             filterFragment.show(getChildFragmentManager(),"FilterFragment");
         });
-//        setFilterAdapter();
         initView();
         setRVAdapter();
         return view;

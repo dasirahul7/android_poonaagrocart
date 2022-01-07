@@ -1,26 +1,19 @@
 package com.poona.agrocart.ui.products_list;
 
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentProductListBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_explore.adapter.FilterItemAdapter;
-import com.poona.agrocart.ui.nav_explore.model.FilterItem;
+import com.poona.agrocart.ui.bottom_sheet.BottomSheetFilterFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.model.Product;
 
@@ -36,104 +29,25 @@ public class ProductListFragment extends BaseFragment
     private ProductGridAdapter productGridAdapter;
     private String isVegetablesOrFruits="vegetable";
 
-    private BottomSheetBehavior bottomSheetBehavior;
-    FilterItemAdapter categoryAdapter, sortByAdapter, brandAdapter;
-    private ArrayList<FilterItem> categoryItems;
-    private ArrayList<FilterItem> filterItems;
-    private ArrayList<FilterItem> brandItems;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         fragmentProductListBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_product_list, container, false);
         fragmentProductListBinding.setLifecycleOwner(this);
         final View view = fragmentProductListBinding.getRoot();
-        productListViewModel = new ViewModelProvider(this).get(ProductListViewModel.class);
-        Bundle bundle=this.getArguments();
-
-        if(bundle!=null)
-        isVegetablesOrFruits=bundle.getString("ProductCategory");
-
+        initView();
         setTitleBar();
-
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setOnClickListener(v -> {
-            try {
-                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            fragmentProductListBinding.bottomView.setVisibility(View.VISIBLE);
-            fragmentProductListBinding.rlContainer.setVisibility(View.VISIBLE);
-            fragmentProductListBinding.rlContainer.setClickable(false);
-            fragmentProductListBinding.etSearch.setEnabled(false);
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            // Show the Filter Dialog
+            BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment();
+            filterFragment.show(getChildFragmentManager(),"FilterFragment");
         });
-
-        setFilterAdapter();
-
-        initView();
         setRVAdapter(view);
 
         return view;
     }
 
-    private void setFilterAdapter()
-    {
-        categoryItems = new ArrayList<>();
-        filterItems = new ArrayList<>();
-        brandItems = new ArrayList<>();
-
-        //Sample categories
-        FilterItem category1 = new FilterItem("1", "Vegetable", false);
-        FilterItem category2 = new FilterItem("2", "Leafy Vegetables", false);
-        FilterItem category3 = new FilterItem("3", "Herbs", false);
-        FilterItem category4 = new FilterItem("4", "Fruits", false);
-        FilterItem category5 = new FilterItem("5", "Dry Fruits", false);
-        FilterItem category6 = new FilterItem("6", "Sprouts", false);
-
-        categoryItems.add(category1);
-        categoryItems.add(category2);
-        categoryItems.add(category3);
-        categoryItems.add(category4);
-        categoryItems.add(category5);
-
-        //Sample Sort By Filter
-        FilterItem filterItem1 = new FilterItem("1", "Low to High", false);
-        FilterItem filterItem2 = new FilterItem("2", "High to Low", false);
-        FilterItem filterItem3 = new FilterItem("3", "Newest Arrived", false);
-        filterItems.add(filterItem1);
-        filterItems.add(filterItem2);
-        filterItems.add(filterItem3);
-        filterItems.add(filterItem3);
-        filterItems.add(filterItem3);
-
-        // sample Brand Items
-
-        FilterItem brand1 = new FilterItem("1", "B&G Green", false);
-        FilterItem brand2 = new FilterItem("2", "Del Monte", false);
-        FilterItem brand3 = new FilterItem("3", "Fruttella", false);
-        brandItems.add(brand1);
-        brandItems.add(brand2);
-        brandItems.add(brand3);
-        brandItems.add(brand3);
-
-
-        categoryAdapter = new FilterItemAdapter(categoryItems, getActivity());
-        sortByAdapter = new FilterItemAdapter(filterItems, getActivity());
-        brandAdapter = new FilterItemAdapter(brandItems, getActivity());
-
-        fragmentProductListBinding.filterView.rvCategoryList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        fragmentProductListBinding.filterView.rvCategoryList.setHasFixedSize(true);
-        fragmentProductListBinding.filterView.rvSortList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        fragmentProductListBinding.filterView.rvSortList.setHasFixedSize(true);
-        fragmentProductListBinding.filterView.rvBrandList.setHasFixedSize(true);
-        fragmentProductListBinding.filterView.rvBrandList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        fragmentProductListBinding.filterView.rvCategoryList.setAdapter(categoryAdapter);
-        fragmentProductListBinding.filterView.rvSortList.setAdapter(sortByAdapter);
-        fragmentProductListBinding.filterView.rvBrandList.setAdapter(brandAdapter);
-    }
 
     private void setTitleBar()
     {
@@ -176,21 +90,12 @@ public class ProductListFragment extends BaseFragment
 
     private void initView()
     {
+        productListViewModel = new ViewModelProvider(this).get(ProductListViewModel.class);
+
+        Bundle bundle=this.getArguments();
+        if(bundle!=null)
+            isVegetablesOrFruits=bundle.getString("ProductCategory");
+
         this.rvVegetables= fragmentProductListBinding.rvProducts;
-
-        bottomSheetBehavior = BottomSheetBehavior.from(fragmentProductListBinding.bottomView);
-        fragmentProductListBinding.filterView.closeBtn.setOnClickListener(v -> {
-            closeFilter();
-        });
-        fragmentProductListBinding.filterView.applyBtn.setOnClickListener(v -> {
-            closeFilter();
-        });
-    }
-
-    private void closeFilter() {
-        fragmentProductListBinding.rlContainer.setVisibility(View.GONE);
-        fragmentProductListBinding.bottomView.setVisibility(View.GONE);
-        bottomSheetBehavior.setState(STATE_COLLAPSED);
-        fragmentProductListBinding.etSearch.setEnabled(false);
     }
 }

@@ -154,5 +154,5 @@
     <color name="bold_txt_color">#3F3F3F</color>
 <!--    Dialog colors-->
     <color name="dialog_bg_color">#F2F3F2</color>
-    <color name="filter_bg_color">#F5F5F5</color>
+    <color name="filter_bg_color">#F2F3F2</color>
 </resources>

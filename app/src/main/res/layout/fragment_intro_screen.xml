@@ -46,7 +46,7 @@
                 android:id="@+id/btNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_color_green"
+                android:background="@drawable/button_green"
                 android:text="@string/str_get_started"
                 android:textColor="@color/background_color_white_green"
                 android:textAllCaps="false"

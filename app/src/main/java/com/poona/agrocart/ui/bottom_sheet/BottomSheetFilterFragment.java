@@ -9,94 +9,133 @@ import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.DialogBasketFilterListBinding;
+import com.poona.agrocart.databinding.BottomSheetFilterDialogBinding;
 import com.poona.agrocart.ui.nav_explore.adapter.FilterItemAdapter;
 import com.poona.agrocart.ui.nav_explore.model.FilterItem;
 import com.poona.agrocart.widgets.ExpandIconView;
 
 import java.util.ArrayList;
 
-public class BasketFilterFragment extends BottomSheetDialogFragment {
-    private DialogBasketFilterListBinding dialogBasketFilterListBinding;
+public class BottomSheetFilterFragment extends BottomSheetDialogFragment implements View.OnClickListener {
+    private BottomSheetFilterDialogBinding bottomSheetFilterFragment;
     private FilterItemAdapter categoryAdapter, sortByAdapter, brandAdapter;
     private BasketFilterViewModel basketFilterViewModel;
     private ArrayList<FilterItem> categoryItems;
     private ArrayList<FilterItem> filterItems;
     private ArrayList<FilterItem> brandItems;
     private BottomSheetListener mListener;
-    private boolean isCategoryVisible = false;
+    private boolean isCategoryVisible = true;
     private boolean isFilterVisible = true;
     private boolean isBrandVisible = true;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        dialogBasketFilterListBinding = DialogBasketFilterListBinding.inflate(LayoutInflater.from(getActivity()));
+        bottomSheetFilterFragment = BottomSheetFilterDialogBinding.inflate(LayoutInflater.from(getActivity()));
         basketFilterViewModel = new ViewModelProvider(this).get(BasketFilterViewModel.class);
         setRvAdapter();
-//        this.getDialog().getWindow().setBackgroundDrawableResource(R.drawable.bottom_shhet_background);
+        setClicks();
+        //Hide all list by default
+        setFilterHideOrShow();
+        setBrandHideOrShow();
+        return bottomSheetFilterFragment.getRoot();
+    }
 
-        setStyle(DialogFragment.STYLE_NO_FRAME,R.style.BottomSheetDialogTheme);
-        dialogBasketFilterListBinding.ivCategory.setOnClickListener(v -> {
-            setCategoryHideOrShow();
-        });
-        return dialogBasketFilterListBinding.getRoot();
+    private void setClicks() {
+        bottomSheetFilterFragment.ivCategory.setOnClickListener(this);
+        bottomSheetFilterFragment.llCategoryFilter.setOnClickListener(this);
+        bottomSheetFilterFragment.ivSortBy.setOnClickListener(this);
+        bottomSheetFilterFragment.llSortByFilter.setOnClickListener(this);
+        bottomSheetFilterFragment.ivBrand.setOnClickListener(this);
+        bottomSheetFilterFragment.llBrandFilter.setOnClickListener(this);
     }
 
     private void setCategoryHideOrShow() {
         if (isCategoryVisible) {
-            dialogBasketFilterListBinding.ivCategory.setState(ExpandIconView.MORE, true);
-            collapseView(dialogBasketFilterListBinding.rvCategoryList);
-        }else {
-            dialogBasketFilterListBinding.ivCategory.setState(ExpandIconView.LESS, true);
-            expandView(dialogBasketFilterListBinding.rvCategoryList);
+            bottomSheetFilterFragment.ivCategory.setState(ExpandIconView.MORE, true);
+            collapseView(bottomSheetFilterFragment.rvCategoryList);
+        } else {
+            bottomSheetFilterFragment.ivCategory.setState(ExpandIconView.LESS, true);
+            expandView(bottomSheetFilterFragment.rvCategoryList);
         }
         isCategoryVisible = !isCategoryVisible;
     }
-    private void setFilterOrShow() {
+
+    private void setFilterHideOrShow() {
         if (isFilterVisible) {
-            dialogBasketFilterListBinding.ivSortBy.setState(ExpandIconView.MORE, true);
-            collapseView(dialogBasketFilterListBinding.rvSortList);
-        }else {
-            isFilterVisible = !isFilterVisible;
+            bottomSheetFilterFragment.ivSortBy.setState(ExpandIconView.MORE, true);
+            collapseView(bottomSheetFilterFragment.rvSortList);
+        } else {
+            bottomSheetFilterFragment.ivSortBy.setState(ExpandIconView.LESS, true);
+            expandView(bottomSheetFilterFragment.rvSortList);
         }
+        isFilterVisible = !isFilterVisible;
+    }
+
+    private void setBrandHideOrShow() {
+        if (isBrandVisible) {
+            bottomSheetFilterFragment.ivBrand.setState(ExpandIconView.MORE, true);
+            collapseView(bottomSheetFilterFragment.rvBrandList);
+        } else {
+            bottomSheetFilterFragment.ivBrand.setState(ExpandIconView.LESS, true);
+            expandView(bottomSheetFilterFragment.rvBrandList);
+        }
+        isBrandVisible = !isBrandVisible;
     }
 
     private void setRvAdapter() {
         //setCategory
-        basketFilterViewModel.getCategoryLiveData().observe(getViewLifecycleOwner(),categoryFilterItems -> {
+        basketFilterViewModel.getCategoryLiveData().observe(getViewLifecycleOwner(), categoryFilterItems -> {
             categoryItems = categoryFilterItems;
             categoryAdapter = new FilterItemAdapter(categoryItems, getActivity());
-            dialogBasketFilterListBinding.rvCategoryList.setLayoutManager(new LinearLayoutManager(getActivity(),
+            bottomSheetFilterFragment.rvCategoryList.setLayoutManager(new LinearLayoutManager(getActivity(),
                     RecyclerView.VERTICAL, false));
-            dialogBasketFilterListBinding.rvCategoryList.setHasFixedSize(true);
-            dialogBasketFilterListBinding.rvCategoryList.setAdapter(categoryAdapter);
+            bottomSheetFilterFragment.rvCategoryList.setHasFixedSize(true);
+            bottomSheetFilterFragment.rvCategoryList.setAdapter(categoryAdapter);
         });
-       //set SotBy and Filter
-        basketFilterViewModel.getFilterItemLiveData().observe(getViewLifecycleOwner(),sortByFilterItems -> {
+        //set SotBy and Filter
+        basketFilterViewModel.getFilterItemLiveData().observe(getViewLifecycleOwner(), sortByFilterItems -> {
             filterItems = sortByFilterItems;
             sortByAdapter = new FilterItemAdapter(filterItems, getActivity());
-            dialogBasketFilterListBinding.rvSortList.setLayoutManager(new LinearLayoutManager(getActivity(),
+            bottomSheetFilterFragment.rvSortList.setLayoutManager(new LinearLayoutManager(getActivity(),
                     RecyclerView.VERTICAL, false));
-            dialogBasketFilterListBinding.rvSortList.setHasFixedSize(true);
-            dialogBasketFilterListBinding.rvSortList.setAdapter(sortByAdapter);
+            bottomSheetFilterFragment.rvSortList.setHasFixedSize(true);
+            bottomSheetFilterFragment.rvSortList.setAdapter(sortByAdapter);
         });
         // set Brand Filter
-        basketFilterViewModel.getBrandItemLiveData().observe(getViewLifecycleOwner(),brandFilterItems -> {
+        basketFilterViewModel.getBrandItemLiveData().observe(getViewLifecycleOwner(), brandFilterItems -> {
             brandItems = brandFilterItems;
             brandAdapter = new FilterItemAdapter(brandItems, getActivity());
-            dialogBasketFilterListBinding.rvBrandList.setHasFixedSize(true);
-            dialogBasketFilterListBinding.rvBrandList.setLayoutManager(new LinearLayoutManager(getActivity(),
+            bottomSheetFilterFragment.rvBrandList.setHasFixedSize(true);
+            bottomSheetFilterFragment.rvBrandList.setLayoutManager(new LinearLayoutManager(getActivity(),
                     RecyclerView.VERTICAL, false));
-            dialogBasketFilterListBinding.rvBrandList.setAdapter(brandAdapter);
+            bottomSheetFilterFragment.rvBrandList.setAdapter(brandAdapter);
         });
 
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.iv_category:
+            case R.id.ll_category_filter:
+                setCategoryHideOrShow();
+                break;
+            case R.id.iv_sort_by:
+            case R.id.ll_sort_by_filter:
+                setFilterHideOrShow();
+                break;
+            case R.id.iv_brand:
+            case R.id.ll_brand_filter:
+                setBrandHideOrShow();
+                break;
+        }
     }
 
     public interface BottomSheetListener {
@@ -166,5 +205,8 @@ public class BasketFilterFragment extends BottomSheetDialogFragment {
         v.startAnimation(a);
     }
 
-
+//    @Override
+//    public int getTheme() {
+//        return R.style.CustomBottomSheetDialog;
+//    }
 }

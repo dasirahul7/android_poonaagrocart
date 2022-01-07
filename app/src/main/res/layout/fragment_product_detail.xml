@@ -915,7 +915,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginVertical="@dimen/_10sdp"
-                android:background="@drawable/background_color_green"
+                android:background="@drawable/button_green"
                 android:gravity="center|center_vertical"
                 android:includeFontPadding="false"
                 android:padding="@dimen/alerter_padding_small"

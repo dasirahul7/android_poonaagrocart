@@ -223,7 +223,7 @@
         <entry key="app/src/main/res/layout/content_home.xml" value="0.11" />
         <entry key="app/src/main/res/layout/content_splash_activity.xml" value="0.1" />
         <entry key="app/src/main/res/layout/coupon_terms_dialog.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/dialog_basket_filter_list.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/dialog_basket_filter_list.xml" value="0.2" />
         <entry key="app/src/main/res/layout/dialog_coupon_terms.xml" value="0.12" />
         <entry key="app/src/main/res/layout/dialog_delivery_options.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_logout.xml" value="0.18" />
