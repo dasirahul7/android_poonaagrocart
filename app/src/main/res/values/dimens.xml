@@ -54,7 +54,8 @@
     <dimen name="button_txt_size">@dimen/_18sp</dimen>
     <dimen name="small_txt_size">@dimen/_12sp</dimen>
     <dimen name="medium_txt_size">@dimen/_14sp</dimen>
-    <dimen name="large_txt_size">@dimen/_16sp</dimen>
-    <dimen name="xlarge_txt_size">@dimen/_18sp</dimen>
-    <dimen name="xl_large_txt_size">@dimen/_20sdp</dimen>
+    <dimen name="l_txt_size">@dimen/_16sp</dimen>
+    <dimen name="xl_txt_size">@dimen/_18sp</dimen>
+    <dimen name="xxl_txt_size">@dimen/_20sdp</dimen>
+    <dimen name="very_large">@dimen/_25sdp</dimen>
 </resources>

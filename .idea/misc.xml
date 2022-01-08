@@ -207,6 +207,7 @@
         <entry key="app/src/main/res/font/adamina.xml" value="0.11927083333333334" />
         <entry key="app/src/main/res/font/montserrat.xml" value="0.13973941368078177" />
         <entry key="app/src/main/res/font/poppins.xml" value="0.15648148148148147" />
+        <entry key="app/src/main/res/font/poppins_medium.xml" value="0.1411184210526316" />
         <entry key="app/src/main/res/layout-v28/app_bar_home.xml" value="0.14673913043478262" />
         <entry key="app/src/main/res/layout/about_us_fragment.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/activity_dash_board.xml" value="0.1431159420289855" />
@@ -306,7 +307,8 @@
         <entry key="app/src/main/res/layout/row_best_selling_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/row_category_item.xml" value="0.22" />
         <entry key="app/src/main/res/layout/row_check_box_item.xml" value="0.2" />
-        <entry key="app/src/main/res/layout/row_coupon_item.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/row_coupon.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/row_coupon_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/row_delivery_option_radio.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_explore_item.xml" value="0.2" />
         <entry key="app/src/main/res/layout/row_notification.xml" value="0.2324455205811138" />

@@ -137,6 +137,7 @@
     <color name="blue_top_color" tools:keep="@color/blue_top_color">#C8EEFE</color>
     <color name="blue_bottom_color" tools:keep="@color/blue_bottom_color">#A3D2FE</color>
     <color name="red_text_color">#F3603F</color>
+    <color name="light_green_txt_color">#71AA10</color>
 
     <!--Weight item colors-->
     <color name="weight_border_color">#69BB86</color>

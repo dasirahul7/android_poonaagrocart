@@ -7,7 +7,7 @@
     tools:context=".ui.nav_offers.CouponFragment">
 
 <androidx.recyclerview.widget.RecyclerView
-    android:layout_marginHorizontal="@dimen/_10sdp"
+    android:layout_marginHorizontal="@dimen/horizontal_margin"
     android:id="@+id/rvCoupons"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>

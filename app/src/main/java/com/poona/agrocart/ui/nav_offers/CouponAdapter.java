@@ -41,12 +41,18 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     public void onBindViewHolder(@NonNull CouponHolder holder, int position) {
         Coupons coupon = coupons.get(position);
         rowCouponItemBinding.setModuleCoupon(coupon);
-        if (coupon.getId() % 3 == 1)
+        if (coupon.getId() % 3 == 1){
             rowCouponItemBinding.couponRow.setBackgroundResource(R.drawable.coupon_green);
+            rowCouponItemBinding.tvCouponCode.setTextColor(context.getColor(R.color.light_green_txt_color));
+            rowCouponItemBinding.mcvCouponCode.setStrokeColor(context.getColor(R.color.light_green_txt_color));
+        }
         if (coupon.getId() % 3 == 2)
             rowCouponItemBinding.couponRow.setBackgroundResource(R.drawable.coupon_blue);
-        if (coupon.getId() % 3 == 0)
+        if (coupon.getId() % 3 == 0){
             rowCouponItemBinding.couponRow.setBackgroundResource(R.drawable.coupon_pink);
+            rowCouponItemBinding.tvCouponCode.setTextColor(context.getColor(R.color.red_text_color));
+            rowCouponItemBinding.mcvCouponCode.setStrokeColor(context.getColor(R.color.red_text_color));
+        }
         holder.bind(coupon);
     }
 
