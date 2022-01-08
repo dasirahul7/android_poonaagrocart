@@ -2,61 +2,72 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <ScrollView
-        android:background="@color/white"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical"
         tools:context=".ui.nav_about_us.AboutUsFragment">
 
-       <LinearLayout
-           android:orientation="vertical"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-
-       <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:layout_width="match_parent"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:strokeWidth="1dp"
-            android:layout_margin="@dimen/_10sdp"
-            app:strokeColor="@color/colorGrey"
-            android:layout_height="@dimen/_150sdp">
-            <ImageView
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginHorizontal="@dimen/horizontal_margin"
+            android:orientation="vertical">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:elevation="@dimen/_20sdp"
+                app:cardCornerRadius="@dimen/_10sdp"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/colorLightGrey"
+                app:strokeWidth="1dp">
+                <LinearLayout
+                    android:padding="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_poona_agro_cart_logo" />
+
+                </LinearLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_poona_agro_cart_logo"/>
+                android:text="@string/menu_about_us"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sp"
+                android:textStyle="bold"
+                app:setCustomFont="@string/font_poppins_semi_bold" />
 
-        </com.google.android.material.card.MaterialCardView>
+            <View
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="3dp"
+                android:background="@color/colorLightGrey" />
 
-        <com.poona.agrocart.widgets.CustomTextView
-            android:textColor="@color/black"
-            android:text="@string/menu_about_us"
-            android:textStyle="bold"
-            app:setCustomFont="@string/font_poppins_semi_bold"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:textSize="@dimen/_16sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <View
-            android:layout_marginTop="3dp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@color/colorLightGrey"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-
-        <com.poona.agrocart.widgets.CustomTextView
-            android:layout_margin="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:text="@string/about_str"
-            android:padding="@dimen/_5sdp"
-            android:textSize="@dimen/_12sp"
-            android:fontFamily="@font/poppins"
-            android:textColor="@color/about_txt_color"
-            android:layout_height="wrap_content"/>
-       </LinearLayout>
-    </ScrollView>
+            <com.poona.agrocart.widgets.CustomTextView
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:lineSpacingExtra="@dimen/_2sdp"
+                android:text="@string/about_str"
+                android:textColor="@color/about_txt_color"
+                android:textSize="@dimen/medium_txt_size"
+                android:textStyle="normal"
+                app:setCustomFont="@string/font_poppins_medium" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

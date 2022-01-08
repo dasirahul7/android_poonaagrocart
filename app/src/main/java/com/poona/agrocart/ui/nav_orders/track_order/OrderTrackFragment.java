@@ -34,12 +34,10 @@ public class OrderTrackFragment extends BaseFragment
     private void setValues()
     {
         orderTrackViewModel = new ViewModelProvider(this).get(OrderTrackViewModel.class);
-        fragmentOrderTrackBinding.setOrderTrackViewModel(orderTrackViewModel);
-        orderTrackViewModel.orderId.setValue(getString(R.string._paac002));
-        orderTrackViewModel.expectedDeliveryDate.setValue(getString(R.string.sep_30_2021_9_00_am_12_00pm));
-        orderTrackViewModel.customerName.setValue(getString(R.string.ayush_shah));
-        orderTrackViewModel.mobileNumber.setValue(getString(R.string._91_986_095_3315));
-        orderTrackViewModel.address.setValue(getString(R.string.nand_nivas_building_floor_3_b_3_lane_no_13_bhatrau_nivas_vishrantwadi_pune_411015));
+        orderTrackViewModel.getOrderMutableLiveData().observe(getViewLifecycleOwner(),
+                order -> {
+            fragmentOrderTrackBinding.setOrderTrackViewModel(orderTrackViewModel);
+        });
     }
 
     private void initView()
