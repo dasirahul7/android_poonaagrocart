@@ -75,7 +75,6 @@
 <!--                    android:maxLength="4"-->
 <!--                    android:text="@{commonViewModel.otp}"-->
 <!--                    android:textColor="@color/clr_enter_otp"-->
-<!--                    android:textCursorDrawable="@null"-->
 <!--                    android:textSize="@dimen/_18sp"-->
 <!--                    android:windowSoftInputMode="stateVisible" />-->
 
@@ -92,14 +91,16 @@
                     android:digits="1234567890"
                     android:imeOptions="actionDone"
                     android:inputType="number"
+                    android:lineSpacingExtra="@dimen/_20sdp"
                     android:text="@{commonViewModel.otp}"
                     android:textColor="@color/clr_enter_otp"
                     android:textSize="@dimen/_18sp"
                     android:textStyle="bold"
                     app:cursorWidth="@dimen/_1sdp"
                     app:itemCount="4"
-                    app:lineColor="@color/colorLightGrey"
                     app:itemHeight="@dimen/_45sdp"
+                    app:lineColor="@color/color17"
+                    app:lineWidth="1dp"
                     app:viewType="line" />
 
                 <com.poona.agrocart.widgets.CustomTextView
