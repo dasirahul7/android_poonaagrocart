@@ -63,20 +63,44 @@
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
 
-                <com.poona.agrocart.widgets.custom_otp_edit_text.CustomOtpEditText
+<!--                <com.poona.agrocart.widgets.custom_otp_edit_text.CustomOtpEditText-->
+<!--                    android:id="@+id/et_otp"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="@dimen/_40sdp"-->
+<!--                    android:layout_below="@+id/tv_otp_sent"-->
+<!--                    android:layout_marginTop="@dimen/_20sdp"-->
+<!--                    android:layout_marginEnd="@dimen/_80sdp"-->
+<!--                    android:cursorVisible="false"-->
+<!--                    android:inputType="number"-->
+<!--                    android:maxLength="4"-->
+<!--                    android:text="@{commonViewModel.otp}"-->
+<!--                    android:textColor="@color/clr_enter_otp"-->
+<!--                    android:textCursorDrawable="@null"-->
+<!--                    android:textSize="@dimen/_18sp"-->
+<!--                    android:windowSoftInputMode="stateVisible" />-->
+
+                <com.poona.agrocart.widgets.pinview_OTP.PinView
                     android:id="@+id/et_otp"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    style="@style/PinWidget.PinView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_otp_sent"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_80sdp"
-                    android:focusable="true"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:cursorVisible="true"
+                    android:digits="1234567890"
+                    android:imeOptions="actionDone"
                     android:inputType="number"
-                    android:maxLength="4"
                     android:text="@{commonViewModel.otp}"
                     android:textColor="@color/clr_enter_otp"
                     android:textSize="@dimen/_18sp"
-                    android:windowSoftInputMode="stateVisible"/>
+                    android:textStyle="bold"
+                    app:cursorWidth="@dimen/_1sdp"
+                    app:itemCount="4"
+                    app:lineColor="@color/colorLightGrey"
+                    app:itemHeight="@dimen/_45sdp"
+                    app:viewType="line" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_resend_otp"

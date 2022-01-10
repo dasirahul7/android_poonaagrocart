@@ -6,6 +6,7 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.20833333333333334" />
         <entry key="../../.gradle/caches/transforms-3/74c8d3b93df5ec37a852dbd0ebdf6ff9/transformed/jetified-tooltipindicator-0.0.1/res/drawable/tooltip_indicator_rounded_line_selected.xml" value="0.1527777777777778" />
         <entry key="../../.gradle/caches/transforms-3/74c8d3b93df5ec37a852dbd0ebdf6ff9/transformed/jetified-tooltipindicator-0.0.1/res/drawable/tooltip_indicator_rounded_line_unselected.xml" value="0.1527777777777778" />
+        <entry key="../../.gradle/caches/transforms-3/f9b6d98449c64230b47df54dd24d0908/transformed/jetified-pinview-1.4.4/res/drawable/pv_invisible_image.xml" value="0.13385416666666666" />
         <entry key="app/src/main/res/drawable-mdpi/strike_through.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable-v24/bg_green_rounded.xml" value="0.19814814814814816" />
         <entry key="app/src/main/res/drawable/alerter_ic_notifications.xml" value="0.20615384615384616" />
@@ -149,6 +150,7 @@
         <entry key="app/src/main/res/layout/fragment_splash_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_terms_condition.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_ticket_detail.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_verify_otp.xml" value="0.25" />
         <entry key="app/src/main/res/layout/home_basket_item.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/home_best_selling_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/home_cat_item.xml" value="0.15489130434782608" />
