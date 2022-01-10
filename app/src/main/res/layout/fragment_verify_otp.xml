@@ -88,6 +88,7 @@
                     android:layout_marginEnd="@dimen/_80sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:cursorVisible="true"
+                    app:itemSpacingg="@dimen/_8sdp"
                     android:digits="1234567890"
                     android:imeOptions="actionDone"
                     android:inputType="number"
