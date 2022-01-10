@@ -1,38 +1,25 @@
 package com.poona.agrocart.ui.nav_favourites;
 
-public class FavouriteItem
+import com.poona.agrocart.ui.home.model.Product;
+
+public class FavouriteItem extends Product
 {
-    private String imgUrl,name,weight,price;
+    private boolean isFavorite ;
 
-    public String getImgUrl() {
-        return imgUrl;
+    public FavouriteItem(String id, String name, String weight, String offer,
+                         String price, String img, String location, String brand,
+                         boolean isFavorite) {
+        super(id, name, weight, offer, price, img, location, brand);
+        this.isFavorite = isFavorite;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    @Override
+    public boolean isFavorite() {
+        return isFavorite;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getWeight() {
-        return weight;
-    }
-
-    public void setWeight(String weight) {
-        this.weight = weight;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
+    @Override
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }

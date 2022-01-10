@@ -49,7 +49,7 @@ public class HomeViewModel extends AndroidViewModel {
 
     private void getBasketData() {
         AppSharedPreferences preferences = new AppSharedPreferences(getApplication());
-        ArrayList<Product> basketList = preferences.getArrayList(AppConstants.CART_LIST);
+        ArrayList<Product> basketList = preferences.getSavedCartList(AppConstants.CART_LIST);
         savesProductInBasket.setValue(basketList);
     }
 

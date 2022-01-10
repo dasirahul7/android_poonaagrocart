@@ -6,6 +6,7 @@ import com.poona.agrocart.ui.basket_detail.model.Subscription;
 import java.util.ArrayList;
 
 public class ProductDetail {
+    public String productId;
     public String productName;
     public String productLocation;
     public ArrayList<String> weightOfProduct;
@@ -27,12 +28,33 @@ public class ProductDetail {
     public String productOfferMsg;
     public Boolean basket=false;
     public Boolean organic=false;
+    public Boolean isFavourite=false;
     public String brand;
     // Basket details
     private Subscription subscription;
     private ArrayList<ProductItem> productList;
     private ArrayList<ProductComment> commentList;
     private ArrayList<BasketContent> basketContents;
+
+    public Boolean getFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite(Boolean favourite) {
+        isFavourite = favourite;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public Boolean getOrganic() {
+        return organic;
+    }
 
     public Boolean isOrganic() {
         return organic;

@@ -14,6 +14,21 @@ public class Product implements Parcelable {
     boolean organic = false;
     boolean inBasket = false, isFavorite = false;
 
+    public Product(String productId, String productName,
+                   String weight, String offerValue, String price,
+                   String productImage, String productLocation,
+                   String brand, Boolean isFavourite) {
+        this.id = productId;
+        this.name = productName;
+        this.weight = weight;
+        this.offer = offerValue;
+        this.price = price;
+        this.img = productImage;
+        this.location = productLocation;
+        this.brand = brand;
+        this.isFavorite = isFavourite;
+    }
+
     public boolean isInBasket() {
         return inBasket;
     }

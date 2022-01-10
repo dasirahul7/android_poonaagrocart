@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +53,7 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void setContent() {
-        OrderDetails orderDetails = new OrderDetails(getString(R.string.congratulations),getString(R.string.order_placed_success));
+        OrderDetails orderDetails = new OrderDetails(getString(R.string.order_success_msg),getString(R.string.order_placed_success));
         orderDetailsViewModel.orderDetailsLiveData.setValue(orderDetails);
         orderDetailsBinding.setOrderDetailsViewModel(orderDetailsViewModel);
         orderDetailsBinding.btnTrackOrder.setOnClickListener(this::onClick);

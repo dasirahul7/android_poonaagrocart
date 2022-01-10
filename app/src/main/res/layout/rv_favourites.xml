@@ -44,7 +44,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:scaleType="fitXY"
-                    setImage="@{favouriteItem.imgUrl}"/>
+                    setImage="@{favouriteItem.img}"/>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/bell_pepper_red"
-                    android:textColor="@color/color_basket_name"
+                    android:textColor="@color/blue_txt_color"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_bold" />
 
@@ -99,20 +99,29 @@
                     android:layout_height="0dp"
                     android:layout_weight="50"
                     android:paddingTop="@dimen/_2sdp"
-                    android:paddingEnd="@dimen/_2sdp"
                     android:paddingBottom="@dimen/_10sdp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_red_heart" />
+                    android:src="@drawable/ic_filled_heart" />
 
-                <ImageView
-                    android:id="@+id/img_plus"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="50"
+                    android:layout_gravity="center_horizontal"
                     android:paddingTop="@dimen/_2sdp"
                     android:paddingEnd="@dimen/_4sdp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_plus_with_sqaure_bg" />
+                    >
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:id="@+id/img_plus"
+                        style="@style/PlusButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

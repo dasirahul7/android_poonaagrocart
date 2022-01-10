@@ -31,7 +31,7 @@ import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     private static final int AUTO_SCROLL_THRESHOLD_IN_MILLI = 3000;
     private HomeViewModel homeViewModel;
@@ -48,7 +48,6 @@ public class HomeFragment extends BaseFragment {
     private ArrayList<Banner> banners = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
     private ArrayList<Basket> baskets = new ArrayList<>();
-    private AppSharedPreferences session;
     private final ArrayList<Product> mCartList = new ArrayList<Product>();
     private ArrayList<String> BasketIds = new ArrayList<>();
 
@@ -57,7 +56,6 @@ public class HomeFragment extends BaseFragment {
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
-        session = new AppSharedPreferences(requireActivity());
         View root = fragmentHomeBinding.getRoot();
         getBasketItems();
         setBannersView();
@@ -67,7 +65,14 @@ public class HomeFragment extends BaseFragment {
         setBasketItems(root);
         setCartItems(root);
         setStoreBanner(root);
+        initClick();
         return root;
+    }
+
+    private void initClick() {
+        fragmentHomeBinding.tvAllCategory.setOnClickListener(this);
+        fragmentHomeBinding.tvAllExclusive.setOnClickListener(this);
+        fragmentHomeBinding.tvAllSelling.setOnClickListener(this);
     }
 
     private void getBasketItems() {
@@ -230,16 +235,15 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void addToBasket(Product item) {
-        if (item.getQuantity() == null)
             item.setQuantity("1");
         mCartList.add(item);
-        session.saveArrayList(mCartList, AppConstants.CART_LIST);
+        preferences.saveCartArrayList(mCartList, AppConstants.CART_LIST);
         for (int i = 0; i < mCartList.size(); i++) {
             System.out.println("Added: " + mCartList.get(i).getName());
         }
     }
 
-    private void toProductDetail(Product product, View root) {
+    public void toProductDetail(Product product, View root) {
         Bundle bundle = new Bundle();
         bundle.putString("name", product.getName());
         bundle.putString("image", product.getImg());
@@ -253,4 +257,12 @@ public class HomeFragment extends BaseFragment {
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
 
+    @Override
+    public void onClick(View v) {
+switch (v.getId()){
+    case R.id.tv_all_category:
+
+        break;
+}
+    }
 }

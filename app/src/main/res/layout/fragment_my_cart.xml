@@ -173,23 +173,6 @@
 
         </LinearLayout>
 
-<!--        <com.poona.agrocart.widgets.CustomButton-->
-<!--            style="?android:attr/borderlessButtonStyle"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center|center_vertical"-->
-<!--            android:layout_margin="@dimen/_30sdp"-->
-<!--            android:background="@drawable/background_light_green"-->
-<!--            android:gravity="center|center_vertical"-->
-<!--            android:includeFontPadding="false"-->
-<!--            android:padding="@dimen/alerter_padding_small"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textSize="@dimen/_18sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:setCustomFont="@string/font_poppins_semi_bold" />-->
-
         <com.poona.agrocart.widgets.CustomButton
             android:visibility="gone"
             android:id="@+id/continue_btn"

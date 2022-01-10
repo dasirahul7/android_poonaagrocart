@@ -120,15 +120,27 @@ public class AppSharedPreferences
         }
     }
 
-    public void saveArrayList(ArrayList<Product> list, String key){
+    public void saveCartArrayList(ArrayList<Product> list, String key){
 
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString(key, json);
         editor.apply();     // This line is IMPORTANT !!!
     }
-    public ArrayList<Product> getArrayList(String key){
+    public void saveFavArrayList(ArrayList<Product> list, String key){
 
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
+    public ArrayList<Product> getSavedCartList(String key){
+        Gson gson = new Gson();
+        String json = preferences.getString(key, null);
+        Type type = new TypeToken<ArrayList<Product>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+    public ArrayList<Product> getSavedFavList(String key){
         Gson gson = new Gson();
         String json = preferences.getString(key, null);
         Type type = new TypeToken<ArrayList<Product>>() {}.getType();

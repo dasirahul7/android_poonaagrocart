@@ -99,7 +99,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
     @SuppressLint("NotifyDataSetChanged")
     private void setRvAdapter() {
-        cartList = mSessionManager.getArrayList(AppConstants.CART_LIST);
+        cartList = mSessionManager.getSavedCartList(AppConstants.CART_LIST);
             myCartViewModel.liveProductList.setValue(cartList);
             if (cartList!=null&&cartList.size()>0) {
                 myCartViewModel.getCartList().observe(getViewLifecycleOwner(), products -> {
@@ -126,31 +126,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         else {
             fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
             fragmentMyCartBinding.continueBtn.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void prepareListingData() {
-        for (int i = 0; i < 10; i++) {
-            Product cartItem = new Product();
-            cartItem.setName("Bell Pepper Red");
-            cartItem.setWeight("1kg");
-            cartItem.setPrice("Rs.30");
-            cartItem.setOfferPrice("RS.25");
-            cartItem.setImg("https://www.linkpicture.com/q/capsicon.png");
-            cartItem.setLocation("Vishrantwadi");
-            if (i == 3) {
-                cartItem.setName("Potato");
-                cartItem.setWeight("2kg");
-                cartItem.setPrice("Rs.50");
-                cartItem.setOfferPrice("RS.40");
-            }
-            if (i == 5) {
-                cartItem.setName("Potato");
-                cartItem.setWeight("2kg");
-                cartItem.setPrice("Rs.50");
-                cartItem.setOfferPrice("RS.40");
-            }
-//            cartItemArrayList.add(cartItem);
         }
     }
 

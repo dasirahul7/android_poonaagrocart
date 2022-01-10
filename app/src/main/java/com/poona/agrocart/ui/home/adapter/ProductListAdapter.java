@@ -72,9 +72,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         // The Landscape Item Holder
         public ProductHolder(RowProductItemBinding productBinding) {
             super(productBinding.getRoot());
-            productBinding.ivCross.setVisibility(View.INVISIBLE);
-            productBinding.ivMinus.setVisibility(View.INVISIBLE);
-            productBinding.etQuantity.setVisibility(View.INVISIBLE);
         }
         //Only Product Item bind
         public void bindProduct(Product product, int position) {

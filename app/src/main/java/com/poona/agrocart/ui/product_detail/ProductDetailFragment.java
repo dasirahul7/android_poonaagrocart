@@ -16,13 +16,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
+import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.basket_detail.model.Subscription;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.adapter.OfferProductListAdapter;
 import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.nav_favourites.FavouriteItem;
 import com.poona.agrocart.ui.product_detail.adapter.BasketContentsAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.WeightAdapter;
@@ -70,7 +73,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         fragmentProductDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false);
         fragmentProductDetailBinding.setLifecycleOwner(this);
         root = fragmentProductDetailBinding.getRoot();
-
         initTitleWithBackBtn("");
         initView();
         setSimilarItems();
@@ -446,7 +448,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         if (isFavourite) {
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
         } else {
-            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_red_heart);
+            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
         }
         isFavourite = !isFavourite;
     }

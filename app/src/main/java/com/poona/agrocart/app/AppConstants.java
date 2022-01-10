@@ -105,6 +105,7 @@ public class AppConstants
 
     //SharedPreferences keys
     public static String CART_LIST = "CART_LIST";
+    public static String FAV_LIST = "FAV_LIST";
     public static final String pId="PAC";
 
 }

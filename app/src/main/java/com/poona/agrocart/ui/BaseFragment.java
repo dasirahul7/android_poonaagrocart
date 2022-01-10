@@ -25,6 +25,7 @@ import android.net.NetworkInfo;
 import android.net.ParseException;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -46,12 +47,14 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.firebase.PushNotification;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
@@ -803,6 +806,21 @@ public abstract class BaseFragment extends Fragment {
         a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density + 300));
         v.startAnimation(a);
     }
+
+    public void toDetails(Product product, View root) {
+        Bundle bundle = new Bundle();
+        bundle.putString("name", product.getName());
+        bundle.putString("image", product.getImg());
+        bundle.putString("price", product.getPrice());
+        bundle.putString("brand", product.getBrand());
+        bundle.putString("weight", product.getWeight());
+        bundle.putString("quantity", product.getQuantity());
+        bundle.putBoolean("organic", product.isOrganic());
+        bundle.putBoolean("isInBasket", product.isInBasket());
+        bundle.putString("Product", "Product");
+        Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+    }
+
 
     /*private String saveTempFileToFile(File tempFile) {
         try {
