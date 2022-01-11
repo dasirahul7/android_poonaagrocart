@@ -251,8 +251,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/_2sdp">
+                    android:orientation="vertical">
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_house_number"
@@ -274,8 +273,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/_2sdp">
+                    android:orientation="vertical">
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_apartment"

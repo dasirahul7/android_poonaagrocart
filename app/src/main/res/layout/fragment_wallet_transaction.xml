@@ -37,6 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:text="@string/my_wallet_amount"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_16sp"

@@ -238,7 +238,7 @@
     <style name="FormShortEdittextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:layout_height">@dimen/_30sdp</item>
         <item name="android:layout_marginStart">@dimen/_15sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_15sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_20sdp</item>
         <item name="android:layout_marginBottom">@dimen/_10sdp</item>
         <item name="android:background">@drawable/bg_dashboard_et_layout</item>
         <item name="android:elevation">@dimen/_2sdp</item>
