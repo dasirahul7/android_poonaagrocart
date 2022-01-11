@@ -6,7 +6,7 @@
 
         <variable
             name="cartItem"
-            type="com.poona.agrocart.ui.my_cart.CartItem" />
+            type="com.poona.agrocart.ui.nav_my_cart.CartItem" />
 
     </data>
 
@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{cartItem.name}"
-                    android:textColor="@color/color_basket_name"
+                    android:textColor="@color/blue_txt_color"
                     android:textSize="@dimen/_16sp"
                     android:paddingHorizontal="@dimen/_2sdp"
                     app:setCustomFont="@string/font_poppins_bold" />
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{cartItem.weight}"
                     android:paddingHorizontal="@dimen/_2sdp"
-                    android:textColor="@color/color17"
+                    android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
 
@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{cartItem.price}"
                     android:background="@drawable/bg_strikethrough"
-                    android:textColor="@color/color17"
+                    android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     android:paddingHorizontal="@dimen/_2sdp"
                     android:layout_marginTop="@dimen/_4sdp"

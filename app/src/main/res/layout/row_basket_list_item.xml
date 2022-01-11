@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="basket"
+            type="com.poona.agrocart.ui.home.model.Basket" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardview_product"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_210sdp"
+        android:elevation="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/clr_custom_edit_text_otp"
+        app:strokeWidth="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/img_layout"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_centerHorizontal="true"
+                app:cardCornerRadius="@dimen/_12sdp"
+                app:cardElevation="0dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/itemImg"
+                    setImage="@{basket.img}"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_below="@+id/txt_item_offer"
+                    android:layout_centerHorizontal="true" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:id="@+id/txt_item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:singleLine="true"
+                android:text="@{basket.name}"
+                android:textColor="@color/blue_txt_color"
+                android:textSize="@dimen/category_txt_size"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_layout"
+                app:setCustomFont="@string/font_poppins_semi_bold" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:singleLine="true"
+                android:text="@{basket.price}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/category_txt_size"
+                app:fontFamily="@font/montserrat"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

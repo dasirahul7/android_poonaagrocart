@@ -6,7 +6,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.addresses.AddressesFragment">
+        tools:context=".ui.nav_addresses.AddressesFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -19,18 +19,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/background_verify_otp_btn"
+                android:background="@drawable/button_green"
                 android:drawableStart="@drawable/ic_plus_white"
                 android:padding="@dimen/alerter_padding_small"
+                android:drawableTint="@color/background_color_white_green"
                 android:paddingStart="@dimen/_20sdp"
                 android:text="@string/add_new_address"
-                android:textAllCaps="false"
-                android:textColor="@color/background_button_selector_green"
-                android:textSize="@dimen/_18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:setCustomFont="@string/font_poppins_regular" />
+                tools:ignore="RtlSymmetry"
+                android:textColor="@color/background_color_white_green"
+                android:textAllCaps="false"
+                android:includeFontPadding="false"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center|center_vertical"
+                android:textSize="@dimen/_18sp"
+                style="?android:attr/borderlessButtonStyle"
+                app:setCustomFont="@string/font_poppins_semi_bold"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_address"

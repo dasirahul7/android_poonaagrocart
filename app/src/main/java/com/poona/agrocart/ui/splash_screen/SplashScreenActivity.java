@@ -1,38 +1,22 @@
 package com.poona.agrocart.ui.splash_screen;
 
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
+import static com.poona.agrocart.app.AppConstants.LOGOUT;
+
 import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
-import android.app.ActionBar;
-import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHost;
-import androidx.navigation.NavHostController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.poona.agrocart.R;
 import com.poona.agrocart.ui.BaseActivity;
-
-import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
-import static com.poona.agrocart.app.AppConstants.LOGOUT;
+import com.poona.agrocart.widgets.CustomTextView;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -46,6 +30,7 @@ public class SplashScreenActivity extends BaseActivity
 
     Toolbar toolbar;
     public static ImageView ivBack;
+    public static CustomTextView title;
     private AppBarLayout appBarLayout;
 
 
@@ -58,12 +43,12 @@ public class SplashScreenActivity extends BaseActivity
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        }
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Window window = getWindow();
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+//        }
 
 
 
@@ -106,6 +91,7 @@ public class SplashScreenActivity extends BaseActivity
     private void findCompo()
     {
         ivBack=findViewById(R.id.iv_back);
+        title=findViewById(R.id.tv_title);
         toolbar=findViewById(R.id.toolbar_login);
         appBarLayout=findViewById(R.id.app_bar_layout);
 

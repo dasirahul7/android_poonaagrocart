@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.nav_stores.StoreDetailFragment">
+
+    <data>
+
+        <variable
+            name="storeDetailViewModel"
+            type="com.poona.agrocart.ui.nav_stores.StoreDetailViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_15sdp">
+
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="@dimen/_10sdp"
+                android:id="@+id/location_card"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/green_cart_bg"
+                    android:padding="@dimen/_10sdp"
+                    >
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_store_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_toStartOf="@+id/img_store"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@{storeDetailViewModel.storeMutableLiveData.name}"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_24sp"
+                        android:textStyle="bold"
+                        app:textAllCaps="false"
+                        app:setCustomFont="@string/font_poppins_bold"/>
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_store_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@{storeDetailViewModel.storeMutableLiveData.location}"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sp"
+                        android:layout_toStartOf="@+id/img_store"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+
+                    <ImageView
+                        android:id="@+id/img_store"
+                        setStoreImage="@{storeDetailViewModel.storeMutableLiveData.img}"
+                        android:layout_width="@dimen/_110sdp"
+                        android:layout_height="@dimen/_110sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/customTextView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/about_store"
+                android:textColor="@color/blue_txt_color"
+                android:textSize="@dimen/_18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/location_card"
+                app:setCustomFont="@string/font_poppins_semi_bold" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_horizontal_line"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customTextView3" />
+
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_about_store"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:lineSpacingExtra="@dimen/_2sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@{storeDetailViewModel.storeMutableLiveData.about}"
+                android:textColor="@color/about_txt_color"
+                android:textSize="@dimen/_14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view1"
+                app:setCustomFont="@string/font_poppins_regular" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_horizontal_line"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_about_store" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:drawableStart="@drawable/ic_phone"
+                android:paddingVertical="@dimen/_10sdp"
+                android:drawablePadding="@dimen/_10sdp"
+                android:text="@{storeDetailViewModel.storeMutableLiveData.contact}"
+                android:textColor="@color/store_txt_color"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:drawableStart="@drawable/ic_location"
+                android:paddingVertical="@dimen/_10sdp"
+                android:drawablePadding="@dimen/_10sdp"
+                android:text="@{storeDetailViewModel.storeMutableLiveData.address}"
+                android:textColor="@color/store_txt_color"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_contact" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_170sdp"
+                android:layout_marginVertical="@dimen/_20sdp"
+                app:cardCornerRadius="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_address">
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapView"
+                    class="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                app:elevation="@dimen/_10sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                app:backgroundTint="@android:color/white"
+                android:src="@drawable/ic_send"
+                android:cropToPadding="false"
+                app:tint="@color/color_blue"
+                app:fabCustomSize="@dimen/_40sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView"
+                app:layout_constraintEnd_toEndOf="@+id/cardView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

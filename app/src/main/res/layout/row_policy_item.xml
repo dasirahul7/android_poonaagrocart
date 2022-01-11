@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto">-->
+
+    <data>
+
+        <variable
+            name="modulePolicy"
+            type="com.poona.agrocart.ui.nav_our_privacy.PolicyItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/img"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:src="@drawable/ic_terms_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+        <com.poona.agrocart.widgets.CustomTextView
+            android:id="@+id/tv_policy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@{modulePolicy.policyTitle}"
+            android:padding="@dimen/_10sdp"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_16sp" />
+
+    </LinearLayout>
+
+</layout>

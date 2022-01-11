@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true"
-        android:color="@color/color_invoice_btn" /> <!-- pressed -->
-    <item android:state_focused="true"
-        android:color="@color/white" /> <!-- focused -->
+    <item android:color="@color/color_invoice_btn"
+        android:state_pressed="true" /> <!-- pressed -->
+    <item android:color="@color/white" android:state_focused="true" /> <!-- focused -->
     <item android:color="@color/white" /> <!-- default -->
 </selector>

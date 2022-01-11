@@ -2,29 +2,41 @@ package com.poona.agrocart.ui.product_detail;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentProductImageBinding;
-import com.poona.agrocart.ui.basket_product_detail.BasketProductDetailFragment;
-import com.poona.agrocart.ui.basket_product_detail.BasketProductImgFragment;
+import com.poona.agrocart.ui.basket_detail.BasketDetailFragment;
 
 import java.util.ArrayList;
 
 public class ProductImageFragment extends Fragment
 {
     private static Context context;
-    private static ArrayList<Integer> productImgsList;
+    private static ArrayList<String> productImgsList;
     private FragmentProductImageBinding fragmentProductImageBinding;
     private View view;
     private static final String POSITION = "position";
     private ImageView productImg;
 
-    public static ProductImageFragment newInstance(ProductDetailFragment productDetailFragment, int pos, ArrayList<Integer> imgs)
+    public static ProductImageFragment newInstance(ProductDetailFragment productDetailFragment, int pos, ArrayList<String> imgs)
+    {
+        context = productDetailFragment.getContext();
+        productImgsList = imgs;
+        ProductImageFragment fragment = new ProductImageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(POSITION, pos);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+    public static ProductImageFragment newInstance(BasketDetailFragment productDetailFragment, int pos, ArrayList<String> imgs)
     {
         context = productDetailFragment.getContext();
         productImgsList = imgs;
@@ -43,7 +55,11 @@ public class ProductImageFragment extends Fragment
         fragmentProductImageBinding.setLifecycleOwner(this);
         view = fragmentProductImageBinding.getRoot();
         productImg = fragmentProductImageBinding.ivProduct;
-        productImg.setImageResource(productImgsList.get(position));
+//        productImg.setImageResource(productImgsList.get(position));
+        Glide.with(view.getContext())
+                .load(productImgsList.get(position))
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder).into(productImg);
         return view;
     }
 }

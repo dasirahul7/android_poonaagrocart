@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/horizontal_margin"
+                android:background="@color/white"
+                tools:context=".ui.nav_explore.ExploreFragment">
+
+            <!--Search View Layout-->
+                <com.poona.agrocart.widgets.CustomEditText
+                    android:id="@+id/et_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_et_search"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawableTint="@color/black"
+                    android:drawablePadding="@dimen/_8sdp"
+                    android:hint="@string/search_vegetables"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    tools:ignore="RtlSymmetry"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:textColor="@color/color_grey_txt"
+                    android:textSize="@dimen/search_hint_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:setCustomFont="@string/font_poppins_regular" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_explore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_search" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

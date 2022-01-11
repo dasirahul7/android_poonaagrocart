@@ -5,7 +5,7 @@
     <data>
         <variable
             name="basketContent"
-            type="com.poona.agrocart.ui.basket_product_detail.BasketContent" />
+            type="com.poona.agrocart.ui.product_detail.model.BasketContent" />
     </data>
 
     <LinearLayout

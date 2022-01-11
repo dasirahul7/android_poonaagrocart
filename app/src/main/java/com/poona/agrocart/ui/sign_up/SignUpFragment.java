@@ -55,12 +55,12 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         fragmentSignUpBinding.tvTermsOfService.setOnClickListener(this);
         fragmentSignUpBinding.tvPrivacyPolicy.setOnClickListener(this);
         fragmentSignUpBinding.btnSignUp.setOnClickListener(this);
-        fragmentSignUpBinding.rbIndividual.setOnClickListener(this);
-        fragmentSignUpBinding.rbBusiness.setOnClickListener(this);
+//        fragmentSignUpBinding.rbIndividual.setOnClickListener(this);
+//        fragmentSignUpBinding.rbBusiness.setOnClickListener(this);
 
         Typeface poppinsRegularFont = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_regular));
-        fragmentSignUpBinding.rbIndividual.setTypeface(poppinsRegularFont);
-        fragmentSignUpBinding.rbBusiness.setTypeface(poppinsRegularFont);
+//        fragmentSignUpBinding.rbIndividual.setTypeface(poppinsRegularFont);
+//        fragmentSignUpBinding.rbBusiness.setTypeface(poppinsRegularFont);
 
         hideKeyBoard(requireActivity());
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
@@ -134,39 +134,21 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.tv_terms_of_service:
+                redirectToTermsAndCondtn(v);
                 break;
 
             case R.id.tv_privacy_policy:
+                redirectToPrivacyPolicy(v);
                 break;
 
             case R.id.btn_sign_up:
                 RedirectToSelectLocationFragment(v);
                 break;
 
-            case R.id.rb_individual:
-                changeBgs(true);
-                break;
-
-            case R.id.rb_business:
-                changeBgs(false);
-                break;
         }
 
     }
 
-    private void changeBgs(boolean isIndividualSelected)
-    {
-        if(isIndividualSelected)
-        {
-            fragmentSignUpBinding.rbIndividual.setBackgroundResource(R.drawable.bg_signup_rb_selected);
-            fragmentSignUpBinding.rbBusiness.setBackgroundResource(R.drawable.bg_signup_rb_unselected);
-        }
-        else
-        {
-            fragmentSignUpBinding.rbIndividual.setBackgroundResource(R.drawable.bg_signup_rb_unselected);
-            fragmentSignUpBinding.rbBusiness.setBackgroundResource(R.drawable.bg_signup_rb_selected);
-        }
-    }
 
     private void RedirectToSelectLocationFragment(View v)
     {
@@ -200,5 +182,19 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             }
         }
 
+    }
+
+    private void redirectToPrivacyPolicy(View v) {
+        Bundle bundle = new Bundle();
+        bundle.putString("from", "SignUp");
+        bundle.putString("title", getString(R.string.privacy_policy));
+        Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_signInPrivacyFragment, bundle);
+    }
+
+    private void redirectToTermsAndCondtn(View v) {
+        Bundle bundle = new Bundle();
+        bundle.putString("from", "SignUp");
+        bundle.putString("title", getString(R.string.menu_terms_conditions));
+        Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_signInTermsFragment, bundle);
     }
 }

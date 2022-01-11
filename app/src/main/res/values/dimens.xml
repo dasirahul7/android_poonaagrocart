@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--font sizes-->
     <dimen name="_10sp">10sp</dimen>
     <dimen name="_12sp">12sp</dimen>
+    <dimen name="_13sp">13sp</dimen>
     <dimen name="_14sp">14sp</dimen>
     <dimen name="_15sp">15sp</dimen>
     <dimen name="_16sp">16sp</dimen>
@@ -29,7 +30,32 @@
     <dimen name="nav_header_height">140dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="cat_txt_size">18sp</dimen>
+    <dimen name="category_txt_size">16sp</dimen>
     <dimen name="offer_txt_size">14sp</dimen>
     <dimen name="large">20sp</dimen>
 
+    <dimen name="design_navigation_padding_top_default" tools:override="true">0dp</dimen>
+    <dimen name="design_navigation_separator_vertical_padding" tools:override="true">0dp</dimen>
+    <dimen name="design_navigation_padding_bottom" tools:override="true">0dp</dimen>
+    
+<!--    Home screen spacing-->
+    <dimen name="horizontal_margin">@dimen/_15sdp</dimen>
+    <dimen name="home_bottom_margin">@dimen/_15sdp</dimen>
+    <dimen name="vertical_margin">@dimen/_10sdp</dimen>
+    <dimen name="home_horizontal_padding">@dimen/_10sdp</dimen>
+    <dimen name="product_box_padding">@dimen/_8sdp</dimen>
+    <dimen name="button_horizontal_margin">@dimen/_20sdp</dimen>
+
+
+<!--    Product List Sizes-->
+    <dimen name="search_hint_size">@dimen/_14sp</dimen>
+
+<!--    Text Sizes-->
+    <dimen name="button_txt_size">@dimen/_18sp</dimen>
+    <dimen name="small_txt_size">@dimen/_12sp</dimen>
+    <dimen name="medium_txt_size">@dimen/_14sp</dimen>
+    <dimen name="l_txt_size">@dimen/_16sp</dimen>
+    <dimen name="xl_txt_size">@dimen/_18sp</dimen>
+    <dimen name="xxl_txt_size">@dimen/_20sdp</dimen>
+    <dimen name="very_large">@dimen/_25sdp</dimen>
 </resources>

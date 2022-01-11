@@ -4,11 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:elevation="0dp"
     tools:context=".ui.home.HomeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@null"
         android:foregroundTint="@color/black"
         android:theme="@style/Theme.PoonaAgroCart.AppBarOverlay">
 
@@ -17,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:elevation="0dp"
             app:popupTheme="@style/Theme.PoonaAgroCart.PopupOverlay">
 
             <RelativeLayout
@@ -25,10 +31,9 @@
 
                 <ImageView
                     android:id="@+id/logImg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:src="@drawable/ic_poona_agrocart_logo_final" />
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:src="@drawable/poona_logo" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/textTitle"
@@ -39,44 +44,86 @@
                     android:gravity="center"
                     android:paddingEnd="@dimen/_50sdp"
                     android:singleLine="true"
-                    android:text="@string/my_orders"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp"
                     android:visibility="gone"
                     app:setCustomFont="@string/font_poppins_regular" />
 
                 <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/textView"
+                    android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:drawableStart="@drawable/ic_location"
-                    android:drawableTint="@color/colorGrey"
+                    android:layout_marginEnd="@dimen/_15sp"
+                    android:drawableStart="@drawable/icon_map"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:drawableTint="@color/title_black"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     android:singleLine="true"
                     android:text="@string/address_location"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_13sdp" />
+                    android:textColor="@color/title_black"
+                    android:textSize="@dimen/_14sp"
+                    app:setCustomFont="@string/font_poppins_regular" />
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:id="@+id/rl_product_tag"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_brand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/txt_organic"
+                        android:background="@drawable/bg_offer_yellow"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:text="brand - name"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/offer_txt_size"
+                        android:textStyle="bold"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+                    <ImageView
+                        android:id="@+id/txt_organic"
+                        style="@style/organic_button_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:background="@drawable/bg_organic_sqaure"
+                        android:gravity="center"
+                        android:src="@drawable/ic_organic"
+                        tools:ignore="RtlHardcoded" />
+                </RelativeLayout>
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/img_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:src="@drawable/ic_delete_black"/>
+                    android:src="@drawable/ic_delete_black"
+                    android:visibility="gone" />
+
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/basket_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_20sdp"
-                    android:src="@drawable/basket_menu"/>
+                    android:src="@drawable/basket_menu"
+                    android:visibility="gone" />
 
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -85,38 +132,47 @@
 
     <include layout="@layout/content_home" />
 
-    <LinearLayout
-        android:id="@+id/ll_bottom_navigation_view"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bottom_menu_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:orientation="vertical"
+        android:layout_marginLeft="-30dp"
+        android:layout_marginRight="-30dp"
+        android:layout_marginBottom="-40dp"
+        android:elevation="0dp"
+        android:paddingVertical="@dimen/_10sdp"
+        app:cardElevation="@dimen/_20sdp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.top">
 
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:background="@color/colorGrey" />
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:background="@drawable/background_bottom_navigation_screen"
-            android:elevation="@dimen/_40sdp"
-            android:fitsSystemWindows="true"
-            app:elevation="@dimen/_16sdp"
-            app:itemIconTint="@drawable/bottom_menu_item_color"
-            app:itemRippleColor="@color/white"
-            app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
-            app:itemTextAppearanceInactive="@style/BottomNavigationView"
-            app:itemTextColor="@color/black"
-            app:labelVisibilityMode="labeled"
-            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
-            app:menu="@menu/bottom_menu"
-            app:setCustomFont="@string/font_poppins_bold" />
-    </LinearLayout>
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:itemIconTint="@drawable/bottom_menu_item_color"
+                app:itemRippleColor="@color/white"
+                app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+                app:itemTextAppearanceInactive="@style/BottomNavigationView"
+                app:itemTextColor="@color/black"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/bottom_menu"
+                app:setCustomFont="@string/font_poppins_bold" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

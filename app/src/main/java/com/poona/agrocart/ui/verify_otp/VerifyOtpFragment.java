@@ -3,16 +3,8 @@ package com.poona.agrocart.ui.verify_otp;
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,7 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentVerifyOtpBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
@@ -59,6 +58,17 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         fragmentVerifyOtpBinding.btnVerifyOtp.setOnClickListener(this);
 
         commonViewModel=new ViewModelProvider(this).get(CommonViewModel.class);
+        try {
+            // Mask Phone number
+            String phone = getArguments().getString(AppConstants.MOBILE_NO);
+            String strPattern = "\\d(?=\\d{3})";
+//            System.out.println( "number:"+phone.replaceAll(strPattern, "*") );
+            commonViewModel.otpMobileMsg.setValue(getString(R.string.otp_sent)+phone.replaceAll(strPattern, "*"));
+            fragmentVerifyOtpBinding.etOtp.requestFocus();
+            fragmentVerifyOtpBinding.etOtp.setCursorVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         fragmentVerifyOtpBinding.setCommonViewModel(commonViewModel);
 
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();

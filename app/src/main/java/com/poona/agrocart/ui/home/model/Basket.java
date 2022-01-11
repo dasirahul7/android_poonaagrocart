@@ -45,6 +45,6 @@ public class Basket {
         Glide.with(view.getContext())
                 .load(img)
                 .placeholder(R.drawable.placeholder)
-                .error(R.drawable.capsicon).into(view);
+                .error(R.drawable.img_bell_pepper_red).into(view);
     }
 }

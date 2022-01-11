@@ -20,9 +20,9 @@ import java.util.ArrayList;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder> {
 
     private ArrayList<Category> categories = new ArrayList<>();
-    private Context context;
+    private final Context context;
     private RowCategoryItemBinding categoryBinding;
-    private View view;
+    private final View view;
 
     public CategoryAdapter(ArrayList<Category> categories, Context context,View view) {
         this.categories = categories;
@@ -41,7 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
         Category category = categories.get(position);
         categoryBinding.setCategoryModule(category);
-        holder.bind(category,view);
+        holder.bind(category);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             super(binding.getRoot());
         }
 
-        public void bind(Category category,View view) {
+        public void bind(Category category) {
             categoryBinding.setVariable(BR.categoryModule,category);
             categoryBinding.executePendingBindings();
 

@@ -18,9 +18,9 @@ import java.util.ArrayList;
 
 public class BannerAdapter extends PagerAdapter {
 
-    private ArrayList<Banner> banner;
+    private final ArrayList<Banner> banner;
     private LayoutInflater layoutInflater;
-    private Context context;
+    private final Context context;
 
     public BannerAdapter(ArrayList<Banner> banner,Context context) {
         this.banner = banner;
@@ -35,7 +35,7 @@ public class BannerAdapter extends PagerAdapter {
         ImageView imageView = view.findViewById(R.id.imgAd);
         Glide.with(context)
                 .load(banner.get(position).getImage())
-                .placeholder(R.drawable.placeholder)
+                .placeholder(R.drawable.ic_banner_placeholder)
                 .into(imageView);
         container.addView(view);
         return view;

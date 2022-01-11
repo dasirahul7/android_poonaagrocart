@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="modulePhoto"
+            type="com.poona.agrocart.ui.nav_gallery.model.Photos" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_180sdp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/photoCard"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_180sdp"
+            android:background="@android:color/transparent"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <ImageView
+                android:id="@+id/itemImg"
+                setImage="@{modulePhoto.photo}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

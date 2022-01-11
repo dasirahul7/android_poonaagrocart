@@ -8,7 +8,8 @@
             type="com.poona.agrocart.ui.home.model.Basket" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/cardview_basket_item"
         android:layout_width="@dimen/_180sdp"
         android:layout_height="@dimen/_80sdp"
@@ -19,26 +20,29 @@
         app:cardCornerRadius="@dimen/_12sdp">
 
         <RelativeLayout
+            android:id="@+id/basket_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#E5F4EA"
+            android:background="@color/basket_color_honey_dew"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/basketImg"
                 setImage="@{basketModule.img}"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
-                android:layout_alignParentStart="true"/>
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="@dimen/_5sdp" />
             <LinearLayout
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_toEndOf="@id/basketImg">
-                <TextView
+                <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,11 +51,10 @@
                     android:textSize="@dimen/large"
                     android:textStyle="bold" />
 
-                <TextView
+                <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_name"
                     android:text="@{basketModule.price}"
                     android:textColor="@color/lightBlack"
                     android:textSize="@dimen/normal" />

@@ -100,7 +100,7 @@ public class Alert extends FrameLayout implements View.OnClickListener, Animatio
         inflate(getContext(), R.layout.alerter_alert_view, this);
         setHapticFeedbackEnabled(true);
 
-        flBackground = (FrameLayout) findViewById(R.id.flAlertBackground);
+        flBackground = findViewById(R.id.flAlertBackground);
         ivIcon = findViewById(R.id.ivIcon);
         tvTitle = findViewById(R.id.tvTitle);
         tvText = findViewById(R.id.tvText);

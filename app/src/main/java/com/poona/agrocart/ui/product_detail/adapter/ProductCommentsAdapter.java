@@ -2,22 +2,27 @@ package com.poona.agrocart.ui.product_detail.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RvProductCommentBinding;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
+
 import java.util.ArrayList;
 
 public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductCommentsAdapter.CommentViewHolder>
 {
-    private ArrayList<ProductComment> commentArrayList;
+    private final ArrayList<ProductComment> commentArrayList;
+    private final boolean full;
 
-    public ProductCommentsAdapter(ArrayList<ProductComment> commentArrayList)
+    public ProductCommentsAdapter(ArrayList<ProductComment> commentArrayList, boolean full)
     {
         this.commentArrayList = commentArrayList;
+        this.full = full;
     }
 
     @NonNull
@@ -39,7 +44,9 @@ public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductComments
 
     @Override
     public int getItemCount() {
-        return commentArrayList.size();
+        if (full)
+            return commentArrayList.size();
+        else return 3;
     }
 
     public static class CommentViewHolder extends RecyclerView.ViewHolder
@@ -54,6 +61,7 @@ public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductComments
 
         public void bind(ProductComment comment)
         {
+            rvProductCommentBinding.ratingBar.setRating(comment.getRating());
             rvProductCommentBinding.setVariable(BR.productComment,comment);
             rvProductCommentBinding.executePendingBindings();
         }

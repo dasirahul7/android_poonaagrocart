@@ -2,18 +2,21 @@ package com.poona.agrocart.ui.order_summary;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RvProductAndPriceDetailsBinding;
 import com.poona.agrocart.ui.order_summary.model.ProductAndPrice;
+
 import java.util.ArrayList;
 
 public class ProductAndPriceAdapter extends RecyclerView.Adapter<ProductAndPriceAdapter.ProductAndPriceViewHolder>
 {
-    private ArrayList<ProductAndPrice> productAndPriceArrayList;
+    private final ArrayList<ProductAndPrice> productAndPriceArrayList;
 
     public ProductAndPriceAdapter(ArrayList<ProductAndPrice> productAndPriceArrayList)
     {

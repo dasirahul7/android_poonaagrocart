@@ -1,173 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="address"
-            type="com.poona.agrocart.ui.addresses.model.Address" />
+            type="com.poona.agrocart.ui.nav_addresses.model.Address" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardview_shpping_address"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="@dimen/_6sdp"
-        app:cardCornerRadius="@dimen/_16sdp"
-        app:cardElevation="3dp"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="@dimen/_10sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardview_shpping_address"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/_6sdp"
+            app:cardCornerRadius="@dimen/_16sdp"
+            app:cardElevation="3dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="100">
-
-            <com.poona.agrocart.widgets.CustomTextView
-                android:layout_width="0dp"
-                android:layout_weight="50"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_user"
-                android:drawablePadding="@dimen/_2sdp"
-                android:text="@string/ayush_shah"
-                android:textColor="@color/color_order_view_username"
-                android:textSize="@dimen/_16sp"
-                app:setCustomFont="@string/font_poppins_semi_bold" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="50"
-                    android:gravity="end"
-                    android:layout_height="wrap_content">
-
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/_2sdp"
-                    android:text="@string/home"
-                    android:gravity="center"
-                    android:background="@drawable/bg_type_of_address_tag"
-                    android:textColor="@color/color_type_of_address"
-                    android:textSize="@dimen/_14sp"
-                    app:setCustomFont="@string/font_poppins_semi_bold" />
+                    android:weightSum="100">
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_user"
+                        android:drawablePadding="@dimen/_2sdp"
+                        android:text="@string/ayush_shah"
+                        android:textColor="@color/color_order_view_username"
+                        android:textSize="@dimen/_16sp"
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:gravity="end"
+                        android:layout_height="wrap_content">
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:text="@string/home"
+                            android:gravity="center"
+                            android:background="@drawable/bg_type_of_address_tag"
+                            android:textColor="@color/color_type_of_address"
+                            android:textSize="@dimen/_14sp"
+                            app:setCustomFont="@string/font_poppins_semi_bold" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
-
-            </LinearLayout>
-
-            <com.poona.agrocart.widgets.CustomTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_4sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:drawableStart="@drawable/ic_mobile"
-                android:drawablePadding="@dimen/_7sdp"
-                android:text="@string/_91_986_095_3315"
-                android:textColor="@color/color_order_view_username"
-                android:textSize="@dimen/_14sp"
-                app:setCustomFont="@string/font_poppins_regular" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_weight="100"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_location" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_3sdp"
-                    android:text="@string/nand_nivas_building_floor_3_b_3_lane_no_13_bhatrau_nivas_vishrantwadi_pune_411015"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:drawableStart="@drawable/ic_mobile"
+                    android:drawablePadding="@dimen/_7sdp"
+                    android:text="@string/_91_986_095_3315"
                     android:textColor="@color/color_order_view_username"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@color/colorLightGrey"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:weightSum="100">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="50"
-                    android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_weight="100"
+                    android:orientation="horizontal">
 
-                    <CheckBox
-                        android:id="@+id/cb_default"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        />
-
-                    <com.poona.agrocart.widgets.CustomTextView
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/_2sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:text="@string/default_address"
-                        android:gravity="center"
-                        android:textColor="@color/color_default_address"
-                        android:textSize="@dimen/_16sp"
-                        app:setCustomFont="@string/font_poppins_semi_bold" />
+                        android:src="@drawable/ic_location" />
 
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:text="@string/nand_nivas_building_floor_3_b_3_lane_no_13_bhatrau_nivas_vishrantwadi_pune_411015"
+                        android:textColor="@color/color_order_view_username"
+                        android:textSize="@dimen/_14sp"
+                        app:setCustomFont="@string/font_poppins_regular" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@color/colorLightGrey" />
+
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="50"
-                    android:layout_height="match_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:weightSum="100">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="end |center_vertical"
-                        android:paddingEnd="@dimen/_16sdp">
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="wrap_content">
 
-                        <ImageView
+                        <CheckBox
+                            android:id="@+id/cb_default"
                             android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_18sdp"
-                            android:src="@drawable/ic_pencil"
-                            />
+                            android:layout_height="@dimen/_20sdp" />
 
-                        <View
-                            android:layout_width="1dp"
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/_2sdp"
                             android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_height="match_parent"
-                            android:background="@color/colorLightGrey"
-                            android:layout_marginEnd="@dimen/_20sdp"
-                            />
+                            android:text="@string/default_address"
+                            android:gravity="center"
+                            android:textColor="@color/color_default_address"
+                            android:textSize="@dimen/_16sp"
+                            app:setCustomFont="@string/font_poppins_semi_bold" />
 
-                        <ImageView
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_18sdp"
-                            android:src="@drawable/ic_delete"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="end|center_vertical"
+                            android:paddingEnd="@dimen/_16sdp">
+
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_18sdp"
+                                android:src="@drawable/ic_pencil" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_height="match_parent"
+                                android:background="@color/colorLightGrey"
+                                android:layout_marginEnd="@dimen/_20sdp" />
+
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_18sdp"
+                                android:src="@drawable/ic_delete" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -175,10 +173,8 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    </com.google.android.material.card.MaterialCardView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -1,18 +1,24 @@
 package com.poona.agrocart.data.shared_preferences;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.poona.agrocart.R;
-
-import java.io.File;
-
 import static com.poona.agrocart.app.AppConstants.AUTHORIZATION_TOKEN;
 import static com.poona.agrocart.app.AppConstants.FCM_TOKEN;
 import static com.poona.agrocart.app.AppConstants.FROM_LOG_OUT;
 import static com.poona.agrocart.app.AppConstants.IS_LOGGED_IN;
 import static com.poona.agrocart.app.AppConstants.IS_READ_INTRO;
 import static com.poona.agrocart.app.AppConstants.PREFERENCES_NAME;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.poona.agrocart.R;
+import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.nav_my_cart.CartItem;
+
+import java.io.File;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -112,5 +118,32 @@ public class AppSharedPreferences
                 }
             }
         }
+    }
+
+    public void saveCartArrayList(ArrayList<Product> list, String key){
+
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
+    public void saveFavArrayList(ArrayList<Product> list, String key){
+
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
+    public ArrayList<Product> getSavedCartList(String key){
+        Gson gson = new Gson();
+        String json = preferences.getString(key, null);
+        Type type = new TypeToken<ArrayList<Product>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+    public ArrayList<Product> getSavedFavList(String key){
+        Gson gson = new Gson();
+        String json = preferences.getString(key, null);
+        Type type = new TypeToken<ArrayList<Product>>() {}.getType();
+        return gson.fromJson(json, type);
     }
 }

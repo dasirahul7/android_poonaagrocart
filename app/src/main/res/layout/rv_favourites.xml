@@ -6,11 +6,12 @@
 
         <variable
             name="favouriteItem"
-            type="com.poona.agrocart.ui.favourites.FavouriteItem" />
+            type="com.poona.agrocart.ui.nav_favourites.FavouriteItem" />
 
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardview_favourite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -43,7 +44,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:scaleType="fitXY"
-                    android:src="@drawable/img_bell_pepper_red" />
+                    setImage="@{favouriteItem.img}"/>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -60,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/bell_pepper_red"
-                    android:textColor="@color/color_basket_name"
+                    android:textColor="@color/blue_txt_color"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_bold" />
 
@@ -69,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/_1kg"
-                    android:textColor="@color/color17"
+                    android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
 
@@ -98,19 +99,29 @@
                     android:layout_height="0dp"
                     android:layout_weight="50"
                     android:paddingTop="@dimen/_2sdp"
-                    android:paddingEnd="@dimen/_2sdp"
                     android:paddingBottom="@dimen/_10sdp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_red_heart" />
+                    android:src="@drawable/ic_filled_heart" />
 
-                <ImageView
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="50"
+                    android:layout_gravity="center_horizontal"
                     android:paddingTop="@dimen/_2sdp"
                     android:paddingEnd="@dimen/_4sdp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_plus_with_sqaure_bg" />
+                    >
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:id="@+id/img_plus"
+                        style="@style/PlusButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -1,5 +1,7 @@
 package com.poona.agrocart.data.firebase;
 
+import static com.poona.agrocart.app.AppConstants.PUSH_NOTIFICATION;
+
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -17,8 +19,6 @@ import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
-
-import static com.poona.agrocart.app.AppConstants.PUSH_NOTIFICATION;
 
 /**
  * Created by Rahul Dasi on 6/10/2020

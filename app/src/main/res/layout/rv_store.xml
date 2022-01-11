@@ -3,54 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="store"
-            type="com.poona.agrocart.ui.our_stores.model.Store" />
+            type="com.poona.agrocart.ui.nav_stores.model.Store" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/store_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:padding="@dimen/_10sdp"
         android:elevation="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_10sdp"
+        app:cardElevation="3dp"
         app:cardUseCompatPadding="true"
         app:strokeColor="@color/clr_custom_edit_text_otp"
-        app:strokeWidth="1dp"
-        android:padding="@dimen/_10sdp"
-        app:cardElevation="3dp">
+        app:strokeWidth="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
+            android:layout_height="@dimen/_100sdp"
+            android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
-                app:cardBackgroundColor="@color/white"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="30"
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_100sdp"
                 android:padding="@dimen/_10sdp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/_15sdp"
                 app:cardElevation="0dp"
                 app:cardUseCompatPadding="true">
 
                 <ImageView
+                    setStoreImage="@{store.img}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/img_shop" />
+                    android:scaleType="fitCenter" />
 
             </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_8sdp"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:layout_weight="55"
                 android:orientation="vertical">
 
                 <com.poona.agrocart.widgets.CustomTextView
@@ -62,34 +61,18 @@
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:layout_marginBottom="@dimen/_30sdp"
-                    android:gravity="start"
-                    android:weightSum="100">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                        android:src="@drawable/ic_location"
-                        />
                 <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/tv_product_weight"
-                    android:layout_width="0dp"
-                    android:layout_weight="92"
+                    android:id="@+id/tv_store_location"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:drawableStart="@drawable/ic_blue_map"
+                    android:drawablePadding="@dimen/_2sdp"
+                    android:gravity="center_vertical"
                     android:paddingVertical="@dimen/_2sdp"
-                    android:paddingStart="@dimen/_4sdp"
                     android:text="@{store.location}"
-                    android:textColor="@color/color17"
+                    android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
-
-                </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -98,18 +81,19 @@
                 android:layout_marginVertical="@dimen/_8sdp"
                 android:layout_weight="15"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:weightSum="100">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:paddingHorizontal="@dimen/_10sdp"
                     android:layout_height="0dp"
                     android:layout_weight="50"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     android:paddingTop="@dimen/_2sdp"
-                    android:src="@drawable/ic_phone_green_circle"
                     android:paddingEnd="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_14sdp"
-                    android:scaleType="fitXY"/>
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_phone_green_circle" />
 
                 <ImageView
                     android:layout_width="match_parent"

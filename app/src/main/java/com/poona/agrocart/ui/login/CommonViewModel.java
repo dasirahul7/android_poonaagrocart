@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.login;
 
 import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
@@ -13,6 +14,7 @@ public class CommonViewModel extends AndroidViewModel
     public MutableLiveData<String> otp;
 
     public MutableLiveData<String> userName;
+    public MutableLiveData<String> otpMobileMsg;
     public MutableLiveData<String> emailId;
 
     public MutableLiveData<String> city;
@@ -28,6 +30,7 @@ public class CommonViewModel extends AndroidViewModel
         otp=new MutableLiveData<>();
 
         userName=new MutableLiveData<>();
+        otpMobileMsg =new MutableLiveData<>();
         emailId=new MutableLiveData<>();
 
         city=new MutableLiveData<>();
@@ -37,6 +40,7 @@ public class CommonViewModel extends AndroidViewModel
         countryCode.setValue("");
 
         userName.setValue("");
+        otpMobileMsg.setValue("");
         emailId.setValue("");
 
         city.setValue("");

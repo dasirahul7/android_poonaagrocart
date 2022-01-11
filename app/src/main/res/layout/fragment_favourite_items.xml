@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.favourites.FavouriteItemsFragment">
+        tools:context=".ui.nav_favourites.FavouriteItemsFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_favourite_items"
@@ -18,6 +18,66 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/empty_cart_img" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_oops"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/oops_no_products"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_24sp"
+                app:setCustomFont="@string/font_poppins_regular" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_please"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/please_add_product"
+                android:textSize="@dimen/_18sp" />
+
+
+        </LinearLayout>
+        <com.poona.agrocart.widgets.CustomButton
+            android:visibility="gone"
+            android:id="@+id/continue_btn"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_vertical"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/background_light_green"
+            android:gravity="center|center_vertical"
+            android:includeFontPadding="false"
+            android:padding="@dimen/alerter_padding_small"
+            android:text="@string/continue_shopping"
+            android:textAllCaps="false"
+            android:textColor="@color/background_color_white_green"
+            android:textSize="@dimen/_18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:setCustomFont="@string/font_poppins_semi_bold" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

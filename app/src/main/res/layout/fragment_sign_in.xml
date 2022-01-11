@@ -92,10 +92,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_weight="25"
-                app:ccp_showArrow="false"
-                app:ccp_textSize="@dimen/_16sp"
                 android:background="@drawable/et_login_signup_bg"
-                app:ccp_showNameCode="false" />
+                app:ccp_showArrow="false"
+                app:ccp_showNameCode="false"
+                app:ccp_textSize="@dimen/_16sp"
+                />
 
             <com.poona.agrocart.widgets.CustomEditText
                 android:id="@+id/et_phone_no"

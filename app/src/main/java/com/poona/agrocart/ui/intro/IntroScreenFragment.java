@@ -1,24 +1,23 @@
 package com.poona.agrocart.ui.intro;
 
 import android.os.Bundle;
-import androidx.databinding.DataBindingUtil;
-import androidx.navigation.NavOptions;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.viewpager.widget.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentIntroScreenBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.splash_screen.OnBackPressedListener;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.ArrayList;
-
-import me.huseyinozer.TooltipIndicator;
-
 
 public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapter.OnChangeButtonCaptionListener, OnBackPressedListener {
 
@@ -28,7 +27,7 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
     private FragmentIntroScreenBinding fragmentIntroScreenBinding;
     private View view;
     public ViewPager vpIntro;
-    private TooltipIndicator tbIndicator;
+    private DotsIndicator dotsIndicator;
     private Button btnNext;
     ArrayList<Intro> introList;
     private IntroPagerAdapter introPagerAdapter;
@@ -47,7 +46,7 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
         view = fragmentIntroScreenBinding.introLayout;
 
         vpIntro = fragmentIntroScreenBinding.vpIntro;
-        tbIndicator = fragmentIntroScreenBinding.tlIndicators;
+        dotsIndicator = fragmentIntroScreenBinding.dotsIndicator;
         btnNext = fragmentIntroScreenBinding.btNext;
         introList = new ArrayList<>();
         Intro intro1 = new Intro("1", "Welcome to poona cart 1", "Ger your groceries in as fast as one hour", R.drawable.info_img);
@@ -68,13 +67,8 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!btnNext.getText().toString().equalsIgnoreCase(getString(R.string.str_get_started))){
-                    vpIntro.setCurrentItem(vpIntro.getCurrentItem() + 1);
-                }
-                else {
                     preferences.setIsIntroRead(true);
                     NavHostFragment.findNavController(IntroScreenFragment.this).navigate(R.id.action_introScreenFragment_to_SignInFragment);
-                }
             }
         });
 
@@ -90,17 +84,12 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
         vpIntro.addOnPageChangeListener(introPagerAdapter);
 
         // Set up tab indicators
-        tbIndicator.setupViewPager(vpIntro);
+        dotsIndicator.setViewPager(vpIntro);
     }
 
     @Override
     public void onAddText(int position) {
-        Log.d(TAG, "onAddText: " + position);
-        if (position == introList.size()-1){
-            btnNext.setText(R.string.str_get_started);
-        }
-        else btnNext.setText(R.string.str_next);
-
+//            btnNext.setText(R.string.str_get_started);
     }
 
     @Override

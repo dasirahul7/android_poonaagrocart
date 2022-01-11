@@ -4,19 +4,19 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/icon_menu_shop"
-            android:title="@string/shop" />
+            android:title="@string/menu_shop" />
         <item
             android:id="@+id/nav_explore"
             android:icon="@drawable/icon_search_menu"
-            android:title="@string/explore" />
+            android:title="@string/menu_explore" />
         <item
             android:id="@+id/nav_cart"
             android:icon="@drawable/icon_menu_cart"
-            android:title="@string/cart" />
+            android:title="@string/menu_cart" />
         <item
             android:id="@+id/nav_favourite"
             android:icon="@drawable/icon_menu_favourite"
-            android:title="@string/favourite" />
+            android:title="@string/menu_favourite" />
         <item
             android:id="@+id/nav_offer"
             android:icon="@drawable/ic_coupon"
