@@ -225,8 +225,9 @@
         <item name="android:layout_marginStart">@dimen/_20sdp</item>
         <item name="android:layout_marginEnd">@dimen/_20sdp</item>
         <item name="android:layout_marginTop">@dimen/_2sdp</item>
-        <item name="android:background">@drawable/bg_dashboard_et_layout</item>
-        <item name="android:elevation">@dimen/_2sdp</item>
+<!--        <item name="android:background">@drawable/bg_dashboard_et_layout</item>-->
+        <item name="android:background">@drawable/background_shadow_with_white_bg</item>
+        <item name="android:elevation">@dimen/_1sdp</item>
         <item name="android:padding">@dimen/_8sdp</item>
         <item name="android:textColor">@color/color_grey_txt</item>
         <item name="android:textSize">@dimen/_14sp</item>
@@ -240,8 +241,9 @@
         <item name="android:layout_marginStart">@dimen/_15sdp</item>
         <item name="android:layout_marginEnd">@dimen/_20sdp</item>
         <item name="android:layout_marginBottom">@dimen/_10sdp</item>
-        <item name="android:background">@drawable/bg_dashboard_et_layout</item>
-        <item name="android:elevation">@dimen/_2sdp</item>
+<!--        <item name="android:background">@drawable/bg_dashboard_et_layout</item>-->
+        <item name="android:background">@drawable/background_shadow_with_white_bg</item>
+        <item name="android:elevation">@dimen/_1sdp</item>
         <item name="android:paddingStart">@dimen/_5sdp</item>
         <item name="android:paddingEnd">@dimen/_5sdp</item>
         <item name="android:gravity">start|center_vertical</item>

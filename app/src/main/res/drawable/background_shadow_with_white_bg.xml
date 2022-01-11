@@ -3,29 +3,29 @@
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/_7sdp"/>
-            <padding android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp"/>
-            <solid android:color="#00b9baba"/>
+<!--            <padding android:left="0.5dp" android:top="0.5dp" android:right="0.5dp" android:bottom="0.5dp"/>-->
+            <solid android:color="@color/colorLightGrey"/>
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/_7sdp"/>
-            <padding android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp"/>
-            <solid android:color="#29b9baba"/>
+<!--            <padding android:left="0.5dp" android:top="0.5dp" android:right="0.5dp" android:bottom="0.5dp"/>-->
+            <solid android:color="@color/colorLightGrey"/>
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/_7sdp"/>
-            <padding android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp"/>
-            <solid android:color="#42b9baba"/>
+            <padding android:left="0.5dp" android:top="0.5dp" android:right="0.5dp" android:bottom="0.5dp"/>
+            <solid android:color="@color/colorLightGrey"/>
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/_7sdp"/>
-            <padding android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp"/>
-            <solid android:color="#42b9baba"/>
+            <padding android:left="0.5dp" android:top="0.5dp" android:right="0.5dp" android:bottom="0.5dp"/>
+            <solid android:color="@color/colorLightGrey"/>
         </shape>
     </item>
     <item>

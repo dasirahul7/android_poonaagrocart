@@ -110,8 +110,8 @@
                     android:layout_weight="50"
                     android:layout_gravity="center_horizontal"
                     android:paddingTop="@dimen/_2sdp"
-                    android:paddingEnd="@dimen/_4sdp"
-                    >
+                    android:paddingEnd="@dimen/_4sdp">
+
                     <ImageView
                         android:layout_gravity="center"
                         android:id="@+id/img_plus"

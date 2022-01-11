@@ -13,7 +13,7 @@
         <entry key="app/src/main/res/drawable/alerter_ic_notifications.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/background_bottom_navigation_screen.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/background_button_green.xml" value="0.1962962962962963" />
-        <entry key="app/src/main/res/drawable/background_shadow_with_white_bg.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/drawable/background_shadow_with_white_bg.xml" value="0.75" />
         <entry key="app/src/main/res/drawable/background_top_curved.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/basket_bg_first.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/basket_menu.xml" value="0.19444444444444445" />
