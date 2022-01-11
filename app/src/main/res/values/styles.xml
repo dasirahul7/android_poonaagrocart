@@ -164,16 +164,6 @@
         <item name="android:fontFamily">@font/poppins</item>
     </style>
 
-
-    <!-- style for settings switch buttons-->
-    <style name="Color1SwitchStyle">
-        <!-- Active thumb color & Active track color(30% transparency) -->
-        <item name="colorControlActivated">@color/colorPrimary</item>
-
-        <!-- inactive thumb color -->
-        <item name="colorSwitchThumbNormal">@color/color_inactive_switch</item>
-    </style>
-
 <!--     Organic button style-->
     <style name="organic_button_style" parent="Widget.AppCompat.ImageButton">
         <item name="android:paddingTop">@dimen/_1sdp</item>

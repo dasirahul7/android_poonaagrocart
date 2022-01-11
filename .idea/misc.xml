@@ -198,6 +198,7 @@
         <entry key="app/src/main/res/drawable/orange_rectangle.xml" value="0.13223684210526315" />
         <entry key="app/src/main/res/drawable/profile_menu.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/radio_selector.xml" value="0.209375" />
+        <entry key="app/src/main/res/drawable/red_switch_gradient.xml" value="0.17866666666666667" />
         <entry key="app/src/main/res/drawable/selected_dot.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/selected_drawer_background.xml" value="0.14629629629629629" />
         <entry key="app/src/main/res/drawable/selected_icon.xml" value="0.14629629629629629" />
@@ -282,6 +283,7 @@
         <entry key="app/src/main/res/layout/fragment_product_list.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.13269927536231885" />
         <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.14" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_splash_screen.xml" value="0.1" />
