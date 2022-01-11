@@ -24,7 +24,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!--            Bottom amount detail layput-->
+            <!--            Bottom amount detail layout-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -139,6 +139,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:layout_marginBottom="@dimen/_30sdp"
                 android:orientation="vertical"
                 android:visibility="gone">
 
@@ -182,7 +183,7 @@
             android:layout_gravity="center|center_vertical"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_80sdp"
             android:background="@drawable/background_light_green"
             android:gravity="center|center_vertical"
             android:includeFontPadding="false"

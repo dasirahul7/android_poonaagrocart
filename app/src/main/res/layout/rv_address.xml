@@ -71,9 +71,8 @@
                 <com.poona.agrocart.widgets.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_4sdp"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:drawableStart="@drawable/ic_mobile"
+                    android:drawableStart="@drawable/ic_mobile_no"
                     android:drawablePadding="@dimen/_7sdp"
                     android:text="@string/_91_986_095_3315"
                     android:textColor="@color/color_order_view_username"

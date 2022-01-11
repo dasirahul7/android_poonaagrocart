@@ -5,20 +5,21 @@
     <color name="colorAccent">#7AAC22</color>
     <color name="colorAppBackground">#FCFCFC</color>
 
-    <color name="color1" tools:keep="@color/color1">#FF6B06</color>
-    <color name="color2" tools:keep="@color/color2">#FFAF10</color>
-    <color name="color11" tools:keep="@color/color11">#849A31</color>
-    <color name="color8" tools:keep="@color/color8">#456304</color>
-    <color name="color3" tools:keep="@color/color3">#81C654</color>
-    <color name="color6" tools:keep="@color/color6">#3E9420</color>
-    <color name="color5" tools:keep="@color/color5">#A97C50</color>
-    <color name="color7" tools:keep="@color/color7">#603913</color>
-    <color name="color4" tools:keep="@color/color4">#F23900</color>
-    <color name="color10" tools:keep="@color/color10">#BB2913</color>
+    <color name="color1">#FF6B06</color>
+    <color name="color2">#FFAF10</color>
+    <color name="color11">#849A31</color>
+    <color name="color8">#456304</color>
+    <color name="color3">#81C654</color>
+    <color name="color6">#3E9420</color>
+    <color name="color5">#A97C50</color>
+    <color name="color7">#603913</color>
+    <color name="color4">#F23900</color>
+    <color name="color10">#BB2913</color>
     <color name="selectedGreen">#53B175</color>
     <color name="color14">#464A43</color>
     <color name="color15">#424242</color>
     <color name="color16">#E2E2E2</color>
+    <color name="color17">#7C7C7C</color>
     <color name="color_grey_txt">#7C7C7C</color>
 
     <color name="black">#000000</color>
@@ -33,7 +34,7 @@
     <color name="warningColor">#FFA900</color>
     <color name="normalColor">#353A3E</color>
     <color name="colorOrange">#F16531</color>
-    <color name="lightGreen" tools:keep="@color/lightGreen">#8C9C78</color>
+    <color name="lightGreen">#8C9C78</color>
 
     <color name="colorGreenButton">#4CAF50</color>
     <color name="colorDefaultTextView">#808080</color>
@@ -78,6 +79,7 @@
     <color name="brand_tag_color">#FAA322</color>"
 
     <!--basket page-->
+    <color name="color_basket_name">#575574</color>
     <color name="color_price">#737373</color>
     <color name="drawer_selected_bg_color">#F2F2F2</color>
     <color name="color_basket_content_weight">#9D9D9D</color>
@@ -102,15 +104,16 @@
 
     <!--Address-->
     <color name="color_type_of_address">#5E5E5E</color>
-    <color name="color_type_of_address_bg" tools:keep="@color/color_type_of_address_bg">#CCCCCC</color>
+    <color name="color_type_of_address_bg">#CCCCCC</color>
     <color name="color_default_address">#4A4A4A</color>
     <color name="about_txt_color">#4D4D4D</color>
-    <color name="ticket_color" tools:keep="@color/ticket_color">#E3FFB1</color>
+    <color name="ticket_color">#E3FFB1</color>
+
 
     <!--help center-->
     <color name="color_pending">#FF3636</color>
     <color name="color_ongoing">#FF8F27</color>
-<!--    Filter screen color-->
+    <!--    Filter screen color-->
     <color name="filter_line_color">#D1D1D1</color>
 
     <!--track order-->
@@ -129,12 +132,13 @@
     <color name="color_setting_horizontal_line">#D2D2D2</color>
 
     <!--Coupon row background colors-->
-    <color name="pink_top_color" tools:keep="@color/pink_top_color">#FFFFC7BB</color>
-    <color name="pink_bottom_color" tools:keep="@color/pink_bottom_color">#FFFEA996</color>
-    <color name="green_top_color" tools:keep="@color/green_top_color">#FFE3FFB1</color>
-    <color name="green_bottom_color" tools:keep="@color/green_bottom_color">#FFCFFA73</color>
-    <color name="blue_top_color" tools:keep="@color/blue_top_color">#C8EEFE</color>
-    <color name="blue_bottom_color" tools:keep="@color/blue_bottom_color">#A3D2FE</color>
+    <color name="pink_top_color">#FFFFC7BB</color>
+    <color name="pink_bottom_color">#FFFEA996</color>
+    <color name="green_top_color">#FFE3FFB1</color>
+    <color name="green_bottom_color">#FFCFFA73</color>
+    <color name="blue_top_color">#C8EEFE</color>
+    <color name="blue_bottom_color">#A3D2FE</color>
+
     <color name="red_text_color">#F3603F</color>
     <color name="light_green_txt_color">#71AA10</color>
 
@@ -148,18 +152,18 @@
     <color name="store_txt_color">#191919</color>
     <color name="color_blue">#3077CF</color>
 
-<!--    Gallery screen colors-->
+    <!--    Gallery screen colors-->
     <color name="bg_grey">#EFEFEF</color>
-    
-<!--    FAQ"S Sreen colors-->
+
+    <!--    FAQ"S Sreen colors-->
     <color name="color_off_white">#FCFFF8</color>
     <color name="color_off_white_border">#A6A6A6</color>
     <color name="bold_txt_color">#3F3F3F</color>
-<!--    Dialog colors-->
+    <!--    Dialog colors-->
     <color name="dialog_bg_color">#F2F3F2</color>
     <color name="filter_bg_color">#F2F3F2</color>
 
-<!--    My Basket Subscription color-->
+    <!--    My Basket Subscription color-->
     <color name="color_border_light">#E2E2E2</color>
     <color name="color_dark_divider">#C9C9C9</color>
 </resources>

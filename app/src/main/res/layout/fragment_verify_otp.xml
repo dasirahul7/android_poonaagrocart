@@ -88,7 +88,6 @@
                     android:layout_marginEnd="@dimen/_80sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:cursorVisible="true"
-                    app:itemSpacingg="@dimen/_8sdp"
                     android:digits="1234567890"
                     android:imeOptions="actionDone"
                     android:inputType="number"
@@ -100,6 +99,7 @@
                     app:cursorWidth="@dimen/_1sdp"
                     app:itemCount="4"
                     app:itemHeight="@dimen/_45sdp"
+                    app:itemSpacingg="@dimen/_8sdp"
                     app:lineColor="@color/color17"
                     app:lineWidth="1dp"
                     app:viewType="line" />
@@ -122,11 +122,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_resend_otp"
                     android:layout_marginTop="@dimen/_35sdp"
-                    android:background="@drawable/background_verify_otp_btn"
+                    android:background="@drawable/button_green"
                     android:padding="@dimen/alerter_padding_small"
                     android:text="@string/verify_otp_btn"
                     android:textAllCaps="false"
-                    android:textColor="@color/background_button_selector_green"
+                    android:textColor="@color/background_color_white_green"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
 

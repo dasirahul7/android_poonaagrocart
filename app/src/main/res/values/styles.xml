@@ -196,28 +196,31 @@
     <style name="FormTextStyle" parent="Widget.AppCompat.TextView">
         <item name="android:layout_marginStart">@dimen/_20sdp</item>
         <item name="android:layout_marginEnd">@dimen/_20sdp</item>
-        <item name="android:layout_marginTop">@dimen/_20sdp</item>
+        <item name="android:layout_marginTop">@dimen/_15sdp</item>
         <item name="android:paddingTop">@dimen/alerter_padding_half</item>
         <item name="android:paddingLeft">@dimen/alerter_padding_half</item>
         <item name="android:paddingRight">@dimen/alerter_padding_half</item>
         <item name="android:paddingBottom">@dimen/alerter_padding_small</item>
         <item name="android:textColor">@color/color15</item>
-        <item name="android:textSize">@dimen/_14sp</item>
+        <item name="android:textSize">@dimen/_16sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="setCustomFont">@string/font_poppins_semi_bold</item>
     </style>
 
     <style name="FormShortTextStyle" parent="Widget.AppCompat.TextView">
-        <item name="android:layout_marginStart">@dimen/_20sp</item>
+        <item name="android:layout_marginStart">@dimen/_15sdp</item>
         <item name="android:layout_marginTop">@dimen/_8sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_20sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_15sdp</item>
         <item name="android:paddingTop">@dimen/alerter_padding_half</item>
         <item name="android:paddingLeft">@dimen/alerter_padding_half</item>
         <item name="android:paddingRight">@dimen/alerter_padding_half</item>
         <item name="android:paddingBottom">@dimen/alerter_padding_small</item>
         <item name="android:textColor">@color/color15</item>
-        <item name="android:textSize">@dimen/_14sp</item>
+        <item name="android:textSize">@dimen/_16sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="setCustomFont">@string/font_poppins_semi_bold</item>
     </style>
+
     <style name="FormEdittextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:layout_marginStart">@dimen/_20sdp</item>
         <item name="android:layout_marginEnd">@dimen/_20sdp</item>
@@ -235,7 +238,7 @@
     <style name="FormShortEdittextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:layout_height">@dimen/_30sdp</item>
         <item name="android:layout_marginStart">@dimen/_15sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_20sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_15sdp</item>
         <item name="android:layout_marginBottom">@dimen/_10sdp</item>
         <item name="android:background">@drawable/bg_dashboard_et_layout</item>
         <item name="android:elevation">@dimen/_2sdp</item>
@@ -254,8 +257,8 @@
         <item name="android:padding">@dimen/alerter_padding_half</item>
         <item name="android:text">@string/detail_address</item>
         <item name="android:textColor">@color/color15</item>
-        <item name="android:textSize">@dimen/_18sp</item>
-        <item name="setCustomFont">@string/font_poppins_bold</item>
+        <item name="android:textSize">@dimen/_20sp</item>
+        <item name="setCustomFont">@string/font_poppins_medium</item>
     </style>
 
 <!--    Product item styles-->

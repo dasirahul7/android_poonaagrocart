@@ -46,7 +46,8 @@
                 <com.google.android.material.card.MaterialCardView
                     app:cardCornerRadius="@dimen/_10sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_14sdp">
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_marginVertical="@dimen/_8sdp"

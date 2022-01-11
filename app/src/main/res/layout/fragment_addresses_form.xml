@@ -117,7 +117,7 @@
                 android:id="@+id/ll_state_and_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_5sdp"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:weightSum="100"
@@ -127,8 +127,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/_2sdp">
+                    android:orientation="vertical">
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_city_text"
@@ -149,8 +148,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/_2sdp">
+                    android:orientation="vertical">
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_area_text"
@@ -198,6 +196,7 @@
                         android:id="@+id/et_pincode"
                         style="@style/FormShortEdittextStyle"
                         android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
                         android:gravity="center_vertical"
                         android:singleLine="true" />
                 </LinearLayout>
@@ -211,7 +210,6 @@
 
                     <com.poona.agrocart.widgets.CustomButton
                         android:id="@+id/btn_check_availabilty"
-                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_gravity="center|center_vertical"
@@ -219,7 +217,6 @@
                         android:layout_marginEnd="@dimen/_16sdp"
                         android:layout_marginBottom="@dimen/_12sdp"
                         android:background="@drawable/bg_check_availablity_btn"
-                        android:elevation="@dimen/_6sdp"
                         android:gravity="center|center_vertical"
                         android:includeFontPadding="false"
                         android:text="@string/check_availability"
@@ -262,7 +259,7 @@
                         style="@style/FormShortTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/house_no" />
+                        android:text="@string/apartment_no" />
 
                     <com.poona.agrocart.widgets.CustomEditText
                         android:id="@+id/et_house_number"
@@ -285,7 +282,7 @@
                         style="@style/FormShortTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/apartment_no" />
+                        android:text="@string/house_no" />
 
                     <com.poona.agrocart.widgets.CustomEditText
                         android:id="@+id/et_apartment_number"
