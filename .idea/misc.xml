@@ -81,6 +81,7 @@
         <entry key="app/src/main/res/drawable/bg_weight.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/black_shadow_bg.xml" value="0.20185185185185187" />
         <entry key="app/src/main/res/drawable/border_line.xml" value="0.13094462540716612" />
+        <entry key="app/src/main/res/drawable/border_textview.xml" value="0.17866666666666667" />
         <entry key="app/src/main/res/drawable/bottom_menu_item_color.xml" value="0.20185185185185187" />
         <entry key="app/src/main/res/drawable/bottom_menu_shadow.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/bottom_shadow.xml" value="0.15462962962962962" />
@@ -128,6 +129,7 @@
         <entry key="app/src/main/res/drawable/ic_grey_calender.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_grey_circle.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_grey_down_arrow.xml" value="0.11666666666666667" />
+        <entry key="app/src/main/res/drawable/ic_grey_right_arrow.xml" value="0.17866666666666667" />
         <entry key="app/src/main/res/drawable/ic_h.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/ic_h2.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/ic_help_center.xml" value="0.209375" />
@@ -139,6 +141,8 @@
         <entry key="app/src/main/res/drawable/ic_minus.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_minus_with_square_bg.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_mobile.xml" value="0.14351851851851852" />
+        <entry key="app/src/main/res/drawable/ic_my_basket.xml" value="0.1810810810810811" />
+        <entry key="app/src/main/res/drawable/ic_my_order.xml" value="0.1810810810810811" />
         <entry key="app/src/main/res/drawable/ic_my_orders.xml" value="0.19907407407407407" />
         <entry key="app/src/main/res/drawable/ic_next_arrow.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/drawable/ic_not_selected_img.xml" value="0.209375" />
@@ -157,6 +161,8 @@
         <entry key="app/src/main/res/drawable/ic_plus_with_sqaure_bg.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_poona_agrocart.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_poona_agrocart_logo_final.xml" value="0.17592592592592593" />
+        <entry key="app/src/main/res/drawable/ic_privacy_green.xml" value="0.17866666666666667" />
+        <entry key="app/src/main/res/drawable/ic_privacy_policy.xml" value="0.17866666666666667" />
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_radio_btn_selected.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_radio_btn_unselected.xml" value="0.13094462540716612" />
@@ -178,6 +184,8 @@
         <entry key="app/src/main/res/drawable/ic_strok.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/ic_subtract_1_.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/ic_terms__condition.xml" value="0.17592592592592593" />
+        <entry key="app/src/main/res/drawable/ic_terms_condition.xml" value="0.17866666666666667" />
+        <entry key="app/src/main/res/drawable/ic_terms_info.xml" value="0.1810810810810811" />
         <entry key="app/src/main/res/drawable/ic_tick_green_bg.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/ic_tick_mark.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_tick_mark_white_border.xml" value="0.13094462540716612" />
@@ -273,10 +281,12 @@
         <entry key="app/src/main/res/layout/fragment_order_track.xml" value="0.15" />
         <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_our_policy.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_our_policy_item.xml" value="0.11458333333333333" />
         <entry key="app/src/main/res/layout/fragment_our_stores.xml" value="0.1272644927536232" />
         <entry key="app/src/main/res/layout/fragment_photo.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_photo_gallery.xml" value="0.10860655737704918" />
-        <entry key="app/src/main/res/layout/fragment_policy.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/fragment_policy.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_policy_item.xml" value="0.11458333333333333" />
         <entry key="app/src/main/res/layout/fragment_privacy_policy.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_product_image.xml" value="0.14402173913043478" />

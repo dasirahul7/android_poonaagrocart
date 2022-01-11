@@ -106,11 +106,11 @@
         android:name="com.poona.agrocart.ui.nav_explore.ExploreFragment"
         android:label="Explore" />
     <!--    Explore actions-->
-    <action
-        android:id="@+id/action_nav_explore_to_nav_explore_baskets"
-        app:destination="@id/nav_explore_baskets"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+<!--    <action-->
+<!--        android:id="@+id/action_nav_explore_to_nav_explore_baskets"-->
+<!--        app:destination="@id/nav_explore_baskets"-->
+<!--        app:enterAnim="@anim/fade_in"-->
+<!--        app:exitAnim="@anim/fade_out"/>-->
     <action
         android:id="@+id/action_nav_explore_to_nav_products_list"
         app:destination="@id/nav_products_list"
@@ -159,11 +159,31 @@
         android:id="@+id/nav_notification"
         android:name="com.poona.agrocart.ui.nav_notification.NotificationFragment"
         android:label="@string/menu_notification"
-        tools:layout="@layout/fragment_notification" />
+        tools:layout="@layout/fragment_notification" >
+    </fragment>
+<!--    Nav Policies-->
     <fragment
         android:id="@+id/nav_privacy"
-        android:name="com.poona.agrocart.ui.nav_our_privacy.PrivacyFragment"
-        android:label="PrivacyFragment" />
+        android:name="com.poona.agrocart.ui.nav_our_privacy.OurPolicyFragment"
+        android:label="PrivacyFragment" >
+    </fragment>
+<!--    Actions in policies-->
+    <action
+        android:id="@+id/action_nav_privacy_to_privacyPolicyFragment"
+        app:destination="@id/privacyPolicyFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
+    <action
+        android:id="@+id/action_nav_privacy_to_termsConditionFragment"
+        app:destination="@id/termsConditionFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
+    <action
+        android:id="@+id/action_nav_privacy_to_returnRefundFragment"
+        app:destination="@id/returnRefundFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
+
     <fragment
         android:id="@+id/nav_terms"
         android:name="com.poona.agrocart.ui.nav_terms.TermsConditionFragment"
@@ -188,17 +208,17 @@
         android:label="TicketDetailFragment" />
 
     <!--    Bottom Navigation graph-->
-    <fragment
-        android:id="@+id/nav_explore_baskets"
-        android:name="com.poona.agrocart.ui.home.basket_page.BasketPageFragment"
-        android:label="BasketPageFragment">
+<!--    <fragment-->
+<!--        android:id="@+id/nav_explore_baskets"-->
+<!--        android:name="com.poona.agrocart.ui.home.basket_page.BasketPageFragment"-->
+<!--        android:label="BasketPageFragment">-->
 
-        <action
-            android:id="@+id/action_nav_explore_baskets_to_nav_product_details"
-            app:destination="@id/nav_product_details"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"/>
-    </fragment>
+<!--        <action-->
+<!--            android:id="@+id/action_nav_explore_baskets_to_nav_product_details"-->
+<!--            app:destination="@id/nav_product_details"-->
+<!--            app:enterAnim="@anim/fade_in"-->
+<!--            app:exitAnim="@anim/fade_out"/>-->
+<!--    </fragment>-->
     <fragment
         android:id="@+id/nav_order_track"
         android:name="com.poona.agrocart.ui.nav_orders.track_order.OrderTrackFragment"
@@ -299,6 +319,18 @@
         app:destination="@id/nav_faq"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"/>
+    <fragment
+        android:id="@+id/privacyPolicyFragment"
+        android:name="com.poona.agrocart.ui.nav_our_privacy.PrivacyPolicyFragment"
+        android:label="PrivacyPolicyFragment" />
+    <fragment
+        android:id="@+id/termsConditionFragment"
+        android:name="com.poona.agrocart.ui.nav_our_privacy.TermsConditionFragment"
+        android:label="TermsConditionFragment" />
+    <fragment
+        android:id="@+id/returnRefundFragment"
+        android:name="com.poona.agrocart.ui.nav_our_privacy.ReturnRefundFragment"
+        android:label="ReturnRefundFragment" />
 
 
 </navigation>
