@@ -24,10 +24,12 @@ import com.poona.agrocart.ui.home.adapter.BasketAdapter;
 import com.poona.agrocart.ui.home.adapter.OfferProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
+import com.poona.agrocart.ui.home.adapter.SeasonalBannerAdapter;
 import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.home.model.SeasonalProduct;
 
 import java.util.ArrayList;
 
@@ -42,12 +44,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private OfferProductListAdapter bestsellingAdapter;
     private OfferProductListAdapter offerListAdapter;
     private BasketAdapter basketAdapter;
+    private SeasonalBannerAdapter seasonalBannerAdapter;
     private ArrayList<Product> bestSellings = new ArrayList<>();
     private ArrayList<Product> offerProducts = new ArrayList<>();
     private ArrayList<Product> cartProductList = new ArrayList<>();
     private ArrayList<Banner> banners = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
     private ArrayList<Basket> baskets = new ArrayList<>();
+    private ArrayList<SeasonalProduct> seasonalProductList = new ArrayList<>();
     private final ArrayList<Product> mCartList = new ArrayList<Product>();
     private ArrayList<String> BasketIds = new ArrayList<>();
 
@@ -65,8 +69,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         setBasketItems(root);
         setCartItems(root);
         setStoreBanner(root);
+        setSeasonBanners(root);
         initClick();
         return root;
+    }
+
+    private void setSeasonBanners(View root) {
+        homeViewModel.getLiveSeasonProducts().observe(getViewLifecycleOwner(),seasonalProducts -> {
+           seasonalProductList = seasonalProducts;
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false);
+            fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
+            fragmentHomeBinding.recSeasonal.setLayoutManager(linearLayoutManager);
+            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(),seasonalProducts,root);
+            fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
+        });
     }
 
     private void initClick() {

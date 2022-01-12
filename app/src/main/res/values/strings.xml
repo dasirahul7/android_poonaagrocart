@@ -388,6 +388,8 @@
     <string name="basket_sprout_img">https://www.linkpicture.com/q/sprout-basket.png</string>
     <string name="basket_nutrition_img">https://www.linkpicture.com/q/nutritions.png</string>
     <string name="basket_diet_img">https://www.linkpicture.com/q/dait-basket.png</string>
+    <string name="url_mango_img">https://www.linkpicture.com/q/pngkey.png</string>
+    <string name="url_grapes_img">https://www.linkpicture.com/q/blue_berry.png</string>
 
     <!--    MAP KEY-->
     <string name="map_key">AIzaSyDi2KxP5vuvOxYO1qA2i5Ehx-yXY7hcN1Q</string>

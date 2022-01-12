@@ -56,6 +56,7 @@
     <color name="blue_txt_color">#575574</color>
     <color name="dark_blue_color">#012F59</color>
     <color name="lightBlack">#3E423F</color>
+    <color name="dark_green_color">#235614</color>
 
     <!--Addresses fragment-->
     <color name="clr_check_availabilty_bg">#EFF7E2</color>
@@ -162,4 +163,7 @@
 <!--    My Basket Subscription color-->
     <color name="color_border_light">#E2E2E2</color>
     <color name="color_dark_divider">#C9C9C9</color>
+    <color name="seasonal_border_color">#EEEEEE</color>
+
+
 </resources>

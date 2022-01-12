@@ -13,6 +13,7 @@ import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.home.model.SeasonalProduct;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class HomeViewModel extends AndroidViewModel {
     private MutableLiveData<ArrayList<Category>> liveDataCategory;
     private MutableLiveData<ArrayList<Basket>> liveDataBaskets;
     private MutableLiveData<ArrayList<Product>> savesProductInBasket;
+    private MutableLiveData<ArrayList<SeasonalProduct>> liveSeasonProducts;
 
 
     public HomeViewModel(@NonNull Application application) {
@@ -37,6 +39,7 @@ public class HomeViewModel extends AndroidViewModel {
         liveDataCategory = new MutableLiveData<>();
         liveDataBaskets = new MutableLiveData<>();
         savesProductInBasket = new MutableLiveData<>();
+        liveSeasonProducts = new MutableLiveData<>();
         //init arraylist
         getBasketData();
         initBanner();
@@ -45,6 +48,40 @@ public class HomeViewModel extends AndroidViewModel {
         initOfferProduct();
         initBasketItems();
         initCartItems();
+        initSeasonalBanner();
+    }
+
+    private void initSeasonalBanner() {
+        ArrayList<SeasonalProduct> seasonalProducts = new ArrayList<>();
+        SeasonalProduct seasonalProduct = new SeasonalProduct();
+        seasonalProduct.setsProductName("Alphanso");
+        seasonalProduct.setsProductPlace("Ratnagiri");
+        seasonalProduct.setsProductQuality("Fresh farm mangoes");
+        seasonalProduct.setsProductImage(getApplication().getString(R.string.url_mango_img));
+        SeasonalProduct seasonalProduct1 = new SeasonalProduct();
+        seasonalProduct1.setsProductName("Grapes");
+        seasonalProduct1.setsProductPlace("Nashik");
+        seasonalProduct1.setsProductQuality("Fresh farm grapes");
+        seasonalProduct1.setsProductImage(getApplication().getString(R.string.url_grapes_img));
+        SeasonalProduct seasonalProduct2 = new SeasonalProduct();
+        seasonalProduct2.setsProductName("Alphanso");
+        seasonalProduct2.setsProductPlace("Ratnagiri");
+        seasonalProduct2.setsProductQuality("Fresh farm mangoes");
+        seasonalProduct2.setsProductImage(getApplication().getString(R.string.url_mango_img));
+        SeasonalProduct seasonalProduct3 = new SeasonalProduct();
+        seasonalProduct3.setsProductName("Grapes");
+        seasonalProduct3.setsProductPlace("Nashik");
+        seasonalProduct3.setsProductQuality("Fresh farm grapes");
+        seasonalProduct3.setsProductImage(getApplication().getString(R.string.url_grapes_img));
+        seasonalProducts.add(seasonalProduct);
+        seasonalProducts.add(seasonalProduct1);
+        seasonalProducts.add(seasonalProduct2);
+        seasonalProducts.add(seasonalProduct3);
+        seasonalProducts.add(seasonalProduct);
+        seasonalProducts.add(seasonalProduct1);
+        seasonalProducts.add(seasonalProduct2);
+        seasonalProducts.add(seasonalProduct3);
+        liveSeasonProducts.setValue(seasonalProducts);
     }
 
     private void getBasketData() {
@@ -159,6 +196,8 @@ public class HomeViewModel extends AndroidViewModel {
         }
         liveDataBanner.setValue(banners);
     }
+
+    public MutableLiveData<ArrayList<SeasonalProduct>> getLiveSeasonProducts() { return liveSeasonProducts; }
 
     public MutableLiveData<ArrayList<Banner>> getLiveDataBanner() {
         return liveDataBanner;

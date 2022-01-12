@@ -188,6 +188,16 @@
                     android:paddingHorizontal="@dimen/home_horizontal_padding"
                     tools:ignore="RtlSymmetry" />
 
+                <!--                Seasonal Banners-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rec_seasonal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="@dimen/home_horizontal_padding"
+                    tools:ignore="RtlSymmetry" />
+
                 <!--Exclusive Offers-->
                 <RelativeLayout
                     android:layout_width="match_parent"

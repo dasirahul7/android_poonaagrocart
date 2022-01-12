@@ -57,5 +57,6 @@
     <dimen name="l_txt_size">@dimen/_16sp</dimen>
     <dimen name="xl_txt_size">@dimen/_18sp</dimen>
     <dimen name="xxl_txt_size">@dimen/_20sdp</dimen>
+    <dimen name="xlarge_txt_size">@dimen/_18sdp</dimen>
     <dimen name="very_large">@dimen/_25sdp</dimen>
 </resources>

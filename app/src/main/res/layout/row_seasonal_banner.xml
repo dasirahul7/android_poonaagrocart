@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="moduleSeasonBanner"
+            type="com.poona.agrocart.ui.home.model.SeasonalProduct" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/_300sdp"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_seasonal_banner"
+            android:layout_width="@dimen/_290sdp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:elevation="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/seasonal_border_color"
+            app:strokeWidth="1dp">
+
+            <RelativeLayout
+                android:gravity="center"
+                android:id="@+id/rl_seasonal_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/seasonal_banner_yellow">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/s_banner_img"
+                    setImage="@{moduleSeasonBanner.sProductImage}"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_s_place"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:text="@{moduleSeasonBanner.sProductPlace}"
+                        android:textColor="@color/dark_green_color"
+                        android:textSize="@dimen/xxl_txt_size"
+                        android:textStyle="bold"
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_s_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:text="@{moduleSeasonBanner.sProductName}"
+                        android:textColor="@color/dark_green_color"
+                        android:textSize="@dimen/l_txt_size"
+                        android:textStyle="bold"
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_s_quality"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:text="@{moduleSeasonBanner.sProductQuality}"
+                        android:textColor="@color/dark_green_color"
+                        android:textSize="@dimen/medium_txt_size"
+                        android:textStyle="normal"
+                        app:setCustomFont="@string/font_poppins_medium" />
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:id="@+id/tv_register"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:background="@drawable/bg_white_rectangle"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Register here"
+                        android:textColor="@color/dark_green_color"
+                        android:textSize="@dimen/xl_txt_size"
+                        android:textStyle="normal"
+                        app:setCustomFont="@string/font_poppins_medium" />
+                </LinearLayout>
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
