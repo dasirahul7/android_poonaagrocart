@@ -1,8 +1,15 @@
 package com.poona.agrocart.ui.home.model;
 
 public class SeasonalProduct {
-    public String sProductName,sProductPlace,sProductQuality,sProductImage;
+    public String sProductName,sProductPlace,sProductQuality,sProductImage,type;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getsProductName() {
         return sProductName;
