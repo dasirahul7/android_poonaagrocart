@@ -9,7 +9,6 @@
             name="addressFormViewModel"
             type="com.poona.agrocart.ui.nav_addresses.addresses_form.AddressFormViewModel" />
     </data>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -83,12 +82,14 @@
                 style="@style/FormTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="start"
                 android:text="@string/name"
                 app:layout_constraintTop_toBottomOf="@+id/ll_radio_goup" />
 
             <com.poona.agrocart.widgets.CustomEditText
                 android:id="@+id/et_username"
                 style="@style/FormEdittextStyle"
+                android:background="@drawable/background_with_shadow_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{addressFormViewModel.name}"
@@ -106,6 +107,7 @@
                 android:id="@+id/et_mobile_no"
                 style="@style/FormEdittextStyle"
                 android:layout_width="match_parent"
+                android:background="@drawable/background_with_shadow_edittext"
                 android:layout_height="wrap_content"
                 android:digits="0123456789"
                 android:inputType="phone"
@@ -196,7 +198,8 @@
                         android:id="@+id/et_pincode"
                         style="@style/FormShortEdittextStyle"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_30sdp"
+                        android:background="@drawable/background_with_shadow_small_edittext"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:singleLine="true" />
                 </LinearLayout>
@@ -211,7 +214,7 @@
                     <com.poona.agrocart.widgets.CustomButton
                         android:id="@+id/btn_check_availabilty"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_30sdp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center|center_vertical"
                         android:layout_marginStart="@dimen/_14sdp"
                         android:layout_marginEnd="@dimen/_16sdp"
@@ -264,6 +267,8 @@
                         android:id="@+id/et_house_number"
                         style="@style/FormShortEdittextStyle"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_with_shadow_small_edittext"
                         android:text="@{addressFormViewModel.houseNumber}"
                         tools:ignore="RtlSymmetry" />
 
@@ -286,6 +291,8 @@
                         android:id="@+id/et_apartment_number"
                         style="@style/FormShortEdittextStyle"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_with_shadow_small_edittext"
                         tools:ignore="RtlSymmetry" />
 
                 </LinearLayout>
@@ -305,6 +312,7 @@
                 style="@style/FormEdittextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/background_with_shadow_edittext"
                 app:layout_constraintTop_toBottomOf="@id/tv_street" />
 
             <com.poona.agrocart.widgets.CustomTextView
@@ -318,6 +326,7 @@
             <com.poona.agrocart.widgets.CustomEditText
                 android:id="@+id/et_landmark"
                 style="@style/FormEdittextStyle"
+                android:background="@drawable/background_with_shadow_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/tv_landmark" />
