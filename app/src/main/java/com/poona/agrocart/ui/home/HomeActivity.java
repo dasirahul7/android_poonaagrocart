@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.home;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -34,8 +35,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppUtils;
+import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.ActivityHomeBinding;
 import com.poona.agrocart.ui.BaseActivity;
+import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomTextView;
 
 import java.util.Objects;
@@ -117,7 +121,8 @@ public class HomeActivity extends BaseActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
+        Menu m = navigationView.getMenu();
+        MenuItem signOut = m.findItem(R.id.nav_signout);
         binding.appBarHome.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +131,18 @@ public class HomeActivity extends BaseActivity {
                 } else {
                     HomeActivity.this.binding.drawerLayout.closeDrawer(binding.drawerLayout);
                 }
+            }
+        });
+        signOut.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                try {
+                    drawer.closeDrawer(GravityCompat.START);
+                    signingOut();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return true;
             }
         });
 
@@ -141,6 +158,16 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
+
+    }
+
+    private void signingOut() {
+        AppUtils.infoToast(this,"Log out");
+        AppSharedPreferences preferences = new AppSharedPreferences(this);
+        preferences.clearSharedPreferences(this);
+        Intent intent = new Intent(this, SplashScreenActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void setCustomDrawerIconInFragments() {

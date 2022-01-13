@@ -58,7 +58,7 @@
                         android:paddingHorizontal="@dimen/_5sdp"
                         android:text="@{moduleSeasonBanner.sProductPlace}"
                         android:textColor="@color/dark_green_color"
-                        android:textSize="@dimen/xxl_txt_size"
+                        android:textSize="@dimen/xl_txt_size"
                         android:textStyle="bold"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
 
@@ -70,7 +70,7 @@
                         android:paddingHorizontal="@dimen/_5sdp"
                         android:text="@{moduleSeasonBanner.sProductName}"
                         android:textColor="@color/dark_green_color"
-                        android:textSize="@dimen/l_txt_size"
+                        android:textSize="@dimen/large_txt_size"
                         android:textStyle="bold"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
 
@@ -96,7 +96,7 @@
                         android:padding="@dimen/_5sdp"
                         android:text="Register here"
                         android:textColor="@color/dark_green_color"
-                        android:textSize="@dimen/xl_txt_size"
+                        android:textSize="@dimen/x_large_txt_size"
                         android:textStyle="normal"
                         app:setCustomFont="@string/font_poppins_medium" />
                 </LinearLayout>

@@ -146,4 +146,8 @@ public class AppSharedPreferences
         Type type = new TypeToken<ArrayList<Product>>() {}.getType();
         return gson.fromJson(json, type);
     }
+    public void removeAll() {
+        this.editor.clear();
+        this.editor.commit();
+    }
 }

@@ -51,8 +51,8 @@
                         android:id="@+id/tv_loging"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/alerter_padding_small"
                         android:text="@string/sign_up"
+                        android:padding="@dimen/alerter_padding_small"
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_24sp"
                         app:setCustomFont="@string/font_poppins_regular" />
