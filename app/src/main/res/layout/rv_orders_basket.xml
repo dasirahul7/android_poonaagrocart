@@ -195,9 +195,9 @@
                             android:gravity="start"
                             android:singleLine="true"
                             android:text="@{basketOrder.paymentMode}"
-                            android:textColor="@color/black"
+                            android:textColor="@color/selectedGreen"
                             android:textSize="@dimen/_14sp"
-                            app:setCustomFont="@string/font_poppins_regular" />
+                            app:setCustomFont="@string/font_poppins_medium" />
 
                     </LinearLayout>
 

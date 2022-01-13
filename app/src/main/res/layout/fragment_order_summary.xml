@@ -198,7 +198,7 @@
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:drawablePadding="@dimen/_2sdp"
-                            android:drawableStart="@drawable/ic_phone"
+                            android:drawableStart="@drawable/ic_mobile_no"
                             android:text="@string/_91_986_095_3315"
                             android:textColor="@color/color_order_view_username"
                             android:textSize="@dimen/_14sp"
