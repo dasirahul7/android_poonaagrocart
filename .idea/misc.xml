@@ -12,6 +12,9 @@
         <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/simple_selectable_list_item.xml" value="0.1" />
         <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.1" />
         <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_item.xml" value="0.1" />
+        <entry key="..\:/MPlussoft/android/android_poonaagrocart/app/src/main/res/layout/fragment_log_in.xml" value="0.16304347826086957" />
+        <entry key="..\:/MPlussoft/android/android_poonaagrocart/app/src/main/res/layout/fragment_sign_in.xml" value="0.1" />
+        <entry key="..\:/MPlussoft/android/android_poonaagrocart/app/src/main/res/layout/fragment_verify_otp.xml" value="0.18" />
         <entry key="app/src/main/res/drawable-mdpi/strike_through.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable-v24/bg_green_rounded.xml" value="0.19814814814814816" />
         <entry key="app/src/main/res/drawable/alerter_ic_notifications.xml" value="0.20615384615384616" />
