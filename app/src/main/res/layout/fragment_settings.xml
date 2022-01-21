@@ -12,18 +12,19 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:weightSum="2">
+                android:layout_marginTop="@dimen/_30sdp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
                     android:orientation="vertical">
@@ -48,11 +49,12 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/sc_notification"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
                     android:checked="true"
-                    android:theme="@style/Color1SwitchStyle"/>
+                    android:padding="@dimen/_10sdp"
+                    android:thumb="@drawable/switch_thumb" />
 
             </LinearLayout>
 
@@ -60,11 +62,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:weightSum="2">
+                android:layout_marginTop="@dimen/_30sdp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
                     android:orientation="vertical">
@@ -89,29 +90,29 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/sc_email_notification"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.7"
-                    android:checked="false"
-                    android:theme="@style/Color1SwitchStyle"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:padding="@dimen/_10sdp"
+                    android:thumb="@drawable/switch_thumb" />
 
             </LinearLayout>
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_version_1_0_12"
-                android:textColor="@color/black"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_30sdp"
+                android:text="@string/app_version_1_0_12"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_16sp"
                 app:setCustomFont="@string/font_poppins_semi_bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_12sdp"
                 android:background="@color/color_setting_horizontal_line" />
 

@@ -15,7 +15,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.databinding.FragmentTicketDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.help_center.model.Ticket;
+import com.poona.agrocart.ui.nav_help_center.model.Ticket;
 import com.poona.agrocart.ui.ticket_details.model.Comment;
 
 import java.util.ArrayList;

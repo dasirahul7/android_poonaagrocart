@@ -1,8 +1,5 @@
 package com.poona.agrocart.ui.home;
 
-import static com.poona.agrocart.app.AppConstants.LANDSCAPE;
-import static com.poona.agrocart.app.AppConstants.PORTRAIT;
-
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,36 +14,46 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
+import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
 import com.poona.agrocart.ui.home.adapter.BasketAdapter;
+import com.poona.agrocart.ui.home.adapter.OfferProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
+import com.poona.agrocart.ui.home.adapter.SeasonalBannerAdapter;
 import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.home.model.SeasonalProduct;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     private static final int AUTO_SCROLL_THRESHOLD_IN_MILLI = 3000;
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding fragmentHomeBinding;
     private BannerAdapter bannerAdapter;
-    private final ArrayList<Banner> banners = new ArrayList<>();
-    private final ArrayList<Category> categories = new ArrayList<>();
     private CategoryAdapter categoryAdapter;
     private ProductListAdapter productListAdapter;
-    private ProductListAdapter offerListAdapter;
+    private OfferProductListAdapter bestsellingAdapter;
+    private OfferProductListAdapter offerListAdapter;
     private BasketAdapter basketAdapter;
-    private final ArrayList<Product> products = new ArrayList<>();
-    private final ArrayList<Product> offerProducts = new ArrayList<>();
-    private final ArrayList<Product> productLists = new ArrayList<>();
-    private final ArrayList<Basket> baskets = new ArrayList<>();
+    private SeasonalBannerAdapter seasonalBannerAdapter;
+    private ArrayList<Product> bestSellings = new ArrayList<>();
+    private ArrayList<Product> offerProducts = new ArrayList<>();
+    private ArrayList<Product> cartProductList = new ArrayList<>();
+    private ArrayList<Banner> banners = new ArrayList<>();
+    private ArrayList<Category> categories = new ArrayList<>();
+    private ArrayList<Basket> baskets = new ArrayList<>();
+    private ArrayList<SeasonalProduct> seasonalProductList = new ArrayList<>();
+    private final ArrayList<Product> mCartList = new ArrayList<Product>();
+    private ArrayList<String> BasketIds = new ArrayList<>();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -54,6 +61,7 @@ public class HomeFragment extends BaseFragment {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = fragmentHomeBinding.getRoot();
+        getBasketItems();
         setBannersView();
         setShopByCategory(root);
         setBestSellings(root);
@@ -61,7 +69,36 @@ public class HomeFragment extends BaseFragment {
         setBasketItems(root);
         setCartItems(root);
         setStoreBanner(root);
+        setSeasonBanners(root);
+        initClick();
         return root;
+    }
+
+    private void setSeasonBanners(View root) {
+        homeViewModel.getLiveSeasonProducts().observe(getViewLifecycleOwner(),seasonalProducts -> {
+           seasonalProductList = seasonalProducts;
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false);
+            fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
+            fragmentHomeBinding.recSeasonal.setLayoutManager(linearLayoutManager);
+            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(),seasonalProducts,root);
+            fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
+        });
+    }
+
+    private void initClick() {
+        fragmentHomeBinding.tvAllCategory.setOnClickListener(this);
+        fragmentHomeBinding.tvAllExclusive.setOnClickListener(this);
+        fragmentHomeBinding.tvAllSelling.setOnClickListener(this);
+    }
+
+    private void getBasketItems() {
+        homeViewModel.getSavesProductInBasket().observe(getViewLifecycleOwner(), products -> {
+            if (products!=null){
+                for (Product saved : products)
+                    BasketIds.add(saved.getId());
+            }
+        });
     }
 
     private void setStoreBanner(View root) {
@@ -76,129 +113,106 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void setCartItems(View root) {
-        productLists.clear();
-        for (int i = 0; i < 4; i++) {
-            Product product = new Product("0", "Potatos", "1kg", "10% Off", "Rs 65", "Rs 35", "https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png","Pune");
-            productLists.add(product);
-            if (i == 3){
-                product.setOrganic(true);
-            }
-        }
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-        fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recProduct.setHasFixedSize(true);
-        fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
-        productListAdapter = new ProductListAdapter(productLists, getActivity(), LANDSCAPE, root);
-        fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
+        homeViewModel.getLiveDataCartProduct().observe(getViewLifecycleOwner(), cartProducts -> {
+            this.cartProductList = cartProducts;
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+            fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recProduct.setHasFixedSize(true);
+            fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
+            productListAdapter = new ProductListAdapter(cartProductList, getActivity(), root);
+            fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
+            productListAdapter.setOnProductClick(product -> {
+                toProductDetail(product, root);
+            });
+            productListAdapter.setOnPlusClick((product, position) -> {
+                addToBasket(product);
+                this.cartProductList.get(position).setInBasket(true);
+                this.cartProductList.get(position).setQuantity("1");
+                productListAdapter.notifyItemChanged(position);
+            });
+        });
+
     }
 
     private void setBasketItems(View view) {
-        baskets.clear();
-        Basket basket = new Basket("Fruit\n" +
-                "Baskets", "Rs 15000", "https://www.linkpicture.com/q/1-200284.png");
-        for (int i = 0; i < 4; i++)
-            baskets.add(basket);
-        basketAdapter = new BasketAdapter(baskets, getActivity(), view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
-        fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
-        fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
+        homeViewModel.getLiveDataBaskets().observe(getViewLifecycleOwner(), baskets -> {
+            this.baskets = baskets;
+            basketAdapter = new BasketAdapter(this.baskets, getActivity(), view);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
+            fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
+            fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
+        });
+
     }
 
     private void setOfferProduct(View root) {
-        offerProducts.clear();
-        Product offerProduct = new Product("1", "Red Apple", "1Kg"
-                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png","Pune");
-        Product offerProduct1 = new Product("2", "Organic Bananas", "12 pcs"
-                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png","Pune");
-        offerProduct1.setOrganic(true);
-        Product offerProduct2 = new Product("3", "Red Apple", "1Kg"
-                , "10% Off", "Rs150", "Rs. 140", "https://www.linkpicture.com/q/pngfuel-1-1.png","Pune");
-        Product offerProduct3 = new Product("4", "Organic Bananas", "12 pcs"
-                , "10% Off", "Rs 45", "Rs. 35", "https://www.linkpicture.com/q/banana_2.png","Pune");
-        offerProduct3.setOrganic(true);
-        offerProducts.add(offerProduct);
-        offerProducts.add(offerProduct1);
-        offerProducts.add(offerProduct2);
-        offerProducts.add(offerProduct3);
-        offerListAdapter = new ProductListAdapter(offerProducts, getActivity(), PORTRAIT, root);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-        fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
-        fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
+        homeViewModel.getLiveDataOffer().observe(getViewLifecycleOwner(), liveProducts -> {
+            this.offerProducts = liveProducts;
+            offerListAdapter = new OfferProductListAdapter(this.offerProducts, getActivity(), root);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+            fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
+            fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
+            // Redirect to Product details
+            offerListAdapter.setOnProductClick(product -> {
+                toProductDetail(product, root);
+            });
+            offerListAdapter.setOnPlusClick((product, position) -> {
+                addToBasket(product);
+                offerProducts.get(position).setInBasket(true);
+                offerProducts.get(position).setQuantity("1");
+                offerListAdapter.notifyItemChanged(position);
+            });
+        });
     }
 
     private void setBestSellings(View root) {
-        products.clear();
-        Product product = new Product("1", "Bell Pepper Red", "1Kg"
-                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png","Pune");
-        Product product1 = new Product("2", "Ginger", "250 gms"
-                , "10% Off", "Rs 110", "Rs. 140", "https://www.linkpicture.com/q/ginger.png","Pune");
-        product1.setOrganic(true);
-        Product product2 = new Product("3", "Bell Pepper Red", "1Kg"
-                , "10% Off", "Rs25", "Rs. 15", "https://www.linkpicture.com/q/capsicon.png","Pune");
-        Product product3 = new Product("4", "Ginger", "500 gms"
-                , "10% Off", "Rs280", "Rs. 250", "https://www.linkpicture.com/q/ginger.png","Pune");
-        Product product4 = new Product("4", "Ginger", ""
-                , "", "", "", "https://www.linkpicture.com/q/ginger.png","Pune");
-        product4.setQty("0");
-        Product product5 = new Product("4", "Ginger", ""
-                , "", "", "", "https://www.linkpicture.com/q/ginger.png","Pune");
-        product5.setQty("0");
-        products.add(product);
-        products.add(product1);
-        products.add(product2);
-        products.add(product3);
-        products.add(product4);
-        products.add(product5);
+        homeViewModel.getLiveDataBestSelling().observe(getViewLifecycleOwner(), liveList -> {
+            this.bestSellings = liveList;
+            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+            bestsellingAdapter = new OfferProductListAdapter(this.bestSellings, requireActivity(), root);
+            fragmentHomeBinding.recOfferProduct.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recOfferProduct.setLayoutManager(layoutManager);
+            fragmentHomeBinding.recOfferProduct.setAdapter(bestsellingAdapter);
+            // Redirect to Product details
+            bestsellingAdapter.setOnProductClick(product -> {
+                toProductDetail(product, root);
+            });
+            bestsellingAdapter.setOnPlusClick((product, position) -> {
+                addToBasket(product);
+                this.bestSellings.get(position).setInBasket(true);
+                this.bestSellings.get(position).setQuantity("1");
+                bestsellingAdapter.notifyItemChanged(position);
+            });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-        productListAdapter = new ProductListAdapter(products, requireActivity(), PORTRAIT, root);
-        fragmentHomeBinding.recOfferProduct.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recOfferProduct.setLayoutManager(layoutManager);
-        fragmentHomeBinding.recOfferProduct.setAdapter(productListAdapter);
+        });
+
     }
 
     private void setShopByCategory(View view) {
-        categories.clear();
-        Category category = new Category("1", "Green Vegetables", "https://www.linkpicture.com/q/green_leafy_vegetable.png");
-        Category category1 = new Category("2", "Fruit Vegetables", "https://www.linkpicture.com/q/tomato_1.png");
-        Category category2 = new Category("3", "Green Vegetables", "https://www.linkpicture.com/q/green_leafy_vegetable.png");
-        Category category3 = new Category("4", "Fruit Vegetables", "https://www.linkpicture.com/q/tomato_1.png");
+        homeViewModel.getLiveDataCategory().observe(getViewLifecycleOwner(), categories1 -> {
+            categories = categories1;
+            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+            categoryAdapter = new CategoryAdapter(categories, requireActivity(), view);
+            fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
+            fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
+            fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
+        });
 
-        categories.add(category);
-        categories.add(category1);
-        categories.add(category2);
-        categories.add(category3);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-        categoryAdapter = new CategoryAdapter(categories, requireActivity(), view);
-        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
-        fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
     }
 
     private void setBannersView() {
-        banners.clear();
-        Banner banner = new Banner("1", "Banner1", "https://www.linkpicture.com/q/banner_img.jpg");
-        for (int i = 0; i < 3; i++) {
-            banners.add(banner);
-        }
-        System.out.println(banners.size());
-        BannerAdapter bannerAdapter = new BannerAdapter(banners, requireActivity());
+        homeViewModel.getLiveDataBanner().observe(getViewLifecycleOwner(), banners1 -> {
+            banners = banners1;
+            bannerAdapter = new BannerAdapter(banners, requireActivity());
 
-        fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
-        //fragmentHomeBinding.tlIndicators.setupViewPager(fragmentHomeBinding.viewPagerBanner);
-        // tabs.setupWithViewPager(autoScrollViewPager);
+            fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
+            // Set up tab indicators
+            fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
+        });
 
-        // start auto scroll
-        fragmentHomeBinding.viewPagerBanner.startAutoScroll();
-
-        // set auto scroll time in mili
-        fragmentHomeBinding.viewPagerBanner.setSlideInterval(AUTO_SCROLL_THRESHOLD_IN_MILLI);
-
-        // enable recycling using true
-        fragmentHomeBinding.viewPagerBanner.setCycle(true);
 
     }
 
@@ -223,6 +237,10 @@ public class HomeFragment extends BaseFragment {
             ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setVisibility(View.GONE);
         if (((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.getVisibility() == View.VISIBLE)
             ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
+        if (((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.getVisibility() == View.VISIBLE)
+            ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);
+        if (((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.getVisibility() == View.VISIBLE)
+            ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.VISIBLE);
     }
@@ -231,5 +249,37 @@ public class HomeFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         fragmentHomeBinding = null;
+    }
+
+    private void addToBasket(Product item) {
+            item.setQuantity("1");
+        mCartList.add(item);
+        preferences.saveCartArrayList(mCartList, AppConstants.CART_LIST);
+        for (int i = 0; i < mCartList.size(); i++) {
+            System.out.println("Added: " + mCartList.get(i).getName());
+        }
+    }
+
+    public void toProductDetail(Product product, View root) {
+        Bundle bundle = new Bundle();
+        bundle.putString("name", product.getName());
+        bundle.putString("image", product.getImg());
+        bundle.putString("price", product.getPrice());
+        bundle.putString("brand", product.getBrand());
+        bundle.putString("weight", product.getWeight());
+        bundle.putString("quantity", product.getQuantity());
+        bundle.putBoolean("organic", product.isOrganic());
+        bundle.putBoolean("isInBasket", product.isInBasket());
+        bundle.putString("Product", "Product");
+        Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+    }
+
+    @Override
+    public void onClick(View v) {
+switch (v.getId()){
+    case R.id.tv_all_category:
+
+        break;
+}
     }
 }

@@ -29,16 +29,18 @@
             <ImageView
                 android:id="@+id/basketImg"
                 setImage="@{basketModule.img}"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
-                android:layout_alignParentStart="true"/>
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="@dimen/_5sdp" />
             <LinearLayout
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_toEndOf="@id/basketImg">
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_name"

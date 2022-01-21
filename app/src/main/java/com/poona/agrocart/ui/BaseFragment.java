@@ -8,6 +8,7 @@ import static com.poona.agrocart.app.AppConstants.LOGOUT;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,11 +25,13 @@ import android.net.NetworkInfo;
 import android.net.ParseException;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
@@ -44,13 +47,17 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.firebase.PushNotification;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
+import com.poona.agrocart.widgets.CustomButton;
+import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.custom_alert.Alerter;
 import com.poona.agrocart.widgets.toast.CustomToast;
 import com.yalantis.ucrop.UCrop;
@@ -72,6 +79,8 @@ import java.util.Objects;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
+
+
 public abstract class BaseFragment extends Fragment {
     private static final String TAG = BaseFragment.class.getSimpleName();
     public Context context;
@@ -112,6 +121,7 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
@@ -128,6 +138,7 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);
@@ -191,6 +202,32 @@ public abstract class BaseFragment extends Fragment {
                 .setText(dialogMessage)
                 .show();
     }
+    protected void showConfirmPopup(Activity activity, String dialogMessage, CustomDialogInterface dialogInterface)
+    {
+        final boolean[] flag = new boolean[1];
+        Dialog dialog = new Dialog(activity);
+        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_logout);
+//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//        lp.copyFrom(dialog.getWindow().getAttributes());
+//        dialog.getWindow().setAttributes(lp);
+        CustomTextView tvTitle = dialog.findViewById(R.id.tv_heading);
+        CustomButton btnYes = dialog.findViewById(R.id.btn_yes);
+        CustomButton btnNo = dialog.findViewById(R.id.btn_no);
+        btnNo.setOnClickListener(v -> {
+            dialogInterface.onNoClick();
+            dialog.dismiss();
+        });
+        btnYes.setOnClickListener(v -> {
+            dialog.dismiss();
+            dialogInterface.onYesClick();
+        });
+        tvTitle.setText(dialogMessage);
+
+        dialog.show();
+    }
+
 
     // Date and time format exchange
     public String formatDate(String enterDate, String initDateFormat, String endDateFormat) throws ParseException, java.text.ParseException {
@@ -769,6 +806,21 @@ public abstract class BaseFragment extends Fragment {
         a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density + 300));
         v.startAnimation(a);
     }
+
+    public void toDetails(Product product, View root) {
+        Bundle bundle = new Bundle();
+        bundle.putString("name", product.getName());
+        bundle.putString("image", product.getImg());
+        bundle.putString("price", product.getPrice());
+        bundle.putString("brand", product.getBrand());
+        bundle.putString("weight", product.getWeight());
+        bundle.putString("quantity", product.getQuantity());
+        bundle.putBoolean("organic", product.isOrganic());
+        bundle.putBoolean("isInBasket", product.isInBasket());
+        bundle.putString("Product", "Product");
+        Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+    }
+
 
     /*private String saveTempFileToFile(File tempFile) {
         try {

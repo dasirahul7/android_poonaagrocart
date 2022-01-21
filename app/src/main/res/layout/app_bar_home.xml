@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:elevation="4dp"
+    android:elevation="0dp"
     tools:context=".ui.home.HomeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
@@ -21,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:elevation="0dp"
             app:popupTheme="@style/Theme.PoonaAgroCart.PopupOverlay">
 
             <RelativeLayout
@@ -53,14 +55,55 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:drawableStart="@drawable/ic_location"
-                    android:drawableTint="@color/colorGrey"
+                    android:layout_marginEnd="@dimen/_15sp"
+                    android:drawableStart="@drawable/icon_map"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:drawableTint="@color/title_black"
                     android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     android:singleLine="true"
                     android:text="@string/address_location"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_14sp" />
+                    android:textColor="@color/title_black"
+                    android:textSize="@dimen/_14sp"
+                    app:setCustomFont="@string/font_poppins_regular" />
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:id="@+id/rl_product_tag"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_brand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/txt_organic"
+                        android:background="@drawable/bg_offer_yellow"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:text="brand - name"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/offer_txt_size"
+                        android:textStyle="bold"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+                    <ImageView
+                        android:id="@+id/txt_organic"
+                        style="@style/organic_button_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:background="@drawable/bg_organic_sqaure"
+                        android:gravity="center"
+                        android:src="@drawable/ic_organic"
+                        tools:ignore="RtlHardcoded" />
+                </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/img_delete"

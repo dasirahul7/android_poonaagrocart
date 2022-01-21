@@ -33,10 +33,6 @@ public class SplashScreenActivity extends BaseActivity
     public static CustomTextView title;
     private AppBarLayout appBarLayout;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

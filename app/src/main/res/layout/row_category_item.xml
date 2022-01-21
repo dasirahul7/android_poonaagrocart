@@ -9,35 +9,49 @@
     </data>
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardview_category"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_120sdp"
+        android:layout_width="@dimen/_155sdp"
+        android:layout_height="@dimen/_130sdp"
         android:elevation="@dimen/_10sdp"
-        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_15sdp"
         app:cardUseCompatPadding="true"
         app:strokeColor="@color/clr_custom_edit_text_otp"
         app:strokeWidth="1dp">
         <LinearLayout
+            android:padding="@dimen/_5sdp"
             android:id="@+id/cat_row"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:orientation="vertical">
-            <ImageView
-                android:id="@+id/catImg"
+            <com.google.android.material.card.MaterialCardView
+                app:cardElevation="0dp"
                 android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_70sdp"
-                setImage="@{categoryModule.img}"/>
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_height="@dimen/_70sdp">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white">
+                    <ImageView
+                        android:id="@+id/catImg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        setImage="@{categoryModule.img}"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_cat_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/_5sdp"
+                android:gravity="center_vertical"
                 android:singleLine="true"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:text="@{categoryModule.name}"
                 android:textColor="@color/green_txt_color"
-                android:textSize="@dimen/cat_txt_size"
+                android:textSize="@dimen/category_txt_size"
                 app:setCustomFont="@string/font_poppins_semi_bold" />
 
         </LinearLayout>

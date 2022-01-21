@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.our_stores.StoreDetailFragment">
+    tools:context=".ui.nav_stores.StoreDetailFragment">
 
     <data>
 
         <variable
             name="storeDetailViewModel"
-            type="com.poona.agrocart.ui.our_stores.StoreDetailViewModel" />
+            type="com.poona.agrocart.ui.nav_stores.StoreDetailViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -20,14 +20,15 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/_20sdp">
+            android:paddingBottom="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_15sdp">
 
             <androidx.cardview.widget.CardView
                 app:cardCornerRadius="@dimen/_10sdp"
                 android:id="@+id/location_card"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_120sdp"
-                android:layout_margin="@dimen/_10sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
                 <RelativeLayout
@@ -39,26 +40,33 @@
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_store_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_toStartOf="@+id/img_store"
                         android:padding="@dimen/_5sdp"
                         android:text="@{storeDetailViewModel.storeMutableLiveData.name}"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_16sp"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/_24sp"
+                        android:textStyle="bold"
+                        app:textAllCaps="false"
+                        app:setCustomFont="@string/font_poppins_bold"/>
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_store_location"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
                         android:text="@{storeDetailViewModel.storeMutableLiveData.location}"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sp"
+                        android:layout_toStartOf="@+id/img_store"
                         app:setCustomFont="@string/font_poppins_regular" />
 
 
@@ -78,8 +86,7 @@
                 android:id="@+id/customTextView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/about_store"
                 android:textColor="@color/blue_txt_color"
@@ -93,7 +100,6 @@
                 android:id="@+id/view1"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:background="@color/color_horizontal_line"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/customTextView3" />
@@ -103,8 +109,7 @@
                 android:id="@+id/tv_about_store"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:layout_marginStart="8dp"
+                android:layout_marginVertical="@dimen/_10sdp"
                 android:fontFamily="@font/poppins"
                 android:lineSpacingExtra="@dimen/_2sdp"
                 android:padding="@dimen/_5sdp"
@@ -119,7 +124,6 @@
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:background="@color/color_horizontal_line"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_about_store" />
@@ -129,12 +133,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_10sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:drawableStart="@drawable/ic_phone"
-                android:drawablePadding="@dimen/_5sdp"
-                android:padding="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:drawablePadding="@dimen/_10sdp"
                 android:text="@{storeDetailViewModel.storeMutableLiveData.contact}"
-                android:textColor="@color/light_black_txt"
+                android:textColor="@color/store_txt_color"
                 android:textSize="@dimen/_16sp"
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
 
@@ -142,20 +145,20 @@
                 android:id="@+id/tv_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:drawableStart="@drawable/ic_location"
-                android:drawablePadding="@dimen/_5sdp"
-                android:padding="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:drawablePadding="@dimen/_10sdp"
                 android:text="@{storeDetailViewModel.storeMutableLiveData.address}"
-                android:textColor="@color/light_black_txt"
+                android:textColor="@color/store_txt_color"
                 android:textSize="@dimen/_16sp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_contact" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
-                android:layout_margin="@dimen/_20sdp"
+                android:layout_height="@dimen/_170sdp"
+                android:layout_marginVertical="@dimen/_20sdp"
                 app:cardCornerRadius="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -163,14 +166,25 @@
 
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/mapView"
-                    android:clickable="true"
-                    android:layout_height="match_parent"
+                    class="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:focusable="true"
-                    class="com.google.android.gms.maps.SupportMapFragment"/>
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true" />
             </androidx.cardview.widget.CardView>
 
-
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                app:elevation="@dimen/_10sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                app:backgroundTint="@android:color/white"
+                android:src="@drawable/ic_send"
+                android:cropToPadding="false"
+                app:tint="@color/color_blue"
+                app:fabCustomSize="@dimen/_40sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView"
+                app:layout_constraintEnd_toEndOf="@+id/cardView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

@@ -1,14 +1,20 @@
 package com.poona.agrocart.ui.product_detail.model;
 
+import com.poona.agrocart.ui.basket_detail.model.ProductItem;
+import com.poona.agrocart.ui.basket_detail.model.Subscription;
+
 import java.util.ArrayList;
 
 public class ProductDetail {
+    public String productId;
     public String productName;
     public String productLocation;
     public ArrayList<String> weightOfProduct;
     public ArrayList<String> productImages;
     public String productImage;
     public String price;
+    public String OfferPrice;
+    public String OfferValue;
     public String quantity;
     public String productDetailBrief;
     public String aboutProduct;
@@ -19,7 +25,84 @@ public class ProductDetail {
     public String nutritionDetailBrief;
     public String productReview;
     public String ratings;
-    public Boolean basket;
+    public String productOfferMsg;
+    public Boolean basket=false;
+    public Boolean organic=false;
+    public Boolean isFavourite=false;
+    public String brand;
+    // Basket details
+    private Subscription subscription;
+    private ArrayList<ProductItem> productList;
+    private ArrayList<ProductComment> commentList;
+    private ArrayList<BasketContent> basketContents;
+
+    public Boolean getFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite(Boolean favourite) {
+        isFavourite = favourite;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public Boolean getOrganic() {
+        return organic;
+    }
+
+    public Boolean isOrganic() {
+        return organic;
+    }
+
+    public void setOrganic(Boolean organic) {
+        this.organic = organic;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public ArrayList<BasketContent> getBasketContents() {
+        return basketContents;
+    }
+
+    public void setBasketContents(ArrayList<BasketContent> basketContents) {
+        this.basketContents = basketContents;
+    }
+
+    public ArrayList<ProductComment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(ArrayList<ProductComment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public ArrayList<ProductItem> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(ArrayList<ProductItem> productList) {
+        this.productList = productList;
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
+    }
 
     public String getProductImage() {
         return productImage;
@@ -155,5 +238,29 @@ public class ProductDetail {
 
     public void setBasket(Boolean basket) {
         this.basket = basket;
+    }
+
+    public String getOfferPrice() {
+        return OfferPrice;
+    }
+
+    public void setOfferPrice(String offerPrice) {
+        OfferPrice = offerPrice;
+    }
+
+    public String getOfferValue() {
+        return OfferValue;
+    }
+
+    public void setOfferValue(String offerValue) {
+        OfferValue = offerValue;
+    }
+
+    public String getProductOfferMsg() {
+        return productOfferMsg;
+    }
+
+    public void setProductOfferMsg(String productOfferMsg) {
+        this.productOfferMsg = productOfferMsg;
     }
 }

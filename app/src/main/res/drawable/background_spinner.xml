@@ -11,5 +11,5 @@
             android:drawable="@drawable/ic_spinner"
             android:width="@dimen/_10sdp"
             android:height="@dimen/_5sdp"
-            android:gravity="end |bottom" />
+            android:gravity="end|bottom" />
 </layer-list>

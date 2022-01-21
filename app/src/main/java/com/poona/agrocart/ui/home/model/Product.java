@@ -10,21 +10,65 @@ import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 
 public class Product implements Parcelable {
-    String id, name, qty,offer, price, offerPrice,img,location,weight,quantity;
-    boolean organic;
+    String id, name, offer, price, offerPrice, img, location, weight, quantity, brand;
+    boolean organic = false;
+    boolean inBasket = false, isFavorite = false;
+
+    public Product(String productId, String productName,
+                   String weight, String offerValue, String price,
+                   String productImage, String productLocation,
+                   String brand, Boolean isFavourite) {
+        this.id = productId;
+        this.name = productName;
+        this.weight = weight;
+        this.offer = offerValue;
+        this.price = price;
+        this.img = productImage;
+        this.location = productLocation;
+        this.brand = brand;
+        this.isFavorite = isFavourite;
+    }
+
+    public boolean isInBasket() {
+        return inBasket;
+    }
+
+    public void setInBasket(boolean inBasket) {
+        this.inBasket = inBasket;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 
     public Product() {
     }
 
     public Product(String id, String name,
-                   String qty, String offer, String price,
-                   String offerPrice, String img, String location) {
+                   String weight, String offer, String price,
+                   String img, String location, String brand) {
         this.id = id;
         this.name = name;
-        this.qty = qty;
+        this.weight = weight;
         this.offer = offer;
         this.price = price;
-        this.offerPrice = offerPrice;
+        this.img = img;
+        this.location = location;
+        this.brand = brand;
+    }
+
+    public Product(String id, String name,
+                   String weight, String offer,
+                   String price, String img, String location) {
+        this.id = id;
+        this.name = name;
+        this.weight = weight;
+        this.offer = offer;
+        this.price = price;
         this.img = img;
         this.location = location;
     }
@@ -32,7 +76,6 @@ public class Product implements Parcelable {
     protected Product(Parcel in) {
         id = in.readString();
         name = in.readString();
-        qty = in.readString();
         offer = in.readString();
         price = in.readString();
         offerPrice = in.readString();
@@ -40,7 +83,16 @@ public class Product implements Parcelable {
         location = in.readString();
         weight = in.readString();
         quantity = in.readString();
+        brand = in.readString();
         organic = in.readByte() != 0;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -63,16 +115,17 @@ public class Product implements Parcelable {
         this.location = location;
     }
 
-    public String getQty() {
-        return qty;
+    public String getWeight() {
+        return weight;
     }
 
-    public void setQty(String qty) {
-        this.qty = qty;
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
+
 
     public String getOffer() {
-        return offer;
+        return offer + "% Off";
     }
 
     public void setOffer(String offer) {
@@ -80,7 +133,7 @@ public class Product implements Parcelable {
     }
 
     public String getPrice() {
-        return price;
+        return "Rs." + price;
     }
 
     public void setPrice(String price) {
@@ -88,6 +141,15 @@ public class Product implements Parcelable {
     }
 
     public String getOfferPrice() {
+        if (this.price.equals(""))
+            return "";
+        else {
+            float price = Float.parseFloat(this.price);
+            float offer = Float.parseFloat(this.offer);
+            float off = (price/ 100.0f)*offer;
+            int offer_price =(int) (price - off);
+            this.offerPrice = "Rs." + String.valueOf(offer_price);
+        }
         return offerPrice;
     }
 
@@ -127,8 +189,16 @@ public class Product implements Parcelable {
         this.organic = organic;
     }
 
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
     @BindingAdapter("setImage")
-    public static void loadImage(ImageView view,String img){
+    public static void loadImage(ImageView view, String img) {
         Glide.with(view.getContext())
                 .load(img)
                 .placeholder(R.drawable.placeholder)
@@ -144,7 +214,6 @@ public class Product implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
-        dest.writeString(qty);
         dest.writeString(offer);
         dest.writeString(price);
         dest.writeString(offerPrice);

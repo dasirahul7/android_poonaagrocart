@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'kotlin-android'
 }
 
 import java.text.DateFormat
@@ -95,16 +96,16 @@ dependencies {
     /*retrofit*/
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
 
     /*rxjava*/
-    implementation 'io.reactivex.rxjava3:rxjava:3.0.5'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.13'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 
     /*multi dex*/
     implementation 'com.android.support:multidex:1.0.3'
+
 
     /*firebase*/
     // Import the Firebase BoM
@@ -127,8 +128,8 @@ dependencies {
 
     /*for org.apache.commons.io*/
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
-    implementation 'androidx.navigation:navigation-fragment:2.3.5'
-    implementation 'androidx.navigation:navigation-ui:2.3.5'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
     /*dots indicator for intro screen*/
     implementation 'com.tbuonomo:dotsindicator:4.2'
@@ -145,4 +146,11 @@ dependencies {
     /*glide*/
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    // TicketView
+    implementation 'com.vipulasri:ticketview:1.1.2'
+
+    //OTP screen
+    implementation 'com.chaos.view:pinview:1.4.4'
+
 }

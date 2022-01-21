@@ -75,6 +75,7 @@
                     </LinearLayout>
 
                     <RatingBar
+                        android:layout_margin="-5dp"
                         android:layout_marginStart="-20dp"
                         android:id="@+id/rating_bar"
                         style="@style/Widget.AppCompat.RatingBar.Indicator"
@@ -92,8 +93,8 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:background="@color/color_grey_txt" />
+                android:layout_height="0.5dp"
+                android:background="@color/colorLightGrey" />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:layout_width="wrap_content"

@@ -3,6 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/_7sdp"/>
+            <padding android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp"/>
+            <solid android:color="@color/clr_custom_edit_text_otp"/>
+        </shape>
+    </item>
+
+    <item>
     <shape>
 
     <corners android:radius="@dimen/_7sdp"/>
@@ -14,7 +22,7 @@
         android:drawable="@drawable/ic_spinner"
         android:width="@dimen/_10sdp"
         android:height="@dimen/_5sdp"
-        android:gravity="end |center_vertical"
+        android:gravity="end|center_vertical"
         android:end="@dimen/_10sdp"/>
 
 </layer-list>

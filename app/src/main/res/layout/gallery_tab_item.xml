@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.poona.agrocart.widgets.CustomTextView
+    android:drawableStart="@drawable/ic_gallery_video"
+    android:id="@+id/tv_tab"
+    android:textSize="@dimen/_14sp"
+    android:paddingStart="@dimen/_20sdp"
+    android:gravity="start|center|center_vertical"
+    android:layout_height="@dimen/_40sdp"
+    android:layout_margin="@dimen/_5sdp"
+    android:layout_width="@dimen/_100sdp"
+    android:text="Photo"
+    app:setCustomFont="@string/font_poppins_semi_bold"
+    android:textColor="@color/drawable_tint_grey_white"
+    android:drawablePadding="@dimen/_5sdp"
+    app:drawableTint="@color/drawable_tint_grey_white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+</com.poona.agrocart.widgets.CustomTextView>

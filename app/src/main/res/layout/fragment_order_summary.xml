@@ -9,7 +9,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:context=".ui.order_summary.OrderSummaryFragment">
 
             <!--Order Summary states-->
@@ -166,6 +166,7 @@
                     android:weightSum="100">
 
                     <LinearLayout
+                        android:padding="@dimen/_5sdp"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="80"
@@ -180,23 +181,24 @@
                             app:setCustomFont="@string/font_poppins_bold" />
 
                         <com.poona.agrocart.widgets.CustomTextView
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:drawableStart="@drawable/ic_user"
                             android:drawablePadding="@dimen/_2sdp"
                             android:text="@string/ayush_shah"
-                            android:textColor="@color/color_order_view_username"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_16sp"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_4sdp"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:drawableStart="@drawable/ic_mobile"
-                            android:drawablePadding="@dimen/_7sdp"
+                            android:layout_marginHorizontal="@dimen/_2sdp"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:drawableStart="@drawable/ic_mobile_no"
                             android:text="@string/_91_986_095_3315"
                             android:textColor="@color/color_order_view_username"
                             android:textSize="@dimen/_14sp"
@@ -204,7 +206,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_weight="100"
                             android:orientation="horizontal">
@@ -233,6 +235,7 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/iv_address_option"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -300,6 +303,7 @@
                             android:gravity="end">
 
                             <com.poona.agrocart.widgets.imageview.CircularImageView
+                                android:id="@+id/iv_edit_date"
                                 android:layout_width="@dimen/_25sdp"
                                 android:layout_height="@dimen/_25sdp"
                                 android:src="@drawable/ic_pencil_grey_border" />
@@ -347,14 +351,15 @@
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardview_expected_delivery"
-                android:textColor="@color/background_color_white_green"
+                android:textColor="@color/colorPrimary"
                 android:textAllCaps="false"
                 android:includeFontPadding="false"
                 android:layout_gravity="center|center_vertical"
                 android:gravity="center|center_vertical"
-                android:textSize="@dimen/_18sp"
+                android:textSize="@dimen/_12sp"
                 style="?android:attr/borderlessButtonStyle"
-                app:setCustomFont="@string/font_poppins_semi_bold"/>
+                android:textStyle="bold"
+                app:setCustomFont="@string/font_poppins_bold"/>
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_enter_coupon_code"
@@ -400,17 +405,18 @@
 
                     <com.poona.agrocart.widgets.CustomButton
                         android:id="@+id/btn_remove"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="@dimen/_60sdp"
                         android:layout_height="match_parent"
-                        android:background="@drawable/background_color_green"
+                        android:layout_gravity="center|center_vertical"
+                        android:background="@drawable/button_green"
+                        android:gravity="center|center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/remove"
                         android:textAllCaps="false"
-                        android:includeFontPadding="false"
-                        android:layout_gravity="center|center_vertical"
-                        android:gravity="center|center_vertical"
-                        android:textSize="@dimen/_18sp"
-                        style="?android:attr/borderlessButtonStyle"
-                        app:setCustomFont="@string/font_poppins_semi_bold"/>
+                        android:textColor="@color/background_color_white_green"
+                        android:textSize="@dimen/_12sp"
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 </LinearLayout>
 
@@ -422,7 +428,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@string/congratulations"
+                android:text="@string/order_success_msg"
                 android:textColor="@color/selectedGreen"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -659,55 +665,53 @@
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_6sdp"
                 android:gravity="center"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_payment_mode">
 
                 <RadioGroup
+                    android:id="@+id/rg_addresses_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:id="@+id/rg_addresses_type">
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/rb_cod"
+                        style="@style/RadioButtonAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_25sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:singleLine="true"
                         android:text="@string/cash_on_delivery"
                         app:useMaterialThemeColors="false"
-                        android:singleLine="true"
-                        android:paddingStart="@dimen/_4sdp"
-                        tools:ignore="RtlSymmetry"
-                        style="@style/RadioButtonAddress" />
+                        tools:ignore="RtlSymmetry" />
 
                     <RadioButton
                         android:id="@+id/rb_online"
+                        style="@style/RadioButtonAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_25sdp"
-                        android:text="@string/online"
                         android:layout_marginStart="@dimen/_50sdp"
-                        app:useMaterialThemeColors="false"
+                        android:padding="@dimen/_5sdp"
                         android:singleLine="true"
-                        android:paddingStart="@dimen/_4sdp"
-                        tools:ignore="RtlSymmetry"
-                        style="@style/RadioButtonAddress"/>
-
-                    <RadioButton
-                        android:id="@+id/rb_wallet_balace"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_25sdp"
-                        android:layout_marginTop="40dp"
-                        android:layout_marginStart="-292dp"
-                        android:text="@string/wallet_balance"
+                        android:text="@string/online"
                         app:useMaterialThemeColors="false"
-                        android:singleLine="true"
-                        android:paddingTop="@dimen/_4sdp"
-                        android:paddingStart="@dimen/_4sdp"
-                        tools:ignore="RtlSymmetry"
-                        style="@style/RadioButtonAddress" />
+                        tools:ignore="RtlSymmetry" />
 
                 </RadioGroup>
+                <RadioButton
+                    android:id="@+id/rb_wallet_balance"
+                    style="@style/RadioButtonAddress"
+                    android:layout_gravity="left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_25sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:singleLine="true"
+                    android:text="@string/wallet_balance"
+                    app:useMaterialThemeColors="false"
+                    tools:ignore="RtlSymmetry" />
+
 
             </LinearLayout>
 
@@ -725,8 +729,8 @@
                     android:id="@+id/tv_wallet_balance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_26sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
+                    android:paddingStart="@dimen/_26sdp"
                     android:gravity="start"
                     android:text="@string/_rs_7500"
                     android:textColor="@color/color_wallet_balance"
@@ -738,15 +742,16 @@
             <com.poona.agrocart.widgets.CustomButton
                 android:id="@+id/btn_make_payment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/background_color_green"
                 android:text="@string/make_payment"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_wallet_balance"
                 android:textColor="@color/background_color_white_green"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_20sdp"
+                android:background="@drawable/button_green"
+                android:padding="@dimen/alerter_padding_small"
                 android:textAllCaps="false"
                 android:includeFontPadding="false"
                 android:layout_gravity="center|center_vertical"
@@ -754,6 +759,7 @@
                 android:textSize="@dimen/_18sp"
                 style="?android:attr/borderlessButtonStyle"
                 app:setCustomFont="@string/font_poppins_semi_bold"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

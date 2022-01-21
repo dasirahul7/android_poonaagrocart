@@ -51,8 +51,8 @@
                         android:id="@+id/tv_loging"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/alerter_padding_small"
                         android:text="@string/sign_up"
+                        android:padding="@dimen/alerter_padding_small"
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_24sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -68,59 +68,12 @@
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
-                    <RadioGroup
-                        android:id="@+id/rg_individual_business"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_enter_credentials"
-                        style="@style/RadioButtonAddress"
-                        android:orientation="horizontal"
-                        android:weightSum="100">
-
-                        <RadioButton
-                            android:background="@drawable/bg_signup_rb_selected"
-                            android:id="@+id/rb_individual"
-                            android:text="@string/individual"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_weight="50"
-                            app:useMaterialThemeColors="false"
-                            style="@style/RadioButtonAddress"
-                            android:paddingStart="@dimen/_4sdp"
-                            tools:ignore="RtlSymmetry"
-                            android:textStyle="bold"
-                            android:checked="false"
-                            app:fontFamily="@string/font_poppins_semi_bold"
-                            android:layout_margin="@dimen/_2sdp"
-                            android:textColor="@color/color_grey_txt"
-                            android:textSize="@dimen/_14sp" />
-
-                        <RadioButton
-                            android:background="@drawable/bg_signup_rb_unselected"
-                            android:id="@+id/rb_business"
-                            android:text="@string/home"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_weight="50"
-                            app:useMaterialThemeColors="false"
-                            style="@style/RadioButtonAddress"
-                            android:paddingStart="@dimen/_4sdp"
-                            tools:ignore="RtlSymmetry"
-                            android:textStyle="bold"
-                            android:checked="false"
-                            app:fontFamily="@string/font_poppins_semi_bold"
-                            android:layout_margin="@dimen/_2sdp"
-                            android:textColor="@color/color_grey_txt"
-                            android:textSize="@dimen/_14sp" />
-
-
-                    </RadioGroup>
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/rg_individual_business"
+                        android:layout_below="@+id/tv_enter_credentials"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/alerter_padding_small"
                         android:text="@string/username"
@@ -301,7 +254,7 @@
                         android:layout_marginTop="@dimen/_30sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_15sdp"
-                        android:background="@drawable/background_color_green"
+                        android:background="@drawable/button_green"
                         android:gravity="center|center_vertical"
                         android:includeFontPadding="false"
                         android:padding="@dimen/alerter_padding_small"

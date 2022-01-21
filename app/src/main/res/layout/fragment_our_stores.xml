@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.our_stores.OurStoresFragment">
+        tools:context=".ui.nav_stores.OurStoresFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_our_stores"

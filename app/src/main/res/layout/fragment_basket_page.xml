@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        tools:context=".ui.basket_page.BasketPageFragment">
+        tools:context=".ui.home.basket_page.BasketPageFragment">
 
         <com.poona.agrocart.widgets.CustomEditText
             android:id="@+id/et_search"
@@ -52,31 +52,32 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-        <RelativeLayout
-            android:id="@+id/rl_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:animateLayoutChanges="true"
-            android:background="#80000000"
-            android:visibility="gone" />
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/rl_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:animateLayoutChanges="true"-->
+<!--            android:background="#80000000"-->
+<!--            android:visibility="gone" />-->
 
-        <!--Bottom Sheet layout used-->
-        <RelativeLayout
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            app:behavior_peekHeight="@dimen/_440sdp"
-            android:id="@+id/bottom_view"
-            android:layout_gravity="bottom"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+<!--        Bottom Sheet layout used-->
+<!--        <RelativeLayout-->
+<!--            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"-->
+<!--            app:behavior_peekHeight="@dimen/_440sdp"-->
+<!--            android:id="@+id/bottom_view"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            android:visibility="gone"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            >-->
 
-            <include
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_440sdp"
-                android:id="@+id/filter_view"
-                layout="@layout/dialog_basket_filter_list" />
+<!--            <include-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="@dimen/_440sdp"-->
+<!--                android:id="@+id/filter_view"-->
+<!--                layout="@layout/dialog_basket_filter_list" />-->
 
-        </RelativeLayout>
+<!--        </RelativeLayout>-->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

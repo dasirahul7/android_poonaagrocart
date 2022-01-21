@@ -7,6 +7,7 @@
     <string name="font_poppins_medium">fonts/poppins/poppins_medium.ttf</string>
     <string name="font_poppins_regular">fonts/poppins/poppins_regular.ttf</string>
     <string name="font_poppins_semi_bold">fonts/poppins/poppins_semi_bold.ttf</string>
+    <string name="font_montserrat_regular">fonts/montserrat/</string>
 
     <!--check internet connection dialog-->
     <string name="info">Information</string>
@@ -37,7 +38,6 @@
     <string name="get_ur_groceries">Get your groceries \nwith Poona Agrocart</string>
     <string name="fast_fresh_healthy"><![CDATA[Fast, Fresh & \nHealthy…]]></string>
     <string name="privacy_policy_terms_n_conditions">By continuing you agree to our Terms of Service and Privacy Policy</string>
-
     <!--Location screen-->
     <string name="select_location">Select Your Location</string>
     <string name="switch_on_location">Swithch on your location to stay in tune with \n what’s happening in your area</string>
@@ -92,6 +92,7 @@
     <string name="terms_of_service">&#160;Terms of Service</string>
     <string name="and">and</string>
     <string name="privacy_policy"> &#160;Privacy Policy</string>
+    <string name="menu_our_policy">Our Policies</string>
     <string name="username_should_not_be_empty">Username should not be empty!</string>
     <string name="please_enter_valid_email_id">Please enter valid Email ID!</string>
     <string name="address_location">Address , Location</string>
@@ -120,7 +121,7 @@
     <string name="menu_my_profile">My Profile</string>
     <string name="menu_my_orders">My Orders</string>
     <string name="menu_addresses">Addresses</string>
-    <string name="menu_my_basket">My Basket</string>
+    <string name="menu_my_basket_subs">My Basket Subscription</string>
     <string name="menu_wallet_payments"><![CDATA[Wallet & Payments]]></string>
     <string name="menu_offer_coupons"><![CDATA[Offers & Coupons]]></string>
     <string name="menu_notification">Notifications</string>
@@ -136,6 +137,7 @@
     <string name="best_selling">Best Selling</string>
     <string name="exclusive_offer">Exclusive Offers</string>
     <string name="basket">Basket</string>
+    <string name="baskets">Baskets</string>
     <string name="_10_off">10% Off</string>
     <string name="one_kg">1Kg</string>
     <string name="rs">Rs25</string>
@@ -159,10 +161,10 @@
     <string name="office">Office</string>
     <string name="mobile">Mobile</string>
     <string name="pincode">Pincode</string>
-    <string name="check_availabilty">Check Availabilty</string>
+    <string name="check_availability">Check Availabilty</string>
     <string name="detail_address">Detail Address</string>
     <string name="house_no">House No.</string>
-    <string name="apartment_no">Apartment no.</string>
+    <string name="apartment_no">Apartment Name</string>
     <string name="street">Street</string>
     <string name="landmark">Landmark</string>
     <string name="or">OR</string>
@@ -171,7 +173,7 @@
     <string name="addresses_form">Addresses Form</string>
 
     <!--Order view fragment-->
-    <string name="date_sep_30_2021_20_15_am">DATE : Sep 30, 2021 20:15 AM</string>
+    <string name="date_sep_30_2021_20_15_am">Sep 30, 2021 20:15 AM</string>
     <string name="in_transit">In Transit</string>
     <string name="order_status">Order Status</string>
     <string name="order_id_paac001">Order ID - PAAC001</string>
@@ -184,7 +186,7 @@
     <string name="remark">Remark</string>
     <string name="test_order_cancelled">Test Order Cancelled</string>
     <string name="expected_delivery_date">Expected Delivery Date : </string>
-    <string name="sep_30_2021_9_00_am_12_00pm"> Sep 30, 2021 9:00 am - 12:00pm</string>
+    <string name="sep_30_2021_9_00_am_12_00pm"> Sep 30 2021 20.15 AM</string>
     <string name="basket_details">Basket Details</string>
     <string name="sub_total">Sub Total</string>
     <string name="rs_800">Rs. 800</string>
@@ -199,7 +201,7 @@
     <string name="product_details">Product Details</string>
     <string name="track_order">Track Order</string>
     <string name="order_view">Order view</string>
-    <string name="rs_20_x_3">Rs. 20 x 3</string>
+    <string name="sample_unit">Rs. 20 x 3</string>
 
     <!--products detail fragment-->
     <string name="naturel_red_apple">Naturel Red Apple</string>
@@ -238,6 +240,10 @@
     <string name="_rs_7500">Rs. 7500</string>
     <string name="rs_1500_x_5">Rs. 1500 x 5</string>
     <string name="subscribe_now">Subscribe Now</string>
+    <string name="similar_products">Similar Products</string>
+    <string name="review_ratings"><![CDATA[Review & Ratings]]></string>
+    <string name="start_date_for_subscription">Start date for subscription</string>
+    <string name="select_date">Select date</string>
 
     <!--Vegetables-->
     <string name="search_vegetables">Search Vegetables</string>
@@ -248,7 +254,7 @@
     <string name="add_new_address">Add New Address</string>
     <string name="default_address">Default</string>
 
-    <!--Basket Orders-->
+    <!--BasketDetail Orders-->
     <string name="order_id">Order ID -</string>
     <string name="_12_september_2021">12 September 2021</string>
     <string name="diet_basket">Diet Basket</string>
@@ -260,9 +266,15 @@
     <string name="_paac002">PAAC002</string>
 
     <!--our stores-->
-    <string name="poona_agro_center">POONA AGRO CENTER</string>
+    <string name="poona_agro_center">Store Name</string>
     <string name="vishrantwadi_pune">Vishrantwadi Pune</string>
     <string name="our_stores">Our Stores</string>
+    <string name="about_store">About Store</string>
+    <string name="sample_about_store">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper \n\n\nsed aliquam volutpat. Suscipit sem ullamcor per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
+    <string name="store_location">Store Location</string>
+    <string name="sample_address">Nand Nivas  Bhatrau Nivas Vishrantwadi Pune - 411015.</string>
+    <string name="sample_address1">V9 - Landmark 203, Second Floor, above HDFC Bank, Vishrantwadi, Maharashtra Pune- 411015.</string>
+    <string name="sample_address2">Nand Nivas Building floor 3 B-3, Lane No. 13 Bhatroa Nivas Vishrantwadi </string>
 
     <!--My orders-->
     <string name="sep_30_2021_20_15_am">Sep 30, 2021 20:15 AM</string>
@@ -277,9 +289,10 @@
     <!--Support ticker-->
     <string name="lorem_ipsum_dolor_sit_amet_consectetur_adipiscing">Lorem ipsum dolor sit amet, consectetur adipiscing.</string>
     <!--    About screen string-->
-    <string name="about_str">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor \n\n\nper praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.\n\n Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . ridiculus velit at sodales. Ornare enim tempus hendrerit</string>
+    <string name="about_str">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor \n\n\nper praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.\n\n Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . ridiculus velit at sodales. Ornare enim tempus hendrerit\n\n<b>2. Testmonial Review</b>\n\nVarius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.\n\n<b>3. Our working Process</b>\n\nper praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean
+    at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <!--    Notification screen string-->
-    <string name="sample_date">12 September 2021</string>
+    <string name="sample_date">12 Sept 2021</string>
     <string name="sample_notification">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi semper egestas at cursus maecenas duis enim sit ipsum. Ri amet tristique comm.</string>
     <string name="sample_policy">"Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor  per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean  at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.  Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . Ridiculus velit at sodales. Ornare enim tempus hendrerit    "</string>
     <string name="sample_terms">"Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor  per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean  at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.  Risus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . ridiculus velit at sodales. Ornare enim tempus hendrerit\n\n <b>100% refundable policy</b> \n   per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aeneanat. "</string>
@@ -310,7 +323,7 @@
     <string name="get_code">Get Code</string>
     <string name="enter_coupon_code">Enter Coupon Code</string>
     <string name="remove">Remove</string>
-    <string name="congratulations">Congratulations!!</string>
+    <string name="order_success_msg">Woohoo!!</string>
     <string name="_10_discount_applied_successfully">10% Discount applied successfully.</string>
     <string name="product_amp_price_details"><![CDATA[Product & Price Details]]></string>
     <string name="mode_of_payment">Mode of Payment-</string>
@@ -361,20 +374,82 @@
     <string name="my_cart">My Cart</string>
 
     <!--    Images Urls-->
-
     <string name="img_bell_pepper_red">https://www.linkpicture.com/q/capsicon.png</string>
     <string name="img_ginger">https://www.linkpicture.com/q/ginger.png</string>
     <string name="img_green_leafy">https://www.linkpicture.com/q/green_leafy_vegetable.png</string>
     <string name="img_tomato">https://www.linkpicture.com/q/tomato_1.png</string>
-    <string name="img_red_apple">https://www.linkpicture.com/q/pngfuel–1–1.png</string>
+    <string name="img_red_apple">https://www.linkpicture.com/q/pngfuel-1-1.png</string>
     <string name="img_banana">https://www.linkpicture.com/q/banana_2.png</string>
-    <string name="img_potato">https://www.linkpicture.com/q/Potato-Free-Download-PNG-1.png</string>
+    <string name="img_potato">https://www.linkpicture.com/q/Potato-Free-Download-PNG-1_1.png</string>
+    <string name="img_beat">https://www.linkpicture.com/q/beat_1.png</string>
     <string name="img_sample_store">https://www.linkpicture.com/q/unsplash_SsKf1L6rWJk-1.png</string>
-    <string name="about_store">About Store</string>
-    <string name="sample_about_store">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper \n\n\nsed aliquam volutpat. Suscipit sem ullamcor per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
-    <string name="store_location">Store Location</string>
-    <string name="sample_address">Nand Nivas  Bhatrau Nivas Vishrantwadi \nPune - 411015.</string>
+
+    <string name="img_basket">https://www.linkpicture.com/q/Vegetables.png</string>
+    <string name="basket_sprout_img">https://www.linkpicture.com/q/sprout-basket.png</string>
+    <string name="basket_nutrition_img">https://www.linkpicture.com/q/nutritions.png</string>
+    <string name="basket_diet_img">https://www.linkpicture.com/q/dait-basket.png</string>
+    <string name="url_mango_img">https://www.linkpicture.com/q/pngkey.png</string>
+    <string name="url_grapes_img">https://www.linkpicture.com/q/blue_berry.png</string>
 
     <!--    MAP KEY-->
     <string name="map_key">AIzaSyDi2KxP5vuvOxYO1qA2i5Ehx-yXY7hcN1Q</string>
+    //delete is later
+    <string name="sample_coupon_terms"><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit nunc, netus ac vulputate sed purus.</b> \n\nper praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean
+at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
+    <string name="raised_new_ticket">Raised New Ticket</string>
+    <string name="description">Description</string>
+    <string name="Pay">pay</string>
+    <string name="entr_amount">Enter Amount</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="place_order">Place Order</string>
+    <string name="confirm_delete">Are you sure you want to delete all items</string>
+    <string name="oops_no_products">Oops! No Products</string>
+    <string name="please_add_product">Please add product</string>
+    <string name="continue_shopping">Continue shopping</string>
+    <string name="jpg_vege">https://www.linkpicture.com/q/green.jpeg</string>
+    <string name="sample_date_with_time">7 Oct 2021 9:00am - 12:00pm</string>
+    <string name="order_placed_success">Your order has been placed successfully Please check order details.</string>
+    <string name="back_to_home">Back to home</string>
+    <string name="order_details">Order Details</string>
+
+    <!--  Our  Policy Screen String-->
+   <string name="sample_policy_data">Massa odio turpis diam dui porta turpis. Fermentum dignissim proin in nisl. Sit amet aliquam ullamcorper sed aliquam volutpat. Suscipit sem ullamcor\n\n per praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean \n\n\nat. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.\n\nRisus eu hac sed elit velit accumsan. Tempor, ullamcorper nisi fermentum ipsum. Amet, lacinia tincidunt facilisis eget fringilla sed. Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit.Turpis dictumst ridiculus velit at sodales. Ornare enim tempus hendrerit . Ridiculus velit at sodales. Ornare enim tempus hendrerit
+
+
+
+</string>
+    <string name="type">Type</string>
+    <string name="photo">Photo</string>
+    <string name="video">Video</string>
+
+    <!--    type array-->
+    <string-array name="type_array">
+        <item>ordinary</item>
+        <item>special</item>
+        <item>subscription</item>
+        <item>issue</item>
+    </string-array>
+
+<!--    Gallery-->
+    <string name="sample_photo">https://www.linkpicture.com/q/unsplash_QvkAQTNj4zk_1.png</string>
+<!--    Order Summary Dialog-->
+    <string name="set_delivery_address">Set Delivery Address</string>
+    <string name="promo_code">Get Promo Code</string>
+    <string name="exp_date">EXPECTED DELIVERY DATE</string>
+    <string name="exp_slot">EXPECTED DELIVERY SLOT</string>
+    <string name="product_offer_msg">Buy 500gms for Rs. 280</string>
+    <string name="img_carrot">https://www.linkpicture.com/q/Carrot–Download–PNG-1-1.png</string>
+<!--    String for FAQ's Fragment-->
+    <string name="menu_faq">FAQ\'s</string>
+    <string name="faq_heading">How do you prepare for Grocery shopping?</string>
+    <string name="faq_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultrices molestie mauris gravida ultrices in sed erat. Tortor viverra molestie scelerisque tincidunt. Lacus gravida dolor viverra in eleifend lobortis.</string>
+    <string name="where_do_you_deliver">Where do you deliver??</string>
+    <string name="how_do_i_order">How do I order at Grocery Application?</string>
+    <string name="how_do_i_cancel">How do I cancel an order?</string>
+    <string name="how_money_back">How I will get my money back if I cancelled  the order? </string>
+
+<!--    Our Policies screen String-->
+    <string name="refund_and_return">Refund and Return Policies</string>
+    <string name="terms_condition">Terms Condition</string>
+
 </resources>
