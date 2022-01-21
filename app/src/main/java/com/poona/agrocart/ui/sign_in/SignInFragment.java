@@ -1,5 +1,13 @@
 package com.poona.agrocart.ui.sign_in;
 
+import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -17,28 +25,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
-import com.poona.agrocart.data.network.ApiClientAuth;
-import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
-import com.poona.agrocart.ui.sign_in.model.LoginResponse;
-import com.poona.agrocart.ui.sign_in.model.User;
+import com.poona.agrocart.data.network.reponses.SignInResponse;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+public class SignInFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
 
-public class SignInFragment extends BaseFragment implements View.OnClickListener {
-
-    private static final String TAG = "SignInFragment";
+    private static final String TAG = SignInFragment.class.getSimpleName();
+    private SignInViewModel signInViewModel;
     private FragmentSignInBinding fragmentSignInBinding;
     private BasicDetails basicDetails;
     private View rootView;
@@ -47,7 +55,12 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentSignInBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false);
 
-        rootView = (fragmentSignInBinding).getRoot();
+        signInViewModel = new ViewModelProvider(this).get(SignInViewModel.class);
+        fragmentSignInBinding.setSignInViewModel(signInViewModel);
+
+        fragmentSignInBinding.setLifecycleOwner(this);
+
+        rootView = fragmentSignInBinding.getRoot();
 
         initView(rootView);
 
@@ -126,7 +139,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                 signInAndRedirectToVerifyOtp(v);
                 break;
             case R.id.tv_terms_of_service:
-                redirectToTermsAndCondtn(v);
+                redirectToTermsAndCondition(v);
                 break;
             case R.id.tv_privacy_policy:
                 redirectToPrivacyPolicy(v);
@@ -141,7 +154,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_signInPrivacyFragment,bundle);
     }
 
-    private void redirectToTermsAndCondtn(View v) {
+    private void redirectToTermsAndCondition(View v) {
         Bundle bundle = new Bundle();
         bundle.putString("from","SignIn");
         bundle.putString("title",getString(R.string.menu_terms_conditions));
@@ -149,8 +162,6 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void signInAndRedirectToVerifyOtp(View v) {
-        //scrollview.fullScroll(View.FOCUS_UP);
-
         basicDetails.setMobileNumber(Objects.requireNonNull(fragmentSignInBinding.etPhoneNo.getText()).toString());
 
         int errorCodeForMobileNumber = basicDetails.isValidMobileNumber();
@@ -164,47 +175,73 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         } else {
             hideKeyBoard(requireActivity());
             if (isConnectingToInternet(context)) {
-                //add API call here
-                loginApi(showCircleProgressDialog(context,""));
-
+                callSignInApi(showCircleProgressDialog(context,""));
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         }
     }
 
-    private void loginApi(ProgressDialog progressDialog) {
-        ApiInterface apiInterface = ApiClientAuth.getClient(context).create(ApiInterface.class);
-        Call<LoginResponse> responseCall = apiInterface.getLoginResponse(basicDetails.getMobileNumber());
-        responseCall.enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+    private void callSignInApi(ProgressDialog progressDialog) {
+        /* print user input parameters */
+        for (Map.Entry<String, String> entry : signInParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
 
-                if (progressDialog != null){
-                    progressDialog.dismiss();
+        Observer<SignInResponse> signInResponseObserver = signInResponse -> {
+            if (signInResponse != null) {
+                progressDialog.dismiss();
+                Log.e("Sign In Api Response", new Gson().toJson(signInResponse));
+                switch (signInResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if(signInResponse.getUser() != null){
+                            successToast(context, ""+signInResponse.getUser().getOtp());
+                            preferences.setAuthorizationToken(signInResponse.getToken());
+                            Bundle bundle = new Bundle();
+                            bundle.putString(AppConstants.MOBILE_NO, basicDetails.getMobileNumber());
+                            bundle.putString(AppConstants.COUNTRY_CODE, basicDetails.getCountryCode());
+                            Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_verifyOtpFragment, bundle);
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, signInResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(signInResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, signInResponse.getMessage());
+                        break;
                 }
-                if (response.isSuccessful()){
-//                    Log.d(TAG, "onResponse: "+response.body().getUser().getuOtp());
-                    User user = response.body().getUser();
-                    try {
-                        System.out.println("User "+user.getuOtp());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    preferences.setAuthorizationToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNDAiLCJ1c2VydHlwZSI6IjIiLCJ0aW1lU3RhbXAiOiIyMDIyLTAxLTE5IDA4OjA1OjM1In0.tAFCrOniv_PBQWkVb92fJ2eEfuum1GZi3ANTFA1Yg70");
-                    Bundle bundle = new Bundle();
-                    bundle.putString(AppConstants.MOBILE_NO, basicDetails.getMobileNumber());
-                    bundle.putString(AppConstants.COUNTRY_CODE, basicDetails.getCountryCode());
-                    Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_verifyOtpFragment, bundle);
-                }
+            } else {
+                progressDialog.dismiss();
             }
+        };
 
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                if (progressDialog != null){
-                    progressDialog.dismiss();
+        signInViewModel
+                .submitSignInDetails(progressDialog, signInParameters(), SignInFragment.this)
+                .observe(getViewLifecycleOwner(), signInResponseObserver);
+    }
+
+    private HashMap<String, String> signInParameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(MOBILE_NUMBER, basicDetails.getMobileNumber());
+        return map;
+    }
+
+    @Override
+    public void onNetworkException(int from) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), SignInFragment.this,() -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if(from == 0) {
+                    callSignInApi(showCircleProgressDialog(context, ""));
                 }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
-        });
+        }, context);
     }
 }

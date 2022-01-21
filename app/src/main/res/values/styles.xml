@@ -308,4 +308,18 @@
         <item name="android:maxLines">1</item>
     </style>
 
+    <!--custom alert dialog start-->
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="alertDialogTheme">@style/CustomAlertDialogTheme</item>
+    </style>
+
+    <style name="CustomAlertDialogTheme">
+        <item name="android:textSize">16sp</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="textColorAlertDialogListItem">@drawable/alert_dialog_list_item_color</item>
+        <item name="windowFixedWidthMajor">50%</item>
+        <item name="windowFixedWidthMinor">50%</item>
+    </style>
+    <!--custom alert dialog end-->
+
 </resources>

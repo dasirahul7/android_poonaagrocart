@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <LinearLayout
+                    android:id="@+id/ll_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/_22sdp"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingRight="@dimen/_22sdp"
+                    android:paddingBottom="@dimen/_7sdp"
+                    tools:ignore="MissingConstraints">
+
+                    <ImageView
+                        android:id="@+id/iv_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_100sdp"
+                        android:layout_marginHorizontal="@dimen/_16sdp"
+                        android:src="@drawable/ic_server_error" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/_22sdp"
+                    android:paddingRight="@dimen/_22sdp"
+                    android:paddingBottom="@dimen/_7sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_1">
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_heading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/for_better_user_experience"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18sp"
+                        app:setCustomFont="@string/font_poppins_bold"
+                        app:textAllCaps="false" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_retry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/_24sdp"
+                    android:paddingRight="@dimen/_24sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:weightSum="2"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_2">
+
+                    <com.poona.agrocart.widgets.CustomButton
+                        android:id="@+id/bt_retry"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:includeFontPadding="false"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:paddingBottom="@dimen/_10sdp"
+                        android:text="@string/retry"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16sp"
+                        app:setCustomFont="@string/font_poppins_medium" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</layout>

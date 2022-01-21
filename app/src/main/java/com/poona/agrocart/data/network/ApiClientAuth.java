@@ -21,14 +21,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public class ApiClientAuth
-{
+public class ApiClientAuth {
     private static Retrofit retrofit = null;
     private static OkHttpClient okHttpClient;
     private static AppSharedPreferences appSharedPreferences;
 
-    public static Retrofit getClient(Context context)
-    {
+    public static Retrofit getClient(Context context) {
         appSharedPreferences = new AppSharedPreferences(context);
 
         if(okHttpClient == null)
@@ -45,16 +43,14 @@ public class ApiClientAuth
         return retrofit;
     }
 
-    private static void initOkHttp(final Context context)
-    {
+    private static void initOkHttp(final Context context) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .callTimeout(2, TimeUnit.MINUTES)
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .addInterceptor(chain ->
-                {
+                .addInterceptor(chain -> {
                     Request original = chain.request();
                     Request.Builder requestBuilder = original.newBuilder()
                             .addHeader("Accept", "application/json")
@@ -63,8 +59,7 @@ public class ApiClientAuth
                     // Adding Authorization token (API Key)
                     // Requests will be denied without API key
                     if (appSharedPreferences.getAuthorizationToken() != null
-                            && !TextUtils.isEmpty(appSharedPreferences.getAuthorizationToken()))
-                    {
+                            && !TextUtils.isEmpty(appSharedPreferences.getAuthorizationToken())) {
                         Log.e(AUTH_ACCESS_TOKEN, appSharedPreferences.getAuthorizationToken());
                         requestBuilder.addHeader(AUTH_ACCESS_TOKEN, appSharedPreferences.getAuthorizationToken());
                     }

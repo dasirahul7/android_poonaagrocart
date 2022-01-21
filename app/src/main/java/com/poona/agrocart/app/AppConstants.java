@@ -13,7 +13,7 @@ public class AppConstants
     //public static final String BASE_URL = "";
 
     /*Live URL*/
-    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing/";
+    public static final String BASE_URL = "http://cmsweb.m-staging.in/poona_agro_testing/";
 
     /*Live Base URL for Image, Document*/
     public static final String IMAGE_DOC_BASE_URL = "";
@@ -51,6 +51,7 @@ public class AppConstants
     public static final int STATUS_CODE_200 = 200; //success response code
     public static final int STATUS_CODE_400 = 400; //fail response code
     public static final int STATUS_CODE_401 = 401; //fail response code
+    public static final int STATUS_CODE_403 = 403; //record or data not found response code
     public static final int STATUS_CODE_404 = 404; //record or data not found response code
     public static final int STATUS_CODE_405 = 405; //record or data not found response code
     public static final int STATUS_CODE_2 = 2; //inactive user
@@ -100,7 +101,8 @@ public class AppConstants
     public static final Object IS_NOTIFICATION_RECEIVED = "IS_NOTIFICATION_RECEIVED";
 
     /*API KEYS*/
-    public static final String KEY_MOBILE ="UA_mobile";
+    public static final String MOBILE_NUMBER ="mobile";
+
 
     //Help center
     public static final String TICKET_ID="TICKET_ID";

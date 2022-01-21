@@ -452,4 +452,8 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="refund_and_return">Refund and Return Policies</string>
     <string name="terms_condition">Terms Condition</string>
 
+    <string name="for_better_user_experience">For Better User Experience.</string>
+    <string name="server_down">Server is not reachable, please try again later.</string>
+    <string name="server_error_please_contact_to_kbg">Server Error, Please contact to Poona AgroCart.</string>
+
 </resources>
