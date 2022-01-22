@@ -1,8 +1,11 @@
 package com.poona.agrocart.data.network;
 
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
+import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 
+import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
+import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
 
 import java.util.HashMap;
 
@@ -18,4 +21,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(LOGIN_API)
     Single<SignInResponse> getSignInResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(VERIFY_OTP_API)
+    Single<VerifyOtpResponse> getVerifyOtpResponse(@FieldMap HashMap<String, String> data);
 }

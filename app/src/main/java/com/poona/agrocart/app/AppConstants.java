@@ -59,6 +59,7 @@ public class AppConstants
 
     public static final String FROM_SCREEN = "from_screen";
     public static final String LOGIN_API = "api-login-customer";
+    public static final String VERIFY_OTP_API = "verify-otp-customer";
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";
     public static final String LOGOUT = "logout";
@@ -102,6 +103,7 @@ public class AppConstants
 
     /*API KEYS*/
     public static final String MOBILE_NUMBER ="mobile";
+    public static final String OTP ="otp";
 
 
     //Help center
