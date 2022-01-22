@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MPlussoft/android/android_poonaagrocart/app/src/main/res/layout/fragment_intro_screen_item.xml" value="0.1" />
+        <entry key="..\:/MPlussoft/android/android_poonaagrocart/app/src/main/res/layout/fragment_sign_up.xml" value="0.1" />
         <entry key="..\:/MPlussoft/android/android_poonaagrocart/app/src/main/res/layout/fragment_verify_otp.xml" value="0.18" />
       </map>
     </option>

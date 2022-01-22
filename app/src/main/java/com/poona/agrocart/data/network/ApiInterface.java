@@ -1,9 +1,12 @@
 package com.poona.agrocart.data.network;
 
+import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
+import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 
 import com.poona.agrocart.data.network.reponses.BaseResponse;
+import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
 
@@ -12,6 +15,7 @@ import java.util.HashMap;
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 /**
@@ -25,4 +29,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(VERIFY_OTP_API)
     Single<VerifyOtpResponse> getVerifyOtpResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(REGISTER_API)
+    Single<BaseResponse> getRegistrationResponse(@FieldMap HashMap<String, String> data);
+
+    @GET(INTRO_SCREEN_API)
+    Single<IntroScreenResponse> getIntroScreenResponse();
 }

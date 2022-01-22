@@ -1,21 +1,34 @@
 package com.poona.agrocart.ui.intro;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Intro {
-    String id, Title,Description;
-    Integer imgFile;
+    @SerializedName("id")
+    @Expose
+    String id;
+    @SerializedName("title")
+    @Expose
+    String Title;
+    @SerializedName("description")
+    @Expose
+    String Description;
+    @SerializedName("banner_image")
+    @Expose
+    String imgFile;
 
-    public Intro(String id, String title, String description, Integer imgFile) {
-        this.id = id;
-        Title = title;
-        Description = description;
-        this.imgFile = imgFile;
-    }
+//    public Intro(String id, String title, String description, Integer imgFile) {
+//        this.id = id;
+//        Title = title;
+//        Description = description;
+//        this.imgFile = imgFile;
+//    }
 
-    public Integer getImgFile() {
+    public String getImgFile() {
         return imgFile;
     }
 
-    public void setImgFile(Integer imgFile) {
+    public void setImgFile(String imgFile) {
         this.imgFile = imgFile;
     }
 

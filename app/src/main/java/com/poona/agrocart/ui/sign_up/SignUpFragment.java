@@ -1,8 +1,19 @@
 package com.poona.agrocart.ui.sign_up;
 
+import static com.poona.agrocart.app.AppConstants.EMAIL;
+import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
+import static com.poona.agrocart.app.AppConstants.OTP;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.USERNAME;
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -10,44 +21,56 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
+import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.databinding.FragmentSignUpBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+
+import io.reactivex.Observable;
 
 public class SignUpFragment extends BaseFragment implements View.OnClickListener
 {
+    private static final String TAG = SignUpFragment.class.getSimpleName();
     private FragmentSignUpBinding fragmentSignUpBinding;
-    private CommonViewModel commonViewModel;
+    private SignUpViewModel signUpViewModel;
     private BasicDetails basicDetails;
+    private View signUpView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentSignUpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false);
         fragmentSignUpBinding.setLifecycleOwner(this);
-        final View view = ((ViewDataBinding) fragmentSignUpBinding).getRoot();
+        signUpView = ((ViewDataBinding) fragmentSignUpBinding).getRoot();
 
-        commonViewModel=new ViewModelProvider(this).get(CommonViewModel.class);
-        fragmentSignUpBinding.setCommonViewModel(commonViewModel);
+        signUpViewModel=new ViewModelProvider(this).get(SignUpViewModel.class);
+        fragmentSignUpBinding.setSignUpViewModel(signUpViewModel);
 
-        initView(view);
+        initView(signUpView);
 
-        ivBack.setOnClickListener(v -> Navigation.findNavController(view).popBackStack());
+        ivBack.setOnClickListener(v -> Navigation.findNavController(signUpView).popBackStack());
 
-        return view;
+        return signUpView;
     }
 
     private void initView(View view)
@@ -69,15 +92,15 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         Bundle bundle=this.getArguments();
         if(bundle!=null)
         {
-            fragmentSignUpBinding.etPhoneNo.setText(bundle.getString(AppConstants.MOBILE_NO));
+            fragmentSignUpBinding.etPhoneNo.setText(bundle.getString(AppConstants.USER_MOBILE));
             String tempCountryCode=bundle.getString(AppConstants.COUNTRY_CODE).replace("+","");
             fragmentSignUpBinding.countryCodePicker.setCountryForPhoneCode(Integer.parseInt(tempCountryCode));
 
             basicDetails.setCountryCode(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
             basicDetails.setMobileNumber(fragmentSignUpBinding.etPhoneNo.getText().toString());
 
-            commonViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
-            commonViewModel.countryCode.setValue(basicDetails.getCountryCode());
+            signUpViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
+            signUpViewModel.countryCode.setValue(basicDetails.getCountryCode());
         }
 
         fragmentSignUpBinding.ivPoonaAgroMainLogo.bringToFront();
@@ -169,19 +192,67 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         else {
             if (isConnectingToInternet(context)) {
                 //add API call here
-                commonViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
-                commonViewModel.countryCode.setValue(basicDetails.getCountryCode());
-                commonViewModel.userName.setValue(basicDetails.getUserName());
-                commonViewModel.emailId.setValue(basicDetails.getEmailId());
-                successToast(context,"Login Success");
-                Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_selectLocationFragment);
-
+                callRegisterApi(showCircleProgressDialog(context,""));
             }
             else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         }
 
+    }
+
+    private void callRegisterApi(ProgressDialog progressDialog) {
+        /* print user input parameters */
+        for (Map.Entry<String, String> entry : signUpParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+        Observer<BaseResponse> registerResponseObserver = registerResponse -> {
+            if (registerResponse != null) {
+                progressDialog.dismiss();
+                Log.e("Register Api Response", new Gson().toJson(registerResponse));
+                switch (registerResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if(registerResponse.getStatus() == 200){
+                            successToast(context, ""+registerResponse.getMessage());
+                            redirectToHomeScreen();
+//                            Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, registerResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(registerResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, registerResponse.getMessage());
+                        break;
+                }
+            } else {
+                progressDialog.dismiss();
+            }
+        };
+        signUpViewModel.submitRegistrationApi(progressDialog,signUpParameters(),SignUpFragment.this)
+                .observe(getViewLifecycleOwner(),registerResponseObserver);
+
+    }
+
+    private void redirectToHomeScreen() {
+        signUpViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
+        signUpViewModel.countryCode.setValue(basicDetails.getCountryCode());
+        signUpViewModel.userName.setValue(basicDetails.getUserName());
+        signUpViewModel.emailId.setValue(basicDetails.getEmailId());
+        Navigation.findNavController(signUpView).navigate(R.id.action_signUpFragment_to_selectLocationFragment);
+    }
+
+    private HashMap<String, String> signUpParameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(USERNAME, fragmentSignUpBinding.etUsername.getText().toString());
+        map.put(MOBILE_NUMBER, fragmentSignUpBinding.etPhoneNo.getText().toString());
+        map.put(EMAIL, fragmentSignUpBinding.etEmailId.getText().toString());
+        return map;
     }
 
     private void redirectToPrivacyPolicy(View v) {

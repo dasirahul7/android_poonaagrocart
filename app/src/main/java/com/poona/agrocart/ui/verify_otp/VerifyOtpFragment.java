@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.verify_otp;
 
+import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.OTP;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
@@ -7,6 +8,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
 import android.app.ProgressDialog;
@@ -81,7 +83,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         try {
             // Mask Phone number
             bundle =this.getArguments();
-            String phone = getArguments().getString(AppConstants.MOBILE_NO);
+            String phone = getArguments().getString(AppConstants.USER_MOBILE);
             String otp = getArguments().getString(AppConstants.USER_OTP);
             String strPattern = "\\d(?=\\d{3})";
             basicDetails=new BasicDetails();
@@ -166,7 +168,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         Observer<VerifyOtpResponse> verifyOtpResponseObserver = verifyOtpResponse -> {
             if (verifyOtpResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Sign In Api Response", new Gson().toJson(verifyOtpResponse));
+                Log.e("Verify Otp Api Response", new Gson().toJson(verifyOtpResponse));
                 switch (verifyOtpResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if(verifyOtpResponse.getMessage() != null){

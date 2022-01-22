@@ -199,7 +199,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                             basicDetails.setOtp(signInResponse.getUser().getOtp());
                             preferences.setAuthorizationToken(signInResponse.getToken());
                             Bundle bundle = new Bundle();
-                            bundle.putString(AppConstants.MOBILE_NO, basicDetails.getMobileNumber());
+                            bundle.putString(AppConstants.USER_MOBILE, basicDetails.getMobileNumber());
                             bundle.putString(AppConstants.COUNTRY_CODE, basicDetails.getCountryCode());
                             bundle.putString(AppConstants.USER_OTP, basicDetails.getOtp());
                             Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_verifyOtpFragment, bundle);

@@ -59,7 +59,8 @@ public class IntroItemFragment extends BaseFragment {
 
         introTitle.setText(introList.get(position).getTitle());
         introDesc.setText(introList.get(position).getDescription());
-        introImg.setImageResource(introList.get(position).getImgFile());
+//        introImg.setImageResource(introList.get(position).getImgFile());
+        loadingImage(context,introList.get(position).getImgFile(),fragmentIntroItemBinding.itemImg);
         return view;
     }
 }
