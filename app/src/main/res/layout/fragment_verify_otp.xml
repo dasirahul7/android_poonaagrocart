@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="commonViewModel"
-            type="com.poona.agrocart.ui.login.CommonViewModel" />
+            name="verifyOtpViewModel"
+            type="com.poona.agrocart.ui.verify_otp.VerifyOtpViewModel" />
     </data>
 
     <ScrollView
@@ -58,7 +58,7 @@
                     android:layout_marginEnd="@dimen/_80sdp"
                     android:lineSpacingExtra="@dimen/_8sdp"
                     android:padding="@dimen/alerter_padding_small"
-                    android:text="@string/otp_sent"
+                    android:text="@{verifyOtpViewModel.userMobileMsg}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -92,7 +92,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:lineSpacingExtra="@dimen/_20sdp"
-                    android:text="@{commonViewModel.otp}"
+                    android:text="@{verifyOtpViewModel.otp}"
                     android:textColor="@color/clr_enter_otp"
                     android:textSize="@dimen/_18sp"
                     android:textStyle="bold"

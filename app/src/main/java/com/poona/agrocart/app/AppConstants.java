@@ -57,8 +57,13 @@ public class AppConstants
     public static final int STATUS_CODE_2 = 2; //inactive user
     public static final int STATUS_CODE_1 = 1;
 
+    /*API names here*/
     public static final String FROM_SCREEN = "from_screen";
     public static final String LOGIN_API = "api-login-customer";
+    public static final String VERIFY_OTP_API = "verify-otp-customer";
+    public static final String REGISTER_API = "register-customer";
+    public static final String INTRO_SCREEN_API = "screen-customer";
+
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";
     public static final String LOGOUT = "logout";
@@ -85,6 +90,13 @@ public class AppConstants
     public static final String CONTACT_US = "contact-us";
     public static final String QUERY = "query";
 
+    /*API KEYS*/
+    public static final String MOBILE_NUMBER ="mobile";
+    public static final String OTP ="otp";
+    public static final String USERNAME ="username";
+    public static final String EMAIL ="email";
+
+
     /*
     * id to handle the notification in the notification tray
     * */
@@ -95,14 +107,10 @@ public class AppConstants
     public static final String APP = "app";
 
     /*SignInFragment keys*/
-    public static final String MOBILE_NO = "MOBILE_NO";
+    public static final String USER_MOBILE = "MOBILE_NO";
     public static final String COUNTRY_CODE ="COUNTRY_CODE";
     public static final String USER_OTP ="USER_OTP";
     public static final Object IS_NOTIFICATION_RECEIVED = "IS_NOTIFICATION_RECEIVED";
-
-    /*API KEYS*/
-    public static final String MOBILE_NUMBER ="mobile";
-
 
     //Help center
     public static final String TICKET_ID="TICKET_ID";

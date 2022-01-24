@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="commonViewModel"
-            type="com.poona.agrocart.ui.login.CommonViewModel" />
+            name="signUpViewModel"
+            type="com.poona.agrocart.ui.sign_up.SignUpViewModel" />
     </data>
 
     <ScrollView
@@ -91,8 +91,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/bg_login_et_fields"
                         android:digits="@string/all_letters_and_digits"
-                        android:inputType="textCapWords"
-                        android:text="@{commonViewModel.userName}"
+                        android:text="@{signUpViewModel.userName}"
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -139,7 +138,7 @@
                             android:enabled="false"
                             android:inputType="phone"
                             android:maxLength="10"
-                            android:text="@{commonViewModel.mobileNo}"
+                            android:text="@{signUpViewModel.mobileNo}"
                             android:textColor="@color/clr_enter_otp"
                             android:textSize="@dimen/_16sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -178,8 +177,9 @@
                         android:layout_below="@+id/tv_email_optional"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/bg_login_et_fields"
-                        android:text="@{commonViewModel.emailId}"
+                        android:text="@{signUpViewModel.emailId}"
                         android:textSize="@dimen/_16sp"
+                        android:singleLine="true"
                         app:setCustomFont="@string/font_poppins_regular" />
 
                     <LinearLayout
