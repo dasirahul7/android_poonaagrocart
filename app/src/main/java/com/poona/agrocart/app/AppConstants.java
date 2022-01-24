@@ -63,6 +63,9 @@ public class AppConstants
     public static final String VERIFY_OTP_API = "verify-otp-customer";
     public static final String REGISTER_API = "register-customer";
     public static final String INTRO_SCREEN_API = "screen-customer";
+    public static final String AREA_API = "area";
+    public static final String CITY_API = "city";
+    public static final String UPDATE_LOCATION_API = "update-location-customer";
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";
@@ -95,6 +98,8 @@ public class AppConstants
     public static final String OTP ="otp";
     public static final String USERNAME ="username";
     public static final String EMAIL ="email";
+    public static final String AREA_ID ="area_id";
+    public static final String CITY_ID ="city_id";
 
 
     /*
