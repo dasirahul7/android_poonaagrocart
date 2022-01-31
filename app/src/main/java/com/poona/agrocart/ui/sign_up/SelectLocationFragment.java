@@ -199,8 +199,8 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 basicDetails.setArea(parent.getItemAtPosition(position).toString());
                 commonViewModel.area.setValue(areaArrayList.get(position).getId());
-                if (citiIds!=null){
-                    System.out.println("selected area "+ citiIds.get(position));
+                if (citiIds != null) {
+                    System.out.println("selected area " + citiIds.get(position));
                     selectedCity = citiIds.get(position);
                 }
             }
@@ -217,8 +217,8 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 basicDetails.setCity(parent.getItemAtPosition(position).toString());
                 commonViewModel.city.setValue(basicDetails.getCity());
-                if (areaIds!=null){
-                    System.out.println("selected city "+areaIds.get(position));
+                if (areaIds != null) {
+                    System.out.println("selected city " + areaIds.get(position));
                     selectedCity = areaIds.get(position);
                 }
             }
@@ -233,13 +233,13 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
     public void onClick(View v) {
 //        if (selectedArea==null|| selectedCity ==null)
 //            warningToast(context,"select city and area");
-         callUpdateLocationApi(showCircleProgressDialog(context,""));
+        callUpdateLocationApi(showCircleProgressDialog(context, ""));
 
     }
 
     private void callUpdateLocationApi(ProgressDialog showCircleProgressDialog) {
         Observer<BaseResponse> updateLocationObserver = updateLocationResponse -> {
-            if (updateLocationResponse!=null){
+            if (updateLocationResponse != null) {
                 switch (updateLocationResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (updateLocationResponse.getStatus() == 200) {
@@ -263,10 +263,11 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
 
             }
         };
-        selectLocationViewModel.updateLocation(showCircleProgressDialog,updateLocationParams(),
+        selectLocationViewModel.updateLocation(showCircleProgressDialog, updateLocationParams(),
                 SelectLocationFragment.this)
-                .observe(getViewLifecycleOwner(),updateLocationObserver);
+                .observe(getViewLifecycleOwner(), updateLocationObserver);
     }
+
     private HashMap<String, String> updateLocationParams() {
         HashMap<String, String> map = new HashMap<>();
         map.put(CITY_ID, selectedCity);
@@ -308,9 +309,16 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         showServerErrorDialog(getString(R.string.for_better_user_experience), SelectLocationFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
-                if (from == 0) {
-                    callAreaApi(showCircleProgressDialog(context, ""));
-                    callCityApi(showCircleProgressDialog(context, ""));
+                switch (from) {
+                    case 0:
+                        callAreaApi(showCircleProgressDialog(context, ""));
+                        break;
+                    case 1:
+                        callCityApi(showCircleProgressDialog(context, ""));
+                        break;
+                    case 2:
+                        callUpdateLocationApi(showCircleProgressDialog(context, ""));
+                        break;
                 }
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.home;
 
+import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,7 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
-import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.reponses.BannerResponse;
+import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
@@ -32,8 +36,9 @@ import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.home.model.SeasonalProduct;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
 
     private static final int AUTO_SCROLL_THRESHOLD_IN_MILLI = 3000;
     private HomeViewModel homeViewModel;
@@ -54,16 +59,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private ArrayList<SeasonalProduct> seasonalProductList = new ArrayList<>();
     private final ArrayList<Product> mCartList = new ArrayList<Product>();
     private ArrayList<String> BasketIds = new ArrayList<>();
+    private int limit = 0;
+    private int offset = 0;
+    private View root;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = fragmentHomeBinding.getRoot();
+        root = fragmentHomeBinding.getRoot();
         getBasketItems();
-        setBannersView();
-        setShopByCategory(root);
+        callBannerApi(showCircleProgressDialog(context, ""), limit, offset);
+        callCategoryApi(root, showCircleProgressDialog(context, ""), limit, offset);
         setBestSellings(root);
         setOfferProduct(root);
         setBasketItems(root);
@@ -75,13 +83,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void setSeasonBanners(View root) {
-        homeViewModel.getLiveSeasonProducts().observe(getViewLifecycleOwner(),seasonalProducts -> {
-           seasonalProductList = seasonalProducts;
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false);
+        homeViewModel.getLiveSeasonProducts().observe(getViewLifecycleOwner(), seasonalProducts -> {
+            seasonalProductList = seasonalProducts;
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
             fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
             fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
             fragmentHomeBinding.recSeasonal.setLayoutManager(linearLayoutManager);
-            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(),seasonalProducts,root);
+            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProducts, root);
             fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
         });
     }
@@ -94,7 +102,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     private void getBasketItems() {
         homeViewModel.getSavesProductInBasket().observe(getViewLifecycleOwner(), products -> {
-            if (products!=null){
+            if (products != null) {
                 for (Product saved : products)
                     BasketIds.add(saved.getId());
             }
@@ -191,29 +199,60 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     }
 
-    private void setShopByCategory(View view) {
-        homeViewModel.getLiveDataCategory().observe(getViewLifecycleOwner(), categories1 -> {
-            categories = categories1;
-            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-            categoryAdapter = new CategoryAdapter(categories, requireActivity(), view);
-            fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
-            fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
-            fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
-        });
+    private void callCategoryApi(View view, ProgressDialog progressDialog, int limit, int offset) {
+        limit = limit + 10;
+
+        Observer<CategoryResponse> categoryResponseObserver = categoryResponse -> {
+            if (categoryResponse != null) {
+                if (categoryResponse.getCategoryData().getCategoryList().size() > 0) {
+                    categories = categoryResponse.getCategoryData().getCategoryList();
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+                    categoryAdapter = new CategoryAdapter(categories, requireActivity(), view);
+                    fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
+                    fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
+                    fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
+                }
+            }
+        };
+        homeViewModel.categoryResponseLiveData(progressDialog, listingParams(limit, offset), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), categoryResponseObserver);
+
+//        homeViewModel.getLiveDataCategory().observe(getViewLifecycleOwner(), categories1 -> {
+//            categories = categories1;
+//            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+//            categoryAdapter = new CategoryAdapter(categories, requireActivity(), view);
+//            fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
+//            fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
+//            fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
+//        });
 
     }
 
-    private void setBannersView() {
-        homeViewModel.getLiveDataBanner().observe(getViewLifecycleOwner(), banners1 -> {
-            banners = banners1;
-            bannerAdapter = new BannerAdapter(banners, requireActivity());
+    private void callBannerApi(ProgressDialog progressDialog, int limit, int offset) {
+        limit = limit + 10;
+        Observer<BannerResponse> bannerResponseObserver = bannerResponse -> {
+            if (bannerResponse != null) {
+                if (bannerResponse.getData().getBanners().size() > 0) {
+                    banners.clear();
+                    banners = bannerResponse.getData().getBanners();
+                    bannerAdapter = new BannerAdapter(banners, requireActivity());
+//
+                    fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
+                    // Set up tab indicators
+                    fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
+                }
+            }
+        };
+        homeViewModel.bannerResponseLiveData(progressDialog, listingParams(limit, offset), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), bannerResponseObserver);
 
-            fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
-            // Set up tab indicators
-            fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
-        });
+    }
 
-
+    private HashMap<String, String> listingParams(int limit, int offset) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(AppConstants.LIMIT, String.valueOf(limit));
+        map.put(AppConstants.OFFSET, String.valueOf(offset));
+        return map;
     }
 
     @Override
@@ -252,7 +291,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void addToBasket(Product item) {
-            item.setQuantity("1");
+        item.setQuantity("1");
         mCartList.add(item);
         preferences.saveCartArrayList(mCartList, AppConstants.CART_LIST);
         for (int i = 0; i < mCartList.size(); i++) {
@@ -276,10 +315,30 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-switch (v.getId()){
-    case R.id.tv_all_category:
+        switch (v.getId()) {
+            case R.id.tv_all_category:
+                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_explore);
+                break;
+        }
+    }
 
-        break;
-}
+    @Override
+    public void onNetworkException(int from) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), HomeFragment.this, () -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                switch (from) {
+                    case 0:
+                        callBannerApi(showCircleProgressDialog(context, ""), limit, offset);
+                        break;
+                    case 1:
+                        callCategoryApi(root,showCircleProgressDialog(context,""),limit,offset);
+
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+
     }
 }

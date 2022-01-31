@@ -40,11 +40,11 @@ public class Basket {
         this.img = img;
     }
 
-    @BindingAdapter("setImage")
-    public static void loadImage(ImageView view, String img){
-        Glide.with(view.getContext())
-                .load(img)
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.img_bell_pepper_red).into(view);
-    }
+//    @BindingAdapter("setImage")
+//    public static void loadImage(ImageView view, String img){
+//        Glide.with(view.getContext())
+//                .load(img)
+//                .placeholder(R.drawable.placeholder)
+//                .error(R.drawable.img_bell_pepper_red).into(view);
+//    }
 }

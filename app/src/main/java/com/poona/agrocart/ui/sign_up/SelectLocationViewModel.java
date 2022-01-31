@@ -106,7 +106,7 @@ public class SelectLocationViewModel extends AndroidViewModel {
                             cityResponseMutableLiveData.setValue(cityResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) selectLocationFragment).onNetworkException(0);
+                            ((NetworkExceptionListener) selectLocationFragment).onNetworkException(1);
                         }
 
                     }
@@ -146,7 +146,7 @@ public class SelectLocationViewModel extends AndroidViewModel {
                                  updateLocationMutableLiveData.setValue(baseResponse);
                              } catch (Exception exception) {
                                  Log.e(TAG, exception.getMessage());
-                                 ((NetworkExceptionListener) selectLocationFragment).onNetworkException(0);
+                                 ((NetworkExceptionListener) selectLocationFragment).onNetworkException(2);
                              }
                             Log.e(TAG, e.getMessage());
                         }

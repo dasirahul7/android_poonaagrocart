@@ -197,13 +197,13 @@ public class Product implements Parcelable {
         this.quantity = quantity;
     }
 
-    @BindingAdapter("setImage")
-    public static void loadImage(ImageView view, String img) {
-        Glide.with(view.getContext())
-                .load(img)
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder).into(view);
-    }
+//    @BindingAdapter("setImage")
+//    public static void loadImage(ImageView view, String img) {
+//        Glide.with(view.getContext())
+//                .load(img)
+//                .placeholder(R.drawable.placeholder)
+//                .error(R.drawable.placeholder).into(view);
+//    }
 
     @Override
     public int describeContents() {

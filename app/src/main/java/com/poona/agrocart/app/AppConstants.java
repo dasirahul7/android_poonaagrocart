@@ -66,6 +66,8 @@ public class AppConstants
     public static final String AREA_API = "area";
     public static final String CITY_API = "city";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
+    public static final String HOME_BANNER_API = "home-screen-banner";
+    public static final String HOME_CATEGORY_API = "category-list";
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";
@@ -92,6 +94,8 @@ public class AppConstants
     public static final String TERMS_CONDITIONS = "term-and-condition";
     public static final String CONTACT_US = "contact-us";
     public static final String QUERY = "query";
+    public static final String LIMIT = "limit";
+    public static final String OFFSET = "offset";
 
     /*API KEYS*/
     public static final String MOBILE_NUMBER ="mobile";
