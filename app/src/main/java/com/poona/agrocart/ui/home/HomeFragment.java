@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.home;
 
+import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
+import com.poona.agrocart.data.network.reponses.BannerDetails;
+import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.ui.BaseFragment;
@@ -32,6 +36,7 @@ import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.home.model.SeasonalProduct;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
@@ -54,6 +59,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private ArrayList<SeasonalProduct> seasonalProductList = new ArrayList<>();
     private final ArrayList<Product> mCartList = new ArrayList<Product>();
     private ArrayList<String> BasketIds = new ArrayList<>();
+    private int limit = 0;
+    private int offset = 0;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -62,7 +69,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = fragmentHomeBinding.getRoot();
         getBasketItems();
-        setBannersView();
+        setBannersView(showCircleProgressDialog(context,""));
         setShopByCategory(root);
         setBestSellings(root);
         setOfferProduct(root);
@@ -203,17 +210,38 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     }
 
-    private void setBannersView() {
-        homeViewModel.getLiveDataBanner().observe(getViewLifecycleOwner(), banners1 -> {
-            banners = banners1;
-            bannerAdapter = new BannerAdapter(banners, requireActivity());
+    private void setBannersView(ProgressDialog progressDialog) {
+        limit = limit+10;
+        Observer<BannerResponse> bannerResponseObserver = bannerResponse -> {
+            if (bannerResponse!=null){
+                if (bannerResponse.getData().getBannerDetailsList().size()>0){
+                    for (BannerDetails bannerDetails: bannerResponse.getData().getBannerDetailsList()){
+                        Banner banner = new Banner(bannerDetails.getId(),"",bannerDetails.getAdvImage());
+                        banners.add(banner);
+                    }
+                    bannerAdapter = new BannerAdapter(banners,requireActivity());
+                }
+            }
+        };
+        homeViewModel.bannerResponseLiveData(progressDialog,bannerParams(),HomeFragment.this)
+        .observe(getViewLifecycleOwner(),bannerResponseObserver);
+//        homeViewModel.getLiveDataBanner().observe(getViewLifecycleOwner(), banners1 -> {
+//            banners = banners1;
+//            bannerAdapter = new BannerAdapter(banners, requireActivity());
+//
+//            fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
+//            // Set up tab indicators
+//            fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
+//        });
 
-            fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
-            // Set up tab indicators
-            fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
-        });
 
+    }
 
+    private HashMap<String,String> bannerParams(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put(AppConstants.LIMIT,String.valueOf(limit));
+        map.put(AppConstants.OFFSET,String.valueOf(offset));
+        return map;
     }
 
     @Override

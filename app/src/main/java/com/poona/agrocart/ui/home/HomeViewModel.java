@@ -1,24 +1,44 @@
 package com.poona.agrocart.ui.home;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
+import android.app.ProgressDialog;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
+import com.poona.agrocart.data.network.ApiClientAuth;
+import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.reponses.BannerResponse;
+import com.poona.agrocart.data.network.reponses.SignInResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.home.model.SeasonalProduct;
+import com.poona.agrocart.ui.sign_in.SignInFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.observers.DisposableSingleObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.HttpException;
 
 
 public class HomeViewModel extends AndroidViewModel {
+    private String TAG = HomeViewModel.class.getSimpleName();
+
     private MutableLiveData<ArrayList<Banner>> liveDataBanner;
     private MutableLiveData<ArrayList<Product>> liveDataBestSelling;
     private MutableLiveData<ArrayList<Product>> liveDataOffer;
@@ -95,15 +115,15 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     private void initCartItems() {
-        String PID = AppConstants.pId+"OP";
+        String PID = AppConstants.pId + "OP";
         ArrayList cartItemList = new ArrayList();
         for (int i = 0; i < 4; i++) {
-            Product cartProduct = new Product(PID+i, "Vegetable", "1kg",
+            Product cartProduct = new Product(PID + i, "Vegetable", "1kg",
                     "10", "65", getApplication().getString(R.string.img_potato),
-                    "Pune","Green");
-            if (i==1)
+                    "Pune", "Green");
+            if (i == 1)
                 cartProduct.setImg(getApplication().getString(R.string.img_beat));
-            if (i==2)
+            if (i == 2)
                 cartProduct.setImg(getApplication().getString(R.string.img_beat));
             cartItemList.add(cartProduct);
             if (i == 3) {
@@ -112,7 +132,6 @@ public class HomeViewModel extends AndroidViewModel {
         }
         liveDataCartProduct.setValue(cartItemList);
     }
-
 
 
     private void initBasketItems() {
@@ -126,17 +145,17 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     private void initOfferProduct() {
-        String PID = AppConstants.pId+"OP";
+        String PID = AppConstants.pId + "OP";
         ArrayList<Product> offerProducts = new ArrayList<>();
-        Product offerProduct = new Product(PID+"1", "Red Apple", "1Kg"
-                , "10", "150", "https://www.linkpicture.com/q/pngfuel-1-1.png", "Pune","Kashmir");
-        Product offerProduct1 = new Product(PID+"2", "Organic Bananas", "12 pcs"
-                , "10", "45", "https://www.linkpicture.com/q/banana_2.png", "Pune","Kashmir");
+        Product offerProduct = new Product(PID + "1", "Red Apple", "1Kg"
+                , "10", "150", "https://www.linkpicture.com/q/pngfuel-1-1.png", "Pune", "Kashmir");
+        Product offerProduct1 = new Product(PID + "2", "Organic Bananas", "12 pcs"
+                , "10", "45", "https://www.linkpicture.com/q/banana_2.png", "Pune", "Kashmir");
         offerProduct1.setOrganic(true);
-        Product offerProduct2 = new Product(PID+"3", "Red Apple", "1Kg"
-                , "10", "150", "https://www.linkpicture.com/q/pngfuel-1-1.png", "Pune","Kashmir");
-        Product offerProduct3 = new Product(PID+"4", "Organic Bananas", "12 pcs"
-                , "10", "45", "https://www.linkpicture.com/q/banana_2.png", "Pune","Kashmir");
+        Product offerProduct2 = new Product(PID + "3", "Red Apple", "1Kg"
+                , "10", "150", "https://www.linkpicture.com/q/pngfuel-1-1.png", "Pune", "Kashmir");
+        Product offerProduct3 = new Product(PID + "4", "Organic Bananas", "12 pcs"
+                , "10", "45", "https://www.linkpicture.com/q/banana_2.png", "Pune", "Kashmir");
         offerProduct3.setOrganic(true);
         offerProducts.add(offerProduct);
         offerProducts.add(offerProduct1);
@@ -147,27 +166,27 @@ public class HomeViewModel extends AndroidViewModel {
 
     private void initBestSelling() {
         ArrayList<Product> sellingProducts = new ArrayList<>();
-        String PID = AppConstants.pId+"BP";
-        Product product = new Product(PID+"1", "Bell Pepper Red", "1Kg"
+        String PID = AppConstants.pId + "BP";
+        Product product = new Product(PID + "1", "Bell Pepper Red", "1Kg"
                 , "10", "25", "https://www.linkpicture.com/q/capsicon.png",
-                "Pune","Walmart");
-        Product product1 = new Product(PID+"2", "Ginger", "250 gms"
-                , "10", "110",  "https://www.linkpicture.com/q/ginger.png",
-                "Pune","Walmart");
+                "Pune", "Walmart");
+        Product product1 = new Product(PID + "2", "Ginger", "250 gms"
+                , "10", "110", "https://www.linkpicture.com/q/ginger.png",
+                "Pune", "Walmart");
         product1.setOrganic(true);
-        Product product2 = new Product(PID+"3", "Bell Pepper Red", "1Kg"
-                , "10", "25",  "https://www.linkpicture.com/q/capsicon.png",
-                "Pune","Walmart");
-        Product product3 = new Product(PID+"4", "Ginger", "500 gms"
+        Product product2 = new Product(PID + "3", "Bell Pepper Red", "1Kg"
+                , "10", "25", "https://www.linkpicture.com/q/capsicon.png",
+                "Pune", "Walmart");
+        Product product3 = new Product(PID + "4", "Ginger", "500 gms"
                 , "10", "280", "https://www.linkpicture.com/q/ginger.png",
-                "Pune","Walmart");
-        Product product4 = new Product(PID+"5", "Ginger", ""
+                "Pune", "Walmart");
+        Product product4 = new Product(PID + "5", "Ginger", ""
                 , "", "", "https://www.linkpicture.com/q/ginger.png",
-                "Pune","Walmart");
+                "Pune", "Walmart");
         product4.setWeight("0");
-        Product product5 = new Product(PID+"6", "Ginger", ""
+        Product product5 = new Product(PID + "6", "Ginger", ""
                 , "", "", "https://www.linkpicture.com/q/ginger.png",
-                "Pune","Walmart");
+                "Pune", "Walmart");
         product5.setWeight("0");
         sellingProducts.add(product);
         sellingProducts.add(product1);
@@ -200,8 +219,52 @@ public class HomeViewModel extends AndroidViewModel {
         }
         liveDataBanner.setValue(banners);
     }
+    //Home Banner API
+    @SuppressLint("CheckResult")
+    public LiveData<BannerResponse> bannerResponseLiveData(ProgressDialog progressDialog,
+                                                           HashMap<String, String> hashMap,
+                                                           HomeFragment homeFragment) {
 
-    public MutableLiveData<ArrayList<SeasonalProduct>> getLiveSeasonProducts() { return liveSeasonProducts; }
+        MutableLiveData<BannerResponse> bannerResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(homeFragment.getContext())
+                .create(ApiInterface.class)
+                .homeBannerResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BannerResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BannerResponse bannerResponse) {
+                        if (progressDialog!=null){
+                            progressDialog.dismiss();
+                            bannerResponseMutableLiveData.setValue(bannerResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BannerResponse response = new BannerResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BannerResponse.class);
+
+                            bannerResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) response).onNetworkException(0);
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return bannerResponseMutableLiveData;
+    }
+
+    public MutableLiveData<ArrayList<SeasonalProduct>> getLiveSeasonProducts() {
+        return liveSeasonProducts;
+    }
 
     public MutableLiveData<ArrayList<Banner>> getLiveDataBanner() {
         return liveDataBanner;
@@ -230,4 +293,6 @@ public class HomeViewModel extends AndroidViewModel {
     public MutableLiveData<ArrayList<Product>> getSavesProductInBasket() {
         return savesProductInBasket;
     }
+
+
 }
