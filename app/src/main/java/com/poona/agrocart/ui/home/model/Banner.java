@@ -1,6 +1,8 @@
 package com.poona.agrocart.ui.home.model;
 
-public class Banner {
+import com.poona.agrocart.data.network.reponses.BannerDetails;
+
+public class Banner extends BannerDetails {
     String id ,Name,Image;
 
     public Banner(String id, String name, String image) {
