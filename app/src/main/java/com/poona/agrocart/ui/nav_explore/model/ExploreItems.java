@@ -57,11 +57,11 @@ public class ExploreItems {
         this.img = img;
     }
 
-    @BindingAdapter("setImage")
-    public static void loadImage(ImageView view, String img){
-        Glide.with(view.getContext())
-                .load(img)
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder).into(view);
-    }
+//    @BindingAdapter("setImage")
+//    public static void loadImage(ImageView view, String img){
+//        Glide.with(view.getContext())
+//                .load(img)
+//                .placeholder(R.drawable.placeholder)
+//                .error(R.drawable.placeholder).into(view);
+//    }
 }
