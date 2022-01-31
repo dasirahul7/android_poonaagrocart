@@ -18,7 +18,7 @@ import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
-import com.poona.agrocart.data.network.reponses.SignInResponse;
+import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
@@ -233,17 +233,20 @@ public class HomeViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<BannerResponse>() {
+
                     @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BannerResponse bannerResponse) {
-                        if (progressDialog!=null){
+                    public void onSuccess(BannerResponse response) {
+                        if (response!=null){
+                            Log.d(TAG, "onSuccess: "+response.getData().getBannerDetailsList().get(0).getId());
                             progressDialog.dismiss();
-                            bannerResponseMutableLiveData.setValue(bannerResponse);
+                            bannerResponseMutableLiveData.setValue(response);
                         }
                     }
 
                     @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                    public void onError(Throwable e) {
                         progressDialog.dismiss();
+
                         Gson gson = new GsonBuilder().create();
                         BannerResponse response = new BannerResponse();
                         try {
@@ -253,7 +256,7 @@ public class HomeViewModel extends AndroidViewModel {
                             bannerResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) response).onNetworkException(0);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(0);
                         }
 
                         Log.e(TAG, e.getMessage());

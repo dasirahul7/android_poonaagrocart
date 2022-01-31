@@ -69,7 +69,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = fragmentHomeBinding.getRoot();
         getBasketItems();
-        setBannersView(showCircleProgressDialog(context,""));
+        setBannersView(showCircleProgressDialog(context, ""));
         setShopByCategory(root);
         setBestSellings(root);
         setOfferProduct(root);
@@ -82,13 +82,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void setSeasonBanners(View root) {
-        homeViewModel.getLiveSeasonProducts().observe(getViewLifecycleOwner(),seasonalProducts -> {
-           seasonalProductList = seasonalProducts;
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false);
+        homeViewModel.getLiveSeasonProducts().observe(getViewLifecycleOwner(), seasonalProducts -> {
+            seasonalProductList = seasonalProducts;
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
             fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
             fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
             fragmentHomeBinding.recSeasonal.setLayoutManager(linearLayoutManager);
-            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(),seasonalProducts,root);
+            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProducts, root);
             fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
         });
     }
@@ -101,7 +101,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     private void getBasketItems() {
         homeViewModel.getSavesProductInBasket().observe(getViewLifecycleOwner(), products -> {
-            if (products!=null){
+            if (products != null) {
                 for (Product saved : products)
                     BasketIds.add(saved.getId());
             }
@@ -211,20 +211,24 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void setBannersView(ProgressDialog progressDialog) {
-        limit = limit+10;
+        limit = limit + 10;
         Observer<BannerResponse> bannerResponseObserver = bannerResponse -> {
-            if (bannerResponse!=null){
-                if (bannerResponse.getData().getBannerDetailsList().size()>0){
-                    for (BannerDetails bannerDetails: bannerResponse.getData().getBannerDetailsList()){
-                        Banner banner = new Banner(bannerDetails.getId(),"",bannerDetails.getAdvImage());
+            if (bannerResponse != null) {
+                if (bannerResponse.getData().getBannerDetailsList().size() > 0) {
+                    for (BannerDetails bannerDetails : bannerResponse.getData().getBannerDetailsList()) {
+                        Banner banner = new Banner(bannerDetails.getId(), "", bannerDetails.getAdvImage());
                         banners.add(banner);
                     }
-                    bannerAdapter = new BannerAdapter(banners,requireActivity());
+                    bannerAdapter = new BannerAdapter(banners, requireActivity());
+//
+                    fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
+                    // Set up tab indicators
+                    fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
                 }
             }
         };
-        homeViewModel.bannerResponseLiveData(progressDialog,bannerParams(),HomeFragment.this)
-        .observe(getViewLifecycleOwner(),bannerResponseObserver);
+        homeViewModel.bannerResponseLiveData(progressDialog, bannerParams(), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), bannerResponseObserver);
 //        homeViewModel.getLiveDataBanner().observe(getViewLifecycleOwner(), banners1 -> {
 //            banners = banners1;
 //            bannerAdapter = new BannerAdapter(banners, requireActivity());
@@ -237,10 +241,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     }
 
-    private HashMap<String,String> bannerParams(){
+    private HashMap<String, String> bannerParams() {
         HashMap<String, String> map = new HashMap<>();
-        map.put(AppConstants.LIMIT,String.valueOf(limit));
-        map.put(AppConstants.OFFSET,String.valueOf(offset));
+        map.put(AppConstants.LIMIT, String.valueOf(limit));
+        map.put(AppConstants.OFFSET, String.valueOf(offset));
         return map;
     }
 
@@ -280,7 +284,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void addToBasket(Product item) {
-            item.setQuantity("1");
+        item.setQuantity("1");
         mCartList.add(item);
         preferences.saveCartArrayList(mCartList, AppConstants.CART_LIST);
         for (int i = 0; i < mCartList.size(); i++) {
@@ -304,10 +308,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-switch (v.getId()){
-    case R.id.tv_all_category:
+        switch (v.getId()) {
+            case R.id.tv_all_category:
 
-        break;
-}
+                break;
+        }
     }
 }

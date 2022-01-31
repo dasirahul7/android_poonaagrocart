@@ -6,13 +6,13 @@ import com.google.gson.annotations.SerializedName;
 public class BannerResponse extends BaseResponse{
     @SerializedName("data")
     @Expose
-    private BannerData data;
+    private BannerData bannerData;
 
     public BannerData getData() {
-        return data;
+        return bannerData;
     }
 
     public void setData(BannerData data) {
-        this.data = data;
+        this.bannerData = data;
     }
 }

@@ -4,9 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class BannerArea extends BannerDetails {
-    @SerializedName("id")
-    @Expose
-    private String id;
+//    @SerializedName("id")
+//    @Expose
+//    private String id;
     @SerializedName("area_id")
     @Expose
     private String areaId;
@@ -14,15 +14,15 @@ public class BannerArea extends BannerDetails {
     @Expose
     private String areaName;
 
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
+//    @Override
+//    public String getId() {
+//        return id;
+//    }
+//
+//    @Override
+//    public void setId(String id) {
+//        this.id = id;
+//    }
 
     public String getAreaId() {
         return areaId;
