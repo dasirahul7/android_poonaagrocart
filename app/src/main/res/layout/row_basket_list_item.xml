@@ -40,7 +40,7 @@
 
                 <ImageView
                     android:id="@+id/itemImg"
-                    setImage="@{basket.img}"
+                    setImage="@{basket.featureImg}"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_100sdp"
                     android:layout_below="@+id/txt_item_offer"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:singleLine="true"
-                android:text="@{basket.name}"
+                android:text="@{basket.basketName}"
                 android:textColor="@color/blue_txt_color"
                 android:textSize="@dimen/category_txt_size"
                 android:textStyle="bold"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:singleLine="true"
-                android:text="@{basket.price}"
+                android:text="@{basket.basketRate}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/category_txt_size"
                 app:fontFamily="@font/montserrat"

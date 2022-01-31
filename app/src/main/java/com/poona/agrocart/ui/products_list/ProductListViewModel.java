@@ -53,24 +53,24 @@ public class ProductListViewModel extends AndroidViewModel {
         fruitMutableLiveData.setValue(fruitsArrayList);
 
         //Add Baskets
-        for (int i = 0; i < 10; i++) {
-            Basket basket = new Basket("Sprout Baskets", "Rs.500", getApplication().getString(R.string.basket_sprout_img));
-            if (i == 1) {
-                {
-                    basket.setName("Nutrition Baskets");
-                    basket.setPrice("Rs. 700");
-                    basket.setImg(getApplication().getString(R.string.basket_nutrition_img));
-                }
-                if (i == 2) {
-                    {
-                        basket.setName("Diet Baskets");
-                        basket.setPrice("Rs. 900");
-                        basket.setImg(getApplication().getString(R.string.basket_diet_img));
-                    }
-                }
-            }
-            basketArrayList.add(basket);
-        }
+//        for (int i = 0; i < 10; i++) {
+//            Basket basket = new Basket("Sprout Baskets", "Rs.500", getApplication().getString(R.string.basket_sprout_img));
+//            if (i == 1) {
+//                {
+//                    basket.setName("Nutrition Baskets");
+//                    basket.setPrice("Rs. 700");
+//                    basket.setImg(getApplication().getString(R.string.basket_nutrition_img));
+//                }
+//                if (i == 2) {
+//                    {
+//                        basket.setName("Diet Baskets");
+//                        basket.setPrice("Rs. 900");
+//                        basket.setImg(getApplication().getString(R.string.basket_diet_img));
+//                    }
+//                }
+//            }
+//            basketArrayList.add(basket);
+//        }
         basketMutableLiveData.setValue(basketArrayList);
     }
 

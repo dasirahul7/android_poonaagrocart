@@ -18,6 +18,7 @@ import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
+import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.model.Banner;
@@ -29,6 +30,7 @@ import com.poona.agrocart.ui.home.model.SeasonalProduct;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.reactivex.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -41,8 +43,8 @@ public class HomeViewModel extends AndroidViewModel {
     private MutableLiveData<ArrayList<Product>> liveDataBestSelling;
     private MutableLiveData<ArrayList<Product>> liveDataOffer;
     private MutableLiveData<ArrayList<Product>> liveDataCartProduct;
-    private MutableLiveData<ArrayList<Category>> liveDataCategory;
-    private MutableLiveData<ArrayList<Basket>> liveDataBaskets;
+//    private MutableLiveData<ArrayList<Category>> liveDataCategory;
+//    private MutableLiveData<ArrayList<Basket>> liveDataBaskets;
     private MutableLiveData<ArrayList<Product>> savesProductInBasket;
     private MutableLiveData<ArrayList<SeasonalProduct>> liveSeasonProducts;
 
@@ -53,12 +55,11 @@ public class HomeViewModel extends AndroidViewModel {
         liveDataBestSelling = new MutableLiveData<>();
         liveDataOffer = new MutableLiveData<>();
         liveDataCartProduct = new MutableLiveData<>();
-        liveDataCategory = new MutableLiveData<>();
-        liveDataBaskets = new MutableLiveData<>();
+//        liveDataCategory = new MutableLiveData<>();
         savesProductInBasket = new MutableLiveData<>();
         liveSeasonProducts = new MutableLiveData<>();
         //init arraylist
-        getBasketData();
+//        getBasketData();
 //        initBanner();
 //        initCategory();
         initBestSelling();
@@ -132,13 +133,14 @@ public class HomeViewModel extends AndroidViewModel {
 
 
     private void initBasketItems() {
-        ArrayList<Basket> baskets = new ArrayList<>();
-        Basket basket = new Basket("Fruit\n" +
-                "Baskets", "Rs 15000", "https://www.linkpicture.com/q/1-200284.png");
-        for (int i = 0; i < 4; i++)
-            baskets.add(basket);
+//        ArrayList<Basket> baskets = new ArrayList<>();
+//        Basket basket = new Basket("Fruit\n" +
+//                "Baskets", "Rs 15000", "https://www.linkpicture.com/q/1-200284.png");
+//        for (int i = 0; i < 4; i++)
+//            baskets.add(basket);
+//
+//        liveDataBaskets.setValue(baskets);
 
-        liveDataBaskets.setValue(baskets);
     }
 
     private void initOfferProduct() {
@@ -217,6 +219,8 @@ public class HomeViewModel extends AndroidViewModel {
 //        liveDataBanner.setValue(banners);
 //    }
     //Home Banner API
+
+    //Banner Response here
     @SuppressLint("CheckResult")
     public LiveData<BannerResponse> bannerResponseLiveData(ProgressDialog progressDialog,
                                                            HashMap<String, String> hashMap,
@@ -262,6 +266,7 @@ public class HomeViewModel extends AndroidViewModel {
         return bannerResponseMutableLiveData;
     }
 
+    //Category Response here
     @SuppressLint("CheckResult")
     public LiveData<CategoryResponse> categoryResponseLiveData(ProgressDialog progressDialog,
                                                              HashMap<String, String> hashMap,
@@ -307,13 +312,52 @@ public class HomeViewModel extends AndroidViewModel {
         return categoryResponseMutableLiveData;
     }
 
+    // BasketList Response here
+    public LiveData<BasketResponse> basketResponseLiveData(ProgressDialog progressDialog,
+                                                           HashMap<String,String> hashMap,
+                                                           HomeFragment homeFragment){
+        MutableLiveData<BasketResponse> basketResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(homeFragment.getContext())
+                .create(ApiInterface.class)
+                .homeBasketResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BasketResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BasketResponse basketResponse) {
+                        if (basketResponse!=null){
+                            progressDialog.dismiss();
+                            basketResponseMutableLiveData.setValue(basketResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        BasketResponse response = new BasketResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BasketResponse.class);
+
+                            basketResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(2);
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return basketResponseMutableLiveData;
+    }
+
     public MutableLiveData<ArrayList<SeasonalProduct>> getLiveSeasonProducts() {
         return liveSeasonProducts;
     }
 
-    public MutableLiveData<ArrayList<Category>> getLiveDataCategory() {
-        return liveDataCategory;
-    }
 
     public MutableLiveData<ArrayList<Product>> getLiveDataBestSelling() {
         return liveDataBestSelling;
@@ -323,9 +367,6 @@ public class HomeViewModel extends AndroidViewModel {
         return liveDataOffer;
     }
 
-    public MutableLiveData<ArrayList<Basket>> getLiveDataBaskets() {
-        return liveDataBaskets;
-    }
 
     public MutableLiveData<ArrayList<Product>> getLiveDataCartProduct() {
         return liveDataCartProduct;

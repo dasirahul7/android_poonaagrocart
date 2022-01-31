@@ -7,6 +7,8 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_banner.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/row_basket_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/row_basket_list_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_category_item.xml" value="0.1" />
       </map>
     </option>

@@ -1,8 +1,16 @@
 package com.poona.agrocart.ui.home;
 
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+
 import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +23,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
+import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.ui.BaseFragment;
@@ -69,18 +79,20 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         root = fragmentHomeBinding.getRoot();
-        getBasketItems();
         callBannerApi(showCircleProgressDialog(context, ""), limit, offset);
         callCategoryApi(root, showCircleProgressDialog(context, ""), limit, offset);
+        callBasketApi(root,showCircleProgressDialog(context,""),limit,offset);
+//        setBasketItems(root);
+        getBasketItems();
         setBestSellings(root);
         setOfferProduct(root);
-        setBasketItems(root);
         setCartItems(root);
         setStoreBanner(root);
         setSeasonBanners(root);
         initClick();
         return root;
     }
+
 
     private void setSeasonBanners(View root) {
         homeViewModel.getLiveSeasonProducts().observe(getViewLifecycleOwner(), seasonalProducts -> {
@@ -143,17 +155,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     }
 
-    private void setBasketItems(View view) {
-        homeViewModel.getLiveDataBaskets().observe(getViewLifecycleOwner(), baskets -> {
-            this.baskets = baskets;
-            basketAdapter = new BasketAdapter(this.baskets, getActivity(), view);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
-            fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
-            fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
-            fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
-        });
-
-    }
+//    private void setBasketItems(View view) {
+//        homeViewModel.getLiveDataBaskets().observe(getViewLifecycleOwner(), baskets -> {
+//            this.baskets = baskets;
+//            basketAdapter = new BasketAdapter(this.baskets, getActivity(), view);
+//            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
+//            fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
+//            fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
+//            fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
+//        });
+//
+//    }
 
     private void setOfferProduct(View root) {
         homeViewModel.getLiveDataOffer().observe(getViewLifecycleOwner(), liveProducts -> {
@@ -199,18 +211,77 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     }
 
+    //Basket APi Response gere
+    private void callBasketApi(View root, ProgressDialog progressDialog, int limit, int offset) {
+        limit = limit + 10;
+        Observer<BasketResponse> bannerResponseObserver = basketResponse -> {
+            if (basketResponse != null) {
+                progressDialog.dismiss();
+                Log.e("Category Api Response", new Gson().toJson(basketResponse));
+                switch (basketResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (basketResponse.getData().getBaskets().size()>0){
+                            this.baskets = basketResponse.getData().getBaskets();
+                            basketAdapter = new BasketAdapter(this.baskets, getActivity(), root);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
+                            fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
+                            fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
+                            fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, basketResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(basketResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, basketResponse.getMessage());
+                        break;
+                }
+            }
+
+        };
+        homeViewModel.basketResponseLiveData(progressDialog, listingParams(limit, offset), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), bannerResponseObserver);
+
+    }
+
+
     private void callCategoryApi(View view, ProgressDialog progressDialog, int limit, int offset) {
         limit = limit + 10;
 
         Observer<CategoryResponse> categoryResponseObserver = categoryResponse -> {
             if (categoryResponse != null) {
-                if (categoryResponse.getCategoryData().getCategoryList().size() > 0) {
-                    categories = categoryResponse.getCategoryData().getCategoryList();
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-                    categoryAdapter = new CategoryAdapter(categories, requireActivity(), view);
-                    fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
-                    fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
-                    fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
+                progressDialog.dismiss();
+                Log.e("Category Api Response", new Gson().toJson(categoryResponse));
+                switch (categoryResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if(categoryResponse.getCategoryData() != null){
+                            if (categoryResponse.getCategoryData().getCategoryList().size() > 0) {
+                                categories = categoryResponse.getCategoryData().getCategoryList();
+                                LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+                                categoryAdapter = new CategoryAdapter(categories, requireActivity(), view);
+                                fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
+                                fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
+                                fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
+                            }
+
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, categoryResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(categoryResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, categoryResponse.getMessage());
+                        break;
                 }
             }
         };

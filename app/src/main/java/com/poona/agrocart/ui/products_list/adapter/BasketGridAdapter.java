@@ -69,9 +69,9 @@ public class BasketGridAdapter extends RecyclerView.Adapter<BasketGridAdapter.Ba
         private void redirectToProductsDetail(View v)
         {
             Bundle bundle = new Bundle();
-            bundle.putString("name",basketArrayList.get(getAdapterPosition()).getName());
-            bundle.putString("image",basketArrayList.get(getAdapterPosition()).getImg());
-            bundle.putString("price",basketArrayList.get(getAdapterPosition()).getPrice());
+            bundle.putString("name",basketArrayList.get(getAdapterPosition()).getBasketName());
+            bundle.putString("image",basketArrayList.get(getAdapterPosition()).getFeatureImg());
+            bundle.putString("price",basketArrayList.get(getAdapterPosition()).getBasketRate());
             Navigation.findNavController(v).navigate(R.id.action_nav_products_list_to_productDetailFragment2,bundle);
         }
 
