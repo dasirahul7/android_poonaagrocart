@@ -5,7 +5,7 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
-    <!--  Home Fragment-->
+    <!--Home Fragment-->
     <fragment
         android:id="@+id/nav_home"
         android:name="com.poona.agrocart.ui.home.HomeFragment"
@@ -13,324 +13,436 @@
         tools:layout="@layout/fragment_home" >
     </fragment>
 
-    <!--    MyOrdersFragment-->
+    <!--My Orders Fragment-->
     <fragment
         android:id="@+id/nav_orders"
         android:name="com.poona.agrocart.ui.nav_orders.MyOrdersFragment"
         android:label="@string/menu_my_orders"
         tools:layout="@layout/fragment_my_orders">
+
         <action
             android:id="@+id/action_nav_orders_to_orderViewFragment2"
             app:destination="@id/orderViewFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"/>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+
     </fragment>
 
-    <!--    MyProfileFragment-->
+    <!--My Profile Fragment-->
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.poona.agrocart.ui.nav_profile.MyProfileFragment"
         android:label="@string/menu_my_profile"
         tools:layout="@layout/fragment_my_profile" />
 
-    <!-- MyCartFragment-->
+    <!--My Cart Fragment-->
     <fragment
         android:id="@+id/nav_cart"
         android:name="com.poona.agrocart.ui.nav_my_cart.MyCartFragment"
-        android:label="MyCartFragment">
+        tools:layout="@layout/fragment_my_cart">
+
         <action
             android:id="@+id/action_nav_cart_to_nav_order_summary"
             app:destination="@id/nav_order_summary"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"/>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+
         <action
             android:id="@+id/action_nav_cart_to_nav_explore"
             app:destination="@id/nav_explore"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"/>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+
     </fragment>
 
     <!-- Favourites fragment-->
     <fragment
         android:id="@+id/nav_favourite"
         android:name="com.poona.agrocart.ui.nav_favourites.FavouriteItemsFragment"
-        android:label="FavouriteItemsFragment" />
-    <!--    Favourites actions-->
+        tools:layout="@layout/fragment_favourite_items"/>
+
+    <!--Favourite To Carts Action-->
     <action
         android:id="@+id/action_nav_favourite_to_nav_cart"
         app:destination="@id/nav_cart"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Favourite To Product Details-->
     <action
         android:id="@+id/action_nav_favourite_to_nav_product_details"
         app:destination="@id/nav_product_details"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
 
-    <!--    Product List-->
+    <!--Product List Fragment-->
     <fragment
         android:id="@+id/nav_products_list"
         android:name="com.poona.agrocart.ui.products_list.ProductListFragment"
-        android:label="ProductListFragment" />
-    <!--    Product list actions-->
+        tools:layout="@layout/fragment_product_list"/>
+
+    <!--Product list actions ProductDetailFragment2-->
     <action
         android:id="@+id/action_nav_products_list_to_productDetailFragment2"
         app:destination="@id/nav_product_details"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Product list actions cart-->
     <action
         android:id="@+id/action_nav_products_list_to_nav_cart"
         app:destination="@id/nav_cart"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Product Detail Fragment-->
     <fragment
         android:id="@+id/nav_product_details"
         android:name="com.poona.agrocart.ui.product_detail.ProductDetailFragment"
-        android:label="ProductDetailFragment" />
+        tools:layout="@layout/fragment_product_detail"/>
 
     <!--Our stores fragment-->
     <fragment
         android:id="@+id/nav_store"
         android:name="com.poona.agrocart.ui.nav_stores.OurStoresFragment"
-        android:label="OurStoresFragment">
+        tools:layout="@layout/fragment_our_stores">
+
         <action
             android:id="@+id/action_nav_store_to_storeLocationFragment"
             app:destination="@id/storeLocationFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"/>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+
     </fragment>
 
     <!--Explore Fragment-->
     <fragment
         android:id="@+id/nav_explore"
         android:name="com.poona.agrocart.ui.nav_explore.ExploreFragment"
-        android:label="Explore" />
-    <!--    Explore actions-->
-<!--    <action-->
-<!--        android:id="@+id/action_nav_explore_to_nav_explore_baskets"-->
-<!--        app:destination="@id/nav_explore_baskets"-->
-<!--        app:enterAnim="@anim/fade_in"-->
-<!--        app:exitAnim="@anim/fade_out"/>-->
+        android:label="@string/explore"
+        tools:layout="@layout/fragment_explore"/>
+
+    <!--Explore To Products List Action-->
     <action
         android:id="@+id/action_nav_explore_to_nav_products_list"
         app:destination="@id/nav_products_list"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--My Basket Fragment-->
     <fragment
         android:id="@+id/nav_basket"
         android:name="com.poona.agrocart.ui.nav_my_basket.MyBasketFragment"
-        android:label="MyBasketFragment">
+        tools:layout="@layout/fragment_my_basket">
+
         <action
             android:id="@+id/action_nav_basket_to_orderViewFragment2"
             app:destination="@id/orderViewFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"/>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+
     </fragment>
+
+    <!--Addresses Fragment-->
     <fragment
         android:id="@+id/nav_address"
         android:name="com.poona.agrocart.ui.nav_addresses.AddressesFragment"
-        android:label="AddressesFragment">
+        tools:layout="@layout/fragment_addresses">
+
         <action
             android:id="@+id/action_nav_address_to_addressesFormFragment2"
             app:destination="@id/addressesFormFragment2"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"/>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+
     </fragment>
+
+    <!--Addresses Form Fragment-->
     <fragment
         android:id="@+id/addressesFormFragment2"
         android:name="com.poona.agrocart.ui.nav_addresses.addresses_form.AddressesFormFragment"
-        android:label="AddressesFormFragment" />
+        tools:layout="@layout/fragment_addresses_form"/>
+
+    <!--Order View Fragment-->
     <fragment
         android:id="@+id/orderViewFragment"
         android:name="com.poona.agrocart.ui.nav_orders.order_view.OrderViewFragment"
-        android:label="OrderViewFragment">
+        tools:layout="@layout/fragment_order_view">
+        
         <action
             android:id="@+id/action_orderViewFragment_to_nav_order_track"
             app:destination="@id/nav_order_track"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"/>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        
     </fragment>
 
+    <!--About Us Fragment-->
     <fragment
         android:id="@+id/nav_about"
         android:name="com.poona.agrocart.ui.nav_about_us.AboutUsFragment"
-        android:label="AboutUsFragment" />
+        tools:layout="@layout/fragment_about_us"/>
+
+    <!--Notification Fragment-->
     <fragment
         android:id="@+id/nav_notification"
         android:name="com.poona.agrocart.ui.nav_notification.NotificationFragment"
         android:label="@string/menu_notification"
         tools:layout="@layout/fragment_notification" >
     </fragment>
-<!--    Nav Policies-->
+
+    <!--Nav Policies-->
     <fragment
         android:id="@+id/nav_privacy"
         android:name="com.poona.agrocart.ui.nav_our_privacy.OurPolicyFragment"
-        android:label="PrivacyFragment" >
+        tools:layout="@layout/fragment_policy">
     </fragment>
-<!--    Actions in policies-->
+
+    <!--Privacy To Privacy Policy Fragment-->
     <action
         android:id="@+id/action_nav_privacy_to_privacyPolicyFragment"
         app:destination="@id/privacyPolicyFragment"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Privacy To Terms Condition action-->
     <action
         android:id="@+id/action_nav_privacy_to_termsConditionFragment"
         app:destination="@id/termsConditionFragment"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Privacy To Return Refund action-->
     <action
         android:id="@+id/action_nav_privacy_to_returnRefundFragment"
         app:destination="@id/returnRefundFragment"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
 
+    <!--Terms Condition Fragment-->
     <fragment
         android:id="@+id/nav_terms"
         android:name="com.poona.agrocart.ui.nav_terms.TermsConditionFragment"
-        android:label="TermsConditionFragment" />
+        tools:layout="@layout/fragment_terms_condition"/>
+
+    <!--Coupon Fragment-->
     <fragment
         android:id="@+id/nav_offer"
         android:name="com.poona.agrocart.ui.nav_offers.CouponFragment"
-        android:label="CouponFragment" />
+        tools:layout="@layout/fragment_coupon"/>
+
+    <!--Help Center Fragment-->
     <fragment
         android:id="@+id/nav_help_center"
         android:name="com.poona.agrocart.ui.nav_help_center.HelpCenterFragment"
-        android:label="HelpCenterFragment">
+        tools:layout="@layout/fragment_help_center">
+
         <action
             android:id="@+id/action_nav_help_center_to_nav_ticket_detail"
             app:destination="@id/nav_ticket_detail"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"/>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+
     </fragment>
+
+    <!--Ticket Detail Fragment-->
     <fragment
         android:id="@+id/nav_ticket_detail"
         android:name="com.poona.agrocart.ui.ticket_details.TicketDetailFragment"
-        android:label="TicketDetailFragment" />
+        tools:layout="@layout/fragment_ticket_detail"/>
 
-    <!--    Bottom Navigation graph-->
-<!--    <fragment-->
-<!--        android:id="@+id/nav_explore_baskets"-->
-<!--        android:name="com.poona.agrocart.ui.home.basket_page.BasketPageFragment"-->
-<!--        android:label="BasketPageFragment">-->
-
-<!--        <action-->
-<!--            android:id="@+id/action_nav_explore_baskets_to_nav_product_details"-->
-<!--            app:destination="@id/nav_product_details"-->
-<!--            app:enterAnim="@anim/fade_in"-->
-<!--            app:exitAnim="@anim/fade_out"/>-->
-<!--    </fragment>-->
+    <!--Order Track Fragment-->
     <fragment
         android:id="@+id/nav_order_track"
         android:name="com.poona.agrocart.ui.nav_orders.track_order.OrderTrackFragment"
-        android:label="OrderTrackFragment" />
+        tools:layout="@layout/fragment_order_track"/>
+
+    <!--Order Summary Fragment-->
     <fragment
         android:id="@+id/nav_order_summary"
         android:name="com.poona.agrocart.ui.order_summary.OrderSummaryFragment"
-        android:label="OrderSummaryFragment">
+        tools:layout="@layout/fragment_order_summary">
+        
         <action
             android:id="@+id/action_nav_order_summary_to_orderDetailsFragment"
             app:destination="@id/orderDetailsFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"/>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        
     </fragment>
+
+    <!--Wallet Transaction Fragment-->
     <fragment
         android:id="@+id/nav_wallet"
         android:name="com.poona.agrocart.ui.nav_wallet.WalletTransactionFragment"
-        android:label="WalletTransactionFragment" />
+        tools:layout="@layout/fragment_wallet_transaction"/>
+
+    <!--Settings Fragment-->
     <fragment
         android:id="@+id/nav_setting"
         android:name="com.poona.agrocart.ui.nav_settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        tools:layout="@layout/fragment_settings"/>
+
+    <!--Store Location Fragment-->
     <fragment
         android:id="@+id/storeLocationFragment"
         android:name="com.poona.agrocart.ui.nav_stores.StoreDetailFragment"
-        android:label="store_location_fragment"
         tools:layout="@layout/fragment_store_detail" />
-    <!--    Gallery Fragment-->
+
+    <!--Gallery Fragment-->
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.poona.agrocart.ui.nav_gallery.fragment.GalleryFragment"
-        android:label="GalleryFragment" />
+        tools:layout="@layout/fragment_gallery"/>
 
-    <!--    Fragment Order Detail-->
+    <!--Fragment Order Detail-->
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="com.poona.agrocart.ui.nav_orders.order_details.OrderDetailsFragment"
         android:label="fragment_order_details"
         tools:layout="@layout/fragment_order_details">
+
         <action
             android:id="@+id/action_orderDetailsFragment_to_nav_home"
             app:destination="@id/nav_home"
             app:popUpTo="@+id/nav_home"
             app:popUpToInclusive="true"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"/>
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+
     </fragment>
 
-    <!-- Home actions-->
+    <!--Home actions-->
+    <!--Home to products list action-->
     <action
         android:id="@+id/action_nav_home_to_nav_products_list"
         app:destination="@id/nav_products_list"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Home to our stores action-->
     <action
         android:id="@+id/action_nav_home_to_nav_our_stores"
         app:destination="@id/nav_store"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Home to explore action-->
     <action
         android:id="@+id/action_nav_home_to_nav_explore"
         app:destination="@id/nav_explore"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Home to Product Details action-->
     <action
         android:id="@+id/action_nav_home_to_nav_product_details"
         app:destination="@id/nav_product_details"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
-<!--    <action-->
-<!--        android:id="@+id/action_nav_home_to_nav_cart"-->
-<!--        app:destination="@id/nav_cart"-->
-<!--        app:enterAnim="@anim/fade_in"-->
-<!--        app:exitAnim="@anim/fade_out"/>-->
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Home to profile action-->
     <action
         android:id="@+id/action_nav_home_to_nav_profile"
         app:destination="@id/nav_profile"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Home to order track action-->
     <action
         android:id="@+id/action_orderDetailsFragment_to_nav_order_track"
         app:destination="@id/nav_order_track"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
 
+    <!--Home to cart action-->
     <action
         android:id="@+id/action_nav_explore_baskets_to_nav_cart"
         app:destination="@id/nav_cart"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--FAQ Fragment-->
     <fragment
         android:id="@+id/nav_faq"
         android:name="com.poona.agrocart.ui.nav_faq.FaQFragment"
-        android:label="fragment_faq"
         tools:layout="@layout/fragment_faq" />
+
+    <!--Home To FAQ action-->
     <action
         android:id="@+id/action_nav_home_to_faQFragment"
         app:destination="@id/nav_faq"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Privacy Policy Fragment-->
     <fragment
         android:id="@+id/privacyPolicyFragment"
         android:name="com.poona.agrocart.ui.nav_our_privacy.PrivacyPolicyFragment"
-        android:label="PrivacyPolicyFragment" />
+        tools:layout="@layout/fragment_policy_item"/>
+
+    <!--Terms Condition Fragment-->
     <fragment
         android:id="@+id/termsConditionFragment"
         android:name="com.poona.agrocart.ui.nav_our_privacy.TermsConditionFragment"
-        android:label="TermsConditionFragment" />
+        tools:layout="@layout/fragment_policy_item"/>
+
+    <!--Return Refund Fragment-->
     <fragment
         android:id="@+id/returnRefundFragment"
         android:name="com.poona.agrocart.ui.nav_our_privacy.ReturnRefundFragment"
-        android:label="ReturnRefundFragment" />
-
+        tools:layout="@layout/fragment_policy_item"/>
 
 </navigation>

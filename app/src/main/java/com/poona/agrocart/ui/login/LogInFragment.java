@@ -110,7 +110,7 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
                 Navigation.findNavController(v).navigate(R.id.action_LogInFragment_to_SignInFragment);
                 break;
             case R.id.tv_forgot_password:
-                Navigation.findNavController(v).navigate(R.id.action_LoginFragment_to_forgotPasswordFragment);
+                //Navigation.findNavController(v).navigate(R.id.action_LoginFragment_to_forgotPasswordFragment);
                 break;
             case R.id.btn_login:
                 redirectToDashboard(v);
