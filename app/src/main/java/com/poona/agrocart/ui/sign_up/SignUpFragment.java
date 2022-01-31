@@ -36,11 +36,13 @@ import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.databinding.FragmentSignUpBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
+import com.poona.agrocart.ui.sign_in.SignInFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +50,7 @@ import java.util.Objects;
 
 import io.reactivex.Observable;
 
-public class SignUpFragment extends BaseFragment implements View.OnClickListener
+public class SignUpFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener
 {
     private static final String TAG = SignUpFragment.class.getSimpleName();
     private FragmentSignUpBinding fragmentSignUpBinding;
@@ -267,5 +269,20 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         bundle.putString("from", "SignUp");
         bundle.putString("title", getString(R.string.menu_terms_conditions));
         Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_signInTermsFragment, bundle);
+    }
+
+    @Override
+    public void onNetworkException(int from) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), SignUpFragment.this,() -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if(from == 0) {
+                    callRegisterApi(showCircleProgressDialog(context, ""));
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+
     }
 }

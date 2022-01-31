@@ -110,6 +110,7 @@
                 android:inputType="phone"
                 android:digits="@string/digits"
                 android:maxLength="10"
+                android:singleLine="true"
                 android:textSize="@dimen/_16sp"
                 app:setCustomFont="@string/font_poppins_regular" />
 

@@ -1,11 +1,16 @@
 package com.poona.agrocart.data.network;
 
+import static com.poona.agrocart.app.AppConstants.AREA_API;
+import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
+import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 
+import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
+import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
@@ -36,4 +41,14 @@ public interface ApiInterface {
 
     @GET(INTRO_SCREEN_API)
     Single<IntroScreenResponse> getIntroScreenResponse();
+
+    @GET(AREA_API)
+    Single<AreaResponse> getAreaResponse();
+
+    @GET(CITY_API)
+    Single<CityResponse> getCityResponse();
+
+    @FormUrlEncoded
+    @POST(UPDATE_LOCATION_API)
+    Single<BaseResponse> updateLocationResponse(@FieldMap HashMap<String, String> data);
 }
