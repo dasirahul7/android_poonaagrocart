@@ -69,6 +69,7 @@ public class AppConstants
     public static final String HOME_BANNER_API = "home-screen-banner";
     public static final String HOME_CATEGORY_API = "category-list";
     public static final String HOME_BASKET_API = "basket-list";
+    public static final String HOME_EXCLUSIVE_API = "exclusive-product-list";
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";

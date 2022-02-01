@@ -5,6 +5,7 @@ import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BASKET_API;
 import static com.poona.agrocart.app.AppConstants.HOME_CATEGORY_API;
+import static com.poona.agrocart.app.AppConstants.HOME_EXCLUSIVE_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
@@ -69,4 +70,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(HOME_BASKET_API)
     Single<BasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
+
+    @FormUrlEncoded
+    @POST(HOME_EXCLUSIVE_API)
+    Single<ExclusiveResponse> homeExclusiveResponseSingle(@FieldMap HashMap<String, String> hashMap);
 }

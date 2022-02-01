@@ -27,6 +27,8 @@ import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
+import com.poona.agrocart.data.network.ExclusiveData;
+import com.poona.agrocart.data.network.ExclusiveResponse;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
@@ -35,6 +37,7 @@ import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
 import com.poona.agrocart.ui.home.adapter.BasketAdapter;
+import com.poona.agrocart.ui.home.adapter.ExclusiveOfferListAdapter;
 import com.poona.agrocart.ui.home.adapter.OfferProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
@@ -42,6 +45,7 @@ import com.poona.agrocart.ui.home.adapter.SeasonalBannerAdapter;
 import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
+import com.poona.agrocart.ui.home.model.Exclusive;
 import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.home.model.SeasonalProduct;
 
@@ -57,11 +61,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private CategoryAdapter categoryAdapter;
     private ProductListAdapter productListAdapter;
     private OfferProductListAdapter bestsellingAdapter;
-    private OfferProductListAdapter offerListAdapter;
+    private ExclusiveOfferListAdapter offerListAdapter;
     private BasketAdapter basketAdapter;
     private SeasonalBannerAdapter seasonalBannerAdapter;
     private ArrayList<Product> bestSellings = new ArrayList<>();
-    private ArrayList<Product> offerProducts = new ArrayList<>();
+    private ArrayList<Exclusive> offerProducts = new ArrayList<>();
     private ArrayList<Product> cartProductList = new ArrayList<>();
     private ArrayList<Banner> banners = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
@@ -82,15 +86,65 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         callBannerApi(showCircleProgressDialog(context, ""), limit, offset);
         callCategoryApi(root, showCircleProgressDialog(context, ""), limit, offset);
         callBasketApi(root,showCircleProgressDialog(context,""),limit,offset);
+        callExclusiveOfferApi(root,showCircleProgressDialog(context,""),limit,offset);
 //        setBasketItems(root);
         getBasketItems();
         setBestSellings(root);
-        setOfferProduct(root);
+//        setOfferProduct(root);
         setCartItems(root);
         setStoreBanner(root);
         setSeasonBanners(root);
         initClick();
         return root;
+    }
+
+    private void callExclusiveOfferApi(View root, ProgressDialog progressDialog, int limit, int offset) {
+        limit = limit + 10;
+        Observer<ExclusiveResponse> exclusiveResponseObserver = exclusiveResponse -> {
+            if (exclusiveResponse != null) {
+                progressDialog.dismiss();
+                Log.e("Category Api Response", new Gson().toJson(exclusiveResponse));
+                switch (exclusiveResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (exclusiveResponse.getExclusiveData().getExclusivesList().size()>0){
+                            this.offerProducts = exclusiveResponse.getExclusiveData().getExclusivesList();
+                            for (Exclusive exclusive:exclusiveResponse.getExclusiveData().getExclusivesList()){
+                                System.out.println("exclusive :"+exclusive.getProductName());
+                            }
+                            offerListAdapter = new ExclusiveOfferListAdapter(this.offerProducts, getActivity(), root);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+                            fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
+                            fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
+                            fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
+                            // Redirect to Product details
+                            offerListAdapter.setOnProductClick(product -> {
+                                toProductDetail(product, root);
+                            });
+//                            offerListAdapter.setOnPlusClick((product, position) -> {
+//                                addToBasket(product);
+//                                offerProducts.get(position).(true);
+//                                offerProducts.get(position).setQuantity("1");
+//                                offerListAdapter.notifyItemChanged(position);
+//                            });
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, exclusiveResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(exclusiveResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, exclusiveResponse.getMessage());
+                        break;
+                }
+            }
+
+        };
+        homeViewModel.exclusiveResponseLiveData(progressDialog,listingParams(limit,offset),HomeFragment.this)
+            .observe(getViewLifecycleOwner(),exclusiveResponseObserver);
     }
 
 
@@ -167,26 +221,26 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //
 //    }
 
-    private void setOfferProduct(View root) {
-        homeViewModel.getLiveDataOffer().observe(getViewLifecycleOwner(), liveProducts -> {
-            this.offerProducts = liveProducts;
-            offerListAdapter = new OfferProductListAdapter(this.offerProducts, getActivity(), root);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-            fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
-            fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
-            fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
-            // Redirect to Product details
-            offerListAdapter.setOnProductClick(product -> {
-                toProductDetail(product, root);
-            });
-            offerListAdapter.setOnPlusClick((product, position) -> {
-                addToBasket(product);
-                offerProducts.get(position).setInBasket(true);
-                offerProducts.get(position).setQuantity("1");
-                offerListAdapter.notifyItemChanged(position);
-            });
-        });
-    }
+//    private void setOfferProduct(View root) {
+//        homeViewModel.getLiveDataOffer().observe(getViewLifecycleOwner(), liveProducts -> {
+//            this.offerProducts = liveProducts;
+//            offerListAdapter = new OfferProductListAdapter(this.offerProducts, getActivity(), root);
+//            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+//            fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
+//            fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
+//            fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
+//            // Redirect to Product details
+//            offerListAdapter.setOnProductClick(product -> {
+//                toProductDetail(product, root);
+//            });
+//            offerListAdapter.setOnPlusClick((product, position) -> {
+//                addToBasket(product);
+//                offerProducts.get(position).setInBasket(true);
+//                offerProducts.get(position).setQuantity("1");
+//                offerListAdapter.notifyItemChanged(position);
+//            });
+//        });
+//    }
 
     private void setBestSellings(View root) {
         homeViewModel.getLiveDataBestSelling().observe(getViewLifecycleOwner(), liveList -> {
@@ -400,10 +454,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 hideKeyBoard(requireActivity());
                 switch (from) {
                     case 0:
+                        // Call Banner API after network error
                         callBannerApi(showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 1:
+                        //Call Category API after network error
                         callCategoryApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        break;
+                    case 2:
+                        //Call Basket API after network error
+                        callBasketApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        break;
+                    case 3:
+                        //Call Exclusive API after network error
+                        callExclusiveOfferApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        break;
 
                 }
             } else {

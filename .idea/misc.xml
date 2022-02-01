@@ -214,6 +214,7 @@
         <entry key="app/src/main/res/layout/row_category_item.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/row_check_box_item.xml" value="0.32987551867219916" />
         <entry key="app/src/main/res/layout/row_coupon_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/row_exclusive_item.xml" value="0.22" />
         <entry key="app/src/main/res/layout/row_explore_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/row_notification.xml" value="0.2324455205811138" />
         <entry key="app/src/main/res/layout/row_product_item.xml" value="0.16" />
