@@ -13,6 +13,7 @@ import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -37,6 +38,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
 import com.poona.agrocart.databinding.FragmentVerifyOtpBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 
 import java.util.HashMap;
@@ -173,7 +175,15 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if(verifyOtpResponse.getMessage() != null){
                             successToast(context, ""+verifyOtpResponse.getMessage());
-                            Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
+//                            if (verifyOtpResponse.getUser().getUserType()!=null){
+//                                preferences.setIsLoggedIn(true);
+//                                Intent intent = new Intent(context, HomeActivity.class);
+//                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                requireActivity().finish();
+//                                startActivity(intent);
+//                            }else
+                                Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors

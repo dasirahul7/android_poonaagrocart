@@ -3,6 +3,7 @@ package com.poona.agrocart.data.network;
 import static com.poona.agrocart.app.AppConstants.AREA_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BANNER_API;
+import static com.poona.agrocart.app.AppConstants.HOME_BASKET_API;
 import static com.poona.agrocart.app.AppConstants.HOME_CATEGORY_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
@@ -13,6 +14,7 @@ import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
+import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
@@ -63,4 +65,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(HOME_CATEGORY_API)
     Single<CategoryResponse> homeCategoryResponse(@FieldMap HashMap<String, String> categoryParams);
+
+    @FormUrlEncoded
+    @POST(HOME_BASKET_API)
+    Single<BasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
 }
