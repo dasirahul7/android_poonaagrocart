@@ -34,6 +34,7 @@ import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
+import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
@@ -89,15 +90,60 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         callBasketApi(root,showCircleProgressDialog(context,""),limit,offset);
         callExclusiveOfferApi(root,showCircleProgressDialog(context,""),limit,offset);
         callBestSellingApi(root,showCircleProgressDialog(context,""),limit,offset);
+        callSeasonalProductApi(root,showCircleProgressDialog(context,""),limit,offset);
 //        setBasketItems(root);
         getBasketItems();
 //        setBestSellings(root);
 //        setOfferProduct(root);
         setCartItems(root);
         setStoreBanner(root);
-        setSeasonBanners(root);
+//        setSeasonBanners(root);
         initClick();
         return root;
+    }
+
+    //Seasonal Product listing here
+    private void callSeasonalProductApi(View root, ProgressDialog progressDialog, int limit, int offset) {
+    limit = limit+10;
+    Observer<SeasonalProductResponse> seasonalProductObserver = seasonalProductResponse -> {
+        if (seasonalProductResponse!=null){
+            progressDialog.dismiss();
+            Log.e("SeasonalProduct Api Response", new Gson().toJson(seasonalProductResponse));
+            switch (seasonalProductResponse.getStatus()) {
+                case STATUS_CODE_200://Record Create/Update Successfully
+                    if (seasonalProductResponse.getSeasonalProducts().size()>0){
+                        for (int i =0 ; i<seasonalProductResponse.getSeasonalProducts().size();i++){
+                            if (i/2==0){
+                                seasonalProductResponse.getSeasonalProducts().get(i).setType("Green");
+                            }else seasonalProductResponse.getSeasonalProducts().get(i).setType("Yellow");
+                        }
+                        seasonalProductList = seasonalProductResponse.getSeasonalProducts();
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
+                        fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
+                        fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
+                        fragmentHomeBinding.recSeasonal.setLayoutManager(linearLayoutManager);
+                        seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, root);
+                        fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
+                    }
+                    break;
+                case STATUS_CODE_403://Validation Errors
+                case STATUS_CODE_400://Validation Errors
+                case STATUS_CODE_404://Validation Errors
+                    warningToast(context, seasonalProductResponse.getMessage());
+                    break;
+                case STATUS_CODE_401://Unauthorized user
+                    goToAskSignInSignUpScreen(seasonalProductResponse.getMessage(), context);
+                    break;
+                case STATUS_CODE_405://Method Not Allowed
+                    infoToast(context, seasonalProductResponse.getMessage());
+                    break;
+            }
+
+        }
+    };
+    homeViewModel.seasonalResponseLiveData(progressDialog,listingParams(limit, offset), HomeFragment.this)
+            .observe(getViewLifecycleOwner(),seasonalProductObserver);
+
     }
 
     //Best selling Data listing here
@@ -494,6 +540,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case 4:
                         //Call Bestselling API after network error
                         callBestSellingApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        break;
+                    case 5:
+                        //Call Seasonal Product API after network error
+                        callSeasonalProductApi(root,showCircleProgressDialog(context,""),limit,offset);
                         break;
 
                 }

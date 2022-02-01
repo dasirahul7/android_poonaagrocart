@@ -7,6 +7,7 @@ import static com.poona.agrocart.app.AppConstants.HOME_BASKET_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BEST_SELLING_API;
 import static com.poona.agrocart.app.AppConstants.HOME_CATEGORY_API;
 import static com.poona.agrocart.app.AppConstants.HOME_EXCLUSIVE_API;
+import static com.poona.agrocart.app.AppConstants.HOME_SEASONAL_LIST_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
@@ -21,6 +22,7 @@ import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
+import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
 
@@ -61,22 +63,33 @@ public interface ApiInterface {
     @POST(UPDATE_LOCATION_API)
     Single<BaseResponse> updateLocationResponse(@FieldMap HashMap<String, String> data);
 
+    //Home Banner API
     @FormUrlEncoded
     @POST(HOME_BANNER_API)
     Single<BannerResponse> homeBannerResponse(@FieldMap HashMap<String, String> bannerParams);
 
+    //Home Category API
     @FormUrlEncoded
     @POST(HOME_CATEGORY_API)
     Single<CategoryResponse> homeCategoryResponse(@FieldMap HashMap<String, String> categoryParams);
 
+    //Home Basket list API
     @FormUrlEncoded
     @POST(HOME_BASKET_API)
     Single<BasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
 
+    //Home Exclusive Offer API
     @FormUrlEncoded
     @POST(HOME_EXCLUSIVE_API)
     Single<ExclusiveResponse> homeExclusiveResponseSingle(@FieldMap HashMap<String, String> hashMap);
+
+    //Home Best selling API
     @FormUrlEncoded
     @POST(HOME_BEST_SELLING_API)
     Single<BestSellingResponse> homeBestSellingResponseSingle(@FieldMap HashMap<String, String> hashMap);
+
+    //Home Seasonal Product API
+    @FormUrlEncoded
+    @POST(HOME_SEASONAL_LIST_API)
+    Single<SeasonalProductResponse> homeSeasonalListResponse(@FieldMap HashMap<String, String> hashMap);
 }

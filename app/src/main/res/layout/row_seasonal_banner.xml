@@ -33,21 +33,32 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/seasonal_banner_yellow">
 
-                <ImageView
-                    android:layout_centerVertical="true"
-                    android:id="@+id/s_banner_img"
-                    setImage="@{moduleSeasonBanner.sProductImage}"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="@dimen/_120sdp"
                     android:layout_height="@dimen/_100sdp"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"/>
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@android:color/transparent">
+                    <ImageView
+                        android:id="@+id/s_banner_img"
+                        setImage="@{moduleSeasonBanner.productAdsAmage}"
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_5sdp" />
+
+                </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:orientation="vertical">
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -68,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:paddingHorizontal="@dimen/_5sdp"
-                        android:text="@{moduleSeasonBanner.sProductName}"
+                        android:text="@{moduleSeasonBanner.seasonalProductName}"
                         android:textColor="@color/dark_green_color"
                         android:textSize="@dimen/large_txt_size"
                         android:textStyle="bold"
@@ -76,23 +87,25 @@
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_s_quality"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/_120sdp"
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:paddingHorizontal="@dimen/_5sdp"
-                        android:text="@{moduleSeasonBanner.sProductQuality}"
+                        android:singleLine="true"
+                        android:text="@{moduleSeasonBanner.productDetails}"
                         android:textColor="@color/dark_green_color"
                         android:textSize="@dimen/medium_txt_size"
                         android:textStyle="normal"
                         app:setCustomFont="@string/font_poppins_medium" />
+
                     <com.poona.agrocart.widgets.CustomTextView
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:id="@+id/tv_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/bg_white_rectangle"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:background="@drawable/bg_white_rectangle"
                         android:padding="@dimen/_5sdp"
                         android:text="Register here"
                         android:textColor="@color/dark_green_color"
