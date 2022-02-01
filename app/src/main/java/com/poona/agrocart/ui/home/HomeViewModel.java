@@ -20,6 +20,7 @@ import com.poona.agrocart.data.network.ExclusiveResponse;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
+import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.model.Banner;
@@ -397,6 +398,49 @@ public class HomeViewModel extends AndroidViewModel {
                     }
                 });
         return exclusiveResponseMutableLiveData;
+    }
+
+    //BestSelling Response here
+    public LiveData<BestSellingResponse> bestSellingResponseLiveData(ProgressDialog progressDialog,
+                                                                 HashMap<String, String> hashMap,
+                                                                 HomeFragment homeFragment) {
+        MutableLiveData<BestSellingResponse> bestSellingResponseMutableLiveData = new MutableLiveData<>();
+
+            ApiClientAuth.getClient(homeFragment.getContext())
+                    .create(ApiInterface.class)
+                    .homeBestSellingResponseSingle(hashMap)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSingleObserver<BestSellingResponse>() {
+                        @Override
+                        public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BestSellingResponse bestSellingResponse) {
+                            if (bestSellingResponse != null) {
+                                Log.d(TAG, "BestSelling onSuccess: " + bestSellingResponse.getBestSellingData().getBestSellingProductList().size());
+                                progressDialog.dismiss();
+                                bestSellingResponseMutableLiveData.setValue(bestSellingResponse);
+                            }
+                        }
+
+                        @Override
+                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                            progressDialog.dismiss();
+
+                            Gson gson = new GsonBuilder().create();
+                            BestSellingResponse response = new BestSellingResponse();
+                            try {
+                                response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                        BestSellingResponse.class);
+
+                                bestSellingResponseMutableLiveData.setValue(response);
+                            } catch (Exception exception) {
+                                Log.e(TAG, exception.getMessage());
+                                ((NetworkExceptionListener) homeFragment).onNetworkException(4);
+                            }
+
+                            Log.e(TAG, e.getMessage());
+                        }
+                    });
+            return bestSellingResponseMutableLiveData;
     }
 
     public MutableLiveData<ArrayList<SeasonalProduct>> getLiveSeasonProducts() {
