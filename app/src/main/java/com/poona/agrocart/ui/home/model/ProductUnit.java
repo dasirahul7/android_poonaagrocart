@@ -10,6 +10,9 @@ public class ProductUnit {
     @SerializedName("perc_discount")
     @Expose
     private String percDiscount;
+    @SerializedName("special_offer")
+    @Expose
+    private String specialOffer;
     @SerializedName("selling_price")
     @Expose
     private String sellingPrice;
@@ -20,6 +23,14 @@ public class ProductUnit {
     @Expose
     private String unitName;
 
+    public String getSpecialOffer() {
+        return specialOffer;
+    }
+
+    public void setSpecialOffer(String specialOffer) {
+        this.specialOffer = specialOffer;
+    }
+
     public String getWeight() {
         return weight;
     }
@@ -29,7 +40,7 @@ public class ProductUnit {
     }
 
     public String getPercDiscount() {
-        return percDiscount;
+        return percDiscount+" %off";
     }
 
     public void setPercDiscount(String percDiscount) {
@@ -53,10 +64,14 @@ public class ProductUnit {
     }
 
     public String getUnitName() {
-        return unitName;
+        return " "+unitName;
     }
 
     public void setUnitName(String unitName) {
         this.unitName = unitName;
+    }
+
+    public String pWeight(){
+        return this.weight+this.unitName;
     }
 }

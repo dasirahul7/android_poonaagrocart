@@ -18,18 +18,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppUtils;
+import com.poona.agrocart.databinding.HomeProductItemBinding;
 import com.poona.agrocart.databinding.RowBestSellingItemBinding;
-import com.poona.agrocart.databinding.RowProductItemBinding;
+import com.poona.agrocart.databinding.HomeProductItemBinding;
 import com.poona.agrocart.ui.home.OnPlusClick;
 import com.poona.agrocart.ui.home.OnProductClick;
+import com.poona.agrocart.ui.home.model.Exclusive;
 import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductHolder> {
-    private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<Exclusive> products = new ArrayList<>();
     private final Context bdContext;
-    private RowProductItemBinding productBinding;
+    private HomeProductItemBinding productBinding;
     private final View view;
     private OnPlusClick onPlusClick;
     private OnProductClick onProductClick;
@@ -42,7 +44,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         this.onProductClick = onProductClick;
     }
 
-    public ProductListAdapter(ArrayList<Product> products, FragmentActivity context, View view) {
+    public ProductListAdapter(ArrayList<Exclusive> products, FragmentActivity context, View view) {
         this.products = products;
         this.bdContext = context;
         this.view = view;
@@ -51,14 +53,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        productBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_product_item, parent, false);
+        productBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.home_product_item, parent, false);
         return new ProductHolder(productBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
-        Product product = products.get(position);
-            productBinding.setProductModule(product);
+        Exclusive product = products.get(position);
+            productBinding.setHomeProductModel(product);
             holder.bindProduct(product,position);
     }
 
@@ -70,29 +72,28 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public class ProductHolder extends RecyclerView.ViewHolder {
 
         // The Landscape Item Holder
-        public ProductHolder(RowProductItemBinding productBinding) {
+        public ProductHolder(HomeProductItemBinding productBinding) {
             super(productBinding.getRoot());
         }
         //Only Product Item bind
-        public void bindProduct(Product product, int position) {
+        public void bindProduct(Exclusive product, int position) {
             productBinding.setVariable(BR.productModule, product);
             productBinding.executePendingBindings();
-            if (product.getImg().endsWith(".jpeg") || product.getImg().endsWith("jpg"))
+            if (product.getFeatureImg().endsWith(".jpeg") || product.getFeatureImg().endsWith("jpg"))
                 productBinding.itemImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            if (product.getOffer().isEmpty())
+            if (product.getSpecialOffer().isEmpty())
                 productBinding.txtItemOffer.setVisibility(View.INVISIBLE);
-            if (product.getPrice().isEmpty())
-                productBinding.txtItemPrice.setVisibility(View.INVISIBLE);
-            if (product.isOrganic())
+            if (product.getIsO3().equalsIgnoreCase("yes"))
                 productBinding.txtOrganic.setVisibility(View.VISIBLE);
-            if (product.isInBasket())
-                productBinding.ivPlus.setImageResource(R.drawable.ic_added);
-            productBinding.ivPlus.setOnClickListener(v -> {
-                onPlusClick.addToCart(product,position);
-            });
-            itemView.setOnClickListener(v -> {
-                onProductClick.toProductDetail(product);
-            });
+            else productBinding.txtOrganic.setVisibility(View.GONE);
+//            if (product.isInBasket())
+//                productBinding.ivPlus.setImageResource(R.drawable.ic_added);
+//            productBinding.ivPlus.setOnClickListener(v -> {
+//                onPlusClick.addToCart(product,position);
+//            });
+//            itemView.setOnClickListener(v -> {
+//                onProductClick.toProductDetail(product);
+//            });
 
         }
 

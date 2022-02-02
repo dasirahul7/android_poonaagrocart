@@ -112,7 +112,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         fragmentVerifyOtpBinding.etOtp.requestFocus();
 
         setUpTextWatcher();
-        startOtpTimer();
+//        startOtpTimer();
     }
 
     private void setUpTextWatcher() {
@@ -164,7 +164,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                 }
                 break;
             case R.id.tv_resend_otp:
-                fragmentVerifyOtpBinding.tvTimer.setVisibility(View.VISIBLE);
+//                fragmentVerifyOtpBinding.tvTimer.setVisibility(View.VISIBLE);
                 callResendOtpAPI(showCircleProgressDialog(context, ""));
                 break;
         }
@@ -230,7 +230,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (resendOtpResponse.getMessage() != null) {
                             successToast(context, "" + resendOtpResponse.getMessage());
-                            startOtpTimer();
+//                            startOtpTimer();
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors

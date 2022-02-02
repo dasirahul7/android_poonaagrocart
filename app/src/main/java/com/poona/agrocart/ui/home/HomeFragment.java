@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.gson.Gson;
+import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
@@ -35,7 +36,9 @@ import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
+import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
+import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
@@ -50,6 +53,7 @@ import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.home.model.Exclusive;
 import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.home.model.SeasonalProduct;
+import com.poona.agrocart.ui.home.model.StoreBanner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +63,7 @@ import java.util.TimerTask;
 public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
 
     private static final int AUTO_SCROLL_THRESHOLD_IN_MILLI = 3000;
+    private static final String TAG = HomeFragment.class.getSimpleName();
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding fragmentHomeBinding;
     private BannerAdapter bannerAdapter;
@@ -70,7 +75,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private SeasonalBannerAdapter seasonalBannerAdapter;
     private ArrayList<Exclusive> bestSellings = new ArrayList<>();
     private ArrayList<Exclusive> offerProducts = new ArrayList<>();
-    private ArrayList<Product> cartProductList = new ArrayList<>();
+    private ArrayList<Exclusive> cartProductList = new ArrayList<>();
     private ArrayList<Banner> banners = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
     private ArrayList<Basket> baskets = new ArrayList<>();
@@ -80,7 +85,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private int limit = 0;
     private int offset = 0;
     private View root;
-    private Handler slideHandler = new Handler();
     private int currentBanner=0;
     private int NumberOfBanners =0;
     private Timer bannerTimer;
@@ -97,17 +101,91 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         callExclusiveOfferApi(root,showCircleProgressDialog(context,""),limit,offset);
         callBestSellingApi(root,showCircleProgressDialog(context,""),limit,offset);
         callSeasonalProductApi(root,showCircleProgressDialog(context,""),limit,offset);
-//        setBasketItems(root);
+        callProductListApi(root,showCircleProgressDialog(context,""),limit,offset);
+        callStoreBannerApi(root,showCircleProgressDialog(context,""));
         getBasketItems();
-//        setBestSellings(root);
-//        setOfferProduct(root);
-        setCartItems(root);
-        setStoreBanner(root);
-//        setSeasonBanners(root);
+//        setStoreBanner(root);
         initClick();
         bannerAutoSLider();
         return root;
 
+    }
+
+    //Store Banner data here
+    private void callStoreBannerApi(View root, ProgressDialog progressDialog) {
+    Observer<StoreBannerResponse> bannerResponseObserver = storeBannerResponse -> {
+        if (storeBannerResponse!=null){
+            progressDialog.dismiss();
+            Log.e(TAG, "callStoreBannerApi: "+ storeBannerResponse.getStoreBanners().size());
+            switch (storeBannerResponse.getStatus()) {
+                case STATUS_CODE_200://Record Create/Update Successfully
+                    if (storeBannerResponse.getStoreBanners().size()>0){
+                        StoreBanner storeBanner = storeBannerResponse.getStoreBanners().get(0);
+                        fragmentHomeBinding.setStoreBanner(storeBanner);
+                        fragmentHomeBinding.setVariable(BR.storeBanner,storeBanner);
+                        fragmentHomeBinding.executePendingBindings();
+                    }
+                    break;
+                case STATUS_CODE_403://Validation Errors
+                case STATUS_CODE_400://Validation Errors
+                case STATUS_CODE_404://Validation Errors
+                    warningToast(context, storeBannerResponse.getMessage());
+                    break;
+                case STATUS_CODE_401://Unauthorized user
+                    goToAskSignInSignUpScreen(storeBannerResponse.getMessage(), context);
+                    break;
+                case STATUS_CODE_405://Method Not Allowed
+                    infoToast(context, storeBannerResponse.getMessage());
+                    break;
+            }
+
+        }
+    };
+    homeViewModel.storeBannerResponseLiveData(progressDialog,HomeFragment.this)
+            .observe(getViewLifecycleOwner(),bannerResponseObserver);
+    }
+
+    // Product listing here
+    private void callProductListApi(View root, ProgressDialog progressDialog, int limit, int offset) {
+    limit = limit+10;
+    Observer<ProductListResponse> productListResponseObserver = productListResponse -> {
+        if (productListResponse!=null){
+            progressDialog.dismiss();
+            Log.e(TAG, "callProductListApi: "+productListResponse.getProductResponseDt().getProductList().size());
+            switch (productListResponse.getStatus()) {
+                case STATUS_CODE_200://Record Create/Update Successfully
+                    if (productListResponse.getProductResponseDt().getProductList().size()>0){
+                        this.cartProductList = productListResponse.getProductResponseDt().getProductList();
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+                        fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
+                        fragmentHomeBinding.recProduct.setHasFixedSize(true);
+                        fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
+                        productListAdapter = new ProductListAdapter(cartProductList, getActivity(), root);
+                        fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
+                        productListAdapter.setOnProductClick(product -> {
+                            toProductDetail(product, root);
+                        });
+
+                    }
+                    break;
+                case STATUS_CODE_403://Validation Errors
+                case STATUS_CODE_400://Validation Errors
+                case STATUS_CODE_404://Validation Errors
+                    warningToast(context, productListResponse.getMessage());
+                    break;
+                case STATUS_CODE_401://Unauthorized user
+                    goToAskSignInSignUpScreen(productListResponse.getMessage(), context);
+                    break;
+                case STATUS_CODE_405://Method Not Allowed
+                    infoToast(context, productListResponse.getMessage());
+                    break;
+            }
+
+        }
+    };
+    homeViewModel.productListResponseLiveData(progressDialog,
+            listingParams(limit, offset),HomeFragment.this)
+            .observe(getViewLifecycleOwner(),productListResponseObserver);
     }
 
 
@@ -292,28 +370,28 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_our_stores);
     }
 
-    private void setCartItems(View root) {
-
-        homeViewModel.getLiveDataCartProduct().observe(getViewLifecycleOwner(), cartProducts -> {
-            this.cartProductList = cartProducts;
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-            fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
-            fragmentHomeBinding.recProduct.setHasFixedSize(true);
-            fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
-            productListAdapter = new ProductListAdapter(cartProductList, getActivity(), root);
-            fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
-            productListAdapter.setOnProductClick(product -> {
-                toProductDetail(product, root);
-            });
-            productListAdapter.setOnPlusClick((product, position) -> {
-                addToBasket(product);
-                this.cartProductList.get(position).setInBasket(true);
-                this.cartProductList.get(position).setQuantity("1");
-                productListAdapter.notifyItemChanged(position);
-            });
-        });
-
-    }
+//    private void setCartItems(View root) {
+//
+//        homeViewModel.getLiveDataCartProduct().observe(getViewLifecycleOwner(), cartProducts -> {
+//            this.cartProductList = cartProducts;
+//            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+//            fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
+//            fragmentHomeBinding.recProduct.setHasFixedSize(true);
+//            fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
+//            productListAdapter = new ProductListAdapter(cartProductList, getActivity(), root);
+//            fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
+//            productListAdapter.setOnProductClick(product -> {
+//                toProductDetail(product, root);
+//            });
+//            productListAdapter.setOnPlusClick((product, position) -> {
+//                addToBasket(product);
+//                this.cartProductList.get(position).setInBasket(true);
+//                this.cartProductList.get(position).setQuantity("1");
+//                productListAdapter.notifyItemChanged(position);
+//            });
+//        });
+//
+//    }
 
 
     //Basket APi Response gere
@@ -442,7 +520,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             public void run() {
                 handler.post(update);
             }
-        }, 230, 2000);
+        }, 500, 3000);
     }
 
 
@@ -550,6 +628,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         //Call Seasonal Product API after network error
                         callSeasonalProductApi(root,showCircleProgressDialog(context,""),limit,offset);
                         break;
+                    case 6:
+                        //Call Product List API after network error
+                        callProductListApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        break;
+                    case 7:
+                        //Call Product List API after network error
+                        callStoreBannerApi(root,showCircleProgressDialog(context,""));
+                        break;
 
                 }
             } else {
@@ -558,21 +644,4 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         }, context);
 
     }
-    private Runnable slideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            fragmentHomeBinding.viewPagerBanner.setCurrentItem(fragmentHomeBinding.viewPagerBanner.getCurrentItem() + 1);
-            if (HomeFragment.this.currentBanner == HomeFragment.this.NumberOfBanners) {
-                HomeFragment.this.currentBanner = 0;
-            }
-            try {
-                ViewPager viewPager = HomeFragment.this.fragmentHomeBinding.viewPagerBanner;
-                HomeFragment homeFragment = HomeFragment.this;
-                int i = homeFragment.currentBanner;
-                homeFragment.currentBanner = i + 1;
-                viewPager.setCurrentItem(i, true);
-            } catch (Exception e) {
-            }
-        }
-    };
 }

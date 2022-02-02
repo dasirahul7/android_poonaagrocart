@@ -149,7 +149,7 @@
                         android:singleLine="true"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
-                        android:text="@{exclusiveOfferModule.productUnits.get(0).sellingPrice}"
+                        android:text="@{exclusiveOfferModule.priceUnit+exclusiveOfferModule.productUnits.get(0).sellingPrice}"
                         app:setCustomFont="@string/font_poppins_regular"
                         tools:ignore="RtlSymmetry" />
 
@@ -160,7 +160,7 @@
                         android:layout_marginHorizontal="@dimen/_5sdp"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="@{exclusiveOfferModule.productUnits.get(0).offerPrice}"
+                        android:text="@{exclusiveOfferModule.priceUnit+exclusiveOfferModule.productUnits.get(0).offerPrice}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/category_txt_size"
                         app:setCustomFont="@string/font_montserrat_regular"

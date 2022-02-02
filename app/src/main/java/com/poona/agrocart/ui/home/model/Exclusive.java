@@ -42,6 +42,15 @@ public class Exclusive {
     @SerializedName("product_units")
     @Expose
     private ArrayList<ProductUnit> productUnits = null;
+    private String priceUnit= "Rs.";
+
+    public String getPriceUnit() {
+        return priceUnit;
+    }
+
+    public void setPriceUnit(String priceUnit) {
+        this.priceUnit = priceUnit;
+    }
 
     public String getSequenceNo() {
         return sequenceNo;

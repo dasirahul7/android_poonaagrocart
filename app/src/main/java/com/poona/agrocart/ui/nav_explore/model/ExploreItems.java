@@ -33,6 +33,7 @@ public class ExploreItems {
         this.img = img;
     }
 
+
     public String getId() {
         return id;
     }

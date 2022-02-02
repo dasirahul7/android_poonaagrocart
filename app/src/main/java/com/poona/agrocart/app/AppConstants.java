@@ -72,6 +72,8 @@ public class AppConstants
     public static final String HOME_BEST_SELLING_API = "best-selling-product-list";
     public static final String HOME_EXCLUSIVE_API = "exclusive-product-list";
     public static final String HOME_SEASONAL_LIST_API = "seasonal-product-list";
+    public static final String HOME_PRODUCT_LIST_API = "product-list";
+    public static final String HOME_STORE_BANNER_API = "store-banner";
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";

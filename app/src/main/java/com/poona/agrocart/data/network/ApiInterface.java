@@ -7,7 +7,9 @@ import static com.poona.agrocart.app.AppConstants.HOME_BASKET_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BEST_SELLING_API;
 import static com.poona.agrocart.app.AppConstants.HOME_CATEGORY_API;
 import static com.poona.agrocart.app.AppConstants.HOME_EXCLUSIVE_API;
+import static com.poona.agrocart.app.AppConstants.HOME_PRODUCT_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_SEASONAL_LIST_API;
+import static com.poona.agrocart.app.AppConstants.HOME_STORE_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
@@ -22,8 +24,10 @@ import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
+import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
+import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
 
 import java.util.HashMap;
@@ -92,4 +96,13 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(HOME_SEASONAL_LIST_API)
     Single<SeasonalProductResponse> homeSeasonalListResponse(@FieldMap HashMap<String, String> hashMap);
+
+    //Home Product list API
+    @FormUrlEncoded
+    @POST(HOME_PRODUCT_LIST_API)
+    Single<ProductListResponse> homeProductListResponse(@FieldMap HashMap<String, String> hashMap);
+
+    // Home Store Banner API
+    @GET(HOME_STORE_BANNER_API)
+    Single<StoreBannerResponse> homeStoreBannerResponse();
 }
