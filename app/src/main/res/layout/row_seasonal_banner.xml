@@ -34,19 +34,23 @@
                 android:background="@drawable/seasonal_banner_yellow">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/img_layout"
                     android:layout_width="@dimen/_120sdp"
                     android:layout_height="@dimen/_100sdp"
-                    app:cardCornerRadius="@dimen/_10sdp"
+                    android:layout_centerVertical="true"
+                    app:cardCornerRadius="@dimen/_12sdp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="@android:color/transparent">
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    >
+
                     <ImageView
                         android:id="@+id/s_banner_img"
                         setImage="@{moduleSeasonBanner.productAdsAmage}"
-                        android:layout_width="@dimen/_120sdp"
-                        android:layout_height="@dimen/_100sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_centerVertical="true"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginVertical="@dimen/_5sdp" />
+                        />
 
                 </com.google.android.material.card.MaterialCardView>
 

@@ -41,12 +41,16 @@ public class VerifyOtpResponse {
 
     public static class OtpData {
         /*"id": "48",
-                "mobile": "9340768580",
-                "status": "1",
-                "usertype": "2"*/
+        "verified": "1",
+        "mobile": "9340768580",
+        "status": "1",
+        "usertype": "2"*/
         @SerializedName("id")
         @Expose
         private String userId;
+        @SerializedName("verified")
+        @Expose
+        private Integer verified;
         @SerializedName("mobile")
         @Expose
         private String userMobile;
@@ -56,6 +60,14 @@ public class VerifyOtpResponse {
         @SerializedName("usertype")
         @Expose
         private String userType;
+
+        public Integer getVerified() {
+            return verified;
+        }
+
+        public void setVerified(Integer verified) {
+            this.verified = verified;
+        }
 
         public String getUserId() {
             return userId;

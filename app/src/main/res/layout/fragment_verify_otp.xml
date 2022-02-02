@@ -114,7 +114,19 @@
                     android:text="@string/resend_code"
                     android:textColor="@color/selectedGreen"
                     android:textSize="@dimen/_16sp"
+                    android:visibility="gone"
                     app:setCustomFont="@string/font_poppins_regular" />
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/tv_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_below="@+id/et_otp"
+                    android:text="(Otp will expire in 60Sec)"
+                    android:textColor="@color/red_text_color"
+                    android:textSize="@dimen/_16sp" />
 
                 <com.poona.agrocart.widgets.CustomButton
                     android:id="@+id/btn_verify_otp"

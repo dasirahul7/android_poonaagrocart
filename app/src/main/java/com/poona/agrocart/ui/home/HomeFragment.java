@@ -10,6 +10,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +23,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
-import com.poona.agrocart.data.network.ExclusiveData;
 import com.poona.agrocart.data.network.ExclusiveResponse;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
@@ -40,7 +41,6 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
 import com.poona.agrocart.ui.home.adapter.BasketAdapter;
 import com.poona.agrocart.ui.home.adapter.ExclusiveOfferListAdapter;
-import com.poona.agrocart.ui.home.adapter.OfferProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.SeasonalBannerAdapter;
@@ -53,6 +53,8 @@ import com.poona.agrocart.ui.home.model.SeasonalProduct;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
 
@@ -78,6 +80,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private int limit = 0;
     private int offset = 0;
     private View root;
+    private Handler slideHandler = new Handler();
+    private int currentBanner=0;
+    private int NumberOfBanners =0;
+    private Timer bannerTimer;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -99,8 +105,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         setStoreBanner(root);
 //        setSeasonBanners(root);
         initClick();
+        bannerAutoSLider();
         return root;
+
     }
+
 
     //Seasonal Product listing here
     private void callSeasonalProductApi(View root, ProgressDialog progressDialog, int limit, int offset) {
@@ -306,41 +315,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     }
 
-//    private void setBasketItems(View view) {
-//        homeViewModel.getLiveDataBaskets().observe(getViewLifecycleOwner(), baskets -> {
-//            this.baskets = baskets;
-//            basketAdapter = new BasketAdapter(this.baskets, getActivity(), view);
-//            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
-//            fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
-//            fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
-//            fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
-//        });
-//
-//    }
-
-
-//    private void setBestSellings(View root) {
-//        homeViewModel.getLiveDataBestSelling().observe(getViewLifecycleOwner(), liveList -> {
-//            this.bestSellings = liveList;
-//            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-//            bestsellingAdapter = new OfferProductListAdapter(this.bestSellings, requireActivity(), root);
-//            fragmentHomeBinding.recOfferProduct.setNestedScrollingEnabled(false);
-//            fragmentHomeBinding.recOfferProduct.setLayoutManager(layoutManager);
-//            fragmentHomeBinding.recOfferProduct.setAdapter(bestsellingAdapter);
-//            // Redirect to Product details
-//            bestsellingAdapter.setOnProductClick(product -> {
-//                toProductDetail(product, root);
-//            });
-//            bestsellingAdapter.setOnPlusClick((product, position) -> {
-//                addToBasket(product);
-//                this.bestSellings.get(position).setInBasket(true);
-//                this.bestSellings.get(position).setQuantity("1");
-//                bestsellingAdapter.notifyItemChanged(position);
-//            });
-//
-//        });
-//
-//    }
 
     //Basket APi Response gere
     private void callBasketApi(View root, ProgressDialog progressDialog, int limit, int offset) {
@@ -358,6 +332,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
                             fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
+
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -421,6 +396,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     }
 
+    //Banner API here
     private void callBannerApi(ProgressDialog progressDialog, int limit, int offset) {
         limit = limit + 10;
         Observer<BannerResponse> bannerResponseObserver = bannerResponse -> {
@@ -428,6 +404,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 if (bannerResponse.getData().getBanners().size() > 0) {
                     banners.clear();
                     banners = bannerResponse.getData().getBanners();
+                    this.NumberOfBanners = banners.size();
                     bannerAdapter = new BannerAdapter(banners, requireActivity());
 //
                     fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
@@ -440,6 +417,34 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 .observe(getViewLifecycleOwner(), bannerResponseObserver);
 
     }
+
+    //Banner Auto Scroll
+    private void bannerAutoSLider() {
+        Log.e("SetSliderAutoTimer", "SetSliderAutoTimer");
+        final Handler handler = new Handler();
+        final Runnable update = new Runnable() {
+            public void run() {
+                if (HomeFragment.this.currentBanner == HomeFragment.this.NumberOfBanners) {
+                    HomeFragment.this.currentBanner = 0;
+                }
+                try {
+                    ViewPager viewPager = HomeFragment.this.fragmentHomeBinding.viewPagerBanner;
+                    HomeFragment homeFragment = HomeFragment.this;
+                    int i = homeFragment.currentBanner;
+                    homeFragment.currentBanner = i + 1;
+                    viewPager.setCurrentItem(i, true);
+                } catch (Exception e) {
+                }
+            }
+        };
+        this.bannerTimer = new Timer();
+        this.bannerTimer.schedule(new TimerTask() {
+            public void run() {
+                handler.post(update);
+            }
+        }, 230, 2000);
+    }
+
 
     private HashMap<String, String> listingParams(int limit, int offset) {
         HashMap<String, String> map = new HashMap<>();
@@ -553,4 +558,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         }, context);
 
     }
+    private Runnable slideRunnable = new Runnable() {
+        @Override
+        public void run() {
+            fragmentHomeBinding.viewPagerBanner.setCurrentItem(fragmentHomeBinding.viewPagerBanner.getCurrentItem() + 1);
+            if (HomeFragment.this.currentBanner == HomeFragment.this.NumberOfBanners) {
+                HomeFragment.this.currentBanner = 0;
+            }
+            try {
+                ViewPager viewPager = HomeFragment.this.fragmentHomeBinding.viewPagerBanner;
+                HomeFragment homeFragment = HomeFragment.this;
+                int i = homeFragment.currentBanner;
+                homeFragment.currentBanner = i + 1;
+                viewPager.setCurrentItem(i, true);
+            } catch (Exception e) {
+            }
+        }
+    };
 }
