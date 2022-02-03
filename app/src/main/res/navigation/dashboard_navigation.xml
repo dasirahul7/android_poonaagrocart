@@ -426,6 +426,11 @@
         app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
+    <!--Home to Search action-->
+    <action
+        android:id="@+id/action_nav_home_to_searchFragment"
+        app:destination="@id/searchFragment" />
+
 
     <!--Privacy Policy Fragment-->
     <fragment
@@ -444,5 +449,11 @@
         android:id="@+id/returnRefundFragment"
         android:name="com.poona.agrocart.ui.nav_our_privacy.ReturnRefundFragment"
         tools:layout="@layout/fragment_policy_item"/>
+    <!--Search Fragment-->
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.poona.agrocart.ui.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search"/>
 
 </navigation>

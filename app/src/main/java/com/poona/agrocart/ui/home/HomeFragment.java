@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.home;
 
+import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -8,13 +9,17 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -88,6 +93,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private int currentBanner=0;
     private int NumberOfBanners =0;
     private Timer bannerTimer;
+    Timer timer = new Timer();
+    boolean isTyping = false;
+    private String BeforeSerach;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -107,7 +115,50 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //        setStoreBanner(root);
         initClick();
         bannerAutoSLider();
+        searchProducts(root);
         return root;
+
+    }
+
+    private void searchProducts(View root) {
+        fragmentHomeBinding.etSearch.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+            }
+
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+//                BeforeSerach = fragmentHomeBinding.etSearch.getText().toString().trim();
+            }
+
+            public void afterTextChanged(Editable arg0) {
+                if (!isTyping) {
+                    Log.d(TAG, "started typing");
+                    isTyping = true;
+                }
+                timer.cancel();
+                timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    public void run() {
+                        isTyping = false;
+                        Log.d(TAG, "stopped typing");
+                        timer.cancel();
+                        try {
+                            hideKeyBoard(requireActivity());
+                            getActivity().runOnUiThread(new Runnable() {
+                                public void run() {
+                                    if (!fragmentHomeBinding.etSearch.getText().toString().trim().equals("")){
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString(SEARCH_KEY,fragmentHomeBinding.etSearch.getText().toString());
+                                        Navigation.findNavController(root).navigate(R.id.action_nav_home_to_searchFragment,bundle);
+                                    }else return;
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 1000);
+            }
+        });
 
     }
 
@@ -124,6 +175,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         fragmentHomeBinding.setStoreBanner(storeBanner);
                         fragmentHomeBinding.setVariable(BR.storeBanner,storeBanner);
                         fragmentHomeBinding.executePendingBindings();
+                        fragmentHomeBinding.cardviewOurShops.setOnClickListener(v -> {
+                            redirectToOurShops(root);
+                        });
                     }
                     break;
                 case STATUS_CODE_403://Validation Errors
@@ -183,8 +237,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         }
     };
-    homeViewModel.productListResponseLiveData(progressDialog,
-            listingParams(limit, offset),HomeFragment.this)
+    homeViewModel.homeProductListResponseLiveData(progressDialog,
+            listingParams(limit, offset,""),HomeFragment.this)
             .observe(getViewLifecycleOwner(),productListResponseObserver);
     }
 
@@ -228,7 +282,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         }
     };
-    homeViewModel.seasonalResponseLiveData(progressDialog,listingParams(limit, offset), HomeFragment.this)
+    homeViewModel.seasonalResponseLiveData(progressDialog,listingParams(limit, offset,""), HomeFragment.this)
             .observe(getViewLifecycleOwner(),seasonalProductObserver);
 
     }
@@ -277,7 +331,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         };
         homeViewModel.bestSellingResponseLiveData(showCircleProgressDialog,
-                listingParams(limit, offset), HomeFragment.this)
+                listingParams(limit, offset,""), HomeFragment.this)
                 .observe(getViewLifecycleOwner(),bestSellingResponseObserver);
     }
 
@@ -327,7 +381,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             }
 
         };
-        homeViewModel.exclusiveResponseLiveData(progressDialog,listingParams(limit,offset),HomeFragment.this)
+        homeViewModel.exclusiveResponseLiveData(progressDialog,listingParams(limit,offset,""),HomeFragment.this)
             .observe(getViewLifecycleOwner(),exclusiveResponseObserver);
     }
 
@@ -361,37 +415,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private void setStoreBanner(View root) {
         AppUtils.setImage(fragmentHomeBinding.imgStore, "https://www.linkpicture.com/q/store-2.png");
-        fragmentHomeBinding.cardviewOurShops.setOnClickListener(v -> {
-            redirectToOurShops(root);
-        });
+
     }
 
     private void redirectToOurShops(View v) {
         Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_our_stores);
     }
-
-//    private void setCartItems(View root) {
-//
-//        homeViewModel.getLiveDataCartProduct().observe(getViewLifecycleOwner(), cartProducts -> {
-//            this.cartProductList = cartProducts;
-//            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-//            fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
-//            fragmentHomeBinding.recProduct.setHasFixedSize(true);
-//            fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
-//            productListAdapter = new ProductListAdapter(cartProductList, getActivity(), root);
-//            fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
-//            productListAdapter.setOnProductClick(product -> {
-//                toProductDetail(product, root);
-//            });
-//            productListAdapter.setOnPlusClick((product, position) -> {
-//                addToBasket(product);
-//                this.cartProductList.get(position).setInBasket(true);
-//                this.cartProductList.get(position).setQuantity("1");
-//                productListAdapter.notifyItemChanged(position);
-//            });
-//        });
-//
-//    }
 
 
     //Basket APi Response gere
@@ -428,7 +457,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             }
 
         };
-        homeViewModel.basketResponseLiveData(progressDialog, listingParams(limit, offset), HomeFragment.this)
+        homeViewModel.basketResponseLiveData(progressDialog, listingParams(limit, offset,""), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), bannerResponseObserver);
 
     }
@@ -469,7 +498,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 }
             }
         };
-        homeViewModel.categoryResponseLiveData(progressDialog, listingParams(limit, offset), HomeFragment.this)
+        homeViewModel.categoryResponseLiveData(progressDialog, listingParams(limit, offset,""), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), categoryResponseObserver);
 
     }
@@ -491,7 +520,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 }
             }
         };
-        homeViewModel.bannerResponseLiveData(progressDialog, listingParams(limit, offset), HomeFragment.this)
+        homeViewModel.bannerResponseLiveData(progressDialog, listingParams(limit, offset,""), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), bannerResponseObserver);
 
     }
@@ -524,16 +553,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
 
-    private HashMap<String, String> listingParams(int limit, int offset) {
+    private HashMap<String, String> listingParams(int limit, int offset,String search) {
         HashMap<String, String> map = new HashMap<>();
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
+        map.put(AppConstants.SEARCH, search);
         return map;
     }
 
     @Override
     public void onResume() {
         try {
+            fragmentHomeBinding.etSearch.setText("");
             activeHomeTitleBar();
         } catch (Exception e) {
             e.printStackTrace();

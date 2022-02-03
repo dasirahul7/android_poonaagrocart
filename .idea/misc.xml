@@ -128,6 +128,7 @@
         <entry key="app/src/main/res/drawable/logo_final__1.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/menu_home.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/menu_icon_toggle.xml" value="0.17592592592592593" />
+        <entry key="app/src/main/res/drawable/menu_icon_toggle_white.xml" value="0.17962962962962964" />
         <entry key="app/src/main/res/drawable/o_three_banner.xml" value="0.1962962962962963" />
         <entry key="app/src/main/res/drawable/profile_menu.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/radio_selector.xml" value="0.209375" />
@@ -193,6 +194,7 @@
         <entry key="app/src/main/res/layout/fragment_product_image.xml" value="0.14402173913043478" />
         <entry key="app/src/main/res/layout/fragment_product_list.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.13269927536231885" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.18" />

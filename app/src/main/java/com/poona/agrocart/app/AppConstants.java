@@ -102,6 +102,7 @@ public class AppConstants
     public static final String QUERY = "query";
     public static final String LIMIT = "limit";
     public static final String OFFSET = "offset";
+    public static final String SEARCH = "search";
 
     /*API KEYS*/
     public static final String MOBILE_NUMBER ="mobile";
@@ -110,6 +111,7 @@ public class AppConstants
     public static final String EMAIL ="email";
     public static final String AREA_ID ="area_id";
     public static final String CITY_ID ="city_id";
+    public static final String SEARCH_KEY ="search_key";
 
 
     /*

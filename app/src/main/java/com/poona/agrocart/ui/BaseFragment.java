@@ -59,6 +59,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.firebase.PushNotification;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.home.model.Exclusive;
 import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
@@ -91,6 +92,7 @@ public abstract class BaseFragment extends Fragment {
     public Context context;
 
     public AppSharedPreferences preferences;
+    protected ArrayList<Exclusive> searchProductList= new ArrayList<>();
 
     private PushNotification pushNotification;
 

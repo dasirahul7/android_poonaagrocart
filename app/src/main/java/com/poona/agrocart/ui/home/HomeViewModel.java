@@ -356,9 +356,9 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     //Product list Response here
-    public LiveData<ProductListResponse> productListResponseLiveData(ProgressDialog progressDialog,
-                                                                     HashMap<String, String> hashMap,
-                                                                     HomeFragment homeFragment) {
+    public LiveData<ProductListResponse> homeProductListResponseLiveData(ProgressDialog progressDialog,
+                                                                         HashMap<String, String> hashMap,
+                                                                         HomeFragment homeFragment) {
         MutableLiveData<ProductListResponse> productListResponseMutableLiveData = new MutableLiveData();
 
         ApiClientAuth.getClient(homeFragment.getContext())
