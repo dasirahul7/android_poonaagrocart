@@ -56,7 +56,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     private ProductListAdapter searchAdapter;
     Timer timer = new Timer();
     boolean isTyping = false;
-    private ArrayList<Exclusive> productList;
+    private ArrayList<Exclusive> productList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -67,7 +67,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         initViews();
         searchItems(searchView);
         productList.clear();
-        callSearchProductApi(searchView,showCircleProgressDialog(context,""),limit,offset,"");
+        callSearchProductApi(searchView,showCircleProgressDialog(context,""),limit,offset,fragmentSearchBinding.etSearch.getText().toString());
         return searchView;
     }
 
@@ -118,6 +118,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         });
         bundle = getArguments();
         assert bundle != null;
+        searchKey= bundle.getString(SEARCH_KEY);
         fragmentSearchBinding.etSearch.setText(searchKey);
     }
 
@@ -182,7 +183,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         HashMap<String, String> map = new HashMap<>();
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
-        map.put(AppConstants.SEARCH, searchKey);
+        map.put(AppConstants.SEARCH, search);
         return map;
     }
 
