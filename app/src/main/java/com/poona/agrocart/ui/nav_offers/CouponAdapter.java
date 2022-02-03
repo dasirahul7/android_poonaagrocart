@@ -17,13 +17,13 @@ import java.util.ArrayList;
 
 public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHolder> {
 
-    private ArrayList<Coupons> coupons = new ArrayList<>();
+    private ArrayList<Coupon> coupons = new ArrayList<>();
     private final Context context;
     private RowCouponItemBinding rowCouponItemBinding;
     private CouponFragment couponFragment;
 
 
-    public CouponAdapter(ArrayList<Coupons> coupons, Context context, CouponFragment couponFragment) {
+    public CouponAdapter(ArrayList<Coupon> coupons, Context context, CouponFragment couponFragment) {
         this.coupons = coupons;
         this.context = context;
         this.couponFragment = couponFragment;
@@ -39,16 +39,16 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull CouponHolder holder, int position) {
-        Coupons coupon = coupons.get(position);
+        Coupon coupon = coupons.get(position);
         rowCouponItemBinding.setModuleCoupon(coupon);
-        if (coupon.getId() % 3 == 1){
+        if (Integer.parseInt(coupon.getId()) % 3 == 1){
             rowCouponItemBinding.couponRow.setBackgroundResource(R.drawable.coupon_green);
             rowCouponItemBinding.tvCouponCode.setTextColor(context.getColor(R.color.light_green_txt_color));
             rowCouponItemBinding.mcvCouponCode.setStrokeColor(context.getColor(R.color.light_green_txt_color));
         }
-        if (coupon.getId() % 3 == 2)
+        if (Integer.parseInt(coupon.getId())% 3 == 2)
             rowCouponItemBinding.couponRow.setBackgroundResource(R.drawable.coupon_blue);
-        if (coupon.getId() % 3 == 0){
+        if (Integer.parseInt(coupon.getId()) % 3 == 0){
             rowCouponItemBinding.couponRow.setBackgroundResource(R.drawable.coupon_pink);
             rowCouponItemBinding.tvCouponCode.setTextColor(context.getColor(R.color.red_text_color));
             rowCouponItemBinding.mcvCouponCode.setStrokeColor(context.getColor(R.color.red_text_color));
@@ -66,7 +66,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
             super(itemView.getRoot());
         }
 
-        public void bind(Coupons coupon) {
+        public void bind(Coupon coupon) {
             rowCouponItemBinding.setVariable(BR.moduleCoupon, coupon);
             rowCouponItemBinding.executePendingBindings();
             rowCouponItemBinding.imgInfo.setOnClickListener(v -> {

@@ -57,6 +57,7 @@ public class AppConstants {
     public static final int STATUS_CODE_1 = 1;
 
     /*API names here*/
+    /*login & register APIs*/
     public static final String FROM_SCREEN = "from_screen";
     public static final String LOGIN_API = "api-login-customer";
     public static final String VERIFY_OTP_API = "verify-otp-customer";
@@ -65,6 +66,7 @@ public class AppConstants {
     public static final String AREA_API = "area";
     public static final String CITY_API = "city";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
+    /*Home screen APIs*/
     public static final String HOME_BANNER_API = "home-screen-banner";
     public static final String HOME_CATEGORY_API = "category-list";
     public static final String HOME_BASKET_API = "basket-list";
@@ -73,6 +75,9 @@ public class AppConstants {
     public static final String HOME_SEASONAL_LIST_API = "seasonal-product-list";
     public static final String HOME_PRODUCT_LIST_API = "product-list";
     public static final String HOME_STORE_BANNER_API = "store-banner";
+    /*Offer & Coupon APIs*/
+    public static final String COUPON_API = "coupon-list";
+
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";

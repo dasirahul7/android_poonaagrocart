@@ -2,6 +2,7 @@ package com.poona.agrocart.data.network;
 
 import static com.poona.agrocart.app.AppConstants.AREA_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
+import static com.poona.agrocart.app.AppConstants.COUPON_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BASKET_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BEST_SELLING_API;
@@ -23,6 +24,7 @@ import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
+import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
@@ -105,4 +107,10 @@ public interface ApiInterface {
     // Home Store Banner API
     @GET(HOME_STORE_BANNER_API)
     Single<StoreBannerResponse> homeStoreBannerResponse();
+
+    /*Coupon API*/
+    @FormUrlEncoded
+    @POST(COUPON_API)
+    Single<CouponResponse> couponListResponse(@FieldMap HashMap<String, String> hashMap);
+
 }
