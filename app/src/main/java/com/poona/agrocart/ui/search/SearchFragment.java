@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.search;
 
 import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
+import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.collection.ArraySet;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -29,11 +31,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.databinding.FragmentSearchBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
+import com.poona.agrocart.ui.home.model.Exclusive;
 import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
@@ -52,7 +56,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     private ProductListAdapter searchAdapter;
     Timer timer = new Timer();
     boolean isTyping = false;
-    private String BeforeSerach;
+    private ArrayList<Exclusive> productList;
 
     @Nullable
     @Override
@@ -62,10 +66,11 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         searchView = fragmentSearchBinding.getRoot();
         initViews();
         searchItems(searchView);
-        searchProductList.clear();
-        callSearchApi(searchView, showCircleProgressDialog(context, ""), limit, offset, searchKey);
+        productList.clear();
+        callSearchProductApi(searchView,showCircleProgressDialog(context,""),limit,offset,"");
         return searchView;
     }
+
 
     private void searchItems(View searchView) {
         fragmentSearchBinding.etSearch.addTextChangedListener(new TextWatcher() {
@@ -91,9 +96,8 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                             hideKeyBoard(requireActivity());
                             getActivity().runOnUiThread(new Runnable() {
                                 public void run() {
-                                    searchKey = fragmentSearchBinding.etSearch.getText().toString().trim();
-                                    searchProductList.clear();
-                                    callSearchApi(searchView,showCircleProgressDialog(context,""),limit,offset,searchKey);
+                                    productList.clear();
+                                    callSearchProductApi(searchView,showCircleProgressDialog(context,""),limit,offset,fragmentSearchBinding.etSearch.getText().toString());
                                 }
                             });
                         } catch (Exception e) {
@@ -114,26 +118,26 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         });
         bundle = getArguments();
         assert bundle != null;
-        searchKey = bundle.getString(SEARCH_KEY, "");
         fragmentSearchBinding.etSearch.setText(searchKey);
     }
 
-    private void callSearchApi(View searchView, ProgressDialog progressDialog, int limit, int offset, String searchKey) {
+    //Search Product API here
+    private void callSearchProductApi(View searchView, ProgressDialog progressDialog, int limit, int offset, String searchKey) {
         limit = limit + 10;
         Observer<ProductListResponse> productListResponseObserver = productListResponse -> {
             if (productListResponse != null) {
                 progressDialog.dismiss();
-                Log.e(TAG, "callSearchApi: " + productListResponse.getProductResponseDt().getProductList().size());
+                Log.e(TAG, "callSearchProductApi: " + productListResponse.getProductResponseDt().getProductList().size());
                 switch (productListResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (productListResponse.getProductResponseDt().getProductList().size() > 0) {
                             fragmentSearchBinding.tvNoData.setVisibility(View.GONE);
-                            searchProductList = productListResponse.getProductResponseDt().getProductList();
+                            productList = productListResponse.getProductResponseDt().getProductList();
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
                             fragmentSearchBinding.recProduct.setNestedScrollingEnabled(false);
                             fragmentSearchBinding.recProduct.setHasFixedSize(true);
                             fragmentSearchBinding.recProduct.setLayoutManager(linearLayoutManager);
-                            searchAdapter = new ProductListAdapter(searchProductList, getActivity(), searchView);
+                            searchAdapter = new ProductListAdapter(productList, getActivity(), searchView);
                             fragmentSearchBinding.recProduct.setAdapter(searchAdapter);
                             searchAdapter.setOnProductClick(product -> {
                                 toProductDetail(product, searchView);
@@ -159,7 +163,6 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                 SearchFragment.this)
                 .observe(getViewLifecycleOwner(), productListResponseObserver);
     }
-
     public void toProductDetail(Product product, View root) {
         Bundle bundle = new Bundle();
         bundle.putString("name", product.getName());
@@ -179,7 +182,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         HashMap<String, String> map = new HashMap<>();
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
-        map.put(AppConstants.SEARCH, search);
+        map.put(AppConstants.SEARCH, searchKey);
         return map;
     }
 
@@ -200,9 +203,9 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                 hideKeyBoard(requireActivity());
                 switch (from) {
                     case 0:
-                        // Call Banner API after network error
-                        searchProductList.clear();
-                        callSearchApi(searchView, showCircleProgressDialog(context, ""), limit, offset, searchKey);
+                        // Call Product List API after network error
+                        productList.clear();
+                        callSearchProductApi(searchView, showCircleProgressDialog(context, ""), limit, offset, fragmentSearchBinding.etSearch.getText().toString());
                         break;
 
                 }

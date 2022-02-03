@@ -136,7 +136,8 @@
         android:id="@+id/nav_explore"
         android:name="com.poona.agrocart.ui.nav_explore.ExploreFragment"
         android:label="@string/explore"
-        tools:layout="@layout/fragment_explore"/>
+        tools:layout="@layout/fragment_explore">
+    </fragment>
 
     <!--Explore To Products List Action-->
     <action
@@ -429,7 +430,21 @@
     <!--Home to Search action-->
     <action
         android:id="@+id/action_nav_home_to_searchFragment"
-        app:destination="@id/searchFragment" />
+        app:destination="@id/searchFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <!--Explore to Search action-->
+    <action
+        android:id="@+id/action_nav_explore_to_searchFragment"
+        app:destination="@id/searchFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
 
 
     <!--Privacy Policy Fragment-->

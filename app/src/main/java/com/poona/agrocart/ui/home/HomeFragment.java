@@ -1,6 +1,8 @@
 package com.poona.agrocart.ui.home;
 
 import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
+import static com.poona.agrocart.app.AppConstants.SEARCH_PRODUCT;
+import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -147,6 +149,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                 public void run() {
                                     if (!fragmentHomeBinding.etSearch.getText().toString().trim().equals("")){
                                         Bundle bundle = new Bundle();
+                                        bundle.putInt(SEARCH_TYPE,SEARCH_PRODUCT);
                                         bundle.putString(SEARCH_KEY,fragmentHomeBinding.etSearch.getText().toString());
                                         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_searchFragment,bundle);
                                     }else return;
