@@ -549,7 +549,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             public void run() {
                 handler.post(update);
             }
-        }, 500, 3000);
+        }, 800, 3000);
     }
 
 
