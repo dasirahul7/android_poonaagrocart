@@ -79,15 +79,11 @@ public class HomeActivity extends BaseActivity {
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+
     }
 
 
     private void initNavigation() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            Window window = getWindow();
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(ContextCompat.getColor(this, R.color.white));
-//        }
         drawer = binding.drawerLayout;
         navigationView = binding.navView;
         bottomNavigationView = binding.appBarHome.bottomNavigationView;

@@ -6,6 +6,7 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.20833333333333334" />
         <entry key="../../.gradle/caches/transforms-3/74c8d3b93df5ec37a852dbd0ebdf6ff9/transformed/jetified-tooltipindicator-0.0.1/res/drawable/tooltip_indicator_rounded_line_selected.xml" value="0.1527777777777778" />
         <entry key="../../.gradle/caches/transforms-3/74c8d3b93df5ec37a852dbd0ebdf6ff9/transformed/jetified-tooltipindicator-0.0.1/res/drawable/tooltip_indicator_rounded_line_unselected.xml" value="0.1527777777777778" />
+        <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/activity_list_item.xml" value="0.12001811594202899" />
         <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-mdpi/strike_through.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable-v24/bg_green_rounded.xml" value="0.19814814814814816" />
@@ -141,6 +142,7 @@
         <entry key="app/src/main/res/drawable/tab_color.xml" value="0.17222222222222222" />
         <entry key="app/src/main/res/drawable/unselected_dot.xml" value="0.20462962962962963" />
         <entry key="app/src/main/res/drawable/viewpager_tab_selector.xml" value="0.20462962962962963" />
+        <entry key="app/src/main/res/drawable/white_border.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/font/adamina.xml" value="0.11927083333333334" />
         <entry key="app/src/main/res/font/poppins.xml" value="0.15648148148148147" />
         <entry key="app/src/main/res/layout-v28/app_bar_home.xml" value="0.14673913043478262" />
@@ -148,6 +150,8 @@
         <entry key="app/src/main/res/layout/activity_dash_board.xml" value="0.1431159420289855" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.13269927536231885" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_map.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/activity_maps.xml" value="0.12001811594202899" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.1802536231884058" />
         <entry key="app/src/main/res/layout/alerter_alert_view.xml" value="0.16530797101449277" />
         <entry key="app/src/main/res/layout/app_bar_home.xml" value="0.22" />
@@ -180,6 +184,7 @@
         <entry key="app/src/main/res/layout/fragment_intro_screen_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_location.xml" value="0.14130434782608695" />
         <entry key="app/src/main/res/layout/fragment_log_in.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.12001811594202899" />
         <entry key="app/src/main/res/layout/fragment_my_basket.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_my_cart.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/fragment_my_orders.xml" value="0.14855072463768115" />
