@@ -40,7 +40,7 @@ public class SignInResponse extends BaseResponse{
         private String id;
         @SerializedName("status")
         @Expose
-        private String status;
+        private Integer status;
 
         public String getMobile() {
             return mobile;
@@ -66,11 +66,11 @@ public class SignInResponse extends BaseResponse{
             this.id = id;
         }
 
-        public String getStatus() {
+        public Integer getStatus() {
             return status;
         }
 
-        public void setStatus(String status) {
+        public void setStatus(Integer status) {
             this.status = status;
         }
     }

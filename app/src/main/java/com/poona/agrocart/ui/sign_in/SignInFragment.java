@@ -4,6 +4,7 @@ import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_402;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
@@ -28,6 +29,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
@@ -38,6 +40,7 @@ import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
+import com.poona.agrocart.ui.splash_screen.SplashScreenFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,7 +64,6 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         fragmentSignInBinding.setLifecycleOwner(this);
 
         rootView = fragmentSignInBinding.getRoot();
-
         initView(rootView);
 
         return rootView;
@@ -198,15 +200,19 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                             successToast(context, ""+signInResponse.getUser().getOtp());
                             basicDetails.setOtp(signInResponse.getUser().getOtp());
                             preferences.setAuthorizationToken(signInResponse.getToken());
+                            basicDetails.setUserId(signInResponse.getUser().getId());
                             Bundle bundle = new Bundle();
                             bundle.putString(AppConstants.USER_MOBILE, basicDetails.getMobileNumber());
                             bundle.putString(AppConstants.COUNTRY_CODE, basicDetails.getCountryCode());
                             bundle.putString(AppConstants.USER_OTP, basicDetails.getOtp());
+                            bundle.putString(AppConstants.USER_ID, basicDetails.getUserId());
                             Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_verifyOtpFragment, bundle);
                         }
                         break;
-                    case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_402://Validation Errors
+                        goToAskAndDismiss(signInResponse.getMessage(), context);
+                    case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_404://Validation Errors
                         warningToast(context, signInResponse.getMessage());
                         break;

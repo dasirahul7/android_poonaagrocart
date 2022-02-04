@@ -10,10 +10,19 @@ public class BasicDetails
     String otp;
     String userName;
     String emailId;
+    String userId;
     String city;
     String area;
     String password;
     String countryCode;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getCountryCode() {
         return countryCode;

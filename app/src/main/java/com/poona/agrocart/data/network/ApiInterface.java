@@ -14,6 +14,7 @@ import static com.poona.agrocart.app.AppConstants.HOME_STORE_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
+import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 
@@ -51,6 +52,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(VERIFY_OTP_API)
     Single<VerifyOtpResponse> getVerifyOtpResponse(@FieldMap HashMap<String, String> data);
+
+    //Resend OTP here
+    @FormUrlEncoded
+    @POST(RESEND_OTP)
+    Single<SignInResponse> getResendOtpResponse(@FieldMap HashMap<String, String> data);
 
     @FormUrlEncoded
     @POST(REGISTER_API)

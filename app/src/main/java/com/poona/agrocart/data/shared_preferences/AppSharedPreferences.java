@@ -1,11 +1,16 @@
 package com.poona.agrocart.data.shared_preferences;
 
 import static com.poona.agrocart.app.AppConstants.AUTHORIZATION_TOKEN;
+import static com.poona.agrocart.app.AppConstants.COUNTRY_CODE;
 import static com.poona.agrocart.app.AppConstants.FCM_TOKEN;
 import static com.poona.agrocart.app.AppConstants.FROM_LOG_OUT;
 import static com.poona.agrocart.app.AppConstants.IS_LOGGED_IN;
 import static com.poona.agrocart.app.AppConstants.IS_READ_INTRO;
+import static com.poona.agrocart.app.AppConstants.IS_VERIFIED;
 import static com.poona.agrocart.app.AppConstants.PREFERENCES_NAME;
+import static com.poona.agrocart.app.AppConstants.USER_ADDRESS;
+import static com.poona.agrocart.app.AppConstants.USER_ID;
+import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -34,9 +39,9 @@ public class AppSharedPreferences
     //Shared preferences mode
     int PRIVATE_MODE = 0;
 
-    private String fireBaseToken, authorizationToken,uid, baseAuthUsername, baseAuthPassword;
+    private String fireBaseToken, authorizationToken,uid,userMobile,userCountry, userAddress,baseAuthUsername, baseAuthPassword;
     private int newOrderCount;
-    private boolean isLoggedIn,isIntroRead, fromLogOut, isSkipBankForm;
+    private boolean isLoggedIn,isIntroRead, fromLogOut, isVerified;
     private String userType;
 
     //Constructor
@@ -77,6 +82,17 @@ public class AppSharedPreferences
         this.editor.commit();
     }
 
+    public boolean isVerified() {
+        return this.preferences.getBoolean(IS_VERIFIED,false);
+    }
+
+    public void seIstVerified(boolean verified) {
+        this.isVerified = verified;
+        this.editor.putBoolean(IS_VERIFIED,verified);
+        this.editor.commit();
+    }
+
+
     public boolean getFromLogOut() {
         return this.preferences.getBoolean(FROM_LOG_OUT, false);
     }
@@ -97,6 +113,46 @@ public class AppSharedPreferences
     public void setAuthorizationToken(String authorizationToken) {
         this.authorizationToken = authorizationToken;
         this.editor.putString(AUTHORIZATION_TOKEN, authorizationToken);
+        this.editor.commit();
+    }
+
+    public String getUid() {
+        return preferences.getString(USER_ID,"");
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+        this.editor.putString(USER_ID,uid);
+        this.editor.apply();
+    }
+
+    public String getUserMobile() {
+        return preferences.getString(USER_MOBILE,"");
+    }
+
+    public void setUserMobile(String userMobile) {
+        this.userMobile = userMobile;
+        this.editor.putString(USER_MOBILE,userMobile);
+        this.editor.commit();
+    }
+
+    public String getUserCountry() {
+        return preferences.getString(COUNTRY_CODE,"");
+    }
+
+    public void setUserCountry(String userCountry) {
+        this.userCountry = userCountry;
+        this.editor.putString(COUNTRY_CODE,userCountry);
+        this.editor.commit();
+    }
+
+    public String getUserAddress() {
+        return preferences.getString(USER_ADDRESS,"");
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+        this.editor.putString(USER_ADDRESS,userAddress);
         this.editor.commit();
     }
 

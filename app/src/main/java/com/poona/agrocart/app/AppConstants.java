@@ -30,6 +30,9 @@ public class AppConstants {
     public static final String IS_LOGGED_IN = "isLoggedIn";
     public static final String IS_READ_INTRO = "isIntroRead";
     public static final String FROM_LOG_OUT = "fromLogOut";
+    public static final String IS_VERIFIED = "verify";
+//    public static final String IS_REGISTERED = "registered";
+//    public static final String IS_LOCATED = "located";
     public static final String IS_SKIP_BANK_DETAILS = "isSkippedBankDetails";
     public static final String IS_REMEMBER = "isRemember";
     public static final String BASE_AUTH_USERNAME = "BaseAuthUsername";
@@ -50,6 +53,7 @@ public class AppConstants {
     public static final int STATUS_CODE_200 = 200; //success response code
     public static final int STATUS_CODE_400 = 400; //fail response code
     public static final int STATUS_CODE_401 = 401; //fail response code
+    public static final int STATUS_CODE_402 = 402; //fail response code
     public static final int STATUS_CODE_403 = 403; //record or data not found response code
     public static final int STATUS_CODE_404 = 404; //record or data not found response code
     public static final int STATUS_CODE_405 = 405; //record or data not found response code
@@ -61,6 +65,7 @@ public class AppConstants {
     public static final String FROM_SCREEN = "from_screen";
     public static final String LOGIN_API = "api-login-customer";
     public static final String VERIFY_OTP_API = "verify-otp-customer";
+    public static final String RESEND_OTP = "resend-otp";
     public static final String REGISTER_API = "register-customer";
     public static final String INTRO_SCREEN_API = "screen-customer";
     public static final String AREA_API = "area";
@@ -117,6 +122,8 @@ public class AppConstants {
     public static final String CITY_ID = "city_id";
     public static final String SEARCH_KEY = "search_key";
     public static final String SEARCH_TYPE = "search_type";
+    public static final String USER_ID = "user_id";
+    public static final String USER_ADDRESS = "user_address";
 
 
     /*

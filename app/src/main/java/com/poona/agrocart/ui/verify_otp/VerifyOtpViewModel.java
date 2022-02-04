@@ -84,11 +84,11 @@ public class VerifyOtpViewModel extends AndroidViewModel {
     public LiveData<SignInResponse> resendOtpApi(ProgressDialog progressDialog,
                                                         HashMap<String, String> hashMap,
                                                         VerifyOtpFragment verifyOtpFragment) {
-        MutableLiveData<SignInResponse> signInResponseMutableLiveData = new MutableLiveData<>();
+        MutableLiveData<SignInResponse> resendOtpResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(verifyOtpFragment.getContext())
                 .create(ApiInterface.class)
-                .getSignInResponse(hashMap)
+                .getResendOtpResponse(hashMap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<SignInResponse>() {
@@ -96,7 +96,7 @@ public class VerifyOtpViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(SignInResponse response) {
                         progressDialog.dismiss();
-                        signInResponseMutableLiveData.setValue(response);
+                        resendOtpResponseMutableLiveData.setValue(response);
                     }
 
                     @Override
@@ -109,7 +109,7 @@ public class VerifyOtpViewModel extends AndroidViewModel {
                             response = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     SignInResponse.class);
 
-                            signInResponseMutableLiveData.setValue(response);
+                            resendOtpResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
                             ((NetworkExceptionListener) verifyOtpFragment).onNetworkException(1);
@@ -119,6 +119,6 @@ public class VerifyOtpViewModel extends AndroidViewModel {
                     }
                 });
 
-        return signInResponseMutableLiveData;
+        return resendOtpResponseMutableLiveData;
     }
 }

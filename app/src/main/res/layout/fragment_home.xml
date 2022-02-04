@@ -193,7 +193,7 @@
                     android:paddingHorizontal="@dimen/home_horizontal_padding"
                     tools:ignore="RtlSymmetry" />
 
-                <!--                Seasonal Banners-->
+            <!-- Seasonal Banners-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rec_seasonal"
                     android:layout_width="match_parent"
@@ -267,7 +267,6 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_20sdp"
-                            android:layout_toStartOf="@+id/cv_store_img"
                             android:orientation="vertical">
 
                             <com.poona.agrocart.widgets.CustomTextView
