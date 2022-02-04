@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.verify_otp;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.util.Log;
@@ -14,7 +15,9 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.reponses.SignInResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
+import com.poona.agrocart.ui.sign_in.SignInFragment;
 
 import java.util.HashMap;
 
@@ -33,9 +36,11 @@ public class VerifyOtpViewModel extends AndroidViewModel {
         otp = new MutableLiveData<>();
     }
 
+    //Verify Otp API Response
     public LiveData<VerifyOtpResponse> submitVerifyOtp(ProgressDialog progressDialog,
                                                         HashMap<String, String> hashMap,
-                                                        VerifyOtpFragment verifyOtpFragment) {
+                                                        VerifyOtpFragment verifyOtpFragment)
+    {
         MutableLiveData<VerifyOtpResponse> verifyOtpResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(verifyOtpFragment.getContext())
@@ -72,5 +77,48 @@ public class VerifyOtpViewModel extends AndroidViewModel {
                 });
 
         return verifyOtpResponseMutableLiveData;
+    }
+
+
+    @SuppressLint("CheckResult")
+    public LiveData<SignInResponse> resendOtpApi(ProgressDialog progressDialog,
+                                                        HashMap<String, String> hashMap,
+                                                        VerifyOtpFragment verifyOtpFragment) {
+        MutableLiveData<SignInResponse> signInResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(verifyOtpFragment.getContext())
+                .create(ApiInterface.class)
+                .getSignInResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<SignInResponse>() {
+
+                    @Override
+                    public void onSuccess(SignInResponse response) {
+                        progressDialog.dismiss();
+                        signInResponseMutableLiveData.setValue(response);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        SignInResponse response = new SignInResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    SignInResponse.class);
+
+                            signInResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) verifyOtpFragment).onNetworkException(1);
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return signInResponseMutableLiveData;
     }
 }

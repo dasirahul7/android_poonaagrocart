@@ -1,9 +1,18 @@
 package com.poona.agrocart.ui.nav_offers;
 
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +23,31 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppConstants;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.databinding.DialogCouponTermsBinding;
 import com.poona.agrocart.databinding.FragmentCouponBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeFragment;
+import com.poona.agrocart.ui.home.model.StoreBanner;
 import com.poona.agrocart.widgets.CustomTextView;
 
-public class CouponFragment extends BaseFragment {
+import java.util.HashMap;
 
-    private CouponViewModel mViewModel;
+public class CouponFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
+    private static final String TAG = CouponFragment.class.getSimpleName();
+    private CouponViewModel couponViewModel;
     private FragmentCouponBinding fragmentCouponBinding;
     private CouponAdapter couponAdapter;
+    private int limit =0,offset = 0;
 
 
     public static CouponFragment newInstance() {
@@ -39,20 +58,59 @@ public class CouponFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         fragmentCouponBinding = FragmentCouponBinding.inflate(getLayoutInflater());
-        mViewModel = new ViewModelProvider(this).get(CouponViewModel.class);
+        couponViewModel = new ViewModelProvider(this).get(CouponViewModel.class);
         initTitleBar(getString(R.string.menu_offer_coupons));
-        setCoupons();
+        setAllCoupons(showCircleProgressDialog(context, ""),limit,offset);
         View view = fragmentCouponBinding.getRoot();
         return view;
     }
 
-    private void setCoupons() {
-        mViewModel.liveCoupons.observe(requireActivity(), coupons -> {
-            couponAdapter = new CouponAdapter(coupons, requireActivity(), CouponFragment.this);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-            fragmentCouponBinding.rvCoupons.setLayoutManager(layoutManager);
-            fragmentCouponBinding.rvCoupons.setAdapter(couponAdapter);
-        });
+    private void setAllCoupons(ProgressDialog progressDialog,int limit, int offset) {
+        limit +=10;
+        Observer<CouponResponse> couponResponseObserver = couponResponse -> {
+            if (couponResponse != null) {
+                progressDialog.dismiss();
+                Log.e(TAG, "setAllCoupons: " + couponResponse.getCoupons().size());
+                switch (couponResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (couponResponse.getCoupons().size() > 0) {
+                            couponAdapter = new CouponAdapter(couponResponse.getCoupons(), requireActivity(), CouponFragment.this);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
+                            fragmentCouponBinding.rvCoupons.setLayoutManager(layoutManager);
+                            fragmentCouponBinding.rvCoupons.setAdapter(couponAdapter);
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, couponResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(couponResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, couponResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        couponViewModel.couponResponseLiveData(progressDialog, couponParams(limit, offset),CouponFragment.this)
+                .observe(getViewLifecycleOwner(), couponResponseObserver);
+
+//        mViewModel.liveCoupons.observe(requireActivity(), coupons -> {
+//            couponAdapter = new CouponAdapter(coupons, requireActivity(), CouponFragment.this);
+//            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
+//            fragmentCouponBinding.rvCoupons.setLayoutManager(layoutManager);
+//            fragmentCouponBinding.rvCoupons.setAdapter(couponAdapter);
+//        });
+    }
+
+    private HashMap<String, String> couponParams(int limit,int offset) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(AppConstants.LIMIT, String.valueOf(limit));
+            map.put(AppConstants.OFFSET, String.valueOf(offset));
+            return map;
     }
 
     public void termsDialog() {
@@ -100,4 +158,26 @@ public class CouponFragment extends BaseFragment {
         // TODO: Use the ViewModel
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onNetworkException(int from) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), CouponFragment.this, () -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                switch (from) {
+                    case 0:
+                        // Call Banner API after network error
+                        setAllCoupons(showCircleProgressDialog(context, ""), limit, offset);
+                        break;
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+
+    }
 }

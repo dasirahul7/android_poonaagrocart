@@ -82,6 +82,11 @@ public class Basket {
     @SerializedName("hsn_code")
     @Expose
     private String hsnCode;
+    private String priceUnit= "Rs.";
+
+    public String getPriceUnit() {
+        return priceUnit;
+    }
 
     public String getId() {
         return id;

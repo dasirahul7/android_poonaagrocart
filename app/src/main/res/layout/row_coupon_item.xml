@@ -7,7 +7,7 @@
 
         <variable
             name="moduleCoupon"
-            type="com.poona.agrocart.ui.nav_offers.Coupons" />
+            type="com.poona.agrocart.ui.nav_offers.Coupon" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,6 +38,7 @@
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:text="Coupon Code"
+                android:singleLine="true"
                 android:textColor="@color/dark_blue_color"
                 android:textSize="@dimen/x_large_txt_size"
                 android:textStyle="bold"
@@ -46,6 +47,7 @@
                 app:setCustomFont="@string/font_poppins_bold" />
 
             <com.poona.agrocart.widgets.CustomTextView
+                android:singleLine="true"
                 android:id="@+id/tv_discount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,13 +85,14 @@
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_coupon_code"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_120sdp"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
                         android:drawableEnd="@drawable/icon_copy"
                         android:drawablePadding="@dimen/_10sdp"
                         android:includeFontPadding="false"
                         android:letterSpacing="0.05"
+                        android:singleLine="true"
                         android:text="@{moduleCoupon.couponCode}"
                         android:textColor="@color/dark_blue_color"
                         android:textSize="@dimen/large"
@@ -106,7 +109,8 @@
                 android:includeFontPadding="false"
                 android:paddingStart="0dp"
                 android:paddingEnd="@dimen/_10sdp"
-                android:text="@{moduleCoupon.discount}"
+                android:singleLine="true"
+                android:text="@{moduleCoupon.discountPercentage+moduleCoupon.percent}"
                 android:textColor="@color/dark_blue_color"
                 android:textSize="@dimen/very_large"
                 android:textStyle="bold"
@@ -120,12 +124,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-5dp"
                 android:includeFontPadding="false"
-                android:text="@{moduleCoupon.maxDiscount}"
-                android:textSize="@dimen/small_txt_size"
+                android:text="@{moduleCoupon.max+moduleCoupon.discountMaxAmount+moduleCoupon.priceUnit}"
+                android:paddingHorizontal="@dimen/_5sdp"
                 android:textColor="@color/dark_blue_color"
-                android:textStyle="normal"
+                android:textSize="@dimen/small_txt_size"
+                android:singleLine="true"
                 app:setCustomFont="@string/font_poppins_regular"
-                app:layout_constraintEnd_toEndOf="@+id/tv_discount_value"
                 app:layout_constraintStart_toStartOf="@+id/tv_discount"
                 app:layout_constraintTop_toBottomOf="@+id/tv_discount_value" />
 
@@ -137,6 +141,7 @@
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:text="Valid till"
+                android:singleLine="true"
                 android:textColor="@color/dark_blue_color"
                 android:textSize="@dimen/large_txt_size"
                 android:textStyle="bold"
@@ -149,9 +154,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/_5sdp"
-                android:text="@{moduleCoupon.validDate}"
+                android:text="@{moduleCoupon.todate}"
                 android:textColor="@color/dark_blue_color"
                 android:textSize="@dimen/small_txt_size"
+                android:singleLine="true"
                 app:setCustomFont="@string/font_poppins_regular"
                 app:layout_constraintStart_toStartOf="@+id/tv_valid"
                 app:layout_constraintTop_toBottomOf="@+id/tv_valid" />
@@ -165,6 +171,7 @@
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:text="Type"
+                android:singleLine="true"
                 android:textColor="@color/dark_blue_color"
                 android:textSize="@dimen/large_txt_size"
                 android:textStyle="bold"
@@ -178,9 +185,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/_5sdp"
-                android:text="@{moduleCoupon.type}"
+                android:text="@{moduleCoupon.minUnit+moduleCoupon.minOrderAmount}"
                 android:textColor="@color/dark_blue_color"
                 android:textSize="@dimen/small_txt_size"
+                android:singleLine="true"
                 app:setCustomFont="@string/font_poppins_regular"
                 app:layout_constraintStart_toStartOf="@+id/tv_type"
                 app:layout_constraintTop_toBottomOf="@+id/tv_type" />
@@ -203,6 +211,7 @@
                     android:layout_weight="1"
                     android:paddingTop="@dimen/_5sdp"
                     android:text="@string/menu_terms_conditions"
+                    android:singleLine="true"
                     android:textColor="@color/dark_blue_color"
                     android:textSize="@dimen/small_txt_size"
                     app:setCustomFont="@string/font_poppins_regular"

@@ -162,7 +162,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void signingOut() {
-        AppUtils.infoToast(this,"Log out");
         AppSharedPreferences preferences = new AppSharedPreferences(this);
         preferences.clearSharedPreferences(this);
         Intent intent = new Intent(this, SplashScreenActivity.class);

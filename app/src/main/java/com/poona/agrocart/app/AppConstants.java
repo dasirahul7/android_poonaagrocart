@@ -7,8 +7,7 @@ import org.json.JSONArray;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public class AppConstants
-{
+public class AppConstants {
     /*Development URL*/
     //public static final String BASE_URL = "";
 
@@ -41,8 +40,8 @@ public class AppConstants
     public static final String LANDSCAPE = "landscape";
 
     /*
-    * api header parameters
-    * */
+     * api header parameters
+     * */
     public static final String AUTH_ACCESS_TOKEN = "Access-Token";
 
     /*
@@ -58,6 +57,7 @@ public class AppConstants
     public static final int STATUS_CODE_1 = 1;
 
     /*API names here*/
+    /*login & register APIs*/
     public static final String FROM_SCREEN = "from_screen";
     public static final String LOGIN_API = "api-login-customer";
     public static final String VERIFY_OTP_API = "verify-otp-customer";
@@ -66,9 +66,18 @@ public class AppConstants
     public static final String AREA_API = "area";
     public static final String CITY_API = "city";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
+    /*Home screen APIs*/
     public static final String HOME_BANNER_API = "home-screen-banner";
     public static final String HOME_CATEGORY_API = "category-list";
     public static final String HOME_BASKET_API = "basket-list";
+    public static final String HOME_BEST_SELLING_API = "best-selling-product-list";
+    public static final String HOME_EXCLUSIVE_API = "exclusive-product-list";
+    public static final String HOME_SEASONAL_LIST_API = "seasonal-product-list";
+    public static final String HOME_PRODUCT_LIST_API = "product-list";
+    public static final String HOME_STORE_BANNER_API = "store-banner";
+    /*Offer & Coupon APIs*/
+    public static final String COUPON_API = "coupon-list";
+
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";
@@ -82,13 +91,13 @@ public class AppConstants
     public static final String FOUR = "4";
 
     /*
-    * if vendor is inactive or unauthorized then redirect to login page
-    * */
+     * if vendor is inactive or unauthorized then redirect to login page
+     * */
     public static final String UNAUTHORIZED = "unauthorized";
 
     /*
-    * cms content api parameters
-    */
+     * cms content api parameters
+     */
     public static final String CMS_NAME = "cms_name";
     public static final String CMS_ASSIGN_ID = "cms_assign_id";
     public static final String ABOUT_US = "about-us";
@@ -97,19 +106,22 @@ public class AppConstants
     public static final String QUERY = "query";
     public static final String LIMIT = "limit";
     public static final String OFFSET = "offset";
+    public static final String SEARCH = "search";
 
     /*API KEYS*/
-    public static final String MOBILE_NUMBER ="mobile";
-    public static final String OTP ="otp";
-    public static final String USERNAME ="username";
-    public static final String EMAIL ="email";
-    public static final String AREA_ID ="area_id";
-    public static final String CITY_ID ="city_id";
+    public static final String MOBILE_NUMBER = "mobile";
+    public static final String OTP = "otp";
+    public static final String USERNAME = "username";
+    public static final String EMAIL = "email";
+    public static final String AREA_ID = "area_id";
+    public static final String CITY_ID = "city_id";
+    public static final String SEARCH_KEY = "search_key";
+    public static final String SEARCH_TYPE = "search_type";
 
 
     /*
-    * id to handle the notification in the notification tray
-    * */
+     * id to handle the notification in the notification tray
+     * */
     public static final int NOTIFICATION_RANDOM_ID = 0;
     public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
     public static final String PUSH_NOTIFICATION = "com.poona.agrocart.NOTIFICATION";
@@ -118,21 +130,25 @@ public class AppConstants
 
     /*SignInFragment keys*/
     public static final String USER_MOBILE = "MOBILE_NO";
-    public static final String COUNTRY_CODE ="COUNTRY_CODE";
-    public static final String USER_OTP ="USER_OTP";
-    public static final String USER_VERIFIED ="USER_VERIFED";
+    public static final String COUNTRY_CODE = "COUNTRY_CODE";
+    public static final String USER_OTP = "USER_OTP";
     public static final Object IS_NOTIFICATION_RECEIVED = "IS_NOTIFICATION_RECEIVED";
 
     //Help center
-    public static final String TICKET_ID="TICKET_ID";
-    public static final String STATUS="STATUS";
-    public static final String REMARK="REMARK";
-    public static final String DATE="DATE";
-    public static final String SUBJECT="SUBJECT";
+    public static final String TICKET_ID = "TICKET_ID";
+    public static final String STATUS = "STATUS";
+    public static final String REMARK = "REMARK";
+    public static final String DATE = "DATE";
+    public static final String SUBJECT = "SUBJECT";
 
     //SharedPreferences keys
     public static String CART_LIST = "CART_LIST";
     public static String FAV_LIST = "FAV_LIST";
-    public static final String pId="PAC";
+    public static final String pId = "PAC";
+
+    /*Search Types here*/
+    public static final Integer SEARCH_PRODUCT = 0;
+    public static final Integer SEARCH_CATEGORY = 1;
+    public static final Integer SEARCH_BASKET = 2;
 
 }

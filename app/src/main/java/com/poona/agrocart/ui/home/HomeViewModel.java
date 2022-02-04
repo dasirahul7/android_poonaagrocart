@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,20 +13,28 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.ExclusiveResponse;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
+import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
+import com.poona.agrocart.data.network.reponses.ProductListResponse;
+import com.poona.agrocart.data.network.reponses.ProductResponseDt;
+import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
+import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.home.model.SeasonalProduct;
+import com.poona.agrocart.ui.home.model.StoreBanner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,8 +52,8 @@ public class HomeViewModel extends AndroidViewModel {
     private MutableLiveData<ArrayList<Product>> liveDataBestSelling;
     private MutableLiveData<ArrayList<Product>> liveDataOffer;
     private MutableLiveData<ArrayList<Product>> liveDataCartProduct;
-//    private MutableLiveData<ArrayList<Category>> liveDataCategory;
-//    private MutableLiveData<ArrayList<Basket>> liveDataBaskets;
+    //    private MutableLiveData<ArrayList<Category>> liveDataCategory;
+
     private MutableLiveData<ArrayList<Product>> savesProductInBasket;
     private MutableLiveData<ArrayList<SeasonalProduct>> liveSeasonProducts;
 
@@ -55,62 +64,12 @@ public class HomeViewModel extends AndroidViewModel {
         liveDataBestSelling = new MutableLiveData<>();
         liveDataOffer = new MutableLiveData<>();
         liveDataCartProduct = new MutableLiveData<>();
-//        liveDataCategory = new MutableLiveData<>();
         savesProductInBasket = new MutableLiveData<>();
         liveSeasonProducts = new MutableLiveData<>();
-        //init arraylist
-//        getBasketData();
-//        initBanner();
-//        initCategory();
-        initBestSelling();
-        initOfferProduct();
-        initBasketItems();
         initCartItems();
-        initSeasonalBanner();
+//        initSeasonalBanner();
     }
 
-    private void initSeasonalBanner() {
-        ArrayList<SeasonalProduct> seasonalProducts = new ArrayList<>();
-        SeasonalProduct seasonalProduct = new SeasonalProduct();
-        seasonalProduct.setsProductName("Alphanso");
-        seasonalProduct.setsProductPlace("Ratnagiri");
-        seasonalProduct.setsProductQuality("Fresh farm mangoes");
-        seasonalProduct.setsProductImage(getApplication().getString(R.string.url_mango_img));
-        seasonalProduct.setType("Yellow");
-        SeasonalProduct seasonalProduct1 = new SeasonalProduct();
-        seasonalProduct1.setsProductName("Grapes");
-        seasonalProduct1.setsProductPlace("Nashik");
-        seasonalProduct1.setsProductQuality("Fresh farm grapes");
-        seasonalProduct1.setsProductImage(getApplication().getString(R.string.url_grapes_img));
-        seasonalProduct1.setType("Green");
-        SeasonalProduct seasonalProduct2 = new SeasonalProduct();
-        seasonalProduct2.setsProductName("Alphanso");
-        seasonalProduct2.setsProductPlace("Ratnagiri");
-        seasonalProduct2.setsProductQuality("Fresh farm mangoes");
-        seasonalProduct2.setsProductImage(getApplication().getString(R.string.url_mango_img));
-        seasonalProduct2.setType("Yellow");
-        SeasonalProduct seasonalProduct3 = new SeasonalProduct();
-        seasonalProduct3.setsProductName("Grapes");
-        seasonalProduct3.setsProductPlace("Nashik");
-        seasonalProduct3.setsProductQuality("Fresh farm grapes");
-        seasonalProduct3.setsProductImage(getApplication().getString(R.string.url_grapes_img));
-        seasonalProduct3.setType("Green");
-        seasonalProducts.add(seasonalProduct);
-        seasonalProducts.add(seasonalProduct1);
-        seasonalProducts.add(seasonalProduct2);
-        seasonalProducts.add(seasonalProduct3);
-        seasonalProducts.add(seasonalProduct);
-        seasonalProducts.add(seasonalProduct1);
-        seasonalProducts.add(seasonalProduct2);
-        seasonalProducts.add(seasonalProduct3);
-        liveSeasonProducts.setValue(seasonalProducts);
-    }
-
-    private void getBasketData() {
-        AppSharedPreferences preferences = new AppSharedPreferences(getApplication());
-        ArrayList<Product> basketList = preferences.getSavedCartList(AppConstants.CART_LIST);
-        savesProductInBasket.setValue(basketList);
-    }
 
     private void initCartItems() {
         String PID = AppConstants.pId + "OP";
@@ -132,94 +91,6 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
 
-    private void initBasketItems() {
-//        ArrayList<Basket> baskets = new ArrayList<>();
-//        Basket basket = new Basket("Fruit\n" +
-//                "Baskets", "Rs 15000", "https://www.linkpicture.com/q/1-200284.png");
-//        for (int i = 0; i < 4; i++)
-//            baskets.add(basket);
-//
-//        liveDataBaskets.setValue(baskets);
-
-    }
-
-    private void initOfferProduct() {
-        String PID = AppConstants.pId + "OP";
-        ArrayList<Product> offerProducts = new ArrayList<>();
-        Product offerProduct = new Product(PID + "1", "Red Apple", "1Kg"
-                , "10", "150", "https://www.linkpicture.com/q/pngfuel-1-1.png", "Pune", "Kashmir");
-        Product offerProduct1 = new Product(PID + "2", "Organic Bananas", "12 pcs"
-                , "10", "45", "https://www.linkpicture.com/q/banana_2.png", "Pune", "Kashmir");
-        offerProduct1.setOrganic(true);
-        Product offerProduct2 = new Product(PID + "3", "Red Apple", "1Kg"
-                , "10", "150", "https://www.linkpicture.com/q/pngfuel-1-1.png", "Pune", "Kashmir");
-        Product offerProduct3 = new Product(PID + "4", "Organic Bananas", "12 pcs"
-                , "10", "45", "https://www.linkpicture.com/q/banana_2.png", "Pune", "Kashmir");
-        offerProduct3.setOrganic(true);
-        offerProducts.add(offerProduct);
-        offerProducts.add(offerProduct1);
-        offerProducts.add(offerProduct2);
-        offerProducts.add(offerProduct3);
-        liveDataOffer.setValue(offerProducts);
-    }
-
-    private void initBestSelling() {
-        ArrayList<Product> sellingProducts = new ArrayList<>();
-        String PID = AppConstants.pId + "BP";
-        Product product = new Product(PID + "1", "Bell Pepper Red", "1Kg"
-                , "10", "25", "https://www.linkpicture.com/q/capsicon.png",
-                "Pune", "Walmart");
-        Product product1 = new Product(PID + "2", "Ginger", "250 gms"
-                , "10", "110", "https://www.linkpicture.com/q/ginger.png",
-                "Pune", "Walmart");
-        product1.setOrganic(true);
-        Product product2 = new Product(PID + "3", "Bell Pepper Red", "1Kg"
-                , "10", "25", "https://www.linkpicture.com/q/capsicon.png",
-                "Pune", "Walmart");
-        Product product3 = new Product(PID + "4", "Ginger", "500 gms"
-                , "10", "280", "https://www.linkpicture.com/q/ginger.png",
-                "Pune", "Walmart");
-        Product product4 = new Product(PID + "5", "Ginger", ""
-                , "", "", "https://www.linkpicture.com/q/ginger.png",
-                "Pune", "Walmart");
-        product4.setWeight("0");
-        Product product5 = new Product(PID + "6", "Ginger", ""
-                , "", "", "https://www.linkpicture.com/q/ginger.png",
-                "Pune", "Walmart");
-        product5.setWeight("0");
-        sellingProducts.add(product);
-        sellingProducts.add(product1);
-        sellingProducts.add(product2);
-        sellingProducts.add(product3);
-        sellingProducts.add(product4);
-        sellingProducts.add(product5);
-        liveDataBestSelling.setValue(sellingProducts);
-    }
-
-//    private void initCategory() {
-//        ArrayList<Category> categories = new ArrayList<>();
-//        Category category = new Category("1", "Green Vegetables", getApplication().getString(R.string.img_green_leafy));
-//        Category category1 = new Category("2", "Fruit Vegetables", getApplication().getString(R.string.img_tomato));
-//        Category category2 = new Category("3", "Green Vegetables", getApplication().getString(R.string.img_green_leafy));
-//        Category category3 = new Category("4", "Fruit Vegetables", getApplication().getString(R.string.img_tomato));
-//
-//        categories.add(category);
-//        categories.add(category1);
-//        categories.add(category2);
-//        categories.add(category3);
-//        liveDataCategory.setValue(categories);
-//    }
-
-    //    private void initBanner() {
-//        ArrayList<Banner> banners = new ArrayList<>();
-//        Banner banner = new Banner("1", "Banner1", "https://www.linkpicture.com/q/banner_img.jpg");
-//        for (int i = 0; i < 3; i++) {
-//            banners.add(banner);
-//        }
-//        liveDataBanner.setValue(banners);
-//    }
-    //Home Banner API
-
     //Banner Response here
     @SuppressLint("CheckResult")
     public LiveData<BannerResponse> bannerResponseLiveData(ProgressDialog progressDialog,
@@ -237,8 +108,8 @@ public class HomeViewModel extends AndroidViewModel {
 
                     @Override
                     public void onSuccess(BannerResponse response) {
-                        if (response!=null){
-                            Log.d(TAG, "onSuccess: "+response.getData().getBanners().get(0).getId());
+                        if (response != null) {
+                            Log.d(TAG, "onSuccess: " + response.getData().getBanners().get(0).getId());
                             progressDialog.dismiss();
                             bannerResponseMutableLiveData.setValue(response);
                         }
@@ -269,8 +140,8 @@ public class HomeViewModel extends AndroidViewModel {
     //Category Response here
     @SuppressLint("CheckResult")
     public LiveData<CategoryResponse> categoryResponseLiveData(ProgressDialog progressDialog,
-                                                             HashMap<String, String> hashMap,
-                                                             HomeFragment homeFragment) {
+                                                               HashMap<String, String> hashMap,
+                                                               HomeFragment homeFragment) {
 
         MutableLiveData<CategoryResponse> categoryResponseMutableLiveData = new MutableLiveData<>();
 
@@ -283,8 +154,8 @@ public class HomeViewModel extends AndroidViewModel {
 
                     @Override
                     public void onSuccess(CategoryResponse response) {
-                        if (response!=null){
-                            Log.d(TAG, "onSuccess: "+response.getMessage());
+                        if (response != null) {
+                            Log.d(TAG, "onSuccess: " + response.getMessage());
                             progressDialog.dismiss();
                             categoryResponseMutableLiveData.setValue(response);
                         }
@@ -314,8 +185,8 @@ public class HomeViewModel extends AndroidViewModel {
 
     // BasketList Response here
     public LiveData<BasketResponse> basketResponseLiveData(ProgressDialog progressDialog,
-                                                           HashMap<String,String> hashMap,
-                                                           HomeFragment homeFragment){
+                                                           HashMap<String, String> hashMap,
+                                                           HomeFragment homeFragment) {
         MutableLiveData<BasketResponse> basketResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(homeFragment.getContext())
@@ -326,7 +197,7 @@ public class HomeViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<BasketResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BasketResponse basketResponse) {
-                        if (basketResponse!=null){
+                        if (basketResponse != null) {
                             progressDialog.dismiss();
                             basketResponseMutableLiveData.setValue(basketResponse);
                         }
@@ -353,6 +224,220 @@ public class HomeViewModel extends AndroidViewModel {
                 });
         return basketResponseMutableLiveData;
     }
+
+    //ExclusiveList Response here
+    public LiveData<ExclusiveResponse> exclusiveResponseLiveData(ProgressDialog progressDialog,
+                                                                 HashMap<String, String> hashMap,
+                                                                 HomeFragment homeFragment) {
+        MutableLiveData<ExclusiveResponse> exclusiveResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(homeFragment.getContext())
+                .create(ApiInterface.class)
+                .homeExclusiveResponseSingle(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<ExclusiveResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ExclusiveResponse exclusiveResponse) {
+                        if (exclusiveResponse != null) {
+                            Log.d(TAG, "Exclusive onSuccess: " + exclusiveResponse.getExclusiveData().getExclusivesList().get(0).getId());
+
+                            progressDialog.dismiss();
+                            exclusiveResponseMutableLiveData.setValue(exclusiveResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        ExclusiveResponse response = new ExclusiveResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    ExclusiveResponse.class);
+
+                            exclusiveResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(3);
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return exclusiveResponseMutableLiveData;
+    }
+
+    //BestSelling Response here
+    public LiveData<BestSellingResponse> bestSellingResponseLiveData(ProgressDialog progressDialog,
+                                                                     HashMap<String, String> hashMap,
+                                                                     HomeFragment homeFragment) {
+        MutableLiveData<BestSellingResponse> bestSellingResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(homeFragment.getContext())
+                .create(ApiInterface.class)
+                .homeBestSellingResponseSingle(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BestSellingResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BestSellingResponse bestSellingResponse) {
+                        if (bestSellingResponse != null) {
+                            Log.d(TAG, "BestSelling onSuccess: " + bestSellingResponse.getBestSellingData().getBestSellingProductList().size());
+                            progressDialog.dismiss();
+                            bestSellingResponseMutableLiveData.setValue(bestSellingResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        BestSellingResponse response = new BestSellingResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BestSellingResponse.class);
+
+                            bestSellingResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(4);
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return bestSellingResponseMutableLiveData;
+    }
+
+    //Seasonal Products Response here
+    public LiveData<SeasonalProductResponse> seasonalResponseLiveData(ProgressDialog progressDialog,
+                                                                      HashMap<String, String> hashMap,
+                                                                      HomeFragment homeFragment) {
+        MutableLiveData<SeasonalProductResponse> seasonalProductResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(homeFragment.getContext())
+                .create(ApiInterface.class)
+                .homeSeasonalListResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<SeasonalProductResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull SeasonalProductResponse seasonalProductResponse) {
+                        if (seasonalProductResponse != null) {
+                            Log.d(TAG, "Seasonal onSuccess: " + seasonalProductResponse.getSeasonalProducts().size());
+                            progressDialog.dismiss();
+                            seasonalProductResponseMutableLiveData.setValue(seasonalProductResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        SeasonalProductResponse response = new SeasonalProductResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    SeasonalProductResponse.class);
+
+                            seasonalProductResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(5);
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return seasonalProductResponseMutableLiveData;
+    }
+
+    //Product list Response here
+    public LiveData<ProductListResponse> homeProductListResponseLiveData(ProgressDialog progressDialog,
+                                                                         HashMap<String, String> hashMap,
+                                                                         HomeFragment homeFragment) {
+        MutableLiveData<ProductListResponse> productListResponseMutableLiveData = new MutableLiveData();
+
+        ApiClientAuth.getClient(homeFragment.getContext())
+                .create(ApiInterface.class)
+                .homeProductListResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<ProductListResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProductListResponse productListResponse) {
+                        if (productListResponse != null) {
+                            Log.d(TAG, "productListResponse onSuccess: " + productListResponse.getProductResponseDt().getProductList().size());
+                            progressDialog.dismiss();
+                            productListResponseMutableLiveData.setValue(productListResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        ProductListResponse response = new ProductListResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    ProductListResponse.class);
+
+                            productListResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(6);
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return productListResponseMutableLiveData;
+    }
+
+    //Store Banner Response here
+
+    public LiveData<StoreBannerResponse> storeBannerResponseLiveData(ProgressDialog progressDialog,
+                                                                     HomeFragment homeFragment){
+        MutableLiveData<StoreBannerResponse> storeBannerMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(homeFragment.getContext())
+                .create(ApiInterface.class)
+                .homeStoreBannerResponse()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<StoreBannerResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull StoreBannerResponse storeBannerResponse) {
+                        if (storeBannerResponse!=null){
+                            Log.e(TAG, "storeBannerResponse onSuccess: "+storeBannerResponse.getStoreBanners().size());
+                            progressDialog.dismiss();
+                            storeBannerMutableLiveData.setValue(storeBannerResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        StoreBannerResponse storeBannerResponse = new StoreBannerResponse();
+                        try{
+                            storeBannerResponse = gson.fromJson(((HttpException) e).response().errorBody().toString(),
+                                    StoreBannerResponse.class);
+
+                            storeBannerMutableLiveData.setValue(storeBannerResponse);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(7);
+                        }
+                    }
+                });
+        return storeBannerMutableLiveData;
+    }
+
 
     public MutableLiveData<ArrayList<SeasonalProduct>> getLiveSeasonProducts() {
         return liveSeasonProducts;
