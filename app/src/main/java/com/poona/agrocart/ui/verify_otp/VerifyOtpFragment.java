@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
@@ -60,7 +61,9 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
     private View verifyView;
     private Bundle bundle;
 
-
+    private String strPattern = "\\d(?=\\d{3})";
+    private String phone;
+    private String otp = "";
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,12 +71,38 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         fragmentVerifyOtpBinding.setLifecycleOwner(this);
         verifyView = fragmentVerifyOtpBinding.getRoot();
 
+        verifyOtpViewModel = new ViewModelProvider(this).get(VerifyOtpViewModel.class);
+        try {
+            // Mask Phone number
+            bundle = this.getArguments();
+            phone = getArguments().getString(AppConstants.USER_MOBILE);
+            otp = getArguments().getString(AppConstants.USER_OTP);
+            basicDetails = new BasicDetails();
+            basicDetails.setOtp(otp);
+            String phoneNumber = "number:" + phone.replaceAll(strPattern, "*");
+            basicDetails.setMobileNumber(phoneNumber);
+            verifyOtpViewModel.userMobileMsg.setValue(context.getString(R.string.otp_sent) + " " + basicDetails.getMobileNumber());
+            fragmentVerifyOtpBinding.etOtp.requestFocus();
+            fragmentVerifyOtpBinding.etOtp.setCursorVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initViews(verifyView);
 
         ivBack.setOnClickListener(v -> {
             hideKeyBoard(requireActivity());
             Navigation.findNavController(verifyView).popBackStack();
         });
+
+        fragmentVerifyOtpBinding.etOtp.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                checkValidEnteredOtp();
+                return true;
+            }
+            return false;
+        });
+
         return verifyView;
     }
 
@@ -84,25 +113,6 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         fragmentVerifyOtpBinding.btnVerifyOtp.setOnClickListener(this);
         fragmentVerifyOtpBinding.tvResendOtp.setOnClickListener(this);
 
-//        commonViewModel=new ViewModelProvider(this).get(CommonViewModel.class);
-        verifyOtpViewModel = new ViewModelProvider(this).get(VerifyOtpViewModel.class);
-        try {
-            // Mask Phone number
-            bundle = this.getArguments();
-            String phone = getArguments().getString(AppConstants.USER_MOBILE);
-            String otp = getArguments().getString(AppConstants.USER_OTP);
-            String strPattern = "\\d(?=\\d{3})";
-            basicDetails = new BasicDetails();
-            basicDetails.setOtp(otp);
-            String phoneNumber = "number:" + phone.replaceAll(strPattern, "*");
-            basicDetails.setMobileNumber(phoneNumber);
-            verifyOtpViewModel.userMobileMsg.setValue(context.getString(R.string.otp_sent) + " " + basicDetails.getMobileNumber());
-//            commonViewModel.otpMobileMsg.setValue(getString(R.string.otp_sent)+phone.replaceAll(strPattern, "*"));
-            fragmentVerifyOtpBinding.etOtp.requestFocus();
-            fragmentVerifyOtpBinding.etOtp.setCursorVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         fragmentVerifyOtpBinding.setVerifyOtpViewModel(verifyOtpViewModel);
 
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
@@ -129,6 +139,9 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
             public void afterTextChanged(Editable s) {
                 if (s.length() == 4) {
                     hideKeyBoard(requireActivity());
+                    if(s.toString().equals(basicDetails.getOtp())) {
+                        checkValidEnteredOtp();
+                    }
                 }
             }
         });
@@ -144,24 +157,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_verify_otp:
-                Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
-                hideKeyBoard(requireActivity());
-                if (bundle != null) {
-                    basicDetails.setOtp(Objects.requireNonNull(fragmentVerifyOtpBinding.etOtp.getText()).toString());
-                    int errorCodeForOtp = basicDetails.isValidOtp();
-                    if (errorCodeForOtp == 0) {
-                        errorToast(requireActivity(), getString(R.string.otp_should_not_be_empty));
-                    } else if (errorCodeForOtp == 1) {
-                        errorToast(requireActivity(), getString(R.string.please_enter_valid_otp));
-                    } else {
-                        if (isConnectingToInternet(context)) {
-                            //add API call here
-                            callVerifyOtpApi(showCircleProgressDialog(context, ""));
-                        } else {
-                            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-                        }
-                    }
-                }
+                checkValidEnteredOtp();
                 break;
             case R.id.tv_resend_otp:
 //                fragmentVerifyOtpBinding.tvTimer.setVisibility(View.VISIBLE);
@@ -171,6 +167,26 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
 
     }
 
+    private void checkValidEnteredOtp() {
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
+        hideKeyBoard(requireActivity());
+        if (bundle != null) {
+            basicDetails.setOtp(Objects.requireNonNull(fragmentVerifyOtpBinding.etOtp.getText()).toString());
+            int errorCodeForOtp = basicDetails.isValidOtp();
+            if (errorCodeForOtp == 0) {
+                errorToast(requireActivity(), getString(R.string.otp_should_not_be_empty));
+            } else if (errorCodeForOtp == 1) {
+                errorToast(requireActivity(), getString(R.string.please_enter_valid_otp));
+            } else {
+                if (isConnectingToInternet(context)) {
+                    //add API call here
+                    callVerifyOtpApi(showCircleProgressDialog(context, ""));
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        }
+    }
 
     //Very OTP API here
     private void callVerifyOtpApi(ProgressDialog progressDialog) {
@@ -230,7 +246,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (resendOtpResponse.getMessage() != null) {
                             successToast(context, "" + resendOtpResponse.getMessage());
-//                            startOtpTimer();
+                            basicDetails.setOtp(resendOtpResponse.getUser().getOtp());
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors

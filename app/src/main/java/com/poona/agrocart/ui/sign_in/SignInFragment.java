@@ -18,9 +18,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -84,6 +87,14 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
         //hide keyboard after entering mobile number
         setUpTextWatcher();
+
+        fragmentSignInBinding.etPhoneNo.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                signInAndRedirectToVerifyOtp(v);
+                return true;
+            }
+            return false;
+        });
     }
 
     public void setUpCountryCodePicker() {
@@ -136,7 +147,6 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.iv_sign_up:
                 signInAndRedirectToVerifyOtp(v);
                 break;

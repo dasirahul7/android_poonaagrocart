@@ -89,7 +89,7 @@
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:cursorVisible="true"
                     android:digits="1234567890"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionSend"
                     android:inputType="number"
                     android:lineSpacingExtra="@dimen/_20sdp"
                     android:text="@{verifyOtpViewModel.otp}"
