@@ -67,7 +67,7 @@
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
     </style>
 
-<!--    Dialog animation bottom up-->
+    <!--Dialog animation bottom up-->
     <style name="DialogAnimationDownUp">
         <item name="android:windowEnterAnimation">@anim/slide_out_down</item>
         <item name="android:windowExitAnimation">@anim/slide_up_dialog</item>
@@ -84,7 +84,6 @@
     <style name="DialogSlideUp" parent="@android:style/Theme.Dialog">
         <item name="android:windowAnimationStyle">@style/DialogAnimationUp</item>
     </style>
-
 
     <!--rating bar-->
     <style name="theme_rating_bar">
@@ -115,6 +114,7 @@
         <item name="cornerSizeBottomRight">@dimen/_30sdp</item>
         <item name="cornerSizeBottomLeft">@dimen/_30sdp</item>
     </style>
+
     <!--Style for card view with top rounded corners-->
     <style name="ShapeAppearanceOverlay.MaterialCardView.top" parent="">
         <item name="cornerFamily">rounded</item>
@@ -164,33 +164,34 @@
         <item name="android:fontFamily">@font/poppins</item>
     </style>
 
-<!--     Organic button style-->
+    <!--Organic button style-->
     <style name="organic_button_style" parent="Widget.AppCompat.ImageButton">
         <item name="android:paddingTop">@dimen/_1sdp</item>
         <item name="android:paddingStart">@dimen/_1sdp</item>
     </style>
-<!--    Green plus button style-->
+
+    <!--Green plus button style-->
     <style name="PlusButtonStyle" parent="Widget.AppCompat.ImageButton">
         <item name="android:scaleType">center</item>
         <item name="android:background">@drawable/bg_green_square</item>
         <item name="android:src">@drawable/ic_plus_white</item>
     </style>
-    <!--    Green minus button style-->
+
+    <!--Green minus button style-->
     <style name="MinusButtonStyle" parent="Widget.AppCompat.ImageButton">
         <item name="android:scaleType">center</item>
         <item name="android:background">@drawable/bg_grey_square</item>
         <item name="android:src">@drawable/ic_minus</item>
     </style>
 
-<!--    Address TextView style-->
+    <!--Address TextView style-->
     <style name="FormTextStyle" parent="Widget.AppCompat.TextView">
         <item name="android:layout_marginStart">@dimen/_20sdp</item>
         <item name="android:layout_marginEnd">@dimen/_20sdp</item>
-        <item name="android:layout_marginTop">@dimen/_15sdp</item>
-        <item name="android:paddingTop">@dimen/alerter_padding_half</item>
-<!--        <item name="android:paddingLeft">@dimen/alerter_padding_half</item>-->
-        <item name="android:paddingRight">@dimen/alerter_padding_half</item>
-        <item name="android:paddingBottom">@dimen/alerter_padding_small</item>
+        <item name="android:layout_marginTop">@dimen/_12sdp</item>
+        <item name="android:paddingTop">@dimen/_2sdp</item>
+        <item name="android:paddingRight">@dimen/_6sdp</item>
+        <item name="android:paddingBottom">@dimen/_2sdp</item>
         <item name="android:textColor">@color/color15</item>
         <item name="android:textSize">@dimen/_16sp</item>
         <item name="android:textStyle">bold</item>
@@ -220,7 +221,7 @@
 <!--        <item name="background">@drawable/background_with_shadow_edittext</item>-->
         <item name="android:elevation">@dimen/_2sdp</item>
         <item name="android:paddingTop">@dimen/_8sdp</item>
-        <item name="android:paddingBottom">@dimen/_8sdp</item>
+        <item name="android:paddingBottom">@dimen/_12sdp</item>
         <item name="android:paddingRight">@dimen/_16sdp</item>
         <item name="android:paddingLeft">@dimen/_16sdp</item>
         <item name="android:textColor">@color/color_grey_txt</item>
@@ -234,9 +235,8 @@
         <item name="android:layout_height">@dimen/_30sdp</item>
         <item name="android:layout_marginStart">@dimen/_12sdp</item>
         <item name="android:layout_marginEnd">@dimen/_12sdp</item>
-<!--        <item name="android:background">@drawable/bg_dashboard_et_layout</item>-->
-<!--        <item name="android:background">@drawable/background_shadow_with_white_bg</item>-->
         <item name="android:elevation">@dimen/_2sdp</item>
+        <item name="android:paddingTop">@dimen/_4sdp</item>
         <item name="android:paddingStart">@dimen/_16sdp</item>
         <item name="android:paddingEnd">@dimen/_16sdp</item>
         <item name="android:gravity">start|center_vertical</item>
@@ -260,7 +260,7 @@
         <item name="setCustomFont">@string/font_poppins_medium</item>
     </style>
 
-<!--    Product item styles-->
+    <!--Product item styles-->
     <style name="ProductNameStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/blue_txt_color</item>
         <item name="android:textSize">@dimen/cat_txt_size</item>
@@ -282,7 +282,7 @@
         <item name="setCustomFont">@string/font_poppins_regular</item>
     </style>
 
-<!--    // Bottom sheet style-->
+    <!--// Bottom sheet style-->
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
@@ -322,4 +322,17 @@
     </style>
     <!--custom alert dialog end-->
 
+    <!--Start PinView Style-->
+    <style name="PinWidget" />
+
+    <style name="PinWidget.PinView" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@null</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textCursorDrawable">@drawable/pv_invisible_image</item>
+        <item name="android:textSelectHandle">@drawable/pv_invisible_image</item>
+        <item name="android:textSelectHandleLeft">@drawable/pv_invisible_image</item>
+        <item name="android:textSelectHandleRight">@drawable/pv_invisible_image</item>
+    </style>
+    <!--End PinView Style-->
 </resources>

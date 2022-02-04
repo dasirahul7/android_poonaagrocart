@@ -112,5 +112,4 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(COUPON_API)
     Single<CouponResponse> couponListResponse(@FieldMap HashMap<String, String> hashMap);
-
 }

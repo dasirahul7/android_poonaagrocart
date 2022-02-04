@@ -144,7 +144,7 @@ public class PinView extends AppCompatEditText {
                 res.getDimensionPixelSize(R.dimen.pv_pin_view_item_size));
         mPinItemWidth = (int) a.getDimension(R.styleable.PinView_itemWidth,
                 res.getDimensionPixelSize(R.dimen.pv_pin_view_item_size));
-        mPinItemSpacing = (int) a.getDimensionPixelSize(R.styleable.PinView_itemSpacingg,
+        mPinItemSpacing = (int) a.getDimensionPixelSize(R.styleable.PinView_itemSpacing,
                 res.getDimensionPixelSize(R.dimen.pv_pin_view_item_spacing));
         mPinItemRadius = (int) a.getDimension(R.styleable.PinView_itemRadius, 0);
         mLineWidth = (int) a.getDimension(R.styleable.PinView_lineWidth,

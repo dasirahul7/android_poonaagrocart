@@ -55,12 +55,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.util.IOUtils;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.firebase.PushNotification;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.home.model.Category;
-import com.poona.agrocart.ui.home.model.Exclusive;
 import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
@@ -68,8 +67,6 @@ import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.custom_alert.Alerter;
 import com.poona.agrocart.widgets.toast.CustomToast;
 import com.yalantis.ucrop.UCrop;
-
-import org.apache.commons.io.IOUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -820,18 +817,6 @@ public abstract class BaseFragment extends Fragment {
             e.printStackTrace();
         }
         return contentURI;
-    }
-
-    protected Uri getFilePathFromUri(Uri uri) throws IOException {
-        String fileName = getFileName(uri);
-        File file = new File(getActivity().getExternalCacheDir(), fileName);
-        file.createNewFile();
-        try (OutputStream outputStream = new FileOutputStream(file);
-             InputStream inputStream = getActivity().getContentResolver().openInputStream(uri)) {
-            IOUtils.copy(inputStream, outputStream); //Simply reads input to output stream
-            outputStream.flush();
-        }
-        return Uri.fromFile(file);
     }
 
     protected String getFileName(Uri uri) {
