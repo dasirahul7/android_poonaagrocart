@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -36,6 +37,7 @@ import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
 
@@ -196,13 +198,21 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if(signInResponse.getUser() != null){
                             successToast(context, ""+signInResponse.getUser().getOtp());
-                            basicDetails.setOtp(signInResponse.getUser().getOtp());
                             preferences.setAuthorizationToken(signInResponse.getToken());
-                            Bundle bundle = new Bundle();
-                            bundle.putString(AppConstants.USER_MOBILE, basicDetails.getMobileNumber());
-                            bundle.putString(AppConstants.COUNTRY_CODE, basicDetails.getCountryCode());
-                            bundle.putString(AppConstants.USER_OTP, basicDetails.getOtp());
-                            Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_verifyOtpFragment, bundle);
+                            //getStatus() = 1 Active, 2 Inactive, 3 Account deleted
+                            if(signInResponse.getUser().getStatus().equals("1")) {
+                                basicDetails.setOtp(signInResponse.getUser().getOtp());
+                                Bundle bundle = new Bundle();
+                                bundle.putString(AppConstants.COUNTRY_CODE, basicDetails.getCountryCode());
+                                bundle.putString(AppConstants.USER_MOBILE, basicDetails.getMobileNumber());
+                                bundle.putString(AppConstants.USER_OTP, basicDetails.getOtp());
+                                bundle.putString(AppConstants.USER_VERIFIED, signInResponse.getUser().getVerified());
+                                Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_verifyOtpFragment, bundle);
+                            } else if(signInResponse.getUser().getStatus().equals("2")) {
+                                //Inactive
+                            } else if(signInResponse.getUser().getStatus().equals("3")) {
+                                //Account deleted
+                            }
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors

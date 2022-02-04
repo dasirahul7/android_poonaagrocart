@@ -1,6 +1,5 @@
 package com.poona.agrocart.ui.verify_otp;
 
-import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.OTP;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
@@ -8,7 +7,6 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
-import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
 import android.app.ProgressDialog;
@@ -50,64 +48,61 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
     private static final String TAG =VerifyOtpFragment.class.getSimpleName() ;
     private FragmentVerifyOtpBinding fragmentVerifyOtpBinding;
     private BasicDetails basicDetails;
-//    private CommonViewModel commonViewModel;
     private VerifyOtpViewModel verifyOtpViewModel;
     private View verifyView;
     private Bundle bundle;
 
+    private String countryCode, mobileNumber, receivedOtp, userVerified;
+    private String strPattern = "\\d(?=\\d{3})";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        fragmentVerifyOtpBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_verify_otp,container,false);
+        fragmentVerifyOtpBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_verify_otp,container,false);
+
+        verifyOtpViewModel = new ViewModelProvider(this).get(VerifyOtpViewModel.class);
+        fragmentVerifyOtpBinding.setVerifyOtpViewModel(verifyOtpViewModel);
+
         fragmentVerifyOtpBinding.setLifecycleOwner(this);
+
         verifyView = fragmentVerifyOtpBinding.getRoot();
 
-        initViews(verifyView);
+        bundle = getArguments();
+        if(bundle != null) {
+            countryCode = bundle.getString(AppConstants.COUNTRY_CODE);
+            mobileNumber = bundle.getString(AppConstants.USER_MOBILE);
+            receivedOtp = bundle.getString(AppConstants.USER_OTP);
+            userVerified = bundle.getString(AppConstants.USER_VERIFIED);
+        }
+
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
+
+        basicDetails = new BasicDetails();
+        basicDetails.setOtp(receivedOtp);
+        mobileNumber = "number:"+ mobileNumber.replaceAll(strPattern, "*" );
+        basicDetails.setMobileNumber(mobileNumber);
+
+        /*set mobile number heading*/
+        verifyOtpViewModel.userMobileMsg.setValue(context.getString(R.string.otp_sent)+" "+basicDetails.getMobileNumber());
+        fragmentVerifyOtpBinding.etOtp.requestFocus();
+        fragmentVerifyOtpBinding.etOtp.setCursorVisible(true);
+
+        /*set font to pin view*/
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_regular));
+        fragmentVerifyOtpBinding.etOtp.setTypeface(font);
+
+        fragmentVerifyOtpBinding.btnVerifyOtp.setOnClickListener(this);
 
         ivBack.setOnClickListener(v -> {
             hideKeyBoard(requireActivity());
             Navigation.findNavController(verifyView).popBackStack();
         });
 
-        return verifyView;
-    }
-
-    private void initViews(View view)
-    {
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_regular));
-        fragmentVerifyOtpBinding.etOtp.setTypeface(font);
-
-        fragmentVerifyOtpBinding.btnVerifyOtp.setOnClickListener(this);
-
-//        commonViewModel=new ViewModelProvider(this).get(CommonViewModel.class);
-        verifyOtpViewModel=new ViewModelProvider(this).get(VerifyOtpViewModel.class);
-        try {
-            // Mask Phone number
-            bundle =this.getArguments();
-            String phone = getArguments().getString(AppConstants.USER_MOBILE);
-            String otp = getArguments().getString(AppConstants.USER_OTP);
-            String strPattern = "\\d(?=\\d{3})";
-            basicDetails=new BasicDetails();
-            basicDetails.setOtp(otp);
-            String phoneNumber = "number:"+phone.replaceAll(strPattern, "*" );
-            basicDetails.setMobileNumber(phoneNumber);
-            verifyOtpViewModel.userMobileMsg.setValue(context.getString(R.string.otp_sent)+" "+basicDetails.getMobileNumber());
-//            commonViewModel.otpMobileMsg.setValue(getString(R.string.otp_sent)+phone.replaceAll(strPattern, "*"));
-            fragmentVerifyOtpBinding.etOtp.requestFocus();
-            fragmentVerifyOtpBinding.etOtp.setCursorVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        fragmentVerifyOtpBinding.setVerifyOtpViewModel(verifyOtpViewModel);
-
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
-
         enableSoftKeyboard();
-
         fragmentVerifyOtpBinding.etOtp.requestFocus();
-
         setUpTextWatcher();
+
+        return verifyView;
     }
 
     private void setUpTextWatcher() {
@@ -126,8 +121,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         });
     }
 
-    private void enableSoftKeyboard()
-    {
+    private void enableSoftKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
@@ -136,25 +130,17 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
     public void onClick(View v) {
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
         hideKeyBoard(requireActivity());
-        if(bundle!=null)
-        {
+        if(bundle!=null) {
             basicDetails.setOtp(Objects.requireNonNull(fragmentVerifyOtpBinding.etOtp.getText()).toString());
             int errorCodeForOtp=basicDetails.isValidOtp();
-            if(errorCodeForOtp==0)
-            {
+            if(errorCodeForOtp==0) {
                 errorToast(requireActivity(),getString(R.string.otp_should_not_be_empty));
-            }
-            else if(errorCodeForOtp==1)
-            {
+            } else if(errorCodeForOtp==1) {
                 errorToast(requireActivity(),getString(R.string.please_enter_valid_otp));
-            }
-            else
-            {
+            } else {
                 if (isConnectingToInternet(context)) {
-                    //add API call here
                     callVerifyOtpApi(showCircleProgressDialog(context,""));
-                }
-                else {
+                } else {
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 }
             }
@@ -173,17 +159,20 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                 Log.e("Verify Otp Api Response", new Gson().toJson(verifyOtpResponse));
                 switch (verifyOtpResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        if(verifyOtpResponse.getMessage() != null){
+                        if(verifyOtpResponse.getMessage() != null) {
                             successToast(context, ""+verifyOtpResponse.getMessage());
-//                            if (verifyOtpResponse.getUser().getUserType()!=null){
-//                                preferences.setIsLoggedIn(true);
-//                                Intent intent = new Intent(context, HomeActivity.class);
-//                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                requireActivity().finish();
-//                                startActivity(intent);
-//                            }else
-                                Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
+                            Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment, bundle);
+                            //getVerified() = 0 not verified, 1 verified
+                            if(userVerified.equals("0")) {
+                                Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment, bundle);
+                            } else {
+                                preferences.setIsLoggedIn(true);
+                                Intent intent = new Intent(context, HomeActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                requireActivity().finish();
+                                startActivity(intent);
+                            }
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors

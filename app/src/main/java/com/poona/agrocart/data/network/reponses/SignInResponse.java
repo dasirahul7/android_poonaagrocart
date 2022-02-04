@@ -41,6 +41,12 @@ public class SignInResponse extends BaseResponse{
         @SerializedName("status")
         @Expose
         private String status;
+        @SerializedName("usertype")
+        @Expose
+        private String usertype;
+        @SerializedName("verified")
+        @Expose
+        private String verified;
 
         public String getMobile() {
             return mobile;
@@ -72,6 +78,22 @@ public class SignInResponse extends BaseResponse{
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        public String getUsertype() {
+            return usertype;
+        }
+
+        public void setUsertype(String usertype) {
+            this.usertype = usertype;
+        }
+
+        public String getVerified() {
+            return verified;
+        }
+
+        public void setVerified(String verified) {
+            this.verified = verified;
         }
     }
 }
