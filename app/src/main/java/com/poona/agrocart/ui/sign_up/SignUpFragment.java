@@ -98,9 +98,10 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         if(bundle!=null)
         {
             fragmentSignUpBinding.etPhoneNo.setText(bundle.getString(AppConstants.USER_MOBILE));
-            String tempCountryCode=bundle.getString(AppConstants.COUNTRY_CODE).replace("+","");
-            fragmentSignUpBinding.countryCodePicker.setCountryForPhoneCode(Integer.parseInt(tempCountryCode));
-            basicDetails.setCountryCode(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
+            Log.d(TAG, "initView: "+bundle.getString(AppConstants.USER_MOBILE));
+//            String tempCountryCode=bundle.getString(AppConstants.COUNTRY_CODE).replace("+","");
+//            fragmentSignUpBinding.countryCodePicker.setCountryForPhoneCode(Integer.parseInt(tempCountryCode));
+//            basicDetails.setCountryCode(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
             basicDetails.setMobileNumber(fragmentSignUpBinding.etPhoneNo.getText().toString());
 
             signUpViewModel.mobileNo.setValue(basicDetails.getMobileNumber());

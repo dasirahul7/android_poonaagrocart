@@ -205,6 +205,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                                 bundle.putString(USER_ID,verifyOtpResponse.getUser().getUserId());
                                 bundle.putString(USER_MOBILE,verifyOtpResponse.getUser().getUserMobile());
                                 bundle.putString(COUNTRY_CODE,bundle.getString(COUNTRY_CODE));
+                                preferences.setUserMobile(verifyOtpResponse.getUser().getUserMobile());
                                 Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment, bundle);
                             }
                         }

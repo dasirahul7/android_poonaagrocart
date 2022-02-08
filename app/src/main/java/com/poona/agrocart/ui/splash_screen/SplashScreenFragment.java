@@ -117,7 +117,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
                 bundle.putString(USER_ID,preferences.getUid());
                 bundle.putString(USER_MOBILE,preferences.getUserMobile());
                 bundle.putString(COUNTRY_CODE,preferences.getUserCountry());
-                NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signUpFragment);
+                NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signUpFragment,bundle);
             }
         }else {
             NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signInFragment);
