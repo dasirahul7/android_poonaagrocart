@@ -109,7 +109,6 @@ public class HomeViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(BannerResponse response) {
                         if (response != null) {
-                            Log.d(TAG, "onSuccess: " + response.getData().getBanners().get(0).getId());
                             progressDialog.dismiss();
                             bannerResponseMutableLiveData.setValue(response);
                         }
