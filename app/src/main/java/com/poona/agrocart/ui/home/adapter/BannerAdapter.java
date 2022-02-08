@@ -33,10 +33,18 @@ public class BannerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = this.layoutInflater.inflate(R.layout.row_banner, container, false);
         ImageView imageView = view.findViewById(R.id.imgAd);
-        Glide.with(context)
-                .load(banner.get(position).getAdvImage())
-                .placeholder(R.drawable.ic_banner_placeholder)
-                .into(imageView);
+        if (banner.get(position).isDummy()){
+            //set a dummy banner if bo banner is available
+            Glide.with(context)
+                    .load(R.drawable.ic_poona_agro_cart_logo)
+                    .placeholder(R.drawable.ic_banner_placeholder)
+                    .into(imageView);
+        }else {
+            Glide.with(context)
+                    .load(banner.get(position).getAdvImage())
+                    .placeholder(R.drawable.ic_banner_placeholder)
+                    .into(imageView);
+        }
         container.addView(view);
         return view;
     }

@@ -55,8 +55,8 @@ public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAd
 
         private void bindSeasonItem(SeasonalProduct seasonalProduct){
             if (seasonalProduct.getType().equals("Green"))
-                seasonalBannerBinding.rlSeasonalView.setBackgroundResource(R.drawable.seasonal_banner_green);
-            else seasonalBannerBinding.rlSeasonalView.setBackgroundResource(R.drawable.seasonal_banner_yellow);
+                seasonalBannerBinding.rlSeasonalView.setBackgroundResource(R.drawable.seasonal_banner_bg_green);
+            else seasonalBannerBinding.rlSeasonalView.setBackgroundResource(R.drawable.seasonal_banner_bg_yellow);
             seasonalBannerBinding.setVariable(BR.moduleSeasonBanner,seasonalProduct);
             seasonalBannerBinding.executePendingBindings();
         }

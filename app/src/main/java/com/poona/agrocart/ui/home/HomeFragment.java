@@ -483,13 +483,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                 fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
                                 fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
                                 fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
-                            }
-
+                            }else warningToast(context, "Category Not found");
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
+                        Log.e(TAG, "callCategoryApi: "+ categoryResponse.getMessage());
                         warningToast(context, categoryResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
@@ -510,9 +510,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private void callBannerApi(ProgressDialog progressDialog, int limit, int offset) {
         limit = limit + 10;
         Observer<BannerResponse> bannerResponseObserver = bannerResponse -> {
-            switch (bannerResponse.getStatus()) {
-                case STATUS_CODE_200://Record Create/Update Successfully
-                    if (bannerResponse != null) {
+            if (bannerResponse != null) {
+                progressDialog.dismiss();
+                Log.e("Banner Api Response", new Gson().toJson(bannerResponse));
+                switch (bannerResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+
                         if (bannerResponse.getData().getBanners().size() > 0) {
                             banners.clear();
                             banners = bannerResponse.getData().getBanners();
@@ -522,28 +525,45 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
                             // Set up tab indicators
                             fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
-                        }else {
-
+                        } else {
+                            // set a dummy banner if no banner is available
+                            makeDummyBanner();
                         }
-                    }
-                    break;
-                case STATUS_CODE_403://Validation Errors
-                case STATUS_CODE_400://Validation Errors
-                case STATUS_CODE_404://Validation Errors
-                    warningToast(context, bannerResponse.getMessage());
-                    break;
-                case STATUS_CODE_401://Unauthorized user
-                    goToAskSignInSignUpScreen(bannerResponse.getMessage(), context);
-                    break;
-                case STATUS_CODE_405://Method Not Allowed
-                    infoToast(context, bannerResponse.getMessage());
-                    break;
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        // set a dummy banner if no banner is available
+                        makeDummyBanner();
+                        warningToast(context, bannerResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(bannerResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, bannerResponse.getMessage());
+                        break;
+                }
             }
 
         };
         homeViewModel.bannerResponseLiveData(progressDialog, listingParams(limit, offset,""), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), bannerResponseObserver);
 
+    }
+
+    /*Create a Summy banner if no banner is available*/
+    private void makeDummyBanner() {
+        Banner banner = new Banner("1","customer","","");
+        banner.setDummy(true);
+        banners.clear();
+        banners.add(banner);
+        this.NumberOfBanners = banners.size();
+        bannerAdapter = new BannerAdapter(banners, requireActivity());
+//
+        fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
+        // Set up tab indicators
+        fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
     }
 
     //Banner Auto Scroll
