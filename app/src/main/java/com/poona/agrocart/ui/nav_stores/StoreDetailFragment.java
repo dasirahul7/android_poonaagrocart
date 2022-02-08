@@ -19,7 +19,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentStoreDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.nav_stores.model.OurStoreListData;
 import com.poona.agrocart.ui.nav_stores.model.Store;
+import com.poona.agrocart.ui.nav_stores.model.store_details.StoreDetail;
 
 public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallback {
 
@@ -27,13 +29,13 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private StoreDetailViewModel mViewModel;
     private FragmentStoreDetailBinding storeBinding;
-    private static Store storeValue;
+    private static StoreDetail storeValue;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
     private MapView mapView;
     private GoogleMap gmap;
     private boolean locationPermissionGranted;
 
-    public static StoreDetailFragment newInstance(Store store) {
+    public static StoreDetailFragment newInstance(StoreDetail store) {
         storeValue = store;
         return new StoreDetailFragment();
     }
@@ -60,7 +62,7 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
 
     private void initViews() {
         mViewModel.storeMutableLiveData.setValue(storeValue);
-        Log.d(TAG, "initViews: "+mViewModel.storeMutableLiveData.getValue().getName());
+        Log.d(TAG, "initViews: "+mViewModel.storeMutableLiveData.getValue().getId());
         storeBinding.setStoreDetailViewModel(mViewModel);
     }
 

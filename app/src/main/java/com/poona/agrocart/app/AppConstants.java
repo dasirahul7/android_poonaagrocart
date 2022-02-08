@@ -83,6 +83,9 @@ public class AppConstants {
     /*Offer & Coupon APIs*/
     public static final String COUPON_API = "coupon-list";
 
+    /*Our Store Api */
+    public static final String STORE_LIST = "store-list";
+
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";
@@ -158,4 +161,6 @@ public class AppConstants {
     public static final Integer SEARCH_CATEGORY = 1;
     public static final Integer SEARCH_BASKET = 2;
 
+    /*Store Parameter*/
+    public static String ORDER_ID = "store_id";
 }

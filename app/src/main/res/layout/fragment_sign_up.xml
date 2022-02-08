@@ -190,23 +190,26 @@
                         android:layout_marginLeft="@dimen/_4sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:orientation="horizontal"
-                        android:weightSum="100">
+                        android:weightSum="2">
 
                         <com.poona.agrocart.widgets.CustomTextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/alerter_padding_half"
                             android:text="@string/by_continuing_you_agree"
                             android:textSize="@dimen/_14sp"
+                            android:layout_gravity="start"
+                            android:layout_weight="0.9"
                             app:setCustomFont="@string/font_poppins_regular" />
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:id="@+id/tv_terms_of_service"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="@dimen/alerter_padding_half"
+                            android:layout_weight="1.1"
                             android:text="@string/terms_of_service"
                             android:textColor="@color/selectedGreen"
+                            android:layout_gravity="start"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
 
@@ -227,7 +230,7 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/alerter_padding_half"
                             android:text="@string/and"
-                            android:textSize="@dimen/_14sp"
+                            android:textSize="@dimen/_12sp"
                             app:setCustomFont="@string/font_poppins_regular" />
 
                         <com.poona.agrocart.widgets.CustomTextView
@@ -237,7 +240,7 @@
                             android:drawablePadding="@dimen/alerter_padding_half"
                             android:text="@string/privacy_policy"
                             android:textColor="@color/selectedGreen"
-                            android:textSize="@dimen/_14sp"
+                            android:textSize="@dimen/_12sp"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
 
 

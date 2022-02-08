@@ -5,125 +5,34 @@
     tools:context=".ui.nav_faq.FaQFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+
         android:layout_width="match_parent"
         android:background="@color/white"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/linearLayout4"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_14sdp"
-            android:layout_marginVertical="@dimen/_10sdp"
-            android:background="@drawable/bg_et_border"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.poona.agrocart.widgets.CustomButton
-                android:id="@+id/btn_faq"
-                style="?android:attr/borderlessButtonStyle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_light_green"
-                android:drawableEnd="@drawable/ic_white_down_arrow"
-                android:drawablePadding="-30dp"
-                android:gravity="start|center_vertical"
-                android:includeFontPadding="false"
-                android:paddingEnd="@dimen/_10sdp"
-                android:paddingStart="@dimen/_10sdp"
-                android:text="@string/faq_heading"
-                android:textAllCaps="false"
-                android:textColor="@color/background_color_white_green"
-                android:textSize="@dimen/_14sp"
-                app:setCustomFont="@string/font_poppins_semi_bold" />
+                android:orientation="vertical">
 
-            <com.poona.agrocart.widgets.CustomEditText
-                android:id="@+id/tv_faq_content"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_100sdp"
-                android:background="@null"
-                android:hint="@string/faq_content"
-                android:padding="@dimen/_10sdp"
-                android:textColor="@color/color_grey_txt"
-                android:textSize="@dimen/_16sp" />
-        </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_faq_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_6sdp"/>
+
+            </LinearLayout>
 
 
-        <com.poona.agrocart.widgets.CustomTextView
-            android:elevation="@dimen/_8sdp"
-            android:gravity="center_vertical"
-            android:id="@+id/tv_where"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_marginHorizontal="@dimen/_14sdp"
-            android:layout_marginVertical="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/bg_tv_border"
-            android:padding="@dimen/_12sdp"
-            android:includeFontPadding="false"
-            app:setCustomFont="@string/font_poppins_semi_bold"
-            android:text="@string/where_do_you_deliver"
-            android:textSize="@dimen/_13sp"
-            android:textColor="@color/bold_txt_color"
-            android:drawableEnd="@drawable/ic_grey_down_arrow"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-        <com.poona.agrocart.widgets.CustomTextView
-            android:id="@+id/how_do_i"
-            android:elevation="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_marginHorizontal="@dimen/_14sdp"
-            android:layout_marginVertical="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/bg_tv_border"
-            android:padding="@dimen/_12sdp"
-            android:includeFontPadding="false"
-            app:setCustomFont="@string/font_poppins_semi_bold"
-            android:text="@string/how_do_i_order"
-            android:textSize="@dimen/_13sp"
-            android:gravity="center_vertical"
-            android:textColor="@color/bold_txt_color"
-            android:drawableEnd="@drawable/ic_grey_down_arrow"
-            app:layout_constraintTop_toBottomOf="@+id/tv_where" />
-        <com.poona.agrocart.widgets.CustomTextView
-            android:id="@+id/tv_how_cancel"
-            android:elevation="@dimen/_8sdp"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_marginHorizontal="@dimen/_14sdp"
-            android:layout_marginVertical="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/bg_tv_border"
-            android:padding="@dimen/_12sdp"
-            android:includeFontPadding="false"
-            app:setCustomFont="@string/font_poppins_semi_bold"
-            android:text="@string/how_do_i_cancel"
-            android:textSize="@dimen/_13sp"
-            android:gravity="center_vertical"
-            android:textColor="@color/bold_txt_color"
-            android:drawableEnd="@drawable/ic_grey_down_arrow"
-            app:layout_constraintTop_toBottomOf="@+id/how_do_i" />
-        <com.poona.agrocart.widgets.CustomTextView
-            android:id="@+id/tv_money_back"
-            android:layout_width="match_parent"
-            android:elevation="@dimen/_8sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_marginHorizontal="@dimen/_14sdp"
-            android:layout_marginVertical="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/bg_tv_border"
-            android:padding="@dimen/_12sdp"
-            android:includeFontPadding="false"
-            android:gravity="center_vertical"
-            app:setCustomFont="@string/font_poppins_semi_bold"
-            android:text="@string/how_money_back"
-            android:textSize="@dimen/_13sp"
-            android:textColor="@color/lightBlack"
-            android:drawableEnd="@drawable/ic_grey_down_arrow"
-            app:layout_constraintTop_toBottomOf="@+id/tv_how_cancel" />
-
+        </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

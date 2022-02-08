@@ -6,7 +6,7 @@
 
         <variable
             name="store"
-            type="com.poona.agrocart.ui.nav_stores.model.Store" />
+            type="com.poona.agrocart.ui.nav_stores.model.OurStoreListData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -37,7 +37,8 @@
                 app:cardUseCompatPadding="true">
 
                 <ImageView
-                    setStoreImage="@{store.img}"
+                    android:id="@+id/iv_icon"
+                    setStoreImage="@{store.storeImage}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
@@ -56,7 +57,7 @@
                     android:id="@+id/tv_store_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{store.name}"
+                    android:text="@{store.storeName}"
                     android:textColor="@color/blue_txt_color"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
@@ -69,7 +70,7 @@
                     android:drawablePadding="@dimen/_2sdp"
                     android:gravity="center_vertical"
                     android:paddingVertical="@dimen/_2sdp"
-                    android:text="@{store.location}"
+                    android:text="@{store.areaName}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
