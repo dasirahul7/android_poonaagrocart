@@ -510,18 +510,34 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private void callBannerApi(ProgressDialog progressDialog, int limit, int offset) {
         limit = limit + 10;
         Observer<BannerResponse> bannerResponseObserver = bannerResponse -> {
-            if (bannerResponse != null) {
-                if (bannerResponse.getData().getBanners().size() > 0) {
-                    banners.clear();
-                    banners = bannerResponse.getData().getBanners();
-                    this.NumberOfBanners = banners.size();
-                    bannerAdapter = new BannerAdapter(banners, requireActivity());
+            switch (bannerResponse.getStatus()) {
+                case STATUS_CODE_200://Record Create/Update Successfully
+                    if (bannerResponse != null) {
+                        if (bannerResponse.getData().getBanners().size() > 0) {
+                            banners.clear();
+                            banners = bannerResponse.getData().getBanners();
+                            this.NumberOfBanners = banners.size();
+                            bannerAdapter = new BannerAdapter(banners, requireActivity());
 //
-                    fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
-                    // Set up tab indicators
-                    fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
-                }
+                            fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
+                            // Set up tab indicators
+                            fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
+                        }
+                    }
+                    break;
+                case STATUS_CODE_403://Validation Errors
+                case STATUS_CODE_400://Validation Errors
+                case STATUS_CODE_404://Validation Errors
+                    warningToast(context, bannerResponse.getMessage());
+                    break;
+                case STATUS_CODE_401://Unauthorized user
+                    goToAskSignInSignUpScreen(bannerResponse.getMessage(), context);
+                    break;
+                case STATUS_CODE_405://Method Not Allowed
+                    infoToast(context, bannerResponse.getMessage());
+                    break;
             }
+
         };
         homeViewModel.bannerResponseLiveData(progressDialog, listingParams(limit, offset,""), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), bannerResponseObserver);
