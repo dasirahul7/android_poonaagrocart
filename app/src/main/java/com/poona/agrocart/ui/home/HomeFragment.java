@@ -522,6 +522,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
                             // Set up tab indicators
                             fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
+                        }else {
+
                         }
                     }
                     break;

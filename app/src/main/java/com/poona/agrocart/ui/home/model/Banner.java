@@ -67,6 +67,9 @@ public class Banner {
     @Expose
     private ArrayList<BannerArea> bannerArea = null;
 
+    public Banner() {
+    }
+
     public Banner(String id, String userType, String advUrl, String advImage) {
         this.id = id;
         this.userType = userType;
