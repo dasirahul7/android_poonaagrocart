@@ -47,7 +47,6 @@ public class SearchViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProductListResponse productListResponse) {
                         if (productListResponse != null) {
-                            Log.d(TAG, "productListResponse onSuccess: " + productListResponse.getProductResponseDt().getProductList().size());
                             progressDialog.dismiss();
                             productListResponseMutableLiveData.setValue(productListResponse);
                         }

@@ -141,6 +141,12 @@
     <string name="_10_off">10% Off</string>
     <string name="one_kg">1Kg</string>
     <string name="rs">Rs25</string>
+    <string name="no_category">No category available</string>
+    <string name="no_best_selling">No Best Selling available</string>
+    <string name="no_offer">No Offer available</string>
+    <string name="no_our_store">No Store available</string>
+    <string name="no_seasonal">No Seasonal Offer available</string>
+    <string name="no_products">No Products available</string>
 
     <!--My profile screen-->
     <string name="name">Name</string>

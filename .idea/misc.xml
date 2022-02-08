@@ -66,7 +66,7 @@
         <entry key="app/src/main/res/drawable/green_rectangle.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_about_us.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/ic_address.xml" value="0.1638888888888889" />
-        <entry key="app/src/main/res/drawable/ic_banner_placeholder.xml" value="0.13240740740740742" />
+        <entry key="app/src/main/res/drawable/ic_banner_placeholder.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.19814814814814816" />
         <entry key="app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.2" />
@@ -180,7 +180,7 @@
         <entry key="app/src/main/res/layout/fragment_dash_board2.xml" value="0.1431159420289855" />
         <entry key="app/src/main/res/layout/fragment_explore.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_favourite_items.xml" value="0.13405797101449277" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_intro.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_intro_item.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_intro_screen.xml" value="0.2" />

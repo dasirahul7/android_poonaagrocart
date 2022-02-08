@@ -11,7 +11,6 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +20,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -73,6 +71,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private static final String TAG = HomeFragment.class.getSimpleName();
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding fragmentHomeBinding;
+    //Adapters here
     private BannerAdapter bannerAdapter;
     private CategoryAdapter categoryAdapter;
     private ProductListAdapter productListAdapter;
@@ -80,20 +79,23 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private ExclusiveOfferListAdapter offerListAdapter;
     private BasketAdapter basketAdapter;
     private SeasonalBannerAdapter seasonalBannerAdapter;
+    //ArrayLists here
     private ArrayList<Exclusive> bestSellings = new ArrayList<>();
     private ArrayList<Exclusive> offerProducts = new ArrayList<>();
-    private ArrayList<Exclusive> cartProductList = new ArrayList<>();
+    private ArrayList<Exclusive> productList = new ArrayList<>();
     private ArrayList<Banner> banners = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
     private ArrayList<Basket> baskets = new ArrayList<>();
     private ArrayList<SeasonalProduct> seasonalProductList = new ArrayList<>();
     private final ArrayList<Product> mCartList = new ArrayList<Product>();
+    private ArrayList<StoreBanner> storeBannerList = new ArrayList<>();
     private ArrayList<String> BasketIds = new ArrayList<>();
+
     private int limit = 0;
     private int offset = 0;
     private View root;
-    private int currentBanner=0;
-    private int NumberOfBanners =0;
+    private int currentBanner = 0;
+    private int NumberOfBanners = 0;
     private Timer bannerTimer;
     Timer timer = new Timer();
     boolean isTyping = false;
@@ -105,21 +107,64 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         root = fragmentHomeBinding.getRoot();
+        clearLists();
         callBannerApi(showCircleProgressDialog(context, ""), limit, offset);
         callCategoryApi(root, showCircleProgressDialog(context, ""), limit, offset);
-        callBasketApi(root,showCircleProgressDialog(context,""),limit,offset);
-        callExclusiveOfferApi(root,showCircleProgressDialog(context,""),limit,offset);
-        callBestSellingApi(root,showCircleProgressDialog(context,""),limit,offset);
-        callSeasonalProductApi(root,showCircleProgressDialog(context,""),limit,offset);
-        callProductListApi(root,showCircleProgressDialog(context,""),limit,offset);
-        callStoreBannerApi(root,showCircleProgressDialog(context,""));
+        callBasketApi(root, showCircleProgressDialog(context, ""), limit, offset);
+        callExclusiveOfferApi(root, showCircleProgressDialog(context, ""), limit, offset);
+        callBestSellingApi(root, showCircleProgressDialog(context, ""), limit, offset);
+        callSeasonalProductApi(root, showCircleProgressDialog(context, ""), limit, offset);
+        callProductListApi(root, showCircleProgressDialog(context, ""), limit, offset);
+        callStoreBannerApi(root, showCircleProgressDialog(context, ""));
         getBasketItems();
 //        setStoreBanner(root);
         initClick();
         bannerAutoSLider();
         searchProducts(root);
+
+        checkEmpties();
         return root;
 
+    }
+
+    private void checkEmpties() {
+        //check if banner is empty
+        if (banners == null || banners.size() == 0) {
+            makeDummyBanner();
+        }
+        //check if category is empty
+        if (categories == null || categories.size() == 0) {
+            makeInVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
+        }
+        //check if Basket is empty
+        if (baskets == null || baskets.size() == 0) {
+            makeInVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
+        }
+        //check if Best selling is Empty
+        if (bestSellings == null || bestSellings.size() == 0) {
+            makeInVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
+        }
+        //check if seasonalProductList is Empty
+        if (seasonalProductList == null || seasonalProductList.size() == 0) {
+            makeInVisible(fragmentHomeBinding.recSeasonal, null);
+        }
+        // check if exclusive offer is Empty
+        if (offerProducts == null || offerProducts.size() == 0) {
+            makeInVisible(fragmentHomeBinding.recOffers, fragmentHomeBinding.rlExclusiveOffer);
+        }
+        //check if storeBannerList is Empty
+        if (storeBannerList == null || storeBannerList.size() == 0) {
+            makeInVisible(fragmentHomeBinding.cardviewOurShops,null);
+        }
+        // check if productList is Empty
+        if (productList==null||productList.size()==0){
+            makeInVisible(fragmentHomeBinding.recProduct,null);
+        }
+
+    }
+
+    private void clearLists() {
+        banners.clear();
     }
 
     private void searchProducts(View root) {
@@ -147,12 +192,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             hideKeyBoard(requireActivity());
                             getActivity().runOnUiThread(new Runnable() {
                                 public void run() {
-                                    if (!fragmentHomeBinding.etSearch.getText().toString().trim().equals("")){
-                                        Bundle bundle = new Bundle();
-                                        bundle.putInt(SEARCH_TYPE,SEARCH_PRODUCT);
-                                        bundle.putString(SEARCH_KEY,fragmentHomeBinding.etSearch.getText().toString());
-                                        Navigation.findNavController(root).navigate(R.id.action_nav_home_to_searchFragment,bundle);
-                                    }else return;
+                                    try {
+                                        if (fragmentHomeBinding.etSearch.getText() != null) {
+                                            if (!fragmentHomeBinding.etSearch.getText().toString().trim().equals("")) {
+                                                Bundle bundle = new Bundle();
+                                                bundle.putInt(SEARCH_TYPE, SEARCH_PRODUCT);
+                                                bundle.putString(SEARCH_KEY, fragmentHomeBinding.etSearch.getText().toString());
+                                                Navigation.findNavController(root).navigate(R.id.action_nav_home_to_searchFragment, bundle);
+                                            } else return;
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                         } catch (Exception e) {
@@ -167,126 +218,130 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     //Store Banner data here
     private void callStoreBannerApi(View root, ProgressDialog progressDialog) {
-    Observer<StoreBannerResponse> bannerResponseObserver = storeBannerResponse -> {
-        if (storeBannerResponse!=null){
-            progressDialog.dismiss();
-            Log.e(TAG, "callStoreBannerApi: "+ storeBannerResponse.getStoreBanners().size());
-            switch (storeBannerResponse.getStatus()) {
-                case STATUS_CODE_200://Record Create/Update Successfully
-                    if (storeBannerResponse.getStoreBanners().size()>0){
-                        StoreBanner storeBanner = storeBannerResponse.getStoreBanners().get(0);
-                        fragmentHomeBinding.setStoreBanner(storeBanner);
-                        fragmentHomeBinding.setVariable(BR.storeBanner,storeBanner);
-                        fragmentHomeBinding.executePendingBindings();
-                        fragmentHomeBinding.cardviewOurShops.setOnClickListener(v -> {
-                            redirectToOurShops(root);
-                        });
-                    }
-                    break;
-                case STATUS_CODE_403://Validation Errors
-                case STATUS_CODE_400://Validation Errors
-                case STATUS_CODE_404://Validation Errors
-                    warningToast(context, storeBannerResponse.getMessage());
-                    break;
-                case STATUS_CODE_401://Unauthorized user
-                    goToAskSignInSignUpScreen(storeBannerResponse.getMessage(), context);
-                    break;
-                case STATUS_CODE_405://Method Not Allowed
-                    infoToast(context, storeBannerResponse.getMessage());
-                    break;
-            }
+        Observer<StoreBannerResponse> bannerResponseObserver = storeBannerResponse -> {
+            if (storeBannerResponse != null) {
+                progressDialog.dismiss();
+                Log.e(TAG, "callStoreBannerApi: " + storeBannerResponse.getStoreBanners().size());
+                switch (storeBannerResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (storeBannerResponse.getStoreBanners().size() > 0) {
+                            makeVisible(fragmentHomeBinding.cardviewOurShops,null);
+                            storeBannerList = storeBannerResponse.getStoreBanners();
+                            StoreBanner storeBanner = storeBannerResponse.getStoreBanners().get(0);
+                            fragmentHomeBinding.setStoreBanner(storeBanner);
+                            fragmentHomeBinding.setVariable(BR.storeBanner, storeBanner);
+                            fragmentHomeBinding.executePendingBindings();
+                            fragmentHomeBinding.cardviewOurShops.setOnClickListener(v -> {
+                                redirectToOurShops(root);
+                            });
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, storeBannerResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(storeBannerResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, storeBannerResponse.getMessage());
+                        break;
+                }
 
-        }
-    };
-    homeViewModel.storeBannerResponseLiveData(progressDialog,HomeFragment.this)
-            .observe(getViewLifecycleOwner(),bannerResponseObserver);
+            }
+        };
+        homeViewModel.storeBannerResponseLiveData(progressDialog, HomeFragment.this)
+                .observe(getViewLifecycleOwner(), bannerResponseObserver);
     }
 
     // Product listing here
     private void callProductListApi(View root, ProgressDialog progressDialog, int limit, int offset) {
-    limit = limit+10;
-    Observer<ProductListResponse> productListResponseObserver = productListResponse -> {
-        if (productListResponse!=null){
-            progressDialog.dismiss();
-            Log.e(TAG, "callProductListApi: "+productListResponse.getProductResponseDt().getProductList().size());
-            switch (productListResponse.getStatus()) {
-                case STATUS_CODE_200://Record Create/Update Successfully
-                    if (productListResponse.getProductResponseDt().getProductList().size()>0){
-                        this.cartProductList = productListResponse.getProductResponseDt().getProductList();
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-                        fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
-                        fragmentHomeBinding.recProduct.setHasFixedSize(true);
-                        fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
-                        productListAdapter = new ProductListAdapter(cartProductList, getActivity(), root);
-                        fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
-                        productListAdapter.setOnProductClick(product -> {
-                            toProductDetail(product, root);
-                        });
+        limit = limit + 10;
+        Observer<ProductListResponse> productListResponseObserver = productListResponse -> {
+            if (productListResponse != null) {
+                progressDialog.dismiss();
+                Log.e(TAG, "callProductListApi: " + productListResponse.getProductResponseDt().getProductList().size());
+                switch (productListResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (productListResponse.getProductResponseDt().getProductList().size() > 0) {
+                            makeVisible(fragmentHomeBinding.recProduct,null);
+                            productList = productListResponse.getProductResponseDt().getProductList();
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+                            fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
+                            fragmentHomeBinding.recProduct.setHasFixedSize(true);
+                            fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
+                            productListAdapter = new ProductListAdapter(productList, getActivity(), root);
+                            fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
+                            productListAdapter.setOnProductClick(product -> {
+                                toProductDetail(product, root);
+                            });
 
-                    }
-                    break;
-                case STATUS_CODE_403://Validation Errors
-                case STATUS_CODE_400://Validation Errors
-                case STATUS_CODE_404://Validation Errors
-                    warningToast(context, productListResponse.getMessage());
-                    break;
-                case STATUS_CODE_401://Unauthorized user
-                    goToAskSignInSignUpScreen(productListResponse.getMessage(), context);
-                    break;
-                case STATUS_CODE_405://Method Not Allowed
-                    infoToast(context, productListResponse.getMessage());
-                    break;
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, productListResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(productListResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, productListResponse.getMessage());
+                        break;
+                }
+
             }
-
-        }
-    };
-    homeViewModel.homeProductListResponseLiveData(progressDialog,
-            listingParams(limit, offset,""),HomeFragment.this)
-            .observe(getViewLifecycleOwner(),productListResponseObserver);
+        };
+        homeViewModel.homeProductListResponseLiveData(progressDialog,
+                listingParams(limit, offset, ""), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), productListResponseObserver);
     }
 
 
     //Seasonal Product listing here
     private void callSeasonalProductApi(View root, ProgressDialog progressDialog, int limit, int offset) {
-    limit = limit+10;
-    Observer<SeasonalProductResponse> seasonalProductObserver = seasonalProductResponse -> {
-        if (seasonalProductResponse!=null){
-            progressDialog.dismiss();
-            Log.e("SeasonalProduct Api Response", new Gson().toJson(seasonalProductResponse));
-            switch (seasonalProductResponse.getStatus()) {
-                case STATUS_CODE_200://Record Create/Update Successfully
-                    if (seasonalProductResponse.getSeasonalProducts().size()>0){
-                        for (int i =0 ; i<seasonalProductResponse.getSeasonalProducts().size();i++){
-                            if (i/2==0){
-                                seasonalProductResponse.getSeasonalProducts().get(i).setType("Green");
-                            }else seasonalProductResponse.getSeasonalProducts().get(i).setType("Yellow");
+        limit = limit + 10;
+        Observer<SeasonalProductResponse> seasonalProductObserver = seasonalProductResponse -> {
+            if (seasonalProductResponse != null) {
+                progressDialog.dismiss();
+                Log.e("SeasonalProduct Api Response", new Gson().toJson(seasonalProductResponse));
+                switch (seasonalProductResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (seasonalProductResponse.getSeasonalProducts().size() > 0) {
+                            for (int i = 0; i < seasonalProductResponse.getSeasonalProducts().size(); i++) {
+                                if (i / 2 == 0) {
+                                    seasonalProductResponse.getSeasonalProducts().get(i).setType("Green");
+                                } else
+                                    seasonalProductResponse.getSeasonalProducts().get(i).setType("Yellow");
+                            }
+                            seasonalProductList = seasonalProductResponse.getSeasonalProducts();
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
+                            fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
+                            fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
+                            fragmentHomeBinding.recSeasonal.setLayoutManager(linearLayoutManager);
+                            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, root);
+                            fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
                         }
-                        seasonalProductList = seasonalProductResponse.getSeasonalProducts();
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
-                        fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
-                        fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
-                        fragmentHomeBinding.recSeasonal.setLayoutManager(linearLayoutManager);
-                        seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, root);
-                        fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
-                    }
-                    break;
-                case STATUS_CODE_403://Validation Errors
-                case STATUS_CODE_400://Validation Errors
-                case STATUS_CODE_404://Validation Errors
-                    warningToast(context, seasonalProductResponse.getMessage());
-                    break;
-                case STATUS_CODE_401://Unauthorized user
-                    goToAskSignInSignUpScreen(seasonalProductResponse.getMessage(), context);
-                    break;
-                case STATUS_CODE_405://Method Not Allowed
-                    infoToast(context, seasonalProductResponse.getMessage());
-                    break;
-            }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, seasonalProductResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(seasonalProductResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, seasonalProductResponse.getMessage());
+                        break;
+                }
 
-        }
-    };
-    homeViewModel.seasonalResponseLiveData(progressDialog,listingParams(limit, offset,""), HomeFragment.this)
-            .observe(getViewLifecycleOwner(),seasonalProductObserver);
+            }
+        };
+        homeViewModel.seasonalResponseLiveData(progressDialog, listingParams(limit, offset, ""), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), seasonalProductObserver);
 
     }
 
@@ -299,23 +354,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 Log.e("Category Api Response", new Gson().toJson(bestSellingResponse));
                 switch (bestSellingResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size()>0){
+                        if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
                             this.bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
                             bestsellingAdapter = new ExclusiveOfferListAdapter(this.bestSellings, requireActivity(), root);
-                            fragmentHomeBinding.recOfferProduct.setNestedScrollingEnabled(false);
-                            fragmentHomeBinding.recOfferProduct.setLayoutManager(layoutManager);
-                            fragmentHomeBinding.recOfferProduct.setAdapter(bestsellingAdapter);
+                            fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
+                            fragmentHomeBinding.recBestSelling.setLayoutManager(layoutManager);
+                            fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
                             // Redirect to Product details
                             bestsellingAdapter.setOnProductClick(product -> {
                                 toProductDetail(product, root);
                             });
-//                            bestsellingAdapter.setOnPlusClick((product, position) -> {
-//                                addToBasket(product);
-//                                this.bestSellings.get(position).setInBasket(true);
-//                                this.bestSellings.get(position).setQuantity("1");
-//                                bestsellingAdapter.notifyItemChanged(position);
-//                            });
+//
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -334,8 +384,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         };
         homeViewModel.bestSellingResponseLiveData(showCircleProgressDialog,
-                listingParams(limit, offset,""), HomeFragment.this)
-                .observe(getViewLifecycleOwner(),bestSellingResponseObserver);
+                listingParams(limit, offset, ""), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), bestSellingResponseObserver);
     }
 
     //Exclusive Offer Data listing
@@ -347,11 +397,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 Log.e("Category Api Response", new Gson().toJson(exclusiveResponse));
                 switch (exclusiveResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        if (exclusiveResponse.getExclusiveData().getExclusivesList().size()>0){
+                        if (exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
                             this.offerProducts = exclusiveResponse.getExclusiveData().getExclusivesList();
-                            for (Exclusive exclusive:exclusiveResponse.getExclusiveData().getExclusivesList()){
-                                System.out.println("exclusive :"+exclusive.getProductName());
-                            }
+                            makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
                             offerListAdapter = new ExclusiveOfferListAdapter(this.offerProducts, getActivity(), root);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
                             fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
@@ -361,12 +409,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             offerListAdapter.setOnProductClick(product -> {
                                 toProductDetail(product, root);
                             });
-//                            offerListAdapter.setOnPlusClick((product, position) -> {
-//                                addToBasket(product);
-//                                offerProducts.get(position).(true);
-//                                offerProducts.get(position).setQuantity("1");
-//                                offerListAdapter.notifyItemChanged(position);
-//                            });
+//
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -384,21 +427,35 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             }
 
         };
-        homeViewModel.exclusiveResponseLiveData(progressDialog,listingParams(limit,offset,""),HomeFragment.this)
-            .observe(getViewLifecycleOwner(),exclusiveResponseObserver);
+        homeViewModel.exclusiveResponseLiveData(progressDialog, listingParams(limit, offset, ""), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), exclusiveResponseObserver);
     }
 
+    private void makeVisible(View recyclerView, View relativeLayout) {
+        try {
+            if (recyclerView != null) {
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+            if (relativeLayout != null) {
+                relativeLayout.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    private void setSeasonBanners(View root) {
-        homeViewModel.getLiveSeasonProducts().observe(getViewLifecycleOwner(), seasonalProducts -> {
-            seasonalProductList = seasonalProducts;
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
-            fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
-            fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
-            fragmentHomeBinding.recSeasonal.setLayoutManager(linearLayoutManager);
-            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProducts, root);
-            fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
-        });
+    }
+
+    private void makeInVisible(View recyclerView, View relativeLayout) {
+        try {
+            if (recyclerView != null) {
+                recyclerView.setVisibility(View.GONE);
+            }
+            if (relativeLayout != null) {
+                relativeLayout.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initClick() {
@@ -435,14 +492,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 Log.e("Category Api Response", new Gson().toJson(basketResponse));
                 switch (basketResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        if (basketResponse.getData().getBaskets().size()>0){
+                        if (basketResponse.getData().getBaskets().size() > 0) {
+                            makeVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
                             this.baskets = basketResponse.getData().getBaskets();
                             basketAdapter = new BasketAdapter(this.baskets, getActivity(), root);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
                             fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
                             fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
-
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -460,7 +517,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             }
 
         };
-        homeViewModel.basketResponseLiveData(progressDialog, listingParams(limit, offset,""), HomeFragment.this)
+        homeViewModel.basketResponseLiveData(progressDialog, listingParams(limit, offset, ""), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), bannerResponseObserver);
 
     }
@@ -475,21 +532,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 Log.e("Category Api Response", new Gson().toJson(categoryResponse));
                 switch (categoryResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        if(categoryResponse.getCategoryData() != null){
+                        if (categoryResponse.getCategoryData() != null) {
                             if (categoryResponse.getCategoryData().getCategoryList().size() > 0) {
+                                makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
                                 categories = categoryResponse.getCategoryData().getCategoryList();
                                 LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
                                 categoryAdapter = new CategoryAdapter(categories, requireActivity(), view);
                                 fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
                                 fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
                                 fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
-                            }else warningToast(context, "Category Not found");
+                            }
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
-                        Log.e(TAG, "callCategoryApi: "+ categoryResponse.getMessage());
+                        Log.e(TAG, "callCategoryApi: " + categoryResponse.getMessage());
                         warningToast(context, categoryResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
@@ -501,7 +559,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 }
             }
         };
-        homeViewModel.categoryResponseLiveData(progressDialog, listingParams(limit, offset,""), HomeFragment.this)
+        homeViewModel.categoryResponseLiveData(progressDialog, listingParams(limit, offset, ""), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), categoryResponseObserver);
 
     }
@@ -517,7 +575,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_200://Record Create/Update Successfully
 
                         if (bannerResponse.getData().getBanners().size() > 0) {
-                            banners.clear();
+
                             banners = bannerResponse.getData().getBanners();
                             this.NumberOfBanners = banners.size();
                             bannerAdapter = new BannerAdapter(banners, requireActivity());
@@ -525,16 +583,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
                             // Set up tab indicators
                             fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
-                        } else {
-                            // set a dummy banner if no banner is available
-                            makeDummyBanner();
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
                         // set a dummy banner if no banner is available
-                        makeDummyBanner();
                         warningToast(context, bannerResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
@@ -547,14 +601,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             }
 
         };
-        homeViewModel.bannerResponseLiveData(progressDialog, listingParams(limit, offset,""), HomeFragment.this)
+        homeViewModel.bannerResponseLiveData(progressDialog, listingParams(limit, offset, ""), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), bannerResponseObserver);
 
     }
 
-    /*Create a Summy banner if no banner is available*/
+    /*Create a Dummy banner if no banner is available*/
     private void makeDummyBanner() {
-        Banner banner = new Banner("1","customer","","");
+        Banner banner = new Banner("1", "customer", "", "");
         banner.setDummy(true);
         banners.clear();
         banners.add(banner);
@@ -594,7 +648,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
 
-    private HashMap<String, String> listingParams(int limit, int offset,String search) {
+    private HashMap<String, String> listingParams(int limit, int offset, String search) {
         HashMap<String, String> map = new HashMap<>();
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
@@ -629,6 +683,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         if (((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.getVisibility() == View.VISIBLE)
             ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.VISIBLE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setText(preferences.getUserAddress());
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.VISIBLE);
     }
 
@@ -682,31 +737,31 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         break;
                     case 1:
                         //Call Category API after network error
-                        callCategoryApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        callCategoryApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 2:
                         //Call Basket API after network error
-                        callBasketApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        callBasketApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 3:
                         //Call Exclusive API after network error
-                        callExclusiveOfferApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        callExclusiveOfferApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 4:
                         //Call Bestselling API after network error
-                        callBestSellingApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        callBestSellingApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 5:
                         //Call Seasonal Product API after network error
-                        callSeasonalProductApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        callSeasonalProductApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 6:
                         //Call Product List API after network error
-                        callProductListApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        callProductListApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 7:
                         //Call Product List API after network error
-                        callStoreBannerApi(root,showCircleProgressDialog(context,""));
+                        callStoreBannerApi(root, showCircleProgressDialog(context, ""));
                         break;
 
                 }

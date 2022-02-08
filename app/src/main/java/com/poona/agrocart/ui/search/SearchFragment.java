@@ -128,7 +128,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         Observer<ProductListResponse> productListResponseObserver = productListResponse -> {
             if (productListResponse != null) {
                 progressDialog.dismiss();
-                Log.e(TAG, "callSearchProductApi: " + productListResponse.getProductResponseDt().getProductList().size());
+                Log.e(TAG, "callSearchProductApi: " + productListResponse.getMessage());
                 switch (productListResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (productListResponse.getProductResponseDt().getProductList().size() > 0) {
@@ -148,6 +148,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
+                        fragmentSearchBinding.tvNoData.setVisibility(View.VISIBLE);
                         warningToast(context, productListResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user

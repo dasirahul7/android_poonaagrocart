@@ -49,23 +49,18 @@ import retrofit2.HttpException;
 public class HomeViewModel extends AndroidViewModel {
     private String TAG = HomeViewModel.class.getSimpleName();
 
-    private MutableLiveData<ArrayList<Product>> liveDataBestSelling;
-    private MutableLiveData<ArrayList<Product>> liveDataOffer;
     private MutableLiveData<ArrayList<Product>> liveDataCartProduct;
     //    private MutableLiveData<ArrayList<Category>> liveDataCategory;
 
     private MutableLiveData<ArrayList<Product>> savesProductInBasket;
-    private MutableLiveData<ArrayList<SeasonalProduct>> liveSeasonProducts;
+
 
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
         //init all mutable liveData
-        liveDataBestSelling = new MutableLiveData<>();
-        liveDataOffer = new MutableLiveData<>();
         liveDataCartProduct = new MutableLiveData<>();
         savesProductInBasket = new MutableLiveData<>();
-        liveSeasonProducts = new MutableLiveData<>();
         initCartItems();
 //        initSeasonalBanner();
     }
@@ -437,19 +432,6 @@ public class HomeViewModel extends AndroidViewModel {
         return storeBannerMutableLiveData;
     }
 
-
-    public MutableLiveData<ArrayList<SeasonalProduct>> getLiveSeasonProducts() {
-        return liveSeasonProducts;
-    }
-
-
-    public MutableLiveData<ArrayList<Product>> getLiveDataBestSelling() {
-        return liveDataBestSelling;
-    }
-
-    public MutableLiveData<ArrayList<Product>> getLiveDataOffer() {
-        return liveDataOffer;
-    }
 
 
     public MutableLiveData<ArrayList<Product>> getLiveDataCartProduct() {

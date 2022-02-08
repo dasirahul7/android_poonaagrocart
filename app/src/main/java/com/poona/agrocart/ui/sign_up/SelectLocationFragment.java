@@ -54,14 +54,19 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
     private BasicDetails basicDetails;
     private CommonViewModel commonViewModel;
     private SelectLocationViewModel selectLocationViewModel;
-//    private ArrayList<String> areas;
+    //    private ArrayList<String> areas;
 //    private ArrayList<String> areaIds;
 //    private ArrayList<String> cities;
 //    private ArrayList<String> citiIds;
     private String selectedCityId = "1";
     private String selectedAreaId = "1";
-    private String selectedCity ,selectedArea;
+    private String selectedCity, selectedArea;
+
     private View rootSelectView;
+    private ArrayList<String> areas;
+    private ArrayList<String> cities;
+    private ArrayList<String> areaIds;
+    private ArrayList<String> cityIds;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -111,11 +116,19 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                             if (areaResponse.getAreaData() != null) {
                                 if (areaResponse.getAreaData().getArea().size() > 0) {
                                     areaArrayList = areaResponse.getAreaData().getArea();
-//
+                                    areas = new ArrayList<>();
+                                    areaIds = new ArrayList<>();
+                                    for (Areas area : areaArrayList) {
+                                        areas.add(area.getAreaName());
+                                        areaIds.add(area.getId());
+                                        System.out.println("area " + area.getAreaName());
+                                    }
+                                    ArrayAdapter<String> areasArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.text_spinner, areas);
+                                    areasArrayAdapter.setDropDownViewResource(R.layout.text_spinner);
                                     selectedAreaId = areaArrayList.get(0).getId();
                                     selectedArea = areaArrayList.get(0).getAreaName();
-                                    ArrayAdapter<Areas> areasArrayAdapter = new ArrayAdapter<Areas>(getContext(), R.layout.text_spinner, areaArrayList);
-                                    areasArrayAdapter.setDropDownViewResource(R.layout.text_spinner);
+//                                    ArrayAdapter<Areas> areasArrayAdapter = new ArrayAdapter<Areas>(getContext(), R.layout.text_spinner, areaArrayList);
+//                                    areasArrayAdapter.setDropDownViewResource(R.layout.text_spinner);
                                     fragmentSelectLocationBinding.spinnerArea.setAdapter(areasArrayAdapter);
                                 }
                             }
@@ -155,10 +168,17 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                                 if (cityResponse.getCityResponseData() != null) {
                                     if (cityResponse.getCityResponseData().getCityArrayList().size() > 0) {
                                         cityArrayList = cityResponse.getCityResponseData().getCityArrayList();
-                                        selectedCityId = cityArrayList.get(0).getCityId();
-                                        selectedCity = cityArrayList.get(0).getCityName();
-                                        ArrayAdapter<City> areasArrayAdapter = new ArrayAdapter<City>(getContext(), R.layout.text_spinner, cityArrayList);
+                                        cityIds = new ArrayList<>();
+                                        cities = new ArrayList<>();
+                                        for (City city : cityArrayList) {
+                                            cities.add(city.getCityName());
+                                            cityIds.add(city.getCityId());
+                                            System.out.println("city " + city.getCityName());
+                                        }
+                                        ArrayAdapter<String> areasArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.text_spinner, cities);
                                         areasArrayAdapter.setDropDownViewResource(R.layout.text_spinner);
+                                        selectedCityId = cityIds.get(0);
+                                        selectedCity = cities.get(0);
                                         fragmentSelectLocationBinding.spinnerCity.setAdapter(areasArrayAdapter);
                                     }
 
@@ -191,11 +211,10 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 basicDetails.setArea(parent.getItemAtPosition(position).toString());
-//                commonViewModel.area.setValue(areaArrayList.get(position).());
-                if (areaArrayList != null) {
-                    System.out.println("selected area " + areaArrayList.get(position));
-                    selectedAreaId = areaArrayList.get(position).getId();
-                    selectedArea = areaArrayList.get(position).getAreaName();
+                if (areaIds != null) {
+                    System.out.println("selected area " + areaIds.get(position));
+                    selectedAreaId = areaIds.get(position);
+                    selectedArea = areas.get(position);
                 }
             }
 
@@ -231,6 +250,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         callUpdateLocationApi(showCircleProgressDialog(context, ""));
 
     }
+
     /* Update Location API*/
     private void callUpdateLocationApi(ProgressDialog showCircleProgressDialog) {
         Observer<BaseResponse> updateLocationObserver = updateLocationResponse -> {
@@ -239,7 +259,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (updateLocationResponse.getStatus() == 200) {
                             successToast(context, "" + updateLocationResponse.getMessage());
-                            preferences.setUserAddress(selectedArea+","+selectedCity);
+                            preferences.setUserAddress(selectedArea + "," + selectedCity);
                             redirectToLoginFragment(rootSelectView);
                         }
                         break;
