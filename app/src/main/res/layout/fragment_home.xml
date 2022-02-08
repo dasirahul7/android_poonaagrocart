@@ -30,28 +30,42 @@
                 android:orientation="vertical">
 
                 <!--Search View Layout-->
-                <com.poona.agrocart.widgets.CustomEditText
-                    android:id="@+id/et_search"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/bg_et_search"
-                    android:drawableStart="@drawable/ic_search"
-                    android:drawablePadding="@dimen/_8sdp"
-                    android:drawableTint="@color/black"
-                    android:hint="@string/search_store"
-                    android:imeOptions="actionDone"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_2sdp"
-                    android:singleLine="true"
-                    android:textColor="@color/color_grey_txt"
-                    android:textSize="@dimen/_16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:setCustomFont="@string/font_poppins_regular"
-                    tools:ignore="RtlSymmetry" />
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp">
+
+                    <com.poona.agrocart.widgets.CustomEditText
+                        android:id="@+id/et_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_toStartOf="@+id/img_mice"
+                        android:background="@drawable/bg_et_search"
+                        android:drawableStart="@drawable/ic_search"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:drawableTint="@color/black"
+                        android:hint="@string/search_store"
+                        android:imeOptions="actionDone"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/color_grey_txt"
+                        android:textSize="@dimen/_16sp"
+                        app:setCustomFont="@string/font_poppins_regular"
+                        tools:ignore="RtlSymmetry" />
+
+                    <ImageView
+                        android:id="@+id/img_mice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/ic_grey_square"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_mice" />
+                </RelativeLayout>
 
                 <!-- Banner Layout -->
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -102,7 +116,7 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/shop_by_category"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/x_large_txt_size"
+                        android:textSize="@dimen/xx_large_txt_size"
                         app:fontFamily="@font/poppins" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -144,8 +158,21 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/baskets"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/x_large_txt_size"
+                        android:textSize="@dimen/xx_large_txt_size"
                         app:fontFamily="@font/poppins" />
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_all_basket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/see_all"
+                        android:textColor="@color/colorGreenButton"
+                        android:textSize="@dimen/_16sp"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
                 </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -173,7 +200,7 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/best_selling"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/x_large_txt_size"
+                        android:textSize="@dimen/xx_large_txt_size"
                         app:fontFamily="@font/poppins" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -224,7 +251,7 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/exclusive_offer"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/x_large_txt_size"
+                        android:textSize="@dimen/xx_large_txt_size"
                         app:fontFamily="@font/poppins" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -241,7 +268,7 @@
                 </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rec_offers"
+                    android:id="@+id/rec_ex_offers"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
@@ -335,6 +362,7 @@
                     app:cardCornerRadius="@dimen/_10sdp">
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/rl_o3_banner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

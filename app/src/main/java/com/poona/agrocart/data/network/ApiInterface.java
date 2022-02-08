@@ -15,6 +15,7 @@ import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
+import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 
@@ -118,5 +119,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(COUPON_API)
     Single<CouponResponse> couponListResponse(@FieldMap HashMap<String, String> hashMap);
+
+    @FormUrlEncoded
+    @POST(SIGN_OUT_API)
+    Single<BaseResponse> signOutResponse(@FieldMap HashMap<String, String> hashMap);
 
 }

@@ -80,8 +80,10 @@ public class AppConstants {
     public static final String HOME_SEASONAL_LIST_API = "seasonal-product-list";
     public static final String HOME_PRODUCT_LIST_API = "product-list";
     public static final String HOME_STORE_BANNER_API = "store-banner";
+    public static final String SIGN_OUT_API = "logout-customer";
     /*Offer & Coupon APIs*/
     public static final String COUPON_API = "coupon-list";
+
 
 
     public static final String TAB_INDEX = "index";

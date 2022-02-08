@@ -150,11 +150,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         }
         // check if exclusive offer is Empty
         if (offerProducts == null || offerProducts.size() == 0) {
-            makeInVisible(fragmentHomeBinding.recOffers, fragmentHomeBinding.rlExclusiveOffer);
+            makeInVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
         }
         //check if storeBannerList is Empty
         if (storeBannerList == null || storeBannerList.size() == 0) {
             makeInVisible(fragmentHomeBinding.cardviewOurShops,null);
+            makeInVisible(null,fragmentHomeBinding.rlO3Banner);
         }
         // check if productList is Empty
         if (productList==null||productList.size()==0){
@@ -226,6 +227,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (storeBannerResponse.getStoreBanners().size() > 0) {
                             makeVisible(fragmentHomeBinding.cardviewOurShops,null);
+                            makeVisible(null,fragmentHomeBinding.rlO3Banner);
                             storeBannerList = storeBannerResponse.getStoreBanners();
                             StoreBanner storeBanner = storeBannerResponse.getStoreBanners().get(0);
                             fragmentHomeBinding.setStoreBanner(storeBanner);
@@ -355,9 +357,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 switch (bestSellingResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
-                            this.bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
+                            bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-                            bestsellingAdapter = new ExclusiveOfferListAdapter(this.bestSellings, requireActivity(), root);
+                            bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), root);
                             fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recBestSelling.setLayoutManager(layoutManager);
                             fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
@@ -398,13 +400,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 switch (exclusiveResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
-                            this.offerProducts = exclusiveResponse.getExclusiveData().getExclusivesList();
-                            makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
-                            offerListAdapter = new ExclusiveOfferListAdapter(this.offerProducts, getActivity(), root);
+                            offerProducts = exclusiveResponse.getExclusiveData().getExclusivesList();
+                            makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
+                            offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), root);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-                            fragmentHomeBinding.recOffers.setNestedScrollingEnabled(false);
-                            fragmentHomeBinding.recOffers.setLayoutManager(layoutManager);
-                            fragmentHomeBinding.recOffers.setAdapter(offerListAdapter);
+                            fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);
+                            fragmentHomeBinding.recExOffers.setLayoutManager(layoutManager);
+                            fragmentHomeBinding.recExOffers.setAdapter(offerListAdapter);
                             // Redirect to Product details
                             offerListAdapter.setOnProductClick(product -> {
                                 toProductDetail(product, root);
@@ -460,6 +462,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private void initClick() {
         fragmentHomeBinding.tvAllCategory.setOnClickListener(this);
+        fragmentHomeBinding.tvAllBasket.setOnClickListener(this);
         fragmentHomeBinding.tvAllExclusive.setOnClickListener(this);
         fragmentHomeBinding.tvAllSelling.setOnClickListener(this);
     }
@@ -644,7 +647,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             public void run() {
                 handler.post(update);
             }
-        }, 800, 3000);
+        }, 1000, 3000);
     }
 
 
@@ -718,10 +721,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.tv_all_category:
                 Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_explore);
                 break;
+            case R.id.tv_all_basket:
+                bundle.putString("ProductCategory","Basket");
+                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list,bundle);
         }
     }
 

@@ -1,48 +1,57 @@
 package com.poona.agrocart.ui.home;
 
-import android.app.Dialog;
+import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
+import static com.poona.agrocart.app.AppConstants.USER_ID;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.ContextThemeWrapper;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.poona.agrocart.R;
-import com.poona.agrocart.app.AppUtils;
+import com.poona.agrocart.data.network.ApiClientAuth;
+import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.reponses.BaseResponse;
+import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.ActivityHomeBinding;
 import com.poona.agrocart.ui.BaseActivity;
+import com.poona.agrocart.ui.sign_in.SignInFragment;
+import com.poona.agrocart.ui.sign_in.SignInViewModel;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomTextView;
 
+import java.util.HashMap;
 import java.util.Objects;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.observers.DisposableSingleObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.HttpException;
 
 public class HomeActivity extends BaseActivity {
 
@@ -55,11 +64,12 @@ public class HomeActivity extends BaseActivity {
     public ImageView backBtn;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private BottomNavigationView bottomNavigationView;
+    private AppSharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        preferences = new AppSharedPreferences(HomeActivity.this);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         toolbar = binding.appBarHome.toolbar;
@@ -133,8 +143,8 @@ public class HomeActivity extends BaseActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 try {
-                    drawer.closeDrawer(GravityCompat.START);
-                    signingOut();
+                    signOutApiCall(showCircleProgressDialog(HomeActivity.this,""));
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -157,12 +167,29 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-    private void signingOut() {
-        AppSharedPreferences preferences = new AppSharedPreferences(this);
-        preferences.clearSharedPreferences(this);
-        Intent intent = new Intent(this, SplashScreenActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    private void signOutApiCall(ProgressDialog progressDialog) {
+        SignInViewModel signInViewModel = new ViewModelProvider(this).get(SignInViewModel.class);
+        Observer<BaseResponse> baseResponseObserver = baseResponse -> {
+            if (baseResponse!=null){
+                if (baseResponse.getStatus()==200){
+                    drawer.closeDrawer(GravityCompat.START);
+                    Log.e( "signOutApiCall: " ,new Gson().toJson(baseResponse));
+                    AppSharedPreferences preferences = new AppSharedPreferences(this);
+                    preferences.clearSharedPreferences(this);
+                    Intent intent = new Intent(this, SplashScreenActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            }
+        };
+        signInViewModel.signOutApiResponse(progressDialog,parameters(),HomeActivity.this)
+                .observeForever(baseResponseObserver);
+
+    }
+    private HashMap<String, String> parameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(USER_ID, preferences.getUid());
+        return map;
     }
 
     private void setCustomDrawerIconInFragments() {
@@ -218,5 +245,4 @@ public class HomeActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
 }
