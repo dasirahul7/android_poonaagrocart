@@ -215,12 +215,13 @@
         <item name="android:layout_marginStart">@dimen/_12sdp</item>
         <item name="android:layout_marginEnd">@dimen/_12sdp</item>
         <item name="android:layout_marginTop">@dimen/_2sdp</item>
+        <item name="android:layout_marginBottom">@dimen/_6sdp</item>
 <!--        <item name="android:background">@drawable/bg_dashboard_et_layout</item>-->
 <!--        <item name="android:background">@drawable/background_shadow_with_white_bg</item>-->
 <!--        <item name="background">@drawable/background_with_shadow_edittext</item>-->
         <item name="android:elevation">@dimen/_2sdp</item>
-        <item name="android:paddingTop">@dimen/_8sdp</item>
-        <item name="android:paddingBottom">@dimen/_8sdp</item>
+        <item name="android:paddingTop">@dimen/_10sdp</item>
+        <item name="android:paddingBottom">@dimen/_10sdp</item>
         <item name="android:paddingRight">@dimen/_16sdp</item>
         <item name="android:paddingLeft">@dimen/_16sdp</item>
         <item name="android:textColor">@color/color_grey_txt</item>
@@ -234,6 +235,7 @@
         <item name="android:layout_height">@dimen/_30sdp</item>
         <item name="android:layout_marginStart">@dimen/_12sdp</item>
         <item name="android:layout_marginEnd">@dimen/_12sdp</item>
+        <item name="android:layout_marginBottom">@dimen/_6sdp</item>
 <!--        <item name="android:background">@drawable/bg_dashboard_et_layout</item>-->
 <!--        <item name="android:background">@drawable/background_shadow_with_white_bg</item>-->
         <item name="android:elevation">@dimen/_2sdp</item>
