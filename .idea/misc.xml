@@ -6,14 +6,19 @@
         <entry key="../../../../../layout/custom_preview.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/backgound_deit_profile.xml" value="0.125" />
         <entry key="app/src/main/res/drawable/background_button_green.xml" value="0.12407407407407407" />
+        <entry key="app/src/main/res/drawable/background_button_simple.xml" value="0.11481481481481481" />
+        <entry key="app/src/main/res/drawable/background_faq_list.xml" value="0.11481481481481481" />
         <entry key="app/src/main/res/drawable/bg_my_profile_dob.xml" value="0.18854166666666666" />
         <entry key="app/src/main/res/drawable/bg_my_profile_spinner.xml" value="0.18854166666666666" />
+        <entry key="app/src/main/res/layout/faq_recycler_view_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/faq_recycler_view_item_list.xml" value="0.16018518518518518" />
-        <entry key="app/src/main/res/layout/fragment_faq.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/fragment_faq.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_log_in.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/fragment_our_stores.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/fragment_product_image.xml" value="0.16018518518518518" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.16018518518518518" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_store_detail.xml" value="0.17239583333333333" />
@@ -24,6 +29,7 @@
         <entry key="app/src/main/res/layout/row_seasonal_banner.xml" value="0.16018518518518518" />
         <entry key="app/src/main/res/layout/rv_basket_detail.xml" value="0.16018518518518518" />
         <entry key="app/src/main/res/layout/rv_order.xml" value="0.16018518518518518" />
+        <entry key="app/src/main/res/layout/rv_orders_basket.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/rv_store.xml" value="0.16018518518518518" />
       </map>
     </option>

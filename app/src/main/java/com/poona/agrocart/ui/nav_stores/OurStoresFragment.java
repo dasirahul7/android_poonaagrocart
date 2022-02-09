@@ -2,13 +2,13 @@ package com.poona.agrocart.ui.nav_stores;
 
 import static com.poona.agrocart.app.AppConstants.LIMIT;
 import static com.poona.agrocart.app.AppConstants.OFFSET;
-import static com.poona.agrocart.app.AppConstants.ORDER_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.STORE_ID;
 import static com.poona.agrocart.app.AppConstants.TICKET_ID;
 
 import android.annotation.SuppressLint;
@@ -49,6 +49,7 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
     private LinearLayoutManager linearLayoutManager;
     private OurStoreAdapter ourStoreAdapter;
     private ArrayList<OurStoreListData> storeArrayList;
+
 
 
     @Override
@@ -187,7 +188,7 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
 
         String orderId =storeArrayList.get(position).getId();
         Bundle bundle = new Bundle();
-        bundle.putString(ORDER_ID, orderId);
+        bundle.putString(STORE_ID, orderId);
         NavHostFragment.findNavController(OurStoresFragment.this).navigate(R.id.action_nav_store_to_storeLocationFragment, bundle);
 
     }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="faqListData"
+            type="com.poona.agrocart.ui.nav_faq.model.FaqListData" />
+    </data>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginHorizontal="@dimen/_14sdp"
+        android:layout_marginVertical="@dimen/_10sdp">
+
+        <LinearLayout
+            android:id="@+id/ll_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:paddingVertical="@dimen/_4sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:background="@drawable/bg_et_border">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:paddingVertical="@dimen/_6sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:orientation="vertical">
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/tv_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textStart"
+                    android:justificationMode="inter_word"
+                    android:text="@{@string/q + faqListData.question}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_16sp"
+                    app:setCustomFont="@string/font_poppins_semi_bold"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.8"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+                <com.poona.agrocart.widgets.expand_icon_view.ExpandIconView
+                    android:id="@+id/expand_question"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_gravity="center"
+                    app:eiv_animationDuration="300"
+                    app:eiv_colorLess="#0C0000"
+                    app:eiv_colorMore="#0B0000"
+                    app:eiv_roundedCorners="true"
+                    app:eiv_switchColor="true" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingVertical="@dimen/_4sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_32sdp"
+            android:background="@color/green_top_color"
+            android:layout_below="@+id/ll_main">
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={faqListData.answer}"
+                android:justificationMode="inter_word"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sp"
+                app:setCustomFont="@string/font_poppins_regular" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_horizontal_line"
+            android:layout_below="@+id/ll_answer"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_height="1dp"
+            android:background="@color/green_top_color"/>
+    </RelativeLayout>
+</layout>

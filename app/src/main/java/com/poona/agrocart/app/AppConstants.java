@@ -85,7 +85,10 @@ public class AppConstants {
 
     /*Our Store Api */
     public static final String STORE_LIST = "store-list";
+    public static final String STORE_DETAILS = "store-details";
 
+    /*Faq Api*/
+    public static final String FAQ = "faq";
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";
@@ -162,5 +165,5 @@ public class AppConstants {
     public static final Integer SEARCH_BASKET = 2;
 
     /*Store Parameter*/
-    public static String ORDER_ID = "store_id";
+    public static String STORE_ID = "store_id";
 }
