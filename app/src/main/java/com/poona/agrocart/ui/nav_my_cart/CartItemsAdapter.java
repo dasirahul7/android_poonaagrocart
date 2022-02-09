@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RowProductItemBinding;
-import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 
 public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.CartItemsViewHolder>
 {
-    private final ArrayList<Product> cartItemArrayList;
+    private final ArrayList<ProductOld> cartItemArrayList;
     private OnClickCart onCartItemClick;
 
     public interface OnClickCart {
@@ -28,7 +28,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         this.onCartItemClick = onCartItemClick;
     }
 
-    public CartItemsAdapter(ArrayList<Product> cartItemArrayList) {
+    public CartItemsAdapter(ArrayList<ProductOld> cartItemArrayList) {
         this.cartItemArrayList = cartItemArrayList;
     }
 
@@ -42,8 +42,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
 
     @Override
     public void onBindViewHolder(@NonNull CartItemsViewHolder holder, int position) {
-        final Product cartItem = cartItemArrayList.get(position);
-        holder.rvCartItemBinding.setProductModule(cartItem);
+        final ProductOld cartItem = cartItemArrayList.get(position);
+        holder.rvCartItemBinding.setProductOldModule(cartItem);
         holder.bind(cartItem,position);
     }
 
@@ -101,7 +101,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             }
         }
 
-        public void bind(Product cartItem, int position) {
+        public void bind(ProductOld cartItem, int position) {
             if (cartItem.getLocation().isEmpty())
                 rvCartItemBinding.tvLocation.setVisibility(View.INVISIBLE);
             rvCartItemBinding.setVariable(BR.cartItem, cartItem);

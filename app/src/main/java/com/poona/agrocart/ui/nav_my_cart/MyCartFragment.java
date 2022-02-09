@@ -19,7 +19,7 @@ import com.poona.agrocart.databinding.FragmentMyCartBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.CustomDialogInterface;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 
@@ -29,8 +29,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     private RecyclerView rvCart;
     private LinearLayoutManager linearLayoutManager;
     private CartItemsAdapter cartItemsAdapter;
-    private ArrayList<Product> cartItemArrayList = new ArrayList<>();
-    ArrayList<Product> cartList = new ArrayList<>();
+    private ArrayList<ProductOld> cartItemArrayList = new ArrayList<>();
+    ArrayList<ProductOld> cartList = new ArrayList<>();
     private View navHostFragment;
     private ViewGroup.MarginLayoutParams navHostMargins;
     private float scale;

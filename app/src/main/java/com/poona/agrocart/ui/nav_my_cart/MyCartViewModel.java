@@ -6,21 +6,19 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.poona.agrocart.app.AppConstants;
-import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
-import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 
 public class MyCartViewModel extends AndroidViewModel {
 
-    public MutableLiveData<ArrayList<Product>> liveProductList = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<ProductOld>> liveProductList = new MutableLiveData<>();
 
     public MyCartViewModel(@NonNull Application application) {
         super(application);
     }
 
-    public MutableLiveData<ArrayList<Product>> getCartList(){
+    public MutableLiveData<ArrayList<ProductOld>> getCartList(){
         return liveProductList;
     }
 }

@@ -7,7 +7,7 @@
 
         <variable
             name="exclusiveOfferModule"
-            type="com.poona.agrocart.ui.home.model.Exclusive" />
+            type="com.poona.agrocart.ui.home.model.Product" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

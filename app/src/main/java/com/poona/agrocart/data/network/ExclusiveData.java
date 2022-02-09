@@ -2,20 +2,20 @@ package com.poona.agrocart.data.network;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.poona.agrocart.ui.home.model.Exclusive;
+import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 
 public class ExclusiveData {
     @SerializedName("exclusive_list")
     @Expose
-    private ArrayList<Exclusive> exclusivesList;
+    private ArrayList<Product> exclusivesList;
 
-    public ArrayList<Exclusive> getExclusivesList() {
+    public ArrayList<Product> getExclusivesList() {
         return exclusivesList;
     }
 
-    public void setExclusivesList(ArrayList<Exclusive> exclusivesList) {
+    public void setExclusivesList(ArrayList<Product> exclusivesList) {
         this.exclusivesList = exclusivesList;
     }
 }

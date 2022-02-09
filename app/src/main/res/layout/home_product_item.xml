@@ -7,7 +7,7 @@
 
         <variable
             name="homeProductModel"
-            type="com.poona.agrocart.ui.home.model.Exclusive" />
+            type="com.poona.agrocart.ui.home.model.Product" />
 
     </data>
 

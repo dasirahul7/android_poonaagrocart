@@ -1,6 +1,5 @@
 package com.poona.agrocart.ui.products_list.adapter;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RowBasketListItemBinding;
 import com.poona.agrocart.ui.home.model.Basket;
-import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 

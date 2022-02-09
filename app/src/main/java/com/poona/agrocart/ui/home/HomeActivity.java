@@ -1,6 +1,5 @@
 package com.poona.agrocart.ui.home;
 
-import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 
 import android.app.ProgressDialog;
@@ -14,12 +13,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -30,17 +27,11 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.ApiClientAuth;
-import com.poona.agrocart.data.network.ApiInterface;
-import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.ActivityHomeBinding;
 import com.poona.agrocart.ui.BaseActivity;
-import com.poona.agrocart.ui.sign_in.SignInFragment;
 import com.poona.agrocart.ui.sign_in.SignInViewModel;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomTextView;
@@ -48,10 +39,6 @@ import com.poona.agrocart.widgets.CustomTextView;
 import java.util.HashMap;
 import java.util.Objects;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.observers.DisposableSingleObserver;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.HttpException;
 
 public class HomeActivity extends BaseActivity {
 
@@ -62,7 +49,6 @@ public class HomeActivity extends BaseActivity {
     private NavController navController;
     public Toolbar toolbar;
     public ImageView backBtn;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
     private BottomNavigationView bottomNavigationView;
     private AppSharedPreferences preferences;
 

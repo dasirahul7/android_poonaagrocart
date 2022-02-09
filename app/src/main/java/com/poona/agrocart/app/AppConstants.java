@@ -87,6 +87,13 @@ public class AppConstants {
     /*Our Store Api */
     public static final String STORE_LIST = "store-list";
 
+    /*Product list API*/
+    public static final String PRODUCT_LIST_BY_API ="product-by-category-list";
+
+    /*Basket list API*/
+
+
+
 
 
     public static final String TAB_INDEX = "index";
@@ -130,6 +137,15 @@ public class AppConstants {
     public static final String USER_ID = "user_id";
     public static final String USER_ADDRESS = "user_address";
 
+    /*Home parameters*/
+    public static final String CATEGORY_ID = "category_id";
+    public static final String LIST_TITLE = "list_title";
+    public static final String LIST_TYPE = "list_type";
+
+    /*Category types*/
+    public static final String BASKET = "0";
+    public static final String PRODUCT = "1";
+
 
     /*
      * id to handle the notification in the notification tray
@@ -159,9 +175,9 @@ public class AppConstants {
     public static final String pId = "PAC";
 
     /*Search Types here*/
-    public static final Integer SEARCH_PRODUCT = 0;
-    public static final Integer SEARCH_CATEGORY = 1;
-    public static final Integer SEARCH_BASKET = 2;
+    public static final String SEARCH_PRODUCT = "0";
+    public static final String SEARCH_CATEGORY = "1";
+    public static final String SEARCH_BASKET = "2";
 
     /*Store Parameter*/
     public static String ORDER_ID = "store_id";

@@ -43,7 +43,7 @@
                 android:background="@drawable/bg_offer_yellow"
                 android:gravity="center"
                 android:includeFontPadding="false"
-                android:text="@{productModule.offer}"
+                android:text="@{productModule.productUnits.get(0).percDiscount}"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/offer_txt_size"
@@ -62,7 +62,7 @@
 
                 <ImageView
                     android:id="@+id/itemImg"
-                    setImage="@{productModule.img}"
+                    setImage="@{productModule.featureImg}"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_70sdp"
                     android:layout_below="@+id/txt_item_offer"
@@ -88,7 +88,7 @@
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:text="@{productModule.name}"
+                    android:text="@{productModule.productName}"
                     android:textColor="@color/blue_txt_color"
                     android:textSize="@dimen/category_txt_size"
                     android:textStyle="bold"
@@ -100,6 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:drawablePadding="-5dp"
+                    android:singleLine="true"
                     android:gravity="center_vertical"
                     android:text="@{productModule.location}"
                     android:textColor="@color/color_grey_txt"
@@ -115,7 +116,7 @@
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:text="@{productModule.weight}"
+                    android:text="@{productModule.productUnits.get(0).weight}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_12sp" />
 
@@ -145,7 +146,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_strikethrough"
                         android:gravity="center"
-                        android:text="@{productModule.price}"
+                        android:text="@{productModule.priceUnit+productModule.productUnits.get(0).sellingPrice}"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_12sp"
                         tools:ignore="RtlSymmetry" />
@@ -156,7 +157,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_5sdp"
                         android:gravity="center"
-                        android:text="@{productModule.offerPrice}"
+                        android:text="@{productModule.priceUnit+productModule.productUnits.get(0).sellingPrice}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/category_txt_size"
                         app:setCustomFont="@string/font_montserrat_regular" />

@@ -59,9 +59,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.firebase.PushNotification;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.home.model.Category;
-import com.poona.agrocart.ui.home.model.Exclusive;
-import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.home.model.ProductOld;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
@@ -1047,17 +1045,17 @@ public abstract class BaseFragment extends Fragment {
         v.startAnimation(a);
     }
 
-    public void toDetails(Product product, View root) {
+    public void toDetails(ProductOld productOld, View root) {
         Bundle bundle = new Bundle();
-        bundle.putString("name", product.getName());
-        bundle.putString("image", product.getImg());
-        bundle.putString("price", product.getPrice());
-        bundle.putString("brand", product.getBrand());
-        bundle.putString("weight", product.getWeight());
-        bundle.putString("quantity", product.getQuantity());
-        bundle.putBoolean("organic", product.isOrganic());
-        bundle.putBoolean("isInBasket", product.isInBasket());
-        bundle.putString("Product", "Product");
+        bundle.putString("name", productOld.getName());
+        bundle.putString("image", productOld.getImg());
+        bundle.putString("price", productOld.getPrice());
+        bundle.putString("brand", productOld.getBrand());
+        bundle.putString("weight", productOld.getWeight());
+        bundle.putString("quantity", productOld.getQuantity());
+        bundle.putBoolean("organic", productOld.isOrganic());
+        bundle.putBoolean("isInBasket", productOld.isInBasket());
+        bundle.putString("ProductOld", "ProductOld");
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
 

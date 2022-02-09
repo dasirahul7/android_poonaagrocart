@@ -1,5 +1,8 @@
 package com.poona.agrocart.ui.home;
 
+import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
+import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
+import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
 import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
@@ -26,6 +29,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -55,8 +59,8 @@ import com.poona.agrocart.ui.home.adapter.SeasonalBannerAdapter;
 import com.poona.agrocart.ui.home.model.Banner;
 import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.Category;
-import com.poona.agrocart.ui.home.model.Exclusive;
 import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.home.model.ProductOld;
 import com.poona.agrocart.ui.home.model.SeasonalProduct;
 import com.poona.agrocart.ui.home.model.StoreBanner;
 
@@ -80,18 +84,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private BasketAdapter basketAdapter;
     private SeasonalBannerAdapter seasonalBannerAdapter;
     //ArrayLists here
-    private ArrayList<Exclusive> bestSellings = new ArrayList<>();
-    private ArrayList<Exclusive> offerProducts = new ArrayList<>();
-    private ArrayList<Exclusive> productList = new ArrayList<>();
+    private ArrayList<Product> bestSellings = new ArrayList<>();
+    private ArrayList<Product> offerProducts = new ArrayList<>();
+    private ArrayList<Product> productList = new ArrayList<>();
     private ArrayList<Banner> banners = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
     private ArrayList<Basket> baskets = new ArrayList<>();
     private ArrayList<SeasonalProduct> seasonalProductList = new ArrayList<>();
-    private final ArrayList<Product> mCartList = new ArrayList<Product>();
+    private final ArrayList<ProductOld> mCartList = new ArrayList<ProductOld>();
     private ArrayList<StoreBanner> storeBannerList = new ArrayList<>();
     private ArrayList<String> BasketIds = new ArrayList<>();
 
-    private int limit = 0;
+    private int limit = 10;
     private int offset = 0;
     private View root;
     private int currentBanner = 0;
@@ -100,6 +104,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     Timer timer = new Timer();
     boolean isTyping = false;
     private String BeforeSerach;
+    private int visibleCategoryCount;
+    private LinearLayoutManager categoryManager;
+    private String scrollOrListing;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -123,19 +130,47 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         searchProducts(root);
 
         checkEmpties();
+        setPaginationForLists();
         return root;
 
+    }
+
+    private void setCategoryRv() {
+        categoryManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+        categoryAdapter = new CategoryAdapter(categories, requireActivity(), root,category -> {
+            String cat_id =category.getId();
+            Bundle bundle = new Bundle();
+            bundle.putString(CATEGORY_ID, cat_id);
+            bundle.putString(LIST_TITLE, category.getCategoryName());
+            bundle.putString(LIST_TYPE, category.getCategoryType());
+            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+        });
+        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
+        fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
+        fragmentHomeBinding.recCategory.setLayoutManager(categoryManager);
+    }
+
+    private void setPaginationForLists() {
+        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(true);
+        fragmentHomeBinding.recBasket.setNestedScrollingEnabled(true);
+        fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(true);
+        fragmentHomeBinding.recProduct.setNestedScrollingEnabled(true);
+//        category scrolling
+        fragmentHomeBinding.recCategory.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            visibleCategoryCount = categoryManager.getItemCount();
+
+        });
     }
 
     private void checkEmpties() {
         //check if banner is empty
         if (banners == null || banners.size() == 0) {
-            makeDummyBanner();
+            makeInVisible(fragmentHomeBinding.viewPagerBanner,fragmentHomeBinding.dotsIndicator);
         }
         //check if category is empty
-        if (categories == null || categories.size() == 0) {
-            makeInVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
-        }
+//        if (categories == null || categories.size() == 0) {
+//            makeInVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
+//        }
         //check if Basket is empty
         if (baskets == null || baskets.size() == 0) {
             makeInVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
@@ -197,7 +232,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                         if (fragmentHomeBinding.etSearch.getText() != null) {
                                             if (!fragmentHomeBinding.etSearch.getText().toString().trim().equals("")) {
                                                 Bundle bundle = new Bundle();
-                                                bundle.putInt(SEARCH_TYPE, SEARCH_PRODUCT);
+                                                bundle.putString(SEARCH_TYPE, SEARCH_PRODUCT);
                                                 bundle.putString(SEARCH_KEY, fragmentHomeBinding.etSearch.getText().toString());
                                                 Navigation.findNavController(root).navigate(R.id.action_nav_home_to_searchFragment, bundle);
                                             } else return;
@@ -257,9 +292,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 .observe(getViewLifecycleOwner(), bannerResponseObserver);
     }
 
-    // Product listing here
+    // ProductOld listing here
     private void callProductListApi(View root, ProgressDialog progressDialog, int limit, int offset) {
-        limit = limit + 10;
         Observer<ProductListResponse> productListResponseObserver = productListResponse -> {
             if (productListResponse != null) {
                 progressDialog.dismiss();
@@ -302,9 +336,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
 
-    //Seasonal Product listing here
+    //Seasonal ProductOld listing here
     private void callSeasonalProductApi(View root, ProgressDialog progressDialog, int limit, int offset) {
-        limit = limit + 10;
         Observer<SeasonalProductResponse> seasonalProductObserver = seasonalProductResponse -> {
             if (seasonalProductResponse != null) {
                 progressDialog.dismiss();
@@ -318,6 +351,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                 } else
                                     seasonalProductResponse.getSeasonalProducts().get(i).setType("Yellow");
                             }
+                            makeVisible(fragmentHomeBinding.recSeasonal,null);
                             seasonalProductList = seasonalProductResponse.getSeasonalProducts();
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
                             fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
@@ -349,21 +383,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     //Best selling Data listing here
     private void callBestSellingApi(View root, ProgressDialog showCircleProgressDialog, int limit, int offset) {
-        limit = limit + 10;
         Observer<BestSellingResponse> bestSellingResponseObserver = bestSellingResponse -> {
             if (bestSellingResponse != null) {
                 showCircleProgressDialog.dismiss();
-                Log.e("Category Api Response", new Gson().toJson(bestSellingResponse));
+                Log.e("Best selling Api Response", new Gson().toJson(bestSellingResponse));
                 switch (bestSellingResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
+                            makeVisible(fragmentHomeBinding.recBestSelling,fragmentHomeBinding.rlBestSelling);
                             bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
                             bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), root);
                             fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recBestSelling.setLayoutManager(layoutManager);
                             fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
-                            // Redirect to Product details
+                            // Redirect to ProductOld details
                             bestsellingAdapter.setOnProductClick(product -> {
                                 toProductDetail(product, root);
                             });
@@ -390,9 +424,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 .observe(getViewLifecycleOwner(), bestSellingResponseObserver);
     }
 
-    //Exclusive Offer Data listing
+    //Product Offer Data listing
     private void callExclusiveOfferApi(View root, ProgressDialog progressDialog, int limit, int offset) {
-        limit = limit + 10;
         Observer<ExclusiveResponse> exclusiveResponseObserver = exclusiveResponse -> {
             if (exclusiveResponse != null) {
                 progressDialog.dismiss();
@@ -407,7 +440,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recExOffers.setLayoutManager(layoutManager);
                             fragmentHomeBinding.recExOffers.setAdapter(offerListAdapter);
-                            // Redirect to Product details
+                            // Redirect to ProductOld details
                             offerListAdapter.setOnProductClick(product -> {
                                 toProductDetail(product, root);
                             });
@@ -470,7 +503,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private void getBasketItems() {
         homeViewModel.getSavesProductInBasket().observe(getViewLifecycleOwner(), products -> {
             if (products != null) {
-                for (Product saved : products)
+                for (ProductOld saved : products)
                     BasketIds.add(saved.getId());
             }
         });
@@ -488,7 +521,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     //Basket APi Response gere
     private void callBasketApi(View root, ProgressDialog progressDialog, int limit, int offset) {
-        limit = limit + 10;
         Observer<BasketResponse> bannerResponseObserver = basketResponse -> {
             if (basketResponse != null) {
                 progressDialog.dismiss();
@@ -527,8 +559,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
 
     private void callCategoryApi(View view, ProgressDialog progressDialog, int limit, int offset) {
-        limit = limit + 10;
-
         Observer<CategoryResponse> categoryResponseObserver = categoryResponse -> {
             if (categoryResponse != null) {
                 progressDialog.dismiss();
@@ -539,11 +569,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             if (categoryResponse.getCategoryData().getCategoryList().size() > 0) {
                                 makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
                                 categories = categoryResponse.getCategoryData().getCategoryList();
-                                LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-                                categoryAdapter = new CategoryAdapter(categories, requireActivity(), view);
-                                fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
-                                fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
-                                fragmentHomeBinding.recCategory.setLayoutManager(layoutManager);
+                                setCategoryRv();
                             }
                         }
                         break;
@@ -569,7 +595,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     //Banner API here
     private void callBannerApi(ProgressDialog progressDialog, int limit, int offset) {
-        limit = limit + 10;
         Observer<BannerResponse> bannerResponseObserver = bannerResponse -> {
             if (bannerResponse != null) {
                 progressDialog.dismiss();
@@ -578,7 +603,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_200://Record Create/Update Successfully
 
                         if (bannerResponse.getData().getBanners().size() > 0) {
-
+                            makeVisible(fragmentHomeBinding.viewPagerBanner,fragmentHomeBinding.dotsIndicator);
                             banners = bannerResponse.getData().getBanners();
                             this.NumberOfBanners = banners.size();
                             bannerAdapter = new BannerAdapter(banners, requireActivity());
@@ -696,7 +721,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding = null;
     }
 
-    private void addToBasket(Product item) {
+    private void addToBasket(ProductOld item) {
         item.setQuantity("1");
         mCartList.add(item);
         preferences.saveCartArrayList(mCartList, AppConstants.CART_LIST);
@@ -705,17 +730,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-    public void toProductDetail(Product product, View root) {
+    public void toProductDetail(ProductOld productOld, View root) {
         Bundle bundle = new Bundle();
-        bundle.putString("name", product.getName());
-        bundle.putString("image", product.getImg());
-        bundle.putString("price", product.getPrice());
-        bundle.putString("brand", product.getBrand());
-        bundle.putString("weight", product.getWeight());
-        bundle.putString("quantity", product.getQuantity());
-        bundle.putBoolean("organic", product.isOrganic());
-        bundle.putBoolean("isInBasket", product.isInBasket());
-        bundle.putString("Product", "Product");
+        bundle.putString("name", productOld.getName());
+        bundle.putString("image", productOld.getImg());
+        bundle.putString("price", productOld.getPrice());
+        bundle.putString("brand", productOld.getBrand());
+        bundle.putString("weight", productOld.getWeight());
+        bundle.putString("quantity", productOld.getQuantity());
+        bundle.putBoolean("organic", productOld.isOrganic());
+        bundle.putBoolean("isInBasket", productOld.isInBasket());
+        bundle.putString("ProductOld", "ProductOld");
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
 
@@ -727,7 +752,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_explore);
                 break;
             case R.id.tv_all_basket:
-                bundle.putString("ProductCategory","Basket");
+                bundle.putString(LIST_TITLE,"Basket");
                 Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list,bundle);
         }
     }
@@ -751,7 +776,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         callBasketApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 3:
-                        //Call Exclusive API after network error
+                        //Call Product API after network error
                         callExclusiveOfferApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 4:
@@ -759,15 +784,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         callBestSellingApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 5:
-                        //Call Seasonal Product API after network error
+                        //Call Seasonal ProductOld API after network error
                         callSeasonalProductApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 6:
-                        //Call Product List API after network error
+                        //Call ProductOld List API after network error
                         callProductListApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                     case 7:
-                        //Call Product List API after network error
+                        //Call ProductOld List API after network error
                         callStoreBannerApi(root, showCircleProgressDialog(context, ""));
                         break;
 

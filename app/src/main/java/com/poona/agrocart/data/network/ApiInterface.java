@@ -13,6 +13,7 @@ import static com.poona.agrocart.app.AppConstants.HOME_SEASONAL_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_STORE_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
+import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
@@ -29,6 +30,7 @@ import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
+import com.poona.agrocart.data.network.reponses.ProductListByResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
@@ -94,7 +96,7 @@ public interface ApiInterface {
     @POST(HOME_BASKET_API)
     Single<BasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
 
-    //Home Exclusive Offer API
+    //Home Product Offer API
     @FormUrlEncoded
     @POST(HOME_EXCLUSIVE_API)
     Single<ExclusiveResponse> homeExclusiveResponseSingle(@FieldMap HashMap<String, String> hashMap);
@@ -104,12 +106,12 @@ public interface ApiInterface {
     @POST(HOME_BEST_SELLING_API)
     Single<BestSellingResponse> homeBestSellingResponseSingle(@FieldMap HashMap<String, String> hashMap);
 
-    //Home Seasonal Product API
+    //Home Seasonal ProductOld API
     @FormUrlEncoded
     @POST(HOME_SEASONAL_LIST_API)
     Single<SeasonalProductResponse> homeSeasonalListResponse(@FieldMap HashMap<String, String> hashMap);
 
-    //Home Product list API
+    //Home ProductOld list API
     @FormUrlEncoded
     @POST(HOME_PRODUCT_LIST_API)
     Single<ProductListResponse> homeProductListResponse(@FieldMap HashMap<String, String> hashMap);
@@ -123,12 +125,21 @@ public interface ApiInterface {
     @POST(COUPON_API)
     Single<CouponResponse> couponListResponse(@FieldMap HashMap<String, String> hashMap);
 
+    /*Store listing API*/
     @FormUrlEncoded
     @POST(STORE_LIST)
     Single<OurStoreListResponse> getOurStoreList(@FieldMap HashMap<String, String> ourStoreInputParameter);
 
+    /*Logout API*/
     @FormUrlEncoded
     @POST(SIGN_OUT_API)
     Single<BaseResponse> signOutResponse(@FieldMap HashMap<String, String> hashMap);
+
+    /*Product list by Category API*/
+    @FormUrlEncoded
+    @POST(PRODUCT_LIST_BY_API)
+    Single<ProductListByResponse> productsByCategoryResponse(@FieldMap HashMap<String,String> hashMap);
+
+
 
 }

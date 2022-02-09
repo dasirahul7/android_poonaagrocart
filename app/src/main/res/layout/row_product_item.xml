@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="productModule"
-            type="com.poona.agrocart.ui.home.model.Product" />
+            name="productOldModule"
+            type="com.poona.agrocart.ui.home.model.ProductOld" />
 
     </data>
 
@@ -41,7 +41,7 @@
 
                 <ImageView
                     android:id="@+id/itemImg"
-                    setImage="@{productModule.img}"
+                    setImage="@{productOldModule.img}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
@@ -67,7 +67,7 @@
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:text="@{productModule.name}"
+                    android:text="@{productOldModule.name}"
                     android:textColor="@color/blue_txt_color"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_bold" />
@@ -79,7 +79,7 @@
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:drawablePadding="-5dp"
                     android:gravity="center_vertical"
-                    android:text="@{productModule.location}"
+                    android:text="@{productOldModule.location}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:drawableStartCompat="@drawable/ic_location_small"
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
-                    android:text="@{productModule.weight}"
+                    android:text="@{productOldModule.weight}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -109,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/bg_strikethrough"
-                        android:text="@{productModule.price}"
+                        android:text="@{productOldModule.price}"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -121,7 +121,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_weight="1"
-                        android:text="@{productModule.offerPrice}"
+                        android:text="@{productOldModule.offerPrice}"
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/cat_txt_size"
                         app:setCustomFont="@string/font_montserrat_regular" />

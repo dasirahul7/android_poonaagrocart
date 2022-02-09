@@ -28,12 +28,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentOurStoresBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.home.HomeViewModel;
-import com.poona.agrocart.ui.home.model.StoreBanner;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListData;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 
@@ -110,7 +107,7 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
                 }
                 else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount == totalCount) {
-                    infoToast(getActivity(), getString(R.string.no_result_found));  //change
+                    infoToast(requireActivity(), getString(R.string.no_result_found));  //change
                 }
             }
         });

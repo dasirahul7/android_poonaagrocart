@@ -11,12 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
-import com.poona.agrocart.app.AppConstants;
-import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
-import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 
@@ -27,7 +24,7 @@ public class FavouriteItemsFragment extends BaseFragment
     private RecyclerView rvFavouriteItems;
     private LinearLayoutManager linearLayoutManager;
     private FavouriteItemAdapter favouriteItemAdapter;
-    private ArrayList<Product> favouriteItemsList = new ArrayList<>();
+    private ArrayList<ProductOld> favouriteItemsList = new ArrayList<>();
 
     View view;
 
@@ -55,8 +52,8 @@ public class FavouriteItemsFragment extends BaseFragment
         rvFavouriteItems.setLayoutManager(linearLayoutManager);
         favouriteViewModel.getFavouriteItemMutableLiveData().observe(getViewLifecycleOwner(),products -> {
             favouriteItemsList = products;
-            for (Product product :products)
-                System.out.println("Product "+product.getName());
+            for (ProductOld productOld :products)
+                System.out.println("ProductOld "+ productOld.getName());
             favouriteItemAdapter = new FavouriteItemAdapter(favouriteItemsList,requireActivity(),view);
             rvFavouriteItems.setAdapter(favouriteItemAdapter);
             favouriteItemAdapter.setOnProductClick(product -> {
@@ -70,7 +67,7 @@ public class FavouriteItemsFragment extends BaseFragment
         ArrayList favouriteList = new ArrayList<>();
         for(int i = 0; i < 10; i++)
         {
-            Product favouriteItem = new Product("FAV"+i,
+            ProductOld favouriteItem = new ProductOld("FAV"+i,
                     "Bell Pepper Red","1kg","10","50",
                     getString(R.string.img_bell_pepper_red)
                     ,"Pune","Kashmir");

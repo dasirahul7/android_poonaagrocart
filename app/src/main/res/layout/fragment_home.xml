@@ -234,7 +234,7 @@
                     android:paddingHorizontal="@dimen/home_horizontal_padding"
                     tools:ignore="RtlSymmetry" />
 
-                <!--Exclusive Offers-->
+                <!--Product Offers-->
                 <RelativeLayout
                     android:id="@+id/rl_exclusive_offer"
                     android:layout_width="match_parent"

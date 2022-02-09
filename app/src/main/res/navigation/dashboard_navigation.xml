@@ -76,7 +76,7 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
 
-    <!--Favourite To Product Details-->
+    <!--Favourite To ProductOld Details-->
     <action
         android:id="@+id/action_nav_favourite_to_nav_product_details"
         app:destination="@id/nav_product_details"
@@ -85,13 +85,13 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
 
-    <!--Product List Fragment-->
+    <!--ProductOld List Fragment-->
     <fragment
         android:id="@+id/nav_products_list"
         android:name="com.poona.agrocart.ui.products_list.ProductListFragment"
         tools:layout="@layout/fragment_product_list"/>
 
-    <!--Product list actions ProductDetailFragment2-->
+    <!--ProductOld list actions ProductDetailFragment2-->
     <action
         android:id="@+id/action_nav_products_list_to_productDetailFragment2"
         app:destination="@id/nav_product_details"
@@ -100,7 +100,7 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
 
-    <!--Product list actions cart-->
+    <!--ProductOld list actions cart-->
     <action
         android:id="@+id/action_nav_products_list_to_nav_cart"
         app:destination="@id/nav_cart"
@@ -109,7 +109,7 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
 
-    <!--Product Detail Fragment-->
+    <!--ProductOld Detail Fragment-->
     <fragment
         android:id="@+id/nav_product_details"
         android:name="com.poona.agrocart.ui.product_detail.ProductDetailFragment"
@@ -350,7 +350,7 @@
     </fragment>
 
     <!--Home actions-->
-    <!--Home to products list action-->
+    <!--Home to productOlds list action-->
     <action
         android:id="@+id/action_nav_home_to_nav_products_list"
         app:destination="@id/nav_products_list"
@@ -377,7 +377,7 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
 
-    <!--Home to Product Details action-->
+    <!--Home to ProductOld Details action-->
     <action
         android:id="@+id/action_nav_home_to_nav_product_details"
         app:destination="@id/nav_product_details"

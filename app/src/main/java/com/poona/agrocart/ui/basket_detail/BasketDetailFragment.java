@@ -80,7 +80,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         basketDetailsBinding.ivPlus.setOnClickListener(this);
         basketDetailsBinding.ivMinus.setOnClickListener(this);
         basketDetailsBinding.ivFavourite.setOnClickListener(this);
-        // BasketDetail Product views
+        // BasketDetail ProductOld views
         basketDetailsBinding.layoutAdded.llProductList.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.imgPlus.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.imgMinus.setOnClickListener(this);
@@ -102,7 +102,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         ArrayList<String> images = new ArrayList<>();
         for (int i=0;i<3;i++)
             images.add(getArguments() != null ? getArguments().getString("image") : null);
-        // Set Product Details here
+        // Set ProductOld Details here
         basketDetail.setBasketPrice("Rs. 200");
         basketDetail.setBasketImages(images);
         // Add Subscription Details
@@ -112,7 +112,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         subType.add("Monthly");
         Subscription subscription = new Subscription("Rs. 1500","per basket","Special rate for subscription",subType,"5","15 Dec 2021","Rs. 1400 X 5 ","Rs. 7000");
         basketDetail.setSubscription(subscription);
-        //Add Product Items list
+        //Add ProductOld Items list
         ProductItem item = new ProductItem("Moong","500gm");
         ProductItem item1 = new ProductItem("Matki","250gm");
         ProductItem item2 = new ProductItem("Beans sprouts","500gm");

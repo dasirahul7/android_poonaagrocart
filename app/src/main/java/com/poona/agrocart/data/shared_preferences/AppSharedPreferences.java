@@ -18,8 +18,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.poona.agrocart.R;
-import com.poona.agrocart.ui.home.model.Product;
-import com.poona.agrocart.ui.nav_my_cart.CartItem;
+import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -176,30 +175,30 @@ public class AppSharedPreferences
         }
     }
 
-    public void saveCartArrayList(ArrayList<Product> list, String key){
+    public void saveCartArrayList(ArrayList<ProductOld> list, String key){
 
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString(key, json);
         editor.apply();     // This line is IMPORTANT !!!
     }
-    public void saveFavArrayList(ArrayList<Product> list, String key){
+    public void saveFavArrayList(ArrayList<ProductOld> list, String key){
 
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString(key, json);
         editor.apply();     // This line is IMPORTANT !!!
     }
-    public ArrayList<Product> getSavedCartList(String key){
+    public ArrayList<ProductOld> getSavedCartList(String key){
         Gson gson = new Gson();
         String json = preferences.getString(key, null);
-        Type type = new TypeToken<ArrayList<Product>>() {}.getType();
+        Type type = new TypeToken<ArrayList<ProductOld>>() {}.getType();
         return gson.fromJson(json, type);
     }
-    public ArrayList<Product> getSavedFavList(String key){
+    public ArrayList<ProductOld> getSavedFavList(String key){
         Gson gson = new Gson();
         String json = preferences.getString(key, null);
-        Type type = new TypeToken<ArrayList<Product>>() {}.getType();
+        Type type = new TypeToken<ArrayList<ProductOld>>() {}.getType();
         return gson.fromJson(json, type);
     }
     public void removeAll() {
