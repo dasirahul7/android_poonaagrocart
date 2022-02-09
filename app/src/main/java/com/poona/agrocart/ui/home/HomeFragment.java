@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.home;
 
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
 import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
 import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
@@ -753,6 +754,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.tv_all_basket:
                 bundle.putString(LIST_TITLE,"Basket");
+                bundle.putString(FROM_SCREEN,"Basket");
+                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list,bundle);
+                break;
+            case R.id.tv_all_exclusive:
+                bundle.putString(LIST_TITLE,"Best selling");
+                bundle.putString(FROM_SCREEN,"Best selling");
                 Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list,bundle);
         }
     }

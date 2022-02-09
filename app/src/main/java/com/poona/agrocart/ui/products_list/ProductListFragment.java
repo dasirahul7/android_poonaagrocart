@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.products_list;
 
 import static com.poona.agrocart.app.AppConstants.BASKET;
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
 import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
 import static com.poona.agrocart.app.AppConstants.SEARCH_BASKET;
@@ -63,7 +64,7 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
     private ProductGridAdapter productGridAdapter;
     private BasketGridAdapter basketGridAdapter;
     //argument values
-    private String CategoryId, ListTitle, ListType;
+    private String CategoryId, ListTitle, ListType,fromScreen;
     private final int limit = 10;
     private int visibleItemCount = 0;
     private int totalCount = 0, offset = 0;
@@ -106,7 +107,12 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
         rvVegetables.setHasFixedSize(true);
         rvVegetables.setLayoutManager(gridLayoutManager);
         if (CategoryId==null){
+            fromScreen = getArguments().getString(FROM_SCREEN);
+            if (fromScreen.equalsIgnoreCase("Basket"))
             callBasketListApi(showCircleProgressDialog(context,""),"load");
+            else if (fromScreen.equalsIgnoreCase("Best selling")){
+                infoToast(context,"Best selling listing");
+            }
         }else callProductListApi(showCircleProgressDialog(context, ""), limit, "load");
 
     }
