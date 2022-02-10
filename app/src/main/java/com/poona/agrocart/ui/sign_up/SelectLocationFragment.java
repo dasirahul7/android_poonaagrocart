@@ -111,9 +111,9 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                         if (areaResponse.getStatus() == 200) {
                             successToast(context, "" + areaResponse.getMessage());
 //                            Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
-                            if (areaResponse.getAreaData() != null) {
-                                if (areaResponse.getAreaData().getArea().size() > 0) {
-                                    areaArrayList = areaResponse.getAreaData().getArea();
+                            if (areaResponse.getArea() != null) {
+                                if (areaResponse.getArea().size() > 0) {
+                                    areaArrayList = areaResponse.getArea();
                                     areas = new ArrayList<>();
                                     areaIds = new ArrayList<>();
                                     for (AreaResponse.Areas area : areaArrayList) {
@@ -163,9 +163,9 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                             if (cityResponse.getStatus() == 200) {
                                 successToast(context, "" + cityResponse.getMessage());
 //                            Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
-                                if (cityResponse.getCityResponseData() != null) {
-                                    if (cityResponse.getCityResponseData().getCityArrayList().size() > 0) {
-                                        cityArrayList = cityResponse.getCityResponseData().getCityArrayList();
+                                if (cityResponse.getCityArrayList() != null) {
+                                    if (cityResponse.getCityArrayList().size() > 0) {
+                                        cityArrayList = cityResponse.getCityArrayList();
                                         cityIds = new ArrayList<>();
                                         cities = new ArrayList<>();
                                         for (CityResponse.City city : cityArrayList) {

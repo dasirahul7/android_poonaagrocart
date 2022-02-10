@@ -8,25 +8,16 @@ import java.util.ArrayList;
 public class CityResponse extends BaseResponse{
     @SerializedName("data")
     @Expose
-    private CityData cityResponseData;
+    private ArrayList<City> cityArrayList;
 
-    public CityData getCityResponseData() {
-        return cityResponseData;
+    public ArrayList<City> getCityArrayList() {
+        return cityArrayList;
     }
 
-    public void setCityResponseData(CityData cityResponseData) {
-        this.cityResponseData = cityResponseData;
+    public void setCityArrayList(ArrayList<City> cityArrayList) {
+        this.cityArrayList = cityArrayList;
     }
 
-    public class CityData {
-        @SerializedName("city_data")
-        @Expose
-        private ArrayList<City> cityArrayList;
-
-        public ArrayList<City> getCityArrayList() {
-            return cityArrayList;
-        }
-    }
     public class City {
         @SerializedName("id")
         @Expose

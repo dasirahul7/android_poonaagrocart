@@ -8,29 +8,16 @@ import java.util.ArrayList;
 public class AreaResponse extends BaseResponse{
     @SerializedName("data")
     @Expose
-    private AreaData areaData;
+    private ArrayList<Areas> area;
 
-    public AreaData getAreaData() {
-        return areaData;
+    public ArrayList<Areas> getArea() {
+        return area;
     }
 
-    public void setAreaData(AreaData areaData) {
-        this.areaData = areaData;
+    public void setArea(ArrayList<Areas> area) {
+        this.area = area;
     }
 
-    public class AreaData {
-        @SerializedName("area_data")
-        @Expose
-        private ArrayList<Areas> area;
-
-        public ArrayList<Areas> getArea() {
-            return area;
-        }
-
-        public void setArea(ArrayList<Areas> area) {
-            this.area = area;
-        }
-    }
 
     public class Areas {
         @SerializedName("id")
