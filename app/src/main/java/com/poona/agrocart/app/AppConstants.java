@@ -160,6 +160,7 @@ public class AppConstants {
     public static final String USER_MOBILE = "MOBILE_NO";
     public static final String COUNTRY_CODE = "COUNTRY_CODE";
     public static final String USER_OTP = "USER_OTP";
+    public static final String USER_VERIFIED = "USER_VERIFIED";
     public static final Object IS_NOTIFICATION_RECEIVED = "IS_NOTIFICATION_RECEIVED";
 
     //Help center

@@ -51,15 +51,15 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private void setupSpinner()
     {
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions,states);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
+        arrayAdapter.setDropDownViewResource(R.layout.custom_list_item_checked);
         fragmentMyProfileBinding.spinnerState.setAdapter(arrayAdapter);
 
         arrayAdapter = new ArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions,cities);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
+        arrayAdapter.setDropDownViewResource(R.layout.custom_list_item_checked);
         fragmentMyProfileBinding.spinnerCity.setAdapter(arrayAdapter);
 
         arrayAdapter = new ArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions,areas);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
+        arrayAdapter.setDropDownViewResource(R.layout.custom_list_item_checked);
         fragmentMyProfileBinding.spinnerArea.setAdapter(arrayAdapter);
 
         /*fragmentMyProfileBinding.spinnerArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

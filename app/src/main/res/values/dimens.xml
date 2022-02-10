@@ -61,4 +61,11 @@
     <dimen name="xl_txt_size">@dimen/_20sdp</dimen>
     <dimen name="xxl_txt_size">@dimen/_18sdp</dimen>
     <dimen name="very_large">@dimen/_25sdp</dimen>
+
+    <!--PinView-->
+    <dimen name="pv_pin_view_item_size">48dp</dimen>
+    <dimen name="pv_pin_view_item_radius">5dp</dimen>
+    <dimen name="pv_pin_view_item_spacing">5dp</dimen>
+    <dimen name="pv_pin_view_item_line_width">2dp</dimen>
+    <dimen name="pv_pin_view_cursor_width">2dp</dimen>
 </resources>
