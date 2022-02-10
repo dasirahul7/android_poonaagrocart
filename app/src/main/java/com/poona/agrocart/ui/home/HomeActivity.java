@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -139,18 +140,14 @@ public class HomeActivity extends BaseActivity {
         });
 
         View headerView = navigationView.getHeaderView(0);
+        RelativeLayout rlEditProfile = headerView.findViewById(R.id.rl_edit_profile);
         CustomTextView tvUserName = headerView.findViewById(R.id.tv_user_name);
         ImageView editImg = headerView.findViewById(R.id.edit_img);
         tvUserName.setText("Hello ! Ranju");
-        editImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer.closeDrawer(GravityCompat.START);
-                navController.navigate(R.id.nav_profile);
-            }
+        rlEditProfile.setOnClickListener(v -> {
+            drawer.closeDrawer(GravityCompat.START);
+            navController.navigate(R.id.nav_profile);
         });
-
-
     }
 
     private void signOutApiCall(ProgressDialog progressDialog) {
@@ -210,7 +207,6 @@ public class HomeActivity extends BaseActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
 
     @Override
     public void onBackPressed() {

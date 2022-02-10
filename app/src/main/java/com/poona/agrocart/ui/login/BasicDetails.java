@@ -4,8 +4,7 @@ import android.text.TextUtils;
 
 import java.util.regex.Pattern;
 
-public class BasicDetails
-{
+public class BasicDetails {
     String mobileNumber;
     String otp;
     String userName;
@@ -15,6 +14,12 @@ public class BasicDetails
     String area;
     String password;
     String countryCode;
+
+    String name;
+    String alternateMobileNumber;
+    String state;
+    String gender;
+    String dob;
 
     public String getUserId() {
         return userId;
@@ -31,7 +36,6 @@ public class BasicDetails
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
-
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -89,14 +93,60 @@ public class BasicDetails
         this.password = password;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAlternateMobileNumber() {
+        return alternateMobileNumber;
+    }
+
+    public void setAlternateMobileNumber(String alternateMobileNumber) {
+        this.alternateMobileNumber = alternateMobileNumber;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
     public int isValidMobileNumber(){
         if(TextUtils.isEmpty(this.mobileNumber)) {
             return 0;
-        }
-        else if(!TextUtils.isEmpty(this.mobileNumber) && this.mobileNumber.length()<10){
+        } else if(!TextUtils.isEmpty(this.mobileNumber) && this.mobileNumber.length()<10){
             return 1;
-        }
-        else{
+        } else { return -1; }
+    }
+
+    public int isValidAlternateMobileNumber(){
+        /*if(TextUtils.isEmpty(this.alternateMobileNumber)) {
+            return 0;
+        } else*/ if(!TextUtils.isEmpty(this.alternateMobileNumber) && this.alternateMobileNumber.length()<10) {
+            return 0;
+        } else {
             return -1;
         }
     }
@@ -141,8 +191,7 @@ public class BasicDetails
                 + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$").matcher(email).matches();
     }
 
-    public int isValidCity()
-    {
+    public int isValidCity() {
         if(TextUtils.isEmpty(this.city)){
             return 0;
         }
@@ -171,6 +220,42 @@ public class BasicDetails
 
     public int isValidPassword(){
         if(TextUtils.isEmpty(this.password)){
+            return 0;
+        }
+        else{
+            return -1;
+        }
+    }
+
+    public int isValidName(){
+        if(TextUtils.isEmpty(this.name)){
+            return 0;
+        }
+        else{
+            return -1;
+        }
+    }
+
+    public int isValidState(){
+        if(TextUtils.isEmpty(this.state)){
+            return 0;
+        }
+        else{
+            return -1;
+        }
+    }
+
+    public int isValidGender(){
+        if(TextUtils.isEmpty(this.gender)){
+            return 0;
+        }
+        else{
+            return -1;
+        }
+    }
+
+    public int isValidDob(){
+        if(TextUtils.isEmpty(this.dob)){
             return 0;
         }
         else{

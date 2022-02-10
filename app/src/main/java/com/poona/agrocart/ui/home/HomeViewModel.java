@@ -139,7 +139,6 @@ public class HomeViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(CategoryResponse response) {
                         if (response != null) {
-                            Log.d(TAG, "onSuccess: " + response.getMessage());
                             progressDialog.dismiss();
                             categoryResponseMutableLiveData.setValue(response);
                         }

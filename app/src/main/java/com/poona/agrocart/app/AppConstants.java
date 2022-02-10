@@ -70,6 +70,7 @@ public class AppConstants {
     public static final String INTRO_SCREEN_API = "screen-customer";
     public static final String AREA_API = "area";
     public static final String CITY_API = "city";
+    public static final String STATE_API = "state";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
     /*Home screen APIs*/
     public static final String HOME_BANNER_API = "home-screen-banner";
@@ -89,12 +90,6 @@ public class AppConstants {
 
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API ="product-by-category-list";
-
-    /*Basket list API*/
-
-
-
-
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";

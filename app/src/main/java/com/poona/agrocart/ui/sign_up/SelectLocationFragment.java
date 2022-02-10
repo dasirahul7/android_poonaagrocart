@@ -27,8 +27,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.poona.agrocart.R;
-import com.poona.agrocart.common.model.Areas;
-import com.poona.agrocart.common.model.City;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
@@ -41,23 +39,18 @@ import com.poona.agrocart.ui.login.CommonViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class SelectLocationFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
-
     private FragmentSelectLocationBinding fragmentSelectLocationBinding;
-//    private final String[] cities={"Pune"};
-//    private final String[] areas={"Vishrantwadi", "Khadki"};
 
-    private ArrayList<Areas> areaArrayList;
-    private ArrayList<City> cityArrayList;
+    private List<AreaResponse.Area> areaArrayList;
+    private List<CityResponse.City> cityArrayList;
     private BasicDetails basicDetails;
     private CommonViewModel commonViewModel;
     private SelectLocationViewModel selectLocationViewModel;
-    //    private ArrayList<String> areas;
-//    private ArrayList<String> areaIds;
-//    private ArrayList<String> cities;
-//    private ArrayList<String> citiIds;
+
     private String selectedCityId = "1";
     private String selectedAreaId = "1";
     private String selectedCity, selectedArea;
@@ -75,7 +68,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         fragmentSelectLocationBinding.setLifecycleOwner(this);
         rootSelectView = fragmentSelectLocationBinding.getRoot();
 
-        initViews(rootSelectView);
+        initViews();
 
         ivBack.setOnClickListener(v -> {
             Navigation.findNavController(rootSelectView).popBackStack();
@@ -84,7 +77,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         return rootSelectView;
     }
 
-    private void initViews(View view) {
+    private void initViews() {
         /*checkGpsStatus();*/
         commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
         selectLocationViewModel = new ViewModelProvider(this).get(SelectLocationViewModel.class);
@@ -95,8 +88,8 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
 
         basicDetails = new BasicDetails();
-        areaArrayList = new ArrayList<>();
-        cityArrayList = new ArrayList<>();
+        areaArrayList = new ArrayList<AreaResponse.Area>();
+        cityArrayList = new ArrayList<CityResponse.City>();
         callAreaApi(showCircleProgressDialog(context, ""));
         callCityApi(showCircleProgressDialog(context, ""));
         setUpSpinnerCity();
@@ -112,13 +105,12 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (areaResponse.getStatus() == 200) {
                             successToast(context, "" + areaResponse.getMessage());
-//                            Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
-                            if (areaResponse.getAreaData() != null) {
-                                if (areaResponse.getAreaData().getArea().size() > 0) {
-                                    areaArrayList = areaResponse.getAreaData().getArea();
+                            if (areaResponse.getAreas() != null) {
+                                if (areaResponse.getAreas().size() > 0) {
+                                    areaArrayList = areaResponse.getAreas();
                                     areas = new ArrayList<>();
                                     areaIds = new ArrayList<>();
-                                    for (Areas area : areaArrayList) {
+                                    for (AreaResponse.Area area : areaArrayList) {
                                         areas.add(area.getAreaName());
                                         areaIds.add(area.getId());
                                         System.out.println("area " + area.getAreaName());
@@ -127,8 +119,6 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                                     areasArrayAdapter.setDropDownViewResource(R.layout.text_spinner);
                                     selectedAreaId = areaArrayList.get(0).getId();
                                     selectedArea = areaArrayList.get(0).getAreaName();
-//                                    ArrayAdapter<Areas> areasArrayAdapter = new ArrayAdapter<Areas>(getContext(), R.layout.text_spinner, areaArrayList);
-//                                    areasArrayAdapter.setDropDownViewResource(R.layout.text_spinner);
                                     fragmentSelectLocationBinding.spinnerArea.setAdapter(areasArrayAdapter);
                                 }
                             }
@@ -164,15 +154,14 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                         case STATUS_CODE_200://Record Create/Update Successfully
                             if (cityResponse.getStatus() == 200) {
                                 successToast(context, "" + cityResponse.getMessage());
-//                            Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
-                                if (cityResponse.getCityResponseData() != null) {
-                                    if (cityResponse.getCityResponseData().getCityArrayList().size() > 0) {
-                                        cityArrayList = cityResponse.getCityResponseData().getCityArrayList();
+                                if (cityResponse.getCities() != null) {
+                                    if (cityResponse.getCities().size() > 0) {
+                                        cityArrayList = cityResponse.getCities();
                                         cityIds = new ArrayList<>();
                                         cities = new ArrayList<>();
-                                        for (City city : cityArrayList) {
+                                        for (CityResponse.City city : cityArrayList) {
                                             cities.add(city.getCityName());
-                                            cityIds.add(city.getCityId());
+                                            cityIds.add(city.getId());
                                             System.out.println("city " + city.getCityName());
                                         }
                                         ArrayAdapter<String> areasArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.text_spinner, cities);
@@ -181,7 +170,6 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                                         selectedCity = cities.get(0);
                                         fragmentSelectLocationBinding.spinnerCity.setAdapter(areasArrayAdapter);
                                     }
-
                                 }
                             }
                             break;
@@ -231,8 +219,8 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                 basicDetails.setCity(parent.getItemAtPosition(position).toString());
                 commonViewModel.city.setValue(basicDetails.getCity());
                 if (cityArrayList != null) {
-                    System.out.println("selected city " + cityArrayList.get(position).getCityId());
-                    selectedCityId = cityArrayList.get(position).getCityId();
+                    System.out.println("selected city " + cityArrayList.get(position).getId());
+                    selectedCityId = cityArrayList.get(position).getId();
                     selectedCity = cityArrayList.get(position).getCityName();
                 }
             }
@@ -275,7 +263,6 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                         infoToast(context, updateLocationResponse.getMessage());
                         break;
                 }
-
             }
         };
         selectLocationViewModel.updateLocation(showCircleProgressDialog, updateLocationParams(),

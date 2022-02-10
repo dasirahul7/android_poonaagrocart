@@ -24,6 +24,9 @@
     <declare-styleable name="CustomCheckBox">
         <attr name="setCustomFont"/>
     </declare-styleable>
+    <declare-styleable name="CustomCheckedTextView">
+        <attr name="setCustomFont"/>
+    </declare-styleable>
 
     <!--dotted progress bar-->
     <declare-styleable name="DotProgressBar">

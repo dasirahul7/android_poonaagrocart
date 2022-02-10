@@ -40,7 +40,6 @@ import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 
 import java.util.HashMap;
 
-import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -139,7 +138,4 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(PRODUCT_LIST_BY_API)
     Single<ProductListByResponse> productsByCategoryResponse(@FieldMap HashMap<String,String> hashMap);
-
-
-
 }

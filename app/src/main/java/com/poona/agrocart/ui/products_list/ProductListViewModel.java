@@ -124,7 +124,6 @@ public class ProductListViewModel extends AndroidViewModel {
                        if (productListByResponse!=null){
                            progressDialog.dismiss();
                            productListByResponseMutableLiveData.setValue(productListByResponse);
-                           Log.d(TAG, "onSuccess: "+ productListByResponse.getMessage());
                        }
                     }
 

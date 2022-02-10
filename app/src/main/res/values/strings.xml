@@ -44,8 +44,11 @@
     <string name="your_city">Your City</string>
     <string name="your_area">Your Area</string>
     <string name="submit">Submit</string>
+    <string name="please_select_state">Please select state!</string>
     <string name="please_select_city">Please select city!</string>
-    <string name="please_select_area">Please select Area!</string>
+    <string name="please_select_area">Please select area!</string>
+    <string name="please_select_gender">Please select gender!</string>
+    <string name="please_select_dob">Please select date of birth!</string>
 
     <!--Loggin screen-->
     <string name="loging">Loging</string>
@@ -72,6 +75,9 @@
     <string name="please_select_country_code">Please select country code!</string>
     <string name="select_country">Select country</string>
     <string name="digits">0123456789</string>
+
+    <!--Edit profile screen validation messages-->
+    <string name="name_should_not_be_empty">Name should not be empty!</string>
 
     <!--Verify OTP fragment-->
     <string name="enter_otp">Enter your 4-digit code</string>
