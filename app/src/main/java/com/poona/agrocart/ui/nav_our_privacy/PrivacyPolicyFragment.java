@@ -23,14 +23,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.BR;
-import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.FragmentAboutUsBinding;
 import com.poona.agrocart.databinding.FragmentPolicyItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_about_us.AboutUsFragment;
-import com.poona.agrocart.ui.nav_about_us.AboutUsViewModel;
 import com.poona.agrocart.ui.nav_about_us.model.CmsPagesData;
-import com.poona.agrocart.ui.nav_about_us.model.CmsPagesDataResponse;
+import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +71,7 @@ public class PrivacyPolicyFragment extends BaseFragment {
     private void callPrivacyPolicyApi(ProgressDialog progressDialog) {
 
         @SuppressLint("NotifyDataSetChanged")
-        Observer<CmsPagesDataResponse> cmsPagesDataResponseObserver = cmsPagesDataResponse -> {
+        Observer<CmsResponse> cmsPagesDataResponseObserver = cmsPagesDataResponse -> {
 
             if (cmsPagesDataResponse != null){
                 Log.e("Privacy and Policy Api Response", new Gson().toJson(cmsPagesDataResponse));

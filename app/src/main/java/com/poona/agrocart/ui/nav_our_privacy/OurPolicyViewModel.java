@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
-import com.poona.agrocart.ui.nav_about_us.model.CmsPagesDataResponse;
+import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -41,17 +41,17 @@ public class OurPolicyViewModel extends ViewModel {
 
 
     /*Privacy Policy*/
-    public LiveData<CmsPagesDataResponse> getPrivacyPolicyResponse(ProgressDialog progressDialog, Context context, PrivacyPolicyFragment privacyPolicyFragment) {
-        MutableLiveData<CmsPagesDataResponse> cmsPagesDataResponseMutableLiveData = new MutableLiveData<>();
+    public LiveData<CmsResponse> getPrivacyPolicyResponse(ProgressDialog progressDialog, Context context, PrivacyPolicyFragment privacyPolicyFragment) {
+        MutableLiveData<CmsResponse> cmsPagesDataResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(context)
                 .create(ApiInterface.class)
-                .getPrivacyPolicyResponse()
+                .getCmsResponse()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<CmsPagesDataResponse>() {
+                .subscribeWith(new DisposableSingleObserver<CmsResponse>() {
                     @Override
-                    public void onSuccess(@NonNull CmsPagesDataResponse baseResponse) {
+                    public void onSuccess(@NonNull CmsResponse baseResponse) {
                         if (progressDialog != null){
                             progressDialog.dismiss();
                         }
@@ -69,9 +69,9 @@ public class OurPolicyViewModel extends ViewModel {
                         }
 
                         Gson gson = new GsonBuilder().create();
-                        CmsPagesDataResponse baseResponse = new CmsPagesDataResponse();
+                        CmsResponse baseResponse = new CmsResponse();
                         try {
-                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CmsPagesDataResponse.class);
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CmsResponse.class);
 
                             cmsPagesDataResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
@@ -87,19 +87,19 @@ public class OurPolicyViewModel extends ViewModel {
     }
 
     /*Terms And Condition*/
-    public LiveData<CmsPagesDataResponse> getTermsConditionResponse(ProgressDialog progressDialog
+    public LiveData<CmsResponse> getTermsConditionResponse(ProgressDialog progressDialog
             , Context context, TermsConditionFragment termsConditionFragment) {
 
-        MutableLiveData<CmsPagesDataResponse> cmsPagesDataResponseMutableLiveData = new MutableLiveData<>();
+        MutableLiveData<CmsResponse> cmsPagesDataResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(context)
                 .create(ApiInterface.class)
-                .getTermsConditionResponse()
+                .getCmsResponse()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<CmsPagesDataResponse>() {
+                .subscribeWith(new DisposableSingleObserver<CmsResponse>() {
                     @Override
-                    public void onSuccess(@NonNull CmsPagesDataResponse baseResponse) {
+                    public void onSuccess(@NonNull CmsResponse baseResponse) {
                         if (progressDialog != null){
                             progressDialog.dismiss();
                         }
@@ -117,9 +117,9 @@ public class OurPolicyViewModel extends ViewModel {
                         }
 
                         Gson gson = new GsonBuilder().create();
-                        CmsPagesDataResponse baseResponse = new CmsPagesDataResponse();
+                        CmsResponse baseResponse = new CmsResponse();
                         try {
-                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CmsPagesDataResponse.class);
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CmsResponse.class);
 
                             cmsPagesDataResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
@@ -134,18 +134,18 @@ public class OurPolicyViewModel extends ViewModel {
         return cmsPagesDataResponseMutableLiveData;
     }
 
-    public LiveData<CmsPagesDataResponse> getReturnRefundResponse(ProgressDialog progressDialog, Context context, ReturnRefundFragment returnRefundFragment) {
+    public LiveData<CmsResponse> getReturnRefundResponse(ProgressDialog progressDialog, Context context, ReturnRefundFragment returnRefundFragment) {
 
-        MutableLiveData<CmsPagesDataResponse> cmsPagesDataResponseMutableLiveData = new MutableLiveData<>();
+        MutableLiveData<CmsResponse> cmsPagesDataResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(context)
                 .create(ApiInterface.class)
-                .getReturnRefundResponse()
+                .getCmsResponse()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<CmsPagesDataResponse>() {
+                .subscribeWith(new DisposableSingleObserver<CmsResponse>() {
                     @Override
-                    public void onSuccess(@NonNull CmsPagesDataResponse baseResponse) {
+                    public void onSuccess(@NonNull CmsResponse baseResponse) {
                         if (progressDialog != null){
                             progressDialog.dismiss();
                         }
@@ -163,9 +163,9 @@ public class OurPolicyViewModel extends ViewModel {
                         }
 
                         Gson gson = new GsonBuilder().create();
-                        CmsPagesDataResponse baseResponse = new CmsPagesDataResponse();
+                        CmsResponse baseResponse = new CmsResponse();
                         try {
-                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CmsPagesDataResponse.class);
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CmsResponse.class);
 
                             cmsPagesDataResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {

@@ -26,7 +26,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentAboutUsBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_about_us.model.CmsPagesData;
-import com.poona.agrocart.ui.nav_about_us.model.CmsPagesDataResponse;
+import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +66,7 @@ public class AboutUsFragment extends BaseFragment {
     private void callAboutUsApi(ProgressDialog progressDialog) {
 
         @SuppressLint("NotifyDataSetChanged")
-        Observer<CmsPagesDataResponse> aboutUsResponseObserver = cmsPagesDataResponse -> {
+        Observer<CmsResponse> aboutUsResponseObserver = cmsPagesDataResponse -> {
 
             if (cmsPagesDataResponse != null){
                 Log.e("About us Api Response", new Gson().toJson(cmsPagesDataResponse));
@@ -116,6 +116,4 @@ public class AboutUsFragment extends BaseFragment {
         aboutUsViewModel.getAboutUsResponse(progressDialog, context, AboutUsFragment.this)
                 .observe(getViewLifecycleOwner(), aboutUsResponseObserver);
     }
-
-
 }
