@@ -25,22 +25,20 @@ import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentAboutUsBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_about_us.model.CmsPagesData;
-import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
+import com.poona.agrocart.data.network.reponses.CmsResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AboutUsFragment extends BaseFragment {
-
-    private AboutUsViewModel aboutUsViewModel;
+public class CmsFragment extends BaseFragment {
+    private CmsViewModel cmsViewModel;
     private FragmentAboutUsBinding fragmentAboutUsBinding;
-    private List<CmsPagesData> cmsPagesDataList = new ArrayList<>();
-    private String aboutUsContent = "";
+    private List<CmsResponse.Cms> cmsList = new ArrayList<>();
+    private String cmsContent = "";
     private View view;
 
-    public static AboutUsFragment newInstance() {
-        return new AboutUsFragment();
+    public static CmsFragment newInstance() {
+        return new CmsFragment();
     }
 
     @Override
@@ -49,71 +47,69 @@ public class AboutUsFragment extends BaseFragment {
         fragmentAboutUsBinding = FragmentAboutUsBinding.inflate(getLayoutInflater());
         fragmentAboutUsBinding.setLifecycleOwner(this);
 
-        aboutUsViewModel = new ViewModelProvider(this).get(AboutUsViewModel.class);
-        fragmentAboutUsBinding.setAboutUsViewModel(aboutUsViewModel);
+        cmsViewModel = new ViewModelProvider(this).get(CmsViewModel.class);
+        fragmentAboutUsBinding.setAboutUsViewModel(cmsViewModel);
 
         view = fragmentAboutUsBinding.getRoot();
 
         initTitleBar(getString(R.string.menu_about_us));
 
-        callAboutUsApi(showCircleProgressDialog(context, ""));
+        if (isConnectingToInternet(context)) {
+            callCmsApi(showCircleProgressDialog(context, ""));
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
 
         return view;
     }
 
 
     /* About us api*/
-    private void callAboutUsApi(ProgressDialog progressDialog) {
-
+    private void callCmsApi(ProgressDialog progressDialog) {
         @SuppressLint("NotifyDataSetChanged")
-        Observer<CmsResponse> aboutUsResponseObserver = cmsPagesDataResponse -> {
-
-            if (cmsPagesDataResponse != null){
-                Log.e("About us Api Response", new Gson().toJson(cmsPagesDataResponse));
-                if (progressDialog !=null){
+        Observer<CmsResponse> aboutUsResponseObserver = cmsResponse -> {
+            if (cmsResponse != null) {
+                Log.e("Cms Api Response", new Gson().toJson(cmsResponse));
+                if (progressDialog !=null) {
                     progressDialog.dismiss();
                 }
-                switch (cmsPagesDataResponse.getStatus()) {
+                switch (cmsResponse.getStatus()) {
                     case STATUS_CODE_200://success
-
-                        if(cmsPagesDataResponse.getData() != null &&
-                        cmsPagesDataResponse.getData().size() > 0){
-                            cmsPagesDataList = cmsPagesDataResponse.getData();
-                            aboutUsContent = cmsPagesDataList.get(0).getCmsText();
-
+                        if(cmsResponse.getData() != null &&
+                        cmsResponse.getData().size() > 0) {
+                            cmsList = cmsResponse.getData();
+                            cmsContent = cmsList.get(0).getCmsText();
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                fragmentAboutUsBinding.tvAboutUs.setText(Html.fromHtml(""+aboutUsContent, Html.FROM_HTML_MODE_COMPACT));
-                                // fragmentAboutUsBinding.tvDescription.setText(Html.fromHtml(""+strAboutDescription, Html.FROM_HTML_MODE_COMPACT));
+                                fragmentAboutUsBinding.tvAboutUs.setText(Html.fromHtml(""+ cmsContent, Html.FROM_HTML_MODE_COMPACT));
+                                //fragmentAboutUsBinding.tvDescription.setText(Html.fromHtml(""+strAboutDescription, Html.FROM_HTML_MODE_COMPACT));
                             } else {
-                                fragmentAboutUsBinding.tvAboutUs.setText(Html.fromHtml(""+aboutUsContent));
-                                // fragmentAboutUsBinding.tvDescription.setText(Html.fromHtml(""+strAboutDescription));
+                                fragmentAboutUsBinding.tvAboutUs.setText(Html.fromHtml(""+ cmsContent));
+                                //fragmentAboutUsBinding.tvDescription.setText(Html.fromHtml(""+strAboutDescription));
                             }
-
                         }
-
                         break;
                     case STATUS_CODE_400://Validation Errors
-                        warningToast(context, cmsPagesDataResponse.getMessage());
+                        warningToast(context, cmsResponse.getMessage());
                         break;
                     case STATUS_CODE_404://Record not Found
-                        errorToast(context, cmsPagesDataResponse.getMessage());
+                        errorToast(context, cmsResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        warningToast(context, cmsPagesDataResponse.getMessage());
+                        warningToast(context, cmsResponse.getMessage());
                         goToAskSignInSignUpScreen();
                         break;
                     case STATUS_CODE_405://Method Not Allowed
-                        infoToast(context, cmsPagesDataResponse.getMessage());
+                        infoToast(context, cmsResponse.getMessage());
                         break;
                 }
-            }else{
+            } else {
                 if (progressDialog !=null){
                     progressDialog.dismiss();
                 }
             }
         };
 
-        aboutUsViewModel.getAboutUsResponse(progressDialog, context, AboutUsFragment.this)
+        cmsViewModel.getCmsResponse(progressDialog, context, CmsFragment.this)
                 .observe(getViewLifecycleOwner(), aboutUsResponseObserver);
     }
 }

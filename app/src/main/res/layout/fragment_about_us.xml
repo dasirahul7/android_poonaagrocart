@@ -4,17 +4,18 @@
     <data>
         <variable
             name="aboutUsViewModel"
-            type="com.poona.agrocart.ui.nav_about_us.AboutUsViewModel" />
+            type="com.poona.agrocart.ui.nav_about_us.CmsViewModel" />
 
     </data>
 
-    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical"
-        tools:context=".ui.nav_about_us.AboutUsFragment">
+        tools:context=".ui.nav_about_us.CmsFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,6 +23,7 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:layout_marginHorizontal="@dimen/horizontal_margin"
             android:orientation="vertical">
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
@@ -30,10 +32,12 @@
                 app:cardUseCompatPadding="true"
                 app:strokeColor="@color/colorLightGrey"
                 app:strokeWidth="1dp">
+
                 <LinearLayout
                     android:padding="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -75,6 +79,9 @@
                 android:textSize="@dimen/medium_txt_size"
                 android:textStyle="normal"
                 app:setCustomFont="@string/font_poppins_medium" />
+
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
+
 </layout>

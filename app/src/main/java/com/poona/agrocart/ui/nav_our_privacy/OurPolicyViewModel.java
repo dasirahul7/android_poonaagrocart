@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
-import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
+import com.poona.agrocart.data.network.reponses.CmsResponse;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -41,7 +41,9 @@ public class OurPolicyViewModel extends ViewModel {
 
 
     /*Privacy Policy*/
-    public LiveData<CmsResponse> getPrivacyPolicyResponse(ProgressDialog progressDialog, Context context, PrivacyPolicyFragment privacyPolicyFragment) {
+    public LiveData<CmsResponse> getPrivacyPolicyResponse(ProgressDialog progressDialog,
+                                                          Context context,
+                                                          PrivacyPolicyFragment privacyPolicyFragment) {
         MutableLiveData<CmsResponse> cmsPagesDataResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(context)
@@ -87,8 +89,9 @@ public class OurPolicyViewModel extends ViewModel {
     }
 
     /*Terms And Condition*/
-    public LiveData<CmsResponse> getTermsConditionResponse(ProgressDialog progressDialog
-            , Context context, TermsConditionFragment termsConditionFragment) {
+    public LiveData<CmsResponse> getTermsConditionResponse(ProgressDialog progressDialog,
+                                                           Context context,
+                                                           TermsConditionFragment termsConditionFragment) {
 
         MutableLiveData<CmsResponse> cmsPagesDataResponseMutableLiveData = new MutableLiveData<>();
 
@@ -134,7 +137,9 @@ public class OurPolicyViewModel extends ViewModel {
         return cmsPagesDataResponseMutableLiveData;
     }
 
-    public LiveData<CmsResponse> getReturnRefundResponse(ProgressDialog progressDialog, Context context, ReturnRefundFragment returnRefundFragment) {
+    public LiveData<CmsResponse> getReturnRefundResponse(ProgressDialog progressDialog,
+                                                         Context context,
+                                                         ReturnRefundFragment returnRefundFragment) {
 
         MutableLiveData<CmsResponse> cmsPagesDataResponseMutableLiveData = new MutableLiveData<>();
 

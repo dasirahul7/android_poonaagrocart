@@ -25,8 +25,7 @@ import com.google.gson.Gson;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.databinding.FragmentPolicyItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_about_us.model.CmsPagesData;
-import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
+import com.poona.agrocart.data.network.reponses.CmsResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,7 @@ public class TermsConditionFragment extends BaseFragment {
     private OurPolicyViewModel ourPolicyViewModel;
     private View view;
     private String title = " Title";
-    private List<CmsPagesData> cmsPagesDataList = new ArrayList<>();
+    private List<CmsResponse.Cms> cmsPagesDataList = new ArrayList<>();
     private String termsConditionContent = "";
 
 

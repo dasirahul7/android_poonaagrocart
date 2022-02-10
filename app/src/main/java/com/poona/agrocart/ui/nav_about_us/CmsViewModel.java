@@ -14,20 +14,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
-import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
+import com.poona.agrocart.data.network.reponses.CmsResponse;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
 
-public class AboutUsViewModel extends AndroidViewModel {
+public class CmsViewModel extends AndroidViewModel {
 
-    private static final String TAG = AboutUsViewModel.class.getSimpleName();
+    private static final String TAG = CmsViewModel.class.getSimpleName();
 
     public MutableLiveData<String> aboutUsContent;
 
-    public AboutUsViewModel(@NonNull Application application) {
+    public CmsViewModel(@NonNull Application application) {
         super(application);
 
         aboutUsContent = new MutableLiveData<>();
@@ -36,8 +36,9 @@ public class AboutUsViewModel extends AndroidViewModel {
 
     }
 
-    public LiveData<CmsResponse> getAboutUsResponse(ProgressDialog progressDialog, Context context
-            , AboutUsFragment aboutUsFragment) {
+    public LiveData<CmsResponse> getCmsResponse(ProgressDialog progressDialog,
+                                                Context context,
+                                                CmsFragment cmsFragment) {
 
             MutableLiveData<CmsResponse> aboutUsResponseMutableLiveData = new MutableLiveData<>();
 
@@ -73,7 +74,7 @@ public class AboutUsViewModel extends AndroidViewModel {
                                 aboutUsResponseMutableLiveData.setValue(baseResponse);
                             } catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
-                               /* ((NetworkExceptionListener) aboutUsFragment)
+                               /* ((NetworkExceptionListener) cmsFragment)
                                         .onNetworkException(0);*/
                             }
                             Log.e(TAG, e.getMessage());
@@ -83,6 +84,4 @@ public class AboutUsViewModel extends AndroidViewModel {
             return aboutUsResponseMutableLiveData;
 
     }
-
-    // TODO: Implement the ViewModel
 }
