@@ -2,7 +2,9 @@ package com.poona.agrocart.data.network;
 
 import static com.poona.agrocart.app.AppConstants.AREA_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
+import static com.poona.agrocart.app.AppConstants.CMS;
 import static com.poona.agrocart.app.AppConstants.COUPON_API;
+import static com.poona.agrocart.app.AppConstants.FAQ;
 import static com.poona.agrocart.app.AppConstants.HOME_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BASKET_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BEST_SELLING_API;
@@ -16,6 +18,7 @@ import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
+import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
@@ -37,7 +40,10 @@ import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
 import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
+import com.poona.agrocart.ui.nav_about_us.model.CmsPagesDataResponse;
+import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
+import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
 
 import java.util.HashMap;
 
@@ -140,6 +146,18 @@ public interface ApiInterface {
     @POST(PRODUCT_LIST_BY_API)
     Single<ProductListByResponse> productsByCategoryResponse(@FieldMap HashMap<String,String> hashMap);
 
+    @GET(FAQ)
+    Single<FaqListResponse> getAddFaqs();
 
+    @GET(CMS)
+    Single<CmsPagesDataResponse> getAboutUsResponse();
 
+    @GET(CMS)
+    Single<CmsPagesDataResponse> getPrivacyPolicyResponse();
+
+    @GET(CMS)
+    Single<CmsPagesDataResponse> getTermsConditionResponse();
+
+    @GET(CMS)
+    Single<CmsPagesDataResponse> getReturnRefundResponse();
 }

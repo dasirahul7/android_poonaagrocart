@@ -32,7 +32,7 @@ public class SignInPrivacyFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentPrivacyPolicyBinding = FragmentTermsConditionBinding.inflate(getLayoutInflater());
         fragmentPrivacyPolicyBinding.setLifecycleOwner(this);
-        final View privacyView = fragmentPrivacyPolicyBinding.getRoot();
+        View privacyView = fragmentPrivacyPolicyBinding.getRoot();
         initView(privacyView);
 
         return privacyView;

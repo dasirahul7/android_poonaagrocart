@@ -31,7 +31,7 @@ public class AppConstants {
     public static final String IS_READ_INTRO = "isIntroRead";
     public static final String FROM_LOG_OUT = "fromLogOut";
     public static final String IS_VERIFIED = "verify";
-    //    public static final String IS_REGISTERED = "registered";
+//    public static final String IS_REGISTERED = "registered";
 //    public static final String IS_LOCATED = "located";
     public static final String IS_SKIP_BANK_DETAILS = "isSkippedBankDetails";
     public static final String IS_REMEMBER = "isRemember";
@@ -70,6 +70,7 @@ public class AppConstants {
     public static final String INTRO_SCREEN_API = "screen-customer";
     public static final String AREA_API = "area";
     public static final String CITY_API = "city";
+    public static final String STATE_API = "state";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
     /*Home screen APIs*/
     public static final String HOME_BANNER_API = "home-screen-banner";
@@ -86,6 +87,11 @@ public class AppConstants {
 
     /*Our Store Api */
     public static final String STORE_LIST = "store-list";
+    public static final String STORE_DETAILS = "store-details";
+
+    /*Faq Api*/
+    public static final String FAQ = "faq";
+    public static final String CMS = "cms";
 
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
@@ -94,7 +100,6 @@ public class AppConstants {
     public static final String AllBasket = "Basket";
     public static final String AllSelling = "Best selling";
     public static final String AllExclusive = "Exclusive";
-
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";
@@ -181,5 +186,5 @@ public class AppConstants {
     public static final String SEARCH_BASKET = "2";
 
     /*Store Parameter*/
-    public static String ORDER_ID = "store_id";
+    public static String STORE_ID = "store_id";
 }

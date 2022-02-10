@@ -76,7 +76,6 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
         basicDetails = new BasicDetails();
 
-
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
 
         //set up country code spinner

@@ -24,6 +24,9 @@
     <declare-styleable name="CustomCheckBox">
         <attr name="setCustomFont"/>
     </declare-styleable>
+    <declare-styleable name="CustomCheckedTextView">
+        <attr name="setCustomFont"/>
+    </declare-styleable>
 
     <!--dotted progress bar-->
     <declare-styleable name="DotProgressBar">
@@ -76,5 +79,7 @@
         <attr name="civ_border_overlay" format="boolean" />
         <attr name="civ_circle_background_color" format="color" />
     </declare-styleable>
+
+
 
 </resources>
