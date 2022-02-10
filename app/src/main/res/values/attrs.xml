@@ -80,4 +80,6 @@
         <attr name="civ_circle_background_color" format="color" />
     </declare-styleable>
 
+
+
 </resources>
