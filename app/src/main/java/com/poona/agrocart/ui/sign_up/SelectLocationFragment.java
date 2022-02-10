@@ -193,7 +193,6 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                 .observe(getViewLifecycleOwner(), cityResponseObserver);
     }
 
-
     private void setUpSpinnerArea() {
         fragmentSelectLocationBinding.spinnerArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
