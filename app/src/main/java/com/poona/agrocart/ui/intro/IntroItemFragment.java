@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
 import com.poona.agrocart.databinding.FragmentIntroScreenItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 public class IntroItemFragment extends BaseFragment {
     private static Context context;
-    private static ArrayList<Intro> introList;
+    private static ArrayList<IntroScreenResponse.Intro> introList;
     private FragmentIntroScreenItemBinding fragmentIntroItemBinding;
     private View view;
     private SharedPreferences getPreferences;
@@ -31,7 +32,7 @@ public class IntroItemFragment extends BaseFragment {
     private TextView introTitle;
     private TextView introDesc;
 
-    public static IntroItemFragment newInstance(IntroScreenFragment introScreenFragment, int pos, ArrayList<Intro> intros) {
+    public static IntroItemFragment newInstance(IntroScreenFragment introScreenFragment, int pos, ArrayList<IntroScreenResponse.Intro> intros) {
         context = introScreenFragment.getContext();
         introList = intros;
         IntroItemFragment fragment = new IntroItemFragment();

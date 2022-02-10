@@ -24,11 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
@@ -37,12 +34,8 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.databinding.FragmentExploreBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.home.HomeFragment;
-import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
-import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.nav_explore.adapter.ExploreItemAdapter;
 import com.poona.agrocart.ui.nav_explore.model.ExploreItems;
-import com.poona.agrocart.ui.nav_stores.OurStoresFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,7 +124,7 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
                         if(categoryResponse.getCategoryData() != null){
                             if (categoryResponse.getCategoryData().getCategoryList().size()>0){
                                 exploreFragmentBinding.tvNoData.setVisibility(View.GONE);
-                                for (Category category : categoryResponse.getCategoryData().getCategoryList()){
+                                for (CategoryResponse.Category category : categoryResponse.getCategoryData().getCategoryList()){
                                     ExploreItems expItem = new ExploreItems(category.getId(),category.getCategoryName(),
                                             category.getCategoryImage(),category.getCategoryType());
                                     expItem.setBackground(R.color.exp_card_color1);

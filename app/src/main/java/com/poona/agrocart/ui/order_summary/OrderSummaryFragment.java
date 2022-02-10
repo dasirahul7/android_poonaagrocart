@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.databinding.DialogDeliveryOptionsBinding;
 import com.poona.agrocart.databinding.DialogOrderSummaryBinding;
 import com.poona.agrocart.databinding.FragmentOrderSummaryBinding;

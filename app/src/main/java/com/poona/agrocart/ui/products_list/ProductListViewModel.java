@@ -1,7 +1,5 @@
 package com.poona.agrocart.ui.products_list;
 
-import static com.poona.agrocart.app.AppConstants.OFFSET;
-
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.util.Log;
@@ -16,14 +14,10 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiErrorException;
 import com.poona.agrocart.data.network.ApiInterface;
-import com.poona.agrocart.data.network.ExclusiveResponse;
-import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.ProductListByResponse;
-import com.poona.agrocart.data.network.reponses.ProductListResponse;
-import com.poona.agrocart.ui.home.HomeFragment;
-import com.poona.agrocart.ui.home.model.Basket;
 import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
@@ -39,7 +33,7 @@ public class ProductListViewModel extends AndroidViewModel {
 
     private MutableLiveData<ArrayList<ProductOld>> vegesMutableLiveData;
     private MutableLiveData<ArrayList<ProductOld>> fruitMutableLiveData;
-    private MutableLiveData<ArrayList<Basket>> basketMutableLiveData;
+    private MutableLiveData<ArrayList<BasketResponse.Basket>> basketMutableLiveData;
     public static final String TAG = ProductListViewModel.class.getSimpleName();
 
     public ProductListViewModel(Application application) {
@@ -50,7 +44,7 @@ public class ProductListViewModel extends AndroidViewModel {
     private void initList() {
         ArrayList<ProductOld> vegetableArrayList = new ArrayList<>();
         ArrayList<ProductOld> fruitsArrayList = new ArrayList<>();
-        ArrayList<Basket> basketArrayList = new ArrayList<>();
+        ArrayList<BasketResponse.Basket> basketArrayList = new ArrayList<>();
         vegesMutableLiveData = new MutableLiveData<>();
         fruitMutableLiveData = new MutableLiveData<>();
         basketMutableLiveData = new MutableLiveData<>();
@@ -75,25 +69,6 @@ public class ProductListViewModel extends AndroidViewModel {
         }
         fruitMutableLiveData.setValue(fruitsArrayList);
 
-        //Add Baskets
-//        for (int i = 0; i < 10; i++) {
-//            Basket basket = new Basket("Sprout Baskets", "Rs.500", getApplication().getString(R.string.basket_sprout_img));
-//            if (i == 1) {
-//                {
-//                    basket.setName("Nutrition Baskets");
-//                    basket.setPrice("Rs. 700");
-//                    basket.setImg(getApplication().getString(R.string.basket_nutrition_img));
-//                }
-//                if (i == 2) {
-//                    {
-//                        basket.setName("Diet Baskets");
-//                        basket.setPrice("Rs. 900");
-//                        basket.setImg(getApplication().getString(R.string.basket_diet_img));
-//                    }
-//                }
-//            }
-//            basketArrayList.add(basket);
-//        }
         basketMutableLiveData.setValue(basketArrayList);
     }
 
@@ -105,7 +80,7 @@ public class ProductListViewModel extends AndroidViewModel {
         return fruitMutableLiveData;
     }
 
-    public MutableLiveData<ArrayList<Basket>> getBasketMutableLiveData() {
+    public MutableLiveData<ArrayList<BasketResponse.Basket>> getBasketMutableLiveData() {
         return basketMutableLiveData;
     }
 

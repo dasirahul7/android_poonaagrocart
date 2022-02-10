@@ -5,7 +5,7 @@
     <data >
         <variable
             name="categoryModule"
-            type="com.poona.agrocart.ui.home.model.Category" />
+            type="com.poona.agrocart.data.network.reponses.CategoryResponse.Category" />
     </data>
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardview_category"

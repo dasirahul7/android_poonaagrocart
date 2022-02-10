@@ -28,6 +28,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,16 +36,15 @@ import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.ApiErrorException;
-import com.poona.agrocart.data.network.ExclusiveResponse;
+import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.ProductListByResponse;
+import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.databinding.FragmentProductListBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.bottom_sheet.BottomSheetFilterFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.home.model.Basket;
-import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.products_list.adapter.BasketGridAdapter;
 import com.poona.agrocart.ui.products_list.adapter.ProductGridAdapter;
 
@@ -58,8 +58,8 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
     private FragmentProductListBinding fragmentProductListBinding;
     private ProductListViewModel productListViewModel;
     private RecyclerView rvVegetables;
-    private ArrayList<Product> productArrayList;
-    private ArrayList<Basket> basketArrayList;
+    private ArrayList<ProductListResponse.Product> productArrayList;
+    private ArrayList<BasketResponse.Basket> basketArrayList;
     private ProductGridAdapter productGridAdapter;
     private BasketGridAdapter basketGridAdapter;
     //argument values
@@ -374,7 +374,7 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
     private void makeProductListing() {
         if (productArrayList != null && productArrayList.size() > 0) {
             fragmentProductListBinding.tvNoData.setVisibility(View.GONE);
-            productGridAdapter = new ProductGridAdapter(productArrayList);
+            productGridAdapter = new ProductGridAdapter(productArrayList, this::redirectToProductsDetail);
             rvVegetables.setAdapter(productGridAdapter);
         }
 
@@ -434,5 +434,15 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
             }
         }, context);
 
+    }
+
+    /* Redirect to product detail screen*/
+    private void redirectToProductsDetail(ProductListResponse.Product product)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putString("name",product.getProductName());
+        bundle.putString("image",product.getFeatureImg());
+        bundle.putString("price",product.getProductUnits().get(0).getSellingPrice());
+        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_products_list_to_productDetailFragment2,bundle);
     }
 }

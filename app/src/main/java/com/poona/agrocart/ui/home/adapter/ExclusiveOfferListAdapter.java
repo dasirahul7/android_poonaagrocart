@@ -12,15 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.BestSellingResponse;
+import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.databinding.RowExclusiveItemBinding;
-import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.home.OnPlusClick;
 import com.poona.agrocart.ui.home.OnProductClick;
 
 import java.util.ArrayList;
 
 public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOfferListAdapter.ExclusiveItemHolder> {
-    private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
     private final Context bdContext;
     private RowExclusiveItemBinding rowExclusiveItemBinding;
     private final View view;
@@ -35,7 +36,7 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
         this.onProductClick = onProductClick;
     }
 
-    public ExclusiveOfferListAdapter(ArrayList<Product> products, Context bdContext, View view) {
+    public ExclusiveOfferListAdapter(ArrayList<ProductListResponse.Product> products, Context bdContext, View view) {
         this.products = products;
         this.bdContext = bdContext;
         this.view = view;
@@ -50,7 +51,7 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
 
     @Override
     public void onBindViewHolder(@NonNull ExclusiveItemHolder holder, int position) {
-        Product product = products.get(position);
+        ProductListResponse.Product product = products.get(position);
         rowExclusiveItemBinding.setExclusiveOfferModule(product);
         holder.bindData(product,position);
     }
@@ -66,7 +67,7 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
             super(rowExclusiveItemBinding.getRoot());
         }
 
-        public void bindData(Product product, int position) {
+        public void bindData(ProductListResponse.Product product, int position) {
             rowExclusiveItemBinding.setVariable(BR.exclusiveOfferModule, product);
             rowExclusiveItemBinding.executePendingBindings();
 //            rowExclusiveItemBinding.txtItemPrice.setText(product.getProductUnits().get(0).getOfferPrice());

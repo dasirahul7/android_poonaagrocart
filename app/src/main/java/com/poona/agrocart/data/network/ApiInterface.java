@@ -29,6 +29,7 @@ import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.CouponResponse;
+import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
 import com.poona.agrocart.data.network.reponses.ProductListByResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
@@ -40,7 +41,6 @@ import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 
 import java.util.HashMap;
 
-import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;

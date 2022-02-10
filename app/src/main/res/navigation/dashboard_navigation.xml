@@ -11,6 +11,7 @@
         android:name="com.poona.agrocart.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
+
     </fragment>
 
     <!--My Orders Fragment-->
@@ -445,6 +446,15 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
 
+    <!--Home to seasonal Registration-->
+    <action
+        android:id="@+id/action_nav_home_to_seasonalRegFragment"
+        app:destination="@id/seasonalRegFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
 
 
     <!--Privacy Policy Fragment-->
@@ -470,5 +480,10 @@
         android:name="com.poona.agrocart.ui.search.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search"/>
+    <!--Seasonal registration screen-->
+    <fragment
+        android:id="@+id/seasonalRegFragment"
+        android:name="com.poona.agrocart.ui.seasonal.SeasonalRegFragment"
+        android:label="SeasonalRegFragment" />
 
 </navigation>

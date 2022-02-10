@@ -27,8 +27,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.poona.agrocart.R;
-import com.poona.agrocart.common.model.Areas;
-import com.poona.agrocart.common.model.City;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
@@ -49,8 +47,8 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
 //    private final String[] cities={"Pune"};
 //    private final String[] areas={"Vishrantwadi", "Khadki"};
 
-    private ArrayList<Areas> areaArrayList;
-    private ArrayList<City> cityArrayList;
+    private ArrayList<AreaResponse.Areas> areaArrayList;
+    private ArrayList<CityResponse.City> cityArrayList;
     private BasicDetails basicDetails;
     private CommonViewModel commonViewModel;
     private SelectLocationViewModel selectLocationViewModel;
@@ -118,7 +116,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                                     areaArrayList = areaResponse.getAreaData().getArea();
                                     areas = new ArrayList<>();
                                     areaIds = new ArrayList<>();
-                                    for (Areas area : areaArrayList) {
+                                    for (AreaResponse.Areas area : areaArrayList) {
                                         areas.add(area.getAreaName());
                                         areaIds.add(area.getId());
                                         System.out.println("area " + area.getAreaName());
@@ -170,7 +168,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                                         cityArrayList = cityResponse.getCityResponseData().getCityArrayList();
                                         cityIds = new ArrayList<>();
                                         cities = new ArrayList<>();
-                                        for (City city : cityArrayList) {
+                                        for (CityResponse.City city : cityArrayList) {
                                             cities.add(city.getCityName());
                                             cityIds.add(city.getCityId());
                                             System.out.println("city " + city.getCityName());

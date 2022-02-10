@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public class IntroPagerAdapter extends FragmentPagerAdapter implements ViewPager
 
     private final FragmentManager fragmentManager;
     private int lastPosition = 0;
-    private final ArrayList<Intro> intros;
+    private final ArrayList<IntroScreenResponse.Intro> intros;
 
     public interface OnChangeButtonCaptionListener {
         void onAddText(int position);
@@ -28,7 +29,7 @@ public class IntroPagerAdapter extends FragmentPagerAdapter implements ViewPager
     public OnChangeButtonCaptionListener onChangeButtonCaptionListener;
 
     public IntroPagerAdapter(IntroScreenFragment context, FragmentManager fm,
-                             OnChangeButtonCaptionListener onChangeButtonCaptionListener, ArrayList<Intro> introList) {
+                             OnChangeButtonCaptionListener onChangeButtonCaptionListener, ArrayList<IntroScreenResponse.Intro> introList) {
         super(fm);
         this.fragmentManager = fm;
         this.context = context;

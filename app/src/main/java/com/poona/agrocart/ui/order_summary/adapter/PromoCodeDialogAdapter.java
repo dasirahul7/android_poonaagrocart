@@ -7,14 +7,11 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
-import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RowPromoCodeRadioBinding;
 import com.poona.agrocart.ui.nav_offers.Coupons;
-import com.poona.agrocart.ui.order_summary.model.Address;
 
 import java.util.ArrayList;
 

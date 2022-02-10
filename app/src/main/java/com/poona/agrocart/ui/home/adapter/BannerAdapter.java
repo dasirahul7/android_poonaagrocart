@@ -11,18 +11,18 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
-import com.poona.agrocart.ui.home.model.Banner;
+import com.poona.agrocart.data.network.reponses.BannerResponse;
 
 import java.util.ArrayList;
 
 
 public class BannerAdapter extends PagerAdapter {
 
-    private final ArrayList<Banner> banner;
+    private final ArrayList<BannerResponse.Banner> banner;
     private LayoutInflater layoutInflater;
     private final Context context;
 
-    public BannerAdapter(ArrayList<Banner> banner,Context context) {
+    public BannerAdapter(ArrayList<BannerResponse.Banner> banner,Context context) {
         this.banner = banner;
         this.context = context;
     }

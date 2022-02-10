@@ -43,7 +43,7 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
-import com.poona.agrocart.data.network.ExclusiveResponse;
+import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
@@ -60,13 +60,7 @@ import com.poona.agrocart.ui.home.adapter.ExclusiveOfferListAdapter;
 import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.SeasonalBannerAdapter;
-import com.poona.agrocart.ui.home.model.Banner;
-import com.poona.agrocart.ui.home.model.Basket;
-import com.poona.agrocart.ui.home.model.Category;
-import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.home.model.ProductOld;
-import com.poona.agrocart.ui.home.model.SeasonalProduct;
-import com.poona.agrocart.ui.home.model.StoreBanner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,15 +82,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private BasketAdapter basketAdapter;
     private SeasonalBannerAdapter seasonalBannerAdapter;
     //ArrayLists here
-    private ArrayList<Product> bestSellings = new ArrayList<>();
-    private ArrayList<Product> offerProducts = new ArrayList<>();
-    private ArrayList<Product> productList = new ArrayList<>();
-    private ArrayList<Banner> banners = new ArrayList<>();
-    private ArrayList<Category> categories = new ArrayList<>();
-    private ArrayList<Basket> baskets = new ArrayList<>();
-    private ArrayList<SeasonalProduct> seasonalProductList = new ArrayList<>();
+    private ArrayList<ProductListResponse.Product> bestSellings = new ArrayList<>();
+    private ArrayList<ProductListResponse.Product> offerProducts = new ArrayList<>();
+    private ArrayList<ProductListResponse.Product> productList = new ArrayList<>();
+    private ArrayList<BannerResponse.Banner> banners = new ArrayList<>();
+    private ArrayList<CategoryResponse.Category> categories = new ArrayList<>();
+    private ArrayList<BasketResponse.Basket> baskets = new ArrayList<>();
+    private ArrayList<SeasonalProductResponse.SeasonalProduct> seasonalProductList = new ArrayList<>();
     private final ArrayList<ProductOld> mCartList = new ArrayList<ProductOld>();
-    private ArrayList<StoreBanner> storeBannerList = new ArrayList<>();
+    private ArrayList<StoreBannerResponse.StoreBanner> storeBannerList = new ArrayList<>();
     private ArrayList<String> BasketIds = new ArrayList<>();
 
     private int limit = 10;
@@ -268,7 +262,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             makeVisible(fragmentHomeBinding.cardviewOurShops,null);
                             makeVisible(null,fragmentHomeBinding.rlO3Banner);
                             storeBannerList = storeBannerResponse.getStoreBanners();
-                            StoreBanner storeBanner = storeBannerResponse.getStoreBanners().get(0);
+                            StoreBannerResponse.StoreBanner storeBanner = storeBannerResponse.getStoreBanners().get(0);
                             fragmentHomeBinding.setStoreBanner(storeBanner);
                             fragmentHomeBinding.setVariable(BR.storeBanner, storeBanner);
                             fragmentHomeBinding.executePendingBindings();
@@ -361,7 +355,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
                             fragmentHomeBinding.recSeasonal.setLayoutManager(linearLayoutManager);
-                            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, root);
+                            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList,seasonalProduct -> {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("image", seasonalProduct.getProduct_image());
+                                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_seasonalRegFragment);
+                            });
                             fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
                         }
                         break;
@@ -640,7 +638,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     /*Create a Dummy banner if no banner is available*/
     private void makeDummyBanner() {
-        Banner banner = new Banner("1", "customer", "", "");
+        BannerResponse.Banner banner = new BannerResponse.Banner("1", "customer", "", "");
         banner.setDummy(true);
         banners.clear();
         banners.add(banner);
@@ -676,7 +674,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             public void run() {
                 handler.post(update);
             }
-        }, 1000, 3000);
+        }, 100, 3000);
     }
 
 
