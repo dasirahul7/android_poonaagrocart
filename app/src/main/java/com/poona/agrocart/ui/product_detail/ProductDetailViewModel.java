@@ -6,16 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.poona.agrocart.R;
-import com.poona.agrocart.ui.home.model.Product;
-import com.poona.agrocart.ui.product_detail.model.ProductComment;
+import com.poona.agrocart.ui.home.model.ProductOld;
 import com.poona.agrocart.ui.product_detail.model.ProductDetail;
 
 import java.util.ArrayList;
 
 public class ProductDetailViewModel extends AndroidViewModel {
     public MutableLiveData<ProductDetail> productDetailMutableLiveData;
-    public MutableLiveData<ArrayList<Product>> similarProductLiveData;
+    public MutableLiveData<ArrayList<ProductOld>> similarProductLiveData;
 
     public ProductDetailViewModel(@NonNull Application application) {
         super(application);
@@ -26,32 +24,32 @@ public class ProductDetailViewModel extends AndroidViewModel {
     }
 
     private void initSimilarItem() {
-        ArrayList<Product> similarItems = new ArrayList<>();
-        Product product = new Product("1", "Bell Pepper Red", "1Kg"
+        ArrayList<ProductOld> similarItems = new ArrayList<>();
+        ProductOld productOld = new ProductOld("1", "Bell Pepper Red", "1Kg"
                 , "10", "25",
                 "https://www.linkpicture.com/q/capsicon.png", "Pune");
-        Product product1 = new Product("2", "Ginger", "250 gms"
+        ProductOld productOld1 = new ProductOld("2", "Ginger", "250 gms"
                 , "10",  "140", "https://www.linkpicture.com/q/ginger.png", "Pune");
-        product1.setOrganic(true);
-        Product product2 = new Product("3", "Bell Pepper Red", "1Kg"
+        productOld1.setOrganic(true);
+        ProductOld productOld2 = new ProductOld("3", "Bell Pepper Red", "1Kg"
                 , "10", "25", "https://www.linkpicture.com/q/capsicon.png", "Pune");
-        Product product3 = new Product("4", "Ginger", "500 gms"
+        ProductOld productOld3 = new ProductOld("4", "Ginger", "500 gms"
                 , "10", "280", "https://www.linkpicture.com/q/ginger.png", "Pune");
-        Product product4 = new Product("4", "Ginger", "250gm"
+        ProductOld productOld4 = new ProductOld("4", "Ginger", "250gm"
                 , "5",  "80", "https://www.linkpicture.com/q/ginger.png", "Pune");
-        Product product5 = new Product("4", "Ginger", "1kg"
+        ProductOld productOld5 = new ProductOld("4", "Ginger", "1kg"
                 , "5", "150", "https://www.linkpicture.com/q/ginger.png", "Pune");
-        similarItems.add(product);
-        similarItems.add(product1);
-        similarItems.add(product2);
-        similarItems.add(product3);
-        similarItems.add(product4);
-        similarItems.add(product5);
+        similarItems.add(productOld);
+        similarItems.add(productOld1);
+        similarItems.add(productOld2);
+        similarItems.add(productOld3);
+        similarItems.add(productOld4);
+        similarItems.add(productOld5);
         similarProductLiveData.setValue(similarItems);
     }
 
 
-    public MutableLiveData<ArrayList<Product>> getSimilarProductLiveData() {
+    public MutableLiveData<ArrayList<ProductOld>> getSimilarProductLiveData() {
         return similarProductLiveData;
     }
 }

@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 
 public class ExploreItems {
-    String id,name,img;
+    String id,name,img,type;
     int border = R.color.exp_card_color1,background=R.color.exp_border1;
 
     public int getBorder() {
@@ -27,12 +27,21 @@ public class ExploreItems {
         this.background = background;
     }
 
-    public ExploreItems(String id, String name, String img) {
+    public ExploreItems(String id, String name, String img,String type) {
         this.id = id;
         this.name = name;
         this.img = img;
+        this.type = type;
     }
 
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getId() {
         return id;

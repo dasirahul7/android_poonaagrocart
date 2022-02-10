@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -17,12 +16,12 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RowProductItemBinding;
 import com.poona.agrocart.ui.home.OnPlusClick;
 import com.poona.agrocart.ui.home.OnProductClick;
-import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 
 public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdapter.FavouriteHolder> {
-    private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<ProductOld> productOlds = new ArrayList<>();
     private final Context bdContext;
     private RowProductItemBinding productBinding;
     private final View view;
@@ -37,8 +36,8 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
         this.onProductClick = onProductClick;
     }
 
-    public FavouriteItemAdapter(ArrayList<Product> products, FragmentActivity context, View view) {
-        this.products = products;
+    public FavouriteItemAdapter(ArrayList<ProductOld> productOlds, FragmentActivity context, View view) {
+        this.productOlds = productOlds;
         this.bdContext = context;
         this.view = view;
     }
@@ -52,14 +51,14 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
 
     @Override
     public void onBindViewHolder(@NonNull FavouriteHolder holder, int position) {
-        Product product = products.get(position);
-        productBinding.setProductModule(product);
-        holder.bindProduct(product, position);
+        ProductOld productOld = productOlds.get(position);
+        productBinding.setProductOldModule(productOld);
+        holder.bindProduct(productOld, position);
     }
 
     @Override
     public int getItemCount() {
-        return products.size();
+        return productOlds.size();
     }
 
     public class FavouriteHolder extends RecyclerView.ViewHolder {
@@ -69,9 +68,9 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
             super(productBinding.getRoot());
         }
 
-        //Only Product Item bind
-        public void bindProduct(Product product, int position) {
-            productBinding.setVariable(BR.productModule, product);
+        //Only ProductOld Item bind
+        public void bindProduct(ProductOld productOld, int position) {
+            productBinding.setVariable(BR.productOldModule, productOld);
             productBinding.executePendingBindings();
             productBinding.txtItemOffer.setVisibility(View.GONE);
             productBinding.txtItemPrice.setVisibility(View.GONE);
@@ -85,7 +84,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
 
             productBinding.ivFavourite.setVisibility(View.VISIBLE);
             itemView.setOnClickListener(v -> {
-                onProductClick.toProductDetail(product);
+                onProductClick.toProductDetail(productOld);
             });
 
         }

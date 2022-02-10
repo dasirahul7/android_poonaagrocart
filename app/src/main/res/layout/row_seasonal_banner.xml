@@ -31,7 +31,7 @@
                 android:id="@+id/rl_seasonal_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/seasonal_banner_yellow">
+                android:background="@drawable/seasonal_banner_bg_yellow">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/img_layout"

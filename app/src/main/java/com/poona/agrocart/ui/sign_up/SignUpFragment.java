@@ -10,6 +10,8 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import static com.poona.agrocart.app.AppConstants.USERNAME;
+import static com.poona.agrocart.app.AppConstants.USER_ID;
+import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -77,6 +79,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     private void initView(View view)
     {
+
         fragmentSignUpBinding.tvTermsOfService.setOnClickListener(this);
         fragmentSignUpBinding.tvPrivacyPolicy.setOnClickListener(this);
         fragmentSignUpBinding.btnSignUp.setOnClickListener(this);
@@ -91,14 +94,14 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
         basicDetails=new BasicDetails();
 
-        Bundle bundle=this.getArguments();
+        Bundle bundle=getArguments();
         if(bundle!=null)
         {
             fragmentSignUpBinding.etPhoneNo.setText(bundle.getString(AppConstants.USER_MOBILE));
-            String tempCountryCode=bundle.getString(AppConstants.COUNTRY_CODE).replace("+","");
-            fragmentSignUpBinding.countryCodePicker.setCountryForPhoneCode(Integer.parseInt(tempCountryCode));
-
-            basicDetails.setCountryCode(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
+            Log.d(TAG, "initView: "+bundle.getString(AppConstants.USER_MOBILE));
+//            String tempCountryCode=bundle.getString(AppConstants.COUNTRY_CODE).replace("+","");
+//            fragmentSignUpBinding.countryCodePicker.setCountryForPhoneCode(Integer.parseInt(tempCountryCode));
+//            basicDetails.setCountryCode(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
             basicDetails.setMobileNumber(fragmentSignUpBinding.etPhoneNo.getText().toString());
 
             signUpViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
@@ -216,6 +219,11 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if(registerResponse.getStatus() == 200){
                             successToast(context, ""+registerResponse.getMessage());
+                            Bundle bundle = getArguments();
+                            if (bundle.getString(USER_ID)!=null){
+                                preferences.setUid(bundle.getString(USER_ID));
+                                preferences.setUserMobile(bundle.getString(USER_MOBILE));
+                            }
                             redirectToHomeScreen();
 //                            Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
                         }

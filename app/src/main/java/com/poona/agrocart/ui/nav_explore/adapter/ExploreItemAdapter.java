@@ -1,5 +1,8 @@
 package com.poona.agrocart.ui.nav_explore.adapter;
 
+import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
+import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,10 +11,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.library.baseAdapters.BR;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RowExploreItemBinding;
 import com.poona.agrocart.ui.nav_explore.model.ExploreItems;
@@ -23,11 +26,16 @@ public class ExploreItemAdapter extends RecyclerView.Adapter<ExploreItemAdapter.
     private ArrayList<ExploreItems> exploreItems = new ArrayList<>();
     private RowExploreItemBinding exploreItemBinding;
     private final View rootView;
+    private OnExploreClickListener onExploreClickListener;
 
-    public ExploreItemAdapter(Context exContext, ArrayList<ExploreItems> exploreItems,View view) {
+    public ExploreItemAdapter(Context exContext, ArrayList<ExploreItems> exploreItems,View view,OnExploreClickListener onExploreClickListener) {
         this.exContext = exContext;
         this.exploreItems = exploreItems;
         this.rootView = view;
+        this.onExploreClickListener = onExploreClickListener;
+    }
+    public interface OnExploreClickListener{
+        void onExploreItemClick(ExploreItems items);
     }
 
     @NonNull
@@ -56,29 +64,24 @@ public class ExploreItemAdapter extends RecyclerView.Adapter<ExploreItemAdapter.
         {
             super(binding.getRoot());
             this.rowExploreItemBinding=binding;
-            rowExploreItemBinding.itemCard.setOnClickListener(v -> {
-                redirectToRequiredProductsPage(rootView,getAdapterPosition());
-            });
         }
 
-        private void redirectToRequiredProductsPage(View view,int adapterPosition)
-        {
-        }
 
         public void bind(ExploreItems items)
         {
             exploreItemBinding.setVariable(BR.exploreModules,items);
             exploreItemBinding.executePendingBindings();
             exploreItemBinding.itemLayout.setOnClickListener(v -> {
-                gotoExploreItems(v,items.getName(),getAdapterPosition());
+               onExploreClickListener.onExploreItemClick(items);
             });
         }
     }
 
-    private void gotoExploreItems(View v, String name,int adapterPosition)
-    {
-        Bundle bundle=new Bundle();
-        bundle.putString("ProductCategory",name);
-        Navigation.findNavController(v).navigate(R.id.action_nav_explore_to_nav_products_list,bundle);
-    }
+//    private void gotoExploreItems(View v, String name,int adapterPosition)
+//    {
+//        Bundle bundle=new Bundle();
+//        bundle.putString(LIST_TITLE,name);
+//        bundle.putString(CATEGORY_ID,);
+//        Navigation.findNavController(v).navigate(R.id.action_nav_explore_to_nav_products_list,bundle);
+//    }
 }

@@ -8,9 +8,9 @@ import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RowPromoCodeRadioBinding;
 import com.poona.agrocart.ui.nav_offers.Coupons;
@@ -81,7 +81,7 @@ public class PromoCodeDialogAdapter extends RecyclerView.Adapter<PromoCodeDialog
         }
 
         public void promoBind(Coupons coupons){
-            codeRadioBinding.setVariable(BR.productModule,coupons);
+            codeRadioBinding.setVariable(BR.productOldModule,coupons);
             codeRadioBinding.executePendingBindings();
             itemView.setOnClickListener(v -> {
                 mSelectedItem = getAdapterPosition();

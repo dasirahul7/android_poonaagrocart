@@ -15,7 +15,9 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
+import com.poona.agrocart.ui.home.HomeActivity;
 
 import java.util.HashMap;
 
@@ -72,5 +74,45 @@ public class SignInViewModel extends AndroidViewModel {
                 });
 
         return signInResponseMutableLiveData;
+    }
+    public LiveData<BaseResponse> signOutApiResponse(ProgressDialog progressDialog,
+                                                      HashMap<String, String> hashMap,
+                                                      HomeActivity homeActivity) {
+        MutableLiveData<BaseResponse> signOutResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(homeActivity.getApplicationContext())
+                .create(ApiInterface.class)
+                .signOutResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+
+                    @Override
+                    public void onSuccess(BaseResponse response) {
+                        progressDialog.dismiss();
+                        signOutResponseMutableLiveData.setValue(response);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new SignInResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            signOutResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) homeActivity).onNetworkException(0);
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return signOutResponseMutableLiveData;
     }
 }

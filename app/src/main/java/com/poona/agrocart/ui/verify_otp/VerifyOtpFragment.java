@@ -1,6 +1,6 @@
 package com.poona.agrocart.ui.verify_otp;
 
-import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
+import static com.poona.agrocart.app.AppConstants.COUNTRY_CODE;
 import static com.poona.agrocart.app.AppConstants.OTP;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
@@ -8,6 +8,8 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.USER_ID;
+import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
 import android.annotation.SuppressLint;
@@ -44,7 +46,6 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -203,15 +204,26 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (verifyOtpResponse.getMessage() != null) {
                             successToast(context, "" + verifyOtpResponse.getMessage());
+                            preferences.seIstVerified(true);
                             if (verifyOtpResponse.getUser().getVerified() == 1) {
                                 preferences.setIsLoggedIn(true);
                                 Intent intent = new Intent(context, HomeActivity.class);
+                                preferences.setUid(verifyOtpResponse.getUser().getUserId());
+                                preferences.setUserMobile(verifyOtpResponse.getUser().getUserMobile());
+                                preferences.setUserCountry(bundle.getString(COUNTRY_CODE));
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 requireActivity().finish();
                                 startActivity(intent);
                             } else
+                            {
+                                Bundle bundle = new Bundle();
+                                bundle.putString(USER_ID,verifyOtpResponse.getUser().getUserId());
+                                bundle.putString(USER_MOBILE,verifyOtpResponse.getUser().getUserMobile());
+                                bundle.putString(COUNTRY_CODE,bundle.getString(COUNTRY_CODE));
+                                preferences.setUserMobile(verifyOtpResponse.getUser().getUserMobile());
                                 Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment, bundle);
+                            }
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -292,7 +304,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
             map.put(OTP, Objects.requireNonNull(fragmentVerifyOtpBinding.etOtp.getText()).toString());
         } else {
             assert getArguments() != null;
-            map.put(MOBILE_NUMBER, getArguments().getString(AppConstants.USER_MOBILE));
+            map.put(USER_ID, getArguments().getString(USER_ID));
         }
         return map;
 

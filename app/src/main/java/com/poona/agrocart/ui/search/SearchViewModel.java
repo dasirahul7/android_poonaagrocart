@@ -16,6 +16,7 @@ import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
+import com.poona.agrocart.data.network.reponses.ProductListByResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class SearchViewModel extends AndroidViewModel {
         super(application);
     }
 
-    // Search Product here
+    // Search ProductOld here
     public LiveData<ProductListResponse> searchListResponseLiveData(ProgressDialog progressDialog,
                                                                     HashMap<String, String> hashMap,
                                                                     SearchFragment searchFragment) {
@@ -47,7 +48,6 @@ public class SearchViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProductListResponse productListResponse) {
                         if (productListResponse != null) {
-                            Log.d(TAG, "productListResponse onSuccess: " + productListResponse.getProductResponseDt().getProductList().size());
                             progressDialog.dismiss();
                             productListResponseMutableLiveData.setValue(productListResponse);
                         }
@@ -118,6 +118,51 @@ public class SearchViewModel extends AndroidViewModel {
                     });
         };
         return categoryResponseMutableLiveData;
+
+    }
+    /*Search By category*/
+    public LiveData<ProductListByResponse> searchProductByCategory(ProgressDialog progressDialog,
+                                                                  HashMap<String, String> hashMap,
+                                                                  SearchFragment searchFragment) {
+        MutableLiveData<ProductListByResponse> productListByResponseMutableLiveData = new MutableLiveData<>();
+        Observer<ProductListByResponse> productListByResponseObserver = productListByResponse -> {
+            ApiClientAuth.getClient(searchFragment.getContext())
+                    .create(ApiInterface.class)
+                    .productsByCategoryResponse(hashMap)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSingleObserver<ProductListByResponse>() {
+                        @Override
+                        public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProductListByResponse productListByResponse1) {
+                            if (productListByResponse != null) {
+                                Log.d(TAG, "Search productListByResponse onSuccess: " + productListByResponse.getMessage());
+                                progressDialog.dismiss();
+                                productListByResponseMutableLiveData.setValue(productListByResponse);
+                            }
+                        }
+
+                        @Override
+                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                            progressDialog.dismiss();
+
+                            Gson gson = new GsonBuilder().create();
+                            ProductListByResponse response = new ProductListByResponse();
+                            try {
+                                response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                        ProductListByResponse.class);
+
+                                productListByResponseMutableLiveData.setValue(response);
+                            } catch (Exception exception) {
+                                Log.e(TAG, exception.getMessage());
+                                ((NetworkExceptionListener) searchFragment).onNetworkException(1);
+                            }
+
+                            Log.e(TAG, e.getMessage());
+                        }
+                    });
+        };
+        return productListByResponseMutableLiveData;
+
     }
 
 }

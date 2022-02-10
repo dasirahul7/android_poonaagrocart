@@ -1,5 +1,9 @@
 package com.poona.agrocart.ui.splash_screen;
 
+import static com.poona.agrocart.app.AppConstants.COUNTRY_CODE;
+import static com.poona.agrocart.app.AppConstants.USER_ID;
+import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -93,15 +97,31 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
                 if (preferences.getIsLoggedIn()){
                     startDashBoard();
                 }else if (preferences.getIsIntroRead())
-                    NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signInFragment);
+                    checkVerified();
                 else NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_introScreenFragment);
-
-//                }
             }
             else {
                 fragmentSplashScreenBinding.linearLayoutNoInternet.setVisibility(View.VISIBLE);
             }
         }, SPLASH_TIME_OUT);
+    }
+
+    private void checkVerified() {
+        if (preferences.isVerified()){
+            if (!preferences.getUid().isEmpty()){
+                if (!preferences.getUserAddress().isEmpty()){
+                    startDashBoard();
+                }else NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_selectLocationFragment);
+            }else {
+                Bundle bundle = new Bundle();
+                bundle.putString(USER_ID,preferences.getUid());
+                bundle.putString(USER_MOBILE,preferences.getUserMobile());
+                bundle.putString(COUNTRY_CODE,preferences.getUserCountry());
+                NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signUpFragment,bundle);
+            }
+        }else {
+            NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signInFragment);
+        }
     }
 
     private void startDashBoard() {

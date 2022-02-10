@@ -13,7 +13,11 @@ import static com.poona.agrocart.app.AppConstants.HOME_SEASONAL_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_STORE_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
+import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
+import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
+import static com.poona.agrocart.app.AppConstants.STORE_LIST;
+import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 
@@ -26,14 +30,17 @@ import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
+import com.poona.agrocart.data.network.reponses.ProductListByResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
 import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
+import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 
 import java.util.HashMap;
 
+import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -51,6 +58,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(VERIFY_OTP_API)
     Single<VerifyOtpResponse> getVerifyOtpResponse(@FieldMap HashMap<String, String> data);
+
+    //Resend OTP here
+    @FormUrlEncoded
+    @POST(RESEND_OTP)
+    Single<SignInResponse> getResendOtpResponse(@FieldMap HashMap<String, String> data);
 
     @FormUrlEncoded
     @POST(REGISTER_API)
@@ -84,7 +96,7 @@ public interface ApiInterface {
     @POST(HOME_BASKET_API)
     Single<BasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
 
-    //Home Exclusive Offer API
+    //Home Product Offer API
     @FormUrlEncoded
     @POST(HOME_EXCLUSIVE_API)
     Single<ExclusiveResponse> homeExclusiveResponseSingle(@FieldMap HashMap<String, String> hashMap);
@@ -94,12 +106,12 @@ public interface ApiInterface {
     @POST(HOME_BEST_SELLING_API)
     Single<BestSellingResponse> homeBestSellingResponseSingle(@FieldMap HashMap<String, String> hashMap);
 
-    //Home Seasonal Product API
+    //Home Seasonal ProductOld API
     @FormUrlEncoded
     @POST(HOME_SEASONAL_LIST_API)
     Single<SeasonalProductResponse> homeSeasonalListResponse(@FieldMap HashMap<String, String> hashMap);
 
-    //Home Product list API
+    //Home ProductOld list API
     @FormUrlEncoded
     @POST(HOME_PRODUCT_LIST_API)
     Single<ProductListResponse> homeProductListResponse(@FieldMap HashMap<String, String> hashMap);
@@ -112,4 +124,22 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(COUPON_API)
     Single<CouponResponse> couponListResponse(@FieldMap HashMap<String, String> hashMap);
+
+    /*Store listing API*/
+    @FormUrlEncoded
+    @POST(STORE_LIST)
+    Single<OurStoreListResponse> getOurStoreList(@FieldMap HashMap<String, String> ourStoreInputParameter);
+
+    /*Logout API*/
+    @FormUrlEncoded
+    @POST(SIGN_OUT_API)
+    Single<BaseResponse> signOutResponse(@FieldMap HashMap<String, String> hashMap);
+
+    /*Product list by Category API*/
+    @FormUrlEncoded
+    @POST(PRODUCT_LIST_BY_API)
+    Single<ProductListByResponse> productsByCategoryResponse(@FieldMap HashMap<String,String> hashMap);
+
+
+
 }

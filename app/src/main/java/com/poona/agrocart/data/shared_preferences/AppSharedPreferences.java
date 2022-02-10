@@ -1,11 +1,16 @@
 package com.poona.agrocart.data.shared_preferences;
 
 import static com.poona.agrocart.app.AppConstants.AUTHORIZATION_TOKEN;
+import static com.poona.agrocart.app.AppConstants.COUNTRY_CODE;
 import static com.poona.agrocart.app.AppConstants.FCM_TOKEN;
 import static com.poona.agrocart.app.AppConstants.FROM_LOG_OUT;
 import static com.poona.agrocart.app.AppConstants.IS_LOGGED_IN;
 import static com.poona.agrocart.app.AppConstants.IS_READ_INTRO;
+import static com.poona.agrocart.app.AppConstants.IS_VERIFIED;
 import static com.poona.agrocart.app.AppConstants.PREFERENCES_NAME;
+import static com.poona.agrocart.app.AppConstants.USER_ADDRESS;
+import static com.poona.agrocart.app.AppConstants.USER_ID;
+import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,8 +18,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.poona.agrocart.R;
-import com.poona.agrocart.ui.home.model.Product;
-import com.poona.agrocart.ui.nav_my_cart.CartItem;
+import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -34,9 +38,9 @@ public class AppSharedPreferences
     //Shared preferences mode
     int PRIVATE_MODE = 0;
 
-    private String fireBaseToken, authorizationToken,uid, baseAuthUsername, baseAuthPassword;
+    private String fireBaseToken, authorizationToken,uid,userMobile,userCountry, userAddress,baseAuthUsername, baseAuthPassword;
     private int newOrderCount;
-    private boolean isLoggedIn,isIntroRead, fromLogOut, isSkipBankForm;
+    private boolean isLoggedIn,isIntroRead, fromLogOut, isVerified;
     private String userType;
 
     //Constructor
@@ -77,6 +81,17 @@ public class AppSharedPreferences
         this.editor.commit();
     }
 
+    public boolean isVerified() {
+        return this.preferences.getBoolean(IS_VERIFIED,false);
+    }
+
+    public void seIstVerified(boolean verified) {
+        this.isVerified = verified;
+        this.editor.putBoolean(IS_VERIFIED,verified);
+        this.editor.commit();
+    }
+
+
     public boolean getFromLogOut() {
         return this.preferences.getBoolean(FROM_LOG_OUT, false);
     }
@@ -100,6 +115,46 @@ public class AppSharedPreferences
         this.editor.commit();
     }
 
+    public String getUid() {
+        return preferences.getString(USER_ID,"");
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+        this.editor.putString(USER_ID,uid);
+        this.editor.apply();
+    }
+
+    public String getUserMobile() {
+        return preferences.getString(USER_MOBILE,"");
+    }
+
+    public void setUserMobile(String userMobile) {
+        this.userMobile = userMobile;
+        this.editor.putString(USER_MOBILE,userMobile);
+        this.editor.commit();
+    }
+
+    public String getUserCountry() {
+        return preferences.getString(COUNTRY_CODE,"");
+    }
+
+    public void setUserCountry(String userCountry) {
+        this.userCountry = userCountry;
+        this.editor.putString(COUNTRY_CODE,userCountry);
+        this.editor.commit();
+    }
+
+    public String getUserAddress() {
+        return preferences.getString(USER_ADDRESS,"");
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+        this.editor.putString(USER_ADDRESS,userAddress);
+        this.editor.commit();
+    }
+
     public void clearSharedPreferences(Context context)
     {
         File dir = new File(context.getFilesDir().getParent() + "/shared_prefs/");
@@ -120,30 +175,30 @@ public class AppSharedPreferences
         }
     }
 
-    public void saveCartArrayList(ArrayList<Product> list, String key){
+    public void saveCartArrayList(ArrayList<ProductOld> list, String key){
 
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString(key, json);
         editor.apply();     // This line is IMPORTANT !!!
     }
-    public void saveFavArrayList(ArrayList<Product> list, String key){
+    public void saveFavArrayList(ArrayList<ProductOld> list, String key){
 
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString(key, json);
         editor.apply();     // This line is IMPORTANT !!!
     }
-    public ArrayList<Product> getSavedCartList(String key){
+    public ArrayList<ProductOld> getSavedCartList(String key){
         Gson gson = new Gson();
         String json = preferences.getString(key, null);
-        Type type = new TypeToken<ArrayList<Product>>() {}.getType();
+        Type type = new TypeToken<ArrayList<ProductOld>>() {}.getType();
         return gson.fromJson(json, type);
     }
-    public ArrayList<Product> getSavedFavList(String key){
+    public ArrayList<ProductOld> getSavedFavList(String key){
         Gson gson = new Gson();
         String json = preferences.getString(key, null);
-        Type type = new TypeToken<ArrayList<Product>>() {}.getType();
+        Type type = new TypeToken<ArrayList<ProductOld>>() {}.getType();
         return gson.fromJson(json, type);
     }
     public void removeAll() {

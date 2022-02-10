@@ -16,16 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.poona.agrocart.R;
-import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
-import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.basket_detail.model.Subscription;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.adapter.OfferProductListAdapter;
-import com.poona.agrocart.ui.home.model.Product;
-import com.poona.agrocart.ui.nav_favourites.FavouriteItem;
+import com.poona.agrocart.ui.home.model.ProductOld;
 import com.poona.agrocart.ui.product_detail.adapter.BasketContentsAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.WeightAdapter;
@@ -57,7 +54,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private ProductCommentsAdapter productCommentsAdapter;
     private ArrayList<ProductComment> commentArrayList;
     private ArrayList<BasketContent> basketContentArrayList;
-    private ArrayList<Product> similarProducts;
+    private ArrayList<ProductOld> similarProductOlds;
     private BasketContentsAdapter basketContentsAdapter;
     private ProductDetail details;
     private OfferProductListAdapter productListAdapter;
@@ -82,9 +79,9 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void setSimilarItems() {
         productDetailViewModel.getSimilarProductLiveData().observe(getViewLifecycleOwner(), similarItems -> {
-            this.similarProducts = similarItems;
+            this.similarProductOlds = similarItems;
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-            productListAdapter = new OfferProductListAdapter(this.similarProducts, requireActivity(), root);
+            productListAdapter = new OfferProductListAdapter(this.similarProductOlds, requireActivity(), root);
             fragmentProductDetailBinding.rvSimilar.setNestedScrollingEnabled(false);
             fragmentProductDetailBinding.rvSimilar.setLayoutManager(layoutManager);
             fragmentProductDetailBinding.rvSimilar.setAdapter(productListAdapter);
@@ -100,7 +97,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         txtBrand = ((HomeActivity) requireActivity()).binding.appBarHome.tvBrand;
         try {
             if (getArguments() != null) {
-                if (getArguments().get("Product").equals("BasketDetail")) {
+                if (getArguments().get("ProductOld").equals("BasketDetail")) {
                     BasketType = true;
                     setProductList();
                     makeItBasketDetails();
@@ -120,7 +117,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         fragmentProductDetailBinding.ivPlus.setOnClickListener(this);
         fragmentProductDetailBinding.ivMinus.setOnClickListener(this);
         fragmentProductDetailBinding.ivFavourite.setOnClickListener(this);
-        // BasketDetail Product views
+        // BasketDetail ProductOld views
         fragmentProductDetailBinding.layoutAdded.llProductList.setOnClickListener(this);
         fragmentProductDetailBinding.layoutAdded.imgPlus.setOnClickListener(this);
         fragmentProductDetailBinding.layoutAdded.imgMinus.setOnClickListener(this);
@@ -175,7 +172,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         ArrayList<String> images = new ArrayList<>();
         for (int i = 0; i < 3; i++)
             images.add(getArguments() != null ? getArguments().getString("image") : null);
-        // Set Product Details here
+        // Set ProductOld Details here
         productDetail.setProductLocation("Pune");
         productDetail.setPrice(getArguments() != null ? getArguments().getString("price") : null);
         productDetail.setBrand(getArguments() != null ? getArguments().getString("brand") : null);
@@ -504,14 +501,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         isBasketContentsVisible = !isBasketContentsVisible;
     }
 
-    private void toProductDetail(Product product, View root) {
+    private void toProductDetail(ProductOld productOld, View root) {
         Bundle bundle = new Bundle();
-        bundle.putString("name", product.getName());
-        bundle.putString("image", product.getImg());
-        bundle.putString("price", product.getPrice());
-        bundle.putString("brand", product.getBrand());
-        bundle.putString("quantity", product.getQuantity());
-        bundle.putBoolean("organic", product.isOrganic());
+        bundle.putString("name", productOld.getName());
+        bundle.putString("image", productOld.getImg());
+        bundle.putString("price", productOld.getPrice());
+        bundle.putString("brand", productOld.getBrand());
+        bundle.putString("quantity", productOld.getQuantity());
+        bundle.putBoolean("organic", productOld.isOrganic());
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
 }

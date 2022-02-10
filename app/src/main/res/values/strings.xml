@@ -141,6 +141,12 @@
     <string name="_10_off">10% Off</string>
     <string name="one_kg">1Kg</string>
     <string name="rs">Rs25</string>
+    <string name="no_category">No category available</string>
+    <string name="no_best_selling">No Best Selling available</string>
+    <string name="no_offer">No Offer available</string>
+    <string name="no_our_store">No Store available</string>
+    <string name="no_seasonal">No Seasonal Offer available</string>
+    <string name="no_products">No Products available</string>
 
     <!--My profile screen-->
     <string name="name">Name</string>
@@ -203,7 +209,7 @@
     <string name="order_view">Order view</string>
     <string name="sample_unit">Rs. 20 x 3</string>
 
-    <!--products detail fragment-->
+    <!--productOlds detail fragment-->
     <string name="naturel_red_apple">Naturel Red Apple</string>
     <string name="rs_150">Rs. 150</string>
     <string name="_1kg">1kg</string>
@@ -404,7 +410,7 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="place_order">Place Order</string>
     <string name="confirm_delete">Are you sure you want to delete all items</string>
     <string name="oops_no_products">Oops! No Products</string>
-    <string name="please_add_product">Please add product</string>
+    <string name="please_add_product">Please add productOld</string>
     <string name="continue_shopping">Continue shopping</string>
     <string name="jpg_vege">https://www.linkpicture.com/q/green.jpeg</string>
     <string name="sample_date_with_time">7 Oct 2021 9:00am - 12:00pm</string>
@@ -458,5 +464,6 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="explore">Explore</string>
     <string name="tv_in_60sec">(Otp will expire in %s Sec)</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="no_data_available">No data available</string>
 
 </resources>

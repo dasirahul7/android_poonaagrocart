@@ -1,6 +1,5 @@
 package com.poona.agrocart.ui.basket_detail.model;
 
-import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
 
 import java.util.ArrayList;

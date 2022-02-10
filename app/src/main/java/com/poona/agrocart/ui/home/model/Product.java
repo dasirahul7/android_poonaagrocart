@@ -1,160 +1,71 @@
 package com.poona.agrocart.ui.home.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.widget.ImageView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-import androidx.databinding.BindingAdapter;
+import java.util.ArrayList;
 
-import com.bumptech.glide.Glide;
-import com.poona.agrocart.R;
+public class Product {
+    @SerializedName("sequence_no")
+    @Expose
+    private String sequenceNo;
+    @SerializedName("category_id")
+    @Expose
+    private String categoryId;
+    @SerializedName("id")
+    @Expose
+    private String id;
+    @SerializedName("product_name")
+    @Expose
+    private String productName;
+    @SerializedName("special_offer")
+    @Expose
+    private String specialOffer;
+    @SerializedName("is_o3")
+    @Expose
+    private String isO3;
+    @SerializedName("product_visible_to")
+    @Expose
+    private String productVisibleTo;
+    @SerializedName("feature_img")
+    @Expose
+    private String featureImg;
+    @SerializedName("location")
+    @Expose
+    private String location;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("category_name")
+    @Expose
+    private String categoryName;
+    @SerializedName("product_units")
+    @Expose
+    private ArrayList<ProductUnit> productUnits = null;
+    private String priceUnit= "Rs.";
 
-public class Product implements Parcelable {
-    String id, name, offer, price, offerPrice, img, location, weight, quantity, brand;
-    boolean organic = false;
-    boolean inBasket = false, isFavorite = false;
-
-    public Product(String productId, String productName,
-                   String weight, String offerValue, String price,
-                   String productImage, String productLocation,
-                   String brand, Boolean isFavourite) {
-        this.id = productId;
-        this.name = productName;
-        this.weight = weight;
-        this.offer = offerValue;
-        this.price = price;
-        this.img = productImage;
-        this.location = productLocation;
-        this.brand = brand;
-        this.isFavorite = isFavourite;
+    public String getPriceUnit() {
+        return priceUnit;
     }
 
-    public boolean isInBasket() {
-        return inBasket;
+    public void setPriceUnit(String priceUnit) {
+        this.priceUnit = priceUnit;
     }
 
-    public void setInBasket(boolean inBasket) {
-        this.inBasket = inBasket;
+    public String getSequenceNo() {
+        return sequenceNo;
     }
 
-    public boolean isFavorite() {
-        return isFavorite;
+    public void setSequenceNo(String sequenceNo) {
+        this.sequenceNo = sequenceNo;
     }
 
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public Product() {
-    }
-
-    public Product(String id, String name,
-                   String weight, String offer, String price,
-                   String img, String location, String brand) {
-        this.id = id;
-        this.name = name;
-        this.weight = weight;
-        this.offer = offer;
-        this.price = price;
-        this.img = img;
-        this.location = location;
-        this.brand = brand;
-    }
-
-    public Product(String id, String name,
-                   String weight, String offer,
-                   String price, String img, String location) {
-        this.id = id;
-        this.name = name;
-        this.weight = weight;
-        this.offer = offer;
-        this.price = price;
-        this.img = img;
-        this.location = location;
-    }
-
-    protected Product(Parcel in) {
-        id = in.readString();
-        name = in.readString();
-        offer = in.readString();
-        price = in.readString();
-        offerPrice = in.readString();
-        img = in.readString();
-        location = in.readString();
-        weight = in.readString();
-        quantity = in.readString();
-        brand = in.readString();
-        organic = in.readByte() != 0;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public static final Creator<Product> CREATOR = new Creator<Product>() {
-        @Override
-        public Product createFromParcel(Parcel in) {
-            return new Product(in);
-        }
-
-        @Override
-        public Product[] newArray(int size) {
-            return new Product[size];
-        }
-    };
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getWeight() {
-        return weight;
-    }
-
-    public void setWeight(String weight) {
-        this.weight = weight;
-    }
-
-
-    public String getOffer() {
-        return offer + "% Off";
-    }
-
-    public void setOffer(String offer) {
-        this.offer = offer;
-    }
-
-    public String getPrice() {
-        return "Rs." + price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getOfferPrice() {
-        if (this.price.equals(""))
-            return "";
-        else {
-            float price = Float.parseFloat(this.price);
-            float offer = Float.parseFloat(this.offer);
-            float off = (price/ 100.0f)*offer;
-            int offer_price =(int) (price - off);
-            this.offerPrice = "Rs." + String.valueOf(offer_price);
-        }
-        return offerPrice;
-    }
-
-    public void setOfferPrice(String offerPrice) {
-        this.offerPrice = offerPrice;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getId() {
@@ -165,62 +76,75 @@ public class Product implements Parcelable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getImg() {
-        return img;
+    public String getSpecialOffer() {
+        return specialOffer;
     }
 
-    public void setImg(String img) {
-        this.img = img;
+    public void setSpecialOffer(String specialOffer) {
+        this.specialOffer = specialOffer;
     }
 
-    public boolean isOrganic() {
-        return organic;
+    public String getIsO3() {
+        return isO3;
     }
 
-    public void setOrganic(boolean organic) {
-        this.organic = organic;
+    public void setIsO3(String isO3) {
+        this.isO3 = isO3;
     }
 
-    public String getQuantity() {
-        return quantity;
+    public String getProductVisibleTo() {
+        return productVisibleTo;
     }
 
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
+    public void setProductVisibleTo(String productVisibleTo) {
+        this.productVisibleTo = productVisibleTo;
     }
 
-//    @BindingAdapter("setImage")
-//    public static void loadImage(ImageView view, String img) {
-//        Glide.with(view.getContext())
-//                .load(img)
-//                .placeholder(R.drawable.placeholder)
-//                .error(R.drawable.placeholder).into(view);
-//    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getFeatureImg() {
+        return featureImg;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(offer);
-        dest.writeString(price);
-        dest.writeString(offerPrice);
-        dest.writeString(img);
-        dest.writeString(location);
-        dest.writeString(weight);
-        dest.writeString(quantity);
-        dest.writeByte((byte) (organic ? 1 : 0));
+    public void setFeatureImg(String featureImg) {
+        this.featureImg = featureImg;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public ArrayList<ProductUnit> getProductUnits() {
+        return productUnits;
+    }
+
+    public void setProductUnits(ArrayList<ProductUnit> productUnits) {
+        this.productUnits = productUnits;
     }
 }

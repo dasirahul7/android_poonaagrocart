@@ -7,7 +7,7 @@
 
         <variable
             name="searchProduct"
-            type="com.poona.agrocart.ui.home.model.Exclusive" />
+            type="com.poona.agrocart.ui.home.model.Product" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,13 +53,18 @@
                     app:setCustomFont="@string/font_poppins_regular"
                     tools:ignore="RtlSymmetry" />
 
-
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/nv_product_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rec_product"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingStart="@dimen/home_horizontal_padding"
                     android:paddingEnd="@dimen/home_horizontal_padding" />
+                </androidx.core.widget.NestedScrollView>
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_no_data"

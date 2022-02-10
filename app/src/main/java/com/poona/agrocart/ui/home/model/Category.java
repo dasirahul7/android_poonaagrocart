@@ -16,6 +16,9 @@ public class Category {
     @SerializedName("category_name")
     @Expose
     private String categoryName;
+    @SerializedName("category_type")
+    @Expose
+    private String categoryType;
     @SerializedName("category_image")
     @Expose
     private String categoryImage;
@@ -26,6 +29,13 @@ public class Category {
     @Expose
     private String status;
 
+    public String getCategoryType() {
+        return categoryType;
+    }
+
+    public void setCategoryType(String categoryType) {
+        this.categoryType = categoryType;
+    }
 
     public String getId() {
         return id;

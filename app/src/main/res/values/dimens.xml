@@ -47,7 +47,7 @@
     <dimen name="button_horizontal_margin">@dimen/_20sdp</dimen>
 
 
-<!--    Product List Sizes-->
+<!--    ProductOld List Sizes-->
     <dimen name="search_hint_size">@dimen/_14sp</dimen>
 
 <!--    Text Sizes-->

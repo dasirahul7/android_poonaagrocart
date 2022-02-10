@@ -1,7 +1,7 @@
 package com.poona.agrocart.ui.home;
 
-import com.poona.agrocart.ui.home.model.Product;
+import com.poona.agrocart.ui.home.model.ProductOld;
 
 public interface OnPlusClick {
-    void addToCart(Product item,int pos);
+    void addToCart(ProductOld item, int pos);
 }

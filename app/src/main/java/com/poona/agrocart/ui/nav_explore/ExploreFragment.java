@@ -1,9 +1,8 @@
 package com.poona.agrocart.ui.nav_explore;
 
-import static com.poona.agrocart.app.AppConstants.SEARCH_CATEGORY;
-import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
-import static com.poona.agrocart.app.AppConstants.SEARCH_PRODUCT;
-import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
+import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
+import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
+import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -26,6 +25,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +42,7 @@ import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
 import com.poona.agrocart.ui.home.model.Category;
 import com.poona.agrocart.ui.nav_explore.adapter.ExploreItemAdapter;
 import com.poona.agrocart.ui.nav_explore.model.ExploreItems;
+import com.poona.agrocart.ui.nav_stores.OurStoresFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,12 +132,20 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
                             if (categoryResponse.getCategoryData().getCategoryList().size()>0){
                                 exploreFragmentBinding.tvNoData.setVisibility(View.GONE);
                                 for (Category category : categoryResponse.getCategoryData().getCategoryList()){
-                                    ExploreItems expItem = new ExploreItems(category.getId(),category.getCategoryName(),category.getCategoryImage());
+                                    ExploreItems expItem = new ExploreItems(category.getId(),category.getCategoryName(),
+                                            category.getCategoryImage(),category.getCategoryType());
                                     expItem.setBackground(R.color.exp_card_color1);
                                     expItem.setBorder(R.color.exp_border1);
                                     exploreItems.add(expItem);
                                 }
-                                exploreItemAdapter = new ExploreItemAdapter(getActivity(),exploreItems,root);
+                                exploreItemAdapter = new ExploreItemAdapter(getActivity(),exploreItems,root,items -> {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString(CATEGORY_ID, items.getId());
+                                    bundle.putString(LIST_TITLE, items.getName());
+                                    bundle.putString(LIST_TYPE, items.getType());
+                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_explore_to_nav_products_list, bundle);
+
+                                });
                                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
                                 exploreFragmentBinding.rvExplore.setLayoutManager(gridLayoutManager);
                                 exploreFragmentBinding.rvExplore.setHasFixedSize(true);

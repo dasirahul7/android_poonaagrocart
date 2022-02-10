@@ -25,23 +25,23 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_et_search"
                     android:drawableStart="@drawable/ic_search"
-                    android:drawableTint="@color/black"
                     android:drawablePadding="@dimen/_8sdp"
+                    android:drawableTint="@color/black"
                     android:hint="@string/search_vegetables"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:singleLine="true"
                     android:imeOptions="actionDone"
-                    tools:ignore="RtlSymmetry"
+                    android:paddingStart="@dimen/_8sdp"
                     android:paddingTop="@dimen/_2sdp"
+                    android:singleLine="true"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/search_hint_size"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:setCustomFont="@string/font_poppins_regular" />
+                    app:setCustomFont="@string/font_poppins_regular"
+                    tools:ignore="RtlSymmetry" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_products"
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/nv_product_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -49,7 +49,26 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_search">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                     />
+                </androidx.core.widget.NestedScrollView>
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/tv_no_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/no_data_available"
+                    android:textSize="@dimen/_18sp"
+                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@+id/et_search" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

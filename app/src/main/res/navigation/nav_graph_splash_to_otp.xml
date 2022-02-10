@@ -11,6 +11,7 @@
         android:name="com.poona.agrocart.ui.splash_screen.SplashScreenFragment"
         tools:layout="@layout/fragment_splash_screen" >
 
+        <!--Splash to intro Screen  action-->
         <action
             android:id="@+id/action_SplashScreenFragment_to_introScreenFragment"
             app:destination="@id/introScreenFragment"
@@ -21,6 +22,7 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"/>
 
+        <!--Splash to Sign action-->
         <action
             android:id="@+id/action_SplashScreenFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -31,6 +33,28 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/SplashScreenFragment"
             app:popUpToInclusive="true" />
+        <!--Splash to SignUp action-->
+        <action
+            android:id="@+id/action_SplashScreenFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/SplashScreenFragment"
+            app:popUpToInclusive="true"/>
+
+        <!--Splash to select location action-->
+        <action
+            android:id="@+id/action_SplashScreenFragment_to_selectLocationFragment"
+            app:destination="@id/selectLocationFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:popUpTo="@id/SplashScreenFragment"
+            app:exitAnim="@anim/slide_out_left" />
+
 
     </fragment>
 
@@ -100,6 +124,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
+            app:popUpTo="@id/signUpFragment"
             app:exitAnim="@anim/slide_out_left" />
 
         <action

@@ -4,6 +4,7 @@ import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_402;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
@@ -12,18 +13,14 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +29,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
@@ -40,9 +38,9 @@ import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
+import com.poona.agrocart.ui.splash_screen.SplashScreenFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +64,6 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         fragmentSignInBinding.setLifecycleOwner(this);
 
         rootView = fragmentSignInBinding.getRoot();
-
         initView(rootView);
 
         return rootView;
@@ -87,14 +84,6 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
         //hide keyboard after entering mobile number
         setUpTextWatcher();
-
-        fragmentSignInBinding.etPhoneNo.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEND) {
-                signInAndRedirectToVerifyOtp(v);
-                return true;
-            }
-            return false;
-        });
     }
 
     public void setUpCountryCodePicker() {
@@ -147,6 +136,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
             case R.id.iv_sign_up:
                 signInAndRedirectToVerifyOtp(v);
                 break;
@@ -208,25 +198,21 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if(signInResponse.getUser() != null){
                             successToast(context, ""+signInResponse.getUser().getOtp());
+                            basicDetails.setOtp(signInResponse.getUser().getOtp());
                             preferences.setAuthorizationToken(signInResponse.getToken());
-                            //getStatus() = 1 Active, 2 Inactive, 3 Account deleted
-                            if(signInResponse.getUser().getStatus().equals("1")) {
-                                basicDetails.setOtp(signInResponse.getUser().getOtp());
-                                Bundle bundle = new Bundle();
-                                bundle.putString(AppConstants.COUNTRY_CODE, basicDetails.getCountryCode());
-                                bundle.putString(AppConstants.USER_MOBILE, basicDetails.getMobileNumber());
-                                bundle.putString(AppConstants.USER_OTP, basicDetails.getOtp());
-                                bundle.putString(AppConstants.USER_VERIFIED, signInResponse.getUser().getVerified());
-                                Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_verifyOtpFragment, bundle);
-                            } else if(signInResponse.getUser().getStatus().equals("2")) {
-                                //Inactive
-                            } else if(signInResponse.getUser().getStatus().equals("3")) {
-                                //Account deleted
-                            }
+                            basicDetails.setUserId(signInResponse.getUser().getId());
+                            Bundle bundle = new Bundle();
+                            bundle.putString(AppConstants.USER_MOBILE, basicDetails.getMobileNumber());
+                            bundle.putString(AppConstants.COUNTRY_CODE, basicDetails.getCountryCode());
+                            bundle.putString(AppConstants.USER_OTP, basicDetails.getOtp());
+                            bundle.putString(AppConstants.USER_ID, basicDetails.getUserId());
+                            Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_verifyOtpFragment, bundle);
                         }
                         break;
-                    case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_402://Validation Errors
+                        goToAskAndDismiss(signInResponse.getMessage(), context);
+                    case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_404://Validation Errors
                         warningToast(context, signInResponse.getMessage());
                         break;

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -13,7 +12,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.ApiClientAuth;
@@ -25,21 +23,13 @@ import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
-import com.poona.agrocart.data.network.reponses.ProductResponseDt;
 import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
-import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
-import com.poona.agrocart.ui.home.model.Banner;
-import com.poona.agrocart.ui.home.model.Basket;
-import com.poona.agrocart.ui.home.model.Category;
-import com.poona.agrocart.ui.home.model.Product;
-import com.poona.agrocart.ui.home.model.SeasonalProduct;
-import com.poona.agrocart.ui.home.model.StoreBanner;
+import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import io.reactivex.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -49,23 +39,18 @@ import retrofit2.HttpException;
 public class HomeViewModel extends AndroidViewModel {
     private String TAG = HomeViewModel.class.getSimpleName();
 
-    private MutableLiveData<ArrayList<Product>> liveDataBestSelling;
-    private MutableLiveData<ArrayList<Product>> liveDataOffer;
-    private MutableLiveData<ArrayList<Product>> liveDataCartProduct;
+    private MutableLiveData<ArrayList<ProductOld>> liveDataCartProduct;
     //    private MutableLiveData<ArrayList<Category>> liveDataCategory;
 
-    private MutableLiveData<ArrayList<Product>> savesProductInBasket;
-    private MutableLiveData<ArrayList<SeasonalProduct>> liveSeasonProducts;
+    private MutableLiveData<ArrayList<ProductOld>> savesProductInBasket;
+
 
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
         //init all mutable liveData
-        liveDataBestSelling = new MutableLiveData<>();
-        liveDataOffer = new MutableLiveData<>();
         liveDataCartProduct = new MutableLiveData<>();
         savesProductInBasket = new MutableLiveData<>();
-        liveSeasonProducts = new MutableLiveData<>();
         initCartItems();
 //        initSeasonalBanner();
     }
@@ -75,16 +60,16 @@ public class HomeViewModel extends AndroidViewModel {
         String PID = AppConstants.pId + "OP";
         ArrayList cartItemList = new ArrayList();
         for (int i = 0; i < 4; i++) {
-            Product cartProduct = new Product(PID + i, "Vegetable", "1kg",
+            ProductOld cartProductOld = new ProductOld(PID + i, "Vegetable", "1kg",
                     "10", "65", getApplication().getString(R.string.img_potato),
                     "Pune", "Green");
             if (i == 1)
-                cartProduct.setImg(getApplication().getString(R.string.img_beat));
+                cartProductOld.setImg(getApplication().getString(R.string.img_beat));
             if (i == 2)
-                cartProduct.setImg(getApplication().getString(R.string.img_beat));
-            cartItemList.add(cartProduct);
+                cartProductOld.setImg(getApplication().getString(R.string.img_beat));
+            cartItemList.add(cartProductOld);
             if (i == 3) {
-                cartProduct.setOrganic(true);
+                cartProductOld.setOrganic(true);
             }
         }
         liveDataCartProduct.setValue(cartItemList);
@@ -109,7 +94,6 @@ public class HomeViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(BannerResponse response) {
                         if (response != null) {
-                            Log.d(TAG, "onSuccess: " + response.getData().getBanners().get(0).getId());
                             progressDialog.dismiss();
                             bannerResponseMutableLiveData.setValue(response);
                         }
@@ -240,7 +224,7 @@ public class HomeViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ExclusiveResponse exclusiveResponse) {
                         if (exclusiveResponse != null) {
-                            Log.d(TAG, "Exclusive onSuccess: " + exclusiveResponse.getExclusiveData().getExclusivesList().get(0).getId());
+                            Log.d(TAG, "Product onSuccess: " + exclusiveResponse.getExclusiveData().getExclusivesList().get(0).getId());
 
                             progressDialog.dismiss();
                             exclusiveResponseMutableLiveData.setValue(exclusiveResponse);
@@ -355,7 +339,7 @@ public class HomeViewModel extends AndroidViewModel {
         return seasonalProductResponseMutableLiveData;
     }
 
-    //Product list Response here
+    //ProductOld list Response here
     public LiveData<ProductListResponse> homeProductListResponseLiveData(ProgressDialog progressDialog,
                                                                          HashMap<String, String> hashMap,
                                                                          HomeFragment homeFragment) {
@@ -439,25 +423,12 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
 
-    public MutableLiveData<ArrayList<SeasonalProduct>> getLiveSeasonProducts() {
-        return liveSeasonProducts;
-    }
 
-
-    public MutableLiveData<ArrayList<Product>> getLiveDataBestSelling() {
-        return liveDataBestSelling;
-    }
-
-    public MutableLiveData<ArrayList<Product>> getLiveDataOffer() {
-        return liveDataOffer;
-    }
-
-
-    public MutableLiveData<ArrayList<Product>> getLiveDataCartProduct() {
+    public MutableLiveData<ArrayList<ProductOld>> getLiveDataCartProduct() {
         return liveDataCartProduct;
     }
 
-    public MutableLiveData<ArrayList<Product>> getSavesProductInBasket() {
+    public MutableLiveData<ArrayList<ProductOld>> getSavesProductInBasket() {
         return savesProductInBasket;
     }
 

@@ -23,11 +23,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private final Context context;
     private RowCategoryItemBinding categoryBinding;
     private final View view;
+    private OnCategoryClickListener onCategoryClickListener;
 
-    public CategoryAdapter(ArrayList<Category> categories, Context context,View view) {
+    public CategoryAdapter(ArrayList<Category> categories, Context context,View view,OnCategoryClickListener onCategoryClickListener) {
         this.categories = categories;
         this.context = context;
         this.view=view;
+        this.onCategoryClickListener = onCategoryClickListener;
+    }
+    public interface OnCategoryClickListener{
+        void categoryClick(Category category);
     }
 
     @NonNull
@@ -59,13 +64,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             categoryBinding.executePendingBindings();
 
             categoryBinding.cardviewCategory.setOnClickListener(v -> {
-                redirectToProductsList(view);
+                onCategoryClickListener.categoryClick(category);
             });
         }
     }
 
-    private void redirectToProductsList(View v)
-    {
-        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list);
-    }
+//    private void redirectToProductsList(View v)
+//    {
+//        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list);
+//    }
 }
