@@ -1,14 +1,13 @@
 package com.poona.agrocart.ui.products_list;
 
+import static com.poona.agrocart.app.AppConstants.AllBasket;
+import static com.poona.agrocart.app.AppConstants.AllExclusive;
+import static com.poona.agrocart.app.AppConstants.AllSelling;
 import static com.poona.agrocart.app.AppConstants.BASKET;
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
 import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
-import static com.poona.agrocart.app.AppConstants.SEARCH_BASKET;
-import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
-import static com.poona.agrocart.app.AppConstants.SEARCH_PRODUCT;
-import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -29,7 +28,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,15 +36,15 @@ import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.ApiErrorException;
+import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
+import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.ProductListByResponse;
+import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.databinding.FragmentProductListBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.bottom_sheet.BottomSheetFilterFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.home.model.Basket;
-import com.poona.agrocart.ui.home.model.Product;
-import com.poona.agrocart.ui.home.model.ProductOld;
 import com.poona.agrocart.ui.products_list.adapter.BasketGridAdapter;
 import com.poona.agrocart.ui.products_list.adapter.ProductGridAdapter;
 
@@ -59,12 +58,12 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
     private FragmentProductListBinding fragmentProductListBinding;
     private ProductListViewModel productListViewModel;
     private RecyclerView rvVegetables;
-    private ArrayList<Product> productArrayList;
-    private ArrayList<Basket> basketArrayList;
+    private ArrayList<ProductListResponse.Product> productArrayList;
+    private ArrayList<BasketResponse.Basket> basketArrayList;
     private ProductGridAdapter productGridAdapter;
     private BasketGridAdapter basketGridAdapter;
     //argument values
-    private String CategoryId, ListTitle, ListType,fromScreen;
+    private String CategoryId, ListTitle, ListType, fromScreen;
     private final int limit = 10;
     private int visibleItemCount = 0;
     private int totalCount = 0, offset = 0;
@@ -96,7 +95,7 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
 
     private void setTitleBar() {
         initTitleWithBackBtn(ListTitle);
-        
+
     }
 
     private void setRVAdapter() {
@@ -106,32 +105,120 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
         gridLayoutManager = new GridLayoutManager(requireContext(), 2);
         rvVegetables.setHasFixedSize(true);
         rvVegetables.setLayoutManager(gridLayoutManager);
-        if (CategoryId==null){
-            fromScreen = getArguments().getString(FROM_SCREEN);
-            if (fromScreen.equalsIgnoreCase("Basket"))
-            callBasketListApi(showCircleProgressDialog(context,""),"load");
-            else if (fromScreen.equalsIgnoreCase("Best selling")){
-                infoToast(context,"Best selling listing");
-            }
-        }else callProductListApi(showCircleProgressDialog(context, ""), limit, "load");
+        checkAndLoadData("load");
 
     }
 
-    private void callBasketListApi(ProgressDialog showCircleProgressDialog, String apiFrom) {
+    // check and load data
+    private void checkAndLoadData(String loading) {
+        if (CategoryId == null) {
+            fromScreen = getArguments().getString(FROM_SCREEN);
+            if (fromScreen.equalsIgnoreCase(AllBasket))
+                seeAllBasketListApi(showCircleProgressDialog(context, ""), loading);
+            else if (fromScreen.equalsIgnoreCase(AllSelling)) {
+                seeAllBestSellingApi(showCircleProgressDialog(context, ""), loading);
+            }else if (fromScreen.equalsIgnoreCase(AllExclusive)){
+                seeAllExclusiveApi(showCircleProgressDialog(context,""),loading);
+            }
+        } else callProductListApi(showCircleProgressDialog(context, ""), loading);
+    }
+
+    /*All Exclusive API*/
+    private void seeAllExclusiveApi(ProgressDialog progressDialog, String loadType) {
+        if (loadType.equalsIgnoreCase("onScrolled")) {
+            offset = offset + 1;
+        } else offset = 0;
+        Observer<ExclusiveResponse> exclusiveResponseObserver = exclusiveResponse -> {
+            if (exclusiveResponse != null) {
+                progressDialog.dismiss();
+                Log.e(TAG, "seeAllExclusiveApi: " + new Gson().toJson(exclusiveResponse));
+                switch (exclusiveResponse.getStatus()) {
+                    case STATUS_CODE_200:
+                        if (exclusiveResponse.getExclusiveData().getExclusivesList() != null
+                                && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
+                            // Exclusive data listing
+                            productArrayList = exclusiveResponse.getExclusiveData().getExclusivesList();
+                            makeProductListing();
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
+                        // set a dummy banner if no banner is available
+                        warningToast(context, exclusiveResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(exclusiveResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, exclusiveResponse.getMessage());
+                        break;
+                }
+            }
+        };
+        productListViewModel.allExclusiveResponseLiveData(progressDialog, seeAllParams(), ProductListFragment.this, loadType)
+                .observe(getViewLifecycleOwner(), exclusiveResponseObserver);
+    }
+
+    /*All Best Selling API*/
+    private void seeAllBestSellingApi(ProgressDialog progressDialog, String load) {
+        if (load.equalsIgnoreCase("onScrolled")) {
+            offset = offset + 1;
+        } else offset = 0;
+
+        Observer<BestSellingResponse> bestSellingResponseObserver = bestSellingResponse -> {
+            if (bestSellingResponse != null) {
+                progressDialog.dismiss();
+                Log.e(TAG, "seeAllBestSellingApi: " + new Gson().toJson(bestSellingResponse));
+                switch (bestSellingResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        //Best selling listing
+                        if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null) {
+                            if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
+                                productArrayList = bestSellingResponse.getBestSellingData().getBestSellingProductList();
+                                makeProductListing();
+                            }
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
+                        // set a dummy banner if no banner is available
+                        warningToast(context, bestSellingResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(bestSellingResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, bestSellingResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        productListViewModel.allBestSellingResponseLiveData(progressDialog, seeAllParams(),
+                ProductListFragment.this, load)
+                .observe(getViewLifecycleOwner(), bestSellingResponseObserver);
+    }
+
+    /*All Basket API*/
+    private void seeAllBasketListApi(ProgressDialog showCircleProgressDialog, String apiFrom) {
         if (apiFrom.equalsIgnoreCase("onScrolled")) {
             offset = offset + 1;
         } else offset = 0;
         Observer<BasketResponse> basketResponseObserver = basketResponse -> {
-            if (basketResponse!=null){
-                Log.e(TAG, "callBasketListApi: "+new Gson().toJson(basketResponse));
+            if (basketResponse != null) {
+                Log.e(TAG, "callBasketListApi: " + new Gson().toJson(basketResponse));
                 switch (basketResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                            //Basket listing
-                            if (basketResponse.getData().getBaskets() != null) {
-                                if (basketResponse.getData().getBaskets().size() > 0) {
-                                    basketArrayList = basketResponse.getData().getBaskets();
-                                    makeBasketListing();
-                                }
+                        //Basket listing
+                        if (basketResponse.getData().getBaskets() != null) {
+                            if (basketResponse.getData().getBaskets().size() > 0) {
+                                basketArrayList = basketResponse.getData().getBaskets();
+                                makeBasketListing();
+                            }
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -151,13 +238,13 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
 
             }
         };
-        productListViewModel.basketResponseLiveData(showCircleProgressDialog,basketParameter(),
-                ProductListFragment.this,apiFrom)
-                .observe(getViewLifecycleOwner(),basketResponseObserver);
+        productListViewModel.basketResponseLiveData(showCircleProgressDialog, seeAllParams(),
+                ProductListFragment.this, apiFrom)
+                .observe(getViewLifecycleOwner(), basketResponseObserver);
     }
 
     /*Product list API calling*/
-    private void callProductListApi(ProgressDialog showCircleProgressDialog, int limit, String apiFrom) {
+    private void callProductListApi(ProgressDialog showCircleProgressDialog, String apiFrom) {
         if (apiFrom.equalsIgnoreCase("onScrolled")) {
             offset = offset + 1;
         } else offset = 0;
@@ -176,8 +263,8 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
                                 }
                             }
                         } else {
-                            if (productListByResponse.getProductListResponseDt().getProductList()!=null){
-                                if (productListByResponse.getProductListResponseDt().getProductList().size()>0){
+                            if (productListByResponse.getProductListResponseDt().getProductList() != null) {
+                                if (productListByResponse.getProductListResponseDt().getProductList().size() > 0) {
                                     productArrayList = productListByResponse.getProductListResponseDt().getProductList();
                                     makeProductListing();
                                 }
@@ -237,7 +324,7 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
                                             if (!fragmentProductListBinding.etSearch.getText().toString().trim().equals("")) {
                                                 productArrayList.clear();
                                                 basketArrayList.clear();
-                                                callProductListApi(showCircleProgressDialog(context,""),limit,"load");
+                                                checkAndLoadData("load");
                                             } else return;
                                         }
                                     } catch (Exception e) {
@@ -265,7 +352,8 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
         map.put(CATEGORY_ID, CategoryId);
         return map;
     }
-    private HashMap<String, String> basketParameter() {
+
+    private HashMap<String, String> seeAllParams() {
         HashMap<String, String> map = new HashMap<>();
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
@@ -286,7 +374,7 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
     private void makeProductListing() {
         if (productArrayList != null && productArrayList.size() > 0) {
             fragmentProductListBinding.tvNoData.setVisibility(View.GONE);
-            productGridAdapter = new ProductGridAdapter(productArrayList);
+            productGridAdapter = new ProductGridAdapter(productArrayList, this::redirectToProductsDetail);
             rvVegetables.setAdapter(productGridAdapter);
         }
 
@@ -314,7 +402,7 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
 
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount != totalCount) {
-                    callProductListApi(showCircleProgressDialog(context, ""), limit, "onScrolled");
+                    checkAndLoadData("onScrolled");
                 } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount == totalCount) {
                     infoToast(requireActivity(), getString(R.string.no_result_found));  //change
@@ -332,14 +420,29 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
                 hideKeyBoard(requireActivity());
                 switch (from) {
                     case 0:
-                        callProductListApi(showCircleProgressDialog(context, ""), limit, apiFrom);
+                        callProductListApi(showCircleProgressDialog(context, ""), apiFrom);
                         break;
                     case 1:
-                        callBasketListApi(showCircleProgressDialog(context,""),apiFrom);
+                        seeAllBasketListApi(showCircleProgressDialog(context, ""), apiFrom);
                         break;
+                    case 2:
+                        seeAllBestSellingApi(showCircleProgressDialog(context, ""), apiFrom);
+                        break;
+                    case 3:
+                        seeAllExclusiveApi(showCircleProgressDialog(context,""),apiFrom);
                 }
             }
         }, context);
 
+    }
+
+    /* Redirect to product detail screen*/
+    private void redirectToProductsDetail(ProductListResponse.Product product)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putString("name",product.getProductName());
+        bundle.putString("image",product.getFeatureImg());
+        bundle.putString("price",product.getProductUnits().get(0).getSellingPrice());
+        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_products_list_to_productDetailFragment2,bundle);
     }
 }

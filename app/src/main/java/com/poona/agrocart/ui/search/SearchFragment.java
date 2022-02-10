@@ -1,8 +1,5 @@
 package com.poona.agrocart.ui.search;
 
-import static com.poona.agrocart.app.AppConstants.BASKET;
-import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
-import static com.poona.agrocart.app.AppConstants.PRODUCT;
 import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
@@ -34,13 +31,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.ApiErrorException;
-import com.poona.agrocart.data.network.reponses.ProductListByResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.databinding.FragmentSearchBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
-import com.poona.agrocart.ui.home.model.Product;
 import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
@@ -61,7 +56,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     private ProductListAdapter searchAdapter;
     Timer timer = new Timer();
     boolean isTyping = false;
-    private ArrayList<Product> productList = new ArrayList<>();
+    private ArrayList<ProductListResponse.Product> productList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
 
     @Nullable

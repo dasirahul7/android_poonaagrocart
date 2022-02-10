@@ -89,7 +89,12 @@ public class AppConstants {
     public static final String STORE_LIST = "store-list";
 
     /*Product list API*/
-    public static final String PRODUCT_LIST_BY_API ="product-by-category-list";
+    public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
+
+    /*See all Listing from home keys*/
+    public static final String AllBasket = "Basket";
+    public static final String AllSelling = "Best selling";
+    public static final String AllExclusive = "Exclusive";
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";

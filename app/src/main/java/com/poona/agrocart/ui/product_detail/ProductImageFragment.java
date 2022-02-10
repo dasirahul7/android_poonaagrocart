@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentProductImageBinding;
 import com.poona.agrocart.ui.basket_detail.BasketDetailFragment;
+import com.poona.agrocart.ui.seasonal.SeasonalRegFragment;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,17 @@ public class ProductImageFragment extends Fragment
     public static ProductImageFragment newInstance(ProductDetailFragment productDetailFragment, int pos, ArrayList<String> imgs)
     {
         context = productDetailFragment.getContext();
+        productImgsList = imgs;
+        ProductImageFragment fragment = new ProductImageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(POSITION, pos);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public static ProductImageFragment newInstance(SeasonalRegFragment seasonalRegFragment, int pos, ArrayList<String> imgs)
+    {
+        context = seasonalRegFragment.getContext();
         productImgsList = imgs;
         ProductImageFragment fragment = new ProductImageFragment();
         Bundle bundle = new Bundle();

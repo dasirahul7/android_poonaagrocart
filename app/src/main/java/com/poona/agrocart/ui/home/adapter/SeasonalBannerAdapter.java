@@ -10,21 +10,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.databinding.RowSeasonalBannerBinding;
-import com.poona.agrocart.ui.home.model.SeasonalProduct;
 
 import java.util.ArrayList;
 
 public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAdapter.SeasonBannerHolder> {
     private RowSeasonalBannerBinding seasonalBannerBinding;
     private Context sbContext;
-    private ArrayList<SeasonalProduct> seasonalProducts;
+    private ArrayList<SeasonalProductResponse.SeasonalProduct> seasonalProducts;
     private View rootView;
+    private OnSeasonalClickListener onSeasonalClickListener;
 
-    public SeasonalBannerAdapter(Context sbContext, ArrayList<SeasonalProduct> seasonalProducts, View rootView) {
+    public SeasonalBannerAdapter(Context sbContext, ArrayList<SeasonalProductResponse.SeasonalProduct> seasonalProducts,
+                                OnSeasonalClickListener onSeasonalClickListener) {
         this.sbContext = sbContext;
         this.seasonalProducts = seasonalProducts;
-        this.rootView = rootView;
+        this.onSeasonalClickListener = onSeasonalClickListener;
+    }
+    public interface OnSeasonalClickListener{
+       void onSeasonRegister(SeasonalProductResponse.SeasonalProduct seasonalProduct);
     }
 
     @NonNull
@@ -36,7 +41,7 @@ public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAd
 
     @Override
     public void onBindViewHolder(@NonNull SeasonBannerHolder holder, int position) {
-        SeasonalProduct product = seasonalProducts.get(position);
+        SeasonalProductResponse.SeasonalProduct product = seasonalProducts.get(position);
         seasonalBannerBinding.setModuleSeasonBanner(product);
         holder.bindSeasonItem(product);
 
@@ -53,12 +58,15 @@ public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAd
             super(binding.getRoot());
         }
 
-        private void bindSeasonItem(SeasonalProduct seasonalProduct){
+        private void bindSeasonItem(SeasonalProductResponse.SeasonalProduct seasonalProduct){
             if (seasonalProduct.getType().equals("Green"))
                 seasonalBannerBinding.rlSeasonalView.setBackgroundResource(R.drawable.seasonal_banner_bg_green);
             else seasonalBannerBinding.rlSeasonalView.setBackgroundResource(R.drawable.seasonal_banner_bg_yellow);
             seasonalBannerBinding.setVariable(BR.moduleSeasonBanner,seasonalProduct);
             seasonalBannerBinding.executePendingBindings();
+            seasonalBannerBinding.tvRegister.setOnClickListener(view -> {
+                onSeasonalClickListener.onSeasonRegister(seasonalProduct);
+            });
         }
     }
 }

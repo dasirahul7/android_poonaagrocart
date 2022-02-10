@@ -1,7 +1,6 @@
 package com.poona.agrocart.ui.products_list.adapter;
 
 import android.os.Build;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.databinding.RowProductListItemBinding;
-import com.poona.agrocart.ui.home.model.Product;
-import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 
 public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.ProductsViewHolder>
 {
-    private final ArrayList<Product> vegetableArrayList;
+    private final ArrayList<ProductListResponse.Product> vegetableArrayList;
+    private OnProductClickListener onProductClickListener;
 
-    public ProductGridAdapter(ArrayList<Product> vegetableArrayList)
-    {
+    public ProductGridAdapter(ArrayList<ProductListResponse.Product> vegetableArrayList, OnProductClickListener onProductClickListener) {
         this.vegetableArrayList = vegetableArrayList;
+        this.onProductClickListener = onProductClickListener;
+    }
+
+    public interface OnProductClickListener{
+        void onProductClick(ProductListResponse.Product product);
     }
 
     @NonNull
@@ -41,7 +44,7 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position)
     {
-        final Product vegetable = vegetableArrayList.get(position);
+        final ProductListResponse.Product vegetable = vegetableArrayList.get(position);
         holder.productListItemBinding.setProductModule(vegetable);
         holder.bind(vegetable);
     }
@@ -59,13 +62,6 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
             super(productListItemBinding.getRoot());
             this.productListItemBinding=productListItemBinding;
 
-//            productListItemBinding.cardviewProduct.setOnClickListener(v -> {
-//                redirectToProductsDetail(view);
-//            });
-
-//            productListItemBinding.imgPlus.setOnClickListener(v -> {
-//                redirectToCartScreen(view);
-//            });
         }
 
         private void redirectToCartScreen(View view)
@@ -73,18 +69,10 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
             Navigation.findNavController(view).navigate(R.id.action_nav_products_list_to_nav_cart);
         }
 
-        private void redirectToProductsDetail(View v)
-        {
-            Bundle bundle = new Bundle();
-            bundle.putString("name",vegetableArrayList.get(getAdapterPosition()).getProductName());
-            bundle.putString("image",vegetableArrayList.get(getAdapterPosition()).getFeatureImg());
-            bundle.putString("price",vegetableArrayList.get(getAdapterPosition()).getProductUnits().get(0).getSellingPrice());
-            Navigation.findNavController(v).navigate(R.id.action_nav_products_list_to_productDetailFragment2,bundle);
-        }
 
-        public void bind(Product Product)
+        public void bind(ProductListResponse.Product product)
         {
-            productListItemBinding.setVariable(BR.productModule, Product);
+            productListItemBinding.setVariable(BR.productModule, product);
             productListItemBinding.executePendingBindings();
 //            if (Product.isInBasket())
 //                productListItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
@@ -99,6 +87,9 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
             if (Build.VERSION.SDK_INT<=Build.VERSION_CODES.M){
                 productListItemBinding.txtItemOfferPrice.setTextSize(14);
             }
+            itemView.setOnClickListener(view -> {
+                onProductClickListener.onProductClick(product);
+            });
         }
     }
 }

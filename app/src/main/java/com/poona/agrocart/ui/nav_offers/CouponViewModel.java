@@ -76,7 +76,7 @@ public class CouponViewModel extends AndroidViewModel {
     }
 
 //    public CouponViewModel() {
-//        ArrayList<Coupons> coupons = new ArrayList<>();
+//        ArrayList<CouponResponse.Coupon> coupons = new ArrayList<>();
 //    for (int i=0;i<20;i++){
 //        Coupons coupon = new Coupons(i,"OFF250","10%","25 November 2021","Order min Rs. 500 ","Order min Rs. 500 ","Max 100Rs.");
 //        coupons.add(coupon);

@@ -13,15 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.databinding.HomeProductItemBinding;
 import com.poona.agrocart.ui.home.OnPlusClick;
 import com.poona.agrocart.ui.home.OnProductClick;
-import com.poona.agrocart.ui.home.model.Product;
 
 import java.util.ArrayList;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductHolder> {
-    private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
     private final Context bdContext;
     private HomeProductItemBinding productBinding;
     private final View view;
@@ -36,7 +36,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         this.onProductClick = onProductClick;
     }
 
-    public ProductListAdapter(ArrayList<Product> products, FragmentActivity context, View view) {
+    public ProductListAdapter(ArrayList<ProductListResponse.Product> products, FragmentActivity context, View view) {
         this.products = products;
         this.bdContext = context;
         this.view = view;
@@ -51,7 +51,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
-        Product product = products.get(position);
+        ProductListResponse.Product product = products.get(position);
             productBinding.setHomeProductModel(product);
             holder.bindProduct(product,position);
     }
@@ -68,7 +68,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             super(productBinding.getRoot());
         }
         //Only ProductOld Item bind
-        public void bindProduct(Product product, int position) {
+        public void bindProduct(ProductListResponse.Product product, int position) {
             productBinding.setVariable(BR.productModule, product);
             productBinding.executePendingBindings();
             if (product.getFeatureImg().endsWith(".jpeg") || product.getFeatureImg().endsWith("jpg"))

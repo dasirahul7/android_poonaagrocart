@@ -33,7 +33,7 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
     public ViewPager vpIntro;
     private DotsIndicator dotsIndicator;
     private Button btnNext;
-    ArrayList<Intro> introList;
+    ArrayList<IntroScreenResponse.Intro> introList;
     private IntroPagerAdapter introPagerAdapter;
     private View introView;
     private IntroScreenViewModel introScreenViewModel;

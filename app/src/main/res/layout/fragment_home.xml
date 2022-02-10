@@ -7,7 +7,7 @@
 
         <variable
             name="storeBanner"
-            type="com.poona.agrocart.ui.home.model.StoreBanner" />
+            type="com.poona.agrocart.data.network.reponses.StoreBannerResponse.StoreBanner" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

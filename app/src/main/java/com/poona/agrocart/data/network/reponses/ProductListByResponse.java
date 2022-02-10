@@ -8,13 +8,13 @@ import com.google.gson.annotations.SerializedName;
 public class ProductListByResponse extends BaseResponse{
     @SerializedName("data")
     @Expose
-    private ProductListResponseDt productListResponseDt;
+    private ProductListResponse.ProductResponseDt productListResponseDt;
 
-    public ProductListResponseDt getProductListResponseDt() {
+    public ProductListResponse.ProductResponseDt getProductListResponseDt() {
         return productListResponseDt;
     }
 
-    public void setProductListResponseDt(ProductListResponseDt productListResponseDt) {
+    public void setProductListResponseDt(ProductListResponse.ProductResponseDt productListResponseDt) {
         this.productListResponseDt = productListResponseDt;
     }
 }

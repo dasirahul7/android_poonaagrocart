@@ -13,18 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.databinding.RowBasketItemBinding;
-import com.poona.agrocart.ui.home.model.Basket;
 
 import java.util.ArrayList;
 
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHolder> {
-    private ArrayList<Basket> baskets = new ArrayList<>();
+    private ArrayList<BasketResponse.Basket> baskets = new ArrayList<>();
     private final Context bContext;
     private RowBasketItemBinding basketItemBinding;
     private final View view;
 
-    public BasketAdapter(ArrayList<Basket> baskets, Context context, View view) {
+    public BasketAdapter(ArrayList<BasketResponse.Basket> baskets, Context context, View view) {
         this.baskets = baskets;
         this.bContext = context;
         this.view=view;
@@ -38,7 +38,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
 
     @Override
     public void onBindViewHolder(@NonNull BasketHolder holder, int position) {
-        Basket basket = baskets.get(position);
+        BasketResponse.Basket basket = baskets.get(position);
         basketItemBinding.setBasketModule(basket);
         int mPosition = position;
         if (mPosition % 2 == 1)
@@ -72,7 +72,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
             Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
         }
 
-        public void bind(Basket basket) {
+        public void bind(BasketResponse.Basket basket) {
             basketItemBinding.setVariable(BR.basketModule,basket);
             basketItemBinding.executePendingBindings();
         }

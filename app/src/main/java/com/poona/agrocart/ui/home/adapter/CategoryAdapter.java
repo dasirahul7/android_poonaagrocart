@@ -7,32 +7,31 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.databinding.RowCategoryItemBinding;
-import com.poona.agrocart.ui.home.model.Category;
 
 import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder> {
 
-    private ArrayList<Category> categories = new ArrayList<>();
+    private ArrayList<CategoryResponse.Category> categories = new ArrayList<>();
     private final Context context;
     private RowCategoryItemBinding categoryBinding;
     private final View view;
     private OnCategoryClickListener onCategoryClickListener;
 
-    public CategoryAdapter(ArrayList<Category> categories, Context context,View view,OnCategoryClickListener onCategoryClickListener) {
+    public CategoryAdapter(ArrayList<CategoryResponse.Category> categories, Context context, View view, OnCategoryClickListener onCategoryClickListener) {
         this.categories = categories;
         this.context = context;
         this.view=view;
         this.onCategoryClickListener = onCategoryClickListener;
     }
     public interface OnCategoryClickListener{
-        void categoryClick(Category category);
+        void categoryClick(CategoryResponse.Category category);
     }
 
     @NonNull
@@ -44,7 +43,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
-        Category category = categories.get(position);
+        CategoryResponse.Category category = categories.get(position);
         categoryBinding.setCategoryModule(category);
         holder.bind(category);
     }
@@ -59,7 +58,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             super(binding.getRoot());
         }
 
-        public void bind(Category category) {
+        public void bind(CategoryResponse.Category category) {
             categoryBinding.setVariable(BR.categoryModule,category);
             categoryBinding.executePendingBindings();
 
@@ -68,9 +67,4 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             });
         }
     }
-
-//    private void redirectToProductsList(View v)
-//    {
-//        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list);
-//    }
 }

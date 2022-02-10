@@ -11,19 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.databinding.RowCouponItemBinding;
 
 import java.util.ArrayList;
 
 public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHolder> {
 
-    private ArrayList<Coupon> coupons = new ArrayList<>();
+    private ArrayList<CouponResponse.Coupon> coupons = new ArrayList<>();
     private final Context context;
     private RowCouponItemBinding rowCouponItemBinding;
     private CouponFragment couponFragment;
 
 
-    public CouponAdapter(ArrayList<Coupon> coupons, Context context, CouponFragment couponFragment) {
+    public CouponAdapter(ArrayList<CouponResponse.Coupon> coupons, Context context, CouponFragment couponFragment) {
         this.coupons = coupons;
         this.context = context;
         this.couponFragment = couponFragment;
@@ -39,7 +40,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull CouponHolder holder, int position) {
-        Coupon coupon = coupons.get(position);
+        CouponResponse.Coupon coupon = coupons.get(position);
         rowCouponItemBinding.setModuleCoupon(coupon);
         if (Integer.parseInt(coupon.getId()) % 3 == 1){
             rowCouponItemBinding.couponRow.setBackgroundResource(R.drawable.coupon_green);
@@ -66,7 +67,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
             super(itemView.getRoot());
         }
 
-        public void bind(Coupon coupon) {
+        public void bind(CouponResponse.Coupon coupon) {
             rowCouponItemBinding.setVariable(BR.moduleCoupon, coupon);
             rowCouponItemBinding.executePendingBindings();
             rowCouponItemBinding.imgInfo.setOnClickListener(v -> {

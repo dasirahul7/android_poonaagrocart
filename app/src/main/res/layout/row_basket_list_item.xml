@@ -8,7 +8,7 @@
 
         <variable
             name="basket"
-            type="com.poona.agrocart.ui.home.model.Basket" />
+            type="com.poona.agrocart.data.network.reponses.BasketResponse.Basket" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

@@ -7,7 +7,7 @@
 
         <variable
             name="searchProduct"
-            type="com.poona.agrocart.ui.home.model.Product" />
+            type="com.poona.agrocart.data.network.reponses.ProductListResponse.Product" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
