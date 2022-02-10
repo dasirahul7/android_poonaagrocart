@@ -89,6 +89,7 @@ public class AppConstants {
 
     /*Faq Api*/
     public static final String FAQ = "faq";
+    public static final String CMS = "cms";
 
     public static final String TAB_INDEX = "index";
     public static final String TOOLBAR_TITLE = "toolbar_title";

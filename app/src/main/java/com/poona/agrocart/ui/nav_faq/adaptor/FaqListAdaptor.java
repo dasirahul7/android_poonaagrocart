@@ -73,7 +73,8 @@ public class FaqListAdaptor extends RecyclerView.Adapter<FaqListAdaptor.FaqViewH
                     viewHolder.binding.rlMain.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_et_border));
                     viewHolder.binding.llMain.setBackground(ContextCompat.getDrawable(context,R.drawable.background_faq_list));
                     viewHolder.binding.tvAnswer.setTextColor(ContextCompat.getColor(context, R.color.black));
-                    viewHolder.binding.rlMain.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                    viewHolder.binding.rlMain.setBackground(ContextCompat.getDrawable(context, R.drawable.background_faq_list_answer));
+                   // viewHolder.binding.rlMain.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
                     viewHolder.itemView.setTag("more");
                 }
             }

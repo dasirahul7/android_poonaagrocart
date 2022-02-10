@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 android:lineSpacingExtra="5dp"
-                android:text="@{modelPolicy.privacyPolicyData}"
+                android:justificationMode="inter_word"
                 android:padding="@dimen/_10sdp"
                 android:textColor="@color/about_txt_color"
                 android:textSize="@dimen/_12sp"

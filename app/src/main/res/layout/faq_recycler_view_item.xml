@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginHorizontal="@dimen/_14sdp"
-        android:layout_marginVertical="@dimen/_10sdp">
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:background="@drawable/background_faq_list_answer">
 
         <LinearLayout
             android:id="@+id/ll_main"
@@ -62,8 +63,8 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_gravity="center"
                     app:eiv_animationDuration="300"
-                    app:eiv_colorLess="#0C0000"
-                    app:eiv_colorMore="#0B0000"
+                    app:eiv_colorLess="#FBF8F8"
+                    app:eiv_colorMore="#130000"
                     app:eiv_roundedCorners="true"
                     app:eiv_switchColor="true" />
             </LinearLayout>
@@ -78,7 +79,6 @@
             android:paddingVertical="@dimen/_4sdp"
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_32sdp"
-            android:background="@color/green_top_color"
             android:layout_below="@+id/ll_main">
 
             <com.poona.agrocart.widgets.CustomTextView
@@ -93,12 +93,5 @@
                 app:setCustomFont="@string/font_poppins_regular" />
         </LinearLayout>
 
-        <View
-            android:id="@+id/v_horizontal_line"
-            android:layout_below="@+id/ll_answer"
-            android:layout_width="match_parent"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_height="1dp"
-            android:background="@color/green_top_color"/>
     </RelativeLayout>
 </layout>

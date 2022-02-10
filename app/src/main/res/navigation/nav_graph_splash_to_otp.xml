@@ -125,24 +125,25 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left" />
 
-        <action
-            android:id="@+id/action_signUpFragment_to_signInPrivacyFragment"
-            app:destination="@id/signInPrivacyFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
-
-        <action
-            android:id="@+id/action_signUpFragment_to_signInTermsFragment"
-            app:destination="@id/signInTermsFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
 
     </fragment>
 
+
+    <action
+        android:id="@+id/action_signUpFragment_to_signInPrivacyFragment"
+        app:destination="@id/privacyPolicyFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <action
+        android:id="@+id/action_signUpFragment_to_signInTermsFragment"
+        app:destination="@id/termsConditionFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
     <!--Select Location Fragment-->
     <fragment
         android:id="@+id/selectLocationFragment"
@@ -154,32 +155,45 @@
         android:id="@+id/signInFragment"
         android:name="com.poona.agrocart.ui.sign_in.SignInFragment"
         tools:layout="@layout/fragment_sign_in" >
-
-        <action
-            android:id="@+id/action_signInFragment_to_verifyOtpFragment"
-            app:destination="@id/verifyOtpFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
-
-        <action
-            android:id="@+id/action_signInFragment_to_signInPrivacyFragment"
-            app:destination="@id/signInPrivacyFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
-
-        <action
-            android:id="@+id/action_signInFragment_to_signInTermsFragment"
-            app:destination="@id/signInTermsFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
-
     </fragment>
+
+    <!--Privacy Policy Fragment-->
+    <fragment
+        android:id="@+id/privacyPolicyFragment"
+        android:name="com.poona.agrocart.ui.nav_our_privacy.PrivacyPolicyFragment"
+        tools:layout="@layout/fragment_policy_item"/>
+
+    <!--Terms Condition Fragment-->
+    <fragment
+        android:id="@+id/termsConditionFragment"
+        android:name="com.poona.agrocart.ui.nav_our_privacy.TermsConditionFragment"
+        tools:layout="@layout/fragment_policy_item"/>
+
+
+    <action
+        android:id="@+id/action_signInFragment_to_verifyOtpFragment"
+        app:destination="@id/verifyOtpFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <action
+        android:id="@+id/action_signInFragment_to_signInPrivacyFragment"
+        app:destination="@id/privacyPolicyFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
+    <action
+        android:id="@+id/action_signInFragment_to_signInTermsFragment"
+        app:destination="@id/termsConditionFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+
 
     <!--Forgot Password Fragment-->
     <fragment
@@ -199,16 +213,5 @@
 
     </fragment>
 
-    <!--SignIn Terms Fragment-->
-    <fragment
-        android:id="@+id/signInTermsFragment"
-        android:name="com.poona.agrocart.ui.sign_in.SignInTermsFragment"
-        tools:layout="@layout/fragment_terms_condition" />
-
-    <!--Sign In Privacy Fragment-->
-    <fragment
-        android:id="@+id/signInPrivacyFragment"
-        android:name="com.poona.agrocart.ui.sign_in.SignInPrivacyFragment"
-        tools:layout="@layout/fragment_terms_condition" />
 
 </navigation>
