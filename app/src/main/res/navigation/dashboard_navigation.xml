@@ -205,9 +205,9 @@
 
     <!--About Us Fragment-->
     <fragment
-        android:id="@+id/nav_about"
+        android:id="@+id/nav_cms"
         android:name="com.poona.agrocart.ui.nav_about_us.CmsFragment"
-        tools:layout="@layout/fragment_about_us"/>
+        tools:layout="@layout/fragment_cms"/>
 
     <!--Notification Fragment-->
     <fragment

@@ -95,7 +95,7 @@ public class HomeActivity extends BaseActivity {
                 R.id.nav_wallet,
                 R.id.nav_offer,
                 R.id.nav_notification,
-                R.id.nav_about,
+                R.id.nav_cms,
                 R.id.nav_faq,
                 R.id.nav_help_center,
                 R.id.nav_privacy,

@@ -89,9 +89,6 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
         fragmentMyProfileBinding.tvDateOfBirthInput.setOnClickListener(this);
         fragmentMyProfileBinding.frameLayout.setOnClickListener(this);
-
-        myProfileViewModel= new ViewModelProvider(this).get(MyProfileViewModel.class);
-        fragmentMyProfileBinding.setMyProfileViewModel(myProfileViewModel);
     }
 
     public void showCalendar() {
@@ -103,19 +100,16 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         mMonth = mcurrentDate.get(Calendar.MONTH);
         mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-        dpd = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    String txtDisplayDate = null;
-                    String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
-                    try {
-                        txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    fragmentMyProfileBinding.tvDateOfBirthInput.setText(txtDisplayDate);
-                calendar.set(year, month, dayOfMonth);
-            }
+        dpd = new DatePickerDialog(requireContext(), (view, year, month, dayOfMonth) -> {
+                String txtDisplayDate = null;
+                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                try {
+                    txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                fragmentMyProfileBinding.tvDateOfBirthInput.setText(txtDisplayDate);
+            calendar.set(year, month, dayOfMonth);
         },
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
         );
@@ -131,32 +125,8 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 showCalendar();
                 break;
             case R.id.frameLayout:
-                openGallery();
+                //openGallery();
                 break;
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==SELECT_IMAGE_FROM_GALLERY && resultCode==RESULT_OK)
-        {
-            Uri uri = data.getData();
-            fragmentMyProfileBinding.ivProfilePicture.setImageURI(uri);
-        }
-
-    }
-
-    private void openGallery() {
-        askForGalleryPermissions();
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);//
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        try {
-            startActivityForResult(Intent.createChooser(intent, getString(R.string.select_file)), SELECT_IMAGE_FROM_GALLERY);
-        } catch (Exception e) {
-            Toast.makeText(getActivity(), getString(R.string.ensure_your_all_permissions), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -194,7 +164,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         } else if(errorCodeDob == 0) {
             errorToast(requireActivity(), getString(R.string.please_select_dob));
         } else {
-
+            //
         }
     }
 }

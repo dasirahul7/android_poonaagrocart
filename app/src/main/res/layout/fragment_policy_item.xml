@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<data>
-    <variable
-        name="modelPolicy"
-        type="com.poona.agrocart.ui.nav_our_privacy.OurPolicyViewModel" />
-</data>
+
+    <data>
+        <variable
+            name="modelPolicy"
+            type="com.poona.agrocart.ui.nav_our_privacy.OurPolicyViewModel" />
+    </data>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -30,6 +31,9 @@
                 android:textColor="@color/about_txt_color"
                 android:textSize="@dimen/_12sp"
                 app:setCustomFont="@string/font_poppins_semi_bold" />
+
         </LinearLayout>
+
     </ScrollView>
+
 </layout>

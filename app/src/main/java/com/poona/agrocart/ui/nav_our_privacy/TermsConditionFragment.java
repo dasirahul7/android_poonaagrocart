@@ -53,7 +53,7 @@ public class TermsConditionFragment extends BaseFragment {
             title = bundle.getString("Policy_Title");
         }
        initTitleWithBackBtn(title);  //change
-        initViews();
+       initViews();
 
        callTermsConditionApi(showCircleProgressDialog(context,""));
 

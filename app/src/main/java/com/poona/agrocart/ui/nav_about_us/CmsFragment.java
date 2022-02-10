@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
-import com.poona.agrocart.databinding.FragmentAboutUsBinding;
+import com.poona.agrocart.databinding.FragmentCmsBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.data.network.reponses.CmsResponse;
 
@@ -32,7 +32,7 @@ import java.util.List;
 
 public class CmsFragment extends BaseFragment {
     private CmsViewModel cmsViewModel;
-    private FragmentAboutUsBinding fragmentAboutUsBinding;
+    private FragmentCmsBinding fragmentCmsBinding;
     private List<CmsResponse.Cms> cmsList = new ArrayList<>();
     private String cmsContent = "";
     private View view;
@@ -44,13 +44,13 @@ public class CmsFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        fragmentAboutUsBinding = FragmentAboutUsBinding.inflate(getLayoutInflater());
-        fragmentAboutUsBinding.setLifecycleOwner(this);
+        fragmentCmsBinding = fragmentCmsBinding.inflate(getLayoutInflater());
+        fragmentCmsBinding.setLifecycleOwner(this);
 
         cmsViewModel = new ViewModelProvider(this).get(CmsViewModel.class);
-        fragmentAboutUsBinding.setAboutUsViewModel(cmsViewModel);
+        fragmentCmsBinding.setAboutUsViewModel(cmsViewModel);
 
-        view = fragmentAboutUsBinding.getRoot();
+        view = fragmentCmsBinding.getRoot();
 
         initTitleBar(getString(R.string.menu_about_us));
 
@@ -80,10 +80,10 @@ public class CmsFragment extends BaseFragment {
                             cmsList = cmsResponse.getData();
                             cmsContent = cmsList.get(0).getCmsText();
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                fragmentAboutUsBinding.tvAboutUs.setText(Html.fromHtml(""+ cmsContent, Html.FROM_HTML_MODE_COMPACT));
+                                fragmentCmsBinding.tvAboutUs.setText(Html.fromHtml(""+ cmsContent, Html.FROM_HTML_MODE_COMPACT));
                                 //fragmentAboutUsBinding.tvDescription.setText(Html.fromHtml(""+strAboutDescription, Html.FROM_HTML_MODE_COMPACT));
                             } else {
-                                fragmentAboutUsBinding.tvAboutUs.setText(Html.fromHtml(""+ cmsContent));
+                                fragmentCmsBinding.tvAboutUs.setText(Html.fromHtml(""+ cmsContent));
                                 //fragmentAboutUsBinding.tvDescription.setText(Html.fromHtml(""+strAboutDescription));
                             }
                         }

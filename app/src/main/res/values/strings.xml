@@ -67,7 +67,7 @@
     <string name="continue_text">Continue</string>
     <string name="back_to">Back to</string>
     <string name="log_in">Log In?</string>
-    <string name="email_id_should_not_be_empty">Email ID should not be empty!</string>
+    <string name="email_id_should_not_be_empty">Email Id should not be empty!</string>
 
     <!--sign in screen validation messages-->
     <string name="mobile_number_should_not_be_empty">Mobile Number should not be empty!</string>

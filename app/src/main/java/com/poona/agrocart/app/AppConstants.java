@@ -121,6 +121,7 @@ public class AppConstants {
      * cms content api parameters
      */
     public static final String CMS_NAME = "cms_name";
+    public static final String CMS_TYPE = "cms_type";
     public static final String CMS_ASSIGN_ID = "cms_assign_id";
     public static final String ABOUT_US = "about-us";
     public static final String TERMS_CONDITIONS = "term-and-condition";

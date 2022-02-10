@@ -1,5 +1,8 @@
 package com.poona.agrocart.ui.nav_our_privacy;
 
+import static com.poona.agrocart.app.AppConstants.CMS_NAME;
+import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -26,16 +29,26 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.databinding.FragmentPolicyItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.data.network.reponses.CmsResponse;
+import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.sign_in.SignInFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PrivacyPolicyFragment extends BaseFragment {
+    private final String signInTAG = SignInFragment.class.getSimpleName();
+    private final String homeTAG = HomeActivity.class.getSimpleName();
+
     private FragmentPolicyItemBinding fragmentPolicyItemBinding;
     private OurPolicyViewModel ourPolicyViewModel;
     private View view;
-    private String title = " Title";
+
+    private String fromScreen = "";
+    private String cmsTitle = "";
+    private int cmsType = 0;
+
     private List<CmsResponse.Cms> cmsPagesDataList = new ArrayList<>();
+
     private String privacyPolicyContent = "";
 
     @Nullable
@@ -48,11 +61,20 @@ public class PrivacyPolicyFragment extends BaseFragment {
         fragmentPolicyItemBinding.setModelPolicy(ourPolicyViewModel);
 
         view = fragmentPolicyItemBinding.getRoot();
+
         if (getArguments() != null) {
             Bundle bundle = this.getArguments();
-            title = bundle.getString("Policy_Title");
+            fromScreen = bundle.getString(FROM_SCREEN);
+            cmsTitle = bundle.getString(CMS_NAME);
+            cmsType = bundle.getInt(CMS_TYPE);
         }
-       initTitleWithBackBtn(title); //change
+
+        if(fromScreen.equals(signInTAG)) {
+
+        } else if(fromScreen.equals(homeTAG)) {
+            initTitleWithBackBtn(cmsTitle);
+        }
+
         initViews();
 
         callPrivacyPolicyApi(showCircleProgressDialog(context,""));
@@ -82,7 +104,14 @@ public class PrivacyPolicyFragment extends BaseFragment {
 
                         if(cmsPagesDataResponse.getData() != null ){
                             cmsPagesDataList = cmsPagesDataResponse.getData();
-                            privacyPolicyContent = cmsPagesDataList.get(2).getCmsText();
+
+                            if(cmsType == 0) {
+                                /*privacy policy response*/
+                                privacyPolicyContent = cmsPagesDataList.get(1).getCmsText();
+                            } else if(cmsType == 1) {
+                                /*terms and conditions response*/
+                                privacyPolicyContent = cmsPagesDataList.get(2).getCmsText();
+                            }
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                 fragmentPolicyItemBinding.tvContent.setText(Html.fromHtml(""+privacyPolicyContent, Html.FROM_HTML_MODE_COMPACT));
