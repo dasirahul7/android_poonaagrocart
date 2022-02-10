@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="productDetailViewModel"
-            type="com.poona.agrocart.ui.product_detail.ProductDetailViewModel" />
+            name="productDetailModule"
+            type="com.poona.agrocart.data.network.reponses.ProductDetailsResponse.ProductDetails" />
     </data>
 
     <ScrollView
@@ -82,7 +82,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="95"
-                    android:text="@{productDetailViewModel.productDetailMutableLiveData.productName}"
+                    android:text="@{productDetailModule.productName}"
                     android:textColor="@color/clr_enter_otp"
                     android:textSize="@dimen/_24sp"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -106,7 +106,7 @@
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:drawableStart="@drawable/ic_location"
                 android:gravity="center_vertical"
-                android:text="@{productDetailViewModel.productDetailMutableLiveData.productLocation}"
+                android:text="@{productDetailModule.location}"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -204,7 +204,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_strikethrough"
-                        android:text="@{productDetailViewModel.productDetailMutableLiveData.price}"
+                        android:text="@{productDetailModule.priceUnit+productDetailModule.productUnits.get(0).sellingPrice}"
                         android:textColor="@color/colorGrey"
                         android:textSize="@dimen/_12sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -213,7 +213,7 @@
                         android:id="@+id/tv_offer_price"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="@{productDetailViewModel.productDetailMutableLiveData.offerPrice}"
+                        android:text="@{productDetailModule.priceUnit+productDetailModule.productUnits.get(0).offerPrice}"
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_24sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -239,7 +239,7 @@
                     android:background="@drawable/bg_offer_yellow"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:text="@{productDetailViewModel.productDetailMutableLiveData.offerValue}"
+                    android:text="@{productDetailModule.productUnits.get(0).specialOffer}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/offer_txt_size"
@@ -312,7 +312,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/orange_fill_color"
                         android:padding="@dimen/_8sdp"
-                        android:text="@{productDetailViewModel.productDetailMutableLiveData.productOfferMsg}"
+                        android:text="@{productDetailModule.offerMsg}"
                         android:textColor="@color/color_order_date_and_time" />
 
                 </com.google.android.material.card.MaterialCardView>
@@ -380,7 +380,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailViewModel.productDetailMutableLiveData.productDetailBrief}"
+                android:text="@{productDetailModule.productDetails}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -440,7 +440,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailViewModel.productDetailMutableLiveData.nutritionDetailBrief}"
+                android:text="@{productDetailModule.aboutProduct}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -499,7 +499,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailViewModel.productDetailMutableLiveData.nutritionDetailBrief}"
+                android:text="@{productDetailModule.benifit}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -558,7 +558,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailViewModel.productDetailMutableLiveData.storageUses}"
+                android:text="@{productDetailModule.storagesUses}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -617,7 +617,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailViewModel.productDetailMutableLiveData.nutritionDetailBrief}"
+                android:text="@{productDetailModule.otherProuctInfo}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -676,7 +676,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailViewModel.productDetailMutableLiveData.nutritionDetailBrief}"
+                android:text="@{productDetailModule.weightPolicy}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -735,7 +735,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailViewModel.productDetailMutableLiveData.nutritionDetailBrief}"
+                android:text="@{productDetailModule.nutrition}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"

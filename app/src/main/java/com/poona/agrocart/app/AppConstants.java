@@ -96,6 +96,11 @@ public class AppConstants {
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
 
+    /*Basket detail API*/
+    public static final String BASKET_DETAIL_API="basket-details";
+    public static final String PRODUCT_DETAIL_API="product-details";
+
+
     /*See all Listing from home keys*/
     public static final String AllBasket = "Basket";
     public static final String AllSelling = "Best selling";
@@ -147,6 +152,11 @@ public class AppConstants {
     public static final String LIST_TITLE = "list_title";
     public static final String LIST_TYPE = "list_type";
 
+    /*Basket API Keys*/
+    public static final String BASKET_ID ="basket_id";
+
+    /*Product API Keys*/
+    public static final String PRODUCT_ID ="product_id";
     /*Category types*/
     public static final String BASKET = "0";
     public static final String PRODUCT = "1";
