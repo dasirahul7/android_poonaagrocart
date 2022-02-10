@@ -137,6 +137,8 @@
                         style="@style/FormEdittextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:inputType="number"
+                        android:maxLength="10"
                         android:background="@drawable/backgound_deit_profile"
                         android:text="@{myProfileViewModel.alternateMobileNo}" />
 
@@ -235,7 +237,7 @@
 
                     <Spinner
                         android:id="@+id/spinner_area"
-                        style="@style/FormEdittextStyle"
+                        style="@style/FormShortEdittextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"
                         android:background="@drawable/bg_my_profile_spinner" />
