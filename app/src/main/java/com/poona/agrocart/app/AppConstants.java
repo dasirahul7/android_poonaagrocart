@@ -31,7 +31,7 @@ public class AppConstants {
     public static final String IS_READ_INTRO = "isIntroRead";
     public static final String FROM_LOG_OUT = "fromLogOut";
     public static final String IS_VERIFIED = "verify";
-//    public static final String IS_REGISTERED = "registered";
+    //    public static final String IS_REGISTERED = "registered";
 //    public static final String IS_LOCATED = "located";
     public static final String IS_SKIP_BANK_DETAILS = "isSkippedBankDetails";
     public static final String IS_REMEMBER = "isRemember";
@@ -88,12 +88,12 @@ public class AppConstants {
     public static final String STORE_LIST = "store-list";
 
     /*Product list API*/
-    public static final String PRODUCT_LIST_BY_API ="product-by-category-list";
+    public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
 
-    /*Basket list API*/
-
-
-
+    /*See all Listing from home keys*/
+    public static final String AllBasket = "Basket";
+    public static final String AllSelling = "Best selling";
+    public static final String AllExclusive = "Exclusive";
 
 
     public static final String TAB_INDEX = "index";

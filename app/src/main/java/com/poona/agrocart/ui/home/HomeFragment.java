@@ -1,5 +1,8 @@
 package com.poona.agrocart.ui.home;
 
+import static com.poona.agrocart.app.AppConstants.AllBasket;
+import static com.poona.agrocart.app.AppConstants.AllExclusive;
+import static com.poona.agrocart.app.AppConstants.AllSelling;
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
@@ -753,14 +756,20 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_explore);
                 break;
             case R.id.tv_all_basket:
-                bundle.putString(LIST_TITLE,"Basket");
-                bundle.putString(FROM_SCREEN,"Basket");
+                bundle.putString(LIST_TITLE,AllBasket);
+                bundle.putString(FROM_SCREEN,AllBasket);
+                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list,bundle);
+                break;
+            case R.id.tv_all_selling:
+                bundle.putString(LIST_TITLE,AllSelling);
+                bundle.putString(FROM_SCREEN,AllSelling);
                 Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list,bundle);
                 break;
             case R.id.tv_all_exclusive:
-                bundle.putString(LIST_TITLE,"Best selling");
-                bundle.putString(FROM_SCREEN,"Best selling");
+                bundle.putString(LIST_TITLE,AllExclusive);
+                bundle.putString(FROM_SCREEN,AllExclusive);
                 Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list,bundle);
+                break;
         }
     }
 
