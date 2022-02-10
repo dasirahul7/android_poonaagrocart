@@ -25,8 +25,7 @@ import com.poona.agrocart.ui.BaseFragment;
 import java.text.ParseException;
 import java.util.Calendar;
 
-public class MyProfileFragment extends BaseFragment implements View.OnClickListener
-{
+public class MyProfileFragment extends BaseFragment implements View.OnClickListener {
     private FragmentMyProfileBinding fragmentMyProfileBinding;
     private MyProfileViewModel myProfileViewModel;
     private Calendar calendar;
@@ -36,8 +35,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private final String[] states={"Maharashtra"};
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentMyProfileBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_my_profile, container, false);
         fragmentMyProfileBinding.setLifecycleOwner(this);
         final View view=fragmentMyProfileBinding.getRoot();
@@ -48,8 +46,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         return view;
     }
 
-    private void setupSpinner()
-    {
+    private void setupSpinner() {
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions,states);
         arrayAdapter.setDropDownViewResource(R.layout.custom_list_item_checked);
         fragmentMyProfileBinding.spinnerState.setAdapter(arrayAdapter);
@@ -73,8 +70,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         });*/
     }
 
-    private void initView(View view)
-    {
+    private void initView(View view) {
         initTitleBar(getString(R.string.menu_my_profile));
         Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_regular));
         fragmentMyProfileBinding.rbMale.setTypeface(font);
@@ -88,8 +84,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         fragmentMyProfileBinding.setMyProfileViewModel(myProfileViewModel);
     }
 
-    public void showCalendar()
-    {
+    public void showCalendar() {
         //showing date picker dialog
         DatePickerDialog dpd;
         calendar = Calendar.getInstance();
@@ -119,8 +114,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         switch (v.getId())
         {
             case R.id.tv_date_of_birth_input:
@@ -143,8 +137,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
     }
 
-    private void openGallery()
-    {
+    private void openGallery() {
         askForGalleryPermissions();
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_GET_CONTENT);//
