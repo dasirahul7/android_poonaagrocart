@@ -40,7 +40,7 @@ import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
 import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
-import com.poona.agrocart.ui.nav_about_us.model.CmsPagesDataResponse;
+import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
@@ -146,18 +146,13 @@ public interface ApiInterface {
     @POST(PRODUCT_LIST_BY_API)
     Single<ProductListByResponse> productsByCategoryResponse(@FieldMap HashMap<String,String> hashMap);
 
+    @FormUrlEncoded
+    @POST(STORE_DETAILS)
+    Single<OurStoreViewDataResponse> getOurStoreDetails(@FieldMap HashMap<String, String> ourStoreDetailsInputParameter);
+
     @GET(FAQ)
     Single<FaqListResponse> getAddFaqs();
 
     @GET(CMS)
-    Single<CmsPagesDataResponse> getAboutUsResponse();
-
-    @GET(CMS)
-    Single<CmsPagesDataResponse> getPrivacyPolicyResponse();
-
-    @GET(CMS)
-    Single<CmsPagesDataResponse> getTermsConditionResponse();
-
-    @GET(CMS)
-    Single<CmsPagesDataResponse> getReturnRefundResponse();
+    Single<CmsResponse> getCmsResponse();
 }

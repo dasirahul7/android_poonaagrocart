@@ -9,13 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
-import com.poona.agrocart.ui.nav_about_us.model.CmsPagesDataResponse;
+import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -37,19 +36,19 @@ public class AboutUsViewModel extends AndroidViewModel {
 
     }
 
-    public LiveData<CmsPagesDataResponse> getAboutUsResponse(ProgressDialog progressDialog, Context context
+    public LiveData<CmsResponse> getAboutUsResponse(ProgressDialog progressDialog, Context context
             , AboutUsFragment aboutUsFragment) {
 
-            MutableLiveData<CmsPagesDataResponse> aboutUsResponseMutableLiveData = new MutableLiveData<>();
+            MutableLiveData<CmsResponse> aboutUsResponseMutableLiveData = new MutableLiveData<>();
 
             ApiClientAuth.getClient(context)
                     .create(ApiInterface.class)
-                    .getAboutUsResponse()
+                    .getCmsResponse()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSingleObserver<CmsPagesDataResponse>() {
+                    .subscribeWith(new DisposableSingleObserver<CmsResponse>() {
                         @Override
-                        public void onSuccess(@NonNull CmsPagesDataResponse baseResponse) {
+                        public void onSuccess(@NonNull CmsResponse baseResponse) {
                             if (progressDialog != null){
                                 progressDialog.dismiss();
                             }
@@ -67,9 +66,9 @@ public class AboutUsViewModel extends AndroidViewModel {
                             }
 
                             Gson gson = new GsonBuilder().create();
-                            CmsPagesDataResponse baseResponse = new CmsPagesDataResponse();
+                            CmsResponse baseResponse = new CmsResponse();
                             try {
-                                baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CmsPagesDataResponse.class);
+                                baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CmsResponse.class);
 
                                 aboutUsResponseMutableLiveData.setValue(baseResponse);
                             } catch (Exception exception) {
