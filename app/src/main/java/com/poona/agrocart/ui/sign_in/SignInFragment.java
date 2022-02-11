@@ -47,9 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class SignInFragment extends BaseFragment implements View.OnClickListener,
-        NetworkExceptionListener {
-
+public class SignInFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     private static final String TAG = SignInFragment.class.getSimpleName();
     private SignInViewModel signInViewModel;
     private FragmentSignInBinding fragmentSignInBinding;
@@ -141,10 +139,10 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                 signInAndRedirectToVerifyOtp(v);
                 break;
             case R.id.tv_terms_of_service:
-                redirectToCmsFragment(0);
+                redirectToCmsFragment(1); //Terms & Condition
                 break;
             case R.id.tv_privacy_policy:
-                redirectToCmsFragment(1);
+                redirectToCmsFragment(2); //Privacy Policy
                 break;
         }
     }
@@ -152,16 +150,8 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     private void redirectToCmsFragment(int from) {
         Bundle bundle = new Bundle();
         bundle.putString(FROM_SCREEN, TAG);
-        if(from == 0) {
-            bundle.putString(CMS_NAME, getString(R.string.menu_terms_conditions));
-            bundle.putInt(CMS_TYPE, from); //terms_of_service
-            Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_signInPrivacyFragment,bundle);
-        }
-        else {
-            bundle.putString(CMS_NAME, getString(R.string.privacy_policy));
-            bundle.putInt(CMS_TYPE, from); //privacy_policy
-            Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_signInPrivacyFragment,bundle);
-        }
+        bundle.putInt(CMS_TYPE, from);
+        Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_cmsFragment, bundle);
     }
 
     private void signInAndRedirectToVerifyOtp(View v) {

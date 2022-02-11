@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.nav_about_us;
+package com.poona.agrocart.ui.nav_cms;
 
 import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
@@ -39,7 +39,6 @@ public class CmsFragment extends BaseFragment {
     private List<CmsResponse.Cms> cmsList = new ArrayList<>();
 
     private String cmsContent = "";
-    private String cmsTitle = "";
     private WebView wvCms;
 
     private View view;
@@ -66,6 +65,7 @@ public class CmsFragment extends BaseFragment {
             cmsType = bundle.getInt(CMS_TYPE);
         }
 
+        /*visible back button action bar if navigating from  sign in screen*/
         if(fromScreen.equals(fromScreenSignIn)) {
             fragmentCmsBinding.actionBar.setVisibility(View.VISIBLE);
         } else if(fromScreen.equals(fromScreenHome)) {
@@ -112,8 +112,14 @@ public class CmsFragment extends BaseFragment {
                             }
 
                             if(cmsContent != null && !TextUtils.isEmpty(cmsContent)) {
+                                fragmentCmsBinding.nsvMain.setVisibility(View.VISIBLE);
+                                fragmentCmsBinding.rlMessage.setVisibility(View.GONE);
+
                                 wvCms.loadData(cmsContent, "text/html", "UTF-8");
                             } else {
+                                fragmentCmsBinding.nsvMain.setVisibility(View.GONE);
+                                fragmentCmsBinding.rlMessage.setVisibility(View.VISIBLE);
+
                                 if(cmsType == 0) {
                                     fragmentCmsBinding.tvMessage.setText(R.string.error_message_about_us);
                                 } else if(cmsType == 1) {

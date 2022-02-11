@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.nav_about_us;
+package com.poona.agrocart.ui.nav_cms;
 
 import android.app.Application;
 import android.app.ProgressDialog;

@@ -70,14 +70,14 @@ public class OurPolicyFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void moveToPrivacyPolicy(View policyViews) {
-        Navigation.findNavController(policyViews).navigate(R.id.action_nav_privacy_to_privacyPolicyFragment,bundle);
+        Navigation.findNavController(policyViews).navigate(R.id.action_nav_privacy_to_nav_cms,bundle);
     }
     private void moveToTermsConditions(View policyViews) {
-        Navigation.findNavController(policyViews).navigate(R.id.action_nav_privacy_to_termsConditionFragment,bundle);
+        Navigation.findNavController(policyViews).navigate(R.id.action_nav_privacy_to_nav_cms,bundle);
     }
 
     private void moveToReturnRefund(View policyViews) {
-        Navigation.findNavController(policyViews).navigate(R.id.action_nav_privacy_to_returnRefundFragment,bundle);
+        Navigation.findNavController(policyViews).navigate(R.id.action_nav_privacy_to_nav_cms,bundle);
     }
 
 }

@@ -4,7 +4,7 @@
     <data>
         <variable
             name="cmsViewModel"
-            type="com.poona.agrocart.ui.nav_about_us.CmsViewModel" />
+            type="com.poona.agrocart.ui.nav_cms.CmsViewModel" />
 
     </data>
 
@@ -14,81 +14,75 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".ui.nav_about_us.CmsFragment">
+        tools:context=".ui.nav_cms.CmsFragment">
 
-        <androidx.core.widget.NestedScrollView
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@null"
+            android:foregroundTint="@color/black"
+            android:theme="@style/Theme.PoonaAgroCart.AppBarOverlay"
+            app:elevation="0dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
+                android:elevation="0dp"
+                android:contentInsetEnd="0dp"
+                android:contentInsetRight="0dp"
+                android:contentInsetStart="0dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:popupTheme="@style/Theme.PoonaAgroCart.PopupOverlay">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:layout_centerInParent="true"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14sdp"
+                        android:visibility="visible"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+                </RelativeLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
             android:id="@+id/nsv_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:scrollbars="none"
+            android:layout_below="@id/action_bar">
 
-            <LinearLayout
+            <WebView
+                android:id="@+id/wv_cms"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content" />
 
-                <com.google.android.material.appbar.AppBarLayout
-                    android:id="@+id/action_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@null"
-                    android:foregroundTint="@color/black"
-                    android:theme="@style/Theme.PoonaAgroCart.AppBarOverlay"
-                    app:elevation="0dp">
-
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        android:background="@color/white"
-                        android:elevation="0dp"
-                        android:contentInsetEnd="0dp"
-                        android:contentInsetRight="0dp"
-                        android:contentInsetStart="0dp"
-                        app:contentInsetEnd="0dp"
-                        app:contentInsetLeft="0dp"
-                        app:contentInsetRight="0dp"
-                        app:contentInsetStart="0dp"
-                        app:popupTheme="@style/Theme.PoonaAgroCart.PopupOverlay">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <com.poona.agrocart.widgets.CustomTextView
-                                android:id="@+id/tv_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_centerHorizontal="true"
-                                android:gravity="center"
-                                android:layout_centerInParent="true"
-                                android:singleLine="true"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_14sdp"
-                                android:visibility="visible"
-                                app:setCustomFont="@string/font_poppins_regular" />
-
-                        </RelativeLayout>
-
-                    </androidx.appcompat.widget.Toolbar>
-
-                </com.google.android.material.appbar.AppBarLayout>
-
-                <WebView
-                    android:id="@+id/wv_cms"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
-
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
         <RelativeLayout
             android:id="@+id/rl_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_message"
@@ -97,7 +91,6 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:layout_centerInParent="true"
-                android:singleLine="true"
                 android:text="@string/error_message_terms_and_conditions"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_18sp"

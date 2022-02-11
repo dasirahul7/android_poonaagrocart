@@ -99,11 +99,11 @@ public class HomeActivity extends BaseActivity {
                 R.id.nav_faq,
                 R.id.nav_help_center,
                 R.id.nav_privacy,
-                R.id.nav_terms,
+                R.id.nav_cms,
                 R.id.nav_setting,
                 R.id.nav_store,
                 R.id.nav_signout,
-                //Bottom New Menus
+                //Bottom Menus
                 R.id.nav_explore,
                 R.id.nav_cart,
                 R.id.nav_favourite
