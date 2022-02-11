@@ -3,85 +3,109 @@
 
     <data>
         <variable
-            name="aboutUsViewModel"
+            name="cmsViewModel"
             type="com.poona.agrocart.ui.nav_about_us.CmsViewModel" />
 
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:orientation="vertical"
         tools:context=".ui.nav_about_us.CmsFragment">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginHorizontal="@dimen/horizontal_margin"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
-                android:elevation="@dimen/_20sdp"
-                app:cardCornerRadius="@dimen/_10sdp"
-                app:cardUseCompatPadding="true"
-                app:strokeColor="@color/colorLightGrey"
-                app:strokeWidth="1dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:padding="@dimen/_10sdp"
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/action_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@null"
+                    android:foregroundTint="@color/black"
+                    android:theme="@style/Theme.PoonaAgroCart.AppBarOverlay"
+                    app:elevation="0dp">
 
-                    <ImageView
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_poona_agro_cart_logo" />
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@color/white"
+                        android:elevation="0dp"
+                        android:contentInsetEnd="0dp"
+                        android:contentInsetRight="0dp"
+                        android:contentInsetStart="0dp"
+                        app:contentInsetEnd="0dp"
+                        app:contentInsetLeft="0dp"
+                        app:contentInsetRight="0dp"
+                        app:contentInsetStart="0dp"
+                        app:popupTheme="@style/Theme.PoonaAgroCart.PopupOverlay">
 
-                </LinearLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:layout_centerInParent="true"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_14sdp"
+                                android:visibility="visible"
+                                app:setCustomFont="@string/font_poppins_regular" />
 
-            </com.google.android.material.card.MaterialCardView>
+                        </RelativeLayout>
+
+                    </androidx.appcompat.widget.Toolbar>
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <WebView
+                    android:id="@+id/wv_cms"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:id="@+id/rl_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="visible">
 
             <com.poona.agrocart.widgets.CustomTextView
-                android:layout_marginHorizontal="@dimen/_5sdp"
-                android:layout_width="match_parent"
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/menu_about_us"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:singleLine="true"
+                android:text="@string/error_message_terms_and_conditions"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_16sp"
-                android:textStyle="bold"
-                app:setCustomFont="@string/font_poppins_semi_bold" />
+                android:textSize="@dimen/_18sp"
+                android:layout_marginHorizontal="@dimen/_22sdp"
+                app:setCustomFont="@string/font_poppins_regular" />
 
-            <View
-                android:layout_marginHorizontal="@dimen/_5sdp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="3dp"
-                android:background="@color/colorLightGrey" />
+        </RelativeLayout>
 
-            <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/tv_about_us"
-                android:paddingStart="@dimen/_5sdp"
-                android:paddingEnd="0dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:lineSpacingExtra="@dimen/_2sdp"
-                android:justificationMode="inter_word"
-                android:textColor="@color/about_txt_color"
-                android:textSize="@dimen/medium_txt_size"
-                android:textStyle="normal"
-                app:setCustomFont="@string/font_poppins_medium" />
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
 
 </layout>

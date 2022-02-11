@@ -1,20 +1,21 @@
 package com.poona.agrocart.ui.nav_about_us;
 
+import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,8 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentCmsBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.data.network.reponses.CmsResponse;
+import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.sign_in.SignInFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,25 +37,42 @@ public class CmsFragment extends BaseFragment {
     private CmsViewModel cmsViewModel;
     private FragmentCmsBinding fragmentCmsBinding;
     private List<CmsResponse.Cms> cmsList = new ArrayList<>();
+
     private String cmsContent = "";
+    private String cmsTitle = "";
+    private WebView wvCms;
+
     private View view;
 
-    public static CmsFragment newInstance() {
-        return new CmsFragment();
-    }
+    private String fromScreen = "";
+    private final String fromScreenSignIn = SignInFragment.class.getSimpleName();
+    private final String fromScreenHome = HomeActivity.class.getSimpleName();
+    private int cmsType = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        fragmentCmsBinding = fragmentCmsBinding.inflate(getLayoutInflater());
+        fragmentCmsBinding = FragmentCmsBinding.inflate(getLayoutInflater());
         fragmentCmsBinding.setLifecycleOwner(this);
 
         cmsViewModel = new ViewModelProvider(this).get(CmsViewModel.class);
-        fragmentCmsBinding.setAboutUsViewModel(cmsViewModel);
+        fragmentCmsBinding.setCmsViewModel(cmsViewModel);
 
         view = fragmentCmsBinding.getRoot();
 
-        initTitleBar(getString(R.string.menu_about_us));
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            fromScreen = bundle.getString(FROM_SCREEN);
+            cmsType = bundle.getInt(CMS_TYPE);
+        }
+
+        if(fromScreen.equals(fromScreenSignIn)) {
+            fragmentCmsBinding.actionBar.setVisibility(View.VISIBLE);
+        } else if(fromScreen.equals(fromScreenHome)) {
+            fragmentCmsBinding.actionBar.setVisibility(View.GONE);
+        }
+
+        wvCms = fragmentCmsBinding.wvCms;
 
         if (isConnectingToInternet(context)) {
             callCmsApi(showCircleProgressDialog(context, ""));
@@ -66,25 +86,43 @@ public class CmsFragment extends BaseFragment {
 
     /* About us api*/
     private void callCmsApi(ProgressDialog progressDialog) {
-        @SuppressLint("NotifyDataSetChanged")
         Observer<CmsResponse> aboutUsResponseObserver = cmsResponse -> {
             if (cmsResponse != null) {
                 Log.e("Cms Api Response", new Gson().toJson(cmsResponse));
-                if (progressDialog !=null) {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (cmsResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        if(cmsResponse.getData() != null &&
-                        cmsResponse.getData().size() > 0) {
+                        if(cmsResponse.getData() != null && cmsResponse.getData().size() > 0) {
                             cmsList = cmsResponse.getData();
-                            cmsContent = cmsList.get(0).getCmsText();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                fragmentCmsBinding.tvAboutUs.setText(Html.fromHtml(""+ cmsContent, Html.FROM_HTML_MODE_COMPACT));
-                                //fragmentAboutUsBinding.tvDescription.setText(Html.fromHtml(""+strAboutDescription, Html.FROM_HTML_MODE_COMPACT));
+
+                            if(cmsType == 0) {
+                                cmsContent = cmsList.get(0).getCmsText(); //About Us
+                                fragmentCmsBinding.tvTitle.setText(cmsList.get(0).getPageTitle());
+                            } else if(cmsType == 1) {
+                                cmsContent = cmsList.get(1).getCmsText(); //Terms & Condition
+                                fragmentCmsBinding.tvTitle.setText(cmsList.get(1).getPageTitle());
+                            } else if(cmsType == 2) {
+                                cmsContent = cmsList.get(2).getCmsText(); //Privacy Policy
+                                fragmentCmsBinding.tvTitle.setText(cmsList.get(2).getPageTitle());
+                            } else if(cmsType == 3) {
+                                cmsContent = cmsList.get(3).getCmsText(); //Return and Refund Policy
+                                fragmentCmsBinding.tvTitle.setText(cmsList.get(3).getPageTitle());
+                            }
+
+                            if(cmsContent != null && !TextUtils.isEmpty(cmsContent)) {
+                                wvCms.loadData(cmsContent, "text/html", "UTF-8");
                             } else {
-                                fragmentCmsBinding.tvAboutUs.setText(Html.fromHtml(""+ cmsContent));
-                                //fragmentAboutUsBinding.tvDescription.setText(Html.fromHtml(""+strAboutDescription));
+                                if(cmsType == 0) {
+                                    fragmentCmsBinding.tvMessage.setText(R.string.error_message_about_us);
+                                } else if(cmsType == 1) {
+                                    fragmentCmsBinding.tvMessage.setText(R.string.error_message_terms_and_conditions);
+                                } else if(cmsType == 2) {
+                                    fragmentCmsBinding.tvMessage.setText(R.string.error_message_privacy_policy);
+                                } else if(cmsType == 3) {
+                                    fragmentCmsBinding.tvMessage.setText(R.string.error_message_refund_policy);
+                                }
                             }
                         }
                         break;
