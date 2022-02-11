@@ -1,5 +1,7 @@
 package com.poona.agrocart.ui.home;
 
+import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 
 import android.app.ProgressDialog;
@@ -43,6 +45,7 @@ import java.util.Objects;
 
 public class HomeActivity extends BaseActivity {
 
+    private static final String TAG = HomeActivity.class.getSimpleName();
     private AppBarConfiguration mAppBarConfiguration;
     public ActivityHomeBinding binding;
     private DrawerLayout drawer;
@@ -95,11 +98,9 @@ public class HomeActivity extends BaseActivity {
                 R.id.nav_wallet,
                 R.id.nav_offer,
                 R.id.nav_notification,
-                R.id.nav_cms,
                 R.id.nav_faq,
                 R.id.nav_help_center,
                 R.id.nav_privacy,
-                R.id.nav_cms,
                 R.id.nav_setting,
                 R.id.nav_store,
                 R.id.nav_signout,
@@ -107,36 +108,37 @@ public class HomeActivity extends BaseActivity {
                 R.id.nav_explore,
                 R.id.nav_cart,
                 R.id.nav_favourite
-        )
-                .setOpenableLayout(drawer)
-                .build();
+        ).setOpenableLayout(drawer).build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-        Menu m = navigationView.getMenu();
-        MenuItem signOut = m.findItem(R.id.nav_signout);
-        binding.appBarHome.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!HomeActivity.this.binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    HomeActivity.this.binding.drawerLayout.openDrawer(GravityCompat.START);
-                } else {
-                    HomeActivity.this.binding.drawerLayout.closeDrawer(binding.drawerLayout);
-                }
+
+        binding.appBarHome.toolbar.setNavigationOnClickListener(v -> {
+            if (!HomeActivity.this.binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                HomeActivity.this.binding.drawerLayout.openDrawer(GravityCompat.START);
+            } else {
+                HomeActivity.this.binding.drawerLayout.closeDrawer(binding.drawerLayout);
             }
         });
-        signOut.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                try {
-                    signOutApiCall(showCircleProgressDialog(HomeActivity.this,""));
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return true;
+        Menu m = navigationView.getMenu();
+        MenuItem menuItemAboutUs = m.findItem(R.id.nav_cms);
+        MenuItem signOut = m.findItem(R.id.nav_signout);
+
+        menuItemAboutUs.setOnMenuItemClickListener(menuItem -> {
+            redirectToCmsFragment(0);
+            return false;
+        });
+
+        signOut.setOnMenuItemClickListener(item -> {
+            try {
+                signOutApiCall(showCircleProgressDialog(HomeActivity.this,""));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return true;
         });
 
         View headerView = navigationView.getHeaderView(0);
@@ -226,5 +228,12 @@ public class HomeActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void redirectToCmsFragment(int from) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FROM_SCREEN, TAG);
+        bundle.putInt(CMS_TYPE, from);
+        navController.navigate(R.id.action_nav_cms, bundle);
     }
 }

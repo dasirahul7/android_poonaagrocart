@@ -71,6 +71,7 @@
         <entry key="app/src/main/res/drawable/green_rectangle.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_about_us.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/ic_address.xml" value="0.1638888888888889" />
+        <entry key="app/src/main/res/drawable/ic_back.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.19814814814814816" />
         <entry key="app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.2" />

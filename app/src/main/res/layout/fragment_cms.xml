@@ -44,6 +44,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <ImageView
+                        android:id="@+id/iv_back"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:src="@drawable/ic_back"
+                        android:padding="@dimen/_14sdp"/>
+
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
@@ -63,19 +70,12 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <ScrollView
-            android:id="@+id/nsv_main"
+        <WebView
+            android:id="@+id/wv_cms"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none"
-            android:layout_below="@id/action_bar">
-
-            <WebView
-                android:id="@+id/wv_cms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </ScrollView>
+            android:layout_below="@id/action_bar"/>
 
         <RelativeLayout
             android:id="@+id/rl_message"

@@ -9,18 +9,23 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
@@ -68,8 +73,27 @@ public class CmsFragment extends BaseFragment {
         /*visible back button action bar if navigating from  sign in screen*/
         if(fromScreen.equals(fromScreenSignIn)) {
             fragmentCmsBinding.actionBar.setVisibility(View.VISIBLE);
+            /*set title to toolbar*/
+            if(cmsType == 0) {
+                fragmentCmsBinding.tvTitle.setText(R.string.about_us);
+            } else if(cmsType == 1) {
+                fragmentCmsBinding.tvTitle.setText(R.string.terms_and_conditions);
+            } else if(cmsType == 2) {
+                fragmentCmsBinding.tvTitle.setText(R.string.privacy_policy);
+            } else if(cmsType == 3) {
+                fragmentCmsBinding.tvTitle.setText(R.string.return_and_refund_policy);
+            }
         } else if(fromScreen.equals(fromScreenHome)) {
             fragmentCmsBinding.actionBar.setVisibility(View.GONE);
+            if(cmsType == 0) {
+                initTitleBar(getString(R.string.about_us));
+            } else if(cmsType == 1) {
+                initTitleBar(getString(R.string.terms_and_conditions));
+            } else if(cmsType == 2) {
+                initTitleBar(getString(R.string.privacy_policy));
+            } else if(cmsType == 3) {
+                initTitleBar(getString(R.string.return_and_refund_policy));
+            }
         }
 
         wvCms = fragmentCmsBinding.wvCms;
@@ -79,6 +103,8 @@ public class CmsFragment extends BaseFragment {
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
+
+        fragmentCmsBinding.ivBack.setOnClickListener(view -> NavHostFragment.findNavController(this).popBackStack());
 
         return view;
     }
@@ -96,28 +122,28 @@ public class CmsFragment extends BaseFragment {
                     case STATUS_CODE_200://success
                         if(cmsResponse.getData() != null && cmsResponse.getData().size() > 0) {
                             cmsList = cmsResponse.getData();
-
                             if(cmsType == 0) {
                                 cmsContent = cmsList.get(0).getCmsText(); //About Us
-                                fragmentCmsBinding.tvTitle.setText(cmsList.get(0).getPageTitle());
                             } else if(cmsType == 1) {
                                 cmsContent = cmsList.get(1).getCmsText(); //Terms & Condition
-                                fragmentCmsBinding.tvTitle.setText(cmsList.get(1).getPageTitle());
                             } else if(cmsType == 2) {
                                 cmsContent = cmsList.get(2).getCmsText(); //Privacy Policy
-                                fragmentCmsBinding.tvTitle.setText(cmsList.get(2).getPageTitle());
                             } else if(cmsType == 3) {
                                 cmsContent = cmsList.get(3).getCmsText(); //Return and Refund Policy
-                                fragmentCmsBinding.tvTitle.setText(cmsList.get(3).getPageTitle());
                             }
 
                             if(cmsContent != null && !TextUtils.isEmpty(cmsContent)) {
-                                fragmentCmsBinding.nsvMain.setVisibility(View.VISIBLE);
+                                fragmentCmsBinding.wvCms.setVisibility(View.VISIBLE);
                                 fragmentCmsBinding.rlMessage.setVisibility(View.GONE);
-
+                                wvCms.getSettings().setJavaScriptEnabled(true);
+                                //wvCms.setBackgroundColor(Color.parseColor("#233D69"));
+                                wvCms.getSettings().setDomStorageEnabled(true);
+                                wvCms.getSettings().setUseWideViewPort(true);
+                                wvCms.setWebChromeClient(new WebChromeClient());
+                                wvCms.setWebViewClient(new WebViewClient());
                                 wvCms.loadData(cmsContent, "text/html", "UTF-8");
                             } else {
-                                fragmentCmsBinding.nsvMain.setVisibility(View.GONE);
+                                fragmentCmsBinding.wvCms.setVisibility(View.GONE);
                                 fragmentCmsBinding.rlMessage.setVisibility(View.VISIBLE);
 
                                 if(cmsType == 0) {
