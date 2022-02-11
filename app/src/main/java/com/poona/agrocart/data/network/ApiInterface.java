@@ -23,6 +23,7 @@ import static com.poona.agrocart.app.AppConstants.STORE_LIST;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
+import static com.poona.agrocart.app.AppConstants.VIEW_GALLERY;
 
 import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
@@ -40,6 +41,7 @@ import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
 import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
+import com.poona.agrocart.data.network.reponses.GalleryResponse;
 import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
@@ -155,4 +157,7 @@ public interface ApiInterface {
 
     @GET(CMS)
     Single<CmsResponse> getCmsResponse();
+
+    @GET(VIEW_GALLERY)
+    Single<GalleryResponse> getGalleryReponse();
 }

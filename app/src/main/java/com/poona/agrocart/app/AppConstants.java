@@ -93,6 +93,9 @@ public class AppConstants {
     public static final String FAQ = "faq";
     public static final String CMS = "cms";
 
+    /*Gallery Api*/
+    public static final String VIEW_GALLERY = "view-gallery";
+
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
 

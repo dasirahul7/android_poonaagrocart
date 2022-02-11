@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="moduleVideo"
-            type="com.poona.agrocart.ui.nav_gallery.model.Videos" />
+            name="galleryVideo"
+            type="com.poona.agrocart.data.network.reponses.gallery.GalleryVideo" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingLeft="@dimen/_5sdp"
@@ -27,13 +27,12 @@
 
             <ImageView
                 android:id="@+id/itemImg"
-                setImage="@{moduleVideo.video}"
+                setImage="@{galleryVideo.videoImage}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY" />
 
             <com.poona.agrocart.widgets.CustomButton
-                android:clickable="true"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:background="@drawable/ic_gallery_play"
                 android:layout_width="@dimen/_30sdp"

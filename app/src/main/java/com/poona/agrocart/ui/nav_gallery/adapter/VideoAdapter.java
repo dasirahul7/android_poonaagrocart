@@ -8,19 +8,29 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
+import com.poona.agrocart.data.network.reponses.gallery.GalleryVideo;
 import com.poona.agrocart.databinding.RowVideoItemBinding;
+import com.poona.agrocart.ui.nav_gallery.fragment.VideoGalleryFragment;
 import com.poona.agrocart.ui.nav_gallery.model.Videos;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder> {
     private Context pContext;
-    private ArrayList<Videos> videosList;
+    private List<GalleryVideo> galleryVideoList = new ArrayList<>();
     private RowVideoItemBinding videoItemBinding;
+    private OnVideoClickListener onVideoClickListener;
+    private VideoGalleryFragment videoGalleryFragment;
 
-    public VideoAdapter(Context pContext, ArrayList<Videos> videosList) {
+    public VideoAdapter(Context pContext, List<GalleryVideo> videosList, VideoGalleryFragment videoGalleryFragment) {
         this.pContext = pContext;
-        this.videosList = videosList;
+        this.galleryVideoList = videosList;
+        this.onVideoClickListener = videoGalleryFragment;
+    }
+
+    public interface OnVideoClickListener{
+        void itemViewClick(int position);
     }
 
     @NonNull
@@ -32,14 +42,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
 
     @Override
     public void onBindViewHolder(@NonNull VideoHolder holder, int position) {
-        Videos videos = videosList.get(position);
-        videoItemBinding.setModuleVideo(videos);
+        GalleryVideo videos = galleryVideoList.get(position);
+        videoItemBinding.setGalleryVideo(videos);
         holder.bind(videos);
     }
 
     @Override
     public int getItemCount() {
-        return videosList.size();
+        return galleryVideoList.size();
     }
 
     public class VideoHolder extends RecyclerView.ViewHolder {
@@ -47,10 +57,21 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
         public VideoHolder(RowVideoItemBinding binding) {
             super(binding.getRoot());
             videoHolderBinding = binding;
+
+
+            itemView.setOnClickListener(v ->{
+                if (onVideoClickListener != null) {
+                    int postion = getAdapterPosition();
+                    if (postion != RecyclerView.NO_POSITION) {
+                        onVideoClickListener.itemViewClick(postion);
+                    }
+                }
+            });
+
         }
 
-        public void bind(Videos videos) {
-            videoHolderBinding.setVariable(BR.modulePhoto, videos);
+        public void bind(GalleryVideo videos) {
+            videoHolderBinding.setVariable(BR.galleryVideo, videos);
             videoHolderBinding.executePendingBindings();
         }
     }

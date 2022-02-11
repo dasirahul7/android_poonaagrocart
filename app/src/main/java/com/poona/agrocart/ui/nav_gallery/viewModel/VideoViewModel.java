@@ -1,42 +1,84 @@
 package com.poona.agrocart.ui.nav_gallery.viewModel;
 
 import android.app.Application;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.collection.ArraySet;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.poona.agrocart.R;
-import com.poona.agrocart.ui.nav_gallery.model.Photos;
-import com.poona.agrocart.ui.nav_gallery.model.Videos;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.poona.agrocart.data.network.ApiClientAuth;
+import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.reponses.GalleryResponse;
+import com.poona.agrocart.ui.nav_gallery.fragment.VideoGalleryFragment;
 
-import java.util.ArrayList;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.observers.DisposableSingleObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.HttpException;
 
 public class VideoViewModel extends AndroidViewModel {
-    public MutableLiveData<ArrayList<Videos>> videoLiveData = new MutableLiveData<>();
-    private ArrayList<Videos> videosList;
+    private static final String TAG = VideoViewModel.class.getSimpleName();
+
 
     public VideoViewModel(@NonNull Application application) {
         super(application);
-        setVideoList();
-        videoLiveData.setValue(videosList);
+
     }
 
-    private void setVideoList() {
-        videosList = new ArrayList<Videos>();
-        Videos video = new Videos(getApplication().getString(R.string.sample_photo));
-        videosList.add(video);
-        videosList.add(video);
-        videosList.add(video);
-        videosList.add(video);
-        videosList.add(video);
-        videosList.add(video);
-        videosList.add(video);
-        videosList.add(video);
-        videosList.add(video);
-        videosList.add(video);
-        videosList.add(video);
-        videosList.add(video);
+
+    public LiveData<GalleryResponse> getGalleryVideoResponse(ProgressDialog progressDialog, Context context, VideoGalleryFragment videoGalleryFragment) {
+
+        MutableLiveData<GalleryResponse> galleryResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(context)
+                .create(ApiInterface.class)
+                .getGalleryReponse()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<GalleryResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull GalleryResponse baseResponse) {
+                        if (progressDialog != null){
+                            progressDialog.dismiss();
+                        }
+                        if (baseResponse != null){
+                            galleryResponseMutableLiveData.setValue(baseResponse);
+                        }else {
+                            galleryResponseMutableLiveData.setValue(null);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (progressDialog != null){
+                            progressDialog.dismiss();
+                        }
+
+                        Gson gson = new GsonBuilder().create();
+                        GalleryResponse baseResponse = new GalleryResponse();
+                        try {
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), GalleryResponse.class);
+
+                            if (baseResponse != null){
+                                galleryResponseMutableLiveData.setValue(baseResponse);
+                            }else {
+                                galleryResponseMutableLiveData.setValue(null);
+                            }
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) videoGalleryFragment)
+                                    .onNetworkException(0);
+                        }
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return galleryResponseMutableLiveData;
     }
 }

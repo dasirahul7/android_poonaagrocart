@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="modulePhoto"
-            type="com.poona.agrocart.ui.nav_gallery.model.Photos" />
+            name="galleryImage"
+            type="com.poona.agrocart.data.network.reponses.gallery.GalleryImage" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +30,7 @@
 
             <ImageView
                 android:id="@+id/itemImg"
-                setImage="@{modulePhoto.photo}"
+                setImage="@{galleryImage.galleryImage}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY" />
