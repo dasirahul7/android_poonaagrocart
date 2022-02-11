@@ -13,7 +13,8 @@
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_60sdp"
         android:contentDescription="@string/nav_header_desc"
-        android:src="@drawable/img_profile_picture" />
+        android:src="@drawable/ic_profile"
+        app:tint="@color/white"/>
 
 
     <RelativeLayout

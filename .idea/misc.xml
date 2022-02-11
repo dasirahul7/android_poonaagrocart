@@ -76,6 +76,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_basket.xml" value="0.1638888888888889" />
+        <entry key="app/src/main/res/drawable/ic_black_circle.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_calender.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/ic_check_mark.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_coupons_offers.xml" value="0.19907407407407407" />
@@ -193,7 +194,7 @@
         <entry key="app/src/main/res/layout/fragment_my_basket.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_my_cart.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/fragment_my_orders.xml" value="0.14855072463768115" />
-        <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.14" />
+        <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.5087719298245614" />
         <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_order_summary.xml" value="0.15534420289855072" />
         <entry key="app/src/main/res/layout/fragment_order_track.xml" value="0.15534420289855072" />

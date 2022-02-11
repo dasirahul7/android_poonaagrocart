@@ -15,9 +15,11 @@ import static com.poona.agrocart.app.AppConstants.HOME_SEASONAL_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_STORE_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
+import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
+import static com.poona.agrocart.app.AppConstants.STATE_API;
 import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
@@ -36,8 +38,10 @@ import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
 import com.poona.agrocart.data.network.reponses.ProductListByResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
+import com.poona.agrocart.data.network.reponses.ProfileResponse;
 import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
+import com.poona.agrocart.data.network.reponses.StateResponse;
 import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
 import com.poona.agrocart.data.network.reponses.CmsResponse;
@@ -47,6 +51,7 @@ import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResp
 
 import java.util.HashMap;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -77,11 +82,24 @@ public interface ApiInterface {
     @GET(INTRO_SCREEN_API)
     Single<IntroScreenResponse> getIntroScreenResponse();
 
-    @GET(AREA_API)
-    Single<AreaResponse> getAreaResponse();
+    @FormUrlEncoded
+    @POST(MY_PROFILE_API)
+    Observable<ProfileResponse> getProfileObservableResponse(@FieldMap HashMap<String, String> data);
+
+    @GET(STATE_API)
+    Observable<StateResponse> getStateObservableResponse();
 
     @GET(CITY_API)
     Single<CityResponse> getCityResponse();
+
+    @GET(CITY_API)
+    Observable<CityResponse> getCityObservableResponse();
+
+    @GET(AREA_API)
+    Single<AreaResponse> getAreaResponse();
+
+    @GET(AREA_API)
+    Observable<AreaResponse> getAreaObservableResponse();
 
     @FormUrlEncoded
     @POST(UPDATE_LOCATION_API)

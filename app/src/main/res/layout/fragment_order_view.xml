@@ -636,7 +636,7 @@
                             <com.poona.agrocart.widgets.imageview.CircularImageView
                                 android:layout_width="@dimen/_40sdp"
                                 android:layout_height="@dimen/_40sdp"
-                                android:src="@drawable/img_profile_picture"/>
+                                android:src="@drawable/ic_profile"/>
 
                             <LinearLayout
                                 android:layout_marginStart="@dimen/_10sdp"
