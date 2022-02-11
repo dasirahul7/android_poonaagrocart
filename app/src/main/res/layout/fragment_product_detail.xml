@@ -204,7 +204,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_strikethrough"
-                        android:text="@{productDetailModule.priceUnit+productDetailModule.productUnits.get(0).sellingPrice}"
+                        android:text="@{`Rs.`+productDetailModule.unit.sellingPrice}"
                         android:textColor="@color/colorGrey"
                         android:textSize="@dimen/_12sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -213,20 +213,10 @@
                         android:id="@+id/tv_offer_price"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="@{productDetailModule.priceUnit+productDetailModule.productUnits.get(0).offerPrice}"
-                        android:textColor="@color/clr_enter_otp"
+                        android:text="@{`Rs. `+productDetailModule.unit.offerPrice}"                        android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_24sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_one_time_rate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="One time rate"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_16sp"
-                        android:visibility="gone"
-                        app:setCustomFont="@string/font_poppins_regular" />
 
                 </LinearLayout>
 
@@ -239,7 +229,7 @@
                     android:background="@drawable/bg_offer_yellow"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:text="@{productDetailModule.productUnits.get(0).specialOffer}"
+                    android:text="@{productDetailModule.specialOffer}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/offer_txt_size"
@@ -312,22 +302,11 @@
                         android:layout_height="match_parent"
                         android:background="@color/orange_fill_color"
                         android:padding="@dimen/_8sdp"
-                        android:text="@{productDetailModule.offerMsg}"
+                        android:text="@{`Buy `+productDetailModule.unit.weight+productDetailModule.unit.unitName+`for Rs.`+productDetailModule.unit.offerPrice}"
                         android:textColor="@color/color_order_date_and_time" />
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
-                    android:id="@+id/in_subscription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <include
-                        android:id="@+id/layout_added"
-                        layout="@layout/view_subscription" />
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -380,7 +359,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailModule.productDetails}"
+                android:text="@string/sample_about_seasonal"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -440,6 +419,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:includeFontPadding="false"
                 android:text="@{productDetailModule.aboutProduct}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"

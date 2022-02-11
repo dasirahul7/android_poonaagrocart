@@ -1,34 +1,37 @@
 package com.poona.agrocart.ui.basket_detail;
 
 import android.app.Application;
+import android.app.ProgressDialog;
+import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.ApiClientAuth;
+import com.poona.agrocart.data.network.ApiErrorException;
+import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.reponses.BasketDetailsResponse;
+import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
 import com.poona.agrocart.ui.basket_detail.model.BasketDetail;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.observers.DisposableSingleObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.HttpException;
 
 public class BasketDetailViewModel extends AndroidViewModel {
-    MutableLiveData<BasketDetail> basketData;
-    MutableLiveData<ArrayList<ProductComment>> basketComments;
-
+    public static final String TAG = BasketDetailViewModel.class.getSimpleName();
     public BasketDetailViewModel(Application application) {
         super(application);
-        basketData = new MutableLiveData<>();
-        basketComments = new MutableLiveData<>();
-        basketData.setValue(null);
-        initComments();
-    }
-    public MutableLiveData<BasketDetail> getBasketData() {
-        return basketData;
-    }
-
-
-    public void setBasketData(MutableLiveData<BasketDetail> basketData) {
-        this.basketData = basketData;
     }
 
     private void initComments() {
@@ -43,10 +46,49 @@ public class BasketDetailViewModel extends AndroidViewModel {
             comment.setComment(getApplication().getString(R.string.lorem_ipsum_dolor_sit_amet_consectetur_adipiscing));
             commentArrayList.add(comment);
         }
-        basketComments.setValue(commentArrayList);
     }
 
-    public MutableLiveData<ArrayList<ProductComment>> getBasketComments() {
-        return basketComments;
+    /*Get BasketDetails API here*/
+    public LiveData<BasketDetailsResponse> basketDetailsResponseLiveData(ProgressDialog progressDialog,
+                                                                         HashMap<String,String> hashMap,
+                                                                         BasketDetailFragment basketDetailFragment){
+        MutableLiveData<BasketDetailsResponse> basketDetailsResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(basketDetailFragment.getContext())
+                .create(ApiInterface.class)
+                .getBasketDetailsResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BasketDetailsResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull BasketDetailsResponse basketDetailsResponse) {
+                        if (basketDetailsResponse!=null){
+                            progressDialog.dismiss();
+                            basketDetailsResponseMutableLiveData.setValue(basketDetailsResponse);
+                            Log.e(TAG, "Basket Details onSuccess: "+new Gson().toJson(basketDetailsResponse));
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BasketDetailsResponse response = new BasketDetailsResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BasketDetailsResponse.class);
+
+                            basketDetailsResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((ApiErrorException) basketDetailFragment).onApiErrorException(0,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return basketDetailsResponseMutableLiveData;
+
     }
+
 }

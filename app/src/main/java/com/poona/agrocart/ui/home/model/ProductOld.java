@@ -127,7 +127,7 @@ public class ProductOld implements Parcelable {
     }
 
     public String getPrice() {
-        return "Rs." + price;
+        return price;
     }
 
     public void setPrice(String price) {

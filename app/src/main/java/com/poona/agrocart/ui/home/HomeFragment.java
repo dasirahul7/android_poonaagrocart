@@ -3,6 +3,7 @@ package com.poona.agrocart.ui.home;
 import static com.poona.agrocart.app.AppConstants.AllBasket;
 import static com.poona.agrocart.app.AppConstants.AllExclusive;
 import static com.poona.agrocart.app.AppConstants.AllSelling;
+import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
@@ -301,16 +302,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (productListResponse.getProductResponseDt().getProductList().size() > 0) {
                             makeVisible(fragmentHomeBinding.recProduct, null);
-                            productList = productListResponse.getProductResponseDt().getProductList();
+                           for (ProductListResponse.Product product :productListResponse.getProductResponseDt().getProductList()){
+                               product.setUnit(product.getProductUnits().get(0));
+                               product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                               productList.add(product);
+                           }
+//                            productList = productListResponse.getProductResponseDt().getProductList();
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
                             fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recProduct.setHasFixedSize(true);
                             fragmentHomeBinding.recProduct.setLayoutManager(linearLayoutManager);
-                            productListAdapter = new ProductListAdapter(productList, getActivity(), root);
+                            productListAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail);
                             fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
-//                            productListAdapter.setOnProductClick(product -> {
-//                                toProductDetail(product);
-//                            });
+//
 
                         }
                         break;
@@ -394,7 +398,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
                             makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
-                            bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
+                            for (ProductListResponse.Product product :bestSellingResponse.getBestSellingData().getBestSellingProductList()){
+                                product.setUnit(product.getProductUnits().get(0));
+                                product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                bestSellings.add(product);
+                            }
+
+//                            bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
                             bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), root, this::toProductDetail);
                             fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
@@ -433,7 +443,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 switch (exclusiveResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
-                            offerProducts = exclusiveResponse.getExclusiveData().getExclusivesList();
+                            for (ProductListResponse.Product product :exclusiveResponse.getExclusiveData().getExclusivesList()){
+                                product.setUnit(product.getProductUnits().get(0));
+                                product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                offerProducts.add(product);
+                            }
+
+//                            offerProducts = exclusiveResponse.getExclusiveData().getExclusivesList();
                             makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
                             offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), root,product -> {
                                 // Redirect to ProductOld details
@@ -529,7 +545,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         if (basketResponse.getData().getBaskets().size() > 0) {
                             makeVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
                             this.baskets = basketResponse.getData().getBaskets();
-                            basketAdapter = new BasketAdapter(this.baskets, getActivity(), root);
+                            basketAdapter = new BasketAdapter(this.baskets, getActivity(), this::toBasketDetail);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
                             fragmentHomeBinding.recBasket.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recBasket.setLayoutManager(layoutManager);
@@ -733,6 +749,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         Bundle bundle = new Bundle();
         bundle.putString(PRODUCT_ID,product.getId());
         NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
+    }
+    public void toBasketDetail(BasketResponse.Basket basket) {
+        Bundle bundle = new Bundle();
+        bundle.putString(BASKET_ID,basket.getId());
+        NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_basketDetailFragment,bundle);
     }
 
     @Override

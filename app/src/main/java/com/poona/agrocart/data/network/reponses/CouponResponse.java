@@ -88,40 +88,9 @@ public class CouponResponse extends BaseResponse{
         @SerializedName("unit_name")
         @Expose
         private String unitName;
-        private String minUnit = "Order min Rs."
-                ,percent = " %",max ="Max ",priceUnit ="Rs.";
+//        private String minUnit = "Order min Rs."
+//                ,percent = " %",max ="Max ",priceUnit ="Rs.";
 
-        public String getPriceUnit() {
-            return priceUnit;
-        }
-
-        public void setPriceUnit(String priceUnit) {
-            this.priceUnit = priceUnit;
-        }
-
-        public String getMinUnit() {
-            return minUnit;
-        }
-
-        public void setMinUnit(String minUnit) {
-            this.minUnit = minUnit;
-        }
-
-        public String getPercent() {
-            return percent;
-        }
-
-        public void setPercent(String percent) {
-            this.percent = percent;
-        }
-
-        public String getMax() {
-            return max;
-        }
-
-        public void setMax(String max) {
-            this.max = max;
-        }
 
         public String getId() {
             return id;

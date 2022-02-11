@@ -68,7 +68,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                             productDetailsResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((ApiErrorException) productDetailFragment).onApiErrorException(2,"");
+                            ((ApiErrorException) productDetailFragment).onApiErrorException(0,"");
                         }
 
                         Log.e(TAG, e.getMessage());

@@ -1,5 +1,7 @@
 package com.poona.agrocart.data.network.reponses;
 
+import android.text.Html;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.poona.agrocart.ui.BaseFragment;
@@ -11,14 +13,14 @@ import java.util.List;
 public class ProductDetailsResponse extends BaseResponse {
 @SerializedName("product_details")
     @Expose
-    private ArrayList<ProductDetails> productArrayList;
+    private ProductDetails productDetails;
 
-    public ArrayList<ProductDetails> getProductArrayList() {
-        return productArrayList;
+    public ProductDetails getProductDetails() {
+        return productDetails;
     }
 
-    public void setProductArrayList(ArrayList<ProductDetails> productArrayList) {
-        this.productArrayList = productArrayList;
+    public void setProductDetails(ProductDetails productDetails) {
+        this.productDetails = productDetails;
     }
 
     public class ProductDetails {
@@ -118,23 +120,14 @@ public class ProductDetailsResponse extends BaseResponse {
         @SerializedName("product_units")
         @Expose
         private List<ProductListResponse.ProductUnit> productUnits = null;
-        private String priceUnit= "Rs.";
-        private String offerMsg = "Buy"+productUnits.get(0).getWeight()+productUnits.get(0).getUnitName()+priceUnit+productUnits.get(0).getOfferPrice();
+        private ProductListResponse.ProductUnit unit;
 
-        public String getOfferMsg() {
-            return offerMsg;
+        public ProductListResponse.ProductUnit getUnit() {
+            return unit;
         }
 
-        public void setOfferMsg(String offerMsg) {
-            this.offerMsg = offerMsg;
-        }
-
-        public String getPriceUnit() {
-            return priceUnit;
-        }
-
-        public void setPriceUnit(String priceUnit) {
-            this.priceUnit = priceUnit;
+        public void setUnit(ProductListResponse.ProductUnit unit) {
+            this.unit = unit;
         }
 
         public String getId() {
@@ -234,7 +227,7 @@ public class ProductDetailsResponse extends BaseResponse {
         }
 
         public String getProductDetails() {
-            return productDetails;
+            return Html.fromHtml(productDetails).toString().trim();
         }
 
         public void setProductDetails(String productDetails) {
@@ -250,7 +243,7 @@ public class ProductDetailsResponse extends BaseResponse {
         }
 
         public String getAboutProduct() {
-            return aboutProduct;
+            return Html.fromHtml(aboutProduct).toString().trim();
         }
 
         public void setAboutProduct(String aboutProduct) {
@@ -266,7 +259,7 @@ public class ProductDetailsResponse extends BaseResponse {
         }
 
         public String getBenifit() {
-            return benifit;
+            return Html.fromHtml(benifit).toString().trim();
         }
 
         public void setBenifit(String benifit) {
@@ -282,7 +275,7 @@ public class ProductDetailsResponse extends BaseResponse {
         }
 
         public String getStoragesUses() {
-            return storagesUses;
+            return Html.fromHtml(storagesUses).toString().trim();
         }
 
         public void setStoragesUses(String storagesUses) {
@@ -298,7 +291,7 @@ public class ProductDetailsResponse extends BaseResponse {
         }
 
         public String getOtherProuctInfo() {
-            return otherProuctInfo;
+            return Html.fromHtml(otherProuctInfo).toString().trim();
         }
 
         public void setOtherProuctInfo(String otherProuctInfo) {
@@ -314,7 +307,7 @@ public class ProductDetailsResponse extends BaseResponse {
         }
 
         public String getWeightPolicy() {
-            return weightPolicy;
+            return Html.fromHtml(weightPolicy).toString().trim();
         }
 
         public void setWeightPolicy(String weightPolicy) {
@@ -330,7 +323,7 @@ public class ProductDetailsResponse extends BaseResponse {
         }
 
         public String getNutrition() {
-            return nutrition;
+            return Html.fromHtml(nutrition).toString().trim();
         }
 
         public void setNutrition(String nutrition) {

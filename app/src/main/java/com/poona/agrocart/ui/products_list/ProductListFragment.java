@@ -137,7 +137,13 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
                         if (exclusiveResponse.getExclusiveData().getExclusivesList() != null
                                 && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
                             // Exclusive data listing
-                            productArrayList = exclusiveResponse.getExclusiveData().getExclusivesList();
+                            for (ProductListResponse.Product product :exclusiveResponse.getExclusiveData().getExclusivesList()){
+                                product.setUnit(product.getProductUnits().get(0));
+                                product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                productArrayList.add(product);
+                            }
+
+//                            productArrayList = exclusiveResponse.getExclusiveData().getExclusivesList();
                             makeProductListing();
                         }
                         break;

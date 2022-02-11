@@ -455,6 +455,14 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
 
+    <!--Home to BasketDetails -->
+    <action
+        android:id="@+id/action_nav_home_to_basketDetailFragment"
+        app:destination="@id/basketDetailFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
 
 
     <!--Privacy Policy Fragment-->
@@ -485,5 +493,9 @@
         android:id="@+id/seasonalRegFragment"
         android:name="com.poona.agrocart.ui.seasonal.SeasonalRegFragment"
         android:label="SeasonalRegFragment" />
+    <fragment
+        android:id="@+id/basketDetailFragment"
+        android:name="com.poona.agrocart.ui.basket_detail.BasketDetailFragment"
+        android:label="BasketDetailFragment" />
 
 </navigation>

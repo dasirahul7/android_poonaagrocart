@@ -1,9 +1,12 @@
 package com.poona.agrocart.data.network.reponses;
 
+import android.text.Html;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BasketResponse extends BaseResponse{
     @SerializedName("data")
@@ -103,10 +106,45 @@ public class BasketResponse extends BaseResponse{
         @SerializedName("hsn_code")
         @Expose
         private String hsnCode;
-        private String priceUnit= "Rs.";
+        @SerializedName("basket_product")
+        @Expose
+        private ArrayList<BasketProduct> basketUnits;
+        @SerializedName("basket_imgs")
+        @Expose
+        private List<BasketImges> basketImges;
+        private BasketProduct basketUnit;
+        private String accurateWeight;
 
-        public String getPriceUnit() {
-            return priceUnit;
+        public List<BasketImges> getBasketImges() {
+            return basketImges;
+        }
+
+        public void setBasketImges(List<BasketImges> basketImges) {
+            this.basketImges = basketImges;
+        }
+
+        public ArrayList<BasketProduct> getBasketUnits() {
+            return basketUnits;
+        }
+
+        public void setBasketUnits(ArrayList<BasketProduct> basketUnits) {
+            this.basketUnits = basketUnits;
+        }
+
+        public BasketProduct getBasketUnit() {
+            return basketUnit;
+        }
+
+        public void setBasketUnit(BasketProduct basketUnit) {
+            this.basketUnit = basketUnit;
+        }
+
+        public String getAccurateWeight() {
+            return accurateWeight;
+        }
+
+        public void setAccurateWeight(String accurateWeight) {
+            this.accurateWeight = accurateWeight;
         }
 
         public String getId() {
@@ -174,7 +212,7 @@ public class BasketResponse extends BaseResponse{
         }
 
         public String getProductDetails() {
-            return productDetails;
+            return Html.fromHtml(productDetails).toString().trim();
         }
 
         public void setProductDetails(String productDetails) {
@@ -190,7 +228,7 @@ public class BasketResponse extends BaseResponse{
         }
 
         public String getAboutProduct() {
-            return aboutProduct;
+            return Html.fromHtml(aboutProduct).toString().trim();
         }
 
         public void setAboutProduct(String aboutProduct) {
@@ -206,7 +244,7 @@ public class BasketResponse extends BaseResponse{
         }
 
         public String getBenifit() {
-            return benifit;
+            return Html.fromHtml(benifit).toString().trim();
         }
 
         public void setBenifit(String benifit) {
@@ -222,7 +260,7 @@ public class BasketResponse extends BaseResponse{
         }
 
         public String getStoragesUses() {
-            return storagesUses;
+            return Html.fromHtml(storagesUses).toString().trim();
         }
 
         public void setStoragesUses(String storagesUses) {
@@ -238,7 +276,7 @@ public class BasketResponse extends BaseResponse{
         }
 
         public String getOtherProuctInfo() {
-            return otherProuctInfo;
+            return Html.fromHtml(otherProuctInfo).toString().trim();
         }
 
         public void setOtherProuctInfo(String otherProuctInfo) {
@@ -254,7 +292,7 @@ public class BasketResponse extends BaseResponse{
         }
 
         public String getWeightPolicy() {
-            return weightPolicy;
+            return Html.fromHtml(weightPolicy).toString().trim();
         }
 
         public void setWeightPolicy(String weightPolicy) {
@@ -270,7 +308,7 @@ public class BasketResponse extends BaseResponse{
         }
 
         public String getNutrition() {
-            return nutrition;
+            return Html.fromHtml(nutrition).toString().trim();
         }
 
         public void setNutrition(String nutrition) {
@@ -303,4 +341,76 @@ public class BasketResponse extends BaseResponse{
 
     }
 
+    public class BasketProduct {
+        @SerializedName("bp_id")
+        @Expose
+        private String bpId;
+        @SerializedName("product_name")
+        @Expose
+        private String productName;
+        @SerializedName("basket_id_fk")
+        @Expose
+        private String basketIdFk;
+        @SerializedName("weight_and_unit")
+        @Expose
+        private String weightAndUnit;
+        @SerializedName("status")
+        @Expose
+        private String status;
+
+        public String getBpId() {
+            return bpId;
+        }
+
+        public void setBpId(String bpId) {
+            this.bpId = bpId;
+        }
+
+        public String getProductName() {
+            return productName;
+        }
+
+        public void setProductName(String productName) {
+            this.productName = productName;
+        }
+
+        public String getBasketIdFk() {
+            return basketIdFk;
+        }
+
+        public void setBasketIdFk(String basketIdFk) {
+            this.basketIdFk = basketIdFk;
+        }
+
+        public String getWeightAndUnit() {
+            return weightAndUnit;
+        }
+
+        public void setWeightAndUnit(String weightAndUnit) {
+            this.weightAndUnit = weightAndUnit;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+    }
+
+    public class BasketImges {
+
+        @SerializedName("basket_img")
+        @Expose
+        private String basketImg;
+
+        public String getBasketImg() {
+            return basketImg;
+        }
+
+        public void setBasketImg(String basketImg) {
+            this.basketImg = basketImg;
+        }
+    }
 }

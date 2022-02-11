@@ -1,7 +1,16 @@
 package com.poona.agrocart.ui.basket_detail;
 
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,35 +19,61 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.ImageView;
 
+import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppConstants;
+import com.poona.agrocart.app.AppUtils;
+import com.poona.agrocart.data.network.ApiErrorException;
+import com.poona.agrocart.data.network.reponses.BasketDetailsResponse;
+import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.databinding.FragmentBasketDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.basket_detail.adapter.BasketImagesAdapter;
-import com.poona.agrocart.ui.basket_detail.model.BasketDetail;
-import com.poona.agrocart.ui.basket_detail.model.ProductItem;
-import com.poona.agrocart.ui.basket_detail.model.Subscription;
+import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
+import com.poona.agrocart.widgets.CustomTextView;
+import com.poona.agrocart.widgets.ExpandIconView;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
-public class BasketDetailFragment extends BaseFragment implements View.OnClickListener {
+public class BasketDetailFragment extends BaseFragment implements View.OnClickListener , ApiErrorException {
 
+    private static final String TAG = BasketDetailFragment.class.getSimpleName();
     private BasketDetailViewModel basketDetailViewModel;
     private FragmentBasketDetailBinding basketDetailsBinding;
     private View rootView;
     public ViewPager vpImages;
+    private DotsIndicator dotsIndicator;
     private RecyclerView rvProductComment;
-    private BasketDetail details;
+    private BasketResponse.Basket details;
+    private ArrayList<BasketResponse.BasketProduct> basketProducts ;
+    private BasketProductAdapter basketProductAdapter;
+    private RecyclerView rvBasketProducts;
+    private LinearLayoutManager linearLayoutManager;
     public int count = 0;
     private BasketImagesAdapter basketImagesAdapter;
     private ArrayList<ProductComment> commentArrayList;
-    private LinearLayoutManager linearLayoutManager;
     private ProductCommentsAdapter productCommentsAdapter;
+    private Bundle bundle;
+    private String itemId;
+    private boolean isProductDetailsVisible = true, isNutritionDetailsVisible = true, isAboutThisProductVisible = true,
+            isBasketContentsVisible = true, isBenefitsVisible = true, isStorageVisible = true, isOtherProductInfo = true,
+            isVariableWtPolicyVisible = true, isFavourite = false;
+    private Calendar calendar;
+    private int mYear, mMonth, mDay;
 
     public static BasketDetailFragment newInstance() {
         return new BasketDetailFragment();
@@ -58,18 +93,20 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     private void setCommentsAdapter() {
         commentArrayList = new ArrayList<>();
-        basketDetailViewModel.getBasketComments().observe(getViewLifecycleOwner(), productComments -> {
-            commentArrayList = productComments;
-            linearLayoutManager = new LinearLayoutManager(requireContext());
-            rvProductComment.setHasFixedSize(true);
-            rvProductComment.setLayoutManager(linearLayoutManager);
-            rvProductComment.setNestedScrollingEnabled(false);
-            productCommentsAdapter = new ProductCommentsAdapter(commentArrayList, false);
-            rvProductComment.setAdapter(productCommentsAdapter);
-        });
     }
 
     private void initView() {
+        try {
+            if (getArguments() != null) {
+                bundle = getArguments();
+                if (bundle.getString(AppConstants.BASKET_ID) != null) {
+                    itemId = bundle.getString(AppConstants.BASKET_ID);
+                    callBasketDetailsApi(showCircleProgressDialog(context,""));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         basketDetailsBinding.llProductDetails.setOnClickListener(this);
         basketDetailsBinding.llNutritions.setOnClickListener(this);
         basketDetailsBinding.llAboutThisProduct.setOnClickListener(this);
@@ -81,13 +118,14 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         basketDetailsBinding.ivMinus.setOnClickListener(this);
         basketDetailsBinding.ivFavourite.setOnClickListener(this);
         // BasketDetail ProductOld views
-        basketDetailsBinding.layoutAdded.llProductList.setOnClickListener(this);
+        basketDetailsBinding.llProductList.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.imgPlus.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.imgMinus.setOnClickListener(this);
+        basketDetailsBinding.layoutAdded.tvStartDate.setOnClickListener(this);
 
 
         vpImages = basketDetailsBinding.vpProductImages;
-        //tbIndicator = fragmentProductDetailBinding.tlIndicators;
+        dotsIndicator = basketDetailsBinding.dotsIndicator;
         rvProductComment = basketDetailsBinding.rvProductComment;
 
         setValues();
@@ -95,75 +133,314 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     }
 
-    private void setValues() {
-        details = new BasketDetail();
-        BasketDetail basketDetail = new BasketDetail();
-        basketDetail.setBasketName(getArguments() != null ? getArguments().getString("name") : null);
-        ArrayList<String> images = new ArrayList<>();
-        for (int i=0;i<3;i++)
-            images.add(getArguments() != null ? getArguments().getString("image") : null);
-        // Set ProductOld Details here
-        basketDetail.setBasketPrice("Rs. 200");
-        basketDetail.setBasketImages(images);
-        // Add Subscription Details
-        ArrayList<String> subType = new ArrayList<>();
-        subType.add("Daily");
-        subType.add("Weekly");
-        subType.add("Monthly");
-        Subscription subscription = new Subscription("Rs. 1500","per basket","Special rate for subscription",subType,"5","15 Dec 2021","Rs. 1400 X 5 ","Rs. 7000");
-        basketDetail.setSubscription(subscription);
-        //Add ProductOld Items list
-        ProductItem item = new ProductItem("Moong","500gm");
-        ProductItem item1 = new ProductItem("Matki","250gm");
-        ProductItem item2 = new ProductItem("Beans sprouts","500gm");
-        ProductItem item3 = new ProductItem("Brocoli sprouts","250gm");
-        ProductItem item4 = new ProductItem("Lentils sprouts","500gm");
-        ProductItem item5 = new ProductItem("Redish sprouts","250gm");
-        ArrayList<ProductItem> productItems = new ArrayList<>();
-        productItems.add(item);
-        productItems.add(item1);
-        productItems.add(item2);
-        productItems.add(item3);
-        productItems.add(item4);
-        productItems.add(item5);
-        basketDetail.setProductList(productItems);
-        basketDetail.setBasketDetails(getString(R.string.apples_are_nutritious_apples_may_be_good_for_weight_loss_apples_may_be_good_for_your_heart_as_part_of_a_healtful_and_varied_diet));
-        basketDetail.setAboutBasket(getString(R.string.apples_are_nutritious_apples_may_be_good_for_weight_loss_apples_may_be_good_for_your_heart_as_part_of_a_healtful_and_varied_diet));
-        basketDetail.setBasketBenefit(getString(R.string.apples_are_nutritious_apples_may_be_good_for_weight_loss_apples_may_be_good_for_your_heart_as_part_of_a_healtful_and_varied_diet));
-        basketDetail.setBasketUses(getString(R.string.apples_are_nutritious_apples_may_be_good_for_weight_loss_apples_may_be_good_for_your_heart_as_part_of_a_healtful_and_varied_diet));
-        basketDetail.setBasketInfo(getString(R.string.apples_are_nutritious_apples_may_be_good_for_weight_loss_apples_may_be_good_for_your_heart_as_part_of_a_healtful_and_varied_diet));
-        basketDetail.setBasketWeightPolicy(getString(R.string.apples_are_nutritious_apples_may_be_good_for_weight_loss_apples_may_be_good_for_your_heart_as_part_of_a_healtful_and_varied_diet));
-        basketDetail.setBasketNutrition(getString(R.string.apples_are_nutritious_apples_may_be_good_for_weight_loss_apples_may_be_good_for_your_heart_as_part_of_a_healtful_and_varied_diet));
-        basketDetail.setBasketRating("5.0");
-        basketDetail.setBasketNoOfRatings("15");
-        basketDetailViewModel.basketData.setValue(basketDetail);
-        details = basketDetailViewModel.basketData.getValue();
-        basketDetailsBinding.setModuleBasket(basketDetailViewModel);
-        setBasketImages();
+    private void callBasketDetailsApi(ProgressDialog progressDialog) {
+        Observer<BasketDetailsResponse> basketDetailsResponseObserver = basketDetailsResponse -> {
+            if (basketDetailsResponse!=null){
+                progressDialog.dismiss();
+                switch (basketDetailsResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (basketDetailsResponse.getBasketDetail()!=null){
+                            BasketResponse.Basket basket = basketDetailsResponse.getBasketDetail();
+                            basket.setBasketUnit(basket.getBasketUnits().get(0));
+                            basket.setAccurateWeight(basket.getBasketUnit().getWeightAndUnit());
+                            details = basket;
+                            basketDetailsBinding.setModuleBasket(details);
+                            basketDetailsBinding.setVariable(BR.moduleBasket,details);
+                            basketDetailsBinding.layoutAdded.setSubscriptionModule(basket);
+                            basketDetailsBinding.layoutAdded.setVariable(BR.subscriptionModule,basket);
+                            hideOrShowProductDetails();
+                            setBasketImages();
+                            setBasketContents();
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, basketDetailsResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(basketDetailsResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, basketDetailsResponse.getMessage());
+                        break;
+                }
 
+
+            }
+        };
+        basketDetailViewModel.basketDetailsResponseLiveData(progressDialog,detailsParams(),BasketDetailFragment.this)
+                .observe(getViewLifecycleOwner(),basketDetailsResponseObserver);
+    }
+
+    private void setBasketContents() {
+        basketProducts = new ArrayList<>();
+        basketProducts = details.getBasketUnits();
+        if (basketProducts.size()>0){
+            rvBasketProducts = basketDetailsBinding.rvBasketContents;
+            linearLayoutManager = new LinearLayoutManager(context,RecyclerView.VERTICAL,false);
+            rvBasketProducts.setLayoutManager(linearLayoutManager);
+            basketProductAdapter = new BasketProductAdapter(basketProducts);
+            rvBasketProducts.setAdapter(basketProductAdapter);
+        }
+    }
+
+    private HashMap<String, String> detailsParams() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(AppConstants.BASKET_ID, itemId);
+        return map;
+    }
+
+    private void setValues() {
         //hide all expanded views initially
 
-//        hideOrShowAboutThisProduct();
-//        hideOrShowBenefits();
-//        hideOrShowStorageAndUses();
-//        hideOrShowOtherProductInfo();
-//        hideOrShowVariableWeightPolicy();
-//        hideOrShowNutritionDetails();
-
+        hideOrShowAboutThisProduct();
+        hideOrShowBenefits();
+        hideOrShowStorageAndUses();
+        hideOrShowOtherProductInfo();
+        hideOrShowVariableWeightPolicy();
+        hideOrShowNutritionDetails();
     }
 
     private void setBasketImages() {
-        count = details.getBasketImages().size();
-        basketImagesAdapter = new BasketImagesAdapter(BasketDetailFragment.this,
-                getChildFragmentManager(), details.getBasketImages());
-        vpImages.setAdapter(basketImagesAdapter);
-        basketImagesAdapter.notifyDataSetChanged();
-        vpImages.addOnPageChangeListener(basketImagesAdapter);
+        ArrayList<String> images = new ArrayList<>();
+        for (int i = 0; i < details.getBasketImges().size(); i++)
+            images.add(details.getBasketImges().get(i).getBasketImg());
+        count = details.getBasketImges().size();
+        if (count>0){
+            basketImagesAdapter = new BasketImagesAdapter(BasketDetailFragment.this,
+                    getChildFragmentManager(), images);
+            vpImages.setAdapter(basketImagesAdapter);
+            basketImagesAdapter.notifyDataSetChanged();
+            vpImages.addOnPageChangeListener(basketImagesAdapter);
+            dotsIndicator.setViewPager(vpImages);
+            Log.e(TAG, "setBasketImages: "+images.size() );
+        }
     }
+
+
+    /*Hide and Show contents*/
+
+    private void hideOrShowVariableWeightPolicy() {
+        if (isVariableWtPolicyVisible) {
+            basketDetailsBinding.ivVariableWeightPolicyShowHide.setState(ExpandIconView.MORE, true);
+            collapse(basketDetailsBinding.tvVariableWeightPolicyBreif);
+        } else {
+            basketDetailsBinding.ivVariableWeightPolicyShowHide.setState(ExpandIconView.LESS, true);
+            expand(basketDetailsBinding.tvVariableWeightPolicyBreif);
+        }
+        isVariableWtPolicyVisible = !isVariableWtPolicyVisible;
+    }
+
+    private void hideOrShowOtherProductInfo() {
+        if (isOtherProductInfo) {
+            basketDetailsBinding.ivOtherProductInfoHideShow.setState(ExpandIconView.MORE, true);
+            collapse(basketDetailsBinding.tvOtherProductInfoBrief);
+        } else {
+            basketDetailsBinding.ivOtherProductInfoHideShow.setState(ExpandIconView.LESS, true);
+            expand(basketDetailsBinding.tvOtherProductInfoBrief);
+        }
+        isOtherProductInfo = !isOtherProductInfo;
+    }
+
+    private void hideOrShowStorageAndUses() {
+        if (isStorageVisible) {
+            basketDetailsBinding.ivStorageUseHideShow.setState(ExpandIconView.MORE, true);
+            collapse(basketDetailsBinding.tvStorageAndUseBrief);
+        } else {
+            basketDetailsBinding.ivStorageUseHideShow.setState(ExpandIconView.LESS, true);
+            expand(basketDetailsBinding.tvStorageAndUseBrief);
+        }
+        isStorageVisible = !isStorageVisible;
+    }
+
+    private void hideOrShowBenefits() {
+        if (isBenefitsVisible) {
+            basketDetailsBinding.ivBenefitsHideShow.setState(ExpandIconView.MORE, true);
+            collapse(basketDetailsBinding.tvBenefitsBrief);
+        } else {
+            basketDetailsBinding.ivBenefitsHideShow.setState(ExpandIconView.LESS, true);
+            expand(basketDetailsBinding.tvBenefitsBrief);
+        }
+        isBenefitsVisible = !isBenefitsVisible;
+    }
+
+    private void hideOrShowAboutThisProduct() {
+        if (isAboutThisProductVisible) {
+            basketDetailsBinding.ivAboutThisProductHideShow.setState(ExpandIconView.MORE, true);
+            collapse(basketDetailsBinding.tvAboutThisProductBrief);
+        } else {
+            basketDetailsBinding.ivAboutThisProductHideShow.setState(ExpandIconView.LESS, true);
+            expand(basketDetailsBinding.tvAboutThisProductBrief);
+        }
+        isAboutThisProductVisible = !isAboutThisProductVisible;
+    }
+
+    private void addOrRemoveFromFavourite() {
+        if (isFavourite) {
+            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+        } else {
+            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
+        }
+        isFavourite = !isFavourite;
+    }
+
+    private void increaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
+        int quantity = Integer.parseInt(qty);
+        quantity++;
+        etQuantity.setText(String.valueOf(quantity));
+        AppUtils.setMinusButton(quantity, view);
+    }
+
+    private void decreaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
+        int quantity = Integer.parseInt(qty);
+        if (quantity == 1) {
+            warningToast(requireActivity(), getString(R.string.quantity_less_than_one));
+        } else {
+            quantity--;
+            etQuantity.setText(String.valueOf(quantity));
+        }
+        AppUtils.setMinusButton(quantity, view);
+    }
+
+
+    private void hideOrShowNutritionDetails() {
+        if (isNutritionDetailsVisible) {
+            basketDetailsBinding.ivNutritionsShowHide.setState(ExpandIconView.MORE, true);
+            collapse(basketDetailsBinding.tvNutritionsBrief);
+        } else {
+            basketDetailsBinding.ivNutritionsShowHide.setState(ExpandIconView.LESS, true);
+            expand(basketDetailsBinding.tvNutritionsBrief);
+        }
+        isNutritionDetailsVisible = !isNutritionDetailsVisible;
+    }
+
+    private void hideOrShowProductDetails() {
+        if (isProductDetailsVisible) {
+            basketDetailsBinding.ivProductDetailHideShow.setState(ExpandIconView.MORE, true);
+            collapse(basketDetailsBinding.tvProductDetailBrief);
+        } else {
+            basketDetailsBinding.ivProductDetailHideShow.setState(ExpandIconView.LESS, true);
+            expand(basketDetailsBinding.tvProductDetailBrief);
+        }
+        isProductDetailsVisible = !isProductDetailsVisible;
+    }
+
+    private void hideOrShowBasketContentsList() {
+        if (isBasketContentsVisible) {
+            basketDetailsBinding.ivProductLists.setState(ExpandIconView.MORE, true);
+            collapse(basketDetailsBinding.rvBasketContents);
+        } else {
+            basketDetailsBinding.ivProductLists.setState(ExpandIconView.LESS, true);
+            expand(basketDetailsBinding.rvBasketContents);
+        }
+        isBasketContentsVisible = !isBasketContentsVisible;
+    }
+
+    //Show calender
+    private void showCalendar(CustomTextView tvDate) {
+        //showing date picker dialog
+        DatePickerDialog dpd;
+        calendar = Calendar.getInstance();
+        Calendar mcurrentDate = Calendar.getInstance();
+        mYear = mcurrentDate.get(Calendar.YEAR);
+        mMonth = mcurrentDate.get(Calendar.MONTH);
+        mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+        dpd = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String txtDisplayDate = null;
+                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                try {
+                    txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+
+                    if (tvDate != null) {
+                        tvDate.setText(txtDisplayDate);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                calendar.set(year, month, dayOfMonth);
+            }
+        },
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        dpd.show();
+
+    }
+
 
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_product_list:
+                hideOrShowBasketContentsList();
+                break;
+            case R.id.ll_product_details:
+                hideOrShowProductDetails();
+                break;
+            case R.id.ll_about_this_product:
+                hideOrShowAboutThisProduct();
+                break;
+            case R.id.ll_benefits:
+                hideOrShowBenefits();
+                break;
+            case R.id.ll_storage_and_use:
+                hideOrShowStorageAndUses();
+                break;
+            case R.id.ll_other_product_info:
+                hideOrShowOtherProductInfo();
+                break;
+            case R.id.ll_variable_weight_policy:
+                hideOrShowVariableWeightPolicy();
+                break;
+            case R.id.ll_nutritions:
+                hideOrShowNutritionDetails();
+                break;
+            case R.id.iv_minus:
+                decreaseQuantity(basketDetailsBinding.etQuantity.getText().toString(),
+                        basketDetailsBinding.etQuantity, basketDetailsBinding.ivMinus);
+                break;
+            case R.id.iv_plus:
+                increaseQuantity(basketDetailsBinding.etQuantity.getText().toString(), basketDetailsBinding.etQuantity, basketDetailsBinding.ivMinus);
+                break;
+            case R.id.img_plus:
+                increaseQuantity(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
+                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
+                break;
+            case R.id.img_minus:
+                decreaseQuantity(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
+                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
+                break;
+            case R.id.iv_favourite:
+                addOrRemoveFromFavourite();
+                break;
+            case R.id.tv_start_date:
+                showCalendar(basketDetailsBinding.layoutAdded.tvStartDate);
+                break;
+        }
+    }
+
+    @Override
+    public void onApiErrorException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), BasketDetailFragment.this, () -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                switch (from) {
+                    case 0:
+                        callBasketDetailsApi(showCircleProgressDialog(context, ""));
+                        break;
+                }
+            }
+        }, context);
 
     }
 }

@@ -9,16 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.databinding.RvBasketContentsListBinding;
-import com.poona.agrocart.ui.product_detail.model.BasketContent;
 
 import java.util.ArrayList;
 
-public class BasketContentsAdapter extends RecyclerView.Adapter<BasketContentsAdapter.BasketContentsViewHolder>
+public class BasketProductAdapter extends RecyclerView.Adapter<BasketProductAdapter.BasketContentsViewHolder>
 {
-    private final ArrayList<BasketContent> basketContentArrayList;
+    private final ArrayList<BasketResponse.BasketProduct> basketContentArrayList;
 
-    public BasketContentsAdapter(ArrayList<BasketContent> basketContentArrayList)
+    public BasketProductAdapter(ArrayList<BasketResponse.BasketProduct> basketContentArrayList)
     {
         this.basketContentArrayList = basketContentArrayList;
     }
@@ -35,9 +35,9 @@ public class BasketContentsAdapter extends RecyclerView.Adapter<BasketContentsAd
     @Override
     public void onBindViewHolder(@NonNull BasketContentsViewHolder holder, int position)
     {
-        final BasketContent basketContent = basketContentArrayList.get(position);
-        holder.rvBasketContentsListBinding.setBasketContent(basketContent);
-        holder.bind(basketContent);
+        final BasketResponse.BasketProduct basketProduct = basketContentArrayList.get(position);
+        holder.rvBasketContentsListBinding.setBasketContent(basketProduct);
+        holder.bind(basketProduct);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class BasketContentsAdapter extends RecyclerView.Adapter<BasketContentsAd
             this.rvBasketContentsListBinding = rvBasketContentsListBinding;
         }
 
-        public void bind(BasketContent basketContent)
+        public void bind(BasketResponse.BasketProduct basketContent)
         {
             rvBasketContentsListBinding.setVariable(BR.basketContent, basketContent);
             rvBasketContentsListBinding.executePendingBindings();

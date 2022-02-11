@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.search;
 
+import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
@@ -26,6 +27,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.poona.agrocart.R;
@@ -141,7 +143,13 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                 switch (productListResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (productListResponse.getProductResponseDt().getProductList().size() > 0) {
-                            productList = productListResponse.getProductResponseDt().getProductList();
+                            for (ProductListResponse.Product product :productListResponse.getProductResponseDt().getProductList()){
+                                product.setUnit(product.getProductUnits().get(0));
+                                product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                productList.add(product);
+                            }
+
+//                            productList = productListResponse.getProductResponseDt().getProductList();
                             setSearchProductList();
                         }else fragmentSearchBinding.tvNoData.setVisibility(View.VISIBLE);
                         break;
@@ -192,25 +200,16 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         fragmentSearchBinding.recProduct.setNestedScrollingEnabled(false);
         fragmentSearchBinding.recProduct.setHasFixedSize(true);
         fragmentSearchBinding.recProduct.setLayoutManager(linearLayoutManager);
-        searchAdapter = new ProductListAdapter(productList, getActivity(), searchView);
-        fragmentSearchBinding.recProduct.setAdapter(searchAdapter);
-        searchAdapter.setOnProductClick(product -> {
-            toProductDetail(product, searchView);
+        searchAdapter = new ProductListAdapter(productList, getActivity(),product -> {
+            toProductDetail(product);
         });
+        fragmentSearchBinding.recProduct.setAdapter(searchAdapter);
     }
 
-    public void toProductDetail(ProductOld productOld, View root) {
+    public void toProductDetail(ProductListResponse.Product product) {
         Bundle bundle = new Bundle();
-        bundle.putString("name", productOld.getName());
-        bundle.putString("image", productOld.getImg());
-        bundle.putString("price", productOld.getPrice());
-        bundle.putString("brand", productOld.getBrand());
-        bundle.putString("weight", productOld.getWeight());
-        bundle.putString("quantity", productOld.getQuantity());
-        bundle.putBoolean("organic", productOld.isOrganic());
-        bundle.putBoolean("isInBasket", productOld.isInBasket());
-        bundle.putString("ProductOld", "ProductOld");
-        Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+        bundle.putString(PRODUCT_ID, product.getId());
+        NavHostFragment.findNavController(SearchFragment.this).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
     }
 
 

@@ -6,16 +6,16 @@ import com.poona.agrocart.ui.BaseFragment;
 
 import java.util.ArrayList;
 
-public class BasketDetailsResponse extends BaseFragment {
+public class BasketDetailsResponse extends BaseResponse {
 @SerializedName("basket_details")
     @Expose
-    private ArrayList<BasketResponse.Basket> basketArrayList;
+    private BasketResponse.Basket basketDetail;
 
-    public ArrayList<BasketResponse.Basket> getBasketArrayList() {
-        return basketArrayList;
+    public BasketResponse.Basket getBasketDetail() {
+        return basketDetail;
     }
 
-    public void setBasketArrayList(ArrayList<BasketResponse.Basket> basketArrayList) {
-        this.basketArrayList = basketArrayList;
+    public void setBasketDetail(BasketResponse.Basket basketDetail) {
+        this.basketDetail = basketDetail;
     }
 }

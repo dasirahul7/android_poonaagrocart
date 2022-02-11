@@ -78,14 +78,23 @@ public class ProductListResponse extends BaseResponse{
         @SerializedName("product_units")
         @Expose
         private ArrayList<ProductUnit> productUnits = null;
-        private String priceUnit= "Rs.";
+        private ProductUnit unit;
+        private String accurateWeight;
 
-        public String getPriceUnit() {
-            return priceUnit;
+        public ProductUnit getUnit() {
+            return unit;
         }
 
-        public void setPriceUnit(String priceUnit) {
-            this.priceUnit = priceUnit;
+        public void setUnit(ProductUnit unit) {
+            this.unit = unit;
+        }
+
+        public String getAccurateWeight() {
+            return accurateWeight;
+        }
+
+        public void setAccurateWeight(String accurateWeight) {
+            this.accurateWeight = accurateWeight;
         }
 
         public String getSequenceNo() {
