@@ -10,6 +10,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.data.network.ApiErrorException;
+import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
@@ -76,6 +78,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private CustomTextView txtBrand;
     private String itemId = "";
     private Bundle bundle;
+   private static final String TAG = ProductDetailFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -428,12 +431,50 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void addOrRemoveFromFavourite() {
-        if (isFavourite) {
-            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
-        } else {
-            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
-        }
-        isFavourite = !isFavourite;
+//        if (isFavourite) {
+            callAddToFavouriteApi(showCircleProgressDialog(context,""),details);
+//        } else {
+//            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
+//        }
+//        isFavourite = !isFavourite;
+    }
+
+    private void callAddToFavouriteApi(ProgressDialog showCircleProgressDialog, ProductDetailsResponse.ProductDetails details) {
+        Observer<BaseResponse> favouriteResponseObserver = responseFavourite -> {
+            if (responseFavourite!=null){
+                showCircleProgressDialog.dismiss();
+                Log.e(TAG, "callAddToFavouriteApi: "+responseFavourite.getMessage() );
+                switch (responseFavourite.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(requireActivity(),responseFavourite.getMessage());
+                        fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, responseFavourite.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(responseFavourite.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, responseFavourite.getMessage());
+                        break;
+                }
+
+            }
+        };
+        productDetailViewModel.addToFavourite(showCircleProgressDialog,favParams(details),ProductDetailFragment.this)
+                .observe(getViewLifecycleOwner(),favouriteResponseObserver);
+    }
+
+    private HashMap<String, String> favParams(ProductDetailsResponse.ProductDetails details) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(AppConstants.ITEM_TYPE, "product");
+        map.put(AppConstants.PRODUCT_ID, details.getId());
+        map.put(AppConstants.BASKET_ID, "");
+        return map;
     }
 
     private void increaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {

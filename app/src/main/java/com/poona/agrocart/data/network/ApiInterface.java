@@ -1,5 +1,6 @@
 package com.poona.agrocart.data.network;
 
+import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.AREA_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
@@ -169,4 +170,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(AppConstants.BASKET_DETAIL_API)
     Single<BasketDetailsResponse> getBasketDetailsResponse(@FieldMap HashMap<String, String> hashMap);
+
+    /*Add to favourite API*/
+    @FormUrlEncoded
+    @POST(ADD_TO_FAVOURITE)
+    Single<BaseResponse> addToFavouriteResponse(@FieldMap HashMap<String,String> hashMap);
 }
