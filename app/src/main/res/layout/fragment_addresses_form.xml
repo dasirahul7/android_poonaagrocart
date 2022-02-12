@@ -93,7 +93,7 @@
                 android:background="@drawable/background_with_shadow_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{addressFormViewModel.name}"
+                android:text="@{addressesViewModel.name}"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name_text" />
 
             <com.poona.agrocart.widgets.CustomTextView
@@ -113,7 +113,7 @@
                 android:digits="0123456789"
                 android:inputType="phone"
                 android:maxLength="10"
-                android:text="@{addressFormViewModel.mobile}"
+                android:text="@{addressesViewModel.mobile}"
                 app:layout_constraintTop_toBottomOf="@+id/tv_mobile_no_text" />
 
             <LinearLayout
@@ -270,7 +270,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_with_shadow_small_edittext"
-                        android:text="@{addressFormViewModel.houseNumber}"
+                        android:text="@{addressesViewModel.houseNumber}"
                         tools:ignore="RtlSymmetry" />
 
                 </LinearLayout>

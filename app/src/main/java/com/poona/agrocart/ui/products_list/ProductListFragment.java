@@ -453,7 +453,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     {
         Bundle bundle = new Bundle();
         bundle.putString(PRODUCT_ID,product.getProductId());
-        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_products_list_to_productDetailFragment2,bundle);
+        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
     /*Redirect to Basket Detail screen*/
     private void redirectToBasketDetails(BasketResponse.Basket basket) {
