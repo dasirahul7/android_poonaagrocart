@@ -14,6 +14,7 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.databinding.RowBasketListItemBinding;
+import com.poona.agrocart.ui.home.adapter.BasketAdapter;
 
 import java.util.ArrayList;
 
@@ -21,10 +22,12 @@ public class BasketGridAdapter extends RecyclerView.Adapter<BasketGridAdapter.Ba
 {
     private final ArrayList<BasketResponse.Basket> basketArrayList;
     private RowBasketListItemBinding rowBasketBinding;
+    private BasketAdapter.OnBasketClickListener onBasketClickListener;
 
-    public BasketGridAdapter(ArrayList<BasketResponse.Basket> basketArrayList)
+    public BasketGridAdapter(ArrayList<BasketResponse.Basket> basketArrayList, BasketAdapter.OnBasketClickListener onBasketClickListener)
     {
         this.basketArrayList = basketArrayList;
+        this.onBasketClickListener = onBasketClickListener;
     }
 
     @NonNull
@@ -56,27 +59,16 @@ public class BasketGridAdapter extends RecyclerView.Adapter<BasketGridAdapter.Ba
 
         public BasketGridHolder(RowBasketListItemBinding productListItemBinding) {
             super(productListItemBinding.getRoot());
-            this.basketListItemBinding =productListItemBinding;
-
-//            productListItemBinding.cardviewProduct.setOnClickListener(v -> {
-//                redirectToProductsDetail(view);
-//            });
-
+            this.basketListItemBinding = productListItemBinding;
         }
 
-        private void redirectToProductsDetail(View v)
-        {
-            Bundle bundle = new Bundle();
-            bundle.putString("name",basketArrayList.get(getAdapterPosition()).getBasketName());
-            bundle.putString("image",basketArrayList.get(getAdapterPosition()).getFeatureImg());
-            bundle.putString("price",basketArrayList.get(getAdapterPosition()).getBasketRate());
-            Navigation.findNavController(v).navigate(R.id.action_nav_products_list_to_productDetailFragment2,bundle);
-        }
-
-        public void bind(BasketResponse.Basket basket)
+            public void bind(BasketResponse.Basket basket)
         {
             basketListItemBinding.setVariable(BR.basket,basket);
             basketListItemBinding.executePendingBindings();
+            itemView.setOnClickListener(view -> {
+                onBasketClickListener.OnBasketClick(basket);
+            });
         }
     }
 }

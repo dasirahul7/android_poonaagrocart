@@ -48,9 +48,9 @@ public class ProductListResponse extends BaseResponse{
         @SerializedName("category_id")
         @Expose
         private String categoryId;
-        @SerializedName("id")
+        @SerializedName("product_id")
         @Expose
-        private String id;
+        private String productId;
         @SerializedName("product_name")
         @Expose
         private String productName;
@@ -143,12 +143,12 @@ public class ProductListResponse extends BaseResponse{
             this.categoryId = categoryId;
         }
 
-        public String getId() {
-            return id;
+        public String getProductId() {
+            return productId;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setProductId(String id) {
+            this.productId = id;
         }
 
         public String getProductName() {

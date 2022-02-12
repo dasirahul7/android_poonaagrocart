@@ -4,10 +4,12 @@ import static com.poona.agrocart.app.AppConstants.AllBasket;
 import static com.poona.agrocart.app.AppConstants.AllExclusive;
 import static com.poona.agrocart.app.AppConstants.AllSelling;
 import static com.poona.agrocart.app.AppConstants.BASKET;
+import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
 import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
+import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -188,7 +190,12 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         //Best selling listing
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null) {
                             if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
-                                productArrayList = bestSellingResponse.getBestSellingData().getBestSellingProductList();
+                                for (ProductListResponse.Product product :bestSellingResponse.getBestSellingData().getBestSellingProductList()){
+                                    product.setUnit(product.getProductUnits().get(0));
+                                    product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                    productArrayList.add(product);
+                                }
+//                                productArrayList = bestSellingResponse.getBestSellingData().getBestSellingProductList();
                                 makeProductListing();
                             }
                         }
@@ -277,7 +284,12 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         } else {
                             if (productListByResponse.getProductListResponseDt().getProductList() != null) {
                                 if (productListByResponse.getProductListResponseDt().getProductList().size() > 0) {
-                                    productArrayList = productListByResponse.getProductListResponseDt().getProductList();
+                                    for (ProductListResponse.Product product :productListByResponse.getProductListResponseDt().getProductList()){
+                                        product.setUnit(product.getProductUnits().get(0));
+                                        product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                        productArrayList.add(product);
+                                    }
+//                                    productArrayList = productListByResponse.getProductListResponseDt().getProductList();
                                     makeProductListing();
                                 }
                             }
@@ -382,7 +394,9 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private void makeBasketListing() {
         if (basketArrayList != null && basketArrayList.size() > 0) {
             fragmentProductListBinding.tvNoData.setVisibility(View.GONE);
-            basketGridAdapter = new BasketGridAdapter(basketArrayList);
+            basketGridAdapter = new BasketGridAdapter(basketArrayList,basket -> {
+                redirectToBasketDetails(basket);
+            });
             rvVegetables.setAdapter(basketGridAdapter);
         }
     }
@@ -438,10 +452,14 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private void redirectToProductsDetail(ProductListResponse.Product product)
     {
         Bundle bundle = new Bundle();
-        bundle.putString("name",product.getProductName());
-        bundle.putString("image",product.getFeatureImg());
-        bundle.putString("price",product.getProductUnits().get(0).getSellingPrice());
+        bundle.putString(PRODUCT_ID,product.getProductId());
         NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_products_list_to_productDetailFragment2,bundle);
+    }
+    /*Redirect to Basket Detail screen*/
+    private void redirectToBasketDetails(BasketResponse.Basket basket) {
+        Bundle bundle = new Bundle();
+        bundle.putString(BASKET_ID,basket.getId());
+        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_home_to_basketDetailFragment,bundle);
     }
 
     @Override

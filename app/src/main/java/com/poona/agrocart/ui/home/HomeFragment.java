@@ -9,6 +9,8 @@ import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
 import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
+import static com.poona.agrocart.app.AppConstants.PU_ID;
+import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
@@ -34,7 +36,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,6 +46,7 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
+import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
@@ -237,7 +239,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString(SEARCH_TYPE, SEARCH_PRODUCT);
                                                 bundle.putString(SEARCH_KEY, fragmentHomeBinding.etSearch.getText().toString());
-                                                Navigation.findNavController(root).navigate(R.id.action_nav_home_to_searchFragment, bundle);
+                                                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_searchFragment, bundle);
                                             } else return;
                                         }
                                     } catch (Exception e) {
@@ -409,7 +411,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
 //                            bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-                            bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), root, this::toProductDetail);
+                            bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), root, this::toProductDetail, product -> {
+//                                addToCartProduct(showCircleProgressDialog(context,""),product,bestsellingAdapter);
+                            });
                             fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recBestSelling.setLayoutManager(layoutManager);
                             fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
@@ -437,6 +441,35 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 .observe(getViewLifecycleOwner(), bestSellingResponseObserver);
     }
 
+    private void addToCartProduct(ProgressDialog progressDialog, ProductListResponse.Product product, ExclusiveOfferListAdapter adapter) {
+        Observer<BaseResponse> baseResponseObserver= response -> {
+            if (response!=null){
+                progressDialog.dismiss();
+                Log.e(TAG, "addToCartProduct: "+new Gson().toJson(response));
+                switch (response.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context,response.getMessage());
+//                        callBestSellingApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, response.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(response.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, response.getMessage());
+                        break;
+                }
+
+            }
+        };
+        homeViewModel.addToCartProductLiveData(progressDialog,addtoCartParam(product),HomeFragment.this)
+                .observe(getViewLifecycleOwner(),baseResponseObserver);
+    }
+
     //Product Offer Data listing
     private void callExclusiveOfferApi(View root, ProgressDialog progressDialog, int limit, int offset) {
         Observer<ExclusiveResponse> exclusiveResponseObserver = exclusiveResponse -> {
@@ -454,9 +487,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
 //                            offerProducts = exclusiveResponse.getExclusiveData().getExclusivesList();
                             makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
-                            offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), root, product -> {
-                                // Redirect to ProductOld details
-                                toProductDetail(product);
+                            // Redirect to ProductOld details
+                            offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), root, this::toProductDetail, product -> {
+//                                addToCartProduct(showCircleProgressDialog(context,""),product,offerListAdapter);
                             });
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
                             fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);
@@ -483,6 +516,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         homeViewModel.exclusiveResponseLiveData(progressDialog, listingParams(limit, offset, ""), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), exclusiveResponseObserver);
     }
+
 
     private void makeVisible(View recyclerView, View relativeLayout) {
         try {
@@ -533,7 +567,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void redirectToOurShops(View v) {
-        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_our_stores);
+        NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_our_stores);
     }
 
 
@@ -726,18 +760,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding = null;
     }
 
-    private void addToBasket(ProductOld item) {
-        item.setQuantity("1");
-        mCartList.add(item);
-        preferences.saveCartArrayList(mCartList, AppConstants.CART_LIST);
-        for (int i = 0; i < mCartList.size(); i++) {
-            System.out.println("Added: " + mCartList.get(i).getName());
-        }
+
+
+
+
+    private HashMap<String, String> addtoCartParam(ProductListResponse.Product product) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(PRODUCT_ID, product.getProductId());
+            map.put(PU_ID,"5");
+            map.put(QUANTITY,"2");
+        return map;
     }
 
     public void toProductDetail(ProductListResponse.Product product) {
         Bundle bundle = new Bundle();
-        bundle.putString(PRODUCT_ID, product.getId());
+        bundle.putString(PRODUCT_ID, product.getProductId());
         NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
 
@@ -752,22 +789,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.tv_all_category:
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_explore);
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_explore);
                 break;
             case R.id.tv_all_basket:
                 bundle.putString(LIST_TITLE, AllBasket);
                 bundle.putString(FROM_SCREEN, AllBasket);
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
                 break;
             case R.id.tv_all_selling:
                 bundle.putString(LIST_TITLE, AllSelling);
                 bundle.putString(FROM_SCREEN, AllSelling);
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
                 break;
             case R.id.tv_all_exclusive:
                 bundle.putString(LIST_TITLE, AllExclusive);
                 bundle.putString(FROM_SCREEN, AllExclusive);
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
                 break;
         }
     }

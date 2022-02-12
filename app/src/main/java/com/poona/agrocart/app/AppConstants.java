@@ -165,9 +165,13 @@ public class AppConstants {
 
     /*Basket API Keys*/
     public static final String BASKET_ID ="basket_id";
+    public static final String ADD_TO_BASKET ="add-to-cart-basket";
 
     /*Product API Keys*/
     public static final String PRODUCT_ID ="product_id";
+    public static final String ADD_TO_PRODUCT ="add-to-cart-product";
+    public static final String PU_ID ="pu_id";
+    public static final String QUANTITY ="quantity";
     /*Category types*/
     public static final String BASKET = "0";
     public static final String PRODUCT = "1";

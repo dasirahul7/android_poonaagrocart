@@ -3,7 +3,6 @@ package com.poona.agrocart.ui.home;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -225,7 +224,7 @@ public class HomeViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ExclusiveResponse exclusiveResponse) {
                         if (exclusiveResponse != null) {
-                            Log.d(TAG, "Product onSuccess: " + exclusiveResponse.getExclusiveData().getExclusivesList().get(0).getId());
+                            Log.d(TAG, "Product onSuccess: " + exclusiveResponse.getExclusiveData().getExclusivesList().get(0).getProductId());
 
                             progressDialog.dismiss();
                             exclusiveResponseMutableLiveData.setValue(exclusiveResponse);
@@ -423,6 +422,46 @@ public class HomeViewModel extends AndroidViewModel {
         return storeBannerMutableLiveData;
     }
 
+    /*Add to Product in CART API*/
+    public LiveData<BaseResponse> addToCartProductLiveData(ProgressDialog progressDialog,
+                                                                     HashMap<String,String> hashMap,
+                                                                     HomeFragment homeFragment){
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(homeFragment.getContext())
+                .create(ApiInterface.class)
+                .addToCartProductResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse!=null){
+                            Log.e(TAG, "add to cart onSuccess: "+new Gson().toJson(baseResponse));
+                            progressDialog.dismiss();
+                            baseResponseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try{
+                            response = gson.fromJson(((HttpException) e).response().errorBody().toString(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(7,"");
+                        }
+                    }
+                });
+        return baseResponseMutableLiveData;
+    }
+
     public MutableLiveData<ArrayList<ProductOld>> getLiveDataCartProduct() {
         return liveDataCartProduct;
     }
@@ -430,6 +469,4 @@ public class HomeViewModel extends AndroidViewModel {
     public MutableLiveData<ArrayList<ProductOld>> getSavesProductInBasket() {
         return savesProductInBasket;
     }
-
-
 }

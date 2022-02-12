@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentForgotPasswordBinding;
@@ -74,7 +75,7 @@ public class ForgotPasswordFragment extends BaseFragment implements View.OnClick
                 redirectToLoginScreen(v);
                 break;
             case R.id.tv_log_in:
-                Navigation.findNavController(v).navigate(R.id.action_forgotPasswordFragment_to_LoginFragment);
+                NavHostFragment.findNavController(ForgotPasswordFragment.this).navigate(R.id.action_forgotPasswordFragment_to_LoginFragment);
                 break;
         }
     }

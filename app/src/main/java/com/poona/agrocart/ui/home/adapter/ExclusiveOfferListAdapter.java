@@ -12,11 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.databinding.RowExclusiveItemBinding;
-import com.poona.agrocart.ui.home.OnPlusClick;
-import com.poona.agrocart.ui.home.OnProductClick;
 
 import java.util.ArrayList;
 
@@ -26,19 +23,26 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
     private RowExclusiveItemBinding rowExclusiveItemBinding;
     private final View view;
     private OnProductClickListener onProductClickListener;
+    private OnPlusClickListener onPlusClickListener;
 
 
     public ExclusiveOfferListAdapter(ArrayList<ProductListResponse.Product> products,
                                      Context bdContext, View view,
-                                     OnProductClickListener onProductClickListener) {
+                                     OnProductClickListener onProductClickListener,
+                                     OnPlusClickListener onPlusClickListener) {
         this.products = products;
         this.bdContext = bdContext;
         this.view = view;
         this.onProductClickListener = onProductClickListener;
+        this.onPlusClickListener = onPlusClickListener;
     }
     public interface OnProductClickListener{
         void onProductClick(ProductListResponse.Product product);
     }
+    public interface OnPlusClickListener {
+        void OnPlusClick(ProductListResponse.Product product);
+    }
+
 
     @NonNull
     @Override
@@ -75,30 +79,18 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
                 rowExclusiveItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
             if (product.getIsO3().equalsIgnoreCase("yes"))
                 rowExclusiveItemBinding.txtOrganic.setVisibility(View.VISIBLE);
+            if (product.getInCart()==1)
+                rowExclusiveItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
+            else rowExclusiveItemBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onProductClickListener.onProductClick(product);
                 }
             });
-
-//            if (product.isInBasket())
-//                rowExclusiveItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
-//            if (Objects.equals(product.getProductUnits().get(0).getWeight(), "0")) {
-//                rowExclusiveItemBinding.txtItemQty.setVisibility(View.INVISIBLE);
-//                rowExclusiveItemBinding.txtItemPrice.setVisibility(View.GONE);
-//                rowExclusiveItemBinding.txtItemOfferPrice.setVisibility(View.GONE);
-//                rowExclusiveItemBinding.txtItemOffer.setVisibility(View.GONE);
-//                rowExclusiveItemBinding.imgPlus.setVisibility(View.GONE);
-//                rowExclusiveItemBinding.txtOutOfStock.setVisibility(View.VISIBLE);
-//            }
-//            rowExclusiveItemBinding.imgPlus.setOnClickListener(v -> {
-//                onPlusClick.addToCart(product, position);
-//            });
-//            itemView.setOnClickListener(v -> {
-//                onProductClick.toProductDetail(product);
-//            });
-
+            rowExclusiveItemBinding.imgPlus.setOnClickListener(view1 -> {
+                onPlusClickListener.OnPlusClick(product);
+            });
         }
     }
 }
