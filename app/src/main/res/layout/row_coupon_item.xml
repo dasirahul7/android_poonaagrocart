@@ -194,6 +194,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_type" />
 
             <LinearLayout
+                android:id="@+id/ll_terms_and_cond"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

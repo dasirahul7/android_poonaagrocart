@@ -1,14 +1,13 @@
 
-package com.poona.agrocart.data.network.reponses;
+package com.poona.agrocart.data.network.reponses.galleryResponse;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.poona.agrocart.data.network.reponses.gallery.GalleryImage;
-import com.poona.agrocart.data.network.reponses.gallery.GalleryVideo;
+import com.poona.agrocart.data.network.reponses.BaseResponse;
 
 import java.util.List;
 
-public class GalleryResponse extends BaseResponse{
+public class GalleryResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private Gallery data;

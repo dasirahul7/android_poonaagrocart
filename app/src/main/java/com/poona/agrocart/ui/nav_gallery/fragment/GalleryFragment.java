@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_gallery.fragment;
 
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -8,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,28 +17,31 @@ import android.widget.FrameLayout;
 
 import com.google.android.material.tabs.TabLayout;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryImage;
+import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryVideo;
 import com.poona.agrocart.databinding.FragmentGalleryBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_gallery.viewModel.GalleryViewModel;
-import com.poona.agrocart.ui.nav_gallery.model.Photos;
-import com.poona.agrocart.ui.nav_gallery.model.Videos;
 import com.poona.agrocart.ui.nav_gallery.adapter.GalleryFragmentAdapter;
 import com.poona.agrocart.widgets.CustomTextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class GalleryFragment extends BaseFragment {
 
     private GalleryViewModel mViewModel;
     private FragmentGalleryBinding galleryBinding;
-    private TabLayout mTabs;
+    private ArrayList<String> tabsTitle;
+    private ArrayList<Fragment> fragmentsName;
+    private TabLayout tabLayout;
     private View mIndicator;
     private ViewPager mViewPager;
     private int indicatorWidth;
     private View fragmentView;
-    private ArrayList<Photos> photos = new ArrayList<>();
-    private ArrayList<Videos> videos = new ArrayList<>();
+    private List<GalleryImage> photos = new ArrayList<>();
+    private List<GalleryVideo> videos = new ArrayList<>();
 
 
 
@@ -51,16 +55,25 @@ public class GalleryFragment extends BaseFragment {
         initViews();
         setFragmentItem();
         setTabsAction();
+
+        Log.d("TAG", "onCreateView: ");
         return fragmentView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("TAG", "onResume: ");
+        setFragmentItem();
+        setTabsAction();
+    }
 
     private void setTabsAction() {
         //Determine indicator width at runtime
-        mTabs.post(new Runnable() {
+        tabLayout.post(new Runnable() {
             @Override
             public void run() {
-                indicatorWidth = mTabs.getWidth() / mTabs.getTabCount();
+                indicatorWidth = tabLayout.getWidth() / tabLayout.getTabCount();
                 //Assign new width
                 FrameLayout.LayoutParams indicatorParams = (FrameLayout.LayoutParams) mIndicator.getLayoutParams();
                 indicatorParams.width = indicatorWidth-30;
@@ -72,8 +85,8 @@ public class GalleryFragment extends BaseFragment {
                 CustomTextView tabVideo = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.gallery_tab_item, null);
                 tabVideo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gallery_video, 0, 0, 0);
                 tabVideo.setText(R.string.video);
-                Objects.requireNonNull(mTabs.getTabAt(0)).setCustomView(tabPhoto);
-                Objects.requireNonNull(mTabs.getTabAt(1)).setCustomView(tabVideo);
+                Objects.requireNonNull(tabLayout.getTabAt(0)).setCustomView(tabPhoto);
+                Objects.requireNonNull(tabLayout.getTabAt(1)).setCustomView(tabVideo);
 
             }
         });
@@ -106,11 +119,14 @@ public class GalleryFragment extends BaseFragment {
 
     private void setFragmentItem() {
         //Set up the view pager and fragments
-        GalleryFragmentAdapter adapter = new GalleryFragmentAdapter(getActivity().getSupportFragmentManager(), 1);
+        GalleryFragmentAdapter adapter = new GalleryFragmentAdapter(getActivity().getSupportFragmentManager(),context);
+
         adapter.addFragment(PhotoGalleryFragment.newInstance(), getString(R.string.photo));
         adapter.addFragment(VideoGalleryFragment.newInstance(), getString(R.string.video));
+
+
         mViewPager.setAdapter(adapter);
-        mTabs.setupWithViewPager(mViewPager);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
     private void initViews() {
@@ -119,11 +135,12 @@ public class GalleryFragment extends BaseFragment {
 //        galleryBinding.setLifecycleOwner(this);
         mViewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
         fragmentView = galleryBinding.getRoot();
-        mTabs = galleryBinding.tab;
+        tabLayout = galleryBinding.tab;
         mIndicator = galleryBinding.indicator;
         mViewPager = galleryBinding.vpGallery;
-//        makePhotoList();
-//        makeVideoList();
+
+        //makePhotoList();
+       //makeVideoList();
         mViewModel.photoLiveData.setValue(photos);
         mViewModel.videoLiveData.setValue(videos);
     }

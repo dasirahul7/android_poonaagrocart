@@ -1,7 +1,5 @@
 package com.poona.agrocart.ui.nav_gallery.adapter;
 
-import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,12 +8,10 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.poona.agrocart.BR;
-import com.poona.agrocart.data.network.reponses.gallery.GalleryVideo;
+import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryVideo;
 import com.poona.agrocart.databinding.RowVideoItemBinding;
 import com.poona.agrocart.ui.nav_gallery.fragment.VideoGalleryFragment;
-import com.poona.agrocart.ui.nav_gallery.model.Videos;
 
 import java.util.ArrayList;
 import java.util.List;

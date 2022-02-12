@@ -10,7 +10,9 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,13 +39,16 @@ import com.poona.agrocart.databinding.FragmentCouponBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.widgets.CustomTextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class CouponFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
+public class CouponFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener, CouponAdapter.TermsAndConditionClickItem {
     private static final String TAG = CouponFragment.class.getSimpleName();
     private CouponViewModel couponViewModel;
     private FragmentCouponBinding fragmentCouponBinding;
     private CouponAdapter couponAdapter;
+    private List<CouponResponse.Coupon> couponArrayList = new ArrayList<>();
     private int limit =0,offset = 0;
 
 
@@ -73,10 +78,13 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
                 switch (couponResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (couponResponse.getCoupons().size() > 0) {
+                            couponArrayList = couponResponse.getCoupons();
                             couponAdapter = new CouponAdapter(couponResponse.getCoupons(), requireActivity(), CouponFragment.this);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
                             fragmentCouponBinding.rvCoupons.setLayoutManager(layoutManager);
                             fragmentCouponBinding.rvCoupons.setAdapter(couponAdapter);
+
+                            couponAdapter.notifyDataSetChanged();
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -112,7 +120,7 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
             return map;
     }
 
-    public void termsDialog() {
+    public void termsDialog(String termsAndCondition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         DialogCouponTermsBinding binding = DialogCouponTermsBinding.inflate(LayoutInflater.from(context));
         builder.setView(binding.getRoot());
@@ -125,12 +133,20 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
         CustomTextView tvContent = binding.tvContent;
         CustomTextView dialogTitle = binding.dialogTitle;
         dialogTitle.setText(R.string.menu_terms_conditions);
-        tvContent.setText(getString(R.string.sample_coupon_terms));
+
+
         walletDialog.setVisibility(View.GONE);
         tvContent.setVisibility(View.VISIBLE);
         closeImg.setOnClickListener(v -> {
             dialog.dismiss();
         });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            binding.tvContent.setText(Html.fromHtml(""+termsAndCondition, Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            binding.tvContent.setText(Html.fromHtml(""+termsAndCondition));
+        }
+
         dialog.show();
 
         // Get screen width and height in pixels
@@ -177,6 +193,13 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         }, context);
+
+    }
+
+    @Override
+    public void itemViewClick(int position) {
+        String termsConditions = couponArrayList.get(position).getTermsAndCond();
+            termsDialog(termsConditions);
 
     }
 }
