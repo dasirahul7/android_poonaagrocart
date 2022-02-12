@@ -195,6 +195,7 @@
         <item name="android:textColor">@color/color15</item>
         <item name="android:textSize">@dimen/_16sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:includeFontPadding">false</item>
         <item name="setCustomFont">@string/font_poppins_semi_bold</item>
     </style>
 
@@ -209,6 +210,7 @@
         <item name="android:textColor">@color/color15</item>
         <item name="android:textSize">@dimen/_16sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:includeFontPadding">false</item>
         <item name="setCustomFont">@string/font_poppins_semi_bold</item>
     </style>
 

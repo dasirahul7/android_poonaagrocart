@@ -14,355 +14,356 @@
         android:layout_height="match_parent"
         tools:context=".ui.nav_profile.MyProfileFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:background="@color/white">
-
-        <RelativeLayout
-            android:id="@+id/rl_main_layout"
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_width="match_parent"
+            android:background="@color/white">
 
             <RelativeLayout
-                android:id="@+id/rl_edit_profile_layout"
+                android:id="@+id/rl_main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <FrameLayout
-                    android:id="@+id/frameLayout"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/rl_edit_profile_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp">
+                    android:gravity="center">
 
-                    <com.poona.agrocart.widgets.imageview.CircularImageView
-                        android:id="@+id/iv_profile_picture"
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_100sdp"
-                        android:src="@drawable/ic_profile" />
+                    <FrameLayout
+                        android:id="@+id/frameLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp">
 
-                    <ImageView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_gravity="top|end"
-                        android:layout_marginEnd="@dimen/_4sdp"
-                        android:src="@drawable/ic_black_circle" />
+                        <com.poona.agrocart.widgets.imageview.CircularImageView
+                            android:id="@+id/iv_profile_picture"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:src="@drawable/ic_profile" />
 
-                    <ImageView
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_gravity="top|end"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:layout_marginEnd="@dimen/_9sdp"
+                        <ImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_gravity="top|end"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:src="@drawable/ic_black_circle" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_gravity="top|end"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:layout_marginEnd="@dimen/_9sdp"
+                            android:padding="@dimen/alerter_padding_small"
+                            android:src="@drawable/ic_camera" />
+                    </FrameLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_details_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rl_edit_profile_layout"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_name_text"
+                            style="@style/FormTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/name" />
+
+
+                        <com.poona.agrocart.widgets.CustomEditText
+                            android:id="@+id/et_username"
+                            style="@style/FormEdittextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/backgound_deit_profile"
+                            android:text="@={myProfileViewModel.name}"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_mobile_no_text"
+                            style="@style/FormTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mobile_no" />
+
+                        <com.poona.agrocart.widgets.CustomEditText
+                            android:id="@+id/et_mobile_number"
+                            style="@style/FormEdittextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:background="@drawable/backgound_deit_profile"
+                            android:text="@={myProfileViewModel.mobileNo}"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_alternate_mobile_no_text"
+                            style="@style/FormTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/alternate_mobile_no" />
+
+                        <com.poona.agrocart.widgets.CustomEditText
+                            android:id="@+id/et_alternate_mobile_number"
+                            style="@style/FormEdittextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:background="@drawable/backgound_deit_profile"
+                            android:text="@={myProfileViewModel.alternateMobileNo}"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_email_id"
+                            style="@style/FormTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/email_id" />
+
+                        <com.poona.agrocart.widgets.CustomEditText
+                            android:id="@+id/et_email_id"
+                            style="@style/FormEdittextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="textEmailAddress"
+                            android:background="@drawable/backgound_deit_profile"
+                            android:text="@={myProfileViewModel.emailId}"
+                            android:singleLine="true"
+                            android:imeOptions="actionDone" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_state_and_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="100">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/_2sdp">
+
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_state_text"
+                                style="@style/FormShortTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/state" />
+
+                            <Spinner
+                                android:id="@+id/spinner_state"
+                                style="@style/FormShortEdittextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_30sdp"
+                                android:paddingEnd="@dimen/_12sdp"
+                                android:background="@drawable/bg_my_profile_spinner" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/_2sdp">
+
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_city_text"
+                                style="@style/FormShortTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/city" />
+
+                            <Spinner
+                                android:id="@+id/spinner_city"
+                                style="@style/FormShortEdittextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_30sdp"
+                                android:background="@drawable/bg_my_profile_spinner" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_area_text"
+                            style="@style/FormTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/area" />
+
+                        <Spinner
+                            android:id="@+id/spinner_area"
+                            style="@style/FormShortEdittextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:background="@drawable/bg_my_profile_spinner" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_gender_text"
+                            style="@style/FormTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/gender" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_gender"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_30sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:orientation="horizontal"
+                            android:weightSum="100"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_gender_text">
+
+                            <com.poona.agrocart.widgets.CustomRadioButton
+                                android:id="@+id/rb_male"
+                                style="@style/RadioButtonAddress"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="33"
+                                android:paddingStart="@dimen/_4sdp"
+                                android:text="@string/male"
+                                android:textSize="@dimen/_14sp"
+                                app:useMaterialThemeColors="false"
+                                app:setCustomFont="@string/font_poppins_regular"
+                                tools:ignore="RtlSymmetry" />
+
+                            <com.poona.agrocart.widgets.CustomRadioButton
+                                android:id="@+id/rb_female"
+                                style="@style/RadioButtonAddress"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="34"
+                                android:paddingStart="@dimen/_4sdp"
+                                android:text="@string/female"
+                                android:textSize="@dimen/_14sp"
+                                app:useMaterialThemeColors="false"
+                                app:setCustomFont="@string/font_poppins_regular"
+                                tools:ignore="RtlSymmetry" />
+
+                            <com.poona.agrocart.widgets.CustomRadioButton
+                                android:id="@+id/rb_other"
+                                style="@style/RadioButtonAddress"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="33"
+                                android:paddingStart="@dimen/_4sdp"
+                                android:text="@string/other"
+                                android:textSize="@dimen/_14sp"
+                                app:useMaterialThemeColors="false"
+                                app:setCustomFont="@string/font_poppins_regular"
+                                tools:ignore="RtlSymmetry" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_text_date_of_birth"
+                            style="@style/FormTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="@string/date_of_birth" />
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_date_of_birth_input"
+                            style="@style/FormEdittextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_my_profile_dob"
+                            android:text="@={myProfileViewModel.dateOfBirth}"/>
+
+                    </LinearLayout>
+
+                    <com.poona.agrocart.widgets.CustomButton
+                        android:id="@+id/cbt_save"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_25sdp"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:background="@drawable/background_light_green"
+                        android:includeFontPadding="false"
                         android:padding="@dimen/alerter_padding_small"
-                        android:src="@drawable/ic_camera" />
-                </FrameLayout>
+                        android:text="@string/save"
+                        android:textAllCaps="false"
+                        android:textColor="@color/background_color_white_green"
+                        android:textSize="@dimen/_18sp"
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
+
+                </LinearLayout>
+
 
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_details_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rl_edit_profile_layout"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_name_text"
-                        style="@style/FormTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/name" />
-
-
-                    <com.poona.agrocart.widgets.CustomEditText
-                        android:id="@+id/et_username"
-                        style="@style/FormEdittextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/backgound_deit_profile"
-                        android:text="@={myProfileViewModel.name}"
-                        android:singleLine="true"
-                        android:imeOptions="actionNext"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_mobile_no_text"
-                        style="@style/FormTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/mobile_no" />
-
-                    <com.poona.agrocart.widgets.CustomEditText
-                        android:id="@+id/et_mobile_number"
-                        style="@style/FormEdittextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="number"
-                        android:maxLength="10"
-                        android:background="@drawable/backgound_deit_profile"
-                        android:text="@={myProfileViewModel.mobileNo}"
-                        android:singleLine="true"
-                        android:imeOptions="actionNext" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_alternate_mobile_no_text"
-                        style="@style/FormTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/alternate_mobile_no" />
-
-                    <com.poona.agrocart.widgets.CustomEditText
-                        android:id="@+id/et_alternate_mobile_number"
-                        style="@style/FormEdittextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="number"
-                        android:maxLength="10"
-                        android:background="@drawable/backgound_deit_profile"
-                        android:text="@={myProfileViewModel.alternateMobileNo}"
-                        android:singleLine="true"
-                        android:imeOptions="actionNext" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_email_id"
-                        style="@style/FormTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/email_id" />
-
-                    <com.poona.agrocart.widgets.CustomEditText
-                        android:id="@+id/et_email_id"
-                        style="@style/FormEdittextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="textEmailAddress"
-                        android:background="@drawable/backgound_deit_profile"
-                        android:text="@={myProfileViewModel.emailId}"
-                        android:singleLine="true"
-                        android:imeOptions="actionDone" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/ll_state_and_city"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_2sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="100">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="50"
-                        android:background="@color/white"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/_2sdp">
-
-                        <com.poona.agrocart.widgets.CustomTextView
-                            android:id="@+id/tv_state_text"
-                            style="@style/FormShortTextStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/state" />
-
-                        <Spinner
-                            android:id="@+id/spinner_state"
-                            style="@style/FormShortEdittextStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_30sdp"
-                            android:background="@drawable/bg_my_profile_spinner" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="50"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/_2sdp">
-
-                        <com.poona.agrocart.widgets.CustomTextView
-                            android:id="@+id/tv_city_text"
-                            style="@style/FormShortTextStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/city" />
-
-                        <Spinner
-                            android:id="@+id/spinner_city"
-                            style="@style/FormShortEdittextStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_30sdp"
-                            android:background="@drawable/bg_my_profile_spinner" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_area_text"
-                        style="@style/FormTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/area" />
-
-                    <Spinner
-                        android:id="@+id/spinner_area"
-                        style="@style/FormShortEdittextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_35sdp"
-                        android:background="@drawable/bg_my_profile_spinner" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_gender_text"
-                        style="@style/FormTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/gender" />
-
-                    <RadioGroup
-                        android:id="@+id/rg_gender"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_30sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="100"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_gender_text">
-
-                        <com.poona.agrocart.widgets.CustomRadioButton
-                            android:id="@+id/rb_male"
-                            style="@style/RadioButtonAddress"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="33"
-                            android:paddingStart="@dimen/_4sdp"
-                            android:text="@string/male"
-                            android:textSize="@dimen/_14sp"
-                            app:useMaterialThemeColors="false"
-                            app:setCustomFont="@string/font_poppins_regular"
-                            tools:ignore="RtlSymmetry" />
-
-                        <com.poona.agrocart.widgets.CustomRadioButton
-                            android:id="@+id/rb_female"
-                            style="@style/RadioButtonAddress"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="34"
-                            android:paddingStart="@dimen/_4sdp"
-                            android:text="@string/female"
-                            android:textSize="@dimen/_14sp"
-                            app:useMaterialThemeColors="false"
-                            app:setCustomFont="@string/font_poppins_regular"
-                            tools:ignore="RtlSymmetry" />
-
-                        <com.poona.agrocart.widgets.CustomRadioButton
-                            android:id="@+id/rb_other"
-                            style="@style/RadioButtonAddress"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="33"
-                            android:paddingStart="@dimen/_4sdp"
-                            android:text="@string/other"
-                            android:textSize="@dimen/_14sp"
-                            app:useMaterialThemeColors="false"
-                            app:setCustomFont="@string/font_poppins_regular"
-                            tools:ignore="RtlSymmetry" />
-
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_text_date_of_birth"
-                        style="@style/FormTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:text="@string/date_of_birth" />
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_date_of_birth_input"
-                        style="@style/FormEdittextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_my_profile_dob"
-                        android:text="@={myProfileViewModel.dateOfBirth}"/>
-                </LinearLayout>
-
-                <com.poona.agrocart.widgets.CustomButton
-                    android:id="@+id/cbt_save"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|center_vertical"
-                    android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
-                    android:background="@drawable/background_light_green"
-                    android:includeFontPadding="false"
-                    android:padding="@dimen/alerter_padding_small"
-                    android:text="@string/save"
-                    android:textAllCaps="false"
-                    android:textColor="@color/background_color_white_green"
-                    android:textSize="@dimen/_18sp"
-                    app:setCustomFont="@string/font_poppins_semi_bold" />
-
-            </LinearLayout>
-
-
-        </RelativeLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

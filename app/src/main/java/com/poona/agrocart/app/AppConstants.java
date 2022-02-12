@@ -71,7 +71,7 @@ public class AppConstants {
     public static final String STATE_API = "state";
     public static final String AREA_API = "area";
     public static final String CITY_API = "city";
-    public static final String MY_PROFILE_API = "profile-view-customerl";
+    public static final String MY_PROFILE_API = "profile-view-customer";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
     /*Home screen APIs*/
     public static final String HOME_BANNER_API = "home-screen-banner";

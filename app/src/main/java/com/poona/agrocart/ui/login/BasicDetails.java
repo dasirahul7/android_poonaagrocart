@@ -10,6 +10,7 @@ public class BasicDetails {
     String userName;
     String emailId;
     String userId;
+    String id;
     String city;
     String area;
     String password;
@@ -107,6 +108,14 @@ public class BasicDetails {
 
     public void setAlternateMobileNumber(String alternateMobileNumber) {
         this.alternateMobileNumber = alternateMobileNumber;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getState() {

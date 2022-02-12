@@ -1,25 +1,17 @@
 package com.poona.agrocart.ui.nav_profile;
 
-import static android.app.Activity.RESULT_OK;
-
 import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -37,6 +29,7 @@ import com.poona.agrocart.ui.login.BasicDetails;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -48,13 +41,16 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import retrofit2.HttpException;
 
 public class MyProfileFragment extends BaseFragment implements View.OnClickListener {
+    private static final String TAG = MyProfileFragment.class.getSimpleName();
     private FragmentMyProfileBinding fragmentMyProfileBinding;
     private MyProfileViewModel myProfileViewModel;
     private Calendar calendar;
     private int mYear, mMonth, mDay;
+
     private final String[] cities={"Pune"};
     private final String[] areas={"Vishrantwadi", "Khadki"};
     private final String[] states={"Maharashtra"};
+
     private View view;
 
     private BasicDetails basicDetails;
@@ -72,7 +68,6 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         basicDetails = new BasicDetails();
 
         initView();
-        setupSpinner();
 
         fragmentMyProfileBinding.rgGender.setOnCheckedChangeListener((group, checkedId) -> {
             switch(checkedId){
@@ -106,17 +101,60 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void setupSpinner() {
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions,states);
-        arrayAdapter.setDropDownViewResource(R.layout.custom_list_item_checked);
-        fragmentMyProfileBinding.spinnerState.setAdapter(arrayAdapter);
+        stateList = new ArrayList<>();
+        cityList = new ArrayList<>();
+        areaList = new ArrayList<>();
 
-        arrayAdapter = new ArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions,cities);
-        arrayAdapter.setDropDownViewResource(R.layout.custom_list_item_checked);
-        fragmentMyProfileBinding.spinnerCity.setAdapter(arrayAdapter);
+        if(stateResponse.getStates() != null && stateResponse.getStates().size() > 0) {
+            for(int i = 0; i < stateResponse.getStates().size(); i++) {
+                BasicDetails basicDetails = new BasicDetails();
+                basicDetails.setId(stateResponse.getStates().get(i).getId());
+                basicDetails.setName(stateResponse.getStates().get(i).getStateName());
+                stateList.add(basicDetails);
+            }
+        } else {
+            BasicDetails basicDetails = new BasicDetails();
+            basicDetails.setId("0");
+            basicDetails.setName("Select");
+            stateList.add(basicDetails);
+        }
 
-        arrayAdapter = new ArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions,areas);
-        arrayAdapter.setDropDownViewResource(R.layout.custom_list_item_checked);
-        fragmentMyProfileBinding.spinnerArea.setAdapter(arrayAdapter);
+        if(cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
+            for(int i = 0; i < cityResponse.getCities().size(); i++) {
+                BasicDetails basicDetails = new BasicDetails();
+                basicDetails.setId(cityResponse.getCities().get(i).getId());
+                basicDetails.setName(cityResponse.getCities().get(i).getCityName());
+                cityList.add(basicDetails);
+            }
+        } else {
+            BasicDetails basicDetails = new BasicDetails();
+            basicDetails.setId("0");
+            basicDetails.setName("Select");
+            cityList.add(basicDetails);
+        }
+
+        if(areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
+            for(int i = 0; i < areaResponse.getAreas().size(); i++) {
+                BasicDetails basicDetails = new BasicDetails();
+                basicDetails.setId(areaResponse.getAreas().get(i).getId());
+                basicDetails.setName(areaResponse.getAreas().get(i).getAreaName());
+                areaList.add(basicDetails);
+            }
+        } else {
+            BasicDetails basicDetails = new BasicDetails();
+            basicDetails.setId("0");
+            basicDetails.setName("Select");
+            areaList.add(basicDetails);
+        }
+
+        CustomArrayAdapter stateArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, stateList);
+        fragmentMyProfileBinding.spinnerState.setAdapter(stateArrayAdapter);
+
+        CustomArrayAdapter cityArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, cityList);
+        fragmentMyProfileBinding.spinnerCity.setAdapter(cityArrayAdapter);
+
+        CustomArrayAdapter areaArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, areaList);
+        fragmentMyProfileBinding.spinnerArea.setAdapter(areaArrayAdapter);
     }
 
     public void showCalendar() {
@@ -216,7 +254,14 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private StateResponse stateResponse = null;
     private CityResponse cityResponse = null;
     private AreaResponse areaResponse = null;
+    private List<BasicDetails> stateList;
+    private List<BasicDetails> cityList;
+    private List<BasicDetails> areaList;
     private void getCommonApiResponses(ProgressDialog progressDialog) {
+        /* print user input parameters */
+        for (Map.Entry<String, String> entry : profileParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
         myProfileViewModel.getCommonApiResponses(context, profileParameters())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new Observer<List<String>>() {
@@ -248,6 +293,8 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                         preferences.setCityData(cityResponse);
                         preferences.setAreaData(areaResponse);*/
 
+                        setupSpinner();
+
                         progressDialog.dismiss();
                     }
 
@@ -265,6 +312,8 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                                 preferences.setStateData(stateResponse);
                                 preferences.setCityData(cityResponse);
                                 preferences.setAreaData(areaResponse);*/
+
+                                setupSpinner();
                             } catch (Exception exception) {
                                 exception.printStackTrace();
                                 showServerErrorDialog(getString(R.string.for_better_user_experience), MyProfileFragment.this, () -> {
