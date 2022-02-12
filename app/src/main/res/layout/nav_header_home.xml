@@ -16,7 +16,7 @@
         android:src="@drawable/ic_profile"
         app:tint="@color/white"
         app:civ_border_width="@dimen/_1sdp"
-        app:civ_border_color="#979797"/>
+        app:civ_border_color="#fff"/>
 
 
     <RelativeLayout

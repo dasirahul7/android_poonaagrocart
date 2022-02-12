@@ -892,6 +892,5 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     public boolean canMakeSmores() {
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
-
     /*end to image update*/
 }

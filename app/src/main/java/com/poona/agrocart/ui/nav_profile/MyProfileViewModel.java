@@ -113,7 +113,7 @@ public class MyProfileViewModel extends AndroidViewModel {
                                                            MyProfileFragment myProfileFragment,
                                                            HashMap<String, RequestBody> profileMap,
                                                            MultipartBody.Part profilePhoto) {
-        MutableLiveData<ProfileResponse> registrationApiResponse = new MutableLiveData<>();
+        MutableLiveData<ProfileResponse> responseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(myProfileFragment.getContext())
                 .create(ApiInterface.class)
@@ -124,7 +124,7 @@ public class MyProfileViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProfileResponse profileResponse) {
                         progressDialog.dismiss();
-                        registrationApiResponse.setValue(profileResponse);
+                        responseMutableLiveData.setValue(profileResponse);
                     }
 
                     @Override
@@ -137,15 +137,15 @@ public class MyProfileViewModel extends AndroidViewModel {
                             response = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     ProfileResponse.class);
 
-                            registrationApiResponse.setValue(response);
+                            responseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) myProfileFragment).onNetworkException(0);
+                            ((NetworkExceptionListener) myProfileFragment).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());
                     }
                 });
-        return registrationApiResponse;
+        return responseMutableLiveData;
     }
 }
