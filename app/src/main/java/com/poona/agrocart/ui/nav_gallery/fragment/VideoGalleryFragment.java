@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_gallery.fragment;
 
+import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
@@ -31,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
@@ -196,7 +198,9 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         i.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"video/mp4", "video/quicktime"});
         startActivityForResult(i, requestCode);*/
 
-
+        Glide.with(context)
+                .load(IMAGE_DOC_BASE_URL+galleryVideoList.get(position).getVideoImage())
+                .into(imageView);
 
         //String strVideoView = galleryVideoList.get(position).getVideoUrl();
         String strVideoView = "https://law.duke.edu/cspd/contest/videos/Framed-Contest_Documentaries-and-You.mp4";

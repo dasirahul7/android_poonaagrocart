@@ -1,12 +1,16 @@
 package com.poona.agrocart.ui.nav_gallery.adapter;
 
+import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.data.network.reponses.gallery.GalleryVideo;
 import com.poona.agrocart.databinding.RowVideoItemBinding;
@@ -22,6 +26,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
     private RowVideoItemBinding videoItemBinding;
     private OnVideoClickListener onVideoClickListener;
     private VideoGalleryFragment videoGalleryFragment;
+    private ImageView popUpImage;
 
     public VideoAdapter(Context pContext, List<GalleryVideo> videosList, VideoGalleryFragment videoGalleryFragment) {
         this.pContext = pContext;
@@ -45,6 +50,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
         GalleryVideo videos = galleryVideoList.get(position);
         videoItemBinding.setGalleryVideo(videos);
         holder.bind(videos);
+
+        /*popUpImage = holder.videoHolderBinding.itemImg;
+        Glide.with(pContext)
+                .load(IMAGE_DOC_BASE_URL+galleryVideoList.get(position).getVideoImage())
+                .into(popUpImage);*/
     }
 
     @Override
