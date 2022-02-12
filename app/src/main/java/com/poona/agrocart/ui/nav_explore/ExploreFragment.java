@@ -67,7 +67,10 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
         root = exploreFragmentBinding.getRoot();
         mViewModel = new ViewModelProvider(this).get(ExploreViewModel.class);
         exploreItems.clear();
-        callExploreApi(root,showCircleProgressDialog(context,""),limit,offset);
+        if (isConnectingToInternet(context)){
+            callExploreApi(root,showCircleProgressDialog(context,""),limit,offset);
+        }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+
         initTitleBar(getString(R.string.menu_explore));
         searchCategory(root);
         return root;
@@ -99,7 +102,10 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
                             getActivity().runOnUiThread(new Runnable() {
                                 public void run() {
                                     exploreItems.clear();
-                                    callExploreApi(root,showCircleProgressDialog(context,""),limit,offset);
+                                    if (isConnectingToInternet(context)){
+                                        callExploreApi(root,showCircleProgressDialog(context,""),limit,offset);
+                                    }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+
                                 }
                             });
                         } catch (Exception e) {
@@ -179,6 +185,7 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
 
     }
+
 
     @Override
     public void onNetworkException(int from) {

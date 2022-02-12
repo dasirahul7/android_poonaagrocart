@@ -74,7 +74,10 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
     private void setRvAdapter()
     {
         storeArrayList=new ArrayList<>();
-        callOurStoreListApi(showCircleProgressDialog(context, ""), "RecyclerView");
+        if (isConnectingToInternet(context)){
+            /*Call Our Store List API here*/
+            callOurStoreListApi(showCircleProgressDialog(context, ""), "RecyclerView");
+        }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
         // storeListData();
 
@@ -104,7 +107,11 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
 
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount != totalCount) {
-                    callOurStoreListApi(showCircleProgressDialog(context, ""), "onScrolled");
+                    if (isConnectingToInternet(context)){
+                        /*Call Our Store List API here*/
+                        callOurStoreListApi(showCircleProgressDialog(context, ""), "onScrolled");
+                    }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+
                 }
                 else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount == totalCount) {

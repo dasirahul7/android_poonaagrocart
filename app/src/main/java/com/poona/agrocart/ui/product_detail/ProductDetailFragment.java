@@ -431,12 +431,12 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void addOrRemoveFromFavourite() {
-//        if (isFavourite) {
+        if (!isFavourite) {
             callAddToFavouriteApi(showCircleProgressDialog(context,""),details);
-//        } else {
-//            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
-//        }
-//        isFavourite = !isFavourite;
+        } else {
+            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+        }
+        isFavourite = !isFavourite;
     }
 
     private void callAddToFavouriteApi(ProgressDialog showCircleProgressDialog, ProductDetailsResponse.ProductDetails details) {

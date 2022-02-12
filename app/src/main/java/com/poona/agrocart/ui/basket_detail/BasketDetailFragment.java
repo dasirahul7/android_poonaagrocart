@@ -101,7 +101,11 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 bundle = getArguments();
                 if (bundle.getString(AppConstants.BASKET_ID) != null) {
                     itemId = bundle.getString(AppConstants.BASKET_ID);
-                    callBasketDetailsApi(showCircleProgressDialog(context,""));
+                    if (isConnectingToInternet(context)){
+                        callBasketDetailsApi(showCircleProgressDialog(context,""));
+                    }else {
+                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                    }
                 }
             }
         } catch (Exception e) {

@@ -55,8 +55,11 @@ public class AboutUsFragment extends BaseFragment {
         view = fragmentAboutUsBinding.getRoot();
 
         initTitleBar(getString(R.string.menu_about_us));
-
-        callAboutUsApi(showCircleProgressDialog(context, ""));
+        if (isConnectingToInternet(context)){
+            callAboutUsApi(showCircleProgressDialog(context, ""));
+        }else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
 
         return view;
     }

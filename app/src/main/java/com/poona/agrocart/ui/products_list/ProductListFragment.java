@@ -105,7 +105,13 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
         gridLayoutManager = new GridLayoutManager(requireContext(), 2);
         rvVegetables.setHasFixedSize(true);
         rvVegetables.setLayoutManager(gridLayoutManager);
-        checkAndLoadData("load");
+        if (isConnectingToInternet(context)) {
+            //add API call here
+            checkAndLoadData("load");
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+
 
     }
 
@@ -330,7 +336,12 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
                                             if (!fragmentProductListBinding.etSearch.getText().toString().trim().equals("")) {
                                                 productArrayList.clear();
                                                 basketArrayList.clear();
-                                                checkAndLoadData("load");
+                                                if (isConnectingToInternet(context)) {
+                                                    //add API call here
+                                                    checkAndLoadData("load");
+                                                } else {
+                                                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                                                }
                                             } else return;
                                         }
                                     } catch (Exception e) {
@@ -408,7 +419,12 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
 
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount != totalCount) {
-                    checkAndLoadData("onScrolled");
+                    if (isConnectingToInternet(context)) {
+                        //add API call here
+                        checkAndLoadData("onScrolled");
+                    } else {
+                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                    }
                 } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount == totalCount) {
                     infoToast(requireActivity(), getString(R.string.no_result_found));  //change

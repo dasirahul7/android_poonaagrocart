@@ -62,10 +62,12 @@ import retrofit2.http.POST;
  * Created by Rahul Dasi on 6/10/2020
  */
 public interface ApiInterface {
+    /*Login API*/
     @FormUrlEncoded
     @POST(LOGIN_API)
     Single<SignInResponse> getSignInResponse(@FieldMap HashMap<String, String> data);
 
+    /*Verify otp API*/
     @FormUrlEncoded
     @POST(VERIFY_OTP_API)
     Single<VerifyOtpResponse> getVerifyOtpResponse(@FieldMap HashMap<String, String> data);

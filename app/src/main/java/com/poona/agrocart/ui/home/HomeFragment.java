@@ -115,19 +115,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         root = fragmentHomeBinding.getRoot();
         clearLists();
-        callBannerApi(showCircleProgressDialog(context, ""), limit, offset);
-        callCategoryApi(root, showCircleProgressDialog(context, ""), limit, offset);
-        callBasketApi(root, showCircleProgressDialog(context, ""), limit, offset);
-        callExclusiveOfferApi(root, showCircleProgressDialog(context, ""), limit, offset);
-        callBestSellingApi(root, showCircleProgressDialog(context, ""), limit, offset);
-        callSeasonalProductApi(root, showCircleProgressDialog(context, ""), limit, offset);
-        callProductListApi(root, showCircleProgressDialog(context, ""), limit, offset);
-        callStoreBannerApi(root, showCircleProgressDialog(context, ""));
+        if (isConnectingToInternet(context)) {
+            callBannerApi(showCircleProgressDialog(context, ""), limit, offset);
+            callCategoryApi(root, showCircleProgressDialog(context, ""), limit, offset);
+            callBasketApi(root, showCircleProgressDialog(context, ""), limit, offset);
+            callExclusiveOfferApi(root, showCircleProgressDialog(context, ""), limit, offset);
+            callBestSellingApi(root, showCircleProgressDialog(context, ""), limit, offset);
+            callSeasonalProductApi(root, showCircleProgressDialog(context, ""), limit, offset);
+            callProductListApi(root, showCircleProgressDialog(context, ""), limit, offset);
+            callStoreBannerApi(root, showCircleProgressDialog(context, ""));
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
         getBasketItems();
 //        setStoreBanner(root);
         initClick();
         bannerAutoSLider();
-        searchProducts(root);
 
         checkEmpties();
         setPaginationForLists();
@@ -302,11 +305,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (productListResponse.getProductResponseDt().getProductList().size() > 0) {
                             makeVisible(fragmentHomeBinding.recProduct, null);
-                           for (ProductListResponse.Product product :productListResponse.getProductResponseDt().getProductList()){
-                               product.setUnit(product.getProductUnits().get(0));
-                               product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
-                               productList.add(product);
-                           }
+                            for (ProductListResponse.Product product : productListResponse.getProductResponseDt().getProductList()) {
+                                product.setUnit(product.getProductUnits().get(0));
+                                product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
+                                productList.add(product);
+                            }
 //                            productList = productListResponse.getProductResponseDt().getProductList();
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
                             fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
@@ -398,9 +401,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
                             makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
-                            for (ProductListResponse.Product product :bestSellingResponse.getBestSellingData().getBestSellingProductList()){
+                            for (ProductListResponse.Product product : bestSellingResponse.getBestSellingData().getBestSellingProductList()) {
                                 product.setUnit(product.getProductUnits().get(0));
-                                product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
                                 bestSellings.add(product);
                             }
 
@@ -443,15 +446,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 switch (exclusiveResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
-                            for (ProductListResponse.Product product :exclusiveResponse.getExclusiveData().getExclusivesList()){
+                            for (ProductListResponse.Product product : exclusiveResponse.getExclusiveData().getExclusivesList()) {
                                 product.setUnit(product.getProductUnits().get(0));
-                                product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
                                 offerProducts.add(product);
                             }
 
 //                            offerProducts = exclusiveResponse.getExclusiveData().getExclusivesList();
                             makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
-                            offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), root,product -> {
+                            offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), root, product -> {
                                 // Redirect to ProductOld details
                                 toProductDetail(product);
                             });
@@ -650,19 +653,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     /*Create a Dummy banner if no banner is available*/
-    private void makeDummyBanner() {
-        BannerResponse.Banner banner = new BannerResponse.Banner("1", "customer", "", "");
-        banner.setDummy(true);
-        banners.clear();
-        banners.add(banner);
-        this.NumberOfBanners = banners.size();
-        bannerAdapter = new BannerAdapter(banners, requireActivity());
-//
-        fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
-        // Set up tab indicators
-        fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
-    }
-
     //Banner Auto Scroll
     private void bannerAutoSLider() {
         Log.e("SetSliderAutoTimer", "SetSliderAutoTimer");
@@ -687,7 +677,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             public void run() {
                 handler.post(update);
             }
-        }, 100, 3000);
+        }, 100, 4000);
     }
 
 
@@ -747,13 +737,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     public void toProductDetail(ProductListResponse.Product product) {
         Bundle bundle = new Bundle();
-        bundle.putString(PRODUCT_ID,product.getId());
-        NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
+        bundle.putString(PRODUCT_ID, product.getId());
+        NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
+
     public void toBasketDetail(BasketResponse.Basket basket) {
         Bundle bundle = new Bundle();
-        bundle.putString(BASKET_ID,basket.getId());
-        NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_basketDetailFragment,bundle);
+        bundle.putString(BASKET_ID, basket.getId());
+        NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_basketDetailFragment, bundle);
     }
 
     @Override
@@ -780,6 +771,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 break;
         }
     }
+
 
     @Override
     public void onNetworkException(int from) {

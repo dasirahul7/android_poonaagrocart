@@ -70,8 +70,11 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         initViews();
         searchItems(searchView);
         productList.clear();
-        callSearchProductApi(searchView,showCircleProgressDialog(context,""),"load");
-
+        if (isConnectingToInternet(context)){
+            callSearchProductApi(searchView,showCircleProgressDialog(context,""),"load");
+        }else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
         //pagination here
         setScrollListener();
         return searchView;
@@ -102,8 +105,12 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                             hideKeyBoard(requireActivity());
                             getActivity().runOnUiThread(new Runnable() {
                                 public void run() {
-                                    productList.clear();
-                                    callSearchProductApi(searchView,showCircleProgressDialog(context,""),"load");
+                                    if (isConnectingToInternet(context)){
+                                        productList.clear();
+                                        callSearchProductApi(searchView,showCircleProgressDialog(context,""),"load");
+                                    }else {
+                                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                                    }
                                 }
                             });
                         } catch (Exception e) {
@@ -185,7 +192,9 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
 
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount != totalCount) {
-                    callSearchProductApi(searchView,showCircleProgressDialog(context, ""), "onScrolled");
+                    if (isConnectingToInternet(context)){
+                        callSearchProductApi(searchView,showCircleProgressDialog(context, ""), "onScrolled");
+                    }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount == totalCount) {
                     infoToast(requireActivity(), getString(R.string.no_result_found));  //change

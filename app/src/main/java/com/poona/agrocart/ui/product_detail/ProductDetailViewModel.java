@@ -97,6 +97,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                         if (baseResponse!=null){
                             progressDialog.dismiss();
                             baseResponseMutableLiveData.setValue(baseResponse);
+                            Log.e(TAG, "onSuccess: "+new Gson().toJson(baseResponse) );
                         }
                     }
 
@@ -113,7 +114,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((ApiErrorException) productDetailFragment).onApiErrorException(8,"");
+                            ((ApiErrorException) productDetailFragment).onApiErrorException(1,"");
                         }
 
                         Log.e(TAG, e.getMessage());
