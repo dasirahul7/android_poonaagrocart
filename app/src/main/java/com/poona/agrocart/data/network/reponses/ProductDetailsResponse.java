@@ -111,6 +111,15 @@ public class ProductDetailsResponse extends BaseResponse {
         @SerializedName("category_sequence")
         @Expose
         private String categorySequence;
+        @SerializedName("is_favourite")
+        @Expose
+        private int isFavourite;
+        @SerializedName("in_cart")
+        @Expose
+        private int isCart;
+        @SerializedName("quantity")
+        @Expose
+        private int quantity;
         @SerializedName("category_image")
         @Expose
         private String categoryImage;
@@ -121,6 +130,30 @@ public class ProductDetailsResponse extends BaseResponse {
         @Expose
         private List<ProductListResponse.ProductUnit> productUnits = null;
         private ProductListResponse.ProductUnit unit;
+
+        public int getIsFavourite() {
+            return isFavourite;
+        }
+
+        public void setIsFavourite(int isFavourite) {
+            this.isFavourite = isFavourite;
+        }
+
+        public int getIsCart() {
+            return isCart;
+        }
+
+        public void setIsCart(int isCart) {
+            this.isCart = isCart;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
 
         public ProductListResponse.ProductUnit getUnit() {
             return unit;

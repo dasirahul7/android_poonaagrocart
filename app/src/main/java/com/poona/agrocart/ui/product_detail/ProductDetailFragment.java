@@ -78,7 +78,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private CustomTextView txtBrand;
     private String itemId = "";
     private Bundle bundle;
-   private static final String TAG = ProductDetailFragment.class.getSimpleName();
+    private static final String TAG = ProductDetailFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,6 +109,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void initView() {
+        fragmentProductDetailBinding.itemLayout.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.VISIBLE);
         txtOrganic = ((HomeActivity) requireActivity()).binding.appBarHome.txtOrganic;
         txtBrand = ((HomeActivity) requireActivity()).binding.appBarHome.tvBrand;
@@ -156,12 +157,13 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 switch (productDetailsResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (productDetailsResponse.getProductDetails() != null) {
+                            fragmentProductDetailBinding.itemLayout.setVisibility(View.VISIBLE);
                             details = productDetailsResponse.getProductDetails();
                             details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
                             fragmentProductDetailBinding.setProductDetailModule(details);
                             fragmentProductDetailBinding.setVariable(BR.productDetailModule,details);
                             System.out.println("product name"+details.getProductName());
-
+                            setDetailsValue();
                             // Redirect to ProductOld details
                             setViewPagerAdapterItems();
                         }
@@ -186,9 +188,32 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 .observe(getViewLifecycleOwner(), productDetailsResponseObserver);
     }
 
+    private void setDetailsValue() {
+        if (details.getBrandName()!=null&& !details.getBrandName().isEmpty())
+            txtBrand.setText(details.getBrandName());
+        else txtBrand.setVisibility(View.GONE);
+        if (details.getIsO3().equalsIgnoreCase("yes")){
+            txtOrganic.setVisibility(View.VISIBLE);
+        }else txtOrganic.setVisibility(View.GONE);
+        if (details.getIsFavourite()==1)
+            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
+        else fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+        if (details.getIsCart()==1){
+            fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
+            fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
+            if (details.getQuantity()>0)
+            fragmentProductDetailBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
+            else fragmentProductDetailBinding.etQuantity.setText("1");
+        }else {
+            fragmentProductDetailBinding.ivPlus.setVisibility(View.VISIBLE);
+            fragmentProductDetailBinding.ivMinus.setVisibility(View.GONE);
+            fragmentProductDetailBinding.etQuantity.setVisibility(View.GONE);
+        }
+    }
+
     private HashMap<String, String> detailsParams(int detail) {
         HashMap<String, String> map = new HashMap<>();
-            map.put(AppConstants.PRODUCT_ID, itemId);
+        map.put(AppConstants.PRODUCT_ID, itemId);
         return map;
     }
 

@@ -56,7 +56,6 @@ import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
 import com.poona.agrocart.data.network.reponses.CmsResponse;
 import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryResponse;
-import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
