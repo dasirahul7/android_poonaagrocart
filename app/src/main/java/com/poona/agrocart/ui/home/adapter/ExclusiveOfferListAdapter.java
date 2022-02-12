@@ -21,19 +21,15 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
     private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
     private final Context bdContext;
     private RowExclusiveItemBinding rowExclusiveItemBinding;
-    private final View view;
     private OnProductClickListener onProductClickListener;
     private OnPlusClickListener onPlusClickListener;
 
 
     public ExclusiveOfferListAdapter(ArrayList<ProductListResponse.Product> products,
-                                     Context bdContext, View view,
-                                     OnProductClickListener onProductClickListener,
+                                     Context bdContext,OnProductClickListener onProductClickListener,
                                      OnPlusClickListener onPlusClickListener) {
         this.products = products;
-        this.bdContext = bdContext;
-        this.view = view;
-        this.onProductClickListener = onProductClickListener;
+        this.bdContext = bdContext;this.onProductClickListener = onProductClickListener;
         this.onPlusClickListener = onPlusClickListener;
     }
     public interface OnProductClickListener{

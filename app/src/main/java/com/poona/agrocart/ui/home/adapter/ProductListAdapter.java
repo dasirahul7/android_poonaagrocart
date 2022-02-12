@@ -24,17 +24,18 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
     private final Context bdContext;
     private HomeProductItemBinding productBinding;
-    private OnProductClickListener onProductClickListener;
+    private ExclusiveOfferListAdapter.OnProductClickListener onProductClickListener;
+    private ExclusiveOfferListAdapter.OnPlusClickListener onPlusClickListener;
 
 
     public ProductListAdapter(ArrayList<ProductListResponse.Product> products,
-                              FragmentActivity context,OnProductClickListener onProductClickListener) {
+                              FragmentActivity context,
+                              ExclusiveOfferListAdapter.OnProductClickListener onProductClickListener,
+                              ExclusiveOfferListAdapter.OnPlusClickListener onPlusClickListener) {
         this.products = products;
         this.bdContext = context;
         this.onProductClickListener = onProductClickListener;
-    }
-    public interface OnProductClickListener{
-        void onProductClick(ProductListResponse.Product product);
+        this.onPlusClickListener = onPlusClickListener;
     }
 
     @Override
@@ -72,10 +73,17 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             if (product.getIsO3().equalsIgnoreCase("yes"))
                 productBinding.txtOrganic.setVisibility(View.VISIBLE);
             else productBinding.txtOrganic.setVisibility(View.GONE);
+            if (product.getInCart()==1)
+                productBinding.imgPlus.setImageResource(R.drawable.ic_added);
+            else productBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
 
             itemView.setOnClickListener(view -> {
                 onProductClickListener.onProductClick(product);
             });
+            productBinding.imgPlus.setOnClickListener(view -> {
+                onPlusClickListener.OnPlusClick(product);
+            });
+
         }
 
     }

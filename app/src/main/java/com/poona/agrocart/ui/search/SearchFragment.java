@@ -207,10 +207,13 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         fragmentSearchBinding.recProduct.setNestedScrollingEnabled(false);
         fragmentSearchBinding.recProduct.setHasFixedSize(true);
         fragmentSearchBinding.recProduct.setLayoutManager(linearLayoutManager);
-        searchAdapter = new ProductListAdapter(productList, getActivity(),product -> {
-            toProductDetail(product);
+        searchAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail,product -> {
+//            addToCartProduct(showCircleProgressDialog(context,""),product,"Product");
         });
         fragmentSearchBinding.recProduct.setAdapter(searchAdapter);
+    }
+
+    private void addToCartProduct(ProgressDialog showCircleProgressDialog, ProductListResponse.Product product, String product1) {
     }
 
     public void toProductDetail(ProductListResponse.Product product) {
