@@ -26,7 +26,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -38,7 +37,6 @@ import com.poona.agrocart.databinding.FragmentSearchBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
-import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -217,7 +215,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
 
     public void toProductDetail(ProductListResponse.Product product) {
         Bundle bundle = new Bundle();
-        bundle.putString(PRODUCT_ID, product.getId());
+        bundle.putString(PRODUCT_ID, product.getProductId());
         NavHostFragment.findNavController(SearchFragment.this).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
     }
 

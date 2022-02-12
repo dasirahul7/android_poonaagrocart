@@ -34,7 +34,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -237,7 +236,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString(SEARCH_TYPE, SEARCH_PRODUCT);
                                                 bundle.putString(SEARCH_KEY, fragmentHomeBinding.etSearch.getText().toString());
-                                                Navigation.findNavController(root).navigate(R.id.action_nav_home_to_searchFragment, bundle);
+                                                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_searchFragment, bundle);
                                             } else return;
                                         }
                                     } catch (Exception e) {
@@ -454,10 +453,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
 //                            offerProducts = exclusiveResponse.getExclusiveData().getExclusivesList();
                             makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
-                            offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), root, product -> {
-                                // Redirect to ProductOld details
-                                toProductDetail(product);
-                            });
+                            // Redirect to ProductOld details
+                            offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), root, this::toProductDetail);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
                             fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recExOffers.setLayoutManager(layoutManager);
@@ -533,7 +530,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void redirectToOurShops(View v) {
-        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_our_stores);
+        NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_our_stores);
     }
 
 
@@ -737,7 +734,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     public void toProductDetail(ProductListResponse.Product product) {
         Bundle bundle = new Bundle();
-        bundle.putString(PRODUCT_ID, product.getId());
+        bundle.putString(PRODUCT_ID, product.getProductId());
         NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
 
@@ -752,22 +749,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.tv_all_category:
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_explore);
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_explore);
                 break;
             case R.id.tv_all_basket:
                 bundle.putString(LIST_TITLE, AllBasket);
                 bundle.putString(FROM_SCREEN, AllBasket);
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
                 break;
             case R.id.tv_all_selling:
                 bundle.putString(LIST_TITLE, AllSelling);
                 bundle.putString(FROM_SCREEN, AllSelling);
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
                 break;
             case R.id.tv_all_exclusive:
                 bundle.putString(LIST_TITLE, AllExclusive);
                 bundle.putString(FROM_SCREEN, AllExclusive);
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
                 break;
         }
     }

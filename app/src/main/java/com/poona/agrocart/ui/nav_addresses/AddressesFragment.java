@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentAddressesBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.login.LogInFragment;
 import com.poona.agrocart.ui.nav_addresses.model.Address;
 
 import java.util.ArrayList;
@@ -84,6 +86,6 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
 
     private void redirectToAddressForm(View v)
     {
-        Navigation.findNavController(v).navigate(R.id.action_nav_address_to_addressesFormFragment2);
+        NavHostFragment.findNavController(AddressesFragment.this).navigate(R.id.action_nav_address_to_addressesFormFragment2);
     }
 }

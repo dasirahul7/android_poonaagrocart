@@ -17,12 +17,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentLogInBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.home.HomeFragment;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -107,10 +109,10 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
                 toogleShowAndHidePassword();
                 break;
             case R.id.tv_sign_up:
-                Navigation.findNavController(v).navigate(R.id.action_LogInFragment_to_SignInFragment);
+                NavHostFragment.findNavController(LogInFragment.this).navigate(R.id.action_LogInFragment_to_SignInFragment);
                 break;
             case R.id.tv_forgot_password:
-                //Navigation.findNavController(v).navigate(R.id.action_LoginFragment_to_forgotPasswordFragment);
+                //NavHostFragment.findNavController(LogInFragment.this).navigate(R.id.action_LoginFragment_to_forgotPasswordFragment);
                 break;
             case R.id.btn_login:
                 redirectToDashboard(v);
