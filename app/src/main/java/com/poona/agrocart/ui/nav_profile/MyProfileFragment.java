@@ -116,8 +116,6 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
         initView();
 
-        fragmentMyProfileBinding.ivChooseProfilePhoto.setOnClickListener(view -> showDialogForAddPhotos());
-
         fragmentMyProfileBinding.rgGender.setOnCheckedChangeListener((group, checkedId) -> {
             switch(checkedId){
                 case R.id.rb_male:
@@ -160,6 +158,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         fragmentMyProfileBinding.tvDateOfBirthInput.setOnClickListener(this);
         fragmentMyProfileBinding.frameLayout.setOnClickListener(this);
         fragmentMyProfileBinding.cbtSave.setOnClickListener(this);
+        fragmentMyProfileBinding.llMobileNumber.setOnClickListener(this);
 
         if (isConnectingToInternet(context)) {
             getCommonApiResponses(showCircleProgressDialog(context, ""));
@@ -323,8 +322,11 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             case R.id.tv_date_of_birth_input:
                 showCalendar();
                 break;
-            case R.id.frameLayout:
-                //openGallery();
+            case R.id.iv_choose_profile_photo:
+                showDialogForAddPhotos();
+                break;
+            case R.id.ll_mobile_number:
+                warningToast(context, getString(R.string.you_cannot_edit_mobile_number));
                 break;
             case R.id.cbt_save:
                 getUserInputAndSetIntoPojo();
