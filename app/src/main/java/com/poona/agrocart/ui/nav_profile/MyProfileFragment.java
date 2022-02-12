@@ -154,6 +154,8 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             }
         });
 
+        showServerErrorDialog(getString(R.string.for_better_user_experience), MyProfileFragment.this,() -> { }, context);
+
         return view;
     }
 
