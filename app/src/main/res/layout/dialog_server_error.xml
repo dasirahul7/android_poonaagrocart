@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/colorGreenTransparent">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -34,7 +34,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_100sdp"
                         android:layout_marginHorizontal="@dimen/_16sdp"
-                        android:src="@drawable/ic_server_error" />
+                        android:src="@drawable/ic_server_error"
+                        android:tint="@color/white"/>
 
                 </LinearLayout>
 
@@ -56,7 +57,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/for_better_user_experience"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_18sp"
                         app:setCustomFont="@string/font_poppins_bold"
                         app:textAllCaps="false" />
@@ -79,16 +80,18 @@
                     <com.poona.agrocart.widgets.CustomButton
                         android:id="@+id/bt_retry"
                         android:layout_width="@dimen/_100sdp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_34sdp"
                         android:layout_gravity="center"
+                        android:layout_marginHorizontal="@dimen/_22sdp"
+                        android:background="@drawable/button_green"
+                        android:gravity="center"
                         android:includeFontPadding="false"
                         android:minWidth="0dp"
                         android:minHeight="0dp"
-                        android:paddingBottom="@dimen/_10sdp"
                         android:text="@string/retry"
                         android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_16sp"
+                        android:textColor="@color/background_color_white_green"
+                        android:textSize="@dimen/_18sp"
                         app:setCustomFont="@string/font_poppins_medium" />
 
                 </LinearLayout>
