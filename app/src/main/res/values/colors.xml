@@ -149,21 +149,36 @@
     <color name="store_txt_color">#191919</color>
     <color name="color_blue">#3077CF</color>
 
-<!--    Gallery screen colors-->
+    <!--Gallery screen colors-->
     <color name="bg_grey">#EFEFEF</color>
     
-<!--    FAQ'S Screen colors-->
+    <!--FAQ'S Screen colors-->
     <color name="color_off_white">#FCFFF8</color>
     <color name="color_off_white_border">#A6A6A6</color>
     <color name="bold_txt_color">#3F3F3F</color>
-<!--    Dialog colors-->
+
+    <!--Dialog colors-->
     <color name="dialog_bg_color">#F2F3F2</color>
     <color name="filter_bg_color">#F2F3F2</color>
 
-<!--    My Basket Subscription color-->
+    <!--My Basket Subscription color-->
     <color name="color_border_light">#E2E2E2</color>
     <color name="color_dark_divider">#C9C9C9</color>
     <color name="seasonal_border_color">#EEEEEE</color>
 
+    <!--upload photo dialog colors-->
+    <color name="colorWhiteTransparent">#A686C11F</color>
+
+    <!--ucrop parameters-->
+    <color name="ucrop_color_toolbar">@color/colorPrimary</color>
+    <color name="ucrop_color_statusbar">@color/colorPrimary</color>
+    <color name="ucrop_color_toolbar_widget">@color/white</color>
+    <color name="ucrop_color_widget_text">@color/white</color>
+    <color name="ucrop_color_widget_rotate_mid_line">#CECECE</color>
+    <color name="ucrop_color_widget_background">@color/colorPrimary</color>
+    <color name="ucrop_color_active_controls_color">@color/infoColor</color>
+    <color name="ucrop_color_widget_active">@color/infoColor</color>
+    <color name="ucrop_color_inactive_controls_color">@color/white</color>
+    <color name="colorPlatinum">#E5E4E2</color>
 
 </resources>

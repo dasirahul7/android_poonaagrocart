@@ -36,7 +36,9 @@
                 <com.poona.agrocart.widgets.imageview.CircularImageView
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
-                    setImage="@{productComment.userImg}"/>
+                    setImage="@{productComment.userImg}"
+                    app:civ_border_width="@dimen/_1sdp"
+                    app:civ_border_color="#979797" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

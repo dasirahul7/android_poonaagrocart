@@ -24,6 +24,7 @@ import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
+import static com.poona.agrocart.app.AppConstants.UPDATE_MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 
 import com.poona.agrocart.data.network.reponses.AreaResponse;
@@ -85,6 +86,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(MY_PROFILE_API)
     Observable<ProfileResponse> getProfileObservableResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(UPDATE_MY_PROFILE_API)
+    Single<ProfileResponse> updateProfileResponse(@FieldMap HashMap<String, String> data);
 
     @GET(STATE_API)
     Observable<StateResponse> getStateObservableResponse();

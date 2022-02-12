@@ -191,7 +191,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
 
     //Very OTP API here
     private void callVerifyOtpApi(ProgressDialog progressDialog) {
-        /* print user input parameters */
+        /*print user input parameters*/
         for (Map.Entry<String, String> entry : verifyOtpParameters(0).entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }

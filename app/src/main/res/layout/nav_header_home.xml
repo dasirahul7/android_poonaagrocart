@@ -14,7 +14,9 @@
         android:layout_height="@dimen/_60sdp"
         android:contentDescription="@string/nav_header_desc"
         android:src="@drawable/ic_profile"
-        app:tint="@color/white"/>
+        app:tint="@color/white"
+        app:civ_border_width="@dimen/_1sdp"
+        app:civ_border_color="#979797"/>
 
 
     <RelativeLayout

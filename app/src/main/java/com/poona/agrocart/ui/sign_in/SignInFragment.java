@@ -176,7 +176,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void callSignInApi(ProgressDialog progressDialog) {
-        /* print user input parameters */
+        /*print user input parameters*/
         for (Map.Entry<String, String> entry : signInParameters().entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }

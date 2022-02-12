@@ -78,8 +78,11 @@
         <entry key="app/src/main/res/drawable/ic_basket.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/ic_black_circle.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_calender.xml" value="0.20615384615384616" />
+        <entry key="app/src/main/res/drawable/ic_camera.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_camera_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_check_mark.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_coupons_offers.xml" value="0.19907407407407407" />
+        <entry key="app/src/main/res/drawable/ic_cross_cancel.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_default_profile_img.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/ic_delete_gray.xml" value="0.20615384615384616" />
@@ -91,6 +94,7 @@
         <entry key="app/src/main/res/drawable/ic_h2.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/ic_help_center.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_home.xml" value="0.17592592592592593" />
+        <entry key="app/src/main/res/drawable/ic_image_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_location.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_location_small.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_location_store.xml" value="0.209375" />
@@ -111,6 +115,10 @@
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_radio_tint.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_radio_unselected_tint.xml" value="0.13094462540716612" />
+        <entry key="app/src/main/res/drawable/ic_red_bin_icon_.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_red_camera_icon.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_red_cancel.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_red_image_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_right_arrow.xml" value="0.19444444444444445" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.16018518518518518" />
         <entry key="app/src/main/res/drawable/ic_selected_dot.xml" value="0.15648148148148147" />
@@ -172,6 +180,7 @@
         <entry key="app/src/main/res/layout/custom_spinner_list_item.xml" value="0.15885416666666666" />
         <entry key="app/src/main/res/layout/custom_spinner_list_item_checked.xml" value="0.17" />
         <entry key="app/src/main/res/layout/dialog_basket_filter_list.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/dialog_select_photo.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_server_error.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_text_with_button.xml" value="0.11" />
         <entry key="app/src/main/res/layout/explore_fragment.xml" value="0.25" />
@@ -196,7 +205,7 @@
         <entry key="app/src/main/res/layout/fragment_my_basket.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_my_cart.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/fragment_my_orders.xml" value="0.14855072463768115" />
-        <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.10740740740740741" />
+        <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.21129326047358835" />
         <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_order_summary.xml" value="0.15534420289855072" />
         <entry key="app/src/main/res/layout/fragment_order_track.xml" value="0.15534420289855072" />

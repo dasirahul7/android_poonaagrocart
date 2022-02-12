@@ -487,4 +487,8 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="return_and_refund_policy">Return &amp; Refund Policy</string>
 
+    <!--upload photo dialog strings-->
+    <string name="select_from_library">Select From Library</string>
+    <string name="take_a_photo">Take a Photo</string>
+    <string name="delete_current_picture">Delete Current Picture</string>
 </resources>

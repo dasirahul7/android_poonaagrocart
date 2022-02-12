@@ -207,7 +207,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void callRegisterApi(ProgressDialog progressDialog) {
-        /* print user input parameters */
+        /*print user input parameters*/
         for (Map.Entry<String, String> entry : signUpParameters().entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }

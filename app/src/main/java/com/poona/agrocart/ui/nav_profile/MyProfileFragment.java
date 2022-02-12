@@ -1,17 +1,57 @@
 package com.poona.agrocart.ui.nav_profile;
 
+import static android.view.View.GONE;
+import static androidx.core.content.ContextCompat.checkSelfPermission;
+import static com.poona.agrocart.app.AppConstants.ALTERNATE_MOBILE_NUMBER;
+import static com.poona.agrocart.app.AppConstants.AREA_ID_;
+import static com.poona.agrocart.app.AppConstants.CITY_ID_;
 import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
+import static com.poona.agrocart.app.AppConstants.DATE_OF_BIRTH;
+import static com.poona.agrocart.app.AppConstants.EMAIL;
+import static com.poona.agrocart.app.AppConstants.GENDER;
+import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
+import static com.poona.agrocart.app.AppConstants.NAME;
+import static com.poona.agrocart.app.AppConstants.STATE_ID_;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_402;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -23,10 +63,15 @@ import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.ProfileResponse;
 import com.poona.agrocart.data.network.reponses.StateResponse;
+import com.poona.agrocart.databinding.DialogSelectPhotoBinding;
 import com.poona.agrocart.databinding.FragmentMyProfileBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -34,10 +79,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import id.zelory.compressor.Compressor;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import okhttp3.MultipartBody;
 import retrofit2.HttpException;
 
 public class MyProfileFragment extends BaseFragment implements View.OnClickListener {
@@ -46,11 +94,6 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private MyProfileViewModel myProfileViewModel;
     private Calendar calendar;
     private int mYear, mMonth, mDay;
-
-    private final String[] cities={"Pune"};
-    private final String[] areas={"Vishrantwadi", "Khadki"};
-    private final String[] states={"Maharashtra"};
-
     private View view;
 
     private BasicDetails basicDetails;
@@ -69,6 +112,8 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
         initView();
 
+        fragmentMyProfileBinding.ivChooseProfilePhoto.setOnClickListener(view -> showDialogForAddPhotos());
+
         fragmentMyProfileBinding.rgGender.setOnCheckedChangeListener((group, checkedId) -> {
             switch(checkedId){
                 case R.id.rb_male:
@@ -80,6 +125,25 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 case R.id.rb_other:
                     myProfileViewModel.gender.setValue("other");
                     break;
+            }
+        });
+
+        // Register the permissions callback, which handles the user's response to the
+        // system permissions dialog. Save the return value, an instance of
+        // ActivityResultLauncher, as an instance variable.
+        multiplePermissionActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
+            Log.d("PERMISSIONS", "Launcher result: " + isGranted.toString());
+            if (isGranted.containsValue(false)) {
+                // Permission is granted. Continue the action or workflow in your app.
+                Log.d("PERMISSIONS", "At least one of the permissions was not granted, launching again...");
+                errorToast(context, getResources().getString(R.string.ensure_your_all_permissions));
+                //multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
+            } else {
+                if(clickedOn.equals("gallery")) {
+                    galleryIntent();
+                } else if(clickedOn.equals("camera")) {
+                    cameraIntent();
+                }
             }
         });
 
@@ -193,15 +257,34 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 //openGallery();
                 break;
             case R.id.cbt_save:
+                getUserInputAndSetIntoPojo();
                 checkValidInputFields();
                 break;
         }
     }
 
-    private void checkValidInputFields() {
-        myProfileViewModel.state.setValue(fragmentMyProfileBinding.spinnerState.getSelectedItem().toString());
-        myProfileViewModel.city.setValue(fragmentMyProfileBinding.spinnerCity.getSelectedItem().toString());
-        myProfileViewModel.area.setValue(fragmentMyProfileBinding.spinnerArea.getSelectedItem().toString());
+    private void getUserInputAndSetIntoPojo() {
+        if(stateList != null && stateList.size() > 0) {
+            for(int i = 0; i < stateList.size(); i++) {
+                if(stateList.get(i).getName().equals(fragmentMyProfileBinding.spinnerState.getSelectedItem().toString())) {
+                    myProfileViewModel.state.setValue(stateList.get(i).getId());
+                }
+            }
+        }
+        if(cityList != null && cityList.size() > 0) {
+            for(int i = 0; i < cityList.size(); i++) {
+                if(cityList.get(i).getName().equals(fragmentMyProfileBinding.spinnerCity.getSelectedItem().toString())) {
+                    myProfileViewModel.city.setValue(cityList.get(i).getId());
+                }
+            }
+        }
+        if(areaList != null && areaList.size() > 0) {
+            for(int i = 0; i < areaList.size(); i++) {
+                if(areaList.get(i).getName().equals(fragmentMyProfileBinding.spinnerArea.getSelectedItem().toString())) {
+                    myProfileViewModel.area.setValue(areaList.get(i).getId());
+                }
+            }
+        }
 
         basicDetails.setName(myProfileViewModel.name.getValue());
         basicDetails.setMobileNumber(myProfileViewModel.mobileNo.getValue());
@@ -212,7 +295,8 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         basicDetails.setArea(myProfileViewModel.area.getValue());
         basicDetails.setGender(myProfileViewModel.gender.getValue());
         basicDetails.setDob(myProfileViewModel.dateOfBirth.getValue());
-
+    }
+    private void checkValidInputFields() {
         int errorCodeName = basicDetails.isValidName();
         int errorCodeMobileNumber = basicDetails.isValidMobileNumber();
         int errorCodeAlternateMobileNumber = basicDetails.isValidAlternateMobileNumber();
@@ -246,7 +330,9 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         } else if(errorCodeDob == 0) {
             errorToast(requireActivity(), getString(R.string.please_select_dob));
         } else {
-            Toast.makeText(context, "all ok", Toast.LENGTH_SHORT).show();
+            for (Map.Entry<String, String> entry : updateProfileParameters().entrySet()) {
+                Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+            }
         }
     }
 
@@ -258,11 +344,11 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private List<BasicDetails> cityList;
     private List<BasicDetails> areaList;
     private void getCommonApiResponses(ProgressDialog progressDialog) {
-        /* print user input parameters */
-        for (Map.Entry<String, String> entry : profileParameters().entrySet()) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : getProfileParameters().entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }
-        myProfileViewModel.getCommonApiResponses(context, profileParameters())
+        myProfileViewModel.getCommonApiResponses(context, getProfileParameters())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new Observer<List<String>>() {
                     @Override
@@ -337,9 +423,399 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 });
     }
 
-    private HashMap<String, String> profileParameters() {
+    private HashMap<String, String> getProfileParameters() {
         HashMap<String, String> map = new HashMap<>();
         map.put(CUSTOMER_ID, preferences.getUid());
         return map;
     }
+
+    private void updateProfileApi(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : updateProfileParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+
+        androidx.lifecycle.Observer<ProfileResponse> updateProfileResponseObserver = profileResponse -> {
+            if (profileResponse != null) {
+                progressDialog.dismiss();
+                Log.e("Sign In Api Response", new Gson().toJson(profileResponse));
+                switch (profileResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, ""+profileResponse.getMessage());
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_402://Validation Errors
+                        goToAskAndDismiss(profileResponse.getMessage(), context);
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, profileResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(profileResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, profileResponse.getMessage());
+                        break;
+                }
+            } else {
+                progressDialog.dismiss();
+            }
+        };
+
+        myProfileViewModel
+                .updateProfileResponse(progressDialog, updateProfileParameters(), MyProfileFragment.this)
+                .observe(getViewLifecycleOwner(), updateProfileResponseObserver);
+    }
+
+    private HashMap<String, String> updateProfileParameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(NAME, basicDetails.getName());
+        map.put(MOBILE_NUMBER, basicDetails.getMobileNumber());
+        map.put(ALTERNATE_MOBILE_NUMBER, basicDetails.getAlternateMobileNumber());
+        map.put(EMAIL, basicDetails.getEmailId());
+        map.put(STATE_ID_, basicDetails.getState());
+        map.put(CITY_ID_, basicDetails.getCity());
+        map.put(AREA_ID_, basicDetails.getArea());
+        map.put(GENDER, basicDetails.getGender());
+        try {
+            map.put(DATE_OF_BIRTH, formatDate(basicDetails.getDob(), "dd MMM yyyy", "yyyy-MM-dd"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    /*
+     * start to image update
+     * */
+    private Dialog dialogForAddPhotos = null;
+    private void showDialogForAddPhotos() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.StyleDataConfirmationDialog));
+
+        DialogSelectPhotoBinding binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_select_photo, null, false);
+        View dialogView = binding.getRoot();
+
+        //binding.setViewModel(new ViewModel(this, event.olaBooking));
+
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+
+        dialogForAddPhotos = builder.create();
+        dialogForAddPhotos.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogForAddPhotos.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
+
+        binding.tvGallery.setOnClickListener(v -> {
+            dialogForAddPhotos.dismiss();
+            clickedOn = "gallery";
+            askPermissions();
+        });
+
+        binding.tvCamera.setOnClickListener(v -> {
+            dialogForAddPhotos.dismiss();
+            clickedOn = "camera";
+            askPermissions();
+        });
+
+        if(myProfileViewModel.profilePhoto.getValue() == null
+                || TextUtils.isEmpty(myProfileViewModel.profilePhoto.getValue())) {
+            binding.tvDeletePhoto.setVisibility(GONE);
+            binding.horizontalView1.setVisibility(GONE);
+        }
+
+        /*binding.tvDeletePhoto.setOnClickListener(v -> {
+            dialog.dismiss();
+            if(profileViewModel.profilePhoto.getValue() == null
+                    || TextUtils.isEmpty(profileViewModel.profilePhoto.getValue())) {
+                compressedImageFile = null;
+            }
+            else
+            {
+                calDeletePhotoApi(showCircleProgressDialog(context, ""));
+            }
+        });*/
+
+        binding.ivCloseDialog.setOnClickListener(v -> {
+            dialogForAddPhotos.dismiss();
+            dialogForAddPhotos = null;
+        });
+
+        dialogForAddPhotos.setOnKeyListener(new Dialog.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event)
+            {
+                // TODO Auto-generated method stub
+                if (keyCode == KeyEvent.KEYCODE_BACK)
+                {
+                    dialogForAddPhotos.dismiss();
+                    dialogForAddPhotos = null;
+                }
+                return true;
+            }
+        });
+
+        dialogForAddPhotos.show();
+
+        // Get screen width and height in pixels
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);        // The absolute width of the available display size in pixels.
+        int displayWidth = displayMetrics.widthPixels;
+        // The absolute height of the available display size in pixels.
+        int displayHeight = displayMetrics.heightPixels;
+
+        //int displayWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        //int displayHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        // Initialize a new window manager layout parameters
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        // Copy the alert dialog window attributes to new layout parameter instance
+        layoutParams.copyFrom(dialogForAddPhotos.getWindow().getAttributes());
+
+        // Set alert dialog width equal to screen width 100%
+        int dialogWindowWidth = (int) (displayWidth * 1.0f);
+        // Set alert dialog height equal to screen height 100%
+        int dialogWindowHeight = (int) (displayHeight * 1.0f);
+
+        // Set the width and height for the layout parameters
+        // This will bet the width and height of alert dialog
+        layoutParams.width = dialogWindowWidth;
+        layoutParams.height = dialogWindowHeight;
+
+        // Apply the newly created layout parameters to the alert dialog window
+        dialogForAddPhotos.getWindow().setAttributes(layoutParams);
+    }
+
+    private File compressedImageFile = null;
+    private MultipartBody.Part multipartBodyImageFile = null;
+    final String[] PERMISSIONS = {
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+    private ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
+
+    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+    ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                dialogForAddPhotos = null;
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    final Uri resultUri = getSelectedImageUri(data, 1); //code 1 for camera
+                    File f = new File(resultUri.getPath());
+
+                    /*Cropping image Start*/
+                    String outputFileName = Calendar.getInstance().getTimeInMillis() + ".jpeg";
+                    Uri selectedImage = Uri.fromFile(f);
+                    gotoUCropImageActivity(selectedImage, Uri.fromFile(new File(context.getExternalCacheDir(), outputFileName)));
+                    /*Cropping image End*/
+                }
+            });
+
+    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+    ActivityResultLauncher<Intent> galleryActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                dialogForAddPhotos = null;
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    final Uri resultUri = getSelectedImageUri(data, 2); //code 2 for gallery
+                    File f = new File(resultUri.getPath());
+
+                    /*Cropping image Start*/
+                    String outputFileName = Calendar.getInstance().getTimeInMillis() + ".jpeg";
+                    Uri selectedImage = Uri.fromFile(f);
+                    gotoUCropImageActivity(selectedImage, Uri.fromFile(new File(context.getExternalCacheDir(), outputFileName)));
+                    /*Cropping image End*/
+                }
+            });
+
+    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+    ActivityResultLauncher<Intent> cropActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                dialogForAddPhotos = null;
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    final Uri resultUri = UCrop.getOutput(data);
+                    try {
+                        File f = new File(resultUri.getPath());
+
+                        /*Compressing gallery image using Compressor library Start*/
+                        compressedImageFile = new Compressor(getActivity()).setQuality(75).compressToFile(f);
+
+                        Bitmap myBitmap = BitmapFactory.decodeFile(compressedImageFile.getAbsolutePath());
+                        fragmentMyProfileBinding.ivProfilePicture.setImageBitmap(myBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+    private void askPermissions() {
+        if (!hasPermissions(PERMISSIONS)) {
+            Log.d("PERMISSIONS", "Launching multiple contract permission launcher for ALL required permissions");
+            multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
+        } else {
+            if(clickedOn.equals("gallery")) {
+                galleryIntent();
+            } else if(clickedOn.equals("camera")) {
+                cameraIntent();
+            }
+        }
+    }
+
+    private boolean hasPermissions(String[] permissions) {
+        if (permissions != null) {
+            for (String permission : permissions) {
+                if(shouldShowRequestPermissionRationale(permission)){
+                    //denied
+                    Log.d("PERMISSIONS", "Permission denied: " + permission);
+                    return false;
+                } else {
+                    if(checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED){
+                        //allowed
+                        Log.d("PERMISSIONS", "Permission already granted: " + permission);
+                        return true;
+                    } else{
+                        //set to never ask again
+                        //do something here.
+                        Log.d("PERMISSIONS", "Permission Set to never ask again: " + permission);
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public String fileName = "";
+    private String clickedOn = "0";
+    public void cameraIntent(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            fileName = Calendar.getInstance().getTimeInMillis() +".jpg";
+            File f = new File(context.getExternalCacheDir().getAbsolutePath(), fileName);
+            intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName() + ".provider", f));
+            cameraActivityResultLauncher.launch(intent);
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), getString(R.string.ensure_your_all_permissions), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void galleryIntent() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        try {
+            galleryActivityResultLauncher.launch(intent);
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), getString(R.string.ensure_your_all_permissions), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void gotoUCropImageActivity(Uri sourceUri, Uri destinationUri) {
+        Intent intent = UCrop.of(sourceUri, destinationUri)
+                .withAspectRatio(1, 1)
+                .getIntent(context);
+        cropActivityResultLauncher.launch(intent);
+    }
+
+    public Uri getSelectedImageUri(Intent data, int code) {
+        Uri selectedImage = null;
+        switch (code) {
+            case 1: //1 is camera
+                try {
+                    File f = new File(context.getExternalCacheDir().getAbsolutePath());
+                    for (File temp : Objects.requireNonNull(f.listFiles())) {
+                        if (temp.getName().equals(fileName)) {
+                            f = temp;
+                            break;
+                        }
+                    }
+                    if (!f.exists()) {
+                        Toast.makeText(getActivity(), "Error while capturing image", Toast.LENGTH_LONG).show();
+                    }
+
+                    selectedImage = Uri.fromFile(f);
+                }catch (Exception e){e.printStackTrace();}
+                break;
+            case 2: //2 is gallery
+                Bitmap bm = null;
+                String path = "";
+
+                if (data != null) {
+                    try {
+                        bm = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
+
+                        // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+                        Uri tempUri = getImageUri(bm);
+                        path = getRealPathFromURI(tempUri.toString());
+                        File f = new File(path);
+
+                        selectedImage = Uri.fromFile(f);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+        return selectedImage;
+    }
+
+    public Uri getImageUri(Bitmap thumbnail) {
+        String path = "";
+        try {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), thumbnail, String.valueOf(Calendar.getInstance().getTimeInMillis()), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(String contentURI) {
+        try {
+            Uri contentUri = Uri.parse(contentURI);
+            Cursor cursor = getActivity().getContentResolver().query(contentUri, null, null, null, null);
+            if (cursor == null) {
+                return contentUri.getPath();
+            } else {
+                cursor.moveToFirst();
+                int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                return cursor.getString(index);
+            }
+        }catch (Exception e){e.printStackTrace();}
+        return contentURI;
+    }
+
+    public ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {
+        ArrayList<String> result = new ArrayList<String>();
+        for (String perm : wanted) {
+            if (!hasPermission(perm)) {
+                result.add(perm);
+            }
+        }
+        return result;
+    }
+
+    public boolean hasPermission(String permission) {
+        if (canMakeSmores()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return (getActivity().checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);
+            }
+        }
+        return true;
+    }
+
+    public boolean canMakeSmores() {
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
+    /*end to image update*/
 }

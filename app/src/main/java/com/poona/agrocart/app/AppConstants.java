@@ -72,6 +72,7 @@ public class AppConstants {
     public static final String AREA_API = "area";
     public static final String CITY_API = "city";
     public static final String MY_PROFILE_API = "profile-view-customer";
+    public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
     /*Home screen APIs*/
     public static final String HOME_BANNER_API = "home-screen-banner";
@@ -153,8 +154,16 @@ public class AppConstants {
     public static final String BASKET = "0";
     public static final String PRODUCT = "1";
 
-    /*profile api paramters*/
+    /*profile api parameters*/
     public static final String CUSTOMER_ID = "customer_id";
+    public static final String NAME = "name";
+    public static final String ALTERNATE_MOBILE_NUMBER = "alternate_mobile";
+    public static final String STATE_ID_ = "state_id_fk";
+    public static final String CITY_ID_ = "city_id_fk";
+    public static final String AREA_ID_ = "area_id_fk";
+    public static final String GENDER = "gender";
+    public static final String DATE_OF_BIRTH = "date_of_birth";
+
 
     /*
      * id to handle the notification in the notification tray
