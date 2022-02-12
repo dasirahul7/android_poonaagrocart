@@ -1,5 +1,8 @@
 package com.poona.agrocart.ui.sign_in;
 
+import static com.poona.agrocart.app.AppConstants.CMS_NAME;
+import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
@@ -29,7 +32,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
@@ -40,14 +42,12 @@ import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
-import com.poona.agrocart.ui.splash_screen.SplashScreenFragment;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class SignInFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
-
     private static final String TAG = SignInFragment.class.getSimpleName();
     private SignInViewModel signInViewModel;
     private FragmentSignInBinding fragmentSignInBinding;
@@ -135,31 +135,23 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.iv_sign_up:
                 signInAndRedirectToVerifyOtp(v);
                 break;
             case R.id.tv_terms_of_service:
-                redirectToTermsAndCondition(v);
+                redirectToCmsFragment(1); //Terms & Condition
                 break;
             case R.id.tv_privacy_policy:
-                redirectToPrivacyPolicy(v);
+                redirectToCmsFragment(2); //Privacy Policy
                 break;
         }
     }
 
-    private void redirectToPrivacyPolicy(View v) {
+    private void redirectToCmsFragment(int from) {
         Bundle bundle = new Bundle();
-        bundle.putString("from","SignIn");
-        bundle.putString("title",getString(R.string.privacy_policy));
-        Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_signInPrivacyFragment,bundle);
-    }
-
-    private void redirectToTermsAndCondition(View v) {
-        Bundle bundle = new Bundle();
-        bundle.putString("from","SignIn");
-        bundle.putString("title",getString(R.string.menu_terms_conditions));
-        Navigation.findNavController(v).navigate(R.id.action_signInFragment_to_signInTermsFragment,bundle);
+        bundle.putString(FROM_SCREEN, TAG);
+        bundle.putInt(CMS_TYPE, from);
+        Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_cmsFragment, bundle);
     }
 
     private void signInAndRedirectToVerifyOtp(View v) {
@@ -184,7 +176,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void callSignInApi(ProgressDialog progressDialog) {
-        /* print user input parameters */
+        /*print user input parameters*/
         for (Map.Entry<String, String> entry : signInParameters().entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }

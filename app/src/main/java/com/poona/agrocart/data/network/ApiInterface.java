@@ -17,14 +17,17 @@ import static com.poona.agrocart.app.AppConstants.HOME_SEASONAL_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_STORE_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
+import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
+import static com.poona.agrocart.app.AppConstants.STATE_API;
 import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
+import static com.poona.agrocart.app.AppConstants.UPDATE_MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_GALLERY;
 
@@ -43,22 +46,30 @@ import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
 import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
 import com.poona.agrocart.data.network.reponses.ProductListByResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
+import com.poona.agrocart.data.network.reponses.ProfileResponse;
 import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.reponses.SignInResponse;
+import com.poona.agrocart.data.network.reponses.StateResponse;
 import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
-import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
+import com.poona.agrocart.data.network.reponses.CmsResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
 
 import java.util.HashMap;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -86,11 +97,29 @@ public interface ApiInterface {
     @GET(INTRO_SCREEN_API)
     Single<IntroScreenResponse> getIntroScreenResponse();
 
-    @GET(AREA_API)
-    Single<AreaResponse> getAreaResponse();
+    @FormUrlEncoded
+    @POST(MY_PROFILE_API)
+    Observable<ProfileResponse> getProfileObservableResponse(@FieldMap HashMap<String, String> data);
+
+    @Multipart
+    @POST(UPDATE_MY_PROFILE_API)
+    Single<ProfileResponse> updateProfileResponse(@PartMap HashMap<String, RequestBody> data,
+                                                  @Part MultipartBody.Part profilePhoto);
+
+    @GET(STATE_API)
+    Observable<StateResponse> getStateObservableResponse();
 
     @GET(CITY_API)
     Single<CityResponse> getCityResponse();
+
+    @GET(CITY_API)
+    Observable<CityResponse> getCityObservableResponse();
+
+    @GET(AREA_API)
+    Single<AreaResponse> getAreaResponse();
+
+    @GET(AREA_API)
+    Observable<AreaResponse> getAreaObservableResponse();
 
     @FormUrlEncoded
     @POST(UPDATE_LOCATION_API)
@@ -163,7 +192,7 @@ public interface ApiInterface {
     @GET(FAQ)
     Single<FaqListResponse> getAddFaqs();
 
-    /*Cms AOI Here*/
+    /*Cms API Here*/
     @GET(CMS)
     Single<CmsResponse> getCmsResponse();
 

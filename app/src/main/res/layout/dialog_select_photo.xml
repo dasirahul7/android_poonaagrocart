@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhiteTransparent">
+
+        <ImageView
+            android:id="@+id/iv_close_dialog"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:src="@drawable/ic_cross_cancel" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_gallery"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_image_icon"
+                android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/select_from_library"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:background="@color/white" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_camera"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_camera_icon"
+                android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/take_a_photo"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:background="@color/colorPrimary"
+                android:visibility="gone" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_delete_photo"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_bin_icon_"
+                android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/delete_current_picture"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18sp"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/horizontal_view_1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:background="@color/white" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

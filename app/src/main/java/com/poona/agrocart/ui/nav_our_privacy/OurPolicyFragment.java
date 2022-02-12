@@ -1,5 +1,8 @@
 package com.poona.agrocart.ui.nav_our_privacy;
 
+import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +17,13 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentPolicyBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeActivity;
 
 public class OurPolicyFragment extends BaseFragment implements View.OnClickListener {
-
+    private static final String TAG = HomeActivity.class.getSimpleName();
     private OurPolicyViewModel mViewModel;
     private FragmentPolicyBinding ourPolicyBinding;
-    private View policyViews;
-    private Bundle bundle = new Bundle();
+    private View view;
 
     public static OurPolicyFragment newInstance() {
         return new OurPolicyFragment();
@@ -32,10 +35,10 @@ public class OurPolicyFragment extends BaseFragment implements View.OnClickListe
         ourPolicyBinding = FragmentPolicyBinding.inflate(getLayoutInflater());
         mViewModel = new ViewModelProvider(this).get(OurPolicyViewModel.class);
         ourPolicyBinding.setLifecycleOwner(this);
-        policyViews = ourPolicyBinding.getRoot();
+        view = ourPolicyBinding.getRoot();
         initTitleBar(getString(R.string.privacy_policy));
         iniViews();
-        return policyViews;
+        return view;
     }
 
     private void iniViews() {
@@ -55,29 +58,21 @@ public class OurPolicyFragment extends BaseFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_policy:
-                bundle.putString("Policy_Title",getString(R.string.privacy_policy));
-                moveToPrivacyPolicy(policyViews);
+                redirectToCmsFragment(2); //Privacy Policy
                 break;
             case R.id.tv_terms:
-                bundle.putString("Policy_Title",getString(R.string.terms_condition));
-                moveToTermsConditions(policyViews);
+                redirectToCmsFragment(1); //Terms & Conditions
                 break;
             case R.id.tv_return:
-                bundle.putString("Policy_Title",getString(R.string.refund_and_return));
-                moveToReturnRefund(policyViews);
+                redirectToCmsFragment(3); //Return & Refund Policy
                 break;
         }
     }
 
-    private void moveToPrivacyPolicy(View policyViews) {
-        Navigation.findNavController(policyViews).navigate(R.id.action_nav_privacy_to_privacyPolicyFragment,bundle);
+    private void redirectToCmsFragment(int from) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FROM_SCREEN, TAG);
+        bundle.putInt(CMS_TYPE, from);
+        Navigation.findNavController(view).navigate(R.id.action_nav_cms, bundle);
     }
-    private void moveToTermsConditions(View policyViews) {
-        Navigation.findNavController(policyViews).navigate(R.id.action_nav_privacy_to_termsConditionFragment,bundle);
-    }
-
-    private void moveToReturnRefund(View policyViews) {
-        Navigation.findNavController(policyViews).navigate(R.id.action_nav_privacy_to_returnRefundFragment,bundle);
-    }
-
 }

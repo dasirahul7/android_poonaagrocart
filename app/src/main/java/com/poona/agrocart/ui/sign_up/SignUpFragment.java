@@ -207,7 +207,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void callRegisterApi(ProgressDialog progressDialog) {
-        /* print user input parameters */
+        /*print user input parameters*/
         for (Map.Entry<String, String> entry : signUpParameters().entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }
@@ -269,14 +269,14 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         Bundle bundle = new Bundle();
         bundle.putString("from", "SignUp");
         bundle.putString("title", getString(R.string.privacy_policy));
-        Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_signInPrivacyFragment, bundle);
+        //Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_signInPrivacyFragment, bundle);
     }
 
     private void redirectToTermsAndCondtn(View v) {
         Bundle bundle = new Bundle();
         bundle.putString("from", "SignUp");
         bundle.putString("title", getString(R.string.menu_terms_conditions));
-        Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_signInTermsFragment, bundle);
+        //Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_signInTermsFragment, bundle);
     }
 
     @Override

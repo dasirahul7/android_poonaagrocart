@@ -203,11 +203,11 @@
         
     </fragment>
 
-    <!--About Us Fragment-->
+    <!--Cms Fragment-->
     <fragment
-        android:id="@+id/nav_about"
-        android:name="com.poona.agrocart.ui.nav_about_us.AboutUsFragment"
-        tools:layout="@layout/fragment_about_us"/>
+        android:id="@+id/nav_cms"
+        android:name="com.poona.agrocart.ui.nav_cms.CmsFragment"
+        tools:layout="@layout/fragment_cms"/>
 
     <!--Notification Fragment-->
     <fragment
@@ -224,38 +224,14 @@
         tools:layout="@layout/fragment_policy">
     </fragment>
 
-    <!--Privacy To Privacy Policy Fragment-->
+    <!--Privacy To Privacy Policy Cms Fragment-->
     <action
-        android:id="@+id/action_nav_privacy_to_privacyPolicyFragment"
-        app:destination="@id/privacyPolicyFragment"
+        android:id="@+id/action_nav_cms"
+        app:destination="@id/nav_cms"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
-
-    <!--Privacy To Terms Condition action-->
-    <action
-        android:id="@+id/action_nav_privacy_to_termsConditionFragment"
-        app:destination="@id/termsConditionFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
-
-    <!--Privacy To Return Refund action-->
-    <action
-        android:id="@+id/action_nav_privacy_to_returnRefundFragment"
-        app:destination="@id/returnRefundFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
-
-    <!--Terms Condition Fragment-->
-    <fragment
-        android:id="@+id/nav_terms"
-        android:name="com.poona.agrocart.ui.nav_terms.TermsConditionFragment"
-        tools:layout="@layout/fragment_terms_condition"/>
 
     <!--Coupon Fragment-->
     <fragment
@@ -464,35 +440,19 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
 
-
-    <!--Privacy Policy Fragment-->
-    <fragment
-        android:id="@+id/privacyPolicyFragment"
-        android:name="com.poona.agrocart.ui.nav_our_privacy.PrivacyPolicyFragment"
-        tools:layout="@layout/fragment_policy_item"/>
-
-    <!--Terms Condition Fragment-->
-    <fragment
-        android:id="@+id/termsConditionFragment"
-        android:name="com.poona.agrocart.ui.nav_our_privacy.TermsConditionFragment"
-        tools:layout="@layout/fragment_policy_item"/>
-
-    <!--Return Refund Fragment-->
-    <fragment
-        android:id="@+id/returnRefundFragment"
-        android:name="com.poona.agrocart.ui.nav_our_privacy.ReturnRefundFragment"
-        tools:layout="@layout/fragment_policy_item"/>
     <!--Search Fragment-->
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.poona.agrocart.ui.search.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search"/>
+
     <!--Seasonal registration screen-->
     <fragment
         android:id="@+id/seasonalRegFragment"
         android:name="com.poona.agrocart.ui.seasonal.SeasonalRegFragment"
         android:label="SeasonalRegFragment" />
+
     <fragment
         android:id="@+id/basketDetailFragment"
         android:name="com.poona.agrocart.ui.basket_detail.BasketDetailFragment"

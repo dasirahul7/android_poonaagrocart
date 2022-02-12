@@ -33,6 +33,7 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/SplashScreenFragment"
             app:popUpToInclusive="true" />
+
         <!--Splash to SignUp action-->
         <action
             android:id="@+id/action_SplashScreenFragment_to_signUpFragment"
@@ -130,22 +131,6 @@
 
     </fragment>
 
-
-    <action
-        android:id="@+id/action_signUpFragment_to_signInPrivacyFragment"
-        app:destination="@id/privacyPolicyFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
-
-    <action
-        android:id="@+id/action_signUpFragment_to_signInTermsFragment"
-        app:destination="@id/termsConditionFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
     <!--Select Location Fragment-->
     <fragment
         android:id="@+id/selectLocationFragment"
@@ -159,18 +144,11 @@
         tools:layout="@layout/fragment_sign_in" >
     </fragment>
 
-    <!--Privacy Policy Fragment-->
+    <!--Cms Fragment-->
     <fragment
-        android:id="@+id/privacyPolicyFragment"
-        android:name="com.poona.agrocart.ui.nav_our_privacy.PrivacyPolicyFragment"
-        tools:layout="@layout/fragment_policy_item"/>
-
-    <!--Terms Condition Fragment-->
-    <fragment
-        android:id="@+id/termsConditionFragment"
-        android:name="com.poona.agrocart.ui.nav_our_privacy.TermsConditionFragment"
-        tools:layout="@layout/fragment_policy_item"/>
-
+        android:id="@+id/cmsFragment"
+        android:name="com.poona.agrocart.ui.nav_cms.CmsFragment"
+        tools:layout="@layout/fragment_cms"/>
 
     <action
         android:id="@+id/action_signInFragment_to_verifyOtpFragment"
@@ -181,21 +159,12 @@
         app:exitAnim="@anim/slide_out_left"/>
 
     <action
-        android:id="@+id/action_signInFragment_to_signInPrivacyFragment"
-        app:destination="@id/privacyPolicyFragment"
+        android:id="@+id/action_signInFragment_to_cmsFragment"
+        app:destination="@id/cmsFragment"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
-
-    <action
-        android:id="@+id/action_signInFragment_to_signInTermsFragment"
-        app:destination="@id/termsConditionFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
-
 
     <!--Forgot Password Fragment-->
     <fragment

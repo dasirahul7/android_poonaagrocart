@@ -202,6 +202,7 @@
         <item name="android:textColor">@color/color15</item>
         <item name="android:textSize">@dimen/_16sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:includeFontPadding">false</item>
         <item name="setCustomFont">@string/font_poppins_semi_bold</item>
     </style>
 
@@ -216,6 +217,7 @@
         <item name="android:textColor">@color/color15</item>
         <item name="android:textSize">@dimen/_16sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:includeFontPadding">false</item>
         <item name="setCustomFont">@string/font_poppins_semi_bold</item>
     </style>
 
@@ -229,7 +231,7 @@
 <!--        <item name="background">@drawable/background_with_shadow_edittext</item>-->
         <item name="android:elevation">@dimen/_2sdp</item>
         <item name="android:paddingTop">@dimen/_8sdp</item>
-        <item name="android:paddingBottom">@dimen/_8sdp</item>
+        <item name="android:paddingBottom">@dimen/_6sdp</item>
         <item name="android:paddingRight">@dimen/_16sdp</item>
         <item name="android:paddingLeft">@dimen/_16sdp</item>
         <item name="android:textColor">@color/color_grey_txt</item>

@@ -46,7 +46,7 @@ public class SelectLocationViewModel extends AndroidViewModel {
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull AreaResponse areaResponse) {
                         if (areaResponse != null) {
                             progressDialog.dismiss();
-                            Log.d(TAG, "onSuccess: " + areaResponse.getArea().size());
+                            Log.d(TAG, "onSuccess: " + areaResponse.getAreas().size());
                             areaResponseMutableLiveData.setValue(areaResponse);
                         }
                     }

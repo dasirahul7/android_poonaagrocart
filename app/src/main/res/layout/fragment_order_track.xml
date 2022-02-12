@@ -215,7 +215,9 @@
                         <com.poona.agrocart.widgets.imageview.CircularImageView
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:src="@drawable/ic_tick_green_bg" />
+                            android:src="@drawable/ic_tick_green_bg"
+                            app:civ_border_width="@dimen/_1sdp"
+                            app:civ_border_color="#979797" />
 
                         <View
                             android:layout_width="@dimen/_1sdp"
@@ -275,7 +277,9 @@
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@drawable/ic_grey_circle"
-                            android:padding="@dimen/_6sdp" />
+                            android:padding="@dimen/_6sdp"
+                            app:civ_border_width="@dimen/_1sdp"
+                            app:civ_border_color="#979797" />
 
                         <View
                             android:layout_width="@dimen/_1sdp"
@@ -337,7 +341,9 @@
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@drawable/ic_grey_circle"
-                            android:padding="@dimen/_6sdp" />
+                            android:padding="@dimen/_6sdp"
+                            app:civ_border_width="@dimen/_1sdp"
+                            app:civ_border_color="#979797" />
 
                         <View
                             android:layout_width="@dimen/_1sdp"
@@ -399,7 +405,9 @@
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@drawable/ic_grey_circle"
-                            android:padding="@dimen/_6sdp" />
+                            android:padding="@dimen/_6sdp"
+                            app:civ_border_width="@dimen/_1sdp"
+                            app:civ_border_color="#979797" />
 
                         <View
                             android:layout_width="@dimen/_1sdp"
@@ -461,7 +469,9 @@
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@drawable/ic_grey_circle"
-                            android:padding="@dimen/_6sdp" />
+                            android:padding="@dimen/_6sdp"
+                            app:civ_border_width="@dimen/_1sdp"
+                            app:civ_border_color="#979797" />
 
                     </LinearLayout>
 

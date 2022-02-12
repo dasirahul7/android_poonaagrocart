@@ -2,45 +2,41 @@ package com.poona.agrocart.data.network.reponses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public class CityResponse extends BaseResponse{
     @SerializedName("data")
     @Expose
-    private ArrayList<City> cityArrayList;
+    private List<City> cities = null;
 
-    public ArrayList<City> getCityArrayList() {
-        return cityArrayList;
+    public List<City> getCities() {
+        return cities;
     }
 
-    public void setCityArrayList(ArrayList<City> cityArrayList) {
-        this.cityArrayList = cityArrayList;
+    public void setCities(List<City> cities) {
+        this.cities = cities;
     }
 
-    public class City {
+    public static class City {
         @SerializedName("id")
         @Expose
-        private String cityId;
+        private String id;
         @SerializedName("city_name")
         @Expose
         private String cityName;
-        @SerializedName("code")
-        @Expose
-        private Integer cityCode;
         @SerializedName("status")
         @Expose
-        private Integer cityStatus;
+        private String status;
         @SerializedName("state_name")
         @Expose
         private String stateName;
 
-        public String getCityId() {
-            return cityId;
+        public String getId() {
+            return id;
         }
 
-        public void setCityId(String cityId) {
-            this.cityId = cityId;
+        public void setId(String id) {
+            this.id = id;
         }
 
         public String getCityName() {
@@ -51,20 +47,12 @@ public class CityResponse extends BaseResponse{
             this.cityName = cityName;
         }
 
-        public Integer getCityCode() {
-            return cityCode;
+        public String getStatus() {
+            return status;
         }
 
-        public void setCityCode(Integer cityCode) {
-            this.cityCode = cityCode;
-        }
-
-        public Integer getCityStatus() {
-            return cityStatus;
-        }
-
-        public void setCityStatus(Integer cityStatus) {
-            this.cityStatus = cityStatus;
+        public void setStatus(String status) {
+            this.status = status;
         }
 
         public String getStateName() {
@@ -75,5 +63,4 @@ public class CityResponse extends BaseResponse{
             this.stateName = stateName;
         }
     }
-
 }

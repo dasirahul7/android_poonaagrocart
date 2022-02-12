@@ -13,7 +13,10 @@
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_60sdp"
         android:contentDescription="@string/nav_header_desc"
-        android:src="@drawable/img_profile_picture" />
+        android:src="@drawable/ic_profile"
+        app:tint="@color/white"
+        app:civ_border_width="@dimen/_1sdp"
+        app:civ_border_color="#fff"/>
 
 
     <RelativeLayout
@@ -21,17 +24,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_12sdp"
         android:layout_toEndOf="@+id/imageView">
 
         <com.poona.agrocart.widgets.CustomTextView
             android:id="@+id/tv_user_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/username"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sp"
             android:textStyle="bold"
+            android:layout_toLeftOf="@+id/edit_img"
+            android:layout_marginEnd="@dimen/_8sdp"
             app:setCustomFont="@string/font_poppins_semi_bold" />
 
         <ImageView
@@ -40,9 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_toEndOf="@+id/tv_user_name"
-            android:contentDescription="TODO"
-            android:src="@drawable/ic_edit" />
+            android:src="@drawable/ic_edit"
+            android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
 

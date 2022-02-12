@@ -67,7 +67,7 @@
     <string name="continue_text">Continue</string>
     <string name="back_to">Back to</string>
     <string name="log_in">Log In?</string>
-    <string name="email_id_should_not_be_empty">Email ID should not be empty!</string>
+    <string name="email_id_should_not_be_empty">Email Id should not be empty!</string>
 
     <!--sign in screen validation messages-->
     <string name="mobile_number_should_not_be_empty">Mobile Number should not be empty!</string>
@@ -96,8 +96,7 @@
     <string name="sign_up_btn_text">Sign Up</string>
     <string name="by_continuing_you_agree">By continuing you agree to our</string>
     <string name="terms_of_service">&#160;Terms of Service</string>
-    <string name="and">and</string>
-    <string name="privacy_policy"> &#160;Privacy Policy</string>
+    <string name="and">and </string>
     <string name="menu_our_policy">Our Policies</string>
     <string name="username_should_not_be_empty">Username should not be empty!</string>
     <string name="please_enter_valid_email_id">Please enter valid Email ID!</string>
@@ -480,4 +479,21 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
            <!--Common Text-->
     <string name="delete_notifications">Do you really want to delete all notifications?</string>
 
+    <!--cms pages error messages-->
+    <string name="error_message_about_us">There is no About Us content found!</string>
+    <string name="error_message_terms_and_conditions">There is no Terms &amp; Condition content found!</string>
+    <string name="error_message_privacy_policy">There is no Privacy Policy content found!</string>
+    <string name="error_message_refund_policy">There is no Return &amp; Refund Policy content found!</string>
+
+    <!--cms pages titles-->
+    <string name="about_us">About Us</string>
+    <string name="terms_and_conditions">Terms &amp; Conditions</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="return_and_refund_policy">Return &amp; Refund Policy</string>
+
+    <!--upload photo dialog strings-->
+    <string name="select_from_library">Select From Library</string>
+    <string name="take_a_photo">Take a Photo</string>
+    <string name="delete_current_picture">Delete Current Picture</string>
+    <string name="you_cannot_edit_mobile_number">You cannot edit your mobile number!</string>
 </resources>

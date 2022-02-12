@@ -3,38 +3,45 @@ package com.poona.agrocart.data.network.reponses;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class AreaResponse extends BaseResponse{
+public class AreaResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
-    private ArrayList<Areas> area;
+    private List<Area> areas = null;
 
-    public ArrayList<Areas> getArea() {
-        return area;
+    public List<Area> getAreas() {
+        return areas;
     }
 
-    public void setArea(ArrayList<Areas> area) {
-        this.area = area;
+    public void setAreas(List<Area> areas) {
+        this.areas = areas;
     }
 
-
-    public class Areas {
+    public static class Area {
         @SerializedName("id")
         @Expose
-        public String id;
+        private String id;
         @SerializedName("area_name")
         @Expose
         private String areaName;
         @SerializedName("status")
         @Expose
-        private Integer status;
+        private String status;
         @SerializedName("city_name")
         @Expose
         private String cityName;
         @SerializedName("state_name")
         @Expose
         private String stateName;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public String getAreaName() {
             return areaName;
@@ -44,11 +51,11 @@ public class AreaResponse extends BaseResponse{
             this.areaName = areaName;
         }
 
-        public Integer getStatus() {
+        public String getStatus() {
             return status;
         }
 
-        public void setStatus(Integer status) {
+        public void setStatus(String status) {
             this.status = status;
         }
 
@@ -68,14 +75,5 @@ public class AreaResponse extends BaseResponse{
             this.stateName = stateName;
         }
 
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
     }
-
-
 }

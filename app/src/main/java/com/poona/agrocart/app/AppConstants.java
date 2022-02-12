@@ -68,9 +68,11 @@ public class AppConstants {
     public static final String RESEND_OTP = "resend-otp";
     public static final String REGISTER_API = "register-customer";
     public static final String INTRO_SCREEN_API = "screen-customer";
+    public static final String STATE_API = "state";
     public static final String AREA_API = "area";
     public static final String CITY_API = "city";
-    public static final String STATE_API = "state";
+    public static final String MY_PROFILE_API = "profile-view-customer";
+    public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
     /*Home screen APIs*/
     public static final String HOME_BANNER_API = "home-screen-banner";
@@ -132,6 +134,7 @@ public class AppConstants {
      * cms content api parameters
      */
     public static final String CMS_NAME = "cms_name";
+    public static final String CMS_TYPE = "cms_type";
     public static final String CMS_ASSIGN_ID = "cms_assign_id";
     public static final String ABOUT_US = "about-us";
     public static final String TERMS_CONDITIONS = "term-and-condition";
@@ -166,6 +169,17 @@ public class AppConstants {
     /*Category types*/
     public static final String BASKET = "0";
     public static final String PRODUCT = "1";
+
+    /*profile api parameters*/
+    public static final String CUSTOMER_ID = "customer_id";
+    public static final String PROFILE_IMAGE = "profile_image";
+    public static final String NAME = "name";
+    public static final String ALTERNATE_MOBILE_NUMBER = "alternate_mobile";
+    public static final String STATE_ID_ = "state_id_fk";
+    public static final String CITY_ID_ = "city_id_fk";
+    public static final String AREA_ID_ = "area_id_fk";
+    public static final String GENDER = "gender";
+    public static final String DATE_OF_BIRTH = "date_of_birth";
 
 
     /*
