@@ -4,7 +4,7 @@
     <data>
         <variable
             name="galleryVideo"
-            type="com.poona.agrocart.data.network.reponses.gallery.GalleryVideo" />
+            type="com.poona.agrocart.data.network.reponses.galleryResponse.GalleryVideo" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingLeft="@dimen/_5sdp"
@@ -24,12 +24,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/itemImg"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_180sdp"
                 setImage="@{galleryVideo.videoImage}"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:scaleType="fitXY" />
 
             <com.poona.agrocart.widgets.CustomButton

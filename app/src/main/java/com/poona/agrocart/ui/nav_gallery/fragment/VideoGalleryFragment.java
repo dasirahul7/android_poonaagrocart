@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_gallery.fragment;
 
+import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
@@ -8,7 +9,6 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -17,10 +17,11 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,20 +29,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.GalleryResponse;
-import com.poona.agrocart.data.network.reponses.gallery.GalleryVideo;
+import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryResponse;
+import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryVideo;
 import com.poona.agrocart.databinding.FragmentVideoBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_gallery.adapter.VideoAdapter;
-import com.poona.agrocart.ui.nav_gallery.viewModel.VideoViewModel;
+import com.poona.agrocart.ui.nav_gallery.viewModel.GalleryViewModel;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +53,7 @@ import java.util.List;
 public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.OnVideoClickListener, NetworkExceptionListener {
    private List<GalleryVideo> galleryVideoList = new ArrayList<>();
     private FragmentVideoBinding videoFragmentBinding;
-    private VideoViewModel videoViewModel;
+    private GalleryViewModel videoViewModel;
     private View videoView;
     private RecyclerView rvVideo;
     private VideoAdapter videoAdapter;
@@ -62,6 +62,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
 
     public static VideoGalleryFragment newInstance() {
         VideoGalleryFragment fragment = new VideoGalleryFragment();
+
 //        videosList = videoLiveData.getValue();
         return fragment;
     }
@@ -80,11 +81,13 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         initViews();
+        Log.d("TAG", "onCreateView: video");
         return videoView;
     }
 
     @Override
     public void onResume() {
+        Log.d("TAG", "onResume: video");
         super.onResume();
         if (isConnectingToInternet(context)) {
             callGalleryVideoApi(showCircleProgressDialog(context, ""));
@@ -97,7 +100,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         videoFragmentBinding = FragmentVideoBinding.inflate(LayoutInflater.from(context));
         videoView = videoFragmentBinding.getRoot();
         // Initialize ViewModel
-        videoViewModel = new ViewModelProvider(this).get(VideoViewModel.class);
+        videoViewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
         //Initialize recyclerView
         rvVideo = videoFragmentBinding.rvVideo;
     }
@@ -155,7 +158,9 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
 
         //initializing our adapter
         videoAdapter = new VideoAdapter(context, galleryVideoList,this);
-
+        GridLayoutManager eLayoutManager = new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
+        rvVideo.setLayoutManager(eLayoutManager);
+        rvVideo.setItemAnimator(new DefaultItemAnimator());
         //Adding adapter to recyclerview
         rvVideo.setAdapter(videoAdapter);
     }
@@ -165,7 +170,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogSlideUp;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogSlideAnim;
         dialog.setContentView(R.layout.video_image_pop_up_dailog);
         ImageView imageView = dialog.findViewById(R.id.imageViewItem);
         VideoView videoView = dialog.findViewById(R.id.VideoView);
@@ -196,7 +201,9 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         i.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"video/mp4", "video/quicktime"});
         startActivityForResult(i, requestCode);*/
 
-
+        Glide.with(context)
+                .load(IMAGE_DOC_BASE_URL+galleryVideoList.get(position).getVideoImage())
+                .into(imageView);
 
         //String strVideoView = galleryVideoList.get(position).getVideoUrl();
         String strVideoView = "https://law.duke.edu/cspd/contest/videos/Framed-Contest_Documentaries-and-You.mp4";
@@ -211,7 +218,6 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
             public void onPrepared(MediaPlayer mp) {
                 videoView.setZOrderOnTop(false);
                 imageView.setVisibility(View.GONE);
-                Toast.makeText(context, "hii dear", Toast.LENGTH_SHORT).show();
          // do something when video is ready to play
 
             }

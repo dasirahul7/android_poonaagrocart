@@ -15,6 +15,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,12 +31,12 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.gallery.GalleryImage;
-import com.poona.agrocart.data.network.reponses.GalleryResponse;
+import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryImage;
+import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryResponse;
 import com.poona.agrocart.databinding.FragmentPhotoBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_gallery.adapter.PhotoAdapter;
-import com.poona.agrocart.ui.nav_gallery.viewModel.PhotoViewModel;
+import com.poona.agrocart.ui.nav_gallery.viewModel.GalleryViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +48,7 @@ import java.util.List;
  */
 public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.OnPhotoClickListener, NetworkExceptionListener {
     private FragmentPhotoBinding fragmentPhotoBinding;
-    private PhotoViewModel photoViewModel;
+    private GalleryViewModel photoViewModel;
     private View photoView;
     private List<GalleryImage> galleryImages = new ArrayList<>();
     private RecyclerView rvPhoto;
@@ -55,7 +57,7 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
 
     public static PhotoGalleryFragment newInstance() {
         PhotoGalleryFragment fragment = new PhotoGalleryFragment();
-//        photoList = photos.getValue();
+      //  GalleryImage = photos.getValue();
         return fragment;
     }
 
@@ -71,13 +73,12 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         initViews();
-
+        callGalleryAPI();
+        Log.e("TAG", "onCreateView: photo " );
         return photoView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void callGalleryAPI() {
         if (isConnectingToInternet(context)) {
             callGalleryImageApi(showCircleProgressDialog(context, ""));
         } else {
@@ -85,11 +86,18 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("TAG", "onResume: photo");
+        callGalleryAPI();
+    }
+
     private void initViews() {
         fragmentPhotoBinding = FragmentPhotoBinding.inflate(LayoutInflater.from(context));
         photoView = fragmentPhotoBinding.getRoot();
         rvPhoto = fragmentPhotoBinding.rvPhoto;
-        photoViewModel = new ViewModelProvider(this).get(PhotoViewModel.class);
+        photoViewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
     }
 
     private void setGallery(List<GalleryImage> galleryImages) {
@@ -105,14 +113,16 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
 
         //initializing our adapter
         photoAdapter = new PhotoAdapter(context, galleryImages, this);
-
+        GridLayoutManager eLayoutManager = new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
+        rvPhoto.setLayoutManager(eLayoutManager);
+        rvPhoto.setItemAnimator(new DefaultItemAnimator());
         //Adding adapter to recyclerview
         rvPhoto.setAdapter(photoAdapter);
     }
 
     private void callGalleryImageApi(ProgressDialog progressDialog){
 
-        @SuppressLint("NotifyDataSetChanged") Observer<GalleryResponse> galleryResponseObserver = galleryResponse -> {
+        @SuppressLint("NotifyDataSetChanged") Observer<GalleryResponse>galleryResponseObserver = galleryResponse -> {
             if (galleryResponse != null){
                 Log.e("Gallery Image Api Response", new Gson().toJson(galleryResponse));
                 if (progressDialog !=null){
@@ -161,10 +171,9 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogSlideUp;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogSlideAnim;
         dialog.setContentView(R.layout.photo_image_pop_up_dailog);
         ImageView popUpImage = dialog.findViewById(R.id.iv_pop_up_image);
-
         Glide.with(context)
                 .load(IMAGE_DOC_BASE_URL+galleryImages.get(position).getGalleryImage())
                 .into(popUpImage);

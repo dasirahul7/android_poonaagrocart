@@ -1,5 +1,5 @@
 
-package com.poona.agrocart.data.network.reponses.gallery;
+package com.poona.agrocart.data.network.reponses.galleryResponse;
 
 
 import com.google.gson.annotations.Expose;

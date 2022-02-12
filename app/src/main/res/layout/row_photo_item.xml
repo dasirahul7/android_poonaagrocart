@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="galleryImage"
-            type="com.poona.agrocart.data.network.reponses.gallery.GalleryImage" />
+            type="com.poona.agrocart.data.network.reponses.galleryResponse.GalleryImage" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingLeft="@dimen/_5sdp"
-        android:paddingRight="@dimen/_5sdp"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_180sdp">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/photoCard"
@@ -22,21 +18,28 @@
             android:background="@android:color/transparent"
             app:cardCornerRadius="@dimen/_10sdp"
             app:cardUseCompatPadding="true"
+            android:layout_margin="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/itemImg"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_180sdp"
+                setImage="@{galleryImage.galleryImage}"
+                android:scaleType="fitXY" />
 
-            <ImageView
+
+           <!-- <ImageView
                 android:id="@+id/itemImg"
                 setImage="@{galleryImage.galleryImage}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY" />
-
+                android:layout_gravity="center"
+                android:scaleType="centerCrop" />-->
 
         </com.google.android.material.card.MaterialCardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

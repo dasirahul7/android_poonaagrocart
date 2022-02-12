@@ -22,12 +22,18 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     private final Context context;
     private RowCouponItemBinding rowCouponItemBinding;
     private CouponFragment couponFragment;
+    private TermsAndConditionClickItem termsAndConditionClickItem;
 
 
     public CouponAdapter(ArrayList<CouponResponse.Coupon> coupons, Context context, CouponFragment couponFragment) {
         this.coupons = coupons;
         this.context = context;
         this.couponFragment = couponFragment;
+        this.termsAndConditionClickItem = couponFragment;
+    }
+
+    public interface TermsAndConditionClickItem{
+        void itemViewClick(int position);
     }
 
     @NonNull
@@ -42,6 +48,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     public void onBindViewHolder(@NonNull CouponHolder holder, int position) {
         CouponResponse.Coupon coupon = coupons.get(position);
         rowCouponItemBinding.setModuleCoupon(coupon);
+        holder.bind(coupon);
         if (Integer.parseInt(coupon.getId()) % 3 == 1){
             rowCouponItemBinding.couponRow.setBackgroundResource(R.drawable.coupon_green);
             rowCouponItemBinding.tvCouponCode.setTextColor(context.getColor(R.color.light_green_txt_color));
@@ -54,7 +61,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
             rowCouponItemBinding.tvCouponCode.setTextColor(context.getColor(R.color.red_text_color));
             rowCouponItemBinding.mcvCouponCode.setStrokeColor(context.getColor(R.color.red_text_color));
         }
-        holder.bind(coupon);
+
     }
 
     @Override
@@ -65,14 +72,24 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     public class CouponHolder extends RecyclerView.ViewHolder {
         public CouponHolder(@NonNull RowCouponItemBinding itemView) {
             super(itemView.getRoot());
+
+            itemView.llTermsAndCond.setOnClickListener(view -> {
+                if (termsAndConditionClickItem != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        termsAndConditionClickItem.itemViewClick(position);
+                    }
+                }
+            });
+
         }
 
         public void bind(CouponResponse.Coupon coupon) {
             rowCouponItemBinding.setVariable(BR.moduleCoupon, coupon);
             rowCouponItemBinding.executePendingBindings();
-            rowCouponItemBinding.imgInfo.setOnClickListener(v -> {
+           /* rowCouponItemBinding.imgInfo.setOnClickListener(v -> {
                 couponFragment.termsDialog();
-            });
+            });*/
         }
     }
 }

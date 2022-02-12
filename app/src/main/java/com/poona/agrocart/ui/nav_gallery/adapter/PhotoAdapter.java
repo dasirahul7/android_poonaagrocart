@@ -1,7 +1,5 @@
 package com.poona.agrocart.ui.nav_gallery.adapter;
 
-import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,13 +8,10 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.poona.agrocart.BR;
-import com.poona.agrocart.data.network.reponses.gallery.GalleryImage;
-import com.poona.agrocart.data.network.reponses.gallery.GalleryVideo;
+import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryImage;
 import com.poona.agrocart.databinding.RowPhotoItemBinding;
 import com.poona.agrocart.ui.nav_gallery.fragment.PhotoGalleryFragment;
-import com.poona.agrocart.ui.nav_gallery.fragment.VideoGalleryFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +52,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder>
         photoItemBinding.setGalleryImage(photo);
         holder.bind(photo);
 
-        imageView = holder.photoItemBinding.itemImg;
+       /* imageView = holder.photoItemBinding.itemImg;
         // set page image
         Glide.with(pContext)
                 .load(IMAGE_DOC_BASE_URL+galleryImages.get(position).getGalleryImage())
-                .into(imageView);
+                .into(imageView);*/
 
     }
 
