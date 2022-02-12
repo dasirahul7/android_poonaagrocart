@@ -8,6 +8,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +41,7 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_gallery.adapter.VideoAdapter;
 import com.poona.agrocart.ui.nav_gallery.viewModel.VideoViewModel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +58,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     private RecyclerView rvVideo;
     private VideoAdapter videoAdapter;
     DisplayMetrics displayMetrics = new DisplayMetrics();
+    private int requestCode;
 
     public static VideoGalleryFragment newInstance() {
         VideoGalleryFragment fragment = new VideoGalleryFragment();
@@ -166,7 +170,6 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         ImageView imageView = dialog.findViewById(R.id.imageViewItem);
         VideoView videoView = dialog.findViewById(R.id.VideoView);
 
-
         /*Glide.with(context)
                 .load("https://www.linkpicture.com/q/unsplash_QvkAQTNj4zk_1.png")
                 .placeholder(R.drawable.img_apple)
@@ -187,17 +190,27 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
                     .into(imageView);
         }
 */
+       /* Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("**");  // change *//*
+        i.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"video/mp4", "video/quicktime"});
+        startActivityForResult(i, requestCode);*/
 
-        String strVideoView = galleryVideoList.get(position).getVideoUrl();
+
+
+        //String strVideoView = galleryVideoList.get(position).getVideoUrl();
+        String strVideoView = "https://law.duke.edu/cspd/contest/videos/Framed-Contest_Documentaries-and-You.mp4";
         Uri uri = Uri.parse(strVideoView);
         videoView.setVideoURI(uri);
+        videoView.setZOrderOnTop(true);
         videoView.start();
 
-          // perform set on prepared listener event on video view
+        // perform set on prepared listener event on video view
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-
+                videoView.setZOrderOnTop(false);
+                imageView.setVisibility(View.GONE);
                 Toast.makeText(context, "hii dear", Toast.LENGTH_SHORT).show();
          // do something when video is ready to play
 

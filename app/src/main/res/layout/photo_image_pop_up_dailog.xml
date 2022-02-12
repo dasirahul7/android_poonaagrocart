@@ -7,18 +7,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/back_rounded_white_alert_dialog">
+        android:orientation="vertical">
+
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/_240sdp">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_pop_up_image"
-                android:layout_height="@dimen/_240sdp"
                 android:layout_width="match_parent"
-                android:scaleType="fitXY"/>
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize20Percent" />
+
+           <!-- <ImageView
+                android:id="@+id/iv_pop_up_image"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="@drawable/gallery_image_backgorund"
+                android:scaleType="centerCrop"/>-->
         </RelativeLayout>
 
     </LinearLayout>
