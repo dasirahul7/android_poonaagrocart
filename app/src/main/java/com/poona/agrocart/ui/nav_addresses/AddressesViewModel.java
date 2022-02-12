@@ -28,11 +28,42 @@ import okhttp3.RequestBody;
 import retrofit2.HttpException;
 
 public class AddressesViewModel extends AndroidViewModel {
-
     private String TAG = AddressesViewModel.class.getSimpleName();
+    public MutableLiveData<String> addressType;
+    public MutableLiveData<String> name;
+    public MutableLiveData<String> mobile;
+    public MutableLiveData<String> city;
+    public MutableLiveData<String> area;
+    public MutableLiveData<String> pinCode;
+    public MutableLiveData<String> apartmentName;
+    public MutableLiveData<String> houseNumber;
+    public MutableLiveData<String> landmark;
+    public MutableLiveData<String> street;
 
     public AddressesViewModel(@NonNull Application application) {
         super(application);
+
+        addressType=new MutableLiveData<>();
+        name=new MutableLiveData<>();
+        mobile=new MutableLiveData<>();
+        city=new MutableLiveData<>();
+        area=new MutableLiveData<>();
+        pinCode =new MutableLiveData<>();
+        houseNumber=new MutableLiveData<>();
+        apartmentName =new MutableLiveData<>();
+        street=new MutableLiveData<>();
+        landmark=new MutableLiveData<>();
+
+        addressType.setValue("");
+        name.setValue("");
+        mobile.setValue("");
+        city.setValue("");
+        area.setValue("");
+        pinCode.setValue("");
+        houseNumber.setValue("");
+        apartmentName.setValue("");
+        street.setValue("");
+        landmark.setValue("");
     }
 
     public LiveData<AddressesResponse> getAddressesResponse(ProgressDialog progressDialog,

@@ -184,7 +184,7 @@
     <!--Addresses Form Fragment-->
     <fragment
         android:id="@+id/addressesFormFragment2"
-        android:name="com.poona.agrocart.ui.nav_addresses.addresses_form.AddressesFormFragment"
+        android:name="com.poona.agrocart.ui.nav_addresses.AddAddressFragment"
         tools:layout="@layout/fragment_addresses_form"/>
 
     <!--Order View Fragment-->
