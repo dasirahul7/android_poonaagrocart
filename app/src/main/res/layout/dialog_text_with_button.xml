@@ -59,7 +59,7 @@
                 <com.poona.agrocart.widgets.CustomButton
                     android:id="@+id/bt_ok"
                     android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_height="@dimen/_34sdp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_22sdp"
                     android:includeFontPadding="false"
