@@ -18,6 +18,7 @@ import static com.poona.agrocart.app.AppConstants.HOME_STORE_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
+import static com.poona.agrocart.app.AppConstants.ADDRESS_LIST_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
@@ -31,6 +32,7 @@ import static com.poona.agrocart.app.AppConstants.UPDATE_MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_GALLERY;
 
+import com.poona.agrocart.data.network.reponses.AddressesResponse;
 import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
@@ -100,6 +102,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(MY_PROFILE_API)
     Observable<ProfileResponse> getProfileObservableResponse(@FieldMap HashMap<String, String> data);
+
+    @GET(ADDRESS_LIST_API)
+    Single<AddressesResponse> getAddressesListResponse();
 
     @Multipart
     @POST(UPDATE_MY_PROFILE_API)

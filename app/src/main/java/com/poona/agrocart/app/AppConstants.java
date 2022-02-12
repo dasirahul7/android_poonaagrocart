@@ -72,6 +72,7 @@ public class AppConstants {
     public static final String AREA_API = "area";
     public static final String CITY_API = "city";
     public static final String MY_PROFILE_API = "profile-view-customer";
+    public static final String ADDRESS_LIST_API = "address-view";
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
     /*Home screen APIs*/
