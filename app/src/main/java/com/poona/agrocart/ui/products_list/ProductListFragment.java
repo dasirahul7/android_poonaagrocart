@@ -35,7 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
-import com.poona.agrocart.data.network.ApiErrorException;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.BestSellingResponse;
@@ -53,7 +53,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ProductListFragment extends BaseFragment implements ApiErrorException {
+public class ProductListFragment extends BaseFragment implements NetworkExceptionListener {
     private static final String TAG = ProductListFragment.class.getSimpleName();
     private FragmentProductListBinding fragmentProductListBinding;
     private ProductListViewModel productListViewModel;
@@ -105,7 +105,13 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
         gridLayoutManager = new GridLayoutManager(requireContext(), 2);
         rvVegetables.setHasFixedSize(true);
         rvVegetables.setLayoutManager(gridLayoutManager);
-        checkAndLoadData("load");
+        if (isConnectingToInternet(context)) {
+            //add API call here
+            checkAndLoadData("load");
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+
 
     }
 
@@ -137,7 +143,13 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
                         if (exclusiveResponse.getExclusiveData().getExclusivesList() != null
                                 && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
                             // Exclusive data listing
-                            productArrayList = exclusiveResponse.getExclusiveData().getExclusivesList();
+                            for (ProductListResponse.Product product :exclusiveResponse.getExclusiveData().getExclusivesList()){
+                                product.setUnit(product.getProductUnits().get(0));
+                                product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                productArrayList.add(product);
+                            }
+
+//                            productArrayList = exclusiveResponse.getExclusiveData().getExclusivesList();
                             makeProductListing();
                         }
                         break;
@@ -324,7 +336,12 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
                                             if (!fragmentProductListBinding.etSearch.getText().toString().trim().equals("")) {
                                                 productArrayList.clear();
                                                 basketArrayList.clear();
-                                                checkAndLoadData("load");
+                                                if (isConnectingToInternet(context)) {
+                                                    //add API call here
+                                                    checkAndLoadData("load");
+                                                } else {
+                                                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                                                }
                                             } else return;
                                         }
                                     } catch (Exception e) {
@@ -402,7 +419,12 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
 
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount != totalCount) {
-                    checkAndLoadData("onScrolled");
+                    if (isConnectingToInternet(context)) {
+                        //add API call here
+                        checkAndLoadData("onScrolled");
+                    } else {
+                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                    }
                 } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount == totalCount) {
                     infoToast(requireActivity(), getString(R.string.no_result_found));  //change
@@ -412,9 +434,18 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
 
     }
 
+    /* Redirect to product detail screen*/
+    private void redirectToProductsDetail(ProductListResponse.Product product)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putString("name",product.getProductName());
+        bundle.putString("image",product.getFeatureImg());
+        bundle.putString("price",product.getProductUnits().get(0).getSellingPrice());
+        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_products_list_to_productDetailFragment2,bundle);
+    }
 
     @Override
-    public void onApiErrorException(int from, String apiFrom) {
+    public void onNetworkException(int from, String apiFrom) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), ProductListFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
@@ -434,15 +465,5 @@ public class ProductListFragment extends BaseFragment implements ApiErrorExcepti
             }
         }, context);
 
-    }
-
-    /* Redirect to product detail screen*/
-    private void redirectToProductsDetail(ProductListResponse.Product product)
-    {
-        Bundle bundle = new Bundle();
-        bundle.putString("name",product.getProductName());
-        bundle.putString("image",product.getFeatureImg());
-        bundle.putString("price",product.getProductUnits().get(0).getSellingPrice());
-        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_products_list_to_productDetailFragment2,bundle);
     }
 }

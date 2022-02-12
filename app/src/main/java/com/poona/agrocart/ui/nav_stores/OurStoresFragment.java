@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentOurStoresBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListData;
@@ -38,7 +39,7 @@ import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.OnStoreClickListener
+public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.OnStoreClickListener, NetworkExceptionListener
 {
     private FragmentOurStoresBinding fragmentOurStoresBinding;
     private OurStoreViewModel ourStoreViewModel;
@@ -74,7 +75,10 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
     private void setRvAdapter()
     {
         storeArrayList=new ArrayList<>();
-        callOurStoreListApi(showCircleProgressDialog(context, ""), "RecyclerView");
+        if (isConnectingToInternet(context)){
+            /*Call Our Store List API here*/
+            callOurStoreListApi(showCircleProgressDialog(context, ""), "RecyclerView");
+        }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
         // storeListData();
 
@@ -104,7 +108,11 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
 
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount != totalCount) {
-                    callOurStoreListApi(showCircleProgressDialog(context, ""), "onScrolled");
+                    if (isConnectingToInternet(context)){
+                        /*Call Our Store List API here*/
+                        callOurStoreListApi(showCircleProgressDialog(context, ""), "onScrolled");
+                    }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+
                 }
                 else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount == totalCount) {
@@ -187,6 +195,11 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
         Bundle bundle = new Bundle();
         bundle.putString(STORE_ID, orderId);
         NavHostFragment.findNavController(OurStoresFragment.this).navigate(R.id.action_nav_store_to_storeLocationFragment, bundle);
+
+    }
+
+    @Override
+    public void onNetworkException(int from, String type) {
 
     }
 }

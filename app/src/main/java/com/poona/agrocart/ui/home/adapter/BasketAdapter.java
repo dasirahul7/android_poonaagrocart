@@ -22,18 +22,20 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
     private ArrayList<BasketResponse.Basket> baskets = new ArrayList<>();
     private final Context bContext;
     private RowBasketItemBinding basketItemBinding;
-    private final View view;
-
-    public BasketAdapter(ArrayList<BasketResponse.Basket> baskets, Context context, View view) {
+    private OnBasketClickListener onBasketClickListener;
+    public BasketAdapter(ArrayList<BasketResponse.Basket> baskets, Context context,OnBasketClickListener onBasketClickListener) {
         this.baskets = baskets;
         this.bContext = context;
-        this.view=view;
+        this.onBasketClickListener = onBasketClickListener;
+    }
+    public interface OnBasketClickListener{
+        void OnBasketClick(BasketResponse.Basket basket);
     }
 
     @Override
     public BasketHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         basketItemBinding = DataBindingUtil.inflate(LayoutInflater.from(bContext), R.layout.row_basket_item, parent, false);
-        return new BasketHolder(basketItemBinding,view);
+        return new BasketHolder(basketItemBinding);
     }
 
     @Override
@@ -54,27 +56,18 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
     }
 
     public class BasketHolder extends RecyclerView.ViewHolder {
-        public BasketHolder(RowBasketItemBinding basketItemBinding,View view) {
+        public BasketHolder(RowBasketItemBinding basketItemBinding) {
             super(basketItemBinding.getRoot());
-
-            basketItemBinding.cardviewBasketItem.setOnClickListener(v->{
-                redirectToBasketDetailFragment(view);
-            });
         }
 
-        private void redirectToBasketDetailFragment(View v)
-        {
-            Bundle bundle = new Bundle();
-            bundle.putString("name",baskets.get(getAdapterPosition()).getBasketName());
-            bundle.putString("image",baskets.get(getAdapterPosition()).getFeatureImg());
-            bundle.putString("price",baskets.get(getAdapterPosition()).getBasketRate());
-            bundle.putString("ProductOld","BasketDetail");
-            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
-        }
 
         public void bind(BasketResponse.Basket basket) {
             basketItemBinding.setVariable(BR.basketModule,basket);
             basketItemBinding.executePendingBindings();
+            basketItemBinding.cardviewBasketItem.setOnClickListener(v->{
+                onBasketClickListener.OnBasketClick(basket);
+            });
+
         }
     }
 }

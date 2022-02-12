@@ -233,7 +233,7 @@
     <string name="about_this_product">About this Product</string>
     <string name="benefits">Benefits</string>
     <string name="storage_and_uses">Storage and Uses</string>
-    <string name="variable_weight_policy">Variable weight policy</string>
+    <string name="variable_weight_policy">Weight policy</string>
     <string name="other_product_info">Other Product Info</string>
     <string name="review">Review</string>
     <string name="your_ratings">Your Ratings</string>
@@ -474,6 +474,10 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="sample_about_seasonal">publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.</string>
     <string name="quantity">Quantity</string>
     <string name="registration">Registration</string>
+    <string name="special_rate_for_subscription">Special rate for subscription</string>
+
+           <!--Common Text-->
+    <string name="delete_notifications">Do you really want to delete all notifications?</string>
 
     <!--cms pages error messages-->
     <string name="error_message_about_us">There is no About Us content found!</string>

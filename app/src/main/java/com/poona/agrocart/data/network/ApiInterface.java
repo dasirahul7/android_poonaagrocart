@@ -1,6 +1,8 @@
 package com.poona.agrocart.data.network;
 
+import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.AREA_API;
+import static com.poona.agrocart.app.AppConstants.BASKET_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
 import static com.poona.agrocart.app.AppConstants.COUPON_API;
@@ -16,6 +18,7 @@ import static com.poona.agrocart.app.AppConstants.HOME_STORE_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
+import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
@@ -26,17 +29,21 @@ import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
+import static com.poona.agrocart.app.AppConstants.VIEW_GALLERY;
 
 import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
+import com.poona.agrocart.data.network.reponses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
+import com.poona.agrocart.data.network.reponses.GalleryResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
+import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
 import com.poona.agrocart.data.network.reponses.ProductListByResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.data.network.reponses.ProfileResponse;
@@ -68,10 +75,12 @@ import retrofit2.http.PartMap;
  * Created by Rahul Dasi on 6/10/2020
  */
 public interface ApiInterface {
+    /*Login API*/
     @FormUrlEncoded
     @POST(LOGIN_API)
     Single<SignInResponse> getSignInResponse(@FieldMap HashMap<String, String> data);
 
+    /*Verify otp API*/
     @FormUrlEncoded
     @POST(VERIFY_OTP_API)
     Single<VerifyOtpResponse> getVerifyOtpResponse(@FieldMap HashMap<String, String> data);
@@ -179,9 +188,29 @@ public interface ApiInterface {
     @POST(STORE_DETAILS)
     Single<OurStoreViewDataResponse> getOurStoreDetails(@FieldMap HashMap<String, String> ourStoreDetailsInputParameter);
 
+    /*FAQ API here*/
     @GET(FAQ)
     Single<FaqListResponse> getAddFaqs();
 
+    /*Cms API Here*/
     @GET(CMS)
     Single<CmsResponse> getCmsResponse();
+
+    /*Product Details API*/
+    @FormUrlEncoded
+    @POST(PRODUCT_DETAIL_API)
+    Single<ProductDetailsResponse> getProductDetailsResponse(@FieldMap HashMap<String,String> hashMap);
+
+    /*Basket detail API*/
+    @FormUrlEncoded
+    @POST(BASKET_DETAIL_API)
+    Single<BasketDetailsResponse> getBasketDetailsResponse(@FieldMap HashMap<String, String> hashMap);
+
+    /*Add to favourite API*/
+    @FormUrlEncoded
+    @POST(ADD_TO_FAVOURITE)
+    Single<BaseResponse> addToFavouriteResponse(@FieldMap HashMap<String,String> hashMap);
+
+    @GET(VIEW_GALLERY)
+    Single<GalleryResponse> getGalleryReponse();
 }

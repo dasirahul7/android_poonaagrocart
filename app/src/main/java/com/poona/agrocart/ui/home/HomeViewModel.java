@@ -3,6 +3,7 @@ package com.poona.agrocart.ui.home;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
@@ -112,7 +114,7 @@ public class HomeViewModel extends AndroidViewModel {
                             bannerResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(0);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(0,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -157,7 +159,7 @@ public class HomeViewModel extends AndroidViewModel {
                             categoryResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(1);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(1,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -199,7 +201,7 @@ public class HomeViewModel extends AndroidViewModel {
                             basketResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(2);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(2,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -243,7 +245,7 @@ public class HomeViewModel extends AndroidViewModel {
                             exclusiveResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(3);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(3,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -286,7 +288,7 @@ public class HomeViewModel extends AndroidViewModel {
                             bestSellingResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(4);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(4,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -329,7 +331,7 @@ public class HomeViewModel extends AndroidViewModel {
                             seasonalProductResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(5);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(5,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -372,7 +374,7 @@ public class HomeViewModel extends AndroidViewModel {
                             productListResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(6);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(6,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -414,14 +416,12 @@ public class HomeViewModel extends AndroidViewModel {
                             storeBannerMutableLiveData.setValue(storeBannerResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(7);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(7,"");
                         }
                     }
                 });
         return storeBannerMutableLiveData;
     }
-
-
 
     public MutableLiveData<ArrayList<ProductOld>> getLiveDataCartProduct() {
         return liveDataCartProduct;

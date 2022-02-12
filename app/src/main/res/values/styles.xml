@@ -77,6 +77,13 @@
         <item name="android:windowExitAnimation">@anim/slide_down_dialog</item>
     </style>
 
+
+    <!--Profile Page-->
+    <style name="ShapeAppearanceOverlay.App.CornerSize20Percent" parent="">
+        <item name="cornerSize">6%</item>
+    </style>
+
+
     <!-- Animation for dialog box -->
     <style name="DialogSlideAnim" parent="@android:style/Theme.Dialog">
         <item name="android:windowAnimationStyle">@style/DialogAnimationDownUp</item>

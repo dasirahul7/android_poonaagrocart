@@ -5,7 +5,7 @@
     <data>
         <variable
             name="basketContent"
-            type="com.poona.agrocart.ui.product_detail.model.BasketContent" />
+            type="com.poona.agrocart.data.network.reponses.BasketResponse.BasketProduct" />
     </data>
 
     <LinearLayout
@@ -21,7 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="@{basketContent.contentName}"
+            android:text="@{basketContent.productName}"
             android:textSize="@dimen/_14sp"
             app:setCustomFont="@string/font_poppins_semi_bold"
             android:textColor="@color/black"
@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="@{basketContent.contentWeight}"
+            android:text="@{basketContent.weightAndUnit}"
             android:gravity="end"
             android:textSize="@dimen/_14sp"
             app:setCustomFont="@string/font_poppins_regular"

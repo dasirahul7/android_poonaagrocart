@@ -55,7 +55,7 @@
                     android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{basketModule.priceUnit+basketModule.basketRate}"
+                    android:text="@{`Rs.`+basketModule.basketRate}"
                     android:textColor="@color/lightBlack"
                     android:textSize="@dimen/normal" />
             </LinearLayout>

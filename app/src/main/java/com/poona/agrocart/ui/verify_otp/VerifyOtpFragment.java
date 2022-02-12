@@ -162,7 +162,11 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                 break;
             case R.id.tv_resend_otp:
 //                fragmentVerifyOtpBinding.tvTimer.setVisibility(View.VISIBLE);
-                callResendOtpAPI(showCircleProgressDialog(context, ""));
+                if (isConnectingToInternet(context)) {
+                    callResendOtpAPI(showCircleProgressDialog(context, ""));
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
                 break;
         }
 
@@ -311,16 +315,18 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
-    public void onNetworkException(int from) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), VerifyOtpFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
                 switch (from) {
                     case 0:
+                        //Verify OTp API here
                         callVerifyOtpApi(showCircleProgressDialog(context, ""));
                         break;
                     case 1:
-                        callResendOtpAPI(showCircleProgressDialog(context,""));
+                        //Resend OTP API here
+                        callResendOtpAPI(showCircleProgressDialog(context, ""));
                         break;
                 }
             } else {

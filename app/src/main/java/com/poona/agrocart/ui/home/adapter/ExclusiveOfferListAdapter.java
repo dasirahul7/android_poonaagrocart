@@ -25,21 +25,19 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
     private final Context bdContext;
     private RowExclusiveItemBinding rowExclusiveItemBinding;
     private final View view;
-    private OnPlusClick onPlusClick;
-    private OnProductClick onProductClick;
+    private OnProductClickListener onProductClickListener;
 
-    public void setOnPlusClick(OnPlusClick onPlusClick) {
-        this.onPlusClick = onPlusClick;
-    }
 
-    public void setOnProductClick(OnProductClick onProductClick) {
-        this.onProductClick = onProductClick;
-    }
-
-    public ExclusiveOfferListAdapter(ArrayList<ProductListResponse.Product> products, Context bdContext, View view) {
+    public ExclusiveOfferListAdapter(ArrayList<ProductListResponse.Product> products,
+                                     Context bdContext, View view,
+                                     OnProductClickListener onProductClickListener) {
         this.products = products;
         this.bdContext = bdContext;
         this.view = view;
+        this.onProductClickListener = onProductClickListener;
+    }
+    public interface OnProductClickListener{
+        void onProductClick(ProductListResponse.Product product);
     }
 
     @NonNull
@@ -77,6 +75,12 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
                 rowExclusiveItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
             if (product.getIsO3().equalsIgnoreCase("yes"))
                 rowExclusiveItemBinding.txtOrganic.setVisibility(View.VISIBLE);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onProductClickListener.onProductClick(product);
+                }
+            });
 
 //            if (product.isInBasket())
 //                rowExclusiveItemBinding.imgPlus.setImageResource(R.drawable.ic_added);

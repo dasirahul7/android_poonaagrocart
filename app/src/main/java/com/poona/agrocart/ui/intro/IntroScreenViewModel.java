@@ -59,7 +59,7 @@ public class IntroScreenViewModel extends AndroidViewModel {
                             introScreenResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) introScreenFragment).onNetworkException(0);
+                            ((NetworkExceptionListener) introScreenFragment).onNetworkException(0,"");
                         }
 
                         Log.e(TAG, e.getMessage());

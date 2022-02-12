@@ -65,7 +65,7 @@ public class OurStoreViewModel extends AndroidViewModel {
                             }  catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
                                /* ((NetworkExceptionListener) supportTicketFragment)
-                                        .onNetworkException(0);*/
+                                        .onNetworkException(0,"");*/
                             }
                             Log.e(TAG, e.getMessage());
                         }
