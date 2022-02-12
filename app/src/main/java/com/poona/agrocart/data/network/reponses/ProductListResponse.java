@@ -222,6 +222,7 @@ public class ProductListResponse extends BaseResponse{
         public void setProductUnits(ArrayList<ProductUnit> productUnits) {
             this.productUnits = productUnits;
         }
+
     }
 
     public class ProductUnit {
