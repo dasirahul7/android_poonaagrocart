@@ -412,7 +412,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //                            bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
                             bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), root, this::toProductDetail, product -> {
-//                                addToCartProduct(showCircleProgressDialog(context,""),product,bestsellingAdapter);
+                                addToCartProduct(showCircleProgressDialog(context,""),product,bestsellingAdapter);
                             });
                             fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recBestSelling.setLayoutManager(layoutManager);
@@ -489,7 +489,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
                             // Redirect to ProductOld details
                             offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), root, this::toProductDetail, product -> {
-//                                addToCartProduct(showCircleProgressDialog(context,""),product,offerListAdapter);
+                                addToCartProduct(showCircleProgressDialog(context,""),product,offerListAdapter);
                             });
                             LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
                             fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);
@@ -767,7 +767,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private HashMap<String, String> addtoCartParam(ProductListResponse.Product product) {
             HashMap<String, String> map = new HashMap<>();
             map.put(PRODUCT_ID, product.getProductId());
-            map.put(PU_ID,"5");
+            map.put(PU_ID,product.getUnit().getpId());
             map.put(QUANTITY,"2");
         return map;
     }
