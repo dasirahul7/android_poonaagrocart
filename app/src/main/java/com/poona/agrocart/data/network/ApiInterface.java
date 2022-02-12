@@ -1,6 +1,5 @@
 package com.poona.agrocart.data.network;
 
-import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.AREA_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
@@ -16,7 +15,6 @@ import static com.poona.agrocart.app.AppConstants.HOME_SEASONAL_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_STORE_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
-import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
@@ -26,11 +24,9 @@ import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 
-import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.CategoryResponse;
@@ -38,7 +34,6 @@ import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
-import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
 import com.poona.agrocart.data.network.reponses.ProductListByResponse;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
@@ -177,4 +172,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(ADD_TO_FAVOURITE)
     Single<BaseResponse> addToFavouriteResponse(@FieldMap HashMap<String,String> hashMap);
+
+    @GET(VIEW_GALLERY)
+    Single<GalleryResponse> getGalleryReponse();
 }
