@@ -239,7 +239,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     }
 
     @Override
-    public void onNetworkException(int from) {
+    public void onNetworkException(int from,String type) {
 
         showServerErrorDialog(getString(R.string.for_better_user_experience), VideoGalleryFragment.this, () -> {
             if (isConnectingToInternet(context)) {

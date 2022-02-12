@@ -82,6 +82,7 @@ public class AppConstants {
     public static final String HOME_PRODUCT_LIST_API = "product-list";
     public static final String HOME_STORE_BANNER_API = "store-banner";
     public static final String SIGN_OUT_API = "logout-customer";
+    public static final String ADD_TO_FAVOURITE = "add-to-favourite";
     /*Offer & Coupon APIs*/
     public static final String COUPON_API = "coupon-list";
 
@@ -98,6 +99,13 @@ public class AppConstants {
 
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
+
+    /*Basket detail API*/
+    public static final String BASKET_DETAIL_API="basket-details";
+    public static final String PRODUCT_DETAIL_API="product-details";
+
+    /*Favourite Api Keys*/
+    public static final String ITEM_TYPE ="item_type";
 
     /*See all Listing from home keys*/
     public static final String AllBasket = "Basket";
@@ -150,6 +158,11 @@ public class AppConstants {
     public static final String LIST_TITLE = "list_title";
     public static final String LIST_TYPE = "list_type";
 
+    /*Basket API Keys*/
+    public static final String BASKET_ID ="basket_id";
+
+    /*Product API Keys*/
+    public static final String PRODUCT_ID ="product_id";
     /*Category types*/
     public static final String BASKET = "0";
     public static final String PRODUCT = "1";

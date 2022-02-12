@@ -18,11 +18,9 @@ import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
@@ -48,6 +46,7 @@ public class SelectLocationViewModel extends AndroidViewModel {
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull AreaResponse areaResponse) {
                         if (areaResponse != null) {
                             progressDialog.dismiss();
+                            Log.d(TAG, "onSuccess: " + areaResponse.getArea().size());
                             areaResponseMutableLiveData.setValue(areaResponse);
                         }
                     }
@@ -65,7 +64,7 @@ public class SelectLocationViewModel extends AndroidViewModel {
                             areaResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) selectLocationFragment).onNetworkException(0);
+                            ((NetworkExceptionListener) selectLocationFragment).onNetworkException(0,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -105,7 +104,7 @@ public class SelectLocationViewModel extends AndroidViewModel {
                             cityResponseMutableLiveData.setValue(cityResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) selectLocationFragment).onNetworkException(1);
+                            ((NetworkExceptionListener) selectLocationFragment).onNetworkException(1,"");
                         }
 
                     }
@@ -145,7 +144,7 @@ public class SelectLocationViewModel extends AndroidViewModel {
                                  updateLocationMutableLiveData.setValue(baseResponse);
                              } catch (Exception exception) {
                                  Log.e(TAG, exception.getMessage());
-                                 ((NetworkExceptionListener) selectLocationFragment).onNetworkException(2);
+                                 ((NetworkExceptionListener) selectLocationFragment).onNetworkException(2,"");
                              }
                             Log.e(TAG, e.getMessage());
                         }

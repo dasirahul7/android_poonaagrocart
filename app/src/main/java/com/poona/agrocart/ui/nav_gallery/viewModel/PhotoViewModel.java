@@ -74,7 +74,7 @@ public class PhotoViewModel extends AndroidViewModel {
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
                             ((NetworkExceptionListener) photoGalleryFragment)
-                                    .onNetworkException(0);
+                                    .onNetworkException(0,"");
                         }
                         Log.e(TAG, e.getMessage());
                     }

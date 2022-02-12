@@ -57,7 +57,9 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
         fragmentCouponBinding = FragmentCouponBinding.inflate(getLayoutInflater());
         couponViewModel = new ViewModelProvider(this).get(CouponViewModel.class);
         initTitleBar(getString(R.string.menu_offer_coupons));
+        if (isConnectingToInternet(context))
         setAllCoupons(showCircleProgressDialog(context, ""),limit,offset);
+        else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         View view = fragmentCouponBinding.getRoot();
         return view;
     }
@@ -161,7 +163,7 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void onNetworkException(int from) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), CouponFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());

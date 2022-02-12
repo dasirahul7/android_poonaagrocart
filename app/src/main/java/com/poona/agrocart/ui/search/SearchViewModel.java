@@ -66,7 +66,7 @@ public class SearchViewModel extends AndroidViewModel {
                             productListResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) searchFragment).onNetworkException(0);
+                            ((NetworkExceptionListener) searchFragment).onNetworkException(0,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -110,7 +110,7 @@ public class SearchViewModel extends AndroidViewModel {
                                 categoryResponseMutableLiveData.setValue(response);
                             } catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
-                                ((NetworkExceptionListener) searchFragment).onNetworkException(1);
+                                ((NetworkExceptionListener) searchFragment).onNetworkException(1,"");
                             }
 
                             Log.e(TAG, e.getMessage());
@@ -154,7 +154,7 @@ public class SearchViewModel extends AndroidViewModel {
                                 productListByResponseMutableLiveData.setValue(response);
                             } catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
-                                ((NetworkExceptionListener) searchFragment).onNetworkException(1);
+                                ((NetworkExceptionListener) searchFragment).onNetworkException(1,"");
                             }
 
                             Log.e(TAG, e.getMessage());

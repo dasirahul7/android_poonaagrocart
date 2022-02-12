@@ -18,7 +18,8 @@ public class BasketImagesAdapter extends FragmentPagerAdapter implements ViewPag
     private int lastPosition = 0;
     private final ArrayList<String> imgsList;
 
-    public BasketImagesAdapter(BasketDetailFragment context, FragmentManager fm, ArrayList<String> imgsList)
+    public BasketImagesAdapter(BasketDetailFragment context,
+                               FragmentManager fm, ArrayList<String> imgsList)
     {
         super(fm);
         this.fragmentManager = fm;

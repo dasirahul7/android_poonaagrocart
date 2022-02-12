@@ -69,7 +69,7 @@ public class VerifyOtpViewModel extends AndroidViewModel {
                             verifyOtpResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) verifyOtpFragment).onNetworkException(0);
+                            ((NetworkExceptionListener) verifyOtpFragment).onNetworkException(0,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -112,7 +112,7 @@ public class VerifyOtpViewModel extends AndroidViewModel {
                             resendOtpResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) verifyOtpFragment).onNetworkException(1);
+                            ((NetworkExceptionListener) verifyOtpFragment).onNetworkException(1,"");
                         }
 
                         Log.e(TAG, e.getMessage());

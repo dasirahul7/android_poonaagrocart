@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -76,8 +77,7 @@ public class OurPolicyViewModel extends ViewModel {
                             cmsPagesDataResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                               /* ((NetworkExceptionListener) aboutUsFragment)
-                                        .onNetworkException(0);*/
+                                ((NetworkExceptionListener) privacyPolicyFragment).onNetworkException(0,"");
                         }
                         Log.e(TAG, e.getMessage());
                     }
@@ -124,8 +124,8 @@ public class OurPolicyViewModel extends ViewModel {
                             cmsPagesDataResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                               /* ((NetworkExceptionListener) aboutUsFragment)
-                                        .onNetworkException(0);*/
+                                ((NetworkExceptionListener) termsConditionFragment)
+                                        .onNetworkException(0,"");
                         }
                         Log.e(TAG, e.getMessage());
                     }
@@ -134,7 +134,8 @@ public class OurPolicyViewModel extends ViewModel {
         return cmsPagesDataResponseMutableLiveData;
     }
 
-    public LiveData<CmsResponse> getReturnRefundResponse(ProgressDialog progressDialog, Context context, ReturnRefundFragment returnRefundFragment) {
+    public LiveData<CmsResponse> getReturnRefundResponse(ProgressDialog progressDialog, Context context,
+                                                         ReturnRefundFragment returnRefundFragment) {
 
         MutableLiveData<CmsResponse> cmsPagesDataResponseMutableLiveData = new MutableLiveData<>();
 
@@ -170,8 +171,8 @@ public class OurPolicyViewModel extends ViewModel {
                             cmsPagesDataResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                               /* ((NetworkExceptionListener) aboutUsFragment)
-                                        .onNetworkException(0);*/
+                                ((NetworkExceptionListener) returnRefundFragment)
+                                        .onNetworkException(0,"");
                         }
                         Log.e(TAG, e.getMessage());
                     }

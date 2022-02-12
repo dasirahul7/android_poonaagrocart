@@ -179,7 +179,7 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
     }
 
     @Override
-    public void onNetworkException(int from) {
+    public void onNetworkException(int from,String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), PhotoGalleryFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());

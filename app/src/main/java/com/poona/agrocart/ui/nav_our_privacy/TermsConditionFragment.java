@@ -23,6 +23,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.BR;
+import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentPolicyItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_about_us.model.CmsPagesData;
@@ -31,7 +33,7 @@ import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TermsConditionFragment extends BaseFragment {
+public class TermsConditionFragment extends BaseFragment implements NetworkExceptionListener {
     private FragmentPolicyItemBinding fragmentPolicyItemBinding;
     private OurPolicyViewModel ourPolicyViewModel;
     private View view;
@@ -53,10 +55,12 @@ public class TermsConditionFragment extends BaseFragment {
             Bundle bundle = this.getArguments();
             title = bundle.getString("Policy_Title");
         }
-       initTitleWithBackBtn(title);  //change
+        initTitleWithBackBtn(title);  //change
         initViews();
-
-       callTermsConditionApi(showCircleProgressDialog(context,""));
+        if (isConnectingToInternet(context))
+            callTermsConditionApi(showCircleProgressDialog(context, ""));
+        else
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
         return view;
     }
@@ -73,23 +77,23 @@ public class TermsConditionFragment extends BaseFragment {
         @SuppressLint("NotifyDataSetChanged")
         Observer<CmsResponse> cmsPagesDataResponseObserver = cmsPagesDataResponse -> {
 
-            if (cmsPagesDataResponse != null){
+            if (cmsPagesDataResponse != null) {
                 Log.e("Privacy and Policy Api Response", new Gson().toJson(cmsPagesDataResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (cmsPagesDataResponse.getStatus()) {
                     case STATUS_CODE_200://success
 
-                        if(cmsPagesDataResponse.getData() != null ){
+                        if (cmsPagesDataResponse.getData() != null) {
                             cmsPagesDataList = cmsPagesDataResponse.getData();
                             termsConditionContent = cmsPagesDataList.get(1).getCmsText();
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                fragmentPolicyItemBinding.tvContent.setText(Html.fromHtml(""+ termsConditionContent, Html.FROM_HTML_MODE_COMPACT));
+                                fragmentPolicyItemBinding.tvContent.setText(Html.fromHtml("" + termsConditionContent, Html.FROM_HTML_MODE_COMPACT));
                                 // fragmentAboutUsBinding.tvDescription.setText(Html.fromHtml(""+strAboutDescription, Html.FROM_HTML_MODE_COMPACT));
                             } else {
-                                fragmentPolicyItemBinding.tvContent.setText(Html.fromHtml(""+ termsConditionContent));
+                                fragmentPolicyItemBinding.tvContent.setText(Html.fromHtml("" + termsConditionContent));
                                 // fragmentAboutUsBinding.tvDescription.setText(Html.fromHtml(""+strAboutDescription));
                             }
                         }
@@ -108,8 +112,8 @@ public class TermsConditionFragment extends BaseFragment {
                         infoToast(context, cmsPagesDataResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
@@ -117,5 +121,20 @@ public class TermsConditionFragment extends BaseFragment {
 
         ourPolicyViewModel.getTermsConditionResponse(progressDialog, context, TermsConditionFragment.this)
                 .observe(getViewLifecycleOwner(), cmsPagesDataResponseObserver);
+    }
+
+    @Override
+    public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), TermsConditionFragment.this,() -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if(from == 0) {
+                    callTermsConditionApi(showCircleProgressDialog(context, ""));
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+
     }
 }

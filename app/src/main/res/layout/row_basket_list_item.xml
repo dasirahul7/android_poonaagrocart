@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:singleLine="true"
-                android:text="@{basket.priceUnit+basket.basketRate}"
+                android:text="@{`Rs.`+basket.basketRate}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/category_txt_size"
                 app:fontFamily="@font/montserrat"

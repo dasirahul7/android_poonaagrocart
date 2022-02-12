@@ -24,24 +24,18 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
     private final Context bdContext;
     private HomeProductItemBinding productBinding;
-    private final View view;
-    private OnPlusClick onPlusClick;
-    private OnProductClick onProductClick;
+    private OnProductClickListener onProductClickListener;
 
-    public void setOnPlusClick(OnPlusClick onPlusClick) {
-        this.onPlusClick = onPlusClick;
-    }
 
-    public void setOnProductClick(OnProductClick onProductClick) {
-        this.onProductClick = onProductClick;
-    }
-
-    public ProductListAdapter(ArrayList<ProductListResponse.Product> products, FragmentActivity context, View view) {
+    public ProductListAdapter(ArrayList<ProductListResponse.Product> products,
+                              FragmentActivity context,OnProductClickListener onProductClickListener) {
         this.products = products;
         this.bdContext = context;
-        this.view = view;
+        this.onProductClickListener = onProductClickListener;
     }
-
+    public interface OnProductClickListener{
+        void onProductClick(ProductListResponse.Product product);
+    }
 
     @Override
     public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -78,15 +72,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             if (product.getIsO3().equalsIgnoreCase("yes"))
                 productBinding.txtOrganic.setVisibility(View.VISIBLE);
             else productBinding.txtOrganic.setVisibility(View.GONE);
-//            if (product.isInBasket())
-//                productBinding.ivPlus.setImageResource(R.drawable.ic_added);
-//            productBinding.ivPlus.setOnClickListener(v -> {
-//                onPlusClick.addToCart(product,position);
-//            });
-//            itemView.setOnClickListener(v -> {
-//                onProductClick.toProductDetail(product);
-//            });
 
+            itemView.setOnClickListener(view -> {
+                onProductClickListener.onProductClick(product);
+            });
         }
 
     }

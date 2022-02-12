@@ -12,8 +12,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.ApiClientAuth;
-import com.poona.agrocart.data.network.ApiErrorException;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.data.network.reponses.BestSellingResponse;
@@ -117,7 +117,7 @@ public class ProductListViewModel extends AndroidViewModel {
                             productListByResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((ApiErrorException) productListFragment).onApiErrorException(0, apiFrom);
+                            ((NetworkExceptionListener) productListFragment).onNetworkException(0, apiFrom);
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -162,7 +162,7 @@ public class ProductListViewModel extends AndroidViewModel {
                             basketResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((ApiErrorException) productListFragment).onApiErrorException(1, listType);
+                            ((NetworkExceptionListener) productListFragment).onNetworkException(1, listType);
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -206,7 +206,7 @@ public class ProductListViewModel extends AndroidViewModel {
                             bestSellingResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((ApiErrorException) productListFragment).onApiErrorException(2,listType);
+                            ((NetworkExceptionListener) productListFragment).onNetworkException(2,listType);
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -251,7 +251,7 @@ public class ProductListViewModel extends AndroidViewModel {
                             exclusiveResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((ApiErrorException) productListFragment).onApiErrorException(3,loadType);
+                            ((NetworkExceptionListener) productListFragment).onNetworkException(3,loadType);
                         }
 
                         Log.e(TAG, e.getMessage());

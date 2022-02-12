@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.home.adapter;
+package com.poona.agrocart.ui.product_detail.adapter;
 
 
 import android.content.Context;

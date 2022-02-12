@@ -89,9 +89,10 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         mapView = fragmentStoreDetailBinding.mapView;
         mapView.onCreate(mapViewBundle);
         mapView.getMapAsync(this);
-
-
-        callStoreDetailsApi(showCircleProgressDialog(context, ""));
+        if (isConnectingToInternet(context)){
+            /*Call Our Store Detail API here*/
+            callStoreDetailsApi(showCircleProgressDialog(context, ""));
+        }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
         return view;
     }

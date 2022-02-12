@@ -77,7 +77,11 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
 
     private void initView() {
         introScreenViewModel = new ViewModelProvider(this).get(IntroScreenViewModel.class);
-        callIntroScreenApi(showCircleProgressDialog(context,""));
+        if (isConnectingToInternet(context)){
+            callIntroScreenApi(showCircleProgressDialog(context,""));
+        }else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
     }
 
     private void callIntroScreenApi(ProgressDialog progressDialog) {
@@ -102,7 +106,7 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
     }
 
     @Override
-    public void onNetworkException(int from) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), IntroScreenFragment.this,() -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
