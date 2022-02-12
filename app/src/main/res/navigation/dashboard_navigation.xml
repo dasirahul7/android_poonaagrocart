@@ -92,14 +92,6 @@
         android:name="com.poona.agrocart.ui.products_list.ProductListFragment"
         tools:layout="@layout/fragment_product_list"/>
 
-    <!--ProductOld list actions ProductDetailFragment2-->
-    <action
-        android:id="@+id/action_nav_products_list_to_productDetailFragment2"
-        app:destination="@id/nav_product_details"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
 
     <!--ProductOld list actions cart-->
     <action
@@ -132,22 +124,6 @@
 
     </fragment>
 
-    <!--Explore Fragment-->
-    <fragment
-        android:id="@+id/nav_explore"
-        android:name="com.poona.agrocart.ui.nav_explore.ExploreFragment"
-        android:label="@string/explore"
-        tools:layout="@layout/fragment_explore">
-    </fragment>
-
-    <!--Explore To Products List Action-->
-    <action
-        android:id="@+id/action_nav_explore_to_nav_products_list"
-        app:destination="@id/nav_products_list"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
 
     <!--My Basket Fragment-->
     <fragment
@@ -414,13 +390,13 @@
         app:exitAnim="@anim/slide_out_left"/>
 
     <!--Explore to Search action-->
-    <action
-        android:id="@+id/action_nav_explore_to_searchFragment"
-        app:destination="@id/searchFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+<!--    <action-->
+<!--        android:id="@+id/action_nav_explore_to_searchFragment"-->
+<!--        app:destination="@id/searchFragment"-->
+<!--        app:popEnterAnim="@anim/slide_in_left"-->
+<!--        app:popExitAnim="@anim/slide_out_right"-->
+<!--        app:enterAnim="@anim/slide_in_right"-->
+<!--        app:exitAnim="@anim/slide_out_left"/>-->
 
     <!--Home to seasonal Registration-->
     <action
