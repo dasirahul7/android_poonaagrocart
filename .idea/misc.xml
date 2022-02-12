@@ -115,6 +115,7 @@
         <entry key="app/src/main/res/drawable/ic_poona_agrocart.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_poona_agrocart_logo_final.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.17592592592592593" />
+        <entry key="app/src/main/res/drawable/ic_profile_white.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_radio_tint.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_radio_unselected_tint.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_red_bin_icon_.xml" value="0.1" />
@@ -233,7 +234,7 @@
         <entry key="app/src/main/res/layout/home_best_selling_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/home_cat_item.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/menu_item.xml" value="0.16259057971014493" />
-        <entry key="app/src/main/res/layout/nav_header_home.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/nav_header_home.xml" value="0.14" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/privacy_fragment.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/row_banner.xml" value="0.14356884057971014" />

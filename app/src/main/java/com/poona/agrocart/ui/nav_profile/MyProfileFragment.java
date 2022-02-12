@@ -58,6 +58,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -69,6 +70,7 @@ import com.poona.agrocart.data.network.reponses.StateResponse;
 import com.poona.agrocart.databinding.DialogSelectPhotoBinding;
 import com.poona.agrocart.databinding.FragmentMyProfileBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.yalantis.ucrop.UCrop;
 
@@ -233,14 +235,17 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             if(profileResponse.getProfile().getImage() != null && !TextUtils.isEmpty(profileResponse.getProfile().getImage())) {
                 myProfileViewModel.profilePhoto.setValue(profileResponse.getProfile().getImage());
                 loadingImage(context, myProfileViewModel.profilePhoto.getValue(), fragmentMyProfileBinding.ivProfilePicture);
+                loadingImage(context, myProfileViewModel.profilePhoto.getValue(), ((HomeActivity)context).civProfilePhoto);
             } else {
                 myProfileViewModel.profilePhoto.setValue("");
             }
 
             if(profileResponse.getProfile().getName() != null && !TextUtils.isEmpty(profileResponse.getProfile().getName())) {
                 myProfileViewModel.name.setValue(profileResponse.getProfile().getName());
+                ((HomeActivity)context).tvUserName.setText("Hello! "+myProfileViewModel.name.getValue());
             } else {
                 myProfileViewModel.name.setValue("");
+                ((HomeActivity)context).tvUserName.setText("Hello!");
             }
 
             if(profileResponse.getProfile().getMobile() != null && !TextUtils.isEmpty(profileResponse.getProfile().getMobile())) {

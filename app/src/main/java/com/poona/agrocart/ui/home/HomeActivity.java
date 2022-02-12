@@ -38,6 +38,7 @@ import com.poona.agrocart.ui.BaseActivity;
 import com.poona.agrocart.ui.sign_in.SignInViewModel;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomTextView;
+import com.poona.agrocart.widgets.imageview.CircularImageView;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -55,6 +56,9 @@ public class HomeActivity extends BaseActivity {
     public ImageView backBtn;
     private BottomNavigationView bottomNavigationView;
     private AppSharedPreferences preferences;
+
+    public CustomTextView tvUserName;
+    public CircularImageView civProfilePhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,9 +147,10 @@ public class HomeActivity extends BaseActivity {
 
         View headerView = navigationView.getHeaderView(0);
         RelativeLayout rlEditProfile = headerView.findViewById(R.id.rl_edit_profile);
-        CustomTextView tvUserName = headerView.findViewById(R.id.tv_user_name);
+        tvUserName = headerView.findViewById(R.id.tv_user_name);
         ImageView editImg = headerView.findViewById(R.id.edit_img);
-        tvUserName.setText("Hello ! Ranju");
+        civProfilePhoto = headerView.findViewById(R.id.civ_profile_photo);
+        tvUserName.setText("Hello! Ranju");
         rlEditProfile.setOnClickListener(v -> {
             drawer.closeDrawer(GravityCompat.START);
             navController.navigate(R.id.nav_profile);
