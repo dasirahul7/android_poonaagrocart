@@ -16,6 +16,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BannerResponse;
@@ -421,6 +422,46 @@ public class HomeViewModel extends AndroidViewModel {
         return storeBannerMutableLiveData;
     }
 
+    /*Add to Product in CART API*/
+    public LiveData<BaseResponse> addToCartProductLiveData(ProgressDialog progressDialog,
+                                                                     HashMap<String,String> hashMap,
+                                                                     HomeFragment homeFragment){
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(homeFragment.getContext())
+                .create(ApiInterface.class)
+                .addToCartProductResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse!=null){
+                            Log.e(TAG, "add to cart onSuccess: "+new Gson().toJson(baseResponse));
+                            progressDialog.dismiss();
+                            baseResponseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try{
+                            response = gson.fromJson(((HttpException) e).response().errorBody().toString(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(7,"");
+                        }
+                    }
+                });
+        return baseResponseMutableLiveData;
+    }
+
     public MutableLiveData<ArrayList<ProductOld>> getLiveDataCartProduct() {
         return liveDataCartProduct;
     }
@@ -428,6 +469,4 @@ public class HomeViewModel extends AndroidViewModel {
     public MutableLiveData<ArrayList<ProductOld>> getSavesProductInBasket() {
         return savesProductInBasket;
     }
-
-
 }

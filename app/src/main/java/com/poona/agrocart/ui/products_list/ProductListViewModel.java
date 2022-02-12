@@ -31,58 +31,14 @@ import retrofit2.HttpException;
 
 public class ProductListViewModel extends AndroidViewModel {
 
-    private MutableLiveData<ArrayList<ProductOld>> vegesMutableLiveData;
-    private MutableLiveData<ArrayList<ProductOld>> fruitMutableLiveData;
-    private MutableLiveData<ArrayList<BasketResponse.Basket>> basketMutableLiveData;
+
     public static final String TAG = ProductListViewModel.class.getSimpleName();
 
     public ProductListViewModel(Application application) {
         super(application);
-        initList();
+
     }
 
-    private void initList() {
-        ArrayList<ProductOld> vegetableArrayList = new ArrayList<>();
-        ArrayList<ProductOld> fruitsArrayList = new ArrayList<>();
-        ArrayList<BasketResponse.Basket> basketArrayList = new ArrayList<>();
-        vegesMutableLiveData = new MutableLiveData<>();
-        fruitMutableLiveData = new MutableLiveData<>();
-        basketMutableLiveData = new MutableLiveData<>();
-        //Add Veges
-        for (int i = 0; i < 6; i++) {
-            ProductOld vegetable = new ProductOld("123", "Ginger", "1kg",
-                    "10", "100", getApplication().getString(R.string.img_ginger), "Pune");
-            if (i == 3)
-                vegetable.setWeight("0");
-            vegetableArrayList.add(vegetable);
-        }
-        vegesMutableLiveData.setValue(vegetableArrayList);
-        //Add fruits
-        for (int i = 0; i < 6; i++) {
-            ProductOld fruit = new ProductOld("123", "Apple", i + "kg",
-                    "10", "40", getApplication().getString(R.string.img_red_apple), "Pune");
-            if (i == 3)
-                fruit.setWeight("0");
-            if (i == 4)
-                fruit.setOrganic(true);
-            fruitsArrayList.add(fruit);
-        }
-        fruitMutableLiveData.setValue(fruitsArrayList);
-
-        basketMutableLiveData.setValue(basketArrayList);
-    }
-
-    public MutableLiveData<ArrayList<ProductOld>> getVegesMutableLiveData() {
-        return vegesMutableLiveData;
-    }
-
-    public MutableLiveData<ArrayList<ProductOld>> getFruitMutableLiveData() {
-        return fruitMutableLiveData;
-    }
-
-    public MutableLiveData<ArrayList<BasketResponse.Basket>> getBasketMutableLiveData() {
-        return basketMutableLiveData;
-    }
 
     /*Product list by category API*/
     public LiveData<ProductListByResponse> productListByResponseLiveData(ProgressDialog progressDialog,
