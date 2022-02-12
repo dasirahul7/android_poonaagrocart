@@ -203,6 +203,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors
                         goToAskAndDismiss(signInResponse.getMessage(), context);
+                        break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_404://Validation Errors
                         warningToast(context, signInResponse.getMessage());

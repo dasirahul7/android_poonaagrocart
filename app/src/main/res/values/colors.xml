@@ -167,7 +167,7 @@
     <color name="seasonal_border_color">#EEEEEE</color>
 
     <!--upload photo dialog colors-->
-    <color name="colorWhiteTransparent">#A686C11F</color>
+    <color name="colorGreenTransparent">#A686C11F</color>
 
     <!--ucrop parameters-->
     <color name="ucrop_color_toolbar">@color/colorPrimary</color>

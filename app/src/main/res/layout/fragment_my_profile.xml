@@ -46,7 +46,8 @@
                             android:layout_height="@dimen/_100sdp"
                             android:src="@drawable/ic_profile"
                             app:civ_border_width="@dimen/_1sdp"
-                            app:civ_border_color="#979797"/>
+                            app:civ_border_color="#979797" />
+                        <!--app:setImageUrl="@{myProfileViewModel.profilePhoto}"-->
 
                         <ImageView
                             android:id="@+id/iv_choose_profile_photo"

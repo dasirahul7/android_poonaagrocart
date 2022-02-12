@@ -4,16 +4,21 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.internal.SafeIterableMap;
+import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
@@ -23,6 +28,7 @@ import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.ProfileResponse;
 import com.poona.agrocart.data.network.reponses.StateResponse;
 import com.poona.agrocart.ui.sign_up.SignUpFragment;
+import com.poona.agrocart.widgets.imageview.CircularImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,8 +56,11 @@ public class MyProfileViewModel extends AndroidViewModel {
     public MutableLiveData<String> gender;
     public MutableLiveData<String> dateOfBirth;
 
+    private Context context;
     public MyProfileViewModel(@NonNull Application application) {
         super(application);
+
+        context = application.getApplicationContext();
 
         profilePhoto = new MutableLiveData<>();
         name = new MutableLiveData<>();

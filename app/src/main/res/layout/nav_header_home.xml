@@ -9,14 +9,13 @@
     android:padding="@dimen/_16sdp">
 
     <com.poona.agrocart.widgets.imageview.CircularImageView
-        android:id="@+id/imageView"
+        android:id="@+id/civ_profile_photo"
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_60sdp"
         android:contentDescription="@string/nav_header_desc"
-        android:src="@drawable/ic_profile"
-        app:tint="@color/white"
-        app:civ_border_width="@dimen/_1sdp"
-        app:civ_border_color="#fff"/>
+        android:src="@drawable/ic_profile_white"
+        app:civ_border_color="#fff"
+        app:civ_border_width="@dimen/_1sdp" />
 
 
     <RelativeLayout
@@ -25,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginStart="@dimen/_12sdp"
-        android:layout_toEndOf="@+id/imageView">
+        android:layout_toEndOf="@+id/civ_profile_photo">
 
         <com.poona.agrocart.widgets.CustomTextView
             android:id="@+id/tv_user_name"

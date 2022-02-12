@@ -3,8 +3,8 @@ package com.poona.agrocart.ui.nav_profile;
 import static android.view.View.GONE;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
 import static com.poona.agrocart.app.AppConstants.ALTERNATE_MOBILE_NUMBER;
-import static com.poona.agrocart.app.AppConstants.AREA_ID_;
-import static com.poona.agrocart.app.AppConstants.CITY_ID_;
+import static com.poona.agrocart.app.AppConstants.AREA_ID;
+import static com.poona.agrocart.app.AppConstants.CITY_ID;
 import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 import static com.poona.agrocart.app.AppConstants.DATE_OF_BIRTH;
 import static com.poona.agrocart.app.AppConstants.EMAIL;
@@ -12,7 +12,7 @@ import static com.poona.agrocart.app.AppConstants.GENDER;
 import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.NAME;
 import static com.poona.agrocart.app.AppConstants.PROFILE_IMAGE;
-import static com.poona.agrocart.app.AppConstants.STATE_ID_;
+import static com.poona.agrocart.app.AppConstants.STATE_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -46,6 +46,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -57,10 +58,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.ProfileResponse;
@@ -68,7 +71,9 @@ import com.poona.agrocart.data.network.reponses.StateResponse;
 import com.poona.agrocart.databinding.DialogSelectPhotoBinding;
 import com.poona.agrocart.databinding.FragmentMyProfileBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
+import com.poona.agrocart.ui.sign_in.SignInFragment;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
@@ -92,7 +97,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.HttpException;
 
-public class MyProfileFragment extends BaseFragment implements View.OnClickListener {
+public class MyProfileFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     private static final String TAG = MyProfileFragment.class.getSimpleName();
     private FragmentMyProfileBinding fragmentMyProfileBinding;
     private MyProfileViewModel myProfileViewModel;
@@ -158,6 +163,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         fragmentMyProfileBinding.tvDateOfBirthInput.setOnClickListener(this);
         fragmentMyProfileBinding.frameLayout.setOnClickListener(this);
         fragmentMyProfileBinding.cbtSave.setOnClickListener(this);
+        fragmentMyProfileBinding.ivChooseProfilePhoto.setOnClickListener(this);
         fragmentMyProfileBinding.llMobileNumber.setOnClickListener(this);
 
         if (isConnectingToInternet(context)) {
@@ -172,6 +178,21 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         cityList = new ArrayList<>();
         areaList = new ArrayList<>();
 
+        BasicDetails basicDetails1 = new BasicDetails();
+        basicDetails1.setId("0");
+        basicDetails1.setName("Select");
+        stateList.add(basicDetails1);
+
+        BasicDetails basicDetails2 = new BasicDetails();
+        basicDetails2.setId("0");
+        basicDetails2.setName("Select");
+        cityList.add(basicDetails2);
+
+        BasicDetails basicDetails3 = new BasicDetails();
+        basicDetails3.setId("0");
+        basicDetails3.setName("Select");
+        areaList.add(basicDetails3);
+
         if(stateResponse.getStates() != null && stateResponse.getStates().size() > 0) {
             for(int i = 0; i < stateResponse.getStates().size(); i++) {
                 BasicDetails basicDetails = new BasicDetails();
@@ -179,11 +200,6 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 basicDetails.setName(stateResponse.getStates().get(i).getStateName());
                 stateList.add(basicDetails);
             }
-        } else {
-            BasicDetails basicDetails = new BasicDetails();
-            basicDetails.setId("0");
-            basicDetails.setName("Select");
-            stateList.add(basicDetails);
         }
 
         if(cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
@@ -193,11 +209,6 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 basicDetails.setName(cityResponse.getCities().get(i).getCityName());
                 cityList.add(basicDetails);
             }
-        } else {
-            BasicDetails basicDetails = new BasicDetails();
-            basicDetails.setId("0");
-            basicDetails.setName("Select");
-            cityList.add(basicDetails);
         }
 
         if(areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
@@ -207,11 +218,6 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 basicDetails.setName(areaResponse.getAreas().get(i).getAreaName());
                 areaList.add(basicDetails);
             }
-        } else {
-            BasicDetails basicDetails = new BasicDetails();
-            basicDetails.setId("0");
-            basicDetails.setName("Select");
-            areaList.add(basicDetails);
         }
 
         CustomArrayAdapter stateArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, stateList);
@@ -230,14 +236,18 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         if(profileResponse != null) {
             if(profileResponse.getProfile().getImage() != null && !TextUtils.isEmpty(profileResponse.getProfile().getImage())) {
                 myProfileViewModel.profilePhoto.setValue(profileResponse.getProfile().getImage());
+                loadingImage(context, myProfileViewModel.profilePhoto.getValue(), fragmentMyProfileBinding.ivProfilePicture);
+                loadingImage(context, myProfileViewModel.profilePhoto.getValue(), ((HomeActivity)context).civProfilePhoto);
             } else {
                 myProfileViewModel.profilePhoto.setValue("");
             }
 
             if(profileResponse.getProfile().getName() != null && !TextUtils.isEmpty(profileResponse.getProfile().getName())) {
                 myProfileViewModel.name.setValue(profileResponse.getProfile().getName());
+                ((HomeActivity)context).tvUserName.setText("Hello! "+myProfileViewModel.name.getValue());
             } else {
                 myProfileViewModel.name.setValue("");
+                ((HomeActivity)context).tvUserName.setText("Hello!");
             }
 
             if(profileResponse.getProfile().getMobile() != null && !TextUtils.isEmpty(profileResponse.getProfile().getMobile())) {
@@ -260,30 +270,62 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
             if(profileResponse.getProfile().getStateId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getStateId())) {
                 myProfileViewModel.state.setValue(profileResponse.getProfile().getStateId());
+                if(stateList != null && stateList.size() > 0) {
+                    for(int i = 0; i < stateList.size(); i++) {
+                        if(stateList.get(i).getId().equals(myProfileViewModel.state.getValue())) {
+                            fragmentMyProfileBinding.spinnerState.setSelection(i);
+                        }
+                    }
+                }
             } else {
                 myProfileViewModel.state.setValue("");
             }
 
             if(profileResponse.getProfile().getCityId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getCityId())) {
                 myProfileViewModel.city.setValue(profileResponse.getProfile().getCityId());
+                if(cityList != null && cityList.size() > 0) {
+                    for(int i = 0; i < cityList.size(); i++) {
+                        if(cityList.get(i).getId().equals(myProfileViewModel.city.getValue())) {
+                            fragmentMyProfileBinding.spinnerCity.setSelection(i);
+                        }
+                    }
+                }
             } else {
                 myProfileViewModel.city.setValue("");
             }
 
             if(profileResponse.getProfile().getAreaId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getAreaId())) {
                 myProfileViewModel.area.setValue(profileResponse.getProfile().getAreaId());
+                if(areaList != null && areaList.size() > 0) {
+                    for(int i = 0; i < areaList.size(); i++) {
+                        if(areaList.get(i).getId().equals(myProfileViewModel.area.getValue())) {
+                            fragmentMyProfileBinding.spinnerArea.setSelection(i);
+                        }
+                    }
+                }
             } else {
                 myProfileViewModel.area.setValue("");
             }
 
             if(profileResponse.getProfile().getGender() != null && !TextUtils.isEmpty(profileResponse.getProfile().getGender())) {
                 myProfileViewModel.gender.setValue(profileResponse.getProfile().getGender());
+                if(myProfileViewModel.gender.getValue().equals("male")) {
+                    fragmentMyProfileBinding.rgGender.check(R.id.rb_male);
+                } else if(myProfileViewModel.gender.getValue().equals("female")) {
+                    fragmentMyProfileBinding.rgGender.check(R.id.rb_female);
+                } else if(myProfileViewModel.gender.getValue().equals("other")) {
+                    fragmentMyProfileBinding.rgGender.check(R.id.rb_other);
+                }
             } else {
                 myProfileViewModel.gender.setValue("");
             }
 
             if(profileResponse.getProfile().getDateOfBirth() != null && !TextUtils.isEmpty(profileResponse.getProfile().getDateOfBirth())) {
-                myProfileViewModel.dateOfBirth.setValue(profileResponse.getProfile().getDateOfBirth());
+                try {
+                    myProfileViewModel.dateOfBirth.setValue(formatDate(profileResponse.getProfile().getDateOfBirth(), "yyyy-MM-dd", "dd MMM yyyy"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             } else {
                 myProfileViewModel.dateOfBirth.setValue("");
             }
@@ -508,7 +550,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         androidx.lifecycle.Observer<ProfileResponse> updateProfileResponseObserver = profileResponse -> {
             if (profileResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Sign In Api Response", new Gson().toJson(profileResponse));
+                Log.e("Update Profile Api Response", new Gson().toJson(profileResponse));
                 switch (profileResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, ""+profileResponse.getMessage());
@@ -516,6 +558,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors
                         goToAskAndDismiss(profileResponse.getMessage(), context);
+                        break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_404://Validation Errors
                         warningToast(context, profileResponse.getMessage());
@@ -543,9 +586,9 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         map.put(MOBILE_NUMBER, toRequestBody(basicDetails.getMobileNumber()));
         map.put(ALTERNATE_MOBILE_NUMBER, toRequestBody(basicDetails.getAlternateMobileNumber()));
         map.put(EMAIL, toRequestBody(basicDetails.getEmailId()));
-        map.put(STATE_ID_, toRequestBody(basicDetails.getState()));
-        map.put(CITY_ID_, toRequestBody(basicDetails.getCity()));
-        map.put(AREA_ID_, toRequestBody(basicDetails.getArea()));
+        map.put(STATE_ID, toRequestBody(basicDetails.getState()));
+        map.put(CITY_ID, toRequestBody(basicDetails.getCity()));
+        map.put(AREA_ID, toRequestBody(basicDetails.getArea()));
         map.put(GENDER, toRequestBody(basicDetails.getGender()));
         try {
             map.put(DATE_OF_BIRTH, toRequestBody(formatDate(basicDetails.getDob(), "dd MMM yyyy", "yyyy-MM-dd")));
@@ -895,4 +938,20 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
     /*end to image update*/
+
+    @Override
+    public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), MyProfileFragment.this,() -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if(from == 0) {
+                    updateProfileApi(showCircleProgressDialog(context, ""));
+                } else if(from == 1) {
+
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+    }
 }

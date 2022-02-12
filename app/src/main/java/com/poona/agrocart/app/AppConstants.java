@@ -72,6 +72,7 @@ public class AppConstants {
     public static final String AREA_API = "area";
     public static final String CITY_API = "city";
     public static final String MY_PROFILE_API = "profile-view-customer";
+    public static final String ADDRESS_LIST_API = "address-view";
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
     /*Home screen APIs*/
@@ -149,6 +150,7 @@ public class AppConstants {
     public static final String OTP = "otp";
     public static final String USERNAME = "username";
     public static final String EMAIL = "email";
+    public static final String STATE_ID = "state_id";
     public static final String AREA_ID = "area_id";
     public static final String CITY_ID = "city_id";
     public static final String SEARCH_KEY = "search_key";
@@ -176,12 +178,9 @@ public class AppConstants {
 
     /*profile api parameters*/
     public static final String CUSTOMER_ID = "customer_id";
-    public static final String PROFILE_IMAGE = "profile_image";
+    public static final String PROFILE_IMAGE = "image";
     public static final String NAME = "name";
     public static final String ALTERNATE_MOBILE_NUMBER = "alternate_mobile";
-    public static final String STATE_ID_ = "state_id_fk";
-    public static final String CITY_ID_ = "city_id_fk";
-    public static final String AREA_ID_ = "area_id_fk";
     public static final String GENDER = "gender";
     public static final String DATE_OF_BIRTH = "date_of_birth";
 
