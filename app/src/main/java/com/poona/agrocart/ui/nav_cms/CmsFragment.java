@@ -29,6 +29,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentCmsBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.data.network.reponses.CmsResponse;
@@ -38,7 +39,7 @@ import com.poona.agrocart.ui.sign_in.SignInFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CmsFragment extends BaseFragment {
+public class CmsFragment extends BaseFragment implements NetworkExceptionListener {
     private CmsViewModel cmsViewModel;
     private FragmentCmsBinding fragmentCmsBinding;
     private List<CmsResponse.Cms> cmsList = new ArrayList<>();
@@ -181,5 +182,19 @@ public class CmsFragment extends BaseFragment {
 
         cmsViewModel.getCmsResponse(progressDialog, context, CmsFragment.this)
                 .observe(getViewLifecycleOwner(), aboutUsResponseObserver);
+    }
+
+    @Override
+    public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), CmsFragment.this,() -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if(from == 0) {
+                    callCmsApi(showCircleProgressDialog(context, ""));
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
     }
 }

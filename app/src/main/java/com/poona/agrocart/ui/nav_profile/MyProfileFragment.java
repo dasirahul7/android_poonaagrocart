@@ -63,6 +63,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.AreaResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.ProfileResponse;
@@ -72,6 +73,7 @@ import com.poona.agrocart.databinding.FragmentMyProfileBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
+import com.poona.agrocart.ui.sign_in.SignInFragment;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
@@ -95,7 +97,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.HttpException;
 
-public class MyProfileFragment extends BaseFragment implements View.OnClickListener {
+public class MyProfileFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     private static final String TAG = MyProfileFragment.class.getSimpleName();
     private FragmentMyProfileBinding fragmentMyProfileBinding;
     private MyProfileViewModel myProfileViewModel;
@@ -936,4 +938,20 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
     /*end to image update*/
+
+    @Override
+    public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), MyProfileFragment.this,() -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if(from == 0) {
+                    updateProfileApi(showCircleProgressDialog(context, ""));
+                } else if(from == 1) {
+
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+    }
 }

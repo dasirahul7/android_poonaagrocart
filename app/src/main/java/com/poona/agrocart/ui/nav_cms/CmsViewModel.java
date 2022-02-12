@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.CmsResponse;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -74,8 +75,8 @@ public class CmsViewModel extends AndroidViewModel {
                                 aboutUsResponseMutableLiveData.setValue(baseResponse);
                             } catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
-                               /* ((NetworkExceptionListener) cmsFragment)
-                                        .onNetworkException(0);*/
+                                ((NetworkExceptionListener) cmsFragment)
+                                        .onNetworkException(0, "");
                             }
                             Log.e(TAG, e.getMessage());
                         }
