@@ -11,6 +11,7 @@ import static com.poona.agrocart.app.AppConstants.EMAIL;
 import static com.poona.agrocart.app.AppConstants.GENDER;
 import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.NAME;
+import static com.poona.agrocart.app.AppConstants.PROFILE_IMAGE;
 import static com.poona.agrocart.app.AppConstants.STATE_ID_;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
@@ -53,6 +54,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
@@ -85,7 +87,9 @@ import id.zelory.compressor.Compressor;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.HttpException;
 
 public class MyProfileFragment extends BaseFragment implements View.OnClickListener {
@@ -219,6 +223,72 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
         CustomArrayAdapter areaArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, areaList);
         fragmentMyProfileBinding.spinnerArea.setAdapter(areaArrayAdapter);
+
+        setDefaultSelectedValues();
+    }
+
+    private void setDefaultSelectedValues() {
+        if(profileResponse != null) {
+            if(profileResponse.getProfile().getImage() != null && !TextUtils.isEmpty(profileResponse.getProfile().getImage())) {
+                myProfileViewModel.profilePhoto.setValue(profileResponse.getProfile().getImage());
+            } else {
+                myProfileViewModel.profilePhoto.setValue("");
+            }
+
+            if(profileResponse.getProfile().getName() != null && !TextUtils.isEmpty(profileResponse.getProfile().getName())) {
+                myProfileViewModel.name.setValue(profileResponse.getProfile().getName());
+            } else {
+                myProfileViewModel.name.setValue("");
+            }
+
+            if(profileResponse.getProfile().getMobile() != null && !TextUtils.isEmpty(profileResponse.getProfile().getMobile())) {
+                myProfileViewModel.mobileNo.setValue(profileResponse.getProfile().getMobile());
+            } else {
+                myProfileViewModel.mobileNo.setValue("");
+            }
+
+            if(profileResponse.getProfile().getAlternateMobile() != null && !TextUtils.isEmpty(profileResponse.getProfile().getAlternateMobile())) {
+                myProfileViewModel.alternateMobileNo.setValue(profileResponse.getProfile().getAlternateMobile());;
+            } else {
+                myProfileViewModel.alternateMobileNo.setValue("");;
+            }
+
+            if(profileResponse.getProfile().getEmail() != null && !TextUtils.isEmpty(profileResponse.getProfile().getEmail())) {
+                myProfileViewModel.emailId.setValue(profileResponse.getProfile().getEmail());
+            } else {
+                myProfileViewModel.emailId.setValue("");
+            }
+
+            if(profileResponse.getProfile().getStateId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getStateId())) {
+                myProfileViewModel.state.setValue(profileResponse.getProfile().getStateId());
+            } else {
+                myProfileViewModel.state.setValue("");
+            }
+
+            if(profileResponse.getProfile().getCityId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getCityId())) {
+                myProfileViewModel.city.setValue(profileResponse.getProfile().getCityId());
+            } else {
+                myProfileViewModel.city.setValue("");
+            }
+
+            if(profileResponse.getProfile().getAreaId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getAreaId())) {
+                myProfileViewModel.area.setValue(profileResponse.getProfile().getAreaId());
+            } else {
+                myProfileViewModel.area.setValue("");
+            }
+
+            if(profileResponse.getProfile().getGender() != null && !TextUtils.isEmpty(profileResponse.getProfile().getGender())) {
+                myProfileViewModel.gender.setValue(profileResponse.getProfile().getGender());
+            } else {
+                myProfileViewModel.gender.setValue("");
+            }
+
+            if(profileResponse.getProfile().getDateOfBirth() != null && !TextUtils.isEmpty(profileResponse.getProfile().getDateOfBirth())) {
+                myProfileViewModel.dateOfBirth.setValue(profileResponse.getProfile().getDateOfBirth());
+            } else {
+                myProfileViewModel.dateOfBirth.setValue("");
+            }
+        }
     }
 
     public void showCalendar() {
@@ -330,9 +400,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         } else if(errorCodeDob == 0) {
             errorToast(requireActivity(), getString(R.string.please_select_dob));
         } else {
-            for (Map.Entry<String, String> entry : updateProfileParameters().entrySet()) {
-                Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
-            }
+            updateProfileApi(showCircleProgressDialog(context, ""));
         }
     }
 
@@ -431,8 +499,8 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
     private void updateProfileApi(ProgressDialog progressDialog) {
         /*print user input parameters*/
-        for (Map.Entry<String, String> entry : updateProfileParameters().entrySet()) {
-            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        for (Map.Entry<String, RequestBody> entry : updateProfileParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + stringifyRequestBody(entry.getValue()));
         }
 
         androidx.lifecycle.Observer<ProfileResponse> updateProfileResponseObserver = profileResponse -> {
@@ -463,25 +531,33 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         };
 
         myProfileViewModel
-                .updateProfileResponse(progressDialog, updateProfileParameters(), MyProfileFragment.this)
+                .updateProfileResponse(progressDialog, MyProfileFragment.this, updateProfileParameters(), multipartBodyImageFile)
                 .observe(getViewLifecycleOwner(), updateProfileResponseObserver);
     }
 
-    private HashMap<String, String> updateProfileParameters() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put(NAME, basicDetails.getName());
-        map.put(MOBILE_NUMBER, basicDetails.getMobileNumber());
-        map.put(ALTERNATE_MOBILE_NUMBER, basicDetails.getAlternateMobileNumber());
-        map.put(EMAIL, basicDetails.getEmailId());
-        map.put(STATE_ID_, basicDetails.getState());
-        map.put(CITY_ID_, basicDetails.getCity());
-        map.put(AREA_ID_, basicDetails.getArea());
-        map.put(GENDER, basicDetails.getGender());
+    private HashMap<String, RequestBody> updateProfileParameters() {
+        HashMap<String, RequestBody> map = new HashMap<>();
+        map.put(NAME, toRequestBody(basicDetails.getName()));
+        map.put(MOBILE_NUMBER, toRequestBody(basicDetails.getMobileNumber()));
+        map.put(ALTERNATE_MOBILE_NUMBER, toRequestBody(basicDetails.getAlternateMobileNumber()));
+        map.put(EMAIL, toRequestBody(basicDetails.getEmailId()));
+        map.put(STATE_ID_, toRequestBody(basicDetails.getState()));
+        map.put(CITY_ID_, toRequestBody(basicDetails.getCity()));
+        map.put(AREA_ID_, toRequestBody(basicDetails.getArea()));
+        map.put(GENDER, toRequestBody(basicDetails.getGender()));
         try {
-            map.put(DATE_OF_BIRTH, formatDate(basicDetails.getDob(), "dd MMM yyyy", "yyyy-MM-dd"));
+            map.put(DATE_OF_BIRTH, toRequestBody(formatDate(basicDetails.getDob(), "dd MMM yyyy", "yyyy-MM-dd")));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        if (compressedImageFile != null) {
+            if (!compressedImageFile.equals("")) {
+                RequestBody reqFile = RequestBody.create(compressedImageFile, MediaType.parse("*/*"));
+                multipartBodyImageFile = MultipartBody.Part.createFormData(PROFILE_IMAGE,
+                        compressedImageFile.getName(), reqFile);
+            }
+        }
+
         return map;
     }
 

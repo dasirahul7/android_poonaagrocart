@@ -19,6 +19,7 @@ import android.net.NetworkInfo;
 import android.net.ParseException;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +50,13 @@ import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.custom_alert.Alerter;
 import com.poona.agrocart.widgets.toast.CustomToast;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okio.Buffer;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -559,6 +565,25 @@ public abstract class BaseFragment extends Fragment {
     protected boolean checkGpsStatus() {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    // This method  converts String to RequestBody
+    protected RequestBody toRequestBody(String value) {
+        return RequestBody.create(value, MultipartBody.FORM);
+    }
+
+    protected String stringifyRequestBody(RequestBody request) {
+        if (request.contentType() != null) {
+            try {
+                final RequestBody copy = request;
+                final Buffer buffer = new Buffer();
+                copy.writeTo(buffer);
+                return buffer.readUtf8();
+            } catch (final IOException e) {
+                Log.w(TAG, "Failed to stringify request body: " + e.getMessage());
+            }
+        }
+        return "";
     }
 
     /*animated expand view VISIBILITY VISIBLE*/

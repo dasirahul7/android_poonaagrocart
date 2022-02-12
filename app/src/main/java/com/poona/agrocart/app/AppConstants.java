@@ -156,6 +156,7 @@ public class AppConstants {
 
     /*profile api parameters*/
     public static final String CUSTOMER_ID = "customer_id";
+    public static final String PROFILE_IMAGE = "profile_image";
     public static final String NAME = "name";
     public static final String ALTERNATE_MOBILE_NUMBER = "alternate_mobile";
     public static final String STATE_ID_ = "state_id_fk";

@@ -54,10 +54,15 @@ import java.util.HashMap;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -87,9 +92,10 @@ public interface ApiInterface {
     @POST(MY_PROFILE_API)
     Observable<ProfileResponse> getProfileObservableResponse(@FieldMap HashMap<String, String> data);
 
-    @FormUrlEncoded
+    @Multipart
     @POST(UPDATE_MY_PROFILE_API)
-    Single<ProfileResponse> updateProfileResponse(@FieldMap HashMap<String, String> data);
+    Single<ProfileResponse> updateProfileResponse(@PartMap HashMap<String, RequestBody> data,
+                                                  @Part MultipartBody.Part profilePhoto);
 
     @GET(STATE_API)
     Observable<StateResponse> getStateObservableResponse();

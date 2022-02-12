@@ -94,7 +94,7 @@
                             style="@style/FormEdittextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/backgound_deit_profile"
+                            android:background="@drawable/background_edit_profile"
                             android:text="@={myProfileViewModel.name}"
                             android:singleLine="true"
                             android:imeOptions="actionNext"/>
@@ -120,9 +120,12 @@
                             android:layout_height="match_parent"
                             android:inputType="number"
                             android:maxLength="10"
-                            android:background="@drawable/backgound_deit_profile"
+                            android:background="@drawable/background_edit_profile_mobile"
                             android:text="@={myProfileViewModel.mobileNo}"
                             android:singleLine="true"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:enabled="false"
                             android:imeOptions="actionNext" />
 
                     </LinearLayout>
@@ -146,7 +149,7 @@
                             android:layout_height="match_parent"
                             android:inputType="number"
                             android:maxLength="10"
-                            android:background="@drawable/backgound_deit_profile"
+                            android:background="@drawable/background_edit_profile"
                             android:text="@={myProfileViewModel.alternateMobileNo}"
                             android:singleLine="true"
                             android:imeOptions="actionNext" />
@@ -171,7 +174,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:inputType="textEmailAddress"
-                            android:background="@drawable/backgound_deit_profile"
+                            android:background="@drawable/background_edit_profile"
                             android:text="@={myProfileViewModel.emailId}"
                             android:singleLine="true"
                             android:imeOptions="actionDone" />

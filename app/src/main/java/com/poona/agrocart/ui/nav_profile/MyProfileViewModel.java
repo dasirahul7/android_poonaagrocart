@@ -33,6 +33,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.HttpException;
 
 public class MyProfileViewModel extends AndroidViewModel {
@@ -108,13 +110,14 @@ public class MyProfileViewModel extends AndroidViewModel {
     }
 
     public LiveData<ProfileResponse> updateProfileResponse(ProgressDialog progressDialog,
-                                                        HashMap<String, String> profileMap,
-                                                        MyProfileFragment myProfileFragment) {
+                                                           MyProfileFragment myProfileFragment,
+                                                           HashMap<String, RequestBody> profileMap,
+                                                           MultipartBody.Part profilePhoto) {
         MutableLiveData<ProfileResponse> registrationApiResponse = new MutableLiveData<>();
 
         ApiClientAuth.getClient(myProfileFragment.getContext())
                 .create(ApiInterface.class)
-                .updateProfileResponse(profileMap)
+                .updateProfileResponse(profileMap, profilePhoto)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<ProfileResponse>() {
