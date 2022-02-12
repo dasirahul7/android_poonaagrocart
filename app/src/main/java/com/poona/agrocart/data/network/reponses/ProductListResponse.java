@@ -78,8 +78,38 @@ public class ProductListResponse extends BaseResponse{
         @SerializedName("product_units")
         @Expose
         private ArrayList<ProductUnit> productUnits = null;
+        @SerializedName("is_favourite")
+        private int isFavourite;
+        @SerializedName("in_cart")
+        private int inCart;
+        @SerializedName("quantity")
+        private int quantity;
         private ProductUnit unit;
         private String accurateWeight;
+
+        public int getIsFavourite() {
+            return isFavourite;
+        }
+
+        public void setIsFavourite(int isFavourite) {
+            this.isFavourite = isFavourite;
+        }
+
+        public int getInCart() {
+            return inCart;
+        }
+
+        public void setInCart(int inCart) {
+            this.inCart = inCart;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
 
         public ProductUnit getUnit() {
             return unit;
@@ -195,6 +225,8 @@ public class ProductListResponse extends BaseResponse{
     }
 
     public class ProductUnit {
+        @SerializedName("pu_id")
+        private String pId;
         @SerializedName("weight")
         @Expose
         private String weight;
@@ -213,6 +245,14 @@ public class ProductListResponse extends BaseResponse{
         @SerializedName("unit_name")
         @Expose
         private String unitName;
+
+        public String getpId() {
+            return pId;
+        }
+
+        public void setpId(String pId) {
+            this.pId = pId;
+        }
 
         public String getSpecialOffer() {
             return specialOffer;

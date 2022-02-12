@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
-import com.poona.agrocart.data.network.ApiErrorException;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.databinding.FragmentSearchBinding;
 import com.poona.agrocart.ui.BaseFragment;
@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SearchFragment extends BaseFragment implements View.OnClickListener, ApiErrorException {
+public class SearchFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     public static final String TAG = SearchFragment.class.getSimpleName();
     private FragmentSearchBinding fragmentSearchBinding;
     private SearchViewModel searchViewModel;
@@ -242,7 +242,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
 
 
     @Override
-    public void onApiErrorException(int from, String type) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), SearchFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());

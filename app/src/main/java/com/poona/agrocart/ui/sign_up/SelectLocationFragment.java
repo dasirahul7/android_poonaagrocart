@@ -318,7 +318,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
     }
 
     @Override
-    public void onNetworkException(int from) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), SelectLocationFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());

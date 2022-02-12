@@ -29,7 +29,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
-import com.poona.agrocart.data.network.ApiErrorException;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
@@ -50,7 +50,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class ProductDetailFragment extends BaseFragment implements View.OnClickListener, ApiErrorException {
+public class ProductDetailFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     public int count = 0;
     private FragmentProductDetailBinding fragmentProductDetailBinding;
     private ProductDetailViewModel productDetailViewModel;
@@ -540,7 +540,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
-    public void onApiErrorException(int from, String type) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), ProductDetailFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
@@ -551,5 +551,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 }
             }
         }, context);
+
     }
 }

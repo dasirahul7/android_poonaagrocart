@@ -106,7 +106,7 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
     }
 
     @Override
-    public void onNetworkException(int from) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), IntroScreenFragment.this,() -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());

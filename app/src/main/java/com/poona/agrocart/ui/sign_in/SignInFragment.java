@@ -239,7 +239,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void onNetworkException(int from) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), SignInFragment.this,() -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());

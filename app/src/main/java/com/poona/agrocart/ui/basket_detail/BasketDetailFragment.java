@@ -30,7 +30,7 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
-import com.poona.agrocart.data.network.ApiErrorException;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.databinding.FragmentBasketDetailBinding;
@@ -49,7 +49,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class BasketDetailFragment extends BaseFragment implements View.OnClickListener , ApiErrorException {
+public class BasketDetailFragment extends BaseFragment implements View.OnClickListener , NetworkExceptionListener {
 
     private static final String TAG = BasketDetailFragment.class.getSimpleName();
     private BasketDetailViewModel basketDetailViewModel;
@@ -434,7 +434,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     @Override
-    public void onApiErrorException(int from, String type) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), BasketDetailFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());

@@ -188,7 +188,7 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
 
 
     @Override
-    public void onNetworkException(int from) {
+    public void onNetworkException(int from,String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), ExploreFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());

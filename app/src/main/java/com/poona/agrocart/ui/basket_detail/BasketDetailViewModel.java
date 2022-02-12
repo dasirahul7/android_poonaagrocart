@@ -12,8 +12,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.ApiClientAuth;
-import com.poona.agrocart.data.network.ApiErrorException;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
 import com.poona.agrocart.ui.basket_detail.model.BasketDetail;
@@ -81,7 +81,7 @@ public class BasketDetailViewModel extends AndroidViewModel {
                             basketDetailsResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((ApiErrorException) basketDetailFragment).onApiErrorException(0,"");
+                            ((NetworkExceptionListener) basketDetailFragment).onNetworkException(0,"");
                         }
 
                         Log.e(TAG, e.getMessage());

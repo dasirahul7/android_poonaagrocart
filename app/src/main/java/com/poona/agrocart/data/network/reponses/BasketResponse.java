@@ -21,7 +21,7 @@ public class BasketResponse extends BaseResponse{
         this.data = data;
     }
     public class BasketData{
-        @SerializedName("basket_details")
+        @SerializedName("basket_list")
         @Expose
         private ArrayList<Basket> baskets;
 
@@ -34,7 +34,7 @@ public class BasketResponse extends BaseResponse{
         }
     }
     public class Basket {
-        @SerializedName("id")
+        @SerializedName("basket_id")
         @Expose
         private String id;
         @SerializedName("basket_name")
@@ -112,8 +112,38 @@ public class BasketResponse extends BaseResponse{
         @SerializedName("basket_imgs")
         @Expose
         private List<BasketImges> basketImges;
+        @SerializedName("is_favourite")
+        private int isFavourite;
+        @SerializedName("in_cart")
+        private int inCart;
+        @SerializedName("quantity")
+        private int quantity;
         private BasketProduct basketUnit;
         private String accurateWeight;
+
+        public int getIsFavourite() {
+            return isFavourite;
+        }
+
+        public void setIsFavourite(int isFavourite) {
+            this.isFavourite = isFavourite;
+        }
+
+        public int getInCart() {
+            return inCart;
+        }
+
+        public void setInCart(int inCart) {
+            this.inCart = inCart;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
 
         public List<BasketImges> getBasketImges() {
             return basketImges;

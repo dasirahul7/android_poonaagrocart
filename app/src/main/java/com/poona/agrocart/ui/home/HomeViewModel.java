@@ -114,7 +114,7 @@ public class HomeViewModel extends AndroidViewModel {
                             bannerResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(0);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(0,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -159,7 +159,7 @@ public class HomeViewModel extends AndroidViewModel {
                             categoryResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(1);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(1,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -201,7 +201,7 @@ public class HomeViewModel extends AndroidViewModel {
                             basketResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(2);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(2,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -245,7 +245,7 @@ public class HomeViewModel extends AndroidViewModel {
                             exclusiveResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(3);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(3,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -288,7 +288,7 @@ public class HomeViewModel extends AndroidViewModel {
                             bestSellingResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(4);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(4,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -331,7 +331,7 @@ public class HomeViewModel extends AndroidViewModel {
                             seasonalProductResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(5);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(5,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -374,7 +374,7 @@ public class HomeViewModel extends AndroidViewModel {
                             productListResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(6);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(6,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -416,7 +416,7 @@ public class HomeViewModel extends AndroidViewModel {
                             storeBannerMutableLiveData.setValue(storeBannerResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(7);
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(7,"");
                         }
                     }
                 });

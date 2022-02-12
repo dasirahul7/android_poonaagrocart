@@ -315,7 +315,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
-    public void onNetworkException(int from) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), VerifyOtpFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());

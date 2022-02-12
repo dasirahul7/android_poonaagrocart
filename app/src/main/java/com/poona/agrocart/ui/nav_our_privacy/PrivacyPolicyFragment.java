@@ -23,15 +23,18 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.BR;
+import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentPolicyItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.nav_about_us.AboutUsFragment;
 import com.poona.agrocart.ui.nav_about_us.model.CmsPagesData;
 import com.poona.agrocart.ui.nav_about_us.model.CmsResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrivacyPolicyFragment extends BaseFragment {
+public class PrivacyPolicyFragment extends BaseFragment implements NetworkExceptionListener {
     private FragmentPolicyItemBinding fragmentPolicyItemBinding;
     private OurPolicyViewModel ourPolicyViewModel;
     private View view;
@@ -56,7 +59,9 @@ public class PrivacyPolicyFragment extends BaseFragment {
        initTitleWithBackBtn(title); //change
         initViews();
 
+        if (isConnectingToInternet(context))
         callPrivacyPolicyApi(showCircleProgressDialog(context,""));
+        else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
         return view;
     }
@@ -119,5 +124,20 @@ public class PrivacyPolicyFragment extends BaseFragment {
 
         ourPolicyViewModel.getPrivacyPolicyResponse(progressDialog, context, PrivacyPolicyFragment.this)
                 .observe(getViewLifecycleOwner(), cmsPagesDataResponseObserver);
+    }
+
+    @Override
+    public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), PrivacyPolicyFragment.this,() -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if(from == 0) {
+                    callPrivacyPolicyApi(showCircleProgressDialog(context, ""));
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+
     }
 }

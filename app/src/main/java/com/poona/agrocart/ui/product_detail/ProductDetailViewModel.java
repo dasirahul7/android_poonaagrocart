@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
-import com.poona.agrocart.data.network.ApiErrorException;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
@@ -71,7 +70,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                             productDetailsResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((ApiErrorException) productDetailFragment).onApiErrorException(0,"");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(0,"");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -114,7 +113,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((ApiErrorException) productDetailFragment).onApiErrorException(1,"");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(1,"");
                         }
 
                         Log.e(TAG, e.getMessage());

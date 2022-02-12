@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -62,8 +63,7 @@ public class FaQViewModel extends AndroidViewModel {
                             addFaqsResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            /*((NetworkExceptionListener) faqFragment)
-                                    .onNetworkException(0);*/
+                            ((NetworkExceptionListener) faQFragment).onNetworkException(0,"");
                         }
                         Log.e(TAG, e.getMessage());
                     }
