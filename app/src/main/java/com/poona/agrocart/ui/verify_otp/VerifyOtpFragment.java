@@ -80,7 +80,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
             otp = getArguments().getString(AppConstants.USER_OTP);
             basicDetails = new BasicDetails();
             basicDetails.setOtp(otp);
-            String phoneNumber = "number:" + phone.replaceAll(strPattern, "*");
+            String phoneNumber = "number " + phone.replaceAll(strPattern, "*");
             basicDetails.setMobileNumber(phoneNumber);
             verifyOtpViewModel.userMobileMsg.setValue(context.getString(R.string.otp_sent) + " " + basicDetails.getMobileNumber());
             fragmentVerifyOtpBinding.etOtp.requestFocus();
