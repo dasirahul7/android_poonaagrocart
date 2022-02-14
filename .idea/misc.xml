@@ -180,6 +180,7 @@
         <entry key="app/src/main/res/layout/dialog_basket_filter_list.xml" value="0.18" />
         <entry key="app/src/main/res/layout/dialog_coupon_terms.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/dialog_delete_notification.xml" value="0.17291666666666666" />
+        <entry key="app/src/main/res/layout/dialog_logout.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/dialog_new_ticket.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_server_error.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_text_with_button.xml" value="0.11" />
