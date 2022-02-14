@@ -28,8 +28,6 @@ import com.poona.agrocart.data.network.reponses.AddressesResponse;
 import com.poona.agrocart.databinding.FragmentAddressesBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_addresses.model.Address;
-import com.poona.agrocart.ui.nav_profile.MyProfileFragment;
-import com.poona.agrocart.ui.sign_in.SignInFragment;
 
 import java.util.ArrayList;
 
@@ -60,8 +58,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void setRvAdapter() {
-        addressArrayList=new ArrayList<>();
-        prepareListingData();
+        addressArrayList = new ArrayList<>();
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvAddress.setHasFixedSize(true);
@@ -74,17 +71,6 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
             getAddressesListApi(showCircleProgressDialog(context, ""));
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-        }
-    }
-
-    private void prepareListingData() {
-        for(int i = 0; i < 3; i++) {
-            Address address = new Address();
-            address.setName(getString(R.string.ayush));
-            address.setMobileNumber(getString(R.string._91_986_095_3315));
-            address.setAddress(getString(R.string.home));
-            address.setAddress(getString(R.string.nand_nivas_building_floor_3_b_3_lane_no_13_bhatrau_nivas_vishrantwadi_pune_411015));
-            addressArrayList.add(address);
         }
     }
 
@@ -114,15 +100,17 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                 Log.e("Addresses List Api Response", new Gson().toJson(addressesResponse));
                 switch (addressesResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(context, ""+addressesResponse.getMessage());
+                        fragmentAddressesBinding.rlErrorMessage.setVisibility(View.GONE);
+                        fragmentAddressesBinding.rvAddress.setVisibility(View.VISIBLE);
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors
                         goToAskAndDismiss(addressesResponse.getMessage(), context);
                         break;
                     case STATUS_CODE_403://Validation Errors
-                    case STATUS_CODE_404://Validation Errors
-                        warningToast(context, addressesResponse.getMessage());
+                    case STATUS_CODE_404://no records found
+                        fragmentAddressesBinding.rlErrorMessage.setVisibility(View.VISIBLE);
+                        fragmentAddressesBinding.rvAddress.setVisibility(View.GONE);
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         goToAskSignInSignUpScreen(addressesResponse.getMessage(), context);

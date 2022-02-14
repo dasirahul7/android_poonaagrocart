@@ -34,9 +34,9 @@
     <!--My Profile Fragment-->
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.poona.agrocart.ui.nav_profile.MyProfileFragment"
+        android:name="com.poona.agrocart.ui.nav_profile.EditProfileFragment"
         android:label="@string/menu_my_profile"
-        tools:layout="@layout/fragment_my_profile" />
+        tools:layout="@layout/fragment_edit_profile" />
 
     <!--My Cart Fragment-->
     <fragment
