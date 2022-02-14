@@ -193,7 +193,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
-    //Very OTP API here
+    //Verify OTP API here
     private void callVerifyOtpApi(ProgressDialog progressDialog) {
         /*print user input parameters*/
         for (Map.Entry<String, String> entry : verifyOtpParameters(0).entrySet()) {
@@ -252,7 +252,6 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
     }
 
     // Resend OTP API here
-
     private void callResendOtpAPI(ProgressDialog progressDialog) {
         Observer<SignInResponse> signInResponseObserver = resendOtpResponse -> {
             if (resendOtpResponse != null) {
@@ -262,6 +261,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (resendOtpResponse.getMessage() != null) {
                             successToast(context, "" + resendOtpResponse.getMessage());
+                            verifyOtpViewModel.otp.setValue("");
                             basicDetails.setOtp(resendOtpResponse.getUser().getOtp());
                         }
                         break;

@@ -667,7 +667,7 @@
                 app:setCustomFont="@string/font_poppins_bold" />
 
             <LinearLayout
-                android:id="@+id/ll_radio_goup"
+                android:id="@+id/ll_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
@@ -731,7 +731,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_radio_goup">
+                app:layout_constraintTop_toBottomOf="@+id/ll_radio_group">
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_wallet_balance"
