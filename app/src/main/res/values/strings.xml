@@ -171,9 +171,9 @@
     <string name="home">Home</string>
     <string name="office">Office</string>
     <string name="mobile">Mobile</string>
-    <string name="pincode">Pincode</string>
-    <string name="check_availability">Check Availabilty</string>
-    <string name="detail_address">Detail Address</string>
+    <string name="pin_code">Pincode</string>
+    <string name="check_availability">Check Availability</string>
+    <string name="detailed_address">Detailed Address</string>
     <string name="house_no">House No.</string>
     <string name="apartment_no">Apartment Name</string>
     <string name="street">Street</string>
@@ -496,4 +496,5 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="take_a_photo">Take a Photo</string>
     <string name="delete_current_picture">Delete Current Picture</string>
     <string name="you_cannot_edit_mobile_number">You cannot edit your mobile number!</string>
+    <string name="address_type">Address Type</string>
 </resources>

@@ -256,7 +256,7 @@
                             android:id="@+id/spinner_area"
                             style="@style/FormShortEdittextStyle"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_35sdp"
+                            android:layout_height="@dimen/_30sdp"
                             android:background="@drawable/bg_my_profile_spinner" />
 
                     </LinearLayout>
