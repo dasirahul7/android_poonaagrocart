@@ -46,7 +46,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -55,10 +54,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -69,11 +66,10 @@ import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.ProfileResponse;
 import com.poona.agrocart.data.network.reponses.StateResponse;
 import com.poona.agrocart.databinding.DialogSelectPhotoBinding;
-import com.poona.agrocart.databinding.FragmentMyProfileBinding;
+import com.poona.agrocart.databinding.FragmentEditProfileBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
-import com.poona.agrocart.ui.sign_in.SignInFragment;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
@@ -97,9 +93,9 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.HttpException;
 
-public class MyProfileFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
-    private static final String TAG = MyProfileFragment.class.getSimpleName();
-    private FragmentMyProfileBinding fragmentMyProfileBinding;
+public class EditProfileFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
+    private static final String TAG = EditProfileFragment.class.getSimpleName();
+    private FragmentEditProfileBinding fragmentEditProfileBinding;
     private MyProfileViewModel myProfileViewModel;
     private Calendar calendar;
     private int mYear, mMonth, mDay;
@@ -109,19 +105,19 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragmentMyProfileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_profile, container, false);
+        fragmentEditProfileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false);
 
         myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
-        fragmentMyProfileBinding.setMyProfileViewModel(myProfileViewModel);
-        fragmentMyProfileBinding.setLifecycleOwner(this);
+        fragmentEditProfileBinding.setMyProfileViewModel(myProfileViewModel);
+        fragmentEditProfileBinding.setLifecycleOwner(this);
 
-        view = fragmentMyProfileBinding.getRoot();
+        view = fragmentEditProfileBinding.getRoot();
 
         basicDetails = new BasicDetails();
 
         initView();
 
-        fragmentMyProfileBinding.rgGender.setOnCheckedChangeListener((group, checkedId) -> {
+        fragmentEditProfileBinding.rgGender.setOnCheckedChangeListener((group, checkedId) -> {
             switch(checkedId){
                 case R.id.rb_male:
                     myProfileViewModel.gender.setValue("male");
@@ -160,11 +156,11 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private void initView() {
         initTitleBar(getString(R.string.menu_my_profile));
 
-        fragmentMyProfileBinding.tvDateOfBirthInput.setOnClickListener(this);
-        fragmentMyProfileBinding.frameLayout.setOnClickListener(this);
-        fragmentMyProfileBinding.cbtSave.setOnClickListener(this);
-        fragmentMyProfileBinding.ivChooseProfilePhoto.setOnClickListener(this);
-        fragmentMyProfileBinding.llMobileNumber.setOnClickListener(this);
+        fragmentEditProfileBinding.tvDateOfBirthInput.setOnClickListener(this);
+        fragmentEditProfileBinding.frameLayout.setOnClickListener(this);
+        fragmentEditProfileBinding.cbtSave.setOnClickListener(this);
+        fragmentEditProfileBinding.ivChooseProfilePhoto.setOnClickListener(this);
+        fragmentEditProfileBinding.llMobileNumber.setOnClickListener(this);
 
         if (isConnectingToInternet(context)) {
             getCommonApiResponses(showCircleProgressDialog(context, ""));
@@ -221,13 +217,13 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         }
 
         CustomArrayAdapter stateArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, stateList);
-        fragmentMyProfileBinding.spinnerState.setAdapter(stateArrayAdapter);
+        fragmentEditProfileBinding.spinnerState.setAdapter(stateArrayAdapter);
 
         CustomArrayAdapter cityArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, cityList);
-        fragmentMyProfileBinding.spinnerCity.setAdapter(cityArrayAdapter);
+        fragmentEditProfileBinding.spinnerCity.setAdapter(cityArrayAdapter);
 
         CustomArrayAdapter areaArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, areaList);
-        fragmentMyProfileBinding.spinnerArea.setAdapter(areaArrayAdapter);
+        fragmentEditProfileBinding.spinnerArea.setAdapter(areaArrayAdapter);
 
         setDefaultSelectedValues();
     }
@@ -236,8 +232,13 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         if(profileResponse != null) {
             if(profileResponse.getProfile().getImage() != null && !TextUtils.isEmpty(profileResponse.getProfile().getImage())) {
                 myProfileViewModel.profilePhoto.setValue(profileResponse.getProfile().getImage());
-                loadingImage(context, myProfileViewModel.profilePhoto.getValue(), fragmentMyProfileBinding.ivProfilePicture);
-                loadingImage(context, myProfileViewModel.profilePhoto.getValue(), ((HomeActivity)context).civProfilePhoto);
+                try {
+                    loadingImage(context, myProfileViewModel.profilePhoto.getValue(), fragmentEditProfileBinding.ivProfilePicture);
+                    loadingImage(context, myProfileViewModel.profilePhoto.getValue(), ((HomeActivity)context).civProfilePhoto);
+                } catch (Exception e) {
+                    fragmentEditProfileBinding.ivProfilePicture.setImageResource(R.drawable.ic_profile);
+                    ((HomeActivity)context).civProfilePhoto.setImageResource(R.drawable.ic_profile);
+                }
             } else {
                 myProfileViewModel.profilePhoto.setValue("");
             }
@@ -273,7 +274,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 if(stateList != null && stateList.size() > 0) {
                     for(int i = 0; i < stateList.size(); i++) {
                         if(stateList.get(i).getId().equals(myProfileViewModel.state.getValue())) {
-                            fragmentMyProfileBinding.spinnerState.setSelection(i);
+                            fragmentEditProfileBinding.spinnerState.setSelection(i);
                         }
                     }
                 }
@@ -286,7 +287,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 if(cityList != null && cityList.size() > 0) {
                     for(int i = 0; i < cityList.size(); i++) {
                         if(cityList.get(i).getId().equals(myProfileViewModel.city.getValue())) {
-                            fragmentMyProfileBinding.spinnerCity.setSelection(i);
+                            fragmentEditProfileBinding.spinnerCity.setSelection(i);
                         }
                     }
                 }
@@ -299,7 +300,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 if(areaList != null && areaList.size() > 0) {
                     for(int i = 0; i < areaList.size(); i++) {
                         if(areaList.get(i).getId().equals(myProfileViewModel.area.getValue())) {
-                            fragmentMyProfileBinding.spinnerArea.setSelection(i);
+                            fragmentEditProfileBinding.spinnerArea.setSelection(i);
                         }
                     }
                 }
@@ -310,11 +311,11 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             if(profileResponse.getProfile().getGender() != null && !TextUtils.isEmpty(profileResponse.getProfile().getGender())) {
                 myProfileViewModel.gender.setValue(profileResponse.getProfile().getGender());
                 if(myProfileViewModel.gender.getValue().equals("male")) {
-                    fragmentMyProfileBinding.rgGender.check(R.id.rb_male);
+                    fragmentEditProfileBinding.rgGender.check(R.id.rb_male);
                 } else if(myProfileViewModel.gender.getValue().equals("female")) {
-                    fragmentMyProfileBinding.rgGender.check(R.id.rb_female);
+                    fragmentEditProfileBinding.rgGender.check(R.id.rb_female);
                 } else if(myProfileViewModel.gender.getValue().equals("other")) {
-                    fragmentMyProfileBinding.rgGender.check(R.id.rb_other);
+                    fragmentEditProfileBinding.rgGender.check(R.id.rb_other);
                 }
             } else {
                 myProfileViewModel.gender.setValue("");
@@ -349,7 +350,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                fragmentMyProfileBinding.tvDateOfBirthInput.setText(txtDisplayDate);
+                fragmentEditProfileBinding.tvDateOfBirthInput.setText(txtDisplayDate);
             calendar.set(year, month, dayOfMonth);
         },
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
@@ -380,21 +381,21 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private void getUserInputAndSetIntoPojo() {
         if(stateList != null && stateList.size() > 0) {
             for(int i = 0; i < stateList.size(); i++) {
-                if(stateList.get(i).getName().equals(fragmentMyProfileBinding.spinnerState.getSelectedItem().toString())) {
+                if(stateList.get(i).getName().equals(fragmentEditProfileBinding.spinnerState.getSelectedItem().toString())) {
                     myProfileViewModel.state.setValue(stateList.get(i).getId());
                 }
             }
         }
         if(cityList != null && cityList.size() > 0) {
             for(int i = 0; i < cityList.size(); i++) {
-                if(cityList.get(i).getName().equals(fragmentMyProfileBinding.spinnerCity.getSelectedItem().toString())) {
+                if(cityList.get(i).getName().equals(fragmentEditProfileBinding.spinnerCity.getSelectedItem().toString())) {
                     myProfileViewModel.city.setValue(cityList.get(i).getId());
                 }
             }
         }
         if(areaList != null && areaList.size() > 0) {
             for(int i = 0; i < areaList.size(); i++) {
-                if(areaList.get(i).getName().equals(fragmentMyProfileBinding.spinnerArea.getSelectedItem().toString())) {
+                if(areaList.get(i).getName().equals(fragmentEditProfileBinding.spinnerArea.getSelectedItem().toString())) {
                     myProfileViewModel.area.setValue(areaList.get(i).getId());
                 }
             }
@@ -514,7 +515,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                                 setupSpinner();
                             } catch (Exception exception) {
                                 exception.printStackTrace();
-                                showServerErrorDialog(getString(R.string.for_better_user_experience), MyProfileFragment.this, () -> {
+                                showServerErrorDialog(getString(R.string.for_better_user_experience), EditProfileFragment.this, () -> {
                                     if (isConnectingToInternet(context)) {
                                         getCommonApiResponses(showCircleProgressDialog(context, ""));
                                     } else {
@@ -576,7 +577,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         };
 
         myProfileViewModel
-                .updateProfileResponse(progressDialog, MyProfileFragment.this, updateProfileParameters(), multipartBodyImageFile)
+                .updateProfileResponse(progressDialog, EditProfileFragment.this, updateProfileParameters(), multipartBodyImageFile)
                 .observe(getViewLifecycleOwner(), updateProfileResponseObserver);
     }
 
@@ -769,7 +770,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                         compressedImageFile = new Compressor(getActivity()).setQuality(75).compressToFile(f);
 
                         Bitmap myBitmap = BitmapFactory.decodeFile(compressedImageFile.getAbsolutePath());
-                        fragmentMyProfileBinding.ivProfilePicture.setImageBitmap(myBitmap);
+                        fragmentEditProfileBinding.ivProfilePicture.setImageBitmap(myBitmap);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -941,7 +942,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onNetworkException(int from, String type) {
-        showServerErrorDialog(getString(R.string.for_better_user_experience), MyProfileFragment.this,() -> {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), EditProfileFragment.this,() -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
                 if(from == 0) {

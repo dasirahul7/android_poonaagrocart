@@ -79,6 +79,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private String itemId = "";
     private Bundle bundle;
     private static final String TAG = ProductDetailFragment.class.getSimpleName();
+    private String unitId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -189,6 +190,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void setDetailsValue() {
+        unitId = details.getUnit().getpId();
         if (details.getBrandName()!=null&& !details.getBrandName().isEmpty())
             txtBrand.setText(details.getBrandName());
         else txtBrand.setVisibility(View.GONE);
@@ -498,6 +500,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         HashMap<String, String> map = new HashMap<>();
         map.put(AppConstants.ITEM_TYPE, "product");
         map.put(AppConstants.PRODUCT_ID, details.getId());
+        map.put(AppConstants.PU_ID, unitId);
         map.put(AppConstants.BASKET_ID, "");
         return map;
     }

@@ -80,14 +80,13 @@ public class HomeViewModel extends AndroidViewModel {
     //Banner Response here
     @SuppressLint("CheckResult")
     public LiveData<BannerResponse> bannerResponseLiveData(ProgressDialog progressDialog,
-                                                           HashMap<String, String> hashMap,
                                                            HomeFragment homeFragment) {
 
         MutableLiveData<BannerResponse> bannerResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(homeFragment.getContext())
                 .create(ApiInterface.class)
-                .homeBannerResponse(hashMap)
+                .homeBannerResponse()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<BannerResponse>() {
@@ -423,9 +422,8 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     /*Add to Product in CART API*/
-    public LiveData<BaseResponse> addToCartProductLiveData(ProgressDialog progressDialog,
-                                                                     HashMap<String,String> hashMap,
-                                                                     HomeFragment homeFragment){
+    public LiveData<BaseResponse> addToCartProductLiveData(HashMap<String,String> hashMap,
+                                                           HomeFragment homeFragment){
         MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(homeFragment.getContext())
@@ -438,14 +436,12 @@ public class HomeViewModel extends AndroidViewModel {
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
                         if (baseResponse!=null){
                             Log.e(TAG, "add to cart onSuccess: "+new Gson().toJson(baseResponse));
-                            progressDialog.dismiss();
                             baseResponseMutableLiveData.setValue(baseResponse);
                         }
                     }
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         BaseResponse response = new BaseResponse();
                         try{

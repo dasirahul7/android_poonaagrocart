@@ -31,6 +31,7 @@ public class AppConstants {
     public static final String IS_READ_INTRO = "isIntroRead";
     public static final String FROM_LOG_OUT = "fromLogOut";
     public static final String IS_VERIFIED = "verify";
+    public static final String GOOGLE_API_KEY = "google_api_key";
 //    public static final String IS_REGISTERED = "registered";
 //    public static final String IS_LOCATED = "located";
     public static final String IS_SKIP_BANK_DETAILS = "isSkippedBankDetails";
@@ -86,6 +87,8 @@ public class AppConstants {
     public static final String HOME_STORE_BANNER_API = "store-banner";
     public static final String SIGN_OUT_API = "logout-customer";
     public static final String ADD_TO_FAVOURITE = "add-to-favourite";
+    /*Favourite API's*/
+    public static final String FAVOURITE_LIST_API = "view-favourite-list";
     /*Offer & Coupon APIs*/
     public static final String COUPON_API = "coupon-list";
 

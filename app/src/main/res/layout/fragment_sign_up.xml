@@ -51,8 +51,8 @@
                         android:id="@+id/tv_loging"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/sign_up"
                         android:padding="@dimen/alerter_padding_small"
+                        android:text="@string/sign_up"
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_24sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -70,13 +70,13 @@
 
 
                     <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_username"
+                        android:id="@+id/tv_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_enter_credentials"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/alerter_padding_small"
-                        android:text="@string/username"
+                        android:text="@string/name"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -86,7 +86,7 @@
                         android:id="@+id/et_username"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/tv_username"
+                        android:layout_below="@+id/tv_name"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/bg_login_et_fields"
@@ -177,9 +177,9 @@
                         android:layout_below="@+id/tv_email_optional"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/bg_login_et_fields"
+                        android:singleLine="true"
                         android:text="@{signUpViewModel.emailId}"
                         android:textSize="@dimen/_16sp"
-                        android:singleLine="true"
                         app:setCustomFont="@string/font_poppins_regular" />
 
                     <LinearLayout
@@ -195,21 +195,21 @@
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="0.9"
                             android:drawablePadding="@dimen/alerter_padding_half"
                             android:text="@string/by_continuing_you_agree"
                             android:textSize="@dimen/_14sp"
-                            android:layout_gravity="start"
-                            android:layout_weight="0.9"
                             app:setCustomFont="@string/font_poppins_regular" />
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:id="@+id/tv_terms_of_service"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start"
                             android:layout_weight="1.1"
                             android:text="@string/terms_of_service"
                             android:textColor="@color/selectedGreen"
-                            android:layout_gravity="start"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
 

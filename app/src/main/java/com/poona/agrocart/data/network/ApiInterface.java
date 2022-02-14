@@ -8,6 +8,7 @@ import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
 import static com.poona.agrocart.app.AppConstants.COUPON_API;
 import static com.poona.agrocart.app.AppConstants.FAQ;
+import static com.poona.agrocart.app.AppConstants.FAVOURITE_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BASKET_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BEST_SELLING_API;
@@ -59,6 +60,7 @@ import com.poona.agrocart.data.network.reponses.StateResponse;
 import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
 import com.poona.agrocart.data.network.reponses.CmsResponse;
+import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteLisResponse;
 import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
@@ -136,9 +138,8 @@ public interface ApiInterface {
     Single<BaseResponse> updateLocationResponse(@FieldMap HashMap<String, String> data);
 
     //Home Banner API
-    @FormUrlEncoded
-    @POST(HOME_BANNER_API)
-    Single<BannerResponse> homeBannerResponse(@FieldMap HashMap<String, String> bannerParams);
+    @GET(HOME_BANNER_API)
+    Single<BannerResponse> homeBannerResponse();
 
     //Home Category API
     @FormUrlEncoded
@@ -236,4 +237,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(VIEW_TICKET)
     Single<TicketListResponse> getTicketList(@FieldMap HashMap<String, String> ticketListInputParameter);
+
+    /*Favourite Response*/
+    @GET(FAVOURITE_LIST_API)
+    Single<FavouriteLisResponse> getFavouriteList();
 }

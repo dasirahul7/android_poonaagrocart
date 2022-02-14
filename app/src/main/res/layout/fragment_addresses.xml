@@ -11,53 +11,76 @@
 
     </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.nav_addresses.AddressesFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.poona.agrocart.widgets.CustomButton
+            android:id="@+id/btn_add_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/button_green"
+            android:drawableStart="@drawable/ic_plus_white"
+            android:padding="@dimen/alerter_padding_small"
+            android:drawableTint="@color/background_color_white_green"
+            android:paddingStart="@dimen/_20sdp"
+            android:text="@string/add_new_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlSymmetry"
+            android:textColor="@color/background_color_white_green"
+            android:textAllCaps="false"
+            android:includeFontPadding="false"
+            android:layout_gravity="center|center_vertical"
+            android:gravity="center|center_vertical"
+            android:textSize="@dimen/_18sp"
+            style="?android:attr/borderlessButtonStyle"
+            app:setCustomFont="@string/font_poppins_semi_bold"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_add_address" />
+
+        <RelativeLayout
+            android:id="@+id/rl_error_message"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusableInTouchMode="true">
+            android:layout_marginHorizontal="@dimen/_50sdp"
+            android:gravity="center"
+            android:visibility="gone">
 
-            <com.poona.agrocart.widgets.CustomButton
-                android:id="@+id/btn_add_address"
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_address"
+                app:tint="@color/colorAccent" />
+
+            <com.poona.agrocart.widgets.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/button_green"
-                android:drawableStart="@drawable/ic_plus_white"
-                android:padding="@dimen/alerter_padding_small"
-                android:drawableTint="@color/background_color_white_green"
-                android:paddingStart="@dimen/_20sdp"
-                android:text="@string/add_new_address"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="RtlSymmetry"
-                android:textColor="@color/background_color_white_green"
-                android:textAllCaps="false"
-                android:includeFontPadding="false"
-                android:layout_gravity="center|center_vertical"
-                android:gravity="center|center_vertical"
-                android:textSize="@dimen/_18sp"
-                style="?android:attr/borderlessButtonStyle"
-                app:setCustomFont="@string/font_poppins_semi_bold"/>
+                android:layout_below="@+id/iv_icon"
+                android:layout_centerHorizontal="true"
+                android:text="There are no addresses found! Please add at least one Address."
+                android:textColor="#808080"
+                android:gravity="center"
+                android:textSize="@dimen/_22sp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginVertical="@dimen/_8sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_add_address" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
 
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
