@@ -96,7 +96,7 @@
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:background="@drawable/background_light_green"
-                        android:drawableTint="@color/background_button_selector_red"
+                        android:drawableTint="@color/background_button_selector_green"
                         android:drawableRight="@drawable/ic_toast_clear_white"
                         android:minHeight="0dp"
                         android:paddingTop="@dimen/_6sdp"

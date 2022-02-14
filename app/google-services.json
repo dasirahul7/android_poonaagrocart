@@ -1,79 +1,41 @@
 {
   "project_info": {
-    "project_number": "739877089674",
-    "firebase_url": "https://mplus1-1544178289957.firebaseio.com",
-    "project_id": "mplus1-1544178289957",
-    "storage_bucket": "mplus1-1544178289957.appspot.com"
+    "project_number": "733168046094",
+    "project_id": "poona-agrocart",
+    "storage_bucket": "poona-agrocart.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:739877089674:android:36b77bebe39c91bd4c5873",
-        "android_client_info": {
-          "package_name": "com.online_amdar"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "739877089674-b2icm2ei155j7p6lhh0hph26kp8nclhp.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.online_amdar",
-            "certificate_hash": "3491f61886e306838a0c106913ea7d3c4c6677ec"
-          }
-        },
-        {
-          "client_id": "739877089674-84q8dnc8vcuvb3l7mgnh24p9u162ic5a.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCurDSgfmSHnxvRv13eilO4vMhxBNGrjRQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "739877089674-84q8dnc8vcuvb3l7mgnh24p9u162ic5a.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:739877089674:android:100c4dcb1234522b4c5873",
+        "mobilesdk_app_id": "1:733168046094:android:642fd006febd61a49bac5f",
         "android_client_info": {
           "package_name": "com.poona.agrocart"
         }
       },
       "oauth_client": [
         {
-          "client_id": "739877089674-6b320v8jr30vkq46sqbftk95vtaj1qim.apps.googleusercontent.com",
+          "client_id": "733168046094-g4qhhmd2e6p3mi9q8di2h5ci0c488jnj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.poona.agrocart",
-            "certificate_hash": "3491f61886e306838a0c106913ea7d3c4c6677ec"
+            "certificate_hash": "f0d405d75d45b6f9e146da5f510ca3ae3f37b891"
           }
         },
         {
-          "client_id": "739877089674-84q8dnc8vcuvb3l7mgnh24p9u162ic5a.apps.googleusercontent.com",
+          "client_id": "733168046094-vri7cgp2eqbqgde1e7om4m15kmoc2h94.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCurDSgfmSHnxvRv13eilO4vMhxBNGrjRQ"
+          "current_key": "AIzaSyB5S3OXLdwROeamb87SDlaKD8RuGnq-OdU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "739877089674-84q8dnc8vcuvb3l7mgnh24p9u162ic5a.apps.googleusercontent.com",
+              "client_id": "733168046094-vri7cgp2eqbqgde1e7om4m15kmoc2h94.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

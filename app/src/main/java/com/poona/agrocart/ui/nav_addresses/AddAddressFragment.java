@@ -148,14 +148,12 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private String [] countryListIso = {"eg","sau","om","mar","usa","ind"};
     private String [] addressLanguageList = {"en","ar"};
     private void selectLocationOnMap() {
-        //String apiKey = "AIzaSyDHYoOXbCOt_AgEbUXbj0DSowKgHFwtdGA"; //
-
         String apiKey = "";
 
         if(preferences.getGoogleApiKey() != null && !TextUtils.isEmpty(preferences.getGoogleApiKey()))
             apiKey = preferences.getGoogleApiKey(); //dynamic
         else
-            apiKey = "AIzaSyDHYoOXbCOt_AgEbUXbj0DSowKgHFwtdGA"; // static
+            apiKey = "AIzaSyDi2KxP5vuvOxYO1qA2i5Ehx-yXY7hcN1Q"; // static
 
         String mCountry = countryListIso[5]; // countries
         String mLanguage = addressLanguageList[0]; // english/arabic

@@ -90,7 +90,7 @@
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/bg_login_et_fields"
-                        android:digits="@string/all_letters_and_digits"
+                        android:inputType="textCapWords"
                         android:text="@{signUpViewModel.userName}"
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_16sp"

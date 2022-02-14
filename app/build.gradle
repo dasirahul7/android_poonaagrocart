@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 import java.text.DateFormat
@@ -101,10 +102,12 @@ dependencies {
 
     /*firebase*/
     //Import the Firebase BoM
-    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    implementation platform('com.google.firebase:firebase-bom:29.1.0')
     //When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-crashlytics'
+
 
     /*sdp*/
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
