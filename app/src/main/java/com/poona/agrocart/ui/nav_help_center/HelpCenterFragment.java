@@ -38,11 +38,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.help_center_response.CreateTicketResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.databinding.FragmentHelpCenterBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.nav_faq.FaQFragment;
 import com.poona.agrocart.ui.nav_help_center.Adaptor.TicketTypeAdaptor;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomEditText;
@@ -51,7 +53,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class HelpCenterFragment extends BaseFragment implements View.OnClickListener
+public class HelpCenterFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener
 {
     private FragmentHelpCenterBinding fragmentHelpCenterBinding;
     private HelpCenterViewModel helpCenterViewModel;
@@ -146,7 +148,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
     /*Upload the Ticket list api*/
     private void callTicketListApi(ProgressDialog progressDialog,String fromFunction) {
         if (fromFunction.equals("onScrolled")) {
-            offset = offset + 10;
+            offset = offset + 1;
         } else {
             offset = 0;
         }
@@ -159,6 +161,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
                 }
                 switch (ticketListResponse.getStatus()) {
                     case STATUS_CODE_200://success
+                        if (offset == 0)
                         ticketArrayList.clear();
 
                         totalCount = Integer.parseInt(ticketListResponse.getData().getCountTickets());
@@ -253,7 +256,14 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
             }else if(strDescription.equalsIgnoreCase("")){
                 warningToast(context, getString(R.string.empty_field_toast));
             }else {
-                callCreateTicketApi(showCircleProgressDialog(context,""));
+
+                if(isConnectingToInternet(context)){
+                    callCreateTicketApi(showCircleProgressDialog(context,""));
+                }else{
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+
+
                 dialog.dismiss();
             }
 
@@ -367,5 +377,24 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
 
         helpCenterViewModel.getTicketTypeResponse(progressDialog, context, HelpCenterFragment.this)
                 .observe(getViewLifecycleOwner(), ticketTypeResponseObserver);
+    }
+
+    @Override
+    public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), HelpCenterFragment.this,() -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if(from == 0) {
+                    callTicketTypeApi(showCircleProgressDialog(context, ""));
+                }else if(from == 1){
+                    callTicketListApi(showCircleProgressDialog(context,""), "RecyclerView");
+                }else if(from == 2){
+                    callCreateTicketApi(showCircleProgressDialog(context, ""));
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+
     }
 }

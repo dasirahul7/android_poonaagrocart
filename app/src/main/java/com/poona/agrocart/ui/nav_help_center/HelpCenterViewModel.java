@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.help_center_response.CreateTicketResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketTypeResponse;
@@ -64,8 +65,8 @@ public class HelpCenterViewModel extends AndroidViewModel {
 
                             ticketTypeResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
-                           /* Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) faQFragment).onNetworkException(0,"");*/
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) helpCenterFragment).onNetworkException(0,"");
                         }
                         Log.e(TAG, e.getMessage());
                     }
@@ -106,8 +107,8 @@ public class HelpCenterViewModel extends AndroidViewModel {
 
                             ticketListResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
-                           /* Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) faQFragment).onNetworkException(0,"");*/
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) helpCenterFragment).onNetworkException(1,"");
                         }
                         Log.e(TAG, e.getMessage());
                     }
@@ -147,8 +148,8 @@ public class HelpCenterViewModel extends AndroidViewModel {
 
                             createTicketResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
-                           /* Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) faQFragment).onNetworkException(0,"");*/
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) helpCenterFragment).onNetworkException(2,"");
                         }
                         Log.e(TAG, e.getMessage());
                     }
