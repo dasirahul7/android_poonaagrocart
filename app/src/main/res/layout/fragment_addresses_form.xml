@@ -282,98 +282,129 @@
                 android:text="@string/detailed_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="0dp"
                 app:layout_constraintTop_toBottomOf="@+id/ll_pin_code_main" />
 
             <LinearLayout
-                android:id="@+id/ll_house_and_apartment_number"
+                android:id="@+id/ll_apartment_name_house_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_5sdp"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:weightSum="100"
                 app:layout_constraintTop_toBottomOf="@id/tv_detail_address">
 
                 <LinearLayout
+                    android:id="@+id/ll_apartment_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
                     android:orientation="vertical">
 
                     <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_house_number"
-                        style="@style/FormShortTextStyle"
+                        android:id="@+id/tv_apartment_name"
+                        style="@style/FormTextStyle"
+                        android:layout_marginTop="@dimen/_4sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/apartment_no" />
+                        android:text="@string/apartment_name" />
+
 
                     <com.poona.agrocart.widgets.CustomEditText
-                        android:id="@+id/et_house_number"
-                        style="@style/FormShortEdittextStyle"
+                        android:id="@+id/et_apartment_name"
+                        style="@style/FormEdittextStyle"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/background_with_shadow_small_edittext"
-                        android:text="@{addressesViewModel.houseNumber}"
-                        tools:ignore="RtlSymmetry" />
+                        android:layout_height="match_parent"
+                        android:background="@drawable/background_edit_profile"
+                        android:text="@={addressesViewModel.apartmentName}"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"/>
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_house_number"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="50"
                     android:orientation="vertical">
 
                     <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_apartment"
-                        style="@style/FormShortTextStyle"
+                        android:id="@+id/tv_house_number_text"
+                        style="@style/FormTextStyle"
+                        android:layout_marginTop="@dimen/_4sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/house_no" />
+                        android:text="@string/house_number" />
+
 
                     <com.poona.agrocart.widgets.CustomEditText
-                        android:id="@+id/et_apartment_number"
-                        style="@style/FormShortEdittextStyle"
+                        android:id="@+id/et_house_number"
+                        style="@style/FormEdittextStyle"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/background_with_shadow_small_edittext"
-                        tools:ignore="RtlSymmetry" />
+                        android:layout_height="match_parent"
+                        android:background="@drawable/background_edit_profile"
+                        android:text="@={addressesViewModel.houseNumber}"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"/>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/tv_street"
-                style="@style/FormTextStyle"
+            <LinearLayout
+                android:id="@+id/ll_street"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/street"
-                app:layout_constraintTop_toBottomOf="@id/ll_house_and_apartment_number" />
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/ll_apartment_name_house_num">
 
-            <com.poona.agrocart.widgets.CustomEditText
-                android:id="@+id/et_street"
-                style="@style/FormEdittextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_with_shadow_edittext"
-                app:layout_constraintTop_toBottomOf="@id/tv_street" />
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/tv_street_text"
+                    style="@style/FormTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/street" />
 
-            <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/tv_landmark"
-                style="@style/FormTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/landmark"
-                app:layout_constraintTop_toBottomOf="@id/et_street" />
 
-            <com.poona.agrocart.widgets.CustomEditText
-                android:id="@+id/et_landmark"
-                style="@style/FormEdittextStyle"
-                android:background="@drawable/background_with_shadow_edittext"
+                <com.poona.agrocart.widgets.CustomEditText
+                    android:id="@+id/et_street"
+                    style="@style/FormEdittextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_edit_profile"
+                    android:text="@={addressesViewModel.street}"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_landmark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_landmark" />
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/ll_street">
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/tv_landmark_text"
+                    style="@style/FormTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/landmark" />
+
+
+                <com.poona.agrocart.widgets.CustomEditText
+                    android:id="@+id/et_landmark"
+                    style="@style/FormEdittextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_edit_profile"
+                    android:text="@={addressesViewModel.landmark}"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"/>
+
+            </LinearLayout>
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_or"
@@ -382,37 +413,25 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/or"
-                app:layout_constraintTop_toBottomOf="@id/et_landmark" />
+                app:layout_constraintTop_toBottomOf="@id/ll_landmark" />
 
-            <LinearLayout
-                android:id="@+id/ll_use_location"
-                android:layout_width="match_parent"
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_current_location"
+                style="@style/FormTextStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:drawableStart="@drawable/ic_location"
                 android:gravity="center"
-                android:orientation="horizontal"
+                android:paddingTop="@dimen/_2sdp"
+                android:text="@string/use_current_location"
+                android:textColor="@color/color15"
+                android:textSize="@dimen/_14sp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:drawablePadding="@dimen/_4sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_or">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_location" />
-
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/tv_use_current_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/_2sdp"
-                    android:paddingTop="@dimen/_2sdp"
-                    android:text="@string/use_current_location"
-                    android:textColor="@color/color15"
-                    android:textSize="@dimen/_14sp"
-                    app:setCustomFont="@string/font_poppins_regular"
-                    tools:ignore="RtlSymmetry" />
-
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@id/tv_or"
+                app:setCustomFont="@string/font_poppins_regular" />
 
             <com.poona.agrocart.widgets.CustomButton
                 android:id="@+id/btn_add_address"
@@ -420,7 +439,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
-                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:background="@drawable/background_light_green"
@@ -434,7 +453,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_use_location"
+                app:layout_constraintTop_toBottomOf="@+id/tv_current_location"
                 app:setCustomFont="@string/font_poppins_semi_bold" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

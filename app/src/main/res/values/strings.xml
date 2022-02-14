@@ -174,8 +174,8 @@
     <string name="pin_code">Pincode</string>
     <string name="check_availability">Check Availability</string>
     <string name="detailed_address">Detailed Address</string>
-    <string name="house_no">House No.</string>
-    <string name="apartment_no">Apartment Name</string>
+    <string name="house_number">House Number</string>
+    <string name="apartment_name">Apartment Name</string>
     <string name="street">Street</string>
     <string name="landmark">Landmark</string>
     <string name="or">OR</string>

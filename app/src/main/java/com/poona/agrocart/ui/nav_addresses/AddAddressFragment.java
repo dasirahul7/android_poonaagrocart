@@ -48,7 +48,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     }
 
     private void initView() {
-        fragmentAddressesFormBinding.tvUseCurrentLocation.setOnClickListener(this);
+        fragmentAddressesFormBinding.tvCurrentLocation.setOnClickListener(this);
 
         Typeface poppinsRegularFont = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_medium));
         fragmentAddressesFormBinding.rbHome.setTypeface(poppinsRegularFont);
@@ -61,7 +61,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_use_current_location:
+            case R.id.tv_current_location:
                 break;
         }
     }
