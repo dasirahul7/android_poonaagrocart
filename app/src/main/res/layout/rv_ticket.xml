@@ -6,7 +6,7 @@
 
         <variable
             name="ticket"
-            type="com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse.TicketList" />
+            type="com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse.TicketList.UserTicket" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +40,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="50"
+                        android:layout_weight="60"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -72,6 +72,7 @@
                         </LinearLayout>
 
                         <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
@@ -86,7 +87,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="50"
+                        android:layout_weight="40"
                         android:gravity="end"
                         android:orientation="vertical">
 

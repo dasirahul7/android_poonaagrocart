@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.reponses.help_center_response.CreateTicketResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketTypeResponse;
 
@@ -113,5 +114,46 @@ public class HelpCenterViewModel extends AndroidViewModel {
                 });
 
         return ticketListResponseMutableLiveData;
+    }
+
+    public LiveData<CreateTicketResponse> getCreateTicketResponse(ProgressDialog progressDialog, Context context
+            , HashMap<String, String> createTicketInputParameter, HelpCenterFragment helpCenterFragment) {
+        MutableLiveData<CreateTicketResponse> createTicketResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(context)
+                .create(ApiInterface.class)
+                .getCreateTicket(createTicketInputParameter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<CreateTicketResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull CreateTicketResponse baseResponse) {
+                        progressDialog.dismiss();
+                        if (baseResponse != null){
+                            createTicketResponseMutableLiveData.setValue(baseResponse);
+                        }else {
+                            createTicketResponseMutableLiveData.setValue(null);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        CreateTicketResponse baseResponse = new CreateTicketResponse();
+                        try {
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CreateTicketResponse.class);
+
+                            createTicketResponseMutableLiveData.setValue(baseResponse);
+                        } catch (Exception exception) {
+                           /* Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) faQFragment).onNetworkException(0,"");*/
+                        }
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return createTicketResponseMutableLiveData;
     }
 }

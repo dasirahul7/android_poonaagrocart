@@ -18,15 +18,17 @@ import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
 import com.poona.agrocart.databinding.RvTicketBinding;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketViewHolder>
 {
-    private List<TicketListResponse.TicketList> ticketArrayList = new ArrayList<>();
+    private List<TicketListResponse.TicketList.UserTicket> ticketArrayList = new ArrayList<>();
     private final Context context;
+    private HelpCenterFragment helpCenterFragment;
 
-    public TicketsAdapter(List<TicketListResponse.TicketList> ticketArrayList,Context context)
+    public TicketsAdapter(List<TicketListResponse.TicketList.UserTicket> ticketArrayList,Context context)
     {
         this.ticketArrayList = ticketArrayList;
         this.context=context;
@@ -44,9 +46,20 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketVi
     @Override
     public void onBindViewHolder(@NonNull TicketViewHolder holder, int position)
     {
-         TicketListResponse.TicketList ticket = ticketArrayList.get(position);
+         TicketListResponse.TicketList.UserTicket ticket = ticketArrayList.get(position);
         holder.rvTicketBinding.setTicket(ticket);
         holder.bind(ticket,context);
+
+
+        String selectedDate = ticket.getCreatedOn();
+
+       /* String txtDisplayDate="";
+        try {
+            txtDisplayDate = helpCenterFragment.formatDate(selectedDate, "yyyy-MM-dd hh:mm a", "yyyy-MM-dd hh:mm:ss ");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        holder.rvTicketBinding.tvDate.setText(txtDisplayDate);*/
     }
 
     @Override
@@ -58,9 +71,9 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketVi
     public static class TicketViewHolder extends RecyclerView.ViewHolder
     {
         RvTicketBinding rvTicketBinding;
-        private  List<TicketListResponse.TicketList> ticketArrayList = new ArrayList<>();
+        private  List<TicketListResponse.TicketList.UserTicket> ticketArrayList = new ArrayList<>();
 
-        public TicketViewHolder(RvTicketBinding rvTicketBinding,List<TicketListResponse.TicketList> ticketArrayList)
+        public TicketViewHolder(RvTicketBinding rvTicketBinding,List<TicketListResponse.TicketList.UserTicket> ticketArrayList)
         {
             super(rvTicketBinding.getRoot());
 
@@ -70,7 +83,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketVi
             rvTicketBinding.cardViewTicket.setOnClickListener(v -> {
 
                 Bundle bundle=new Bundle();
-                bundle.putString(AppConstants.TICKET_ID,ticketArrayList.get(getAdapterPosition()).getTicketId());
+                bundle.putString(AppConstants.TICKET_ID,ticketArrayList.get(getAdapterPosition()).getTicketNo());
                 bundle.putString(AppConstants.STATUS,ticketArrayList.get(getAdapterPosition()).getStatus());
                 bundle.putString(AppConstants.REMARK,ticketArrayList.get(getAdapterPosition()).getRemark());
                 bundle.putString(AppConstants.DATE,ticketArrayList.get(getAdapterPosition()).getCreatedOn());
@@ -80,7 +93,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketVi
         }
 
         @SuppressLint("ResourceType")
-        public void bind(TicketListResponse.TicketList ticket, Context context)
+        public void bind(TicketListResponse.TicketList.UserTicket ticket, Context context)
         {
             rvTicketBinding.setVariable(BR.ticket,ticket);
             if(ticket.getStatus().equals("Pending"))

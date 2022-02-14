@@ -5,6 +5,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
 
+import java.util.List;
+
 public class TicketListResponse extends BaseResponse {
 
 
@@ -22,95 +24,120 @@ public class TicketListResponse extends BaseResponse {
 
     public class TicketList {
 
-        @SerializedName("ticket_id")
+        @SerializedName("count_tickets")
         @Expose
-        private String ticketId;
-        @SerializedName("ticket_no")
+        private String countTickets;
+        @SerializedName("user_tickets")
         @Expose
-        private String ticketNo;
-        @SerializedName("subject")
-        @Expose
-        private String subject;
-        @SerializedName("remark")
-        @Expose
-        private String remark;
-        @SerializedName("created_on")
-        @Expose
-        private String createdOn;
-        @SerializedName("status")
-        @Expose
-        private String status;
-        @SerializedName("ticket_type")
-        @Expose
-        private String ticketType;
-        @SerializedName("username")
-        @Expose
-        private Object username;
+        private List<UserTicket> userTickets = null;
 
-        public String getTicketId() {
-            return ticketId;
+        public String getCountTickets() {
+            return countTickets;
         }
 
-        public void setTicketId(String ticketId) {
-            this.ticketId = ticketId;
+        public void setCountTickets(String countTickets) {
+            this.countTickets = countTickets;
         }
 
-        public String getTicketNo() {
-            return ticketNo;
+        public List<UserTicket> getUserTickets() {
+            return userTickets;
         }
 
-        public void setTicketNo(String ticketNo) {
-            this.ticketNo = ticketNo;
+        public void setUserTickets(List<UserTicket> userTickets) {
+            this.userTickets = userTickets;
         }
 
-        public String getSubject() {
-            return subject;
-        }
+        public class UserTicket {
+            @SerializedName("ticket_id")
+            @Expose
+            private String ticketId;
+            @SerializedName("ticket_no")
+            @Expose
+            private String ticketNo;
+            @SerializedName("subject")
+            @Expose
+            private String subject;
+            @SerializedName("remark")
+            @Expose
+            private String remark;
+            @SerializedName("created_on")
+            @Expose
+            private String createdOn;
+            @SerializedName("status")
+            @Expose
+            private String status;
+            @SerializedName("ticket_type")
+            @Expose
+            private String ticketType;
+            @SerializedName("username")
+            @Expose
+            private String username;
 
-        public void setSubject(String subject) {
-            this.subject = subject;
-        }
+            public String getTicketId() {
+                return ticketId;
+            }
 
-        public String getRemark() {
-            return remark;
-        }
+            public void setTicketId(String ticketId) {
+                this.ticketId = ticketId;
+            }
 
-        public void setRemark(String remark) {
-            this.remark = remark;
-        }
+            public String getTicketNo() {
+                return ticketNo;
+            }
 
-        public String getCreatedOn() {
-            return createdOn;
-        }
+            public void setTicketNo(String ticketNo) {
+                this.ticketNo = ticketNo;
+            }
 
-        public void setCreatedOn(String createdOn) {
-            this.createdOn = createdOn;
-        }
+            public String getSubject() {
+                return subject;
+            }
 
-        public String getStatus() {
-            return status;
-        }
+            public void setSubject(String subject) {
+                this.subject = subject;
+            }
 
-        public void setStatus(String status) {
-            this.status = status;
-        }
+            public String getRemark() {
+                return remark;
+            }
 
-        public String getTicketType() {
-            return ticketType;
-        }
+            public void setRemark(String remark) {
+                this.remark = remark;
+            }
 
-        public void setTicketType(String ticketType) {
-            this.ticketType = ticketType;
-        }
+            public String getCreatedOn() {
+                return createdOn;
+            }
 
-        public Object getUsername() {
-            return username;
-        }
+            public void setCreatedOn(String createdOn) {
+                this.createdOn = createdOn;
+            }
 
-        public void setUsername(Object username) {
-            this.username = username;
-        }
+            public String getStatus() {
+                return status;
+            }
 
+            public void setStatus(String status) {
+                this.status = status;
+            }
+
+            public String getTicketType() {
+                return ticketType;
+            }
+
+            public void setTicketType(String ticketType) {
+                this.ticketType = ticketType;
+            }
+
+            public String getUsername() {
+                return username;
+            }
+
+            public void setUsername(String username) {
+                this.username = username;
+            }
+
+        }
     }
 
 

@@ -106,6 +106,7 @@ public class AppConstants {
     /*Help Center Api*/
     public static final String TICKET_TYPE = "ticket-type";
     public static final String VIEW_TICKET = "view-ticket";
+    public static final String ISSUE_TICKET = "issue-ticket";
 
 
     /*Product list API*/
@@ -215,6 +216,11 @@ public class AppConstants {
     public static final String REMARK = "REMARK";
     public static final String DATE = "DATE";
     public static final String SUBJECT = "SUBJECT";
+
+    /*Help center parameter and data*/
+    public static final String ISSUE_ID = "issue_id";
+    public static final String TICKET_SUBJECT = "subject";
+    public static final String TICKET_REMARK = "remark";
 
     //SharedPreferences keys
     public static String CART_LIST = "CART_LIST";

@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_help_center;
 
+import static com.poona.agrocart.app.AppConstants.ISSUE_ID;
 import static com.poona.agrocart.app.AppConstants.LIMIT;
 import static com.poona.agrocart.app.AppConstants.OFFSET;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
@@ -7,6 +8,8 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.TICKET_REMARK;
+import static com.poona.agrocart.app.AppConstants.TICKET_SUBJECT;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -23,6 +26,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import androidx.core.widget.NestedScrollView;
@@ -34,6 +38,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.help_center_response.CreateTicketResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.databinding.FragmentHelpCenterBinding;
@@ -53,10 +58,11 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
     private RecyclerView rvTickets;
     private LinearLayoutManager linearLayoutManager;
     private TicketsAdapter ticketsAdapter;
-    private List<TicketListResponse.TicketList> ticketArrayList = new ArrayList<>();
+    private List<TicketListResponse.TicketList.UserTicket> ticketArrayList = new ArrayList<>();
     private List<TicketTypeResponse.TicketType> ticketTypeList = new ArrayList<>();
     private Spinner spinTicketType;
     private String ticketId = "", strTicketName = "";
+    private CustomEditText etSubject, etDescription;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -68,12 +74,6 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
         final View view = fragmentHelpCenterBinding.getRoot();
 
         initView();
-
-        if(isConnectingToInternet(context)) {
-            setRvAdapter();
-        }else{
-            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-        }
 
 
         initTitleBar(getString(R.string.menu_help_center));
@@ -102,12 +102,12 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
     private void setRvAdapter()
     {
         ticketArrayList=new ArrayList<>();
-        callTicketListApi(showCircleProgressDialog(context, ""),"RecyclerView");
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvTickets.setHasFixedSize(true);
         rvTickets.setLayoutManager(linearLayoutManager);
 
+        callTicketListApi(showCircleProgressDialog(context, ""),"RecyclerView");
         ticketsAdapter = new TicketsAdapter(ticketArrayList,getContext());
         rvTickets.setAdapter(ticketsAdapter);
 
@@ -161,8 +161,9 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
                     case STATUS_CODE_200://success
                         ticketArrayList.clear();
 
+                        totalCount = Integer.parseInt(ticketListResponse.getData().getCountTickets());
                         if(ticketListResponse.getData() != null){
-                            ticketArrayList.add(ticketListResponse.getData());
+                            ticketArrayList.addAll(ticketListResponse.getData().getUserTickets());
                             ticketsAdapter.notifyDataSetChanged();
                         }
                         break;
@@ -227,8 +228,8 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
 
         ImageView closeImage = dialog.findViewById(R.id.close_btn);
         CustomButton submitButton = dialog.findViewById(R.id.btn_submit);
-        CustomEditText etSubject = dialog.findViewById(R.id.et_subject);
-        CustomEditText  etDescription = dialog.findViewById(R.id.et_description);
+        etSubject = dialog.findViewById(R.id.et_subject);
+        etDescription = dialog.findViewById(R.id.et_description);
         spinTicketType = dialog.findViewById(R.id.spin_ticket);
 
         if(isConnectingToInternet(context)){
@@ -252,12 +253,60 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
             }else if(strDescription.equalsIgnoreCase("")){
                 warningToast(context, getString(R.string.empty_field_toast));
             }else {
+                callCreateTicketApi(showCircleProgressDialog(context,""));
                 dialog.dismiss();
             }
 
         });
 
         dialog.show();
+    }
+    
+    private void callCreateTicketApi (ProgressDialog progressDialog) {
+        
+        Observer<CreateTicketResponse> createTicketResponseObserver = createTicketResponse -> {
+            if (createTicketResponse != null){
+                etDescription.setText("");
+                etSubject.setText("");
+                Log.e("Create Support tickets Api Response", new Gson().toJson(createTicketResponse));
+                if (progressDialog !=null){
+                    progressDialog.dismiss();
+                }
+                switch (createTicketResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        successToast(context,createTicketResponse.getMessage());
+                        /*listing details */
+                        callTicketListApi(showCircleProgressDialog(context, ""),"RecyclerView");
+                        break;
+                    case STATUS_CODE_400:
+                        /* validation message */
+                        warningToast(context, createTicketResponse.getMessage());
+                        break;
+                    case STATUS_CODE_404:
+                        /*  No record found */
+                        errorToast(context, createTicketResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401:
+                        /*  Unauthorized user */
+                        errorToast(context, createTicketResponse.getMessage());
+                        break;
+                }
+            }else{
+                if (progressDialog !=null){
+                    progressDialog.dismiss();
+                }
+            }
+        };
+        helpCenterViewModel.getCreateTicketResponse(progressDialog, context, CreateTicketInputParameter(),HelpCenterFragment.this)
+                .observe(getViewLifecycleOwner(), createTicketResponseObserver);
+    }
+    
+    private HashMap<String, String> CreateTicketInputParameter() {
+        HashMap<String , String> map = new HashMap<>();
+        map.put(ISSUE_ID, ticketId);
+        map.put(TICKET_SUBJECT, etSubject.getText().toString());
+        map.put(TICKET_REMARK, etDescription.getText().toString());
+        return  map;
     }
 
     private void bindingSpinner(List<TicketTypeResponse.TicketType> ticketTypes) {
