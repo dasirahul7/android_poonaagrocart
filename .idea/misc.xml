@@ -233,6 +233,7 @@
         <entry key="app/src/main/res/layout/home_basket_item.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/home_best_selling_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/home_cat_item.xml" value="0.15489130434782608" />
+        <entry key="app/src/main/res/layout/home_product_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/menu_item.xml" value="0.16259057971014493" />
         <entry key="app/src/main/res/layout/nav_header_home.xml" value="0.14" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.17074275362318841" />

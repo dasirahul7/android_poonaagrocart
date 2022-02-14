@@ -1,16 +1,20 @@
 package com.poona.agrocart.ui.nav_favourites;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteLisResponse;
 import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.model.ProductOld;
@@ -27,6 +31,7 @@ public class FavouriteItemsFragment extends BaseFragment
     private ArrayList<ProductOld> favouriteItemsList = new ArrayList<>();
 
     View view;
+    private String TAG= FavouriteItemsFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -50,17 +55,29 @@ public class FavouriteItemsFragment extends BaseFragment
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvFavouriteItems.setHasFixedSize(true);
         rvFavouriteItems.setLayoutManager(linearLayoutManager);
-        favouriteViewModel.getFavouriteItemMutableLiveData().observe(getViewLifecycleOwner(),products -> {
-            favouriteItemsList = products;
-            for (ProductOld productOld :products)
-                System.out.println("ProductOld "+ productOld.getName());
-            favouriteItemAdapter = new FavouriteItemAdapter(favouriteItemsList,requireActivity(),view);
-            rvFavouriteItems.setAdapter(favouriteItemAdapter);
-            favouriteItemAdapter.setOnProductClick(product -> {
-                toDetails(product,view);
-            });
-        });
+        callFavouriteAPi(showCircleProgressDialog(context,""));
+//        favouriteViewModel.getFavouriteItemMutableLiveData().observe(getViewLifecycleOwner(),products -> {
+//            favouriteItemsList = products;
+//            for (ProductOld productOld :products)
+//                System.out.println("ProductOld "+ productOld.getName());
+//            favouriteItemAdapter = new FavouriteItemAdapter(favouriteItemsList,requireActivity(),view);
+//            rvFavouriteItems.setAdapter(favouriteItemAdapter);
+//            favouriteItemAdapter.setOnProductClick(product -> {
+//                toDetails(product,view);
+//            });
+//        });
 
+    }
+
+    private void callFavouriteAPi(ProgressDialog showCircleProgressDialog) {
+        Observer<FavouriteLisResponse> favouriteLisResponseObserver = favouriteLisResponse -> {
+            if (favouriteLisResponse!=null){
+                showCircleProgressDialog.dismiss();
+                Log.e(TAG, "callFavouriteAPi: "+favouriteLisResponse.getMessage() );
+            }
+        };
+        favouriteViewModel.favouriteLisResponseLiveData(showCircleProgressDialog,FavouriteItemsFragment.this)
+                .observe(getViewLifecycleOwner(), favouriteLisResponseObserver);
     }
 
     private void makeFavouriteList() {
@@ -73,7 +90,7 @@ public class FavouriteItemsFragment extends BaseFragment
                     ,"Pune","Kashmir");
             favouriteList.add(favouriteItem);
         }
-        favouriteViewModel.favouriteItemMutableLiveData.setValue(favouriteList);
+//        favouriteViewModel.favouriteItemMutableLiveData.setValue(favouriteList);
     }
 
     private void checkFavouriteEmpty() {
