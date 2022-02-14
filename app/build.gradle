@@ -71,8 +71,6 @@ android {
 }
 
 dependencies {
-    /*Libraries for Map*/
-    implementation 'com.google.android.libraries.places:places-compat:2.5.0'
     testImplementation 'junit:junit:4.13.2'
 
     /*androidx*/
@@ -102,9 +100,9 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     /*firebase*/
-    // Import the Firebase BoM
+    //Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
-    // When using the BoM, don't specify versions in Firebase dependencies
+    //When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
 
@@ -136,6 +134,15 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
-    // TicketView
+    /*TicketView*/
     implementation 'com.vipulasri:ticketview:1.1.2'
+
+    /*for google map*/
+    /*Libraries for Map*/
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
+    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
+    implementation 'com.google.android.libraries.places:places:2.5.0'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 }

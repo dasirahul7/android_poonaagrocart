@@ -4,6 +4,7 @@ import static com.poona.agrocart.app.AppConstants.AUTHORIZATION_TOKEN;
 import static com.poona.agrocart.app.AppConstants.COUNTRY_CODE;
 import static com.poona.agrocart.app.AppConstants.FCM_TOKEN;
 import static com.poona.agrocart.app.AppConstants.FROM_LOG_OUT;
+import static com.poona.agrocart.app.AppConstants.GOOGLE_API_KEY;
 import static com.poona.agrocart.app.AppConstants.IS_LOGGED_IN;
 import static com.poona.agrocart.app.AppConstants.IS_READ_INTRO;
 import static com.poona.agrocart.app.AppConstants.IS_VERIFIED;
@@ -201,6 +202,18 @@ public class AppSharedPreferences
         Type type = new TypeToken<ArrayList<ProductOld>>() {}.getType();
         return gson.fromJson(json, type);
     }
+
+    String googleApiKey;
+    public String getGoogleApiKey() {
+        return this.preferences.getString(GOOGLE_API_KEY, "");
+    }
+
+    public void setGoogleApiKey(String googleApiKey) {
+        this.googleApiKey = googleApiKey;
+        this.editor.putString(GOOGLE_API_KEY, googleApiKey);
+        this.editor.commit();
+    }
+
     public void removeAll() {
         this.editor.clear();
         this.editor.commit();
