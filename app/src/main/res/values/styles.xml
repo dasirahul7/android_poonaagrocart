@@ -264,8 +264,6 @@
         <item name="android:paddingTop">@dimen/alerter_padding_half</item>
         <item name="android:paddingRight">@dimen/alerter_padding_half</item>
         <item name="android:paddingBottom">@dimen/alerter_padding_half</item>
-<!--        <item name="android:paddingLeft">@dimen/alerter_padding_half</item>-->
-        <item name="android:text">@string/detail_address</item>
         <item name="android:textColor">@color/color15</item>
         <item name="android:textSize">@dimen/_20sp</item>
         <item name="setCustomFont">@string/font_poppins_medium</item>

@@ -171,11 +171,11 @@
     <string name="home">Home</string>
     <string name="office">Office</string>
     <string name="mobile">Mobile</string>
-    <string name="pincode">Pincode</string>
-    <string name="check_availability">Check Availabilty</string>
-    <string name="detail_address">Detail Address</string>
-    <string name="house_no">House No.</string>
-    <string name="apartment_no">Apartment Name</string>
+    <string name="pin_code">Pincode</string>
+    <string name="check_availability">Check Availability</string>
+    <string name="detailed_address">Detailed Address</string>
+    <string name="house_number">House Number</string>
+    <string name="apartment_name">Apartment Name</string>
     <string name="street">Street</string>
     <string name="landmark">Landmark</string>
     <string name="or">OR</string>
@@ -402,9 +402,6 @@
     <string name="url_mango_img">https://www.linkpicture.com/q/pngkey.png</string>
     <string name="url_grapes_img">https://www.linkpicture.com/q/blue_berry.png</string>
 
-    <!--    MAP KEY-->
-    <string name="map_key">AIzaSyDi2KxP5vuvOxYO1qA2i5Ehx-yXY7hcN1Q</string>
-    //delete is later
     <string name="sample_coupon_terms"><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit nunc, netus ac vulputate sed purus.</b> \n\nper praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean
 at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="raised_new_ticket">Raised New Ticket</string>
@@ -496,4 +493,15 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="take_a_photo">Take a Photo</string>
     <string name="delete_current_picture">Delete Current Picture</string>
     <string name="you_cannot_edit_mobile_number">You cannot edit your mobile number!</string>
+    <string name="address_type">Address Type</string>
+
+    <!--google map strings-->
+    <string name="service_not_available">Service not available.. check network connection.</string>
+    <string name="no_address_found">No address found</string>
+    <string name="address_found">address found</string>
+    <string name="not_support_area">This area is not supported yet</string>
+    <string name="confirm_location">Confirm Location</string>
+    <string name="search_place">Search a place</string>
+    <string name="failed_select_location">failed to select location please try again</string>
+
 </resources>

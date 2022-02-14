@@ -44,6 +44,8 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.model.ProductOld;
+import com.poona.agrocart.ui.nav_addresses.map_view.MapActivity;
+import com.poona.agrocart.ui.nav_addresses.map_view.SimplePlacePicker;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
@@ -657,5 +659,40 @@ public abstract class BaseFragment extends Fragment {
         bundle.putBoolean("isInBasket", productOld.isInBasket());
         bundle.putString("ProductOld", "ProductOld");
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+    }
+
+    /**
+     *@param apiKey Required parameter, put your google maps and places api key
+     *               { you must get a places key it's required for search autocomplete }
+     * @param country Optional parameter to restrict autocomplete search to a specific country
+     *                put country ISO like "eg" for Egypt and so on ..
+     *                if there is no value attached to COUNTRY key, search will
+     *                be worldWide
+     * @param language Optional parameter to specify the language of the resulting address
+     *                 could be "en" for English or "ar" for Arabic .
+     *                 If this not specified, resulting address will be English by default
+     *
+     * @param supportedAreas Optional Array of supported areas that user can pick a location from.
+     *                       Please be careful when you put areas as this will be literal comparison.
+     *                       Ex : if you put the value of SUPPORTED_AREAS key
+     *                       to something like {"Cairo"} , user will only be able to select the address
+     *                       that only contains cairo on it, like "zamalec,cairo,Egypt"
+     *                       Also consider adding arabic translation as some google addresses contains
+     *                       booth english and arabic together..
+     *          I KNOW THIS IS A TRICKY ONE BUT I JUST USED IT TO RESTRICT USER SELECTION TO A SPECIFIC
+     *                 COUNTRY AND SAVE MANY NETWORK CALLS AS USERS ALWAYS LIKE TO PLAY WITH MAP ^_^
+     *                       it was something like {"Egypt","مصر"}
+     *                       if this array was empty, the whole world is a supported area , user can
+     *                       pick location anywhere!.
+     */
+    protected void startMapActivity(String apiKey, String country, String language, String[] supportedAreas){
+        Intent intent = new Intent(context, MapActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(SimplePlacePicker.API_KEY,apiKey);
+        bundle.putString(SimplePlacePicker.COUNTRY,country);
+        bundle.putString(SimplePlacePicker.LANGUAGE,language);
+        bundle.putStringArray(SimplePlacePicker.SUPPORTED_AREAS,supportedAreas);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, SimplePlacePicker.SELECT_LOCATION_REQUEST_CODE);
     }
 }

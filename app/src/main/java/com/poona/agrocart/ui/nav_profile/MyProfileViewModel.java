@@ -4,37 +4,27 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.arch.core.internal.SafeIterableMap;
-import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.AreaResponse;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.ProfileResponse;
 import com.poona.agrocart.data.network.reponses.StateResponse;
-import com.poona.agrocart.ui.sign_up.SignUpFragment;
-import com.poona.agrocart.widgets.imageview.CircularImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -119,12 +109,12 @@ public class MyProfileViewModel extends AndroidViewModel {
     }
 
     public LiveData<ProfileResponse> updateProfileResponse(ProgressDialog progressDialog,
-                                                           MyProfileFragment myProfileFragment,
+                                                           EditProfileFragment editProfileFragment,
                                                            HashMap<String, RequestBody> profileMap,
                                                            MultipartBody.Part profilePhoto) {
         MutableLiveData<ProfileResponse> responseMutableLiveData = new MutableLiveData<>();
 
-        ApiClientAuth.getClient(myProfileFragment.getContext())
+        ApiClientAuth.getClient(editProfileFragment.getContext())
                 .create(ApiInterface.class)
                 .updateProfileResponse(profileMap, profilePhoto)
                 .subscribeOn(Schedulers.io())
@@ -149,7 +139,7 @@ public class MyProfileViewModel extends AndroidViewModel {
                             responseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) myProfileFragment).onNetworkException(0, "");
+                            ((NetworkExceptionListener) editProfileFragment).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());
