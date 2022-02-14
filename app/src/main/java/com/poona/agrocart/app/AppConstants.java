@@ -100,6 +100,11 @@ public class AppConstants {
     /*Gallery Api*/
     public static final String VIEW_GALLERY = "view-gallery";
 
+    /*Help Center Api*/
+    public static final String TICKET_TYPE = "ticket-type";
+    public static final String VIEW_TICKET = "view-ticket";
+
+
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
 

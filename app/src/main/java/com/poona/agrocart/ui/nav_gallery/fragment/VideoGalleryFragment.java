@@ -170,7 +170,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogSlideAnim;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.video_image_pop_up_dailog);
         ImageView imageView = dialog.findViewById(R.id.imageViewItem);
         VideoView videoView = dialog.findViewById(R.id.VideoView);

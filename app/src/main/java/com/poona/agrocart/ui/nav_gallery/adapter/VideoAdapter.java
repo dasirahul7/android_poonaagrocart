@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.nav_gallery.adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -51,6 +52,21 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
         Glide.with(pContext)
                 .load(IMAGE_DOC_BASE_URL+galleryVideoList.get(position).getVideoImage())
                 .into(popUpImage);*/
+
+      /*  holder.videoHolderBinding.playButton.setOnClickListener(view -> {
+            if (onVideoClickListener != null) {
+
+                holder.videoHolderBinding.playButton.setClickable(false);
+
+                    onVideoClickListener.itemViewClick(position);  // added
+
+                    new Handler().postDelayed(() -> {
+                        holder.videoHolderBinding.playButton.setClickable(true);
+                    }, 500);
+                }
+
+        });*/
+
     }
 
     @Override
@@ -65,14 +81,39 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
             videoHolderBinding = binding;
 
 
-            itemView.setOnClickListener(v ->{
+            videoHolderBinding.photoCard.setOnClickListener(view -> {
                 if (onVideoClickListener != null) {
-                    int postion = getAdapterPosition();
-                    if (postion != RecyclerView.NO_POSITION) {
-                        onVideoClickListener.itemViewClick(postion);
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+
+                        videoHolderBinding.photoCard.setClickable(false);
+
+                        onVideoClickListener.itemViewClick(position);  // added
+
+                        new Handler().postDelayed(() -> {
+                            videoHolderBinding.photoCard.setClickable(true);
+                        }, 500);
                     }
                 }
             });
+
+           /* itemView.setOnClickListener(v ->{
+                if (onVideoClickListener != null) {
+                    int postion = getAdapterPosition();
+                    if (postion != RecyclerView.NO_POSITION) {
+
+                            itemView.setClickable(false);
+
+                            onVideoClickListener.itemViewClick(postion);  // added
+
+                            new Handler().postDelayed(() -> {
+                                itemView.setClickable(true);
+                            }, 500);
+                    }
+                }
+            });
+*/
+
 
         }
 

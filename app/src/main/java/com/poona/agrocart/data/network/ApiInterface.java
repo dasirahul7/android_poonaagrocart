@@ -28,10 +28,12 @@ import static com.poona.agrocart.app.AppConstants.STATE_API;
 import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
+import static com.poona.agrocart.app.AppConstants.TICKET_TYPE;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_GALLERY;
+import static com.poona.agrocart.app.AppConstants.VIEW_TICKET;
 
 import com.poona.agrocart.data.network.reponses.AddressesResponse;
 import com.poona.agrocart.data.network.reponses.AreaResponse;
@@ -44,6 +46,8 @@ import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
+import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
+import com.poona.agrocart.data.network.reponses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
 import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
 import com.poona.agrocart.data.network.reponses.ProductListByResponse;
@@ -225,4 +229,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(ADD_TO_PRODUCT)
     Single<BaseResponse> addToCartProductResponse(@FieldMap HashMap<String,String> hashMap);
+
+    @GET(TICKET_TYPE)
+    Single<TicketTypeResponse> getTicketType();
+
+    @FormUrlEncoded
+    @POST(VIEW_TICKET)
+    Single<TicketListResponse> getTicketList(@FieldMap HashMap<String, String> ticketListInputParameter);
 }

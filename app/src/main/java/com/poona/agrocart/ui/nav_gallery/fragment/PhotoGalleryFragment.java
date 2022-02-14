@@ -171,7 +171,7 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogSlideAnim;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.photo_image_pop_up_dailog);
         ImageView popUpImage = dialog.findViewById(R.id.iv_pop_up_image);
         Glide.with(context)

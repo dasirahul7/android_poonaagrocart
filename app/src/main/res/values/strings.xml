@@ -12,6 +12,7 @@
     <!--check internet connection dialog-->
     <string name="info">Information</string>
     <string name="internet_error_message">Cannot connect to Internet. Check your Internet connection.</string>
+    <string name="no_more_records">No more new records, you are reached to end of the list</string>
     <string name="retry">Retry</string>
     <string name="dialog_cancel">Cancel</string>
 
@@ -496,4 +497,9 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="take_a_photo">Take a Photo</string>
     <string name="delete_current_picture">Delete Current Picture</string>
     <string name="you_cannot_edit_mobile_number">You cannot edit your mobile number!</string>
+
+
+    <!--Warning Toasts -->
+
+    <string name="empty_field_toast">Please fill the details</string>
 </resources>

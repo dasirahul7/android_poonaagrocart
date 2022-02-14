@@ -1,8 +1,19 @@
 package com.poona.agrocart.ui.nav_help_center;
 
+import static com.poona.agrocart.app.AppConstants.LIMIT;
+import static com.poona.agrocart.app.AppConstants.OFFSET;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,43 +21,74 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
+import com.poona.agrocart.data.network.reponses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.databinding.FragmentHelpCenterBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_help_center.model.Ticket;
+import com.poona.agrocart.ui.nav_help_center.Adaptor.TicketTypeAdaptor;
+import com.poona.agrocart.widgets.CustomButton;
+import com.poona.agrocart.widgets.CustomEditText;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class HelpCenterFragment extends BaseFragment implements View.OnClickListener
 {
     private FragmentHelpCenterBinding fragmentHelpCenterBinding;
+    private HelpCenterViewModel helpCenterViewModel;
     private RecyclerView rvTickets;
     private LinearLayoutManager linearLayoutManager;
     private TicketsAdapter ticketsAdapter;
-    private ArrayList<Ticket> ticketArrayList;
+    private List<TicketListResponse.TicketList> ticketArrayList = new ArrayList<>();
+    private List<TicketTypeResponse.TicketType> ticketTypeList = new ArrayList<>();
+    private Spinner spinTicketType;
+    private String ticketId = "", strTicketName = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         fragmentHelpCenterBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_help_center, container, false);
         fragmentHelpCenterBinding.setLifecycleOwner(this);
+        helpCenterViewModel=new ViewModelProvider(this).get(HelpCenterViewModel.class);
+        fragmentHelpCenterBinding.setHelpCenterViewModel(helpCenterViewModel);
         final View view = fragmentHelpCenterBinding.getRoot();
 
         initView();
-        setRvAdapter();
+
+        if(isConnectingToInternet(context)) {
+            setRvAdapter();
+        }else{
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+
 
         initTitleBar(getString(R.string.menu_help_center));
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(isConnectingToInternet(context)) {
+            setRvAdapter();
+        }else{
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
     }
 
     private void initView()
@@ -60,7 +102,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
     private void setRvAdapter()
     {
         ticketArrayList=new ArrayList<>();
-        prepareListingData();
+        callTicketListApi(showCircleProgressDialog(context, ""),"RecyclerView");
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvTickets.setHasFixedSize(true);
@@ -68,29 +110,96 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
 
         ticketsAdapter = new TicketsAdapter(ticketArrayList,getContext());
         rvTickets.setAdapter(ticketsAdapter);
+
+        //Pagination in scroll view
+        setScrollListener();
     }
 
-    private void prepareListingData()
-    {
-        for(int i = 0; i < 3; i++)
-        {
-            Ticket ticket = new Ticket();
-            ticket.setTicketId("ABCDEF");
-            ticket.setDateAndTime(getString(R.string.date_sep_30_2021_20_15_am));
-            if(i==0) {
-                ticket.setStatus("Pending");
+    /* Pagination adding to the recycler view */
+
+    private int offset = 0;
+    private final int limit = 10;
+    private int visibleItemCount = 0;
+    private int totalCount = 0;
+
+    private void setScrollListener() {
+        rvTickets.setNestedScrollingEnabled(true);
+        NestedScrollView nestedScrollView= fragmentHelpCenterBinding.nvMain;
+
+        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if(v.getChildAt(v.getChildCount() - 1) != null) {
+                visibleItemCount = linearLayoutManager.getItemCount();
+
+                if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+                        && visibleItemCount != totalCount) {
+                    callTicketListApi(showCircleProgressDialog(context, ""), "onScrolled");
+                }
+                else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+                        && visibleItemCount == totalCount) {
+                    infoToast(getActivity(), getString(R.string.no_more_records));
+                }
             }
-            else if(i==1) {
-                ticket.setStatus("Ongoing");
-            }
-            else {
-                ticket.setStatus("Pending");
-            }
-            ticket.setSubject(getString(R.string.lorem_ipsum_dolor_sit_amet_consectetur_adipiscing));
-            ticket.setRemark(getString(R.string.lorem_ipsum_dolor_sit_amet_consectetur_adipiscing));
-            ticketArrayList.add(ticket);
-        }
+        });
+
     }
+
+    /*Upload the Ticket list api*/
+    private void callTicketListApi(ProgressDialog progressDialog,String fromFunction) {
+        if (fromFunction.equals("onScrolled")) {
+            offset = offset + 10;
+        } else {
+            offset = 0;
+        }
+        @SuppressLint("NotifyDataSetChanged")
+        Observer<TicketListResponse> ticketListResponseObserver = ticketListResponse -> {
+            if (ticketListResponse != null){
+                Log.e(" Ticket list Api Response", new Gson().toJson(ticketListResponse));
+                if (progressDialog !=null){
+                    progressDialog.dismiss();
+                }
+                switch (ticketListResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        ticketArrayList.clear();
+
+                        if(ticketListResponse.getData() != null){
+                            ticketArrayList.add(ticketListResponse.getData());
+                            ticketsAdapter.notifyDataSetChanged();
+                        }
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                        warningToast(context, ticketListResponse.getMessage());
+                        break;
+                    case STATUS_CODE_404://Record not Found
+                        //llEmptyLayout.setVisibility(View.VISIBLE);
+                        //llMainLayout.setVisibility(View.INVISIBLE);
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen();
+                        errorToast(context, ticketListResponse.getMessage());
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, ticketListResponse.getMessage());
+                        break;
+                }
+            }else{
+                if (progressDialog !=null){
+                    progressDialog.dismiss();
+                }
+            }
+        };
+
+        helpCenterViewModel.getTicketListResponse(progressDialog, context,TicketListInputParameter(),
+                HelpCenterFragment.this)
+                .observe(getViewLifecycleOwner(), ticketListResponseObserver);
+    }
+
+    private HashMap<String , String> TicketListInputParameter() {
+        HashMap<String , String> map = new HashMap<>();
+        map.put(LIMIT, String.valueOf(limit));
+        map.put(OFFSET, String.valueOf(offset));
+        return map;
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -113,22 +222,101 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         dialog.getWindow().setAttributes(lp);
         dialog.getWindow().setGravity(Gravity.BOTTOM);
-        ImageView closeImg = dialog.findViewById(R.id.close_btn);
-        RecyclerView rvAddress = dialog.findViewById(R.id.rv_address);
-        ArrayList<String> typeList = new ArrayList<String>();
-        typeList.add("ordinary");
-        typeList.add("special");
-        typeList.add("subscription");
-        typeList.add("issue");
-//        typeList.addAll(R.array.type);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item,typeList);
-//        arrayAdapter.setDropDownViewResource(android.R.layout.test_list_item);
-//        spType.setAdapter(arrayAdapter);
-        closeImg.setOnClickListener(v -> {
+
+        /*Validation and Logical part on the component */
+
+        ImageView closeImage = dialog.findViewById(R.id.close_btn);
+        CustomButton submitButton = dialog.findViewById(R.id.btn_submit);
+        CustomEditText etSubject = dialog.findViewById(R.id.et_subject);
+        CustomEditText  etDescription = dialog.findViewById(R.id.et_description);
+        spinTicketType = dialog.findViewById(R.id.spin_ticket);
+
+        if(isConnectingToInternet(context)){
+            callTicketTypeApi(showCircleProgressDialog(context, ""));
+        }else{
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+
+
+        closeImage.setOnClickListener(view -> {
             dialog.dismiss();
+        });
+
+        submitButton.setOnClickListener(view -> {
+            String strSubject = etSubject.getText().toString();
+            String strDescription =etDescription.getText().toString();
+            if(strTicketName.equalsIgnoreCase("Ticket Type")){
+                warningToast(context, "Please select the Ticket Type");
+            }else if( strSubject.equalsIgnoreCase("")){
+                warningToast(context, getString(R.string.empty_field_toast));
+            }else if(strDescription.equalsIgnoreCase("")){
+                warningToast(context, getString(R.string.empty_field_toast));
+            }else {
+                dialog.dismiss();
+            }
+
         });
 
         dialog.show();
     }
 
+    private void bindingSpinner(List<TicketTypeResponse.TicketType> ticketTypes) {
+
+        TicketTypeAdaptor ticketTypeAdaptor = new TicketTypeAdaptor(getContext(), ticketTypes);
+        spinTicketType.setAdapter(ticketTypeAdaptor);
+
+        spinTicketType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                hideKeyBoard(requireActivity());
+                ticketId = ticketTypes.get(i).getId();
+                strTicketName = ticketTypes.get(i).getTicketType();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                hideKeyBoard(requireActivity());
+            }
+        });
+    }
+
+    private void callTicketTypeApi (ProgressDialog progressDialog){
+        @SuppressLint("NotifyDataSetChanged")
+        Observer<TicketTypeResponse> ticketTypeResponseObserver = ticketTypeResponse -> {
+            if (ticketTypeResponse != null){
+                Log.e("Ticket Type Api Response", new Gson().toJson(ticketTypeResponse));
+                if (progressDialog !=null){
+                    progressDialog.dismiss();
+                }
+                switch (ticketTypeResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        if (ticketTypeResponse.getData() != null &&
+                                ticketTypeResponse.getData().size()>0){
+                            ticketTypeList.clear();
+                            ticketTypeList.add(new TicketTypeResponse.TicketType("0", "Ticket Type"));
+                            ticketTypeList.addAll(ticketTypeResponse.getData());
+                            bindingSpinner(ticketTypeList);
+                        }else{
+                            ticketTypeList.add(new TicketTypeResponse.TicketType("0", "Ticket Type"));
+                            bindingSpinner(ticketTypeList);
+                        }
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        warningToast(context, ticketTypeResponse.getMessage());
+                        goToAskSignInSignUpScreen();
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, ticketTypeResponse.getMessage());
+                        break;
+                }
+            }else{
+                if (progressDialog !=null){
+                    progressDialog.dismiss();
+                }
+            }
+        };
+
+        helpCenterViewModel.getTicketTypeResponse(progressDialog, context, HelpCenterFragment.this)
+                .observe(getViewLifecycleOwner(), ticketTypeResponseObserver);
+    }
 }

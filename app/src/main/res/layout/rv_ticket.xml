@@ -6,7 +6,7 @@
 
         <variable
             name="ticket"
-            type="com.poona.agrocart.ui.nav_help_center.model.Ticket" />
+            type="com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse.TicketList" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,7 +64,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_3sdp"
                                 android:gravity="start"
-                                android:text="@{ticket.ticketId}"
+                                android:text="@{ticket.ticketNo}"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_16sp"
                                 app:setCustomFont="@string/font_poppins_bold" />
@@ -77,7 +77,7 @@
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="start"
                             android:singleLine="true"
-                            android:text="@{ticket.dateAndTime}"
+                            android:text="@{ticket.createdOn}"
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
