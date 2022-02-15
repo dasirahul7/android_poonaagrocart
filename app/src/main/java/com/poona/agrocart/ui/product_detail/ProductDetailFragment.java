@@ -1,5 +1,8 @@
 package com.poona.agrocart.ui.product_detail;
 
+import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
+import static com.poona.agrocart.app.AppConstants.PU_ID;
+import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -32,6 +35,7 @@ import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
+import com.poona.agrocart.data.network.reponses.ProductListResponse;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
@@ -41,6 +45,7 @@ import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
 import com.poona.agrocart.ui.product_detail.model.BasketContent;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
+import com.poona.agrocart.ui.product_detail.model.ProductDetail;
 import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.ExpandIconView;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
@@ -57,7 +62,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private ProductImagesAdapter productImagesAdapter;
     private boolean isProductDetailsVisible = true, isNutritionDetailsVisible = true, isAboutThisProductVisible = true,
             isBasketContentsVisible = true, isBenefitsVisible = true, isStorageVisible = true, isOtherProductInfo = true,
-            isVariableWtPolicyVisible = true, isFavourite = false;
+            isVariableWtPolicyVisible = true, isFavourite = false,isInCart = false;
     private int quantity = 1;
     public ViewPager vpImages;
     private DotsIndicator dotsIndicator;
@@ -346,7 +351,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
                 break;
             case R.id.iv_plus:
-                increaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(), fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
+                addOrRemoveFromCart();
+//                increaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(), fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
                 break;
             case R.id.img_plus:
 //                increaseQuantity(fragmentProductDetailBinding.layoutAdded.tvSubQty.getText().toString(),
@@ -468,6 +474,48 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         isFavourite = !isFavourite;
     }
 
+     private void addOrRemoveFromCart() {
+        if (!isInCart) {
+            callAddToCartApi(showCircleProgressDialog(context,""),details);
+        } else {
+            infoToast(context,"Allready Added");
+        }
+         isInCart = !isInCart;
+    }
+
+    //Add or Remove from CArt
+    private void callAddToCartApi(ProgressDialog showCircleProgressDialog, ProductDetailsResponse.ProductDetails details) {
+        Observer<BaseResponse> addToCartResponseObserver = addToCartResponse->{
+            if (addToCartResponse!=null){
+                showCircleProgressDialog.dismiss();
+                Log.e(TAG, "callAddToCartApi: "+addToCartResponse.getMessage() );
+                switch (addToCartResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(requireActivity(),addToCartResponse.getMessage());
+                        fragmentProductDetailBinding.ivPlus.setImageResource(R.drawable.ic_added);
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, addToCartResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(addToCartResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, addToCartResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        productDetailViewModel.addToCartProductLiveData(showCircleProgressDialog,addToCartParam(details),ProductDetailFragment.this)
+                .observe(getViewLifecycleOwner(),addToCartResponseObserver);
+    }
+
+
+    //ADd to favourite API
     private void callAddToFavouriteApi(ProgressDialog showCircleProgressDialog, ProductDetailsResponse.ProductDetails details) {
         Observer<BaseResponse> favouriteResponseObserver = responseFavourite -> {
             if (responseFavourite!=null){
@@ -504,6 +552,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         map.put(AppConstants.PRODUCT_ID, details.getId());
         map.put(AppConstants.PU_ID, unitId);
         map.put(AppConstants.BASKET_ID, "");
+        return map;
+    }
+
+    private HashMap<String, String> addToCartParam(ProductDetailsResponse.ProductDetails product) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(PRODUCT_ID, product.getId());
+        map.put(PU_ID, unitId);
+        map.put(QUANTITY, "1");
         return map;
     }
 

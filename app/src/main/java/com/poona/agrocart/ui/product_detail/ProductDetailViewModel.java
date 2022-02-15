@@ -19,6 +19,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.BestSellingResponse;
 import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
+import com.poona.agrocart.ui.home.HomeFragment;
 import com.poona.agrocart.ui.home.model.ProductOld;
 import com.poona.agrocart.ui.product_detail.model.ProductDetail;
 
@@ -37,6 +38,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
         super(application);
     }
 
+    //Product Details API
     public LiveData<ProductDetailsResponse> productDetailsResponseLiveData(ProgressDialog progressDialog,
                                                                            HashMap<String, String> hashMap,
                                                                            ProductDetailFragment productDetailFragment){
@@ -119,6 +121,45 @@ public class ProductDetailViewModel extends AndroidViewModel {
                 });
         return baseResponseMutableLiveData;
     }
+
+    //Add To Cart Product
+    public LiveData<BaseResponse> addToCartProductLiveData(ProgressDialog progressDialog,
+                                                           HashMap<String,String> hashMap,
+                                                           ProductDetailFragment productDetailFragment){
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(productDetailFragment.getContext())
+                .create(ApiInterface.class)
+                .addToCartProductResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse!=null){
+                            Log.e(TAG, "add to cart onSuccess: "+new Gson().toJson(baseResponse));
+                            baseResponseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try{
+                            response = gson.fromJson(((HttpException) e).response().errorBody().toString(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(7,"");
+                        }
+                    }
+                });
+        return baseResponseMutableLiveData;
+    }
+
 
 
 }
