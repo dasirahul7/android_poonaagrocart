@@ -12,6 +12,7 @@
     <!--check internet connection dialog-->
     <string name="info">Information</string>
     <string name="internet_error_message">Cannot connect to Internet. Check your Internet connection.</string>
+    <string name="no_more_records">No more new records, you are reached to end of the list</string>
     <string name="retry">Retry</string>
     <string name="dialog_cancel">Cancel</string>
 
@@ -65,6 +66,7 @@
     <string name="enter_your_phone_number_for_otp_text">Enter your phone number for verification we\nwill send 4 digit code to your mobile number.</string>
     <string name="phone_number">Phone Number</string>
     <string name="continue_text">Continue</string>
+    <string name="message_txt">Please text a message..</string>
     <string name="back_to">Back to</string>
     <string name="log_in">Log In?</string>
     <string name="email_id_should_not_be_empty">Email Id should not be empty!</string>
@@ -409,6 +411,9 @@
     <string name="url_mango_img">https://www.linkpicture.com/q/pngkey.png</string>
     <string name="url_grapes_img">https://www.linkpicture.com/q/blue_berry.png</string>
 
+    <!--    MAP KEY-->
+    <string name="map_key">AIzaSyDi2KxP5vuvOxYO1qA2i5Ehx-yXY7hcN1Q</string>
+    //delete is later
     <string name="sample_coupon_terms"><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit nunc, netus ac vulputate sed purus.</b> \n\nper praesent fusce arcu placerat mi purus felis. Purus viverra ipsum tempor morbi tincidunt ullamcorper. Varius nisi facilisis ultrices neque lacinia aliquet aenean
 at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="raised_new_ticket">Raised New Ticket</string>
@@ -511,4 +516,9 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="search_place">Search a place</string>
     <string name="failed_select_location">failed to select location please try again</string>
 
+
+
+    <!--Warning Toasts -->
+
+    <string name="empty_field_toast">Please fill the details</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.nav_gallery.adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -76,7 +77,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder>
                 if (onPhotoClickListener != null) {
                     int postion = getAdapterPosition();
                     if (postion != RecyclerView.NO_POSITION) {
+
+                        itemView.setClickable(false);
+
                         onPhotoClickListener.itemViewClick(postion);
+
+                        new Handler().postDelayed(() -> {
+                            itemView.setClickable(true);
+                        }, 500);
                     }
                 }
             });

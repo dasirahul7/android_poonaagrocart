@@ -65,7 +65,17 @@ public class GalleryFragment extends BaseFragment {
         super.onResume();
         Log.d("TAG", "onResume: ");
         setFragmentItem();
-        setTabsAction();
+
+        CustomTextView tabPhoto = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.gallery_tab_item, null);
+        tabPhoto.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gallery_photo, 0, 0, 0);
+        tabPhoto.setText(R.string.photo);
+        CustomTextView tabVideo = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.gallery_tab_item, null);
+        tabVideo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gallery_video, 0, 0, 0);
+        tabVideo.setText(R.string.video);
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setCustomView(tabPhoto);
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setCustomView(tabVideo);
+
+       // setTabsAction();
     }
 
     private void setTabsAction() {

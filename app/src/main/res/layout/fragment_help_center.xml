@@ -3,7 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <data>
+        <variable
+            name="helpCenterViewModel"
+            type="com.poona.agrocart.ui.nav_help_center.HelpCenterViewModel" />
+
+    </data>
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nv_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.nav_help_center.HelpCenterFragment">
@@ -35,16 +44,24 @@
             style="?android:attr/borderlessButtonStyle"
             app:setCustomFont="@string/font_poppins_semi_bold"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_tickets"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginVertical="@dimen/_8sdp"
+            android:layout_marginBottom="13dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_create_new_ticket" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_create_new_ticket">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_tickets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginVertical="@dimen/_8sdp" />
+
+        </RelativeLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
