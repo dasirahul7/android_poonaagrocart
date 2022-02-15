@@ -37,7 +37,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
     private RecyclerView rvAddress;
     private LinearLayoutManager linearLayoutManager;
     private AddressesAdapter addressesAdapter;
-    private ArrayList<Address> addressArrayList;
+    private ArrayList<AddressesResponse.Address> addressArrayList;
 
     private View view;
 
@@ -102,6 +102,8 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                     case STATUS_CODE_200://Record Create/Update Successfully
                         fragmentAddressesBinding.rlErrorMessage.setVisibility(View.GONE);
                         fragmentAddressesBinding.rvAddress.setVisibility(View.VISIBLE);
+                        addressArrayList.addAll(addressesResponse.getAddresses());
+                        addressesAdapter.notifyDataSetChanged();
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors

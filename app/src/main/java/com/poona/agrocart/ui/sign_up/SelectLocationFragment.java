@@ -57,8 +57,8 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
     private CommonViewModel commonViewModel;
     private SelectLocationViewModel selectLocationViewModel;
 
-    private String selectedCityId = "1";
-    private String selectedAreaId = "1";
+    private String selectedCityId = "0";
+    private String selectedAreaId = "0";
     private String selectedCity, selectedArea;
 
     private View view;
@@ -100,42 +100,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         }
     }
 
-    /*City API*/
-    private void callCityApi(ProgressDialog showCircleProgressDialog) {
-        Observer<CityResponse> cityResponseObserver = cityResponse -> {
-            if (cityResponse != null) {
-                switch (cityResponse.getStatus()) {
-                    case STATUS_CODE_200://Record Create/Update Successfully
-                        if (cityResponse.getStatus() == 200) {
-                            if (cityResponse.getCities() != null) {
-                                if (cityResponse.getCities().size() > 0) {
-                                    this.cityResponse = cityResponse;
-                                    setupCitySpinner();
-                                }
-
-                            }
-                        }
-                        break;
-                    case STATUS_CODE_403://Validation Errors
-                    case STATUS_CODE_400://Validation Errors
-                    case STATUS_CODE_404://Validation Errors
-                        warningToast(context, cityResponse.getMessage());
-                        break;
-                    case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen(cityResponse.getMessage(), context);
-                        break;
-                    case STATUS_CODE_405://Method Not Allowed
-                        infoToast(context, cityResponse.getMessage());
-                        break;
-                }
-
-            }
-        };
-        selectLocationViewModel.getCityResponse(showCircleProgressDialog, SelectLocationFragment.this)
-                .observe(getViewLifecycleOwner(), cityResponseObserver);
-    }
-
-    int check = 0;
+    private int check = 0;
     private CityResponse cityResponse = null;
     private AreaResponse areaResponse = null;
     private void setupCitySpinner() {
@@ -220,6 +185,41 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
 
             }
         });
+    }
+
+    /*City API*/
+    private void callCityApi(ProgressDialog showCircleProgressDialog) {
+        Observer<CityResponse> cityResponseObserver = cityResponse -> {
+            if (cityResponse != null) {
+                switch (cityResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (cityResponse.getStatus() == 200) {
+                            if (cityResponse.getCities() != null) {
+                                if (cityResponse.getCities().size() > 0) {
+                                    this.cityResponse = cityResponse;
+                                    setupCitySpinner();
+                                }
+
+                            }
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, cityResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(cityResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, cityResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        selectLocationViewModel.getCityResponse(showCircleProgressDialog, SelectLocationFragment.this)
+                .observe(getViewLifecycleOwner(), cityResponseObserver);
     }
 
     /* Area API*/

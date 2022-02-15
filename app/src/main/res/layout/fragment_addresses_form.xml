@@ -113,6 +113,7 @@
                     android:background="@drawable/background_edit_profile"
                     android:text="@={addressesViewModel.name}"
                     android:singleLine="true"
+                    android:inputType="textCapWords"
                     android:imeOptions="actionNext"/>
 
             </LinearLayout>
@@ -122,14 +123,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/ll_address_type">
+                app:layout_constraintTop_toBottomOf="@+id/ll_name">
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_mobile_text"
                     style="@style/FormTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/name" />
+                    android:text="@string/mobile_no" />
 
 
                 <com.poona.agrocart.widgets.CustomEditText
@@ -140,6 +141,9 @@
                     android:background="@drawable/background_edit_profile"
                     android:text="@={addressesViewModel.mobile}"
                     android:singleLine="true"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:maxLength="10"
                     android:imeOptions="actionNext"/>
 
             </LinearLayout>

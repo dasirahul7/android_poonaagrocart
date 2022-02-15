@@ -126,19 +126,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mSmallPinIv = findViewById(R.id.small_pin);
 
         final View icPin = findViewById(R.id.ic_pin);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                revealView(icPin);
-            }
-        }, 1000);
+        new Handler().postDelayed(() -> revealView(icPin), 1000);
 
-        submitLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submitResultLocation();
-            }
-        });
+        submitLocationButton.setOnClickListener(v -> submitResultLocation());
 
     }
 

@@ -32,8 +32,6 @@ public class AppConstants {
     public static final String FROM_LOG_OUT = "fromLogOut";
     public static final String IS_VERIFIED = "verify";
     public static final String GOOGLE_API_KEY = "google_api_key";
-//    public static final String IS_REGISTERED = "registered";
-//    public static final String IS_LOCATED = "located";
     public static final String IS_SKIP_BANK_DETAILS = "isSkippedBankDetails";
     public static final String IS_REMEMBER = "isRemember";
     public static final String BASE_AUTH_USERNAME = "BaseAuthUsername";
@@ -75,6 +73,7 @@ public class AppConstants {
     public static final String AREA_WITH_ID_API = "area-by-city-id";
     public static final String MY_PROFILE_API = "profile-view-customer";
     public static final String ADDRESS_LIST_API = "address-view";
+    public static final String ADD_ADDRESS_API = "address-add";
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
     /*Home screen APIs*/
@@ -191,6 +190,19 @@ public class AppConstants {
     public static final String GENDER = "gender";
     public static final String DATE_OF_BIRTH = "date_of_birth";
 
+    /*add address post parameters*/
+    public static final String ADDRESS_TYPE = "address_type";
+    public static final String MOBILE = "mobile";
+    public static final String CITY_ = "city_id_fk";
+    public static final String AREA_ = "area_id_fk";
+    public static final String PIN_CODE = "pincode";
+    public static final String APARTMENT_NAME = "appartment_name";
+    public static final String HOUSE_NO = "house_no";
+    public static final String STREET = "street";
+    public static final String LANDMARK = "landmark";
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
+    public static final String GOOGLE_MAP_ADDRESS = "map_address";
 
     /*
      * id to handle the notification in the notification tray
