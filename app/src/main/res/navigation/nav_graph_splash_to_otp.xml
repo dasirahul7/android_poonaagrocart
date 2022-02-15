@@ -159,7 +159,7 @@
         app:exitAnim="@anim/slide_out_left"/>
 
     <action
-        android:id="@+id/action_signInFragment_to_cmsFragment"
+        android:id="@+id/action_to_cmsFragment"
         app:destination="@id/cmsFragment"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"

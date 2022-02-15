@@ -94,9 +94,7 @@
     <string name="mobile_no">Mobile No.</string>
     <string name="email_id_optional">Email Id (optional)</string>
     <string name="sign_up_btn_text">Sign Up</string>
-    <string name="by_continuing_you_agree">By continuing you agree to our</string>
-    <string name="terms_of_service">&#160;Terms of Service</string>
-    <string name="and">and </string>
+    <string name="by_continuing_you_agree">By continuing you agree to our Terms of Service and Our Policies</string>
     <string name="menu_our_policy">Our Policies</string>
     <string name="username_should_not_be_empty">Username should not be empty!</string>
     <string name="please_enter_valid_email_id">Please enter valid Email ID!</string>

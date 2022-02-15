@@ -1,8 +1,9 @@
 package com.poona.agrocart.ui.sign_up;
 
+import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
 import static com.poona.agrocart.app.AppConstants.EMAIL;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
-import static com.poona.agrocart.app.AppConstants.OTP;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -17,17 +18,24 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,65 +51,47 @@ import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.databinding.FragmentSignUpBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
-import com.poona.agrocart.ui.login.CommonViewModel;
-import com.poona.agrocart.ui.sign_in.SignInFragment;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import io.reactivex.Observable;
-
-public class SignUpFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener
-{
+public class SignUpFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     private static final String TAG = SignUpFragment.class.getSimpleName();
     private FragmentSignUpBinding fragmentSignUpBinding;
     private SignUpViewModel signUpViewModel;
     private BasicDetails basicDetails;
-    private View signUpView;
+    private View view;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentSignUpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false);
         fragmentSignUpBinding.setLifecycleOwner(this);
-        signUpView = ((ViewDataBinding) fragmentSignUpBinding).getRoot();
+        view = ((ViewDataBinding) fragmentSignUpBinding).getRoot();
 
         signUpViewModel=new ViewModelProvider(this).get(SignUpViewModel.class);
         fragmentSignUpBinding.setSignUpViewModel(signUpViewModel);
 
-        initView(signUpView);
+        initView();
 
-        ivBack.setOnClickListener(v -> Navigation.findNavController(signUpView).popBackStack());
+        ivBack.setOnClickListener(v -> Navigation.findNavController(view).popBackStack());
 
-        return signUpView;
+        return view;
     }
 
-    private void initView(View view)
-    {
-
-        fragmentSignUpBinding.tvTermsOfService.setOnClickListener(this);
-        fragmentSignUpBinding.tvPrivacyPolicy.setOnClickListener(this);
+    private void initView() {
         fragmentSignUpBinding.btnSignUp.setOnClickListener(this);
-//        fragmentSignUpBinding.rbIndividual.setOnClickListener(this);
-//        fragmentSignUpBinding.rbBusiness.setOnClickListener(this);
-
-        Typeface poppinsRegularFont = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_regular));
-//        fragmentSignUpBinding.rbIndividual.setTypeface(poppinsRegularFont);
-//        fragmentSignUpBinding.rbBusiness.setTypeface(poppinsRegularFont);
 
         hideKeyBoard(requireActivity());
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
         basicDetails=new BasicDetails();
 
         Bundle bundle=getArguments();
-        if(bundle!=null)
-        {
+        if(bundle!=null) {
             fragmentSignUpBinding.etPhoneNo.setText(bundle.getString(AppConstants.USER_MOBILE));
             Log.d(TAG, "initView: "+bundle.getString(AppConstants.USER_MOBILE));
-//            String tempCountryCode=bundle.getString(AppConstants.COUNTRY_CODE).replace("+","");
-//            fragmentSignUpBinding.countryCodePicker.setCountryForPhoneCode(Integer.parseInt(tempCountryCode));
-//            basicDetails.setCountryCode(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
+
             basicDetails.setMobileNumber(fragmentSignUpBinding.etPhoneNo.getText().toString());
 
             signUpViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
@@ -113,10 +103,40 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         setUpCountryCodePicker();
 
         setUpTextWatcher();
+
+        SpannableString ssTermsPolicy = new SpannableString(getResources().getString(R.string.by_continuing_you_agree));
+        ClickableSpan clickableSpanTerms = new ClickableSpan() {
+            @Override
+            public void onClick(View view) {
+                redirectToCmsFragment(1); //Terms & Condition
+            }
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        };
+        ssTermsPolicy.setSpan(clickableSpanTerms, 31, 47, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        ClickableSpan clickableSpanPolicy = new ClickableSpan() {
+            @Override
+            public void onClick(View view) {
+                redirectToCmsFragment(2); //Privacy Policy
+            }
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        };
+        ssTermsPolicy.setSpan(clickableSpanPolicy, 52, 64, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        fragmentSignUpBinding.tvTermsPolicy.setText(ssTermsPolicy);
+        fragmentSignUpBinding.tvTermsPolicy.setMovementMethod(LinkMovementMethod.getInstance());
+        fragmentSignUpBinding.tvTermsPolicy.setHighlightColor(ContextCompat.getColor(context, R.color.colorPrimary));
     }
 
-    public void setUpCountryCodePicker()
-    {
+    public void setUpCountryCodePicker() {
         Typeface typeFace=Typeface.createFromAsset(requireContext().getAssets(),getString(R.string.font_poppins_regular));
         fragmentSignUpBinding.countryCodePicker.setTypeFace(typeFace);
         fragmentSignUpBinding.countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
@@ -130,17 +150,9 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             @Override
             public void onCcpDialogCancel(DialogInterface dialogInterface) { }
         });
-
-        /*fragmentSignUpBinding.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                commonViewModel.countryCode.setValue(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
-            }
-        });*/
     }
 
-    private void setUpTextWatcher()
-    {
+    private void setUpTextWatcher() {
         fragmentSignUpBinding.etPhoneNo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -159,16 +171,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
-            case R.id.tv_terms_of_service:
-                redirectToTermsAndCondtn(v);
-                break;
-
-            case R.id.tv_privacy_policy:
-                redirectToPrivacyPolicy(v);
-                break;
-
+        switch (v.getId()) {
             case R.id.btn_sign_up:
                 RedirectToSelectLocationFragment(v);
                 break;
@@ -177,9 +180,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     }
 
-
-    private void RedirectToSelectLocationFragment(View v)
-    {
+    private void RedirectToSelectLocationFragment(View v) {
         basicDetails.setUserName(fragmentSignUpBinding.etUsername.getText().toString());
         basicDetails.setCountryCode(fragmentSignUpBinding.countryCodePicker.getSelectedCountryCodeWithPlus());
         basicDetails.setMobileNumber(fragmentSignUpBinding.etPhoneNo.getText().toString());
@@ -254,7 +255,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         signUpViewModel.countryCode.setValue(basicDetails.getCountryCode());
         signUpViewModel.userName.setValue(basicDetails.getUserName());
         signUpViewModel.emailId.setValue(basicDetails.getEmailId());
-        Navigation.findNavController(signUpView).navigate(R.id.action_signUpFragment_to_selectLocationFragment);
+        Navigation.findNavController(view).navigate(R.id.action_signUpFragment_to_selectLocationFragment);
     }
 
     private HashMap<String, String> signUpParameters() {
@@ -265,18 +266,11 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         return map;
     }
 
-    private void redirectToPrivacyPolicy(View v) {
+    private void redirectToCmsFragment(int from) {
         Bundle bundle = new Bundle();
-        bundle.putString("from", "SignUp");
-        bundle.putString("title", getString(R.string.privacy_policy));
-        //Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_signInPrivacyFragment, bundle);
-    }
-
-    private void redirectToTermsAndCondtn(View v) {
-        Bundle bundle = new Bundle();
-        bundle.putString("from", "SignUp");
-        bundle.putString("title", getString(R.string.menu_terms_conditions));
-        //Navigation.findNavController(v).navigate(R.id.action_signUpFragment_to_signInTermsFragment, bundle);
+        bundle.putString(FROM_SCREEN, TAG);
+        bundle.putInt(CMS_TYPE, from);
+        Navigation.findNavController(view).navigate(R.id.action_to_cmsFragment, bundle);
     }
 
     @Override
