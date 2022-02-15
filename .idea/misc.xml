@@ -74,7 +74,6 @@
         <entry key="app/src/main/res/drawable/ic_about_us.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/ic_address.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/ic_banner_placeholder.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.19814814814814816" />
         <entry key="app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.2" />
@@ -173,7 +172,7 @@
         <entry key="app/src/main/res/layout-v28/app_bar_home.xml" value="0.14673913043478262" />
         <entry key="app/src/main/res/layout/about_us_fragment.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/activity_current_address_map.xml" value="0.10092592592592593" />
-        <entry key="app/src/main/res/layout/activity_current_address_map_content_main.xml" value="0.1010194624652456" />
+        <entry key="app/src/main/res/layout/activity_current_address_map_content_main.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_dash_board.xml" value="0.1431159420289855" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.13269927536231885" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.2" />
@@ -200,7 +199,6 @@
         <entry key="app/src/main/res/layout/fragment_addresses.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_addresses_form.xml" value="0.15" />
         <entry key="app/src/main/res/layout/fragment_app_info.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_basket_detail.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_basket_page.xml" value="0.1286231884057971" />
         <entry key="app/src/main/res/layout/fragment_basket_product_detail.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_cms.xml" value="0.13240740740740742" />

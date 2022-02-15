@@ -28,7 +28,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_pin_red"
+            android:src="@drawable/ic_pin_green"
             android:translationY="-18dp"
             android:visibility="invisible" />
 
@@ -92,15 +92,16 @@
 
                 <ImageView
                     android:id="@+id/small_pin"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_pin_red"
-                    android:visibility="visible" />
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:src="@drawable/ic_location"
+                    android:visibility="visible"
+                    app:tint="@color/colorAccent"/>
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
                     android:visibility="gone" />
@@ -143,7 +144,7 @@
                     android:gravity="center|center_vertical"
                     android:minHeight="0dp"
                     android:paddingTop="@dimen/_6sdp"
-                    android:paddingBottom="@dimen/_6sdp"
+                    android:paddingBottom="@dimen/_8sdp"
                     android:text="@string/confirm_location"
                     android:textAllCaps="false"
                     android:textSize="@dimen/_18sp"
