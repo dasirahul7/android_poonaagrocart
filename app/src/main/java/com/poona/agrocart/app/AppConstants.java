@@ -70,8 +70,9 @@ public class AppConstants {
     public static final String REGISTER_API = "register-customer";
     public static final String INTRO_SCREEN_API = "screen-customer";
     public static final String STATE_API = "state";
-    public static final String AREA_API = "area";
     public static final String CITY_API = "city";
+    public static final String AREA_API = "area";
+    public static final String AREA_WITH_ID_API = "area-by-city-id";
     public static final String MY_PROFILE_API = "profile-view-customer";
     public static final String ADDRESS_LIST_API = "address-view";
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
@@ -87,8 +88,10 @@ public class AppConstants {
     public static final String HOME_STORE_BANNER_API = "store-banner";
     public static final String SIGN_OUT_API = "logout-customer";
     public static final String ADD_TO_FAVOURITE = "add-to-favourite";
+
     /*Favourite API's*/
     public static final String FAVOURITE_LIST_API = "view-favourite-list";
+
     /*Offer & Coupon APIs*/
     public static final String COUPON_API = "coupon-list";
 
@@ -175,6 +178,7 @@ public class AppConstants {
     public static final String ADD_TO_PRODUCT ="add-to-cart-product";
     public static final String PU_ID ="pu_id";
     public static final String QUANTITY ="quantity";
+
     /*Category types*/
     public static final String BASKET = "0";
     public static final String PRODUCT = "1";

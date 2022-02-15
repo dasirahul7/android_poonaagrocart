@@ -40,11 +40,7 @@ public class FavouriteViewModel extends AndroidViewModel {
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull FavouriteLisResponse favouriteLisResponse) {
                         if (favouriteLisResponse!=null){
                             progressDialog.dismiss();
-                            Log.e(TAG, "onSuccess: "+new Gson().toJson(favouriteLisResponse));
                             favouriteLisResponseMutableLiveData.setValue(favouriteLisResponse);
-                            if (favouriteLisResponse.getFavouriteList()!=null){
-                                Log.e(TAG, "onSuccess: "+favouriteLisResponse.getFavouriteList().size() );
-                            }
                         }
                     }
 
