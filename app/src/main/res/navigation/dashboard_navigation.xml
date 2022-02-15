@@ -11,18 +11,6 @@
         android:name="com.poona.agrocart.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
-        <!--Home to profile action-->
-        <action
-            android:id="@+id/action_nav_home_to_nav_profile"
-            app:destination="@id/nav_profile"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:launchSingleTop="true"
-            app:popUpTo="@+id/nav_home"
-            app:popUpToInclusive="true"/>
-        <!--Home to productOlds list action-->
         <action
             android:id="@+id/action_nav_home_to_nav_products_list"
             app:destination="@id/nav_products_list"
@@ -35,6 +23,18 @@
             app:popUpToInclusive="true"/>
 
     </fragment>
+    <!--Home to profile action-->
+    <action
+        android:id="@+id/action_nav_home_to_nav_profile"
+        app:destination="@id/nav_profile"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:launchSingleTop="true"
+        app:popUpTo="@+id/nav_home"
+        app:popUpToInclusive="true"/>
+    <!--Home to productOlds list action-->
     <!--Explore Fragment-->
     <fragment
         android:id="@+id/nav_explore"
