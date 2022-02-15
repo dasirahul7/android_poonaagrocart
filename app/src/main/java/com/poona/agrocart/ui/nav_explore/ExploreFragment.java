@@ -142,8 +142,8 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
                                     bundle.putString(CATEGORY_ID, items.getId());
                                     bundle.putString(LIST_TITLE, items.getName());
                                     bundle.putString(LIST_TYPE, items.getType());
-//                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_explore_to_nav_products_list, bundle);
-                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_explore_to_nav_products_list, bundle);
+//                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
 
                                 });
                                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);

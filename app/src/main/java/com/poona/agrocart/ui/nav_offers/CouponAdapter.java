@@ -1,6 +1,10 @@
 package com.poona.agrocart.ui.nav_offers;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -25,15 +29,17 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     private TermsAndConditionClickItem termsAndConditionClickItem;
 
 
-    public CouponAdapter(ArrayList<CouponResponse.Coupon> coupons, Context context, CouponFragment couponFragment) {
+    public CouponAdapter(ArrayList<CouponResponse.Coupon> coupons,
+                         Context context, CouponFragment couponFragment,TermsAndConditionClickItem termsAndConditionClickItem) {
         this.coupons = coupons;
         this.context = context;
         this.couponFragment = couponFragment;
-        this.termsAndConditionClickItem = couponFragment;
+        this.termsAndConditionClickItem = termsAndConditionClickItem;
     }
 
     public interface TermsAndConditionClickItem{
         void itemViewClick(int position);
+        void onCopyClick(CouponResponse.Coupon coupon);
     }
 
     @NonNull
@@ -81,7 +87,6 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
                     }
                 }
             });
-
         }
 
         public void bind(CouponResponse.Coupon coupon) {
@@ -90,6 +95,10 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
            /* rowCouponItemBinding.imgInfo.setOnClickListener(v -> {
                 couponFragment.termsDialog();
             });*/
+            rowCouponItemBinding.tvCouponCode.setOnClickListener(view -> {
+                termsAndConditionClickItem.onCopyClick(coupon);
+            });
+
         }
     }
 }

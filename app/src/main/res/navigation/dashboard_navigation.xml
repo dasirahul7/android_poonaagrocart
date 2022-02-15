@@ -11,8 +11,49 @@
         android:name="com.poona.agrocart.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
+        <!--Home to profile action-->
+        <action
+            android:id="@+id/action_nav_home_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="true"/>
+        <!--Home to productOlds list action-->
+        <action
+            android:id="@+id/action_nav_home_to_nav_products_list"
+            app:destination="@id/nav_products_list"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="true"/>
 
     </fragment>
+    <!--Explore Fragment-->
+    <fragment
+        android:id="@+id/nav_explore"
+        android:name="com.poona.agrocart.ui.nav_explore.ExploreFragment"
+        android:label="ExploreFragment"
+        tools:layout="@layout/fragment_explore">
+        <action
+            android:id="@+id/action_nav_explore_to_nav_products_list"
+            app:destination="@id/nav_products_list"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_explore"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+
 
     <!--My Orders Fragment-->
     <fragment
@@ -36,7 +77,10 @@
         android:id="@+id/nav_profile"
         android:name="com.poona.agrocart.ui.nav_profile.EditProfileFragment"
         android:label="@string/menu_my_profile"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_profile"
+        app:launchSingleTop="true"
+        app:popUpTo="@+id/nav_home"
+        app:popUpToInclusive="true"/>
 
     <!--My Cart Fragment-->
     <fragment
@@ -303,14 +347,6 @@
     </fragment>
 
     <!--Home actions-->
-    <!--Home to productOlds list action-->
-    <action
-        android:id="@+id/action_nav_home_to_nav_products_list"
-        app:destination="@id/nav_products_list"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
 
     <!--Home to our stores action-->
     <action
@@ -328,7 +364,11 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:launchSingleTop="true"
+        app:popUpToSaveState="true"
+        app:popUpTo="@+id/nav_home"
+        app:popUpToInclusive="true"/>
 
     <!--Home to ProductOld Details action-->
     <action
@@ -337,16 +377,12 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:launchSingleTop="true"
+        app:popUpToSaveState="true"
+        app:popUpTo="@+id/nav_home"
+        app:popUpToInclusive="false"/>
 
-    <!--Home to profile action-->
-    <action
-        android:id="@+id/action_nav_home_to_nav_profile"
-        app:destination="@id/nav_profile"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
 
     <!--Home to order track action-->
     <action
@@ -389,14 +425,6 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"/>
 
-    <!--Explore to Search action-->
-<!--    <action-->
-<!--        android:id="@+id/action_nav_explore_to_searchFragment"-->
-<!--        app:destination="@id/searchFragment"-->
-<!--        app:popEnterAnim="@anim/slide_in_left"-->
-<!--        app:popExitAnim="@anim/slide_out_right"-->
-<!--        app:enterAnim="@anim/slide_in_right"-->
-<!--        app:exitAnim="@anim/slide_out_left"/>-->
 
     <!--Home to seasonal Registration-->
     <action
@@ -414,7 +442,11 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:launchSingleTop="true"
+        app:popUpToSaveState="true"
+        app:popUpTo="@+id/nav_home"
+        app:popUpToInclusive="false"/>
 
     <!--Search Fragment-->
     <fragment

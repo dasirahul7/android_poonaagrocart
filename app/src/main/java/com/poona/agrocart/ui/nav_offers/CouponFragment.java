@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_offers;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -8,6 +9,8 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -79,7 +82,7 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (couponResponse.getCoupons().size() > 0) {
                             couponArrayList = couponResponse.getCoupons();
-                            couponAdapter = new CouponAdapter(couponResponse.getCoupons(), requireActivity(), CouponFragment.this);
+                            couponAdapter = new CouponAdapter(couponResponse.getCoupons(), requireActivity(), CouponFragment.this,this);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
                             fragmentCouponBinding.rvCoupons.setLayoutManager(layoutManager);
                             fragmentCouponBinding.rvCoupons.setAdapter(couponAdapter);
@@ -126,7 +129,7 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
         builder.setView(binding.getRoot());
         final AlertDialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationDownUp;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
 
         ImageView closeImg = binding.closeBtn;
         LinearLayout walletDialog = binding.walletDialog;
@@ -201,5 +204,13 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
         String termsConditions = couponArrayList.get(position).getTermsAndCond();
             termsDialog(termsConditions);
 
+    }
+
+    @Override
+    public void onCopyClick(CouponResponse.Coupon coupon) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("CouponCode", coupon.getCouponCode());
+        clipboard.setPrimaryClip(clip);
+        successToast(context,"Copied to clipBoard");
     }
 }

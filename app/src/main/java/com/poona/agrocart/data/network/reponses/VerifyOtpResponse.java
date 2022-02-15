@@ -40,11 +40,19 @@ public class VerifyOtpResponse {
     }
 
     public static class OtpData {
-        /*"id": "48",
-        "verified": "1",
-        "mobile": "9340768580",
-        "status": "1",
-        "usertype": "2"*/
+        /*"data": {
+          "id": "49",
+                  "verified": "1",
+                  "mobile": "8224858710",
+                  "status": "1",
+                  "usertype": "2",
+                  "state_id": "4",
+                  "state_name": "Madhya Pradesh",
+                  "city_id": "4",
+                  "city_name": "Rourkela city",
+                  "area_id": "7",
+                  "area_name": "Kurla one"
+      }*/
         @SerializedName("id")
         @Expose
         private String userId;
@@ -60,6 +68,28 @@ public class VerifyOtpResponse {
         @SerializedName("usertype")
         @Expose
         private String userType;
+        @SerializedName("state_name")
+        @Expose
+        private String stateName;
+        @SerializedName("city_name")
+        @Expose
+        private String cityName;
+
+        public String getStateName() {
+            return stateName;
+        }
+
+        public void setStateName(String stateName) {
+            this.stateName = stateName;
+        }
+
+        public String getCityName() {
+            return cityName;
+        }
+
+        public void setCityName(String cityName) {
+            this.cityName = cityName;
+        }
 
         public Integer getVerified() {
             return verified;

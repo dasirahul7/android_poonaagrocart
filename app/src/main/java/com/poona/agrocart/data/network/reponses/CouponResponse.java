@@ -1,6 +1,8 @@
 
 package com.poona.agrocart.data.network.reponses;
 
+import android.text.Html;
+
 import java.util.ArrayList;
 
 import com.google.gson.annotations.Expose;
@@ -181,7 +183,7 @@ public class CouponResponse extends BaseResponse{
         }
 
         public String getTermsAndCond() {
-            return termsAndCond;
+            return String.valueOf(Html.fromHtml(termsAndCond));
         }
 
         public void setTermsAndCond(String termsAndCond) {

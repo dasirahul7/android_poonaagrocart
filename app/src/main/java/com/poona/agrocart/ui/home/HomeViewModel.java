@@ -139,6 +139,7 @@ public class HomeViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(CategoryResponse response) {
                         if (response != null) {
+                            if (progressDialog!=null)
                             progressDialog.dismiss();
                             categoryResponseMutableLiveData.setValue(response);
                         }
@@ -146,6 +147,7 @@ public class HomeViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(Throwable e) {
+                        if (progressDialog!=null)
                         progressDialog.dismiss();
 
                         Gson gson = new GsonBuilder().create();
@@ -181,6 +183,7 @@ public class HomeViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BasketResponse basketResponse) {
                         if (basketResponse != null) {
+                            if (progressDialog!=null)
                             progressDialog.dismiss();
                             basketResponseMutableLiveData.setValue(basketResponse);
                         }
@@ -188,6 +191,7 @@ public class HomeViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog!=null)
                         progressDialog.dismiss();
 
                         Gson gson = new GsonBuilder().create();
@@ -224,7 +228,7 @@ public class HomeViewModel extends AndroidViewModel {
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ExclusiveResponse exclusiveResponse) {
                         if (exclusiveResponse != null) {
                             Log.d(TAG, "Product onSuccess: " + exclusiveResponse.getExclusiveData().getExclusivesList().get(0).getProductId());
-
+                            if (progressDialog!=null)
                             progressDialog.dismiss();
                             exclusiveResponseMutableLiveData.setValue(exclusiveResponse);
                         }
@@ -232,6 +236,7 @@ public class HomeViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog!=null)
                         progressDialog.dismiss();
 
                         Gson gson = new GsonBuilder().create();
@@ -267,7 +272,8 @@ public class HomeViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BestSellingResponse bestSellingResponse) {
                         if (bestSellingResponse != null) {
-                            Log.d(TAG, "BestSelling onSuccess: " + bestSellingResponse.getBestSellingData().getBestSellingProductList().size());
+                            Log.d(TAG, "BestSelling onSuccess: " + bestSellingResponse.getMessage());
+                            if (progressDialog!=null)
                             progressDialog.dismiss();
                             bestSellingResponseMutableLiveData.setValue(bestSellingResponse);
                         }
@@ -275,6 +281,7 @@ public class HomeViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog!=null)
                         progressDialog.dismiss();
 
                         Gson gson = new GsonBuilder().create();
@@ -310,7 +317,8 @@ public class HomeViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull SeasonalProductResponse seasonalProductResponse) {
                         if (seasonalProductResponse != null) {
-                            Log.d(TAG, "Seasonal onSuccess: " + seasonalProductResponse.getSeasonalProducts().size());
+                            Log.d(TAG, "Seasonal onSuccess: " + seasonalProductResponse.getMessage());
+                            if (progressDialog!=null)
                             progressDialog.dismiss();
                             seasonalProductResponseMutableLiveData.setValue(seasonalProductResponse);
                         }
@@ -318,6 +326,7 @@ public class HomeViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog!=null)
                         progressDialog.dismiss();
 
                         Gson gson = new GsonBuilder().create();
@@ -353,7 +362,8 @@ public class HomeViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProductListResponse productListResponse) {
                         if (productListResponse != null) {
-                            Log.d(TAG, "productListResponse onSuccess: " + productListResponse.getProductResponseDt().getProductList().size());
+                            Log.d(TAG, "productListResponse onSuccess: " + productListResponse.getMessage());
+                            if (progressDialog!=null)
                             progressDialog.dismiss();
                             productListResponseMutableLiveData.setValue(productListResponse);
                         }
@@ -361,6 +371,7 @@ public class HomeViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog!=null)
                         progressDialog.dismiss();
 
                         Gson gson = new GsonBuilder().create();
@@ -396,7 +407,8 @@ public class HomeViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull StoreBannerResponse storeBannerResponse) {
                         if (storeBannerResponse!=null){
-                            Log.e(TAG, "storeBannerResponse onSuccess: "+storeBannerResponse.getStoreBanners().size());
+                            Log.e(TAG, "storeBannerResponse onSuccess: "+storeBannerResponse.getMessage());
+                            if (progressDialog!=null)
                             progressDialog.dismiss();
                             storeBannerMutableLiveData.setValue(storeBannerResponse);
                         }
@@ -404,6 +416,7 @@ public class HomeViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog!=null)
                         progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         StoreBannerResponse storeBannerResponse = new StoreBannerResponse();
