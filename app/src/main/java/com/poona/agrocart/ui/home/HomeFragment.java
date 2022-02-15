@@ -32,16 +32,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.GravityCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
@@ -858,6 +865,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setText(preferences.getUserAddress());
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.VISIBLE);
+//        NavigationView navigationView = ((HomeActivity) requireActivity()).binding.navView;
+//        View headerView = navigationView.getHeaderView(0);
+//        RelativeLayout rlEditProfile = headerView.findViewById(R.id.rl_edit_profile);
+//        rlEditProfile.setOnClickListener(v -> {
+//            ((HomeActivity) requireActivity()).drawer.closeDrawer(GravityCompat.START);
+//            Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_profile);
+////            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_profile);
+//        });
+
     }
 
     @Override

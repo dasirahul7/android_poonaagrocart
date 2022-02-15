@@ -49,7 +49,7 @@ public class HomeActivity extends BaseActivity {
     private static final String TAG = HomeActivity.class.getSimpleName();
     private AppBarConfiguration mAppBarConfiguration;
     public ActivityHomeBinding binding;
-    private DrawerLayout drawer;
+    public DrawerLayout drawer;
     private NavigationView navigationView;
     private NavController navController;
     public Toolbar toolbar;
@@ -153,7 +153,7 @@ public class HomeActivity extends BaseActivity {
         tvUserName.setText("Hello! Ranju");
         rlEditProfile.setOnClickListener(v -> {
             drawer.closeDrawer(GravityCompat.START);
-            navController.navigate(R.id.nav_profile);
+            navController.navigate(R.id.action_nav_home_to_nav_profile);
         });
     }
 

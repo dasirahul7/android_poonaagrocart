@@ -8,6 +8,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.USER_ADDRESS;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
@@ -214,6 +215,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                                 Intent intent = new Intent(context, HomeActivity.class);
                                 preferences.setUid(verifyOtpResponse.getUser().getUserId());
                                 preferences.setUserMobile(verifyOtpResponse.getUser().getUserMobile());
+                                preferences.setUserAddress(verifyOtpResponse.getUser().getCityName()+","+verifyOtpResponse.getUser().getStateName());
                                 preferences.setUserCountry(bundle.getString(COUNTRY_CODE));
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
