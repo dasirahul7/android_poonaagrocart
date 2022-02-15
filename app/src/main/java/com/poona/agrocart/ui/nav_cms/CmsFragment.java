@@ -115,7 +115,7 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
     private void callCmsApi(ProgressDialog progressDialog) {
         Observer<CmsResponse> aboutUsResponseObserver = cmsResponse -> {
             if (cmsResponse != null) {
-                Log.e("Cms Api Response", new Gson().toJson(cmsResponse));
+                Log.e("Cms Api ResponseData", new Gson().toJson(cmsResponse));
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }

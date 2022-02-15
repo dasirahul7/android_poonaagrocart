@@ -184,7 +184,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         Observer<SignInResponse> signInResponseObserver = signInResponse -> {
             if (signInResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Sign In Api Response", new Gson().toJson(signInResponse));
+                Log.e("Sign In Api ResponseData", new Gson().toJson(signInResponse));
                 switch (signInResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if(signInResponse.getUser() != null){

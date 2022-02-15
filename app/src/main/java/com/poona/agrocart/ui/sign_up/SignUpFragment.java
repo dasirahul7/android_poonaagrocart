@@ -214,7 +214,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         Observer<BaseResponse> registerResponseObserver = registerResponse -> {
             if (registerResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Register Api Response", new Gson().toJson(registerResponse));
+                Log.e("Register Api ResponseData", new Gson().toJson(registerResponse));
                 switch (registerResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if(registerResponse.getStatus() == 200){

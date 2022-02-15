@@ -191,8 +191,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void setDetailsValue() {
         unitId = details.getUnit().getpId();
-        if (details.getBrandName()!=null&& !details.getBrandName().isEmpty())
+        if (details.getBrandName()!=null&& !details.getBrandName().isEmpty()){
             txtBrand.setText(details.getBrandName());
+            txtBrand.setVisibility(View.VISIBLE);
+        }
         else txtBrand.setVisibility(View.GONE);
         if (details.getIsO3().equalsIgnoreCase("yes")){
             txtOrganic.setVisibility(View.VISIBLE);

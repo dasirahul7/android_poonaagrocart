@@ -124,7 +124,7 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
         Observer<CategoryResponse> categoryResponseObserver = categoryResponse -> {
             if (categoryResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Category Api Response", new Gson().toJson(categoryResponse));
+                Log.e("Category Api ResponseData", new Gson().toJson(categoryResponse));
                 switch (categoryResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if(categoryResponse.getCategoryData() != null){

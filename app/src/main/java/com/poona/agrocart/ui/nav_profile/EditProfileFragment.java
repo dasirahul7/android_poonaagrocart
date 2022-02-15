@@ -551,7 +551,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         androidx.lifecycle.Observer<ProfileResponse> updateProfileResponseObserver = profileResponse -> {
             if (profileResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Update Profile Api Response", new Gson().toJson(profileResponse));
+                Log.e("Update Profile Api ResponseData", new Gson().toJson(profileResponse));
                 switch (profileResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, ""+profileResponse.getMessage());

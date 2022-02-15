@@ -36,7 +36,7 @@ public class VerifyOtpViewModel extends AndroidViewModel {
         otp = new MutableLiveData<>();
     }
 
-    //Verify Otp API Response
+    //Verify Otp API ResponseData
     public LiveData<VerifyOtpResponse> submitVerifyOtp(ProgressDialog progressDialog,
                                                         HashMap<String, String> hashMap,
                                                         VerifyOtpFragment verifyOtpFragment)

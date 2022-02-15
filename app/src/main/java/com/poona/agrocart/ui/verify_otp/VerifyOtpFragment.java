@@ -204,7 +204,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         Observer<VerifyOtpResponse> verifyOtpResponseObserver = verifyOtpResponse -> {
             if (verifyOtpResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Verify Otp Api Response", new Gson().toJson(verifyOtpResponse));
+                Log.e("Verify Otp Api ResponseData", new Gson().toJson(verifyOtpResponse));
                 switch (verifyOtpResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (verifyOtpResponse.getMessage() != null) {
@@ -258,7 +258,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         Observer<SignInResponse> signInResponseObserver = resendOtpResponse -> {
             if (resendOtpResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Verify Otp Api Response", new Gson().toJson(resendOtpResponse));
+                Log.e("Verify Otp Api ResponseData", new Gson().toJson(resendOtpResponse));
                 switch (resendOtpResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (resendOtpResponse.getMessage() != null) {

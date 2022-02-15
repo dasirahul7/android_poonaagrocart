@@ -85,9 +85,10 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
                 }
             });
             rowExclusiveItemBinding.imgPlus.setOnClickListener(view1 -> {
-                onPlusClickListener.OnPlusClick(product);
-                products.get(getAdapterPosition()).setInCart(1);
-                notifyItemChanged(getAdapterPosition());
+                    onPlusClickListener.OnPlusClick(product);
+                    products.get(getAdapterPosition()).setInCart(1);
+                    notifyItemChanged(getAdapterPosition());
+
             });
         }
     }

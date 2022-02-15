@@ -92,10 +92,10 @@ public class MyProfileViewModel extends AndroidViewModel {
                         cityResponseObservable.subscribeOn(Schedulers.io()),
                         areaResponseObservable.subscribeOn(Schedulers.io()),
                         (profileResponse, stateResponse, cityResponse, areaResponse) -> {
-                            //Log.e("Profile Api Response", new Gson().toJson(profileResponse));
-                            //Log.e("State Api Response", new Gson().toJson(stateResponse));
-                            //Log.e("City Api Response", new Gson().toJson(cityResponse));
-                            //Log.e("Area Api Response", new Gson().toJson(areaResponse));
+                            //Log.e("Profile Api ResponseData", new Gson().toJson(profileResponse));
+                            //Log.e("State Api ResponseData", new Gson().toJson(stateResponse));
+                            //Log.e("City Api ResponseData", new Gson().toJson(cityResponse));
+                            //Log.e("Area Api ResponseData", new Gson().toJson(areaResponse));
 
                             List<String> list = new ArrayList();
                             list.add(new Gson().toJson(profileResponse));

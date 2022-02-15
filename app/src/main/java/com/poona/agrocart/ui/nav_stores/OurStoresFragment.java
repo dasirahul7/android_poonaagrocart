@@ -132,7 +132,7 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
         }
         @SuppressLint("NotifyDataSetChanged") Observer<OurStoreListResponse> ourStoreListResponseObserver = ourStoreListResponse -> {
             if (ourStoreListResponse != null){
-                Log.e("Our Store List Api Response", new Gson().toJson(ourStoreListResponse));
+                Log.e("Our Store List Api ResponseData", new Gson().toJson(ourStoreListResponse));
                 if (progressDialog !=null){
                     progressDialog.dismiss();
                 }

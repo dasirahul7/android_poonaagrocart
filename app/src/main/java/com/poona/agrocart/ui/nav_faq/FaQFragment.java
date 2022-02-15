@@ -99,7 +99,7 @@ public class FaQFragment extends BaseFragment implements NetworkExceptionListene
         @SuppressLint("NotifyDataSetChanged")
         Observer<FaqListResponse> faqListResponseObserver = addFaqsResponse -> {
             if (addFaqsResponse != null){
-                Log.e("FAQs Api Response", new Gson().toJson(addFaqsResponse));
+                Log.e("FAQs Api ResponseData", new Gson().toJson(addFaqsResponse));
                 if (progressDialog !=null){
                     progressDialog.dismiss();
                 }

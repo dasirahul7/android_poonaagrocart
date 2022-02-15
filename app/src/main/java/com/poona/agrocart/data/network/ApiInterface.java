@@ -9,6 +9,7 @@ import static com.poona.agrocart.app.AppConstants.CMS;
 import static com.poona.agrocart.app.AppConstants.COUPON_API;
 import static com.poona.agrocart.app.AppConstants.FAQ;
 import static com.poona.agrocart.app.AppConstants.FAVOURITE_LIST_API;
+import static com.poona.agrocart.app.AppConstants.HOME_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BASKET_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BEST_SELLING_API;
@@ -45,6 +46,7 @@ import com.poona.agrocart.data.network.reponses.CategoryResponse;
 import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
+import com.poona.agrocart.data.network.reponses.HomeResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
 import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
 import com.poona.agrocart.data.network.reponses.ProductListByResponse;
@@ -218,7 +220,7 @@ public interface ApiInterface {
     @POST(ADD_TO_FAVOURITE)
     Single<BaseResponse> addToFavouriteResponse(@FieldMap HashMap<String,String> hashMap);
 
-    /*View Gallery Response*/
+    /*View Gallery ResponseData*/
     @GET(VIEW_GALLERY)
     Single<GalleryResponse> getGalleryReponse();
 
@@ -227,7 +229,12 @@ public interface ApiInterface {
     @POST(ADD_TO_PRODUCT)
     Single<BaseResponse> addToCartProductResponse(@FieldMap HashMap<String,String> hashMap);
 
-    /*Favourite Response*/
+    /*Favourite ResponseData*/
     @GET(FAVOURITE_LIST_API)
     Single<FavouriteLisResponse> getFavouriteList();
+
+    /*Home API*/
+    @FormUrlEncoded
+    @POST(HOME_API)
+    Single<HomeResponse> getHomeAllData(@FieldMap HashMap<String, String> hashMap);
 }

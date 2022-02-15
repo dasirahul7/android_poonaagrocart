@@ -124,7 +124,7 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
 
         @SuppressLint("NotifyDataSetChanged") Observer<GalleryResponse>galleryResponseObserver = galleryResponse -> {
             if (galleryResponse != null){
-                Log.e("Gallery Image Api Response", new Gson().toJson(galleryResponse));
+                Log.e("Gallery Image Api ResponseData", new Gson().toJson(galleryResponse));
                 if (progressDialog !=null){
                     progressDialog.dismiss();
                 }

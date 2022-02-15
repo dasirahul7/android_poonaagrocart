@@ -109,7 +109,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
 
         @SuppressLint("NotifyDataSetChanged") Observer<GalleryResponse> galleryResponseObserver = galleryResponse -> {
             if (galleryResponse != null){
-                Log.e("Gallery Video Api Response", new Gson().toJson(galleryResponse));
+                Log.e("Gallery Video Api ResponseData", new Gson().toJson(galleryResponse));
                 if (progressDialog !=null){
                     progressDialog.dismiss();
                 }

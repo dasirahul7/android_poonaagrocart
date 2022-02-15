@@ -97,7 +97,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
         androidx.lifecycle.Observer<AddressesResponse> responseObserver = addressesResponse -> {
             if (addressesResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Addresses List Api Response", new Gson().toJson(addressesResponse));
+                Log.e("Addresses List Api ResponseData", new Gson().toJson(addressesResponse));
                 switch (addressesResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         fragmentAddressesBinding.rlErrorMessage.setVisibility(View.GONE);
