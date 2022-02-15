@@ -1,6 +1,6 @@
 package com.poona.agrocart.ui.nav_gallery.fragment;
 
-import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
+
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
@@ -22,16 +22,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.DisplayMetrics;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ImageView;
+
+
+import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
+
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
@@ -57,8 +60,9 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     private View videoView;
     private RecyclerView rvVideo;
     private VideoAdapter videoAdapter;
-    DisplayMetrics displayMetrics = new DisplayMetrics();
-    private int requestCode;
+    private  ProgressBar progressDialog;
+    private MediaController mediaController;
+
 
     public static VideoGalleryFragment newInstance() {
         VideoGalleryFragment fragment = new VideoGalleryFragment();
@@ -172,52 +176,39 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.video_image_pop_up_dailog);
-        ImageView imageView = dialog.findViewById(R.id.imageViewItem);
+        progressDialog = dialog.findViewById(R.id.progress);
         VideoView videoView = dialog.findViewById(R.id.VideoView);
-
-        /*Glide.with(context)
-                .load("https://www.linkpicture.com/q/unsplash_QvkAQTNj4zk_1.png")
-                .placeholder(R.drawable.img_apple)
-                .error(R.drawable.img_apple)
-                .into(imageView);
-*/
-       /* ((Activity) imageView.getContext()).getWindowManager()
-                .getDefaultDisplay()
-                .getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
+        progressDialog.setVisibility(View.VISIBLE);
 
 
-        String s = "https://www.linkpicture.com/q/unsplash_QvkAQTNj4zk_1.png";
-        if (s != null) {
-            Glide.with(imageView.getContext())
-                    .load(s)
-                    .apply(new RequestOptions().override(width - 36, 120))
-                    .into(imageView);
-        }
-*/
+       // videoView.setMediaController(new MediaController(getContext()));
+
+
        /* Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("**");  // change *//*
         i.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"video/mp4", "video/quicktime"});
         startActivityForResult(i, requestCode);*/
-
+        /*
         Glide.with(context)
                 .load(IMAGE_DOC_BASE_URL+galleryVideoList.get(position).getVideoImage())
-                .into(imageView);
+                .into(imageView);*/
 
         //String strVideoView = galleryVideoList.get(position).getVideoUrl();
-        String strVideoView = "https://law.duke.edu/cspd/contest/videos/Framed-Contest_Documentaries-and-You.mp4";
+        String strVideoView = "https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/sample-mp4-file.mp4";
         Uri uri = Uri.parse(strVideoView);
         videoView.setVideoURI(uri);
         videoView.setZOrderOnTop(true);
-        videoView.start();
+        //videoView.start();
 
         // perform set on prepared listener event on video view
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 videoView.setZOrderOnTop(false);
-                imageView.setVisibility(View.GONE);
+                progressDialog.setVisibility(View.GONE);
+                videoView.start();
+               // mediaController.setAnchorView(videoView);
          // do something when video is ready to play
 
             }

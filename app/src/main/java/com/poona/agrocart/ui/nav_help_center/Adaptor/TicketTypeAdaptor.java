@@ -44,7 +44,7 @@ public class TicketTypeAdaptor extends ArrayAdapter<TicketTypeResponse.TicketTyp
         TextView textViewShiftName= convertView.findViewById(R.id.text_view_name);
         if (position == 0) {
             // Set the hint text color gray
-            textViewShiftName.setTextColor(Color.parseColor("#86C11F"));
+            textViewShiftName.setTextColor(Color.BLACK);
         } else {
             textViewShiftName.setTextColor(Color.BLACK);
         }

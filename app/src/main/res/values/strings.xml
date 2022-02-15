@@ -66,6 +66,7 @@
     <string name="enter_your_phone_number_for_otp_text">Enter your phone number for verification we\nwill send 4 digit code to your mobile number.</string>
     <string name="phone_number">Phone Number</string>
     <string name="continue_text">Continue</string>
+    <string name="message_txt">Please text a message..</string>
     <string name="back_to">Back to</string>
     <string name="log_in">Log In?</string>
     <string name="email_id_should_not_be_empty">Email Id should not be empty!</string>

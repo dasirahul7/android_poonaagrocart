@@ -216,9 +216,10 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
 
     // Dialog for create ticket
     public void raiseNewTicketDialog() {
-        Dialog dialog = new Dialog(new ContextThemeWrapper(getActivity(), R.style.DialogAnimationUp));
+        Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.dialog_new_ticket);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
@@ -252,9 +253,9 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
             if(strTicketName.equalsIgnoreCase("Ticket Type")){
                 warningToast(context, "Please select the Ticket Type");
             }else if( strSubject.equalsIgnoreCase("")){
-                warningToast(context, getString(R.string.empty_field_toast));
+                warningToast(context, "Subject Field Should not be empty");
             }else if(strDescription.equalsIgnoreCase("")){
-                warningToast(context, getString(R.string.empty_field_toast));
+                warningToast(context, "Remark Field Should not be empty");
             }else {
 
                 if(isConnectingToInternet(context)){
@@ -278,7 +279,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
             if (createTicketResponse != null){
                 etDescription.setText("");
                 etSubject.setText("");
-                Log.e("Create Support tickets Api Response", new Gson().toJson(createTicketResponse));
+                Log.e("Create  tickets Api Response", new Gson().toJson(createTicketResponse));
                 if (progressDialog !=null){
                     progressDialog.dismiss();
                 }
@@ -352,11 +353,11 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
                         if (ticketTypeResponse.getData() != null &&
                                 ticketTypeResponse.getData().size()>0){
                             ticketTypeList.clear();
-                            ticketTypeList.add(new TicketTypeResponse.TicketType("0", "Ticket Type"));
+                            ticketTypeList.add(new TicketTypeResponse.TicketType("0", "Select Type"));
                             ticketTypeList.addAll(ticketTypeResponse.getData());
                             bindingSpinner(ticketTypeList);
                         }else{
-                            ticketTypeList.add(new TicketTypeResponse.TicketType("0", "Ticket Type"));
+                            ticketTypeList.add(new TicketTypeResponse.TicketType("0", "Select Type"));
                             bindingSpinner(ticketTypeList);
                         }
                         break;
