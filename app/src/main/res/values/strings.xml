@@ -79,6 +79,15 @@
     <!--Edit profile screen validation messages-->
     <string name="name_should_not_be_empty">Name should not be empty!</string>
 
+    <!--Add address screen validation messages-->
+    <string name="address_type_should_not_be_empty">Address Type should not be empty!</string>
+    <string name="pin_code_should_not_be_empty">Pincode should not be empty!</string>
+    <string name="invalid_pin_code">Please enter valid pincode!</string>
+    <string name="apartment_name_should_not_be_empty">Apartment Name should not be empty!</string>
+    <string name="number_should_not_be_empty">House Number should not be empty!</string>
+    <string name="landmark_should_not_be_empty">Landmark should not be empty!</string>
+    <string name="street_should_not_be_empty">Street should not be empty!</string>
+
     <!--Verify OTP fragment-->
     <string name="enter_otp">Enter your 4-digit code</string>
     <string name="otp_sent">We have sent OTP code via SMS to </string>
@@ -91,12 +100,10 @@
     <string name="sign_up">Sign Up</string>
     <string name="enter_your_credentials">Enter your credentials to continue</string>
     <string name="username">Username</string>
-    <string name="mobile_no">Mobile No.</string>
+    <string name="mobile_no">Mobile Number</string>
     <string name="email_id_optional">Email Id (optional)</string>
     <string name="sign_up_btn_text">Sign Up</string>
-    <string name="by_continuing_you_agree">By continuing you agree to our</string>
-    <string name="terms_of_service">&#160;Terms of Service</string>
-    <string name="and">and </string>
+    <string name="by_continuing_you_agree">By continuing you agree to our Terms of Service and Our Policies</string>
     <string name="menu_our_policy">Our Policies</string>
     <string name="username_should_not_be_empty">Username should not be empty!</string>
     <string name="please_enter_valid_email_id">Please enter valid Email ID!</string>

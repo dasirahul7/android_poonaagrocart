@@ -9,16 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.AddressesResponse;
 import com.poona.agrocart.databinding.RvAddressBinding;
 import com.poona.agrocart.ui.nav_addresses.model.Address;
 
 import java.util.ArrayList;
 
-public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.AddressViewHolder>
-{
-    private final ArrayList<Address> addressArrayList;
+public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.AddressViewHolder> {
+    private final ArrayList<AddressesResponse.Address> addressArrayList;
 
-    public AddressesAdapter(ArrayList<Address> addressArrayList) {
+    public AddressesAdapter(ArrayList<AddressesResponse.Address> addressArrayList) {
         this.addressArrayList = addressArrayList;
     }
 
@@ -32,7 +32,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
 
     @Override
     public void onBindViewHolder(@NonNull AddressViewHolder holder, int position) {
-        final Address address = addressArrayList.get(position);
+        final AddressesResponse.Address address = addressArrayList.get(position);
         holder.rvAddressBinding.setAddress(address);
         holder.bind(address);
     }
@@ -42,19 +42,16 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
         return addressArrayList.size();
     }
 
-    public static class AddressViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class AddressViewHolder extends RecyclerView.ViewHolder {
         RvAddressBinding rvAddressBinding;
 
-        public AddressViewHolder(RvAddressBinding rvAddressBinding)
-        {
+        public AddressViewHolder(RvAddressBinding rvAddressBinding) {
             super(rvAddressBinding.getRoot());
-            this.rvAddressBinding=rvAddressBinding;
+            this.rvAddressBinding = rvAddressBinding;
         }
 
-        public void bind(Address address)
-        {
-            rvAddressBinding.setVariable(BR.address,address);
+        public void bind(AddressesResponse.Address address) {
+            rvAddressBinding.setVariable(BR.address, address);
             rvAddressBinding.executePendingBindings();
         }
     }

@@ -35,6 +35,7 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.data.network.reponses.CmsResponse;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.sign_in.SignInFragment;
+import com.poona.agrocart.ui.sign_up.SignUpFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,7 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
 
     private String fromScreen = "";
     private final String fromScreenSignIn = SignInFragment.class.getSimpleName();
+    private final String fromScreenSignUp = SignUpFragment.class.getSimpleName();
     private final String fromScreenHome = HomeActivity.class.getSimpleName();
     private int cmsType = 0;
 
@@ -72,7 +74,7 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
         }
 
         /*visible back button action bar if navigating from  sign in screen*/
-        if(fromScreen.equals(fromScreenSignIn)) {
+        if(fromScreen.equals(fromScreenSignIn) || fromScreen.equals(fromScreenSignUp)) {
             fragmentCmsBinding.actionBar.setVisibility(View.VISIBLE);
             /*set title to toolbar*/
             if(cmsType == 0) {

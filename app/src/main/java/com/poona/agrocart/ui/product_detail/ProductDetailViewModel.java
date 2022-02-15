@@ -52,7 +52,6 @@ public class ProductDetailViewModel extends AndroidViewModel {
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProductDetailsResponse productDetailsResponse) {
                         if (productDetailsResponse!=null){
                             progressDialog.dismiss();
-                            Log.e(TAG, "Product Detail onSuccess: "+new Gson().toJson(productDetailsResponse));
                             productDetailsResponseMutableLiveData.setValue(productDetailsResponse);
                         }
                     }
@@ -96,7 +95,6 @@ public class ProductDetailViewModel extends AndroidViewModel {
                         if (baseResponse!=null){
                             progressDialog.dismiss();
                             baseResponseMutableLiveData.setValue(baseResponse);
-                            Log.e(TAG, "onSuccess: "+new Gson().toJson(baseResponse) );
                         }
                     }
 

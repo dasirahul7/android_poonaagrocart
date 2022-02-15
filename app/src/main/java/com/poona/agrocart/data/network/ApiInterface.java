@@ -1,8 +1,10 @@
 package com.poona.agrocart.data.network;
 
+import static com.poona.agrocart.app.AppConstants.ADD_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.AREA_API;
+import static com.poona.agrocart.app.AppConstants.AREA_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.BASKET_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
@@ -127,6 +129,14 @@ public interface ApiInterface {
 
     @GET(AREA_API)
     Single<AreaResponse> getAreaResponse();
+
+    @FormUrlEncoded
+    @POST(AREA_WITH_ID_API)
+    Single<AreaResponse> getAreaResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(ADD_ADDRESS_API)
+    Single<BaseResponse> addAddressResponse(@FieldMap HashMap<String, String> data);
 
     @GET(AREA_API)
     Observable<AreaResponse> getAreaObservableResponse();
