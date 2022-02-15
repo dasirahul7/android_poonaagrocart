@@ -188,6 +188,21 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             basketProductAdapter = new BasketProductAdapter(basketProducts);
             rvBasketProducts.setAdapter(basketProductAdapter);
         }
+
+        if (details.getIsFavourite()==1)
+            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
+        else basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+        if (details.getInCart()==1){
+            basketDetailsBinding.ivMinus.setVisibility(View.VISIBLE);
+            basketDetailsBinding.etQuantity.setVisibility(View.VISIBLE);
+            if (details.getQuantity()>0)
+                basketDetailsBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
+            else basketDetailsBinding.etQuantity.setText("1");
+        }else {
+            basketDetailsBinding.ivPlus.setVisibility(View.VISIBLE);
+            basketDetailsBinding.ivMinus.setVisibility(View.GONE);
+            basketDetailsBinding.etQuantity.setVisibility(View.GONE);
+        }
     }
 
     private HashMap<String, String> detailsParams() {
