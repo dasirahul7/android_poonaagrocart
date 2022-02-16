@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.widgets.CustomTextView;
 
 import java.text.MessageFormat;
