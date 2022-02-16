@@ -12,7 +12,7 @@ public class AppConstants {
     //public static final String BASE_URL = "";
 
     /*Live URL*/
-    public static final String BASE_URL = "http://cmsweb.m-staging.in/poona_agro_testing/";
+    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing/";
 
     /*Live Base URL for Image, Document*/
     public static final String IMAGE_DOC_BASE_URL = "";

@@ -150,7 +150,8 @@ public class HomeActivity extends BaseActivity {
         tvUserName = headerView.findViewById(R.id.tv_user_name);
         ImageView editImg = headerView.findViewById(R.id.edit_img);
         civProfilePhoto = headerView.findViewById(R.id.civ_profile_photo);
-        tvUserName.setText("Hello! Ranju");
+        tvUserName.setText("Hello!");
+        tvUserName.setSelected(true);
         rlEditProfile.setOnClickListener(v -> {
             drawer.closeDrawer(GravityCompat.START);
             navController.navigate(R.id.action_nav_home_to_nav_profile);

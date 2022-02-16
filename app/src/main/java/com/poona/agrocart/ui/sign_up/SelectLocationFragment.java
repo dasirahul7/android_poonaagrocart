@@ -2,7 +2,6 @@ package com.poona.agrocart.ui.sign_up;
 
 import static com.poona.agrocart.app.AppConstants.AREA_ID;
 import static com.poona.agrocart.app.AppConstants.CITY_ID;
-import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
