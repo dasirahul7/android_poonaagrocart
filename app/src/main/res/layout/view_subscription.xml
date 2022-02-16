@@ -3,7 +3,7 @@
     <data>
         <variable
             name="subscriptionModule"
-            type="com.poona.agrocart.data.network.reponses.BasketResponse.Basket" />
+            type="com.poona.agrocart.data.network.responses.BasketResponse.Basket" />
     </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

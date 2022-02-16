@@ -16,11 +16,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
+import com.poona.agrocart.data.network.responses.IntroScreenResponse;
 import com.poona.agrocart.databinding.FragmentIntroScreenBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.splash_screen.OnBackPressedListener;
-import com.poona.agrocart.ui.verify_otp.VerifyOtpFragment;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.ArrayList;

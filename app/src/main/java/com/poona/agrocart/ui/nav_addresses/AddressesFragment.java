@@ -25,10 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.AddressesResponse;
+import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.databinding.FragmentAddressesBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_addresses.model.Address;
 
 import java.util.ArrayList;
 

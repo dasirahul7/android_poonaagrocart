@@ -1,29 +1,17 @@
 package com.poona.agrocart.ui.nav_addresses;
 
 import static android.app.Activity.RESULT_OK;
-import static android.provider.ContactsContract.CommonDataKinds.StructuredPostal.CITY;
 
 import static com.poona.agrocart.app.AppConstants.ADDRESS_TYPE;
-import static com.poona.agrocart.app.AppConstants.ALTERNATE_MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.APARTMENT_NAME;
 import static com.poona.agrocart.app.AppConstants.AREA_;
-import static com.poona.agrocart.app.AppConstants.AREA_ID;
 import static com.poona.agrocart.app.AppConstants.CITY_;
 import static com.poona.agrocart.app.AppConstants.CITY_ID;
-import static com.poona.agrocart.app.AppConstants.DATE_OF_BIRTH;
-import static com.poona.agrocart.app.AppConstants.EMAIL;
-import static com.poona.agrocart.app.AppConstants.GENDER;
-import static com.poona.agrocart.app.AppConstants.GOOGLE_MAP_ADDRESS;
 import static com.poona.agrocart.app.AppConstants.HOUSE_NO;
 import static com.poona.agrocart.app.AppConstants.LANDMARK;
-import static com.poona.agrocart.app.AppConstants.LATITUDE;
-import static com.poona.agrocart.app.AppConstants.LONGITUDE;
 import static com.poona.agrocart.app.AppConstants.MOBILE;
-import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.NAME;
 import static com.poona.agrocart.app.AppConstants.PIN_CODE;
-import static com.poona.agrocart.app.AppConstants.PROFILE_IMAGE;
-import static com.poona.agrocart.app.AppConstants.STATE_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -53,31 +41,24 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.AreaResponse;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.CityResponse;
-import com.poona.agrocart.data.network.reponses.ProfileResponse;
+import com.poona.agrocart.data.network.responses.AreaResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.databinding.FragmentAddressesFormBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.nav_addresses.map_view.SimplePlacePicker;
 import com.poona.agrocart.ui.nav_profile.CustomArrayAdapter;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 public class AddAddressFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     private static final String TAG = AddAddressFragment.class.getSimpleName();

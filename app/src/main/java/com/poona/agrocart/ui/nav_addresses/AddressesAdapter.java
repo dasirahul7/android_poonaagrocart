@@ -9,9 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.AddressesResponse;
+import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.databinding.RvAddressBinding;
-import com.poona.agrocart.ui.nav_addresses.model.Address;
 
 import java.util.ArrayList;
 

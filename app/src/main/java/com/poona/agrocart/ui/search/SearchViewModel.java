@@ -15,9 +15,9 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.CategoryResponse;
-import com.poona.agrocart.data.network.reponses.ProductListByResponse;
-import com.poona.agrocart.data.network.reponses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.CategoryResponse;
+import com.poona.agrocart.data.network.responses.ProductListByResponse;
+import com.poona.agrocart.data.network.responses.ProductListResponse;
 
 import java.util.HashMap;
 

@@ -36,7 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.CouponResponse;
+import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.databinding.DialogCouponTermsBinding;
 import com.poona.agrocart.databinding.FragmentCouponBinding;
 import com.poona.agrocart.ui.BaseFragment;

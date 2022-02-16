@@ -6,7 +6,7 @@
 
         <variable
             name="moduleSeasonBanner"
-            type="com.poona.agrocart.data.network.reponses.SeasonalProductResponse.SeasonalProduct" />
+            type="com.poona.agrocart.data.network.responses.SeasonalProductResponse.SeasonalProduct" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

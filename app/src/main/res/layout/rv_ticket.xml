@@ -6,7 +6,7 @@
 
         <variable
             name="ticket"
-            type="com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse.TicketList.UserTicket" />
+            type="com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse.TicketList.UserTicket" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

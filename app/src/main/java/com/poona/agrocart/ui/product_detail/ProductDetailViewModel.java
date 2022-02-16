@@ -2,28 +2,21 @@ package com.poona.agrocart.ui.product_detail;
 
 import android.app.Application;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.BestSellingResponse;
-import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
-import com.poona.agrocart.ui.home.HomeFragment;
-import com.poona.agrocart.ui.home.model.ProductOld;
-import com.poona.agrocart.ui.product_detail.model.ProductDetail;
+import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;

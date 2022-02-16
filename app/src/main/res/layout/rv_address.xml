@@ -6,7 +6,7 @@
 
         <variable
             name="address"
-            type="com.poona.agrocart.data.network.reponses.AddressesResponse.Address" />
+            type="com.poona.agrocart.data.network.responses.AddressesResponse.Address" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

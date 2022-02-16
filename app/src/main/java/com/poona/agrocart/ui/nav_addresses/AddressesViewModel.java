@@ -14,19 +14,16 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.AddressesResponse;
-import com.poona.agrocart.data.network.reponses.AreaResponse;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.CityResponse;
-import com.poona.agrocart.data.network.reponses.ProfileResponse;
-import com.poona.agrocart.ui.sign_up.SelectLocationFragment;
+import com.poona.agrocart.data.network.responses.AddressesResponse;
+import com.poona.agrocart.data.network.responses.AreaResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.CityResponse;
 
 import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import okhttp3.RequestBody;
 import retrofit2.HttpException;
 
 public class AddressesViewModel extends AndroidViewModel {
