@@ -60,7 +60,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
 
         if (favourite.getItemType().equalsIgnoreCase("basket")){
             favouriteListItemBinding.tvName.setText(favourite.getBasketName());
-            favouriteListItemBinding.tvOfferActualPrice.setText("RS."+favourite.getBasketName());
+            favouriteListItemBinding.tvOfferActualPrice.setText("RS."+favourite.getOffer_price());
             favouriteListItemBinding.tvSellingPrice.setVisibility(View.INVISIBLE);
             favouriteListItemBinding.tvLocation.setVisibility(View.INVISIBLE);
         }else {
