@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
+import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
 import com.poona.agrocart.databinding.FragmentSeasonalRegBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.product_detail.ProductImagesAdapter;

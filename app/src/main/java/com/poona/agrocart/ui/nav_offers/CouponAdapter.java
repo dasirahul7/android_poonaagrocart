@@ -1,10 +1,6 @@
 package com.poona.agrocart.ui.nav_offers;
 
-import static android.content.Context.CLIPBOARD_SERVICE;
-
 import android.annotation.SuppressLint;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -15,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.CouponResponse;
+import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.databinding.RowCouponItemBinding;
 
 import java.util.ArrayList;

@@ -26,6 +26,7 @@ public class BasicDetails {
     String mapAddress;
 
     String name;
+    String addressId;
     String addressType;
     String alternateMobileNumber;
     String state;
@@ -222,6 +223,14 @@ public class BasicDetails {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
     }
 
     public int isValidMobileNumber(){

@@ -1,40 +1,24 @@
 package com.poona.agrocart.ui.ticket_details;
 
-import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
-import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
-import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
-import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
-
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
-import com.poona.agrocart.data.network.reponses.help_center_response.SendReplayResponse;
-import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
 import com.poona.agrocart.databinding.FragmentTicketDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_help_center.HelpCenterFragment;
-import com.poona.agrocart.ui.nav_help_center.HelpCenterViewModel;
-import com.poona.agrocart.ui.nav_help_center.model.Ticket;
 import com.poona.agrocart.ui.ticket_details.model.Comment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TicketDetailFragment extends BaseFragment
 {

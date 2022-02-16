@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteLisResponse;
+import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteLisResponse;
 import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.model.ProductOld;

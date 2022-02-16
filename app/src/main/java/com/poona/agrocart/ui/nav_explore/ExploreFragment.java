@@ -31,7 +31,7 @@ import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.CategoryResponse;
+import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.databinding.FragmentExploreBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_explore.adapter.ExploreItemAdapter;

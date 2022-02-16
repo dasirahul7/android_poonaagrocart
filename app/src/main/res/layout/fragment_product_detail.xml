@@ -7,7 +7,7 @@
 
         <variable
             name="productDetailModule"
-            type="com.poona.agrocart.data.network.reponses.ProductDetailsResponse.ProductDetails" />
+            type="com.poona.agrocart.data.network.responses.ProductDetailsResponse.ProductDetails" />
     </data>
 
     <ScrollView

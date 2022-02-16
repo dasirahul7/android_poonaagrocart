@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.databinding.HomeProductItemBinding;
-import com.poona.agrocart.ui.home.OnPlusClick;
-import com.poona.agrocart.ui.home.OnProductClick;
 
 import java.util.ArrayList;
 

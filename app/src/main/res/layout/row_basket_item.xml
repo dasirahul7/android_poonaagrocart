@@ -5,7 +5,7 @@
 
         <variable
             name="basketModule"
-            type="com.poona.agrocart.data.network.reponses.BasketResponse.Basket" />
+            type="com.poona.agrocart.data.network.responses.BasketResponse.Basket" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

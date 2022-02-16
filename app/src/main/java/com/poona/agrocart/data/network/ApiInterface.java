@@ -4,12 +4,14 @@ import static com.poona.agrocart.app.AppConstants.ADD_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_BASKET;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_PRODUCT;
-import static com.poona.agrocart.app.AppConstants.AREA_API;
 import static com.poona.agrocart.app.AppConstants.AREA_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.BASKET_DETAIL_API;
+import static com.poona.agrocart.app.AppConstants.CHECK_VALID_PIN_CODE_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
+import static com.poona.agrocart.app.AppConstants.CITY_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
 import static com.poona.agrocart.app.AppConstants.COUPON_API;
+import static com.poona.agrocart.app.AppConstants.DELETE_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.FAQ;
 import static com.poona.agrocart.app.AppConstants.FAVOURITE_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_API;
@@ -36,47 +38,47 @@ import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.TICKET_TYPE;
+import static com.poona.agrocart.app.AppConstants.UPDATE_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_GALLERY;
 import static com.poona.agrocart.app.AppConstants.VIEW_TICKET;
 
-import com.poona.agrocart.data.network.reponses.AddressesResponse;
-import com.poona.agrocart.data.network.reponses.AreaResponse;
-import com.poona.agrocart.data.network.reponses.BannerResponse;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.BasketDetailsResponse;
-import com.poona.agrocart.data.network.reponses.BasketResponse;
-import com.poona.agrocart.data.network.reponses.BestSellingResponse;
-import com.poona.agrocart.data.network.reponses.CategoryResponse;
-import com.poona.agrocart.data.network.reponses.CityResponse;
-import com.poona.agrocart.data.network.reponses.CouponResponse;
-import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
-import com.poona.agrocart.data.network.reponses.HomeResponse;
-import com.poona.agrocart.data.network.reponses.help_center_response.CreateTicketResponse;
-import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
-import com.poona.agrocart.data.network.reponses.help_center_response.TicketTypeResponse;
-import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
-import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
-import com.poona.agrocart.data.network.reponses.ProductListByResponse;
-import com.poona.agrocart.data.network.reponses.ProductListResponse;
-import com.poona.agrocart.data.network.reponses.ProfileResponse;
-import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
-import com.poona.agrocart.data.network.reponses.SignInResponse;
-import com.poona.agrocart.data.network.reponses.StateResponse;
-import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
-import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
-import com.poona.agrocart.data.network.reponses.CmsResponse;
-import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteLisResponse;
-import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryResponse;
+import com.poona.agrocart.data.network.responses.AddressesResponse;
+import com.poona.agrocart.data.network.responses.AreaResponse;
+import com.poona.agrocart.data.network.responses.BannerResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
+import com.poona.agrocart.data.network.responses.BasketResponse;
+import com.poona.agrocart.data.network.responses.BestSellingResponse;
+import com.poona.agrocart.data.network.responses.CategoryResponse;
+import com.poona.agrocart.data.network.responses.CityResponse;
+import com.poona.agrocart.data.network.responses.CouponResponse;
+import com.poona.agrocart.data.network.responses.ExclusiveResponse;
+import com.poona.agrocart.data.network.responses.HomeResponse;
+import com.poona.agrocart.data.network.responses.help_center_response.CreateTicketResponse;
+import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
+import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
+import com.poona.agrocart.data.network.responses.IntroScreenResponse;
+import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
+import com.poona.agrocart.data.network.responses.ProductListByResponse;
+import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.ProfileResponse;
+import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
+import com.poona.agrocart.data.network.responses.SignInResponse;
+import com.poona.agrocart.data.network.responses.StateResponse;
+import com.poona.agrocart.data.network.responses.StoreBannerResponse;
+import com.poona.agrocart.data.network.responses.VerifyOtpResponse;
+import com.poona.agrocart.data.network.responses.CmsResponse;
+import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteLisResponse;
+import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
 
 import java.util.HashMap;
 
-import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
@@ -119,6 +121,10 @@ public interface ApiInterface {
     @POST(MY_PROFILE_API)
     Observable<ProfileResponse> getProfileObservableResponse(@FieldMap HashMap<String, String> data);
 
+    @FormUrlEncoded
+    @POST(MY_PROFILE_API)
+    Single<ProfileResponse> getProfileResponse(@FieldMap HashMap<String, String> data);
+
     @GET(ADDRESS_LIST_API)
     Single<AddressesResponse> getAddressesListResponse();
 
@@ -130,14 +136,20 @@ public interface ApiInterface {
     @GET(STATE_API)
     Observable<StateResponse> getStateObservableResponse();
 
+    @FormUrlEncoded
+    @POST(CITY_WITH_ID_API)
+    Observable<CityResponse> getCityObservableResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(AREA_WITH_ID_API)
+    Observable<AreaResponse> getAreaObservableResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(CITY_WITH_ID_API)
+    Single<CityResponse> getCityResponse(@FieldMap HashMap<String, String> data);
+
     @GET(CITY_API)
     Single<CityResponse> getCityResponse();
-
-    @GET(CITY_API)
-    Observable<CityResponse> getCityObservableResponse();
-
-    @GET(AREA_API)
-    Single<AreaResponse> getAreaResponse();
 
     @FormUrlEncoded
     @POST(AREA_WITH_ID_API)
@@ -147,12 +159,21 @@ public interface ApiInterface {
     @POST(ADD_ADDRESS_API)
     Single<BaseResponse> addAddressResponse(@FieldMap HashMap<String, String> data);
 
-    @GET(AREA_API)
-    Observable<AreaResponse> getAreaObservableResponse();
+    @FormUrlEncoded
+    @POST(UPDATE_ADDRESS_API)
+    Single<BaseResponse> updateAddressResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(DELETE_ADDRESS_API)
+    Single<BaseResponse> deleteAddressResponse(@FieldMap HashMap<String, String> data);
 
     @FormUrlEncoded
     @POST(UPDATE_LOCATION_API)
     Single<BaseResponse> updateLocationResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(CHECK_VALID_PIN_CODE_API)
+    Single<BaseResponse> checkPinCodeAvailableResponse(@FieldMap HashMap<String, String> data);
 
     //Home Banner API
     @GET(HOME_BANNER_API)

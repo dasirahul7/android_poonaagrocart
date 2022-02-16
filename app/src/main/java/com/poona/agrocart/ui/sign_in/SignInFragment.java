@@ -46,7 +46,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
-import com.poona.agrocart.data.network.reponses.SignInResponse;
+import com.poona.agrocart.data.network.responses.SignInResponse;
 
 import java.util.HashMap;
 import java.util.Map;

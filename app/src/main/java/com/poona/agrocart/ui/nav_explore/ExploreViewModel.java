@@ -10,15 +10,11 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.CategoryResponse;
-import com.poona.agrocart.ui.home.HomeFragment;
-import com.poona.agrocart.ui.nav_explore.model.ExploreItems;
+import com.poona.agrocart.data.network.responses.CategoryResponse;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
