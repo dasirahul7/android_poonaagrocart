@@ -35,6 +35,14 @@
             android:textStyle="bold"
             android:layout_toLeftOf="@+id/edit_img"
             android:layout_marginEnd="@dimen/_8sdp"
+            android:singleLine="true"
+            android:lines="1"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:freezesText="true"
             app:setCustomFont="@string/font_poppins_semi_bold" />
 
         <ImageView

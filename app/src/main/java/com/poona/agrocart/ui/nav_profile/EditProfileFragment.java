@@ -189,7 +189,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         basicDetails3.setName("Select");
         areaList.add(basicDetails3);
 
-        if(stateResponse.getStates() != null && stateResponse.getStates().size() > 0) {
+        if(stateResponse != null && stateResponse.getStates() != null && stateResponse.getStates().size() > 0) {
             for(int i = 0; i < stateResponse.getStates().size(); i++) {
                 BasicDetails basicDetails = new BasicDetails();
                 basicDetails.setId(stateResponse.getStates().get(i).getId());
@@ -198,7 +198,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             }
         }
 
-        if(cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
+        if(cityResponse != null && cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
             for(int i = 0; i < cityResponse.getCities().size(); i++) {
                 BasicDetails basicDetails = new BasicDetails();
                 basicDetails.setId(cityResponse.getCities().get(i).getId());
@@ -207,7 +207,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             }
         }
 
-        if(areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
+        if(areaResponse != null && areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
             for(int i = 0; i < areaResponse.getAreas().size(); i++) {
                 BasicDetails basicDetails = new BasicDetails();
                 basicDetails.setId(areaResponse.getAreas().get(i).getId());
