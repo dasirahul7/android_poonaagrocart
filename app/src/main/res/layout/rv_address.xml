@@ -94,7 +94,7 @@
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_3sdp"
+                        android:layout_marginStart="@dimen/_2sdp"
                         android:text="@={address.fullAddress}"
                         android:textColor="@color/color_order_view_username"
                         android:textSize="@dimen/_14sp"
