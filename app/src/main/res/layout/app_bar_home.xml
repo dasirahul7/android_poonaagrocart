@@ -47,11 +47,12 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp"
                     android:visibility="gone"
-                    app:setCustomFont="@string/font_poppins_regular" />
+                    app:setCustomFont="@string/font_poppins_regular"
+                    tools:ignore="RtlSymmetry" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/_120sdp"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
@@ -61,17 +62,21 @@
                     android:drawableTint="@color/title_black"
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    android:singleLine="true"
                     android:text="@string/address_location"
                     android:textColor="@color/title_black"
-                    android:textSize="@dimen/_14sp"
-                    app:setCustomFont="@string/font_poppins_regular"
+                    android:textSize="@dimen/_16sp"
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:lines="1"
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:scrollHorizontally="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true" />
+                    android:focusableInTouchMode="true"
+                    android:freezesText="true"
+                    app:setCustomFont="@string/font_poppins_regular" />
                 <RelativeLayout
                     android:visibility="gone"
                     android:id="@+id/rl_product_tag"

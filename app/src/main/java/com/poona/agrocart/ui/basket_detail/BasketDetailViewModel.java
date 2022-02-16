@@ -14,6 +14,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
 import com.poona.agrocart.ui.basket_detail.model.BasketDetail;
@@ -88,6 +89,136 @@ public class BasketDetailViewModel extends AndroidViewModel {
                     }
                 });
         return basketDetailsResponseMutableLiveData;
+
+    }
+
+
+    /*Add to CART Basket*/
+    public LiveData<BaseResponse> addToBasketResponse(ProgressDialog progressDialog,
+                                                                HashMap<String,String> hashMap,
+                                                                BasketDetailFragment basketDetailFragment){
+        MutableLiveData<BaseResponse> addToBasketResponseObserver  = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(basketDetailFragment.getContext())
+                .create(ApiInterface.class)
+                .addToBasketResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull BaseResponse baseResponse) {
+                        if (baseResponse!=null){
+                            progressDialog.dismiss();
+                            addToBasketResponseObserver.setValue(baseResponse);
+                            Log.e(TAG, "Add to Basket onSuccess: "+new Gson().toJson(baseResponse));
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            addToBasketResponseObserver.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) basketDetailFragment).onNetworkException(1,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return addToBasketResponseObserver;
+
+    }
+
+    /*Add To Favourite Basket*/
+    public LiveData<BaseResponse> addToFavoriteBasketResponse(ProgressDialog progressDialog,
+                                                                HashMap<String,String> hashMap,
+                                                                BasketDetailFragment basketDetailFragment){
+        MutableLiveData<BaseResponse> addToFavouriteResponseObserver  = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(basketDetailFragment.getContext())
+                .create(ApiInterface.class)
+                .addToFavouriteResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull BaseResponse baseResponse) {
+                        if (baseResponse!=null){
+                            progressDialog.dismiss();
+                            addToFavouriteResponseObserver.setValue(baseResponse);
+                            Log.e(TAG, "Add to Favourite onSuccess: "+new Gson().toJson(baseResponse));
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            addToFavouriteResponseObserver.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) basketDetailFragment).onNetworkException(2,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return addToFavouriteResponseObserver;
+
+    }
+
+    /*REmove from favrouite*/
+    public LiveData<BaseResponse> removeFromFavoriteResponse(ProgressDialog progressDialog,
+                                                                HashMap<String,String> hashMap,
+                                                                BasketDetailFragment basketDetailFragment){
+        MutableLiveData<BaseResponse> removeFromFavouriteResponseObserver  = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(basketDetailFragment.getContext())
+                .create(ApiInterface.class)
+                .removeFromFavouriteResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull BaseResponse baseResponse) {
+                        if (baseResponse!=null){
+                            progressDialog.dismiss();
+                            removeFromFavouriteResponseObserver.setValue(baseResponse);
+                            Log.e(TAG, "Remove from Favourite onSuccess: "+new Gson().toJson(baseResponse));
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            removeFromFavouriteResponseObserver.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) basketDetailFragment).onNetworkException(3,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return removeFromFavouriteResponseObserver;
 
     }
 

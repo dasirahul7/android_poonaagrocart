@@ -172,7 +172,6 @@
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="@string/_1"
                         android:textAlignment="center"
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_18sp"
