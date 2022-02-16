@@ -225,6 +225,88 @@ public class AddressesViewModel extends AndroidViewModel {
         return responseMutableLiveData;
     }
 
+    public LiveData<BaseResponse> updateAddressResponse(ProgressDialog progressDialog,
+                                                     AddAddressFragment addAddressFragment,
+                                                     HashMap<String, String> hashmap) {
+        MutableLiveData<BaseResponse> responseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(addAddressFragment.getContext())
+                .create(ApiInterface.class)
+                .updateAddressResponse(hashmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            responseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            responseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(4,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return responseMutableLiveData;
+    }
+
+    public LiveData<BaseResponse> deleteAddressResponse(ProgressDialog progressDialog,
+                                                     AddressesFragment addAddressFragment,
+                                                     HashMap<String, String> hashmap) {
+        MutableLiveData<BaseResponse> responseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(addAddressFragment.getContext())
+                .create(ApiInterface.class)
+                .deleteAddressResponse(hashmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            responseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            responseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(1,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return responseMutableLiveData;
+    }
+
     public LiveData<BaseResponse> checkPinCodeAvailableResponse(ProgressDialog progressDialog,
                                                      AddAddressFragment addAddressFragment,
                                                      HashMap<String, String> hashmap) {

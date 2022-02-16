@@ -1,10 +1,13 @@
 package com.poona.agrocart.ui.nav_addresses;
 
 import static android.app.Activity.RESULT_OK;
+import static android.provider.ContactsContract.CommonDataKinds.StructuredPostal.CITY;
 
+import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_TYPE;
 import static com.poona.agrocart.app.AppConstants.APARTMENT_NAME;
 import static com.poona.agrocart.app.AppConstants.AREA_;
+import static com.poona.agrocart.app.AppConstants.AREA_ID;
 import static com.poona.agrocart.app.AppConstants.CITY_;
 import static com.poona.agrocart.app.AppConstants.CITY_ID;
 import static com.poona.agrocart.app.AppConstants.HOUSE_NO;
@@ -177,6 +180,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 /*basicDetails.setCity(adapterView.getItemAtPosition(i).toString());
                 addressesViewModel.city.setValue(basicDetails.getCity());*/
+                hideKeyBoard(requireActivity());
                 if (cityList != null) {
                     System.out.println("selected city " + cityList.get(i).getId());
                     selectedCityId = cityList.get(i).getId();
@@ -224,6 +228,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 /*basicDetails.setArea(adapterView.getItemAtPosition(i).toString());
                 addressesViewModel.area.setValue(basicDetails.getArea());*/
+                hideKeyBoard(requireActivity());
                 if (areaList != null) {
                     System.out.println("selected area " + areaList.get(i).getId());
                     selectedAreaId = areaList.get(i).getId();
@@ -407,7 +412,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
     private void callAddAddressApi(ProgressDialog progressDialog) {
         /*print user input parameters*/
-        for (Map.Entry<String, String> entry : addAddressParameters().entrySet()) {
+        for (Map.Entry<String, String> entry : addAddressParameters(false).entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }
 
@@ -441,18 +446,60 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         };
 
         addressesViewModel
-                .addAddressResponse(progressDialog, AddAddressFragment.this, addAddressParameters())
+                .addAddressResponse(progressDialog, AddAddressFragment.this, addAddressParameters(false))
                 .observe(getViewLifecycleOwner(), updateProfileResponseObserver);
     }
 
-    private HashMap<String, String> addAddressParameters() {
+    private void callUpdateAddressApi(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : addAddressParameters(true).entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+
+        androidx.lifecycle.Observer<BaseResponse> updateProfileResponseObserver = profileResponse -> {
+            if (profileResponse != null) {
+                progressDialog.dismiss();
+                Log.e("Update Address Api Response", new Gson().toJson(profileResponse));
+                switch (profileResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, ""+profileResponse.getMessage());
+                        Navigation.findNavController(view).popBackStack();
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_402://Validation Errors
+                        goToAskAndDismiss(profileResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, profileResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(profileResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, profileResponse.getMessage());
+                        break;
+                }
+            } else {
+                progressDialog.dismiss();
+            }
+        };
+
+        addressesViewModel
+                .updateAddressResponse(progressDialog, AddAddressFragment.this, addAddressParameters(true))
+                .observe(getViewLifecycleOwner(), updateProfileResponseObserver);
+    }
+
+    private HashMap<String, String> addAddressParameters(boolean isUpdate) {
         HashMap<String, String> map = new HashMap<>();
 
+        if(isUpdate)
+            map.put(ADDRESS_ID, basicDetails.getAddressId());
         map.put(ADDRESS_TYPE, basicDetails.getAddressType());
         map.put(NAME, basicDetails.getName());
         map.put(MOBILE, basicDetails.getMobileNumber());
-        map.put(CITY_, basicDetails.getCity());
-        map.put(AREA_, basicDetails.getArea());
+        map.put(CITY_ID, basicDetails.getCity());
+        map.put(AREA_ID, basicDetails.getArea());
         map.put(PIN_CODE, basicDetails.getPinCode());
         map.put(APARTMENT_NAME, basicDetails.getApartmentName());
         map.put(HOUSE_NO, basicDetails.getHouseNumber());
@@ -649,6 +696,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     callAddAddressApi(showCircleProgressDialog(context, ""));
                 } else if(from == 3) {
                     checkPinCodeAvailableApi(showCircleProgressDialog(context, ""));
+                } else if(from == 4) {
+                    callUpdateAddressApi(showCircleProgressDialog(context, ""));
                 }
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

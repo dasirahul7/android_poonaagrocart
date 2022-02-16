@@ -72,6 +72,8 @@ public class AppConstants {
     public static final String MY_PROFILE_API = "profile-view-customer";
     public static final String ADDRESS_LIST_API = "address-view";
     public static final String ADD_ADDRESS_API = "address-add";
+    public static final String UPDATE_ADDRESS_API = "address-update";
+    public static final String DELETE_ADDRESS_API = "address-delete";
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
     public static final String CHECK_VALID_PIN_CODE_API = "check-pincode-availablity";
@@ -198,6 +200,7 @@ public class AppConstants {
     public static final String DATE_OF_BIRTH = "date_of_birth";
 
     /*add address post parameters*/
+    public static final String ADDRESS_ID = "address_primary_id";
     public static final String ADDRESS_TYPE = "address_type";
     public static final String MOBILE = "mobile";
     public static final String CITY_ = "city_id_fk";

@@ -11,6 +11,7 @@ import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.CITY_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
 import static com.poona.agrocart.app.AppConstants.COUPON_API;
+import static com.poona.agrocart.app.AppConstants.DELETE_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.FAQ;
 import static com.poona.agrocart.app.AppConstants.FAVOURITE_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_API;
@@ -37,6 +38,7 @@ import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.TICKET_TYPE;
+import static com.poona.agrocart.app.AppConstants.UPDATE_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
@@ -156,6 +158,14 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(ADD_ADDRESS_API)
     Single<BaseResponse> addAddressResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(UPDATE_ADDRESS_API)
+    Single<BaseResponse> updateAddressResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(DELETE_ADDRESS_API)
+    Single<BaseResponse> deleteAddressResponse(@FieldMap HashMap<String, String> data);
 
     @FormUrlEncoded
     @POST(UPDATE_LOCATION_API)
