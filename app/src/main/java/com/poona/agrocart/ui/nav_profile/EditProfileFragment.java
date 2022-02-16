@@ -46,6 +46,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -103,6 +104,21 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private View view;
 
     private BasicDetails basicDetails;
+
+    private String selectedStateId = "0";
+    private String selectedCityId = "0";
+    private String selectedAreaId = "0";
+    private String selectedState = "";
+    private String selectedCity = "";
+    private String selectedArea = "";
+
+    private ProfileResponse profileResponse = null;
+    private StateResponse stateResponse = null;
+    private CityResponse cityResponse = null;
+    private AreaResponse areaResponse = null;
+    private List<BasicDetails> stateList;
+    private List<BasicDetails> cityList;
+    private List<BasicDetails> areaList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -163,70 +179,372 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         fragmentEditProfileBinding.ivChooseProfilePhoto.setOnClickListener(this);
         fragmentEditProfileBinding.llMobileNumber.setOnClickListener(this);
 
+        stateList = new ArrayList<>();
+        cityList = new ArrayList<>();
+        areaList = new ArrayList<>();
+
         if (isConnectingToInternet(context)) {
-            getCommonApiResponses(showCircleProgressDialog(context, ""));
+            getProfileStateApiResponses(showCircleProgressDialog(context, ""));
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
     }
 
-    private void setupSpinner() {
-        stateList = new ArrayList<>();
-        cityList = new ArrayList<>();
-        areaList = new ArrayList<>();
+    private void getProfileStateApiResponses(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        myProfileViewModel.getProfileStateResponses(context, getProfileParameters())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new Observer<List<String>>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
-        BasicDetails basicDetails1 = new BasicDetails();
-        basicDetails1.setId("0");
-        basicDetails1.setName("Select");
-        stateList.add(basicDetails1);
+                    }
 
-        BasicDetails basicDetails2 = new BasicDetails();
-        basicDetails2.setId("0");
-        basicDetails2.setName("Select");
-        cityList.add(basicDetails2);
+                    @Override
+                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<String> strings) {
+                        Type profileType = new TypeToken<ProfileResponse>(){}.getType();
+                        profileResponse = new GsonBuilder().create().fromJson(strings.get(0), profileType);
 
-        BasicDetails basicDetails3 = new BasicDetails();
-        basicDetails3.setId("0");
-        basicDetails3.setName("Select");
-        areaList.add(basicDetails3);
+                        Type stateType = new TypeToken<StateResponse>(){}.getType();
+                        stateResponse = new GsonBuilder().create().fromJson(strings.get(1), stateType);
+
+                        selectedStateId = profileResponse.getProfile().getStateId();
+                        selectedState = profileResponse.getProfile().getStateName();
+
+                        selectedCityId = profileResponse.getProfile().getCityId();
+                        selectedCity = profileResponse.getProfile().getCityName();
+
+                        selectedAreaId = profileResponse.getProfile().getAreaId();
+                        selectedArea = profileResponse.getProfile().getAreaName();
+
+                        setupStateSpinner();
+                        getCityAreaApiResponses(showCircleProgressDialog(context, ""));
+
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Gson gson = new GsonBuilder().create();
+                        if(e instanceof HttpException) {
+                            try {
+                                profileResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), ProfileResponse.class);
+                                stateResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), StateResponse.class);
+
+                                setupStateSpinner();
+                                getCityAreaApiResponses(showCircleProgressDialog(context, ""));
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                                showServerErrorDialog(getString(R.string.for_better_user_experience), EditProfileFragment.this, () -> {
+                                    if (isConnectingToInternet(context)) {
+                                        getProfileStateApiResponses(showCircleProgressDialog(context, ""));
+                                    } else {
+                                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                                    }
+                                }, context);
+                            }
+                        } else {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        progressDialog.dismiss();
+                    }
+                });
+    }
+
+    private void getCityAreaApiResponses(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        myProfileViewModel.getCityAreaResponses(context, getCityParameters(), getAreaParameters())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new Observer<List<String>>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<String> strings) {
+                        Type cityType = new TypeToken<CityResponse>(){}.getType();
+                        cityResponse = new GsonBuilder().create().fromJson(strings.get(0), cityType);
+
+                        Type areaType = new TypeToken<AreaResponse>(){}.getType();
+                        areaResponse = new GsonBuilder().create().fromJson(strings.get(1), areaType);
+
+                        setupCitySpinner();
+                        setDefaultSelectedValues();
+
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Gson gson = new GsonBuilder().create();
+                        if(e instanceof HttpException) {
+                            try {
+                                cityResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CityResponse.class);
+                                areaResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), AreaResponse.class);
+
+                                setupCitySpinner();
+                                setDefaultSelectedValues();
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                                showServerErrorDialog(getString(R.string.for_better_user_experience), EditProfileFragment.this, () -> {
+                                    if (isConnectingToInternet(context)) {
+                                        getCityAreaApiResponses(showCircleProgressDialog(context, ""));
+                                    } else {
+                                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                                    }
+                                }, context);
+                            }
+                        } else {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        progressDialog.dismiss();
+                    }
+                });
+    }
+
+    private HashMap<String, String> getProfileParameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(CUSTOMER_ID, preferences.getUid());
+        return map;
+    }
+
+    private int checkState = 0;
+    private void setupStateSpinner() {
+        BasicDetails basicDetails = new BasicDetails();
+        basicDetails.setId("0");
+        basicDetails.setName("Select");
+        stateList.add(basicDetails);
 
         if(stateResponse != null && stateResponse.getStates() != null && stateResponse.getStates().size() > 0) {
             for(int i = 0; i < stateResponse.getStates().size(); i++) {
-                BasicDetails basicDetails = new BasicDetails();
-                basicDetails.setId(stateResponse.getStates().get(i).getId());
-                basicDetails.setName(stateResponse.getStates().get(i).getStateName());
-                stateList.add(basicDetails);
-            }
-        }
-
-        if(cityResponse != null && cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
-            for(int i = 0; i < cityResponse.getCities().size(); i++) {
-                BasicDetails basicDetails = new BasicDetails();
-                basicDetails.setId(cityResponse.getCities().get(i).getId());
-                basicDetails.setName(cityResponse.getCities().get(i).getCityName());
-                cityList.add(basicDetails);
-            }
-        }
-
-        if(areaResponse != null && areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
-            for(int i = 0; i < areaResponse.getAreas().size(); i++) {
-                BasicDetails basicDetails = new BasicDetails();
-                basicDetails.setId(areaResponse.getAreas().get(i).getId());
-                basicDetails.setName(areaResponse.getAreas().get(i).getAreaName());
-                areaList.add(basicDetails);
+                BasicDetails details = new BasicDetails();
+                details.setId(stateResponse.getStates().get(i).getId());
+                details.setName(stateResponse.getStates().get(i).getStateName());
+                stateList.add(details);
             }
         }
 
         CustomArrayAdapter stateArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, stateList);
         fragmentEditProfileBinding.spinnerState.setAdapter(stateArrayAdapter);
 
+        fragmentEditProfileBinding.spinnerState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                EditProfileFragment.this.basicDetails.setState(adapterView.getItemAtPosition(i).toString());
+                myProfileViewModel.state.setValue(EditProfileFragment.this.basicDetails.getState());
+                if (stateList != null) {
+                    System.out.println("selected state " + stateList.get(i).getId());
+                    selectedStateId = stateList.get(i).getId();
+                    selectedState = stateList.get(i).getName();
+
+                    if(++checkState > 1 && !selectedStateId.equals("0"))
+                        callCityApi(showCircleProgressDialog(context, ""));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        /*for first time*/
+        setupCitySpinner();
+    }
+
+    private int checkCity = 0;
+    private void setupCitySpinner() {
+        if(cityList != null && cityList.size() > 0) {
+            cityList.clear();
+        }
+
+        BasicDetails basicDetails = new BasicDetails();
+        basicDetails.setId("0");
+        basicDetails.setName("Select");
+        cityList.add(basicDetails);
+
+        if(cityResponse != null && cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
+            for(int i = 0; i < cityResponse.getCities().size(); i++) {
+                BasicDetails details = new BasicDetails();
+                details.setId(cityResponse.getCities().get(i).getId());
+                details.setName(cityResponse.getCities().get(i).getCityName());
+                cityList.add(details);
+            }
+        }
+
         CustomArrayAdapter cityArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, cityList);
         fragmentEditProfileBinding.spinnerCity.setAdapter(cityArrayAdapter);
+
+        fragmentEditProfileBinding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                EditProfileFragment.this.basicDetails.setCity(adapterView.getItemAtPosition(i).toString());
+                myProfileViewModel.city.setValue(EditProfileFragment.this.basicDetails.getCity());
+                if (cityList != null) {
+                    System.out.println("selected city " + cityList.get(i).getId());
+                    selectedCityId = cityList.get(i).getId();
+                    selectedCity = cityList.get(i).getName();
+
+                    if(++checkCity > 1 && !selectedCityId.equals("0"))
+                        callAreaApi(showCircleProgressDialog(context, ""));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        /*for first time*/
+        setupAreaSpinner();
+    }
+
+    private int checkArea = 0;
+    private void setupAreaSpinner() {
+        if(areaList != null && areaList.size() > 0) {
+            areaList.clear();
+        }
+
+        BasicDetails basicDetails = new BasicDetails();
+        basicDetails.setId("0");
+        basicDetails.setName("Select");
+        areaList.add(basicDetails);
+
+        if(areaResponse != null && areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
+            for(int i = 0; i < areaResponse.getAreas().size(); i++) {
+                BasicDetails details = new BasicDetails();
+                details.setId(areaResponse.getAreas().get(i).getId());
+                details.setName(areaResponse.getAreas().get(i).getAreaName());
+                areaList.add(details);
+            }
+        }
 
         CustomArrayAdapter areaArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, areaList);
         fragmentEditProfileBinding.spinnerArea.setAdapter(areaArrayAdapter);
 
-        setDefaultSelectedValues();
+        fragmentEditProfileBinding.spinnerArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                EditProfileFragment.this.basicDetails.setArea(adapterView.getItemAtPosition(i).toString());
+                myProfileViewModel.area.setValue(EditProfileFragment.this.basicDetails.getArea());
+                if (areaList != null) {
+                    System.out.println("selected area " + areaList.get(i).getId());
+                    selectedAreaId = areaList.get(i).getId();
+                    selectedArea = areaList.get(i).getName();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void callCityApi(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : getCityParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+
+        androidx.lifecycle.Observer<CityResponse> cityResponseObserver = cityResponse -> {
+            if (cityResponse != null) {
+                switch (cityResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (cityResponse.getStatus() == 200) {
+                            if (cityResponse.getCities() != null) {
+                                if (cityResponse.getCities().size() > 0) {
+                                    this.cityResponse = cityResponse;
+                                    setupCitySpinner();
+                                }
+                            }
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        this.cityResponse = null;
+                        setupCitySpinner();
+                        warningToast(context, cityResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(cityResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, cityResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        myProfileViewModel.getCityResponse(progressDialog, EditProfileFragment.this, getCityParameters())
+                .observe(getViewLifecycleOwner(), cityResponseObserver);
+    }
+
+    private HashMap<String, String> getCityParameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(STATE_ID, selectedStateId);
+        return map;
+    }
+
+    private void callAreaApi(ProgressDialog showCircleProgressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : getAreaParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+
+        androidx.lifecycle.Observer<AreaResponse> areaResponseObserver = areaResponse -> {
+            if (areaResponse != null) {
+                showCircleProgressDialog.dismiss();
+                switch (areaResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (areaResponse.getStatus() == 200) {
+                            if (areaResponse.getAreas() != null) {
+                                if (areaResponse.getAreas().size() > 0) {
+                                    this.areaResponse = areaResponse;
+                                    setupAreaSpinner();
+                                }
+                            }
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://No records found
+                        this.areaResponse = null;
+                        setupAreaSpinner();
+                        warningToast(context, areaResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(areaResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, areaResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        myProfileViewModel.getAreaResponse(showCircleProgressDialog,
+                EditProfileFragment.this, getAreaParameters())
+                .observe(getViewLifecycleOwner(), areaResponseObserver);
+    }
+
+    private HashMap<String, String> getAreaParameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(CITY_ID, selectedCityId);
+        return map;
     }
 
     private void setDefaultSelectedValues() {
@@ -443,99 +761,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         } else {
             updateProfileApi(showCircleProgressDialog(context, ""));
         }
-    }
-
-    private ProfileResponse profileResponse = null;
-    private StateResponse stateResponse = null;
-    private CityResponse cityResponse = null;
-    private AreaResponse areaResponse = null;
-    private List<BasicDetails> stateList;
-    private List<BasicDetails> cityList;
-    private List<BasicDetails> areaList;
-    private void getCommonApiResponses(ProgressDialog progressDialog) {
-        /*print user input parameters*/
-        for (Map.Entry<String, String> entry : getProfileParameters().entrySet()) {
-            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
-        }
-        myProfileViewModel.getCommonApiResponses(context, getProfileParameters())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new Observer<List<String>>() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<String> strings) {
-                        //strings.get(0) is Dashboard response
-                        Type profileType = new TypeToken<ProfileResponse>(){}.getType();
-                        profileResponse = new GsonBuilder().create().fromJson(strings.get(0), profileType);
-
-                        //strings.get(1) is Teacher Lessons response
-                        Type stateType = new TypeToken<StateResponse>(){}.getType();
-                        stateResponse = new GsonBuilder().create().fromJson(strings.get(1), stateType);
-
-                        //strings.get(2) is Subjects response
-                        Type cityType = new TypeToken<CityResponse>(){}.getType();
-                        cityResponse = new GsonBuilder().create().fromJson(strings.get(2), cityType);
-
-                        //strings.get(3) is Subjects response
-                        Type areaType = new TypeToken<AreaResponse>(){}.getType();
-                        areaResponse = new GsonBuilder().create().fromJson(strings.get(3), areaType);
-
-                        /*preferences.setProfileData(profileResponse);
-                        preferences.setStateData(stateResponse);
-                        preferences.setCityData(cityResponse);
-                        preferences.setAreaData(areaResponse);*/
-
-                        setupSpinner();
-
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        Gson gson = new GsonBuilder().create();
-                        if(e instanceof HttpException) {
-                            try {
-                                profileResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), ProfileResponse.class);
-                                stateResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), StateResponse.class);
-                                cityResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CityResponse.class);
-                                areaResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), AreaResponse.class);
-
-                                /*preferences.setProfileData(profileResponse);
-                                preferences.setStateData(stateResponse);
-                                preferences.setCityData(cityResponse);
-                                preferences.setAreaData(areaResponse);*/
-
-                                setupSpinner();
-                            } catch (Exception exception) {
-                                exception.printStackTrace();
-                                showServerErrorDialog(getString(R.string.for_better_user_experience), EditProfileFragment.this, () -> {
-                                    if (isConnectingToInternet(context)) {
-                                        getCommonApiResponses(showCircleProgressDialog(context, ""));
-                                    } else {
-                                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-                                    }
-                                }, context);
-                            }
-                        } else {
-                            e.printStackTrace();
-                        }
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        progressDialog.dismiss();
-                    }
-                });
-    }
-
-    private HashMap<String, String> getProfileParameters() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put(CUSTOMER_ID, preferences.getUid());
-        return map;
     }
 
     private void updateProfileApi(ProgressDialog progressDialog) {

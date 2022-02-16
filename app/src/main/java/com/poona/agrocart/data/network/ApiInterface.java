@@ -7,6 +7,7 @@ import static com.poona.agrocart.app.AppConstants.AREA_API;
 import static com.poona.agrocart.app.AppConstants.AREA_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.BASKET_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
+import static com.poona.agrocart.app.AppConstants.CITY_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
 import static com.poona.agrocart.app.AppConstants.COUPON_API;
 import static com.poona.agrocart.app.AppConstants.FAQ;
@@ -117,6 +118,10 @@ public interface ApiInterface {
     @POST(MY_PROFILE_API)
     Observable<ProfileResponse> getProfileObservableResponse(@FieldMap HashMap<String, String> data);
 
+    @FormUrlEncoded
+    @POST(MY_PROFILE_API)
+    Single<ProfileResponse> getProfileResponse(@FieldMap HashMap<String, String> data);
+
     @GET(ADDRESS_LIST_API)
     Single<AddressesResponse> getAddressesListResponse();
 
@@ -128,14 +133,20 @@ public interface ApiInterface {
     @GET(STATE_API)
     Observable<StateResponse> getStateObservableResponse();
 
+    @FormUrlEncoded
+    @POST(CITY_WITH_ID_API)
+    Observable<CityResponse> getCityObservableResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(AREA_WITH_ID_API)
+    Observable<AreaResponse> getAreaObservableResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(CITY_WITH_ID_API)
+    Single<CityResponse> getCityResponse(@FieldMap HashMap<String, String> data);
+
     @GET(CITY_API)
     Single<CityResponse> getCityResponse();
-
-    @GET(CITY_API)
-    Observable<CityResponse> getCityObservableResponse();
-
-    @GET(AREA_API)
-    Single<AreaResponse> getAreaResponse();
 
     @FormUrlEncoded
     @POST(AREA_WITH_ID_API)
@@ -144,9 +155,6 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(ADD_ADDRESS_API)
     Single<BaseResponse> addAddressResponse(@FieldMap HashMap<String, String> data);
-
-    @GET(AREA_API)
-    Observable<AreaResponse> getAreaObservableResponse();
 
     @FormUrlEncoded
     @POST(UPDATE_LOCATION_API)
