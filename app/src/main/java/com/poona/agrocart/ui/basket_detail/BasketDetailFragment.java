@@ -1,11 +1,13 @@
 package com.poona.agrocart.ui.basket_detail;
 
+import static com.poona.agrocart.app.AppConstants.ITEM_TYPE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -31,6 +33,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.reponses.BaseResponse;
 import com.poona.agrocart.data.network.reponses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.reponses.BasketResponse;
 import com.poona.agrocart.databinding.FragmentBasketDetailBinding;
@@ -47,9 +50,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
-public class BasketDetailFragment extends BaseFragment implements View.OnClickListener , NetworkExceptionListener {
+public class BasketDetailFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
 
     private static final String TAG = BasketDetailFragment.class.getSimpleName();
     private BasketDetailViewModel basketDetailViewModel;
@@ -59,7 +61,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private DotsIndicator dotsIndicator;
     private RecyclerView rvProductComment;
     private BasketResponse.Basket details;
-    private ArrayList<BasketResponse.BasketProduct> basketProducts ;
+    private ArrayList<BasketResponse.BasketProduct> basketProducts;
     private BasketProductAdapter basketProductAdapter;
     private RecyclerView rvBasketProducts;
     private LinearLayoutManager linearLayoutManager;
@@ -96,14 +98,15 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void initView() {
+        basketDetailsBinding.itemLayout.setVisibility(View.GONE);
         try {
             if (getArguments() != null) {
                 bundle = getArguments();
                 if (bundle.getString(AppConstants.BASKET_ID) != null) {
                     itemId = bundle.getString(AppConstants.BASKET_ID);
-                    if (isConnectingToInternet(context)){
-                        callBasketDetailsApi(showCircleProgressDialog(context,""));
-                    }else {
+                    if (isConnectingToInternet(context)) {
+                        callBasketDetailsApi(showCircleProgressDialog(context, ""));
+                    } else {
                         showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                     }
                 }
@@ -137,21 +140,23 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     }
 
+    //Basket Details API
     private void callBasketDetailsApi(ProgressDialog progressDialog) {
         Observer<BasketDetailsResponse> basketDetailsResponseObserver = basketDetailsResponse -> {
-            if (basketDetailsResponse!=null){
+            if (basketDetailsResponse != null) {
                 progressDialog.dismiss();
                 switch (basketDetailsResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        if (basketDetailsResponse.getBasketDetail()!=null){
+                        if (basketDetailsResponse.getBasketDetail() != null) {
+                            basketDetailsBinding.itemLayout.setVisibility(View.VISIBLE);
                             BasketResponse.Basket basket = basketDetailsResponse.getBasketDetail();
                             basket.setBasketUnit(basket.getBasketUnits().get(0));
                             basket.setAccurateWeight(basket.getBasketUnit().getWeightAndUnit());
                             details = basket;
                             basketDetailsBinding.setModuleBasket(details);
-                            basketDetailsBinding.setVariable(BR.moduleBasket,details);
+                            basketDetailsBinding.setVariable(BR.moduleBasket, details);
                             basketDetailsBinding.layoutAdded.setSubscriptionModule(basket);
-                            basketDetailsBinding.layoutAdded.setVariable(BR.subscriptionModule,basket);
+                            basketDetailsBinding.layoutAdded.setVariable(BR.subscriptionModule, basket);
                             hideOrShowProductDetails();
                             setBasketImages();
                             setBasketContents();
@@ -174,39 +179,123 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
             }
         };
-        basketDetailViewModel.basketDetailsResponseLiveData(progressDialog,detailsParams(),BasketDetailFragment.this)
-                .observe(getViewLifecycleOwner(),basketDetailsResponseObserver);
+        basketDetailViewModel.basketDetailsResponseLiveData(progressDialog, basketParams(false, false), BasketDetailFragment.this)
+                .observe(getViewLifecycleOwner(), basketDetailsResponseObserver);
+    }
+
+    //Add to Cart Basket API
+    private void callAddToCartBasketApi(ProgressDialog progressDialog) {
+        Observer<BaseResponse> addToCartBasketObserver = baseResponse -> {
+            if (baseResponse != null && progressDialog != null) {
+                progressDialog.dismiss();
+                Log.e(TAG, "callAddToCartBasketApi: " + baseResponse.getMessage());
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, baseResponse.getMessage());
+                        basketDetailsBinding.ivMinus.setVisibility(View.VISIBLE);
+                        basketDetailsBinding.etQuantity.setVisibility(View.VISIBLE);
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        basketDetailViewModel.addToBasketResponse(progressDialog, basketParams(true, false),
+                BasketDetailFragment.this)
+                .observe(getViewLifecycleOwner(), addToCartBasketObserver);
+    }
+
+    /*Add To favourite API*/
+    private void callAddOrRemoveFavouriteApi(ProgressDialog progressDialog, boolean addToFav) {
+        Observer<BaseResponse> favouriteBasketObserver = baseResponse -> {
+            if (baseResponse != null && progressDialog != null) {
+                progressDialog.dismiss();
+                Log.e(TAG, "AddOrRemoveFavBasketApi: " + baseResponse.getMessage());
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, baseResponse.getMessage());
+                        if (addToFav){
+                            isFavourite=true;
+                            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
+                        } else{
+                            isFavourite = false;
+                            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        if (addToFav) {
+            basketDetailViewModel.addToFavoriteBasketResponse(progressDialog, basketParams(false, true),
+                    BasketDetailFragment.this)
+                    .observe(getViewLifecycleOwner(), favouriteBasketObserver);
+        } else
+            basketDetailViewModel.removeFromFavoriteResponse(progressDialog, basketParams(false, true),
+                    BasketDetailFragment.this)
+                    .observe(getViewLifecycleOwner(), favouriteBasketObserver);
     }
 
     private void setBasketContents() {
         basketProducts = new ArrayList<>();
         basketProducts = details.getBasketUnits();
-        if (basketProducts.size()>0){
+        if (basketProducts.size() > 0) {
             rvBasketProducts = basketDetailsBinding.rvBasketContents;
-            linearLayoutManager = new LinearLayoutManager(context,RecyclerView.VERTICAL,false);
+            linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
             rvBasketProducts.setLayoutManager(linearLayoutManager);
             basketProductAdapter = new BasketProductAdapter(basketProducts);
             rvBasketProducts.setAdapter(basketProductAdapter);
         }
 
-        if (details.getIsFavourite()==1)
+        if (details.getIsFavourite() == 1) {
+            isFavourite = true;
             basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
-        else basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
-        if (details.getInCart()==1){
+        } else {
+            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+            isFavourite = false;
+        }
+        if (details.getInCart() == 1) {
             basketDetailsBinding.ivMinus.setVisibility(View.VISIBLE);
             basketDetailsBinding.etQuantity.setVisibility(View.VISIBLE);
-            if (details.getQuantity()>0)
+            if (details.getQuantity() > 0)
                 basketDetailsBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
             else basketDetailsBinding.etQuantity.setText("1");
-        }else {
+        } else {
             basketDetailsBinding.ivPlus.setVisibility(View.VISIBLE);
             basketDetailsBinding.ivMinus.setVisibility(View.GONE);
             basketDetailsBinding.etQuantity.setVisibility(View.GONE);
         }
     }
 
-    private HashMap<String, String> detailsParams() {
+    private HashMap<String, String> basketParams(boolean addTo, boolean favTo) {
         HashMap<String, String> map = new HashMap<>();
+        if (addTo)
+            map.put(AppConstants.QUANTITY, basketDetailsBinding.etQuantity.getText().toString());
+        if (favTo)
+            map.put(ITEM_TYPE, "basket");
         map.put(AppConstants.BASKET_ID, itemId);
         return map;
     }
@@ -227,14 +316,14 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         for (int i = 0; i < details.getBasketImges().size(); i++)
             images.add(details.getBasketImges().get(i).getBasketImg());
         count = details.getBasketImges().size();
-        if (count>0){
+        if (count > 0) {
             basketImagesAdapter = new BasketImagesAdapter(BasketDetailFragment.this,
                     getChildFragmentManager(), images);
             vpImages.setAdapter(basketImagesAdapter);
             basketImagesAdapter.notifyDataSetChanged();
             vpImages.addOnPageChangeListener(basketImagesAdapter);
             dotsIndicator.setViewPager(vpImages);
-            Log.e(TAG, "setBasketImages: "+images.size() );
+            Log.e(TAG, "setBasketImages: " + images.size());
         }
     }
 
@@ -297,12 +386,11 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void addOrRemoveFromFavourite() {
-        if (isFavourite) {
-            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+        if (!isFavourite) {
+            callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), true);
         } else {
-            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
+            callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), false);
         }
-        isFavourite = !isFavourite;
     }
 
     private void increaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
@@ -310,6 +398,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         quantity++;
         etQuantity.setText(String.valueOf(quantity));
         AppUtils.setMinusButton(quantity, view);
+        details.setQuantity(quantity);
     }
 
     private void decreaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
@@ -396,7 +485,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -429,11 +517,13 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         basketDetailsBinding.etQuantity, basketDetailsBinding.ivMinus);
                 break;
             case R.id.iv_plus:
-                increaseQuantity(basketDetailsBinding.etQuantity.getText().toString(), basketDetailsBinding.etQuantity, basketDetailsBinding.ivMinus);
-                break;
-            case R.id.img_plus:
-                increaseQuantity(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
-                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
+                if (details.getInCart() == 0)
+                    callAddToCartBasketApi(showCircleProgressDialog(context, ""));
+                else {
+                    increaseQuantity(basketDetailsBinding.etQuantity.getText().toString(),
+                            basketDetailsBinding.etQuantity, basketDetailsBinding.ivPlus);
+                    callAddToCartBasketApi(showCircleProgressDialog(context,""));
+                }
                 break;
             case R.id.img_minus:
                 decreaseQuantity(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
@@ -457,6 +547,16 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                     case 0:
                         callBasketDetailsApi(showCircleProgressDialog(context, ""));
                         break;
+                    case 1:
+                        callAddToCartBasketApi(showCircleProgressDialog(context, ""));
+                        break;
+                    case 2:
+                        callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), true);
+                        break;
+                    case 3:
+                        callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), false);
+                        break;
+
                 }
             }
         }, context);

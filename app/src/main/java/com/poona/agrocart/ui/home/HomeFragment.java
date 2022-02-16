@@ -26,6 +26,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -738,6 +739,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
+                        if (loadType.equalsIgnoreCase("load"))
                         warningToast(context, productListResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
@@ -792,6 +794,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
+                        if (loadType.equalsIgnoreCase("load"))
                         warningToast(context, seasonalProductResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
@@ -846,6 +849,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
+                        if (loadType.equalsIgnoreCase("load"))
                         warningToast(context, bestSellingResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
@@ -941,6 +945,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
+                        if (loadType.equalsIgnoreCase("load"))
                         warningToast(context, exclusiveResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
@@ -983,6 +988,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
+                        if (loadType.equalsIgnoreCase("load"))
                         warningToast(context, basketResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
@@ -1217,6 +1223,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         if (((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.getVisibility() == View.VISIBLE)
             ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.VISIBLE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setSelected(true);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setText(preferences.getUserAddress());
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.VISIBLE);
 //        NavigationView navigationView = ((HomeActivity) requireActivity()).binding.navView;

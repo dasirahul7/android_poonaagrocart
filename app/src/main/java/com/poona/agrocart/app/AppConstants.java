@@ -86,6 +86,7 @@ public class AppConstants {
     public static final String HOME_STORE_BANNER_API = "store-banner";
     public static final String SIGN_OUT_API = "logout-customer";
     public static final String ADD_TO_FAVOURITE = "add-to-favourite";
+    public static final String REMOVE_FAVOURITE = "remove-from-favourite";
 
     /*Favourite API's*/
     public static final String FAVOURITE_LIST_API = "view-favourite-list";
