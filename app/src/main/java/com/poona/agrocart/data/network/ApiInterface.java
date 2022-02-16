@@ -4,7 +4,6 @@ import static com.poona.agrocart.app.AppConstants.ADD_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_BASKET;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_PRODUCT;
-import static com.poona.agrocart.app.AppConstants.AREA_API;
 import static com.poona.agrocart.app.AppConstants.AREA_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.BASKET_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
@@ -55,6 +54,7 @@ import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.reponses.HomeResponse;
+import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteListResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.CreateTicketResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketTypeResponse;
@@ -69,7 +69,6 @@ import com.poona.agrocart.data.network.reponses.StateResponse;
 import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
 import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
 import com.poona.agrocart.data.network.reponses.CmsResponse;
-import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteLisResponse;
 import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
@@ -275,7 +274,7 @@ public interface ApiInterface {
 
     /*Favourite Response*/
     @GET(FAVOURITE_LIST_API)
-    Single<FavouriteLisResponse> getFavouriteList();
+    Single<FavouriteListResponse> getFavouriteList();
 
     /*Home API*/
     @FormUrlEncoded

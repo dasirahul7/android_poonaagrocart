@@ -1,5 +1,12 @@
 package com.poona.agrocart.ui.nav_favourites;
 
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +20,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteLisResponse;
+import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteListResponse;
 import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.model.ProductOld;
@@ -28,77 +36,111 @@ public class FavouriteItemsFragment extends BaseFragment
     private RecyclerView rvFavouriteItems;
     private LinearLayoutManager linearLayoutManager;
     private FavouriteItemAdapter favouriteItemAdapter;
-    private ArrayList<ProductOld> favouriteItemsList = new ArrayList<>();
+    private ArrayList<FavouriteListResponse.Favourite> favouriteItemsList = new ArrayList<>();
 
     View view;
     private String TAG= FavouriteItemsFragment.class.getSimpleName();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        fragmentFavouriteItemsBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_favourite_items, container, false);
-//        fragmentFavouriteItemsBinding.setLifecycleOwner(this);
-        favouriteViewModel = new ViewModelProvider(this).get(FavouriteViewModel.class);
-         view = fragmentFavouriteItemsBinding.getRoot();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        fragmentFavouriteItemsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_favourite_items, container, false);
+        view = fragmentFavouriteItemsBinding.getRoot();
+        favouriteViewModel=new ViewModelProvider(this).get(FavouriteViewModel.class);
+        fragmentFavouriteItemsBinding.setFaqViewModel(favouriteViewModel);
+        fragmentFavouriteItemsBinding.setLifecycleOwner(this);
+
          initTitleBar(getString(R.string.menu_favourite));
-        initView();
+         initView();
+         setAdaptor();
+
 
         return view;
     }
 
 
-
-    private void initView()
-    {
-        makeFavouriteList();
-        rvFavouriteItems=fragmentFavouriteItemsBinding.rvFavouriteItems;
-        linearLayoutManager = new LinearLayoutManager(requireContext());
-        rvFavouriteItems.setHasFixedSize(true);
-        rvFavouriteItems.setLayoutManager(linearLayoutManager);
-        callFavouriteAPi(showCircleProgressDialog(context,""));
-//        favouriteViewModel.getFavouriteItemMutableLiveData().observe(getViewLifecycleOwner(),products -> {
-//            favouriteItemsList = products;
-//            for (ProductOld productOld :products)
-//                System.out.println("ProductOld "+ productOld.getName());
-//            favouriteItemAdapter = new FavouriteItemAdapter(favouriteItemsList,requireActivity(),view);
-//            rvFavouriteItems.setAdapter(favouriteItemAdapter);
-//            favouriteItemAdapter.setOnProductClick(product -> {
-//                toDetails(product,view);
-//            });
-//        });
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 
-    private void callFavouriteAPi(ProgressDialog showCircleProgressDialog) {
-        Observer<FavouriteLisResponse> favouriteLisResponseObserver = favouriteLisResponse -> {
-            if (favouriteLisResponse!=null){
-                showCircleProgressDialog.dismiss();
-                Log.e(TAG, "callFavouriteAPi: "+favouriteLisResponse.getMessage() );
+    private void setAdaptor() {
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        rvFavouriteItems.setHasFixedSize(true);
+        rvFavouriteItems.setLayoutManager(linearLayoutManager);
+
+        //Initializing our superheroes list
+        favouriteItemsList = new ArrayList<>();
+
+       // refreshLayout.setRefreshing(false);
+        //initializing our adapter
+        favouriteItemAdapter = new FavouriteItemAdapter(context, favouriteItemsList, this);
+
+        //Adding adapter to recyclerview
+        rvFavouriteItems.setAdapter(favouriteItemAdapter);
+
+        //Calling method to get data to fetch data
+        if (isConnectingToInternet(context)) {
+            callFavouriteAPi(showCircleProgressDialog(context, ""));
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+    }
+
+
+    private void initView() {
+        rvFavouriteItems=fragmentFavouriteItemsBinding.rvFavouriteItems;
+    }
+
+    private void callFavouriteAPi(ProgressDialog progressDialog) {
+        @SuppressLint("NotifyDataSetChanged")
+        Observer<FavouriteListResponse> favouriteLisResponseObserver = favouriteLisResponse -> {
+
+            if (favouriteLisResponse != null){
+                Log.e("Favourite List Response", new Gson().toJson(favouriteLisResponse));
+                if (progressDialog !=null){
+                    progressDialog.dismiss();
+                }
+                switch (favouriteLisResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        if (favouriteLisResponse.getFavouriteList() != null
+                                && favouriteLisResponse.getFavouriteList().size() > 0){
+
+                            fragmentFavouriteItemsBinding.emptyLayout.setVisibility(View.GONE);
+                            fragmentFavouriteItemsBinding.rlMain.setVisibility(View.VISIBLE);
+
+                            favouriteItemsList.addAll(favouriteLisResponse.getFavouriteList());
+                            favouriteItemAdapter.notifyDataSetChanged();
+                        }
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                        warningToast(context, favouriteLisResponse.getMessage());
+                        break;
+                    case STATUS_CODE_404://Record not Found
+                        /* show empty screen message */
+                        fragmentFavouriteItemsBinding.emptyLayout.setVisibility(View.VISIBLE);
+                        fragmentFavouriteItemsBinding.rlMain.setVisibility(View.GONE);
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        warningToast(context, favouriteLisResponse.getMessage());
+                        goToAskSignInSignUpScreen();
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, favouriteLisResponse.getMessage());
+                        break;
+                }
+            }else{
+                if (progressDialog !=null){
+                    progressDialog.dismiss();
+                }
             }
         };
-        favouriteViewModel.favouriteLisResponseLiveData(showCircleProgressDialog,FavouriteItemsFragment.this)
+
+        favouriteViewModel.favouriteLisResponseLiveData(progressDialog,FavouriteItemsFragment.this)
                 .observe(getViewLifecycleOwner(), favouriteLisResponseObserver);
     }
 
-    private void makeFavouriteList() {
-        ArrayList favouriteList = new ArrayList<>();
-        for(int i = 0; i < 10; i++)
-        {
-            ProductOld favouriteItem = new ProductOld("FAV"+i,
-                    "Bell Pepper Red","1kg","10","50",
-                    getString(R.string.img_bell_pepper_red)
-                    ,"Pune","Kashmir");
-            favouriteList.add(favouriteItem);
-        }
-//        favouriteViewModel.favouriteItemMutableLiveData.setValue(favouriteList);
-    }
 
-    private void checkFavouriteEmpty() {
-        if (favouriteItemsList.size()>0)
-            return;
-        else {
-            fragmentFavouriteItemsBinding.emptyLayout.setVisibility(View.VISIBLE);
-            fragmentFavouriteItemsBinding.continueBtn.setVisibility(View.VISIBLE);
-        }
-    }
+
 }

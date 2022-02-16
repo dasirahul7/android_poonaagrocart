@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_favourites;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteListResponse;
+import com.poona.agrocart.databinding.RowFavouriteListItemBinding;
 import com.poona.agrocart.databinding.RowProductItemBinding;
 import com.poona.agrocart.ui.home.OnPlusClick;
 import com.poona.agrocart.ui.home.OnProductClick;
@@ -21,12 +24,17 @@ import com.poona.agrocart.ui.home.model.ProductOld;
 import java.util.ArrayList;
 
 public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdapter.FavouriteHolder> {
-    private ArrayList<ProductOld> productOlds = new ArrayList<>();
+    private ArrayList<FavouriteListResponse.Favourite> productOlds = new ArrayList<>();
     private final Context bdContext;
-    private RowProductItemBinding productBinding;
-    private final View view;
+    private  RowFavouriteListItemBinding favouriteListItemBinding;
     private OnPlusClick onPlusClick;
     private OnProductClick onProductClick;
+
+    public FavouriteItemAdapter(Context context, ArrayList<FavouriteListResponse.Favourite> favouriteItemsList,
+                                FavouriteItemsFragment favouriteItemsFragment) {
+        this.productOlds = favouriteItemsList;
+        this.bdContext = context;
+    }
 
     public void setOnPlusClick(OnPlusClick onPlusClick) {
         this.onPlusClick = onPlusClick;
@@ -36,24 +44,32 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
         this.onProductClick = onProductClick;
     }
 
-    public FavouriteItemAdapter(ArrayList<ProductOld> productOlds, FragmentActivity context, View view) {
-        this.productOlds = productOlds;
-        this.bdContext = context;
-        this.view = view;
-    }
-
-
+    @NonNull
     @Override
     public FavouriteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        productBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_product_item, parent, false);
-        return new FavouriteHolder(productBinding);
+        favouriteListItemBinding = DataBindingUtil.inflate(LayoutInflater.from(bdContext), R.layout.row_favourite_list_item, parent, false);
+        return new FavouriteHolder(favouriteListItemBinding);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull FavouriteHolder holder, int position) {
-        ProductOld productOld = productOlds.get(position);
-        productBinding.setProductOldModule(productOld);
-        holder.bindProduct(productOld, position);
+        FavouriteListResponse.Favourite favourite = productOlds.get(position);
+        favouriteListItemBinding.setFavouriteModelList(favourite);
+        holder.bindProduct(favourite, position);
+
+        if (favourite.getItemType().equalsIgnoreCase("basket")){
+            favouriteListItemBinding.tvName.setText(favourite.getBasketName());
+            favouriteListItemBinding.tvOfferActualPrice.setText("RS."+favourite.getBasketName());
+            favouriteListItemBinding.tvSellingPrice.setVisibility(View.INVISIBLE);
+            favouriteListItemBinding.tvLocation.setVisibility(View.INVISIBLE);
+        }else {
+            favouriteListItemBinding.tvName.setText(favourite.getProductName());
+            favouriteListItemBinding.tvOfferActualPrice.setText("RS."+favourite.getOffer_price());
+            favouriteListItemBinding.tvSellingPrice.setText("RS."+favourite.getSelling_price());
+            favouriteListItemBinding.tvProductWeight.setText(favourite.getWeight()+""+favourite.getUnitName());
+        }
+
     }
 
     @Override
@@ -64,27 +80,27 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
     public class FavouriteHolder extends RecyclerView.ViewHolder {
 
         // The Landscape Item Holder
-        public FavouriteHolder(RowProductItemBinding productBinding) {
+        public FavouriteHolder(RowFavouriteListItemBinding productBinding) {
             super(productBinding.getRoot());
         }
 
         //Only ProductOld Item bind
-        public void bindProduct(ProductOld productOld, int position) {
-            productBinding.setVariable(BR.productOldModule, productOld);
-            productBinding.executePendingBindings();
-            productBinding.txtItemOffer.setVisibility(View.GONE);
-            productBinding.txtItemPrice.setVisibility(View.GONE);
-            productBinding.txtOrganic.setVisibility(View.GONE);
-            productBinding.ivPlus.setImageResource(R.drawable.ic_added);
+        public void bindProduct( FavouriteListResponse.Favourite productOld, int position) {
+            favouriteListItemBinding.setVariable(BR.productOldModule, productOld);
+            favouriteListItemBinding.executePendingBindings();
+           // favouriteListItemBinding.txtItemOffer.setVisibility(View.GONE);
+          //  favouriteListItemBinding.txtItemPrice.setVisibility(View.GONE);
+            //favouriteListItemBinding.txtOrganic.setVisibility(View.GONE);
+            favouriteListItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
             //Remove the left margin from Rs text
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT,
                     RecyclerView.LayoutParams.WRAP_CONTENT);
             params.setMargins(0,0,0,0);
-            productBinding.tvOfferPrice.setLayoutParams(params);
+            favouriteListItemBinding.tvOfferActualPrice.setLayoutParams(params);
 
-            productBinding.ivFavourite.setVisibility(View.VISIBLE);
+            favouriteListItemBinding.ivFavourite.setVisibility(View.VISIBLE);
             itemView.setOnClickListener(v -> {
-                onProductClick.toProductDetail(productOld);
+              //  onProductClick.toProductDetail(productOld);
             });
 
         }
