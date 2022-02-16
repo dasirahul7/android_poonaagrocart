@@ -4,18 +4,27 @@ import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
@@ -37,6 +46,7 @@ import com.poona.agrocart.databinding.ActivityHomeBinding;
 import com.poona.agrocart.ui.BaseActivity;
 import com.poona.agrocart.ui.sign_in.SignInViewModel;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
+import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.imageview.CircularImageView;
 
@@ -137,11 +147,14 @@ public class HomeActivity extends BaseActivity {
         });
 
         signOut.setOnMenuItemClickListener(item -> {
-            try {
-                signOutApiCall(showCircleProgressDialog(HomeActivity.this,""));
+            drawer.closeDrawer(GravityCompat.START);
+            showLogoutConfirmationDialog();
+            /*try {
+                //signOutApiCall(showCircleProgressDialog(HomeActivity.this,""));
+                showLogoutConfirmationDialog();
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
             return true;
         });
 
@@ -240,5 +253,70 @@ public class HomeActivity extends BaseActivity {
         bundle.putString(FROM_SCREEN, TAG);
         bundle.putInt(CMS_TYPE, from);
         navController.navigate(R.id.action_nav_cms, bundle);
+    }
+
+    private void showLogoutConfirmationDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this,
+                R.style.StyleDataConfirmationDialog));
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_logout,null);
+
+        builder.setView(dialogView);
+        builder.setCancelable(true);
+
+        CustomTextView tvHeading = dialogView.findViewById(R.id.tv_heading);
+        CustomButton customButtonYes = dialogView.findViewById(R.id.btn_yes);
+        CustomButton customButtonNo = dialogView.findViewById(R.id.btn_no);
+
+
+        tvHeading.setText(R.string.do_you_really_want_to_logout);
+
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
+
+        customButtonYes.setOnClickListener(v -> {
+            try {
+                signOutApiCall(showCircleProgressDialog(HomeActivity.this,""));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            dialog.dismiss();
+        });
+        customButtonNo.setOnClickListener(v ->{
+            dialog.dismiss();
+        });
+
+
+        dialog.show();
+
+        // Get screen width and height in pixels
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // The absolute width of the available display size in pixels.
+        int displayWidth = displayMetrics.widthPixels;
+        // The absolute height of the available display size in pixels.
+        int displayHeight = displayMetrics.heightPixels;
+
+        // Initialize a new window manager layout parameters
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        // Copy the alert dialog window attributes to new layout parameter instance
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+
+        // Set alert dialog width equal to screen width 100%
+        int dialogWindowWidth = (int) (displayWidth * 0.8f);
+        // Set alert dialog height equal to screen height 100%
+        //int dialogWindowHeight = (int) (displayHeight * 0.9f);
+
+        // Set the width and height for the layout parameters
+        // This will bet the width and height of alert dialog
+        layoutParams.width = dialogWindowWidth;
+        //layoutParams.height = dialogWindowHeight;
+
+        // Apply the newly created layout parameters to the alert dialog window
+        dialog.getWindow().setAttributes(layoutParams);
     }
 }

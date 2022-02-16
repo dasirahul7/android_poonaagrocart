@@ -25,13 +25,16 @@ import java.util.List;
 public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketViewHolder>
 {
     private List<TicketListResponse.TicketList.UserTicket> ticketArrayList = new ArrayList<>();
-    private final Context context;
+    private  Context context;
     private HelpCenterFragment helpCenterFragment;
+    public OnTicketClickListener onTicketClickListener;
 
-    public TicketsAdapter(List<TicketListResponse.TicketList.UserTicket> ticketArrayList,Context context)
+    public TicketsAdapter(List<TicketListResponse.TicketList.UserTicket> ticketArrayList,
+                          HelpCenterFragment helpCenterFragment,OnTicketClickListener onTicketClickListener)
     {
         this.ticketArrayList = ticketArrayList;
-        this.context=context;
+        this.onTicketClickListener = onTicketClickListener;
+        this.helpCenterFragment = helpCenterFragment;
     }
 
     @NonNull
@@ -40,26 +43,28 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketVi
     {
         RvTicketBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_ticket, parent, false);
-        return new TicketsAdapter.TicketViewHolder(binding,ticketArrayList);
+        return new TicketsAdapter.TicketViewHolder(binding);
     }
 
+    public interface OnTicketClickListener{
+        void itemViewClick(TicketListResponse.TicketList.UserTicket ticket);
+    }
     @Override
     public void onBindViewHolder(@NonNull TicketViewHolder holder, int position)
     {
-         TicketListResponse.TicketList.UserTicket ticket = ticketArrayList.get(position);
+        TicketListResponse.TicketList.UserTicket ticket = ticketArrayList.get(position);
         holder.rvTicketBinding.setTicket(ticket);
-        holder.bind(ticket,context);
+        holder.bind(ticket);
 
-
-        String selectedDate = ticket.getCreatedOn();
-
-       /* String txtDisplayDate="";
-        try {
-            txtDisplayDate = helpCenterFragment.formatDate(selectedDate, "yyyy-MM-dd hh:mm a", "yyyy-MM-dd hh:mm:ss ");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        holder.rvTicketBinding.tvDate.setText(txtDisplayDate);*/
+       /* holder.rvTicketBinding.cardViewTicket.setOnClickListener(view -> {
+            Bundle bundle=new Bundle();
+            bundle.putString(AppConstants.TICKET_ID,ticketArrayList.get(position).getTicketNo());
+            bundle.putString(AppConstants.STATUS,ticketArrayList.get(position).getStatus());
+            bundle.putString(AppConstants.REMARK,ticketArrayList.get(position).getRemark());
+            bundle.putString(AppConstants.DATE,ticketArrayList.get(position).getCreatedOn());
+            bundle.putString(AppConstants.SUBJECT,ticketArrayList.get(position).getSubject());
+            Navigation.findNavController(view).navigate(R.id.action_nav_help_center_to_nav_ticket_detail,bundle);
+        });*/
     }
 
     @Override
@@ -68,47 +73,46 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketVi
         return ticketArrayList.size();
     }
 
-    public static class TicketViewHolder extends RecyclerView.ViewHolder
+    public  class TicketViewHolder extends RecyclerView.ViewHolder
     {
-        RvTicketBinding rvTicketBinding;
-        private  List<TicketListResponse.TicketList.UserTicket> ticketArrayList = new ArrayList<>();
 
-        public TicketViewHolder(RvTicketBinding rvTicketBinding,List<TicketListResponse.TicketList.UserTicket> ticketArrayList)
+        public RvTicketBinding rvTicketBinding;
+
+
+        public TicketViewHolder(RvTicketBinding rvTicketBinding)
         {
             super(rvTicketBinding.getRoot());
-
-            this.ticketArrayList=ticketArrayList;
             this.rvTicketBinding=rvTicketBinding;
 
-            rvTicketBinding.cardViewTicket.setOnClickListener(v -> {
-
-                Bundle bundle=new Bundle();
-                bundle.putString(AppConstants.TICKET_ID,ticketArrayList.get(getAdapterPosition()).getTicketNo());
-                bundle.putString(AppConstants.STATUS,ticketArrayList.get(getAdapterPosition()).getStatus());
-                bundle.putString(AppConstants.REMARK,ticketArrayList.get(getAdapterPosition()).getRemark());
-                bundle.putString(AppConstants.DATE,ticketArrayList.get(getAdapterPosition()).getCreatedOn());
-                bundle.putString(AppConstants.SUBJECT,ticketArrayList.get(getAdapterPosition()).getSubject());
-                Navigation.findNavController(v).navigate(R.id.action_nav_help_center_to_nav_ticket_detail,bundle);
-            });
         }
 
         @SuppressLint("ResourceType")
-        public void bind(TicketListResponse.TicketList.UserTicket ticket, Context context)
+        public void bind(TicketListResponse.TicketList.UserTicket ticket)
         {
             rvTicketBinding.setVariable(BR.ticket,ticket);
+
             if(ticket.getStatus().equals("Pending"))
             {
-                rvTicketBinding.tvTicketStatus.setTextColor(Color.parseColor(context.getString(R.color.color_pending)));
+                rvTicketBinding.tvTicketStatus.setTextColor(Color.parseColor(helpCenterFragment.context.getString(R.color.color_pending)));
             }
             else if(ticket.getStatus().equals("Ongoing"))
             {
-                rvTicketBinding.tvTicketStatus.setTextColor(Color.parseColor(context.getString(R.color.color_ongoing)));
+                rvTicketBinding.tvTicketStatus.setTextColor(Color.parseColor(helpCenterFragment.context.getString(R.color.color_ongoing)));
             }
             else
             {
-                rvTicketBinding.tvTicketStatus.setTextColor(Color.parseColor(context.getString(R.color.color_pending)));
+                rvTicketBinding.tvTicketStatus.setTextColor(Color.parseColor(helpCenterFragment.context.getString(R.color.color_pending)));
             }
             rvTicketBinding.executePendingBindings();
+
+            itemView.setOnClickListener(v ->{
+                if (onTicketClickListener != null) {
+                    int postion = getAdapterPosition();
+
+                    onTicketClickListener.itemViewClick(ticket);
+                }
+            });
+
         }
 
 

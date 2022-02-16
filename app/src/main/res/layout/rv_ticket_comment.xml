@@ -5,7 +5,7 @@
     <data>
         <variable
             name="comment"
-            type="com.poona.agrocart.ui.ticket_details.model.Comment" />
+            type="com.poona.agrocart.data.network.reponses.help_center_response.recieveMessage.AllChat" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,32 +55,22 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
                         android:gravity="start"
-                        android:text="@string/johnson_doe"
+                        android:text="@{comment.username}"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:weightSum="100">
+                        android:layout_height="wrap_content">
+
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="start"
-                            android:text="Replied-"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_16sp"
-                            app:setCustomFont="@string/font_poppins_regular" />
-
-                        <com.poona.agrocart.widgets.CustomTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_3sdp"
-                            android:gravity="start"
-                            android:text="12 Jan 2021"
+                            android:text="@{`Replied-` + comment.createdOn}"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_16sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -104,7 +94,7 @@
                 android:layout_marginStart="@dimen/_3sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:gravity="start"
-                android:text="@string/lorem_ipsum_dolor_sit_amet_consectetur_adipiscing"
+                android:text="@{comment.message}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp"
                 app:setCustomFont="@string/font_poppins_regular" />

@@ -10,10 +10,14 @@
             type="com.poona.agrocart.ui.ticket_details.TicketDetailsViewModel" />
     </data>
 
+    <!--tools:context=".ui.ticket_details.TicketDetailFragment"-->
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusableInTouchMode="true"
+            android:visibility="visible"
             tools:context=".ui.ticket_details.TicketDetailFragment">
 
 
@@ -244,6 +248,7 @@
                         android:layout_weight="0.3"
                         android:background="@drawable/rectangle_policy"
                         android:hint="@string/message_txt"
+                        android:text="@{ticket.etMessage}"
                         android:inputType="textCapSentences|textMultiLine"
                         android:maxLines="4"
                         android:layout_gravity="bottom"
@@ -254,12 +259,8 @@
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
-
-
-
-
-
                         <ImageView
+                            android:id="@+id/iv_send_message"
                             android:layout_weight="1.7"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

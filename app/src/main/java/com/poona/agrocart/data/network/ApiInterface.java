@@ -25,6 +25,7 @@ import static com.poona.agrocart.app.AppConstants.ADDRESS_LIST_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
+import static com.poona.agrocart.app.AppConstants.REPLY_TO_TICKET;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
 import static com.poona.agrocart.app.AppConstants.STATE_API;
 import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
@@ -34,6 +35,7 @@ import static com.poona.agrocart.app.AppConstants.TICKET_TYPE;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
+import static com.poona.agrocart.app.AppConstants.VIEW_CHATS;
 import static com.poona.agrocart.app.AppConstants.VIEW_GALLERY;
 import static com.poona.agrocart.app.AppConstants.VIEW_TICKET;
 
@@ -49,6 +51,7 @@ import com.poona.agrocart.data.network.reponses.CityResponse;
 import com.poona.agrocart.data.network.reponses.CouponResponse;
 import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.CreateTicketResponse;
+import com.poona.agrocart.data.network.reponses.help_center_response.SendMessageResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.reponses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
@@ -64,6 +67,7 @@ import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
 import com.poona.agrocart.data.network.reponses.CmsResponse;
 import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteLisResponse;
 import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryResponse;
+import com.poona.agrocart.data.network.reponses.help_center_response.recieveMessage.RecieveMessageResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
@@ -248,4 +252,12 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(ISSUE_TICKET)
     Single<CreateTicketResponse> getCreateTicket(@FieldMap HashMap<String, String> createTicketInputParameter);
+
+    @FormUrlEncoded
+    @POST(VIEW_CHATS)
+    Single<RecieveMessageResponse> getReceiveMessage(@FieldMap HashMap<String, String> recieveMessageInputParameter);
+
+    @FormUrlEncoded
+    @POST(REPLY_TO_TICKET)
+    Single<SendMessageResponse> getSenderMessage(@FieldMap HashMap<String, String> sendMessageParameters);;
 }

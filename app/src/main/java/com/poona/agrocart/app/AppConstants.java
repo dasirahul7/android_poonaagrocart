@@ -107,6 +107,8 @@ public class AppConstants {
     public static final String TICKET_TYPE = "ticket-type";
     public static final String VIEW_TICKET = "view-ticket";
     public static final String ISSUE_TICKET = "issue-ticket";
+    public static final String VIEW_CHATS = "view-chats";
+    public static final String REPLY_TO_TICKET = "reply-to-ticket";
 
 
     /*Product list API*/
@@ -211,7 +213,7 @@ public class AppConstants {
     public static final Object IS_NOTIFICATION_RECEIVED = "IS_NOTIFICATION_RECEIVED";
 
     //Help center
-    public static final String TICKET_ID = "TICKET_ID";
+    //public static final String TICKET_ID = "TICKET_ID";
     public static final String STATUS = "STATUS";
     public static final String REMARK = "REMARK";
     public static final String DATE = "DATE";
@@ -221,6 +223,8 @@ public class AppConstants {
     public static final String ISSUE_ID = "issue_id";
     public static final String TICKET_SUBJECT = "subject";
     public static final String TICKET_REMARK = "remark";
+    public static final String TICKET_ID = "ticket_id";
+    public static final String MESSAGE = "message";
 
     //SharedPreferences keys
     public static String CART_LIST = "CART_LIST";
