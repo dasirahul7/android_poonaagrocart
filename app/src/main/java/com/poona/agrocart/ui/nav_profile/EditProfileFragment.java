@@ -183,6 +183,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         cityList = new ArrayList<>();
         areaList = new ArrayList<>();
 
+        fragmentEditProfileBinding.rlMainLayout.setVisibility(GONE);
+
         if (isConnectingToInternet(context)) {
             getProfileStateApiResponses(showCircleProgressDialog(context, ""));
         } else {
@@ -289,7 +291,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                                 areaResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), AreaResponse.class);
 
                                 setupCitySpinner();
-                                setDefaultSelectedValues();
                             } catch (Exception exception) {
                                 exception.printStackTrace();
                                 showServerErrorDialog(getString(R.string.for_better_user_experience), EditProfileFragment.this, () -> {
@@ -348,7 +349,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     selectedStateId = stateList.get(i).getId();
                     selectedState = stateList.get(i).getName();
 
-                    if(++checkState > 1 && !selectedStateId.equals("0"))
+                    if(++checkState > 2 && !selectedStateId.equals("0"))
                         callCityApi(showCircleProgressDialog(context, ""));
                 }
             }
@@ -396,7 +397,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     selectedCityId = cityList.get(i).getId();
                     selectedCity = cityList.get(i).getName();
 
-                    if(++checkCity > 1 && !selectedCityId.equals("0"))
+                    if(++checkCity > 2 && !selectedCityId.equals("0"))
                         callAreaApi(showCircleProgressDialog(context, ""));
                 }
             }
@@ -468,6 +469,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                                 if (cityResponse.getCities().size() > 0) {
                                     this.cityResponse = cityResponse;
                                     setupCitySpinner();
+
+                                    this.areaResponse = null;
+                                    setupAreaSpinner();
                                 }
                             }
                         }
@@ -549,6 +553,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     private void setDefaultSelectedValues() {
         if(profileResponse != null) {
+            fragmentEditProfileBinding.rlMainLayout.setVisibility(View.VISIBLE);
+
             if(profileResponse.getProfile().getImage() != null && !TextUtils.isEmpty(profileResponse.getProfile().getImage())) {
                 myProfileViewModel.profilePhoto.setValue(profileResponse.getProfile().getImage());
                 loadingImage(context, myProfileViewModel.profilePhoto.getValue(), fragmentEditProfileBinding.ivProfilePicture);
