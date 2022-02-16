@@ -10,14 +10,12 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 
 import androidx.databinding.DataBindingUtil;
@@ -43,14 +41,13 @@ import com.poona.agrocart.ui.product_detail.adapter.OfferProductListAdapter;
 import com.poona.agrocart.ui.home.model.ProductOld;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
+import com.poona.agrocart.ui.product_detail.adapter.UnitAdapter;
 import com.poona.agrocart.ui.product_detail.model.BasketContent;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
-import com.poona.agrocart.ui.product_detail.model.ProductDetail;
 import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.ExpandIconView;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -62,7 +59,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private ProductImagesAdapter productImagesAdapter;
     private boolean isProductDetailsVisible = true, isNutritionDetailsVisible = true, isAboutThisProductVisible = true,
             isBasketContentsVisible = true, isBenefitsVisible = true, isStorageVisible = true, isOtherProductInfo = true,
-            isVariableWtPolicyVisible = true, isFavourite = false,isInCart = false;
+            isVariableWtPolicyVisible = true, isFavourite = false, isInCart = false;
     private int quantity = 1;
     public ViewPager vpImages;
     private DotsIndicator dotsIndicator;
@@ -166,10 +163,18 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                             fragmentProductDetailBinding.itemLayout.setVisibility(View.VISIBLE);
                             details = productDetailsResponse.getProductDetails();
                             details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
-                            fragmentProductDetailBinding.setProductDetailModule(details);
-                            fragmentProductDetailBinding.setVariable(BR.productDetailModule,details);
-                            System.out.println("product name"+details.getProductName());
                             setDetailsValue();
+                            changePriceAndUnit(details.getUnit(), false);
+                            fragmentProductDetailBinding.setProductDetailModule(details);
+                            fragmentProductDetailBinding.setVariable(BR.productDetailModule, details);
+                            System.out.println("product name" + details.getProductName());
+                            UnitAdapter unitAdapter = new UnitAdapter(details.getProductUnits(),details.getIsCart(), requireActivity(),unit -> {
+                                if (details.getIsCart()==0)
+                                changePriceAndUnit(unit, false);
+                                else infoToast(context,"Item already added");
+                            });
+                            fragmentProductDetailBinding.rvWeights.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false));
+                            fragmentProductDetailBinding.rvWeights.setAdapter(unitAdapter);
                             // Redirect to ProductOld details
                             setViewPagerAdapterItems();
                         }
@@ -195,28 +200,47 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void setDetailsValue() {
-        unitId = details.getUnit().getpId();
-        if (details.getBrandName()!=null&& !details.getBrandName().isEmpty()){
+        if (details.getBrandName() != null && !details.getBrandName().isEmpty()) {
             txtBrand.setText(details.getBrandName());
             txtBrand.setVisibility(View.VISIBLE);
-        }
-        else txtBrand.setVisibility(View.GONE);
-        if (details.getIsO3().equalsIgnoreCase("yes")){
+        } else txtBrand.setVisibility(View.GONE);
+        if (details.getIsO3().equalsIgnoreCase("yes")) {
             txtOrganic.setVisibility(View.VISIBLE);
-        }else txtOrganic.setVisibility(View.GONE);
-        if (details.getIsFavourite()==1)
+        } else txtOrganic.setVisibility(View.GONE);
+        if (details.getIsFavourite() == 1)
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
-        else fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
-        if (details.getIsCart()==1){
+        else
+            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+        if (details.getIsCart() == 1) {
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
-            if (details.getQuantity()>0)
-            fragmentProductDetailBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
-            else fragmentProductDetailBinding.etQuantity.setText("1");
-        }else {
+            if (details.getQuantity() > 0) {
+                successToast(context, "added");
+                fragmentProductDetailBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
+                changePriceAndUnit(details.getUnit(), false);
+            }
+        } else {
             fragmentProductDetailBinding.ivPlus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.ivMinus.setVisibility(View.GONE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.GONE);
+        }
+    }
+
+    private void changePriceAndUnit(ProductListResponse.ProductUnit unit, boolean added) {
+        unitId = unit.getpId();
+        int sellingPrice = Integer.parseInt(unit.getSellingPrice());
+        int offerPrice = Integer.parseInt(unit.getSellingPrice());
+        int quantity = details.getQuantity();
+        int finalSellingPrice = sellingPrice * quantity;
+        int finalOfferPrice = offerPrice * quantity;
+        System.out.println(finalOfferPrice);
+        System.out.println(finalSellingPrice);
+        if (quantity>0){
+            fragmentProductDetailBinding.tvPrice.setText("Rs." + finalSellingPrice);
+            fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + finalOfferPrice);
+        }else {
+            fragmentProductDetailBinding.tvPrice.setText("Rs." + sellingPrice);
+            fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + offerPrice);
         }
     }
 
@@ -247,17 +271,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         }
     }
 
-    private void makeItBasketDetails() {
-        hideOrShowProductDetails();
-        ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
-        fragmentProductDetailBinding.txtItemOffer.setVisibility(View.INVISIBLE);
-        fragmentProductDetailBinding.cardOfferMsg.setVisibility(View.GONE);
-        fragmentProductDetailBinding.tvLocation.setVisibility(View.GONE);
-        fragmentProductDetailBinding.rvWeights.setVisibility(View.GONE);
-//        fragmentProductDetailBinding.inSubscription.setVisibility(View.VISIBLE);
-//        fragmentProductDetailBinding.tvOneTimeRate.setVisibility(View.VISIBLE);
-    }
-
     private void setValues() {
         hideOrShowAboutThisProduct();
         hideOrShowBenefits();
@@ -286,7 +299,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 //        fragmentProductDetailBinding.layoutAdded.tvSubAmount.setText(subscription.getSubTotalAmount());
 //        fragmentProductDetailBinding.layoutAdded.tvSubMsg.setText(subscription.getSubMsg());
 //        RecyclerView rvType = fragmentProductDetailBinding.layoutAdded.rvSubType;
-//        WeightAdapter subTypeAdapter = new WeightAdapter(details.getSubscription().getSubTypes(), getActivity());
+//        UnitAdapter subTypeAdapter = new UnitAdapter(details.getSubscription().getSubTypes(), getActivity());
 //        rvType.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 //        rvType.setHasFixedSize(true);
 //        rvType.setAdapter(subTypeAdapter);
@@ -352,11 +365,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 break;
             case R.id.iv_plus:
                 addOrRemoveFromCart();
-//                increaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(), fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
-                break;
-            case R.id.img_plus:
-//                increaseQuantity(fragmentProductDetailBinding.layoutAdded.tvSubQty.getText().toString(),
-//                        fragmentProductDetailBinding.layoutAdded.tvSubQty, fragmentProductDetailBinding.layoutAdded.imgMinus);
                 break;
             case R.id.img_minus:
 //                decreaseQuantity(fragmentProductDetailBinding.layoutAdded.tvSubQty.getText().toString(),
@@ -369,43 +377,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 //                showCalendar(fragmentProductDetailBinding.layoutAdded.tvStartDate);
                 break;
         }
-
-    }
-
-    private void showCalendar(CustomTextView tvDate) {
-        //showing date picker dialog
-        DatePickerDialog dpd;
-        calendar = Calendar.getInstance();
-        Calendar mcurrentDate = Calendar.getInstance();
-        mYear = mcurrentDate.get(Calendar.YEAR);
-        mMonth = mcurrentDate.get(Calendar.MONTH);
-        mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
-        dpd = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String txtDisplayDate = null;
-                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
-                try {
-                    txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                try {
-
-                    if (tvDate != null) {
-                        tvDate.setText(txtDisplayDate);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                calendar.set(year, month, dayOfMonth);
-            }
-        },
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
-        );
-        dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-        dpd.show();
 
     }
 
@@ -467,32 +438,39 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void addOrRemoveFromFavourite() {
         if (!isFavourite) {
-            callAddToFavouriteApi(showCircleProgressDialog(context,""),details);
+            callAddToFavouriteApi(showCircleProgressDialog(context, ""), details);
         } else {
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
         }
         isFavourite = !isFavourite;
     }
 
-     private void addOrRemoveFromCart() {
-        if (!isInCart) {
-            callAddToCartApi(showCircleProgressDialog(context,""),details);
+    private void addOrRemoveFromCart() {
+        if (details.getIsCart()==0) {
+            callAddToCartApi(showCircleProgressDialog(context, ""), details);
         } else {
-            infoToast(context,"Allready Added");
+            increaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
+                    fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivPlus);
+            increaseQuantityApi(showCircleProgressDialog(context, ""), details);
         }
-         isInCart = !isInCart;
     }
 
     //Add or Remove from CArt
-    private void callAddToCartApi(ProgressDialog showCircleProgressDialog, ProductDetailsResponse.ProductDetails details) {
-        Observer<BaseResponse> addToCartResponseObserver = addToCartResponse->{
-            if (addToCartResponse!=null){
+    private void callAddToCartApi(ProgressDialog showCircleProgressDialog,
+                                  ProductDetailsResponse.ProductDetails details) {
+        Observer<BaseResponse> addToCartResponseObserver = addToCartResponse -> {
+            if (addToCartResponse != null) {
                 showCircleProgressDialog.dismiss();
-                Log.e(TAG, "callAddToCartApi: "+addToCartResponse.getMessage() );
+                Log.e(TAG, "callAddToCartApi: " + addToCartResponse.getMessage());
                 switch (addToCartResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(requireActivity(),addToCartResponse.getMessage());
-                        fragmentProductDetailBinding.ivPlus.setImageResource(R.drawable.ic_added);
+                        successToast(requireActivity(), addToCartResponse.getMessage());
+                        fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
+                        fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
+                        fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
+                        details.setQuantity(1);
+                        details.setIsCart(1);
+                        setDetailsValue();
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -510,20 +488,56 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
             }
         };
-        productDetailViewModel.addToCartProductLiveData(showCircleProgressDialog,addToCartParam(details),ProductDetailFragment.this)
-                .observe(getViewLifecycleOwner(),addToCartResponseObserver);
+        productDetailViewModel.addToCartProductLiveData(showCircleProgressDialog,
+                addToCartParam(details), ProductDetailFragment.this)
+                .observe(getViewLifecycleOwner(), addToCartResponseObserver);
+    }
+
+    private void increaseQuantityApi(ProgressDialog showCircleProgressDialog,
+                                  ProductDetailsResponse.ProductDetails details) {
+        Observer<BaseResponse> addToCartResponseObserver = addToCartResponse -> {
+            if (addToCartResponse != null) {
+                showCircleProgressDialog.dismiss();
+                Log.e(TAG, "callAddToCartApi: " + addToCartResponse.getMessage());
+                switch (addToCartResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(requireActivity(), addToCartResponse.getMessage());
+                        fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
+                        fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
+                        setDetailsValue();
+                        changePriceAndUnit(details.getUnit(), true);
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, addToCartResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(addToCartResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, addToCartResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        productDetailViewModel.addToCartProductLiveData(showCircleProgressDialog,
+                addToCartParam(details), ProductDetailFragment.this)
+                .observe(getViewLifecycleOwner(), addToCartResponseObserver);
     }
 
 
     //ADd to favourite API
     private void callAddToFavouriteApi(ProgressDialog showCircleProgressDialog, ProductDetailsResponse.ProductDetails details) {
         Observer<BaseResponse> favouriteResponseObserver = responseFavourite -> {
-            if (responseFavourite!=null){
+            if (responseFavourite != null) {
                 showCircleProgressDialog.dismiss();
-                Log.e(TAG, "callAddToFavouriteApi: "+responseFavourite.getMessage() );
+                Log.e(TAG, "callAddToFavouriteApi: " + responseFavourite.getMessage());
                 switch (responseFavourite.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(requireActivity(),responseFavourite.getMessage());
+                        successToast(requireActivity(), responseFavourite.getMessage());
                         fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -542,8 +556,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
             }
         };
-        productDetailViewModel.addToFavourite(showCircleProgressDialog,favParams(details),ProductDetailFragment.this)
-                .observe(getViewLifecycleOwner(),favouriteResponseObserver);
+        productDetailViewModel.addToFavourite(showCircleProgressDialog, favParams(details), ProductDetailFragment.this)
+                .observe(getViewLifecycleOwner(), favouriteResponseObserver);
     }
 
     private HashMap<String, String> favParams(ProductDetailsResponse.ProductDetails details) {
@@ -551,7 +565,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         map.put(AppConstants.ITEM_TYPE, "product");
         map.put(AppConstants.PRODUCT_ID, details.getId());
         map.put(AppConstants.PU_ID, unitId);
-        map.put(AppConstants.BASKET_ID, "");
         return map;
     }
 
@@ -559,7 +572,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         HashMap<String, String> map = new HashMap<>();
         map.put(PRODUCT_ID, product.getId());
         map.put(PU_ID, unitId);
+        if (fragmentProductDetailBinding.etQuantity.getText().toString().isEmpty())
         map.put(QUANTITY, "1");
+        else
+        map.put(QUANTITY, fragmentProductDetailBinding.etQuantity.getText().toString());
         return map;
     }
 
@@ -568,6 +584,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         quantity++;
         etQuantity.setText(String.valueOf(quantity));
         AppUtils.setMinusButton(quantity, view);
+        details.setQuantity(quantity);
     }
 
     private void decreaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
@@ -633,6 +650,12 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 switch (from) {
                     case 0:
                         callProductDetailsApi(showCircleProgressDialog(context, ""));
+                        break;
+                    case 1:
+                        callAddToFavouriteApi(showCircleProgressDialog(context,""),details);
+                        break;
+                    case 2:
+                        addOrRemoveFromCart();
                         break;
                 }
             }
