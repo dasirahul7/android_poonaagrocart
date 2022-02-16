@@ -66,7 +66,12 @@
                     android:text="@string/address_location"
                     android:textColor="@color/title_black"
                     android:textSize="@dimen/_14sp"
-                    app:setCustomFont="@string/font_poppins_regular" />
+                    app:setCustomFont="@string/font_poppins_regular"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" />
                 <RelativeLayout
                     android:visibility="gone"
                     android:id="@+id/rl_product_tag"
