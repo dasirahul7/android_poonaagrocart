@@ -56,7 +56,7 @@ public class TicketDetailFragment extends BaseFragment
     private CustomEditText tvMessage;
     private ImageView ivSendMessage;
     private String strTicketId = "";
-
+    private String strMessage = "";
 
 
     @SuppressLint("ResourceType")
@@ -73,22 +73,6 @@ public class TicketDetailFragment extends BaseFragment
             strTicketId = getArguments().getString(TICKET_ID);
         }
         initTitleWithBackBtn(getString(R.string.menu_help_center));
-
-
-        /*Bundle bundle=this.getArguments();
-        ticketDetailsViewModel.ticketId.setValue(bundle.getString(AppConstants.TICKET_ID));
-        ticketDetailsViewModel.status.setValue(bundle.getString(AppConstants.STATUS));
-        ticketDetailsViewModel.remark.setValue(bundle.getString(AppConstants.REMARK));
-        ticketDetailsViewModel.ticketDate.setValue(bundle.getString(AppConstants.DATE));
-        ticketDetailsViewModel.subject.setValue(bundle.getString(AppConstants.SUBJECT));
-        if(ticketDetailsViewModel.status.equals(getString(R.string.pending)))
-        {
-            fragmentTicketDetailBinding.tvTicketStatus.setTextColor(Color.parseColor(context.getString(R.color.color_pending)));
-        }
-        else if(ticketDetailsViewModel.status.equals(getString(R.string.ongoing)))
-        {
-            fragmentTicketDetailBinding.tvTicketStatus.setTextColor(Color.parseColor(context.getString(R.color.color_ongoing)));
-        }*/
 
         initView();
         setRvAdapter();
@@ -107,11 +91,31 @@ public class TicketDetailFragment extends BaseFragment
 
 
     private void onClick() {
+        strMessage = ticketDetailsViewModel.etMessage.getValue();
+
         ivSendMessage.setOnClickListener(view1 -> {
             if(isConnectingToInternet(context)){
+                if(!strMessage.equalsIgnoreCase(""))
                     callSendMessageApi(showCircleProgressDialog(context, ""));
             }else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        });
+
+        tvMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentTicketDetailBinding.nvMainScroll.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        View lastChild = fragmentTicketDetailBinding.nvMainScroll.getChildAt(fragmentTicketDetailBinding.nvMainScroll.getChildCount() - 1);
+                        int bottom = lastChild.getBottom() + fragmentTicketDetailBinding.nvMainScroll.getPaddingBottom();
+                        int sy = fragmentTicketDetailBinding.nvMainScroll.getScrollY();
+                        int sh = fragmentTicketDetailBinding.nvMainScroll.getHeight();
+                        int delta = bottom - (sy + sh);
+                        fragmentTicketDetailBinding.nvMainScroll.smoothScrollBy(0, delta);
+                    }
+                }, 100);
             }
         });
     }
@@ -129,13 +133,6 @@ public class TicketDetailFragment extends BaseFragment
         //Adding adapter to recyclerview
         rvTicketOrders.setAdapter(ticketCommentsAdapter);
         callReceiveMessageApi(showCircleProgressDialog(context,""));
-
-      /*  linearLayoutManager = new LinearLayoutManager(getActivity());
-        rvTicketOrders.setHasFixedSize(true);
-        rvTicketOrders.setLayoutManager(linearLayoutManager);
-
-        ticketCommentsAdapter = new TicketCommentsAdapter(allChatList,context);
-        rvTicketOrders.setAdapter(ticketCommentsAdapter);*/
 
     }
 
@@ -166,7 +163,10 @@ public class TicketDetailFragment extends BaseFragment
                            ticketDetailsViewModel.remark.setValue(userTicketsDetails.get(0).getRemark());
 
                            if(userTicketsDetails.get(0).getStatus().equalsIgnoreCase("Pending")){
-                               fragmentTicketDetailBinding.tvTicketStatus.setTextColor(ContextCompat.getColor(context, R.color.color10));
+                               fragmentTicketDetailBinding.tvTicketStatus.setTextColor(ContextCompat.getColor(context, R.color.color_pending));
+                               ticketDetailsViewModel.status.setValue(userTicketsDetails.get(0).getStatus());
+                           }else if(userTicketsDetails.get(0).getStatus().equalsIgnoreCase("Ongoing")){
+                               fragmentTicketDetailBinding.tvTicketStatus.setTextColor(ContextCompat.getColor(context, R.color.color_ongoing));
                                ticketDetailsViewModel.status.setValue(userTicketsDetails.get(0).getStatus());
                            }
                        }
@@ -218,7 +218,7 @@ public class TicketDetailFragment extends BaseFragment
         }
         Observer<SendMessageResponse> sendMessageResponseObserver = sendMessageResponse -> {
             if (sendMessageResponse != null){
-                Log.e("Support Chat Api Response", new Gson().toJson(sendMessageResponse));
+                Log.e("Send Message Api Response", new Gson().toJson(sendMessageResponse));
                 if (progressDialog !=null){
                     progressDialog.dismiss();
                 }
@@ -258,7 +258,7 @@ public class TicketDetailFragment extends BaseFragment
         HashMap<String, String> map = new HashMap<>();
 
         map.put(TICKET_ID, strTicketId);
-        map.put(MESSAGE, ticketDetailsViewModel.etMessage.getValue());
+       // map.put(MESSAGE, ticketDetailsViewModel.etMessage.setValue(""));
 
         return map;
     }
