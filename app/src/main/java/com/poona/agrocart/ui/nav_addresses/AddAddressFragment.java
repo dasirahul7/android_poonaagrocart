@@ -98,6 +98,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private CityResponse cityResponse = null;
     private AreaResponse areaResponse = null;
 
+    private boolean checkIsValidPinCode = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentAddressesFormBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_addresses_form, container, false);
@@ -127,6 +129,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private void initView() {
         fragmentAddressesFormBinding.tvCurrentLocation.setOnClickListener(this);
         fragmentAddressesFormBinding.btnAddAddress.setOnClickListener(this);
+        fragmentAddressesFormBinding.btCheckAvailability.setOnClickListener(this);
 
         Typeface poppinsRegularFont = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_medium));
         fragmentAddressesFormBinding.rbHome.setTypeface(poppinsRegularFont);
@@ -162,6 +165,10 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             case R.id.btn_add_address:
                 getUserInputAndSetIntoPojo();
                 checkValidInputFields();
+                break;
+            case R.id.bt_check_availability:
+                getUserInputAndSetIntoPojo();
+                checkValidPinCodeEntered();
                 break;
         }
     }
@@ -403,6 +410,20 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         }
     }
 
+    private void checkValidPinCodeEntered() {
+        int errorCodePinCode = basicDetails.isValidPinCode();
+        if(errorCodePinCode == 0) {
+            errorToast(requireActivity(), getString(R.string.pin_code_should_not_be_empty));
+        } else if(errorCodePinCode == 1) {
+            errorToast(requireActivity(), getString(R.string.invalid_pin_code));
+        } else {
+            if (isConnectingToInternet(context))
+                checkPinCodeAvailableApi(showCircleProgressDialog(context, ""));
+            else
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+    }
+
     private void callAddAddressApi(ProgressDialog progressDialog) {
         /*print user input parameters*/
         for (Map.Entry<String, String> entry : addAddressParameters().entrySet()) {
@@ -460,6 +481,54 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         map.put(LONGITUDE, basicDetails.getLongitude());
         map.put(GOOGLE_MAP_ADDRESS, basicDetails.getMapAddress());*/
 
+        return map;
+    }
+
+    private void checkPinCodeAvailableApi(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : checkPinCodeAvailableParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+
+        androidx.lifecycle.Observer<BaseResponse> updateProfileResponseObserver = baseResponse -> {
+            if (baseResponse != null) {
+                progressDialog.dismiss();
+                Log.e("Check Pin Code Api Response", new Gson().toJson(baseResponse));
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, ""+baseResponse.getMessage());
+                        checkIsValidPinCode = true;
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_402://Validation Errors
+                        checkIsValidPinCode = false;
+                        goToAskAndDismiss(baseResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        checkIsValidPinCode = true;
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+            } else {
+                progressDialog.dismiss();
+            }
+        };
+
+        addressesViewModel
+                .checkPinCodeAvailableResponse(progressDialog, AddAddressFragment.this, checkPinCodeAvailableParameters())
+                .observe(getViewLifecycleOwner(), updateProfileResponseObserver);
+    }
+
+    private HashMap<String, String> checkPinCodeAvailableParameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(PIN_CODE, basicDetails.getPinCode());
         return map;
     }
 
@@ -597,6 +666,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     callAreaApi(showCircleProgressDialog(context, ""));
                 } else if(from == 2) {
                     callAddAddressApi(showCircleProgressDialog(context, ""));
+                } else if(from == 3) {
+                    checkPinCodeAvailableApi(showCircleProgressDialog(context, ""));
                 }
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

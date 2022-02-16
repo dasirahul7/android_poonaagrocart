@@ -7,6 +7,7 @@ import static com.poona.agrocart.app.AppConstants.ADD_TO_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.AREA_API;
 import static com.poona.agrocart.app.AppConstants.AREA_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.BASKET_DETAIL_API;
+import static com.poona.agrocart.app.AppConstants.CHECK_VALID_PIN_CODE_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.CITY_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
@@ -161,6 +162,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(UPDATE_LOCATION_API)
     Single<BaseResponse> updateLocationResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(CHECK_VALID_PIN_CODE_API)
+    Single<BaseResponse> checkPinCodeAvailableResponse(@FieldMap HashMap<String, String> data);
 
     //Home Banner API
     @GET(HOME_BANNER_API)

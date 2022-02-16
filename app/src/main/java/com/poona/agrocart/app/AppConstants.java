@@ -74,6 +74,7 @@ public class AppConstants {
     public static final String ADD_ADDRESS_API = "address-add";
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
+    public static final String CHECK_VALID_PIN_CODE_API = "check-pincode-availablity";
     /*Home screen APIs*/
     public static final String HOME_API = "home";
     public static final String HOME_BANNER_API = "home-screen-banner";
