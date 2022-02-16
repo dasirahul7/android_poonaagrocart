@@ -74,6 +74,7 @@ public class AddressesResponse extends BaseResponse {
         @SerializedName("area_name")
         @Expose
         private String areaName;
+        private String fullAddress;
 
         public String getName() {
             return name;
@@ -219,5 +220,12 @@ public class AddressesResponse extends BaseResponse {
             this.areaName = areaName;
         }
 
+        public String getFullAddress() {
+            return fullAddress;
+        }
+
+        public void setFullAddress(String fullAddress) {
+            this.fullAddress = fullAddress;
+        }
     }
 }

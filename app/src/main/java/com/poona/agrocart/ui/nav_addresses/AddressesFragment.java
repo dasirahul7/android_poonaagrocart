@@ -10,6 +10,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,6 +104,60 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                         fragmentAddressesBinding.rlErrorMessage.setVisibility(View.GONE);
                         fragmentAddressesBinding.rvAddress.setVisibility(View.VISIBLE);
                         addressArrayList.addAll(addressesResponse.getAddresses());
+
+                        if(addressArrayList != null && addressArrayList.size() > 0) {
+                            for(int i = 0; i < addressArrayList.size(); i++) {
+                                AddressesResponse.Address address = new AddressesResponse.Address();
+
+                                String name = addressArrayList.get(i).getName();
+                                String mobileNumber = addressArrayList.get(i).getMobile();
+                                String addressType = addressArrayList.get(i).getAddressType();
+
+                                if(addressType != null
+                                        && !TextUtils.isEmpty(addressType)
+                                        && addressType.equals("home"))
+                                    addressType = "Home";
+                                else if(addressType != null
+                                        && !TextUtils.isEmpty(addressType)
+                                        && addressType.equals("office"))
+                                    addressType = "Office";
+                                else if(addressType != null
+                                        && !TextUtils.isEmpty(addressType)
+                                        && addressType.equals("other"))
+                                    addressType = "Other";
+
+                                String houseNumber = addressArrayList.get(i).getHouseNo();
+                                String apartmentName = addressArrayList.get(i).getAppartmentName();
+                                String street = addressArrayList.get(i).getStreet();
+                                String landmark = addressArrayList.get(i).getLandmark();
+                                String area = addressArrayList.get(i).getAreaName();
+                                String city = addressArrayList.get(i).getCityName();
+                                String pinCode = addressArrayList.get(i).getPincode();
+
+                                StringBuilder fullAddressSb = new StringBuilder();
+                                if(houseNumber != null && !TextUtils.isEmpty(houseNumber))
+                                    fullAddressSb.append(houseNumber+", ");
+                                if(apartmentName != null && !TextUtils.isEmpty(apartmentName))
+                                    fullAddressSb.append(apartmentName+", ");
+                                if(street != null && !TextUtils.isEmpty(street))
+                                    fullAddressSb.append(street+", ");
+                                if(landmark != null && !TextUtils.isEmpty(landmark))
+                                    fullAddressSb.append(landmark+", ");
+                                if(area != null && !TextUtils.isEmpty(area))
+                                    fullAddressSb.append(area+", ");
+                                if(city != null && !TextUtils.isEmpty(city))
+                                    fullAddressSb.append(city+", ");
+                                if(pinCode != null && !TextUtils.isEmpty(pinCode))
+                                    fullAddressSb.append(pinCode);
+
+                                address.setName(name);
+                                address.setMobile(mobileNumber);
+                                address.setAddressType(addressType);
+                                address.setFullAddress(fullAddressSb.toString());
+                                addressArrayList.set(i, address);
+                            }
+                        }
+
                         addressesAdapter.notifyDataSetChanged();
                         break;
                     case STATUS_CODE_400://Validation Errors
