@@ -55,6 +55,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -232,13 +233,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         if(profileResponse != null) {
             if(profileResponse.getProfile().getImage() != null && !TextUtils.isEmpty(profileResponse.getProfile().getImage())) {
                 myProfileViewModel.profilePhoto.setValue(profileResponse.getProfile().getImage());
-                try {
-                    loadingImage(context, myProfileViewModel.profilePhoto.getValue(), fragmentEditProfileBinding.ivProfilePicture);
-                    loadingImage(context, myProfileViewModel.profilePhoto.getValue(), ((HomeActivity)context).civProfilePhoto);
-                } catch (Exception e) {
-                    fragmentEditProfileBinding.ivProfilePicture.setImageResource(R.drawable.ic_profile);
-                    ((HomeActivity)context).civProfilePhoto.setImageResource(R.drawable.ic_profile);
-                }
+                loadingImage(context, myProfileViewModel.profilePhoto.getValue(), fragmentEditProfileBinding.ivProfilePicture);
+                loadingImage(context, myProfileViewModel.profilePhoto.getValue(), ((HomeActivity)context).civProfilePhoto);
             } else {
                 myProfileViewModel.profilePhoto.setValue("");
             }
@@ -551,10 +547,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         androidx.lifecycle.Observer<ProfileResponse> updateProfileResponseObserver = profileResponse -> {
             if (profileResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Update Profile Api ResponseData", new Gson().toJson(profileResponse));
+                Log.e("Update Profile Api Response", new Gson().toJson(profileResponse));
                 switch (profileResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, ""+profileResponse.getMessage());
+                        NavHostFragment.findNavController(EditProfileFragment.this).popBackStack();
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors

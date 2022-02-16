@@ -4,8 +4,10 @@ import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -154,6 +156,7 @@ public class HomeActivity extends BaseActivity {
         tvUserName.setSelected(true);
         rlEditProfile.setOnClickListener(v -> {
             drawer.closeDrawer(GravityCompat.START);
+            initTitleBar(getString(R.string.menu_my_profile));
             navController.navigate(R.id.action_nav_home_to_nav_profile);
         });
     }
@@ -241,5 +244,25 @@ public class HomeActivity extends BaseActivity {
         bundle.putString(FROM_SCREEN, TAG);
         bundle.putInt(CMS_TYPE, from);
         navController.navigate(R.id.action_nav_cms, bundle);
+    }
+
+    //Title and app logo on actionBar
+    @SuppressLint("ResourceType")
+    protected void initTitleBar(String title) {
+        binding.appBarHome.toolbar.post(() -> {
+            Drawable d = ResourcesCompat.getDrawable(getResources(),
+                    R.drawable.menu_icon_toggle, null);
+            binding.appBarHome.toolbar.setNavigationIcon(d);
+            binding.appBarHome.toolbar.setPadding(0, 0, 0, 0);
+        });
+        binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
+        binding.appBarHome.imgDelete.setVisibility(View.GONE);
+        binding.appBarHome.basketMenu.setVisibility(View.GONE);
+        binding.appBarHome.tvAddress.setVisibility(View.GONE);
+        binding.appBarHome.logImg.setVisibility(View.GONE);
+        binding.appBarHome.rlProductTag.setVisibility(View.GONE);
+        binding.appBarHome.textTitle.setText(title);
+        binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
+        binding.appBarHome.textTitle.setTextColor(Color.parseColor(getString(R.color.black)));
     }
 }

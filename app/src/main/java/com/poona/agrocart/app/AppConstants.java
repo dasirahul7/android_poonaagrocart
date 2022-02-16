@@ -8,13 +8,10 @@ import org.json.JSONArray;
  * Created by Rahul Dasi on 6/10/2020
  */
 public class AppConstants {
-    /*Development URL*/
-    //public static final String BASE_URL = "";
-
-    /*Live URL*/
+    /*m-staging URL*/
     public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing/";
 
-    /*Live Base URL for Image, Document*/
+    /*m-staging Base URL for Image, Document*/
     public static final String IMAGE_DOC_BASE_URL = "";
 
     /*API methods*/
