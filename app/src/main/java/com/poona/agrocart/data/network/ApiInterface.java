@@ -1,6 +1,7 @@
 package com.poona.agrocart.data.network;
 
 import static com.poona.agrocart.app.AppConstants.ADD_ADDRESS_API;
+import static com.poona.agrocart.app.AppConstants.ADD_TO_BASKET;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.AREA_API;
@@ -29,6 +30,7 @@ import static com.poona.agrocart.app.AppConstants.ADDRESS_LIST_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
+import static com.poona.agrocart.app.AppConstants.REMOVE_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
 import static com.poona.agrocart.app.AppConstants.STATE_API;
 import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
@@ -240,10 +242,19 @@ public interface ApiInterface {
     @POST(BASKET_DETAIL_API)
     Single<BasketDetailsResponse> getBasketDetailsResponse(@FieldMap HashMap<String, String> hashMap);
 
+    @FormUrlEncoded
+    @POST(ADD_TO_BASKET)
+    Single<BaseResponse> addToBasketResponse(@FieldMap HashMap<String, String> hashMap);
+
     /*Add to favourite API*/
     @FormUrlEncoded
     @POST(ADD_TO_FAVOURITE)
     Single<BaseResponse> addToFavouriteResponse(@FieldMap HashMap<String,String> hashMap);
+
+    /*Remove From Favourite*/
+    @FormUrlEncoded
+    @POST(REMOVE_FAVOURITE)
+    Single<BaseResponse> removeFromFavouriteResponse(@FieldMap HashMap<String,String> hashMap);
 
     /*View Gallery ResponseData*/
     @GET(VIEW_GALLERY)
