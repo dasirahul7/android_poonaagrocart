@@ -130,6 +130,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
                         if (baseResponse!=null){
+                            progressDialog.dismiss();
                             Log.e(TAG, "add to cart onSuccess: "+new Gson().toJson(baseResponse));
                             baseResponseMutableLiveData.setValue(baseResponse);
                         }
@@ -137,6 +138,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         BaseResponse response = new BaseResponse();
                         try{
@@ -146,7 +148,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(7,"");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(2,"");
                         }
                     }
                 });
