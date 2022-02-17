@@ -560,23 +560,16 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         return map;
     }
 
-    /*
-    * get address from google map start
-    * */
-    private String selectedAddressFromGoogleMap = "";
-    private String selectedStateFromGoogleMap = "";
-    private String selectedCityFromGoogleMap = "";
-    private String selectedAreaFromGoogleMap = "";
-    private String latitude = "";
-    private String longitude = "";
-
     private void updateUi(Intent data) {
-        selectedAddressFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_ADDRESS);
-        selectedStateFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_STATE);
-        selectedCityFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_CITY);
-        selectedAreaFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_AREA);
-        latitude = String.valueOf(data.getDoubleExtra(SimplePlacePicker.LOCATION_LAT_EXTRA,-1));
-        longitude = String.valueOf(data.getDoubleExtra(SimplePlacePicker.LOCATION_LNG_EXTRA,-1));
+        /*
+         * get address from google map start
+         * */
+        String selectedAddressFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_ADDRESS);
+        String selectedStateFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_STATE);
+        String selectedCityFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_CITY);
+        String selectedAreaFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_AREA);
+        String latitude = String.valueOf(data.getDoubleExtra(SimplePlacePicker.LOCATION_LAT_EXTRA, -1));
+        String longitude = String.valueOf(data.getDoubleExtra(SimplePlacePicker.LOCATION_LNG_EXTRA, -1));
 
         if(selectedAddressFromGoogleMap == null
                 || TextUtils.isEmpty(selectedAddressFromGoogleMap)) {
