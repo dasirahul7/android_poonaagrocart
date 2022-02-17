@@ -24,7 +24,7 @@ import com.poona.agrocart.ui.home.model.ProductOld;
 import java.util.ArrayList;
 
 public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdapter.FavouriteHolder> {
-    private ArrayList<FavouriteListResponse.Favourite> productOlds = new ArrayList<>();
+    private ArrayList<FavouriteListResponse.Favourite> favouriteArrayList = new ArrayList<>();
     private final Context bdContext;
     private  RowFavouriteListItemBinding favouriteListItemBinding;
     private OnPlusClick onPlusClick;
@@ -32,7 +32,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
 
     public FavouriteItemAdapter(Context context, ArrayList<FavouriteListResponse.Favourite> favouriteItemsList,
                                 FavouriteItemsFragment favouriteItemsFragment) {
-        this.productOlds = favouriteItemsList;
+        this.favouriteArrayList = favouriteItemsList;
         this.bdContext = context;
     }
 
@@ -54,7 +54,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull FavouriteHolder holder, int position) {
-        FavouriteListResponse.Favourite favourite = productOlds.get(position);
+        FavouriteListResponse.Favourite favourite = favouriteArrayList.get(position);
         favouriteListItemBinding.setFavouriteModelList(favourite);
         holder.bindProduct(favourite, position);
 
@@ -74,7 +74,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
 
     @Override
     public int getItemCount() {
-        return productOlds.size();
+        return favouriteArrayList.size();
     }
 
     public class FavouriteHolder extends RecyclerView.ViewHolder {
@@ -88,8 +88,8 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
         public void bindProduct( FavouriteListResponse.Favourite productOld, int position) {
             favouriteListItemBinding.setVariable(BR.productOldModule, productOld);
             favouriteListItemBinding.executePendingBindings();
-           // favouriteListItemBinding.txtItemOffer.setVisibility(View.GONE);
-          //  favouriteListItemBinding.txtItemPrice.setVisibility(View.GONE);
+            //favouriteListItemBinding.txtItemOffer.setVisibility(View.GONE);
+            //favouriteListItemBinding.txtItemPrice.setVisibility(View.GONE);
             //favouriteListItemBinding.txtOrganic.setVisibility(View.GONE);
             favouriteListItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
             //Remove the left margin from Rs text
@@ -102,10 +102,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
             itemView.setOnClickListener(v -> {
               //  onProductClick.toProductDetail(productOld);
             });
-
         }
-
     }
-
 
 }
