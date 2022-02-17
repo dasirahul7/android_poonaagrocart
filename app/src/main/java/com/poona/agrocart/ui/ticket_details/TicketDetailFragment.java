@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -37,7 +38,9 @@ import com.poona.agrocart.ui.BaseFragment;
 
 import com.poona.agrocart.ui.nav_help_center.HelpCenterFragment;
 import com.poona.agrocart.widgets.CustomEditText;
+import com.poona.agrocart.widgets.CustomTextView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,10 +59,21 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
     private View view;
     private static final String TAG = TicketDetailFragment.class.getSimpleName();
     private CustomEditText tvMessage;
+    private CustomTextView tvDate;
     private ImageView ivSendMessage;
     private String strTicketId = "";
     private String strMessage = "";
+    private float scale;
+    private View navHostFragment;
+    private ViewGroup.MarginLayoutParams navHostMargins;
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
+        setBottomMarginInDps(0);
+    }
 
     @SuppressLint("ResourceType")
     @Override
@@ -71,6 +85,8 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
         ticketDetailsViewModel=new ViewModelProvider(this).get(TicketDetailsViewModel.class);
         fragmentTicketDetailBinding.setTicket(ticketDetailsViewModel);
 
+        fragmentTicketDetailBinding.clMainLayout.setVisibility(View.GONE);
+
         if (getArguments() != null) {
             strTicketId = getArguments().getString(TICKET_ID);
         }
@@ -78,24 +94,53 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
         initView();
         setRvAdapter();
         onClick();
+
+         scale = getResources().getDisplayMetrics().density;
+
+        requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
+
+        navHostFragment = requireActivity().findViewById(R.id.nav_host_fragment_content_home);
+        navHostMargins = (ViewGroup.MarginLayoutParams) navHostFragment.getLayoutParams();
+        navHostMargins.bottomMargin = 0;
+
+
         return view;
     }
 
 
 
-    private void initView()
-    {
+    private void setBottomMarginInDps(int i) {
+        int dpAsPixels = (int) (i * scale + 0.5f);
+        navHostMargins.bottomMargin = dpAsPixels;
+    }
 
+    public void onResume(){
+        super.onResume();
+        requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
+        setBottomMarginInDps(0);
+
+        if(isConnectingToInternet(context)){
+          setRvAdapter();
+        }else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+
+    }
+
+    private void initView() {
         rvTicketOrders=fragmentTicketDetailBinding.rvTicketComments;
-        tvMessage=fragmentTicketDetailBinding.etMessage;
+        tvMessage=fragmentTicketDetailBinding.etChatMessage;
         ivSendMessage=fragmentTicketDetailBinding.ivSendMessage;
+        tvDate= fragmentTicketDetailBinding.tvDate;
     }
 
 
     private void onClick() {
-       strMessage = ticketDetailsViewModel.etMessage.getValue();
+
+
 
         ivSendMessage.setOnClickListener(view1 -> {
+            strMessage = ticketDetailsViewModel.etMessage.getValue();
             if(isConnectingToInternet(context)){
                 if(!strMessage.equalsIgnoreCase(""))
                     callSendMessageApi(showCircleProgressDialog(context, ""));
@@ -122,15 +167,17 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
         });
     }
 
-    private void setRvAdapter()
-    {
+    private void setRvAdapter() {
+
         allChatList=new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(context);
-        rvTicketOrders.setHasFixedSize(true);
-        rvTicketOrders.setLayoutManager(linearLayoutManager);
 
+        rvTicketOrders.setHasFixedSize(true);
+
+        rvTicketOrders.setLayoutManager(linearLayoutManager);
+        linearLayoutManager.setStackFromEnd(true);
         //initializing our adapter
-        ticketCommentsAdapter = new TicketCommentsAdapter(allChatList);
+        ticketCommentsAdapter = new TicketCommentsAdapter(allChatList,this,context);
 
         //Adding adapter to recyclerview
         rvTicketOrders.setAdapter(ticketCommentsAdapter);
@@ -176,7 +223,21 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
                            }else if(userTicketsDetails.get(0).getStatus().equalsIgnoreCase("Ongoing")){
                                fragmentTicketDetailBinding.tvTicketStatus.setTextColor(ContextCompat.getColor(context, R.color.color_ongoing));
                                ticketDetailsViewModel.status.setValue(userTicketsDetails.get(0).getStatus());
+
                            }
+
+                           String selectedDate = userTicketsDetails.get(0).getCreatedOn();
+
+                           String txtDisplayDate = "";
+                           try {
+                               txtDisplayDate = formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "MMM dd, yyyy hh:mm aa");
+                           } catch (ParseException e) {
+                               e.printStackTrace();
+                           }
+                           ticketDetailsViewModel.ticketDate.setValue(txtDisplayDate);
+
+
+
                        }
 
                        if(recieveMessageResponse.getData().getAllChats() != null &&
@@ -211,9 +272,7 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
 
     private HashMap<String, String> RecieveMessageInputParameter(){
         HashMap<String, String> map = new HashMap<>();
-
         map.put(TICKET_ID, strTicketId);
-
         return map;
     }
 

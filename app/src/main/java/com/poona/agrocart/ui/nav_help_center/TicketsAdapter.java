@@ -61,7 +61,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketVi
 
         String txtDisplayDate="";
         try {
-            txtDisplayDate = helpCenterFragment.formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "dd MMM yyyy, hh:mm aa");
+            txtDisplayDate = helpCenterFragment.formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "MMM dd, yyyy hh:mm aa");
         } catch (ParseException e) {
             e.printStackTrace();
         }

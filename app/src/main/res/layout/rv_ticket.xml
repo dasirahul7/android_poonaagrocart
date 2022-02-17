@@ -49,10 +49,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_3sdp"
                                 android:gravity="start"
+                                android:singleLine="true"
                                 android:text="@{`Ticket Id- `+ticket.ticketNo}"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/_16sp"
-                                app:setCustomFont="@string/font_poppins_bold" />
+                                android:textSize="@dimen/_14sp"
+                                app:setCustomFont="@string/font_poppins_semi_bold" />
 
 
                         <com.poona.agrocart.widgets.CustomTextView
@@ -83,7 +84,7 @@
                             android:text="@string/status"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"
-                            app:setCustomFont="@string/font_poppins_bold" />
+                            app:setCustomFont="@string/font_poppins_semi_bold" />
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:id="@+id/tv_ticket_status"
@@ -94,7 +95,7 @@
                             android:text="@{ticket.status}"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"
-                            app:setCustomFont="@string/font_poppins_bold" />
+                            app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     </LinearLayout>
 
@@ -115,7 +116,7 @@
                     android:text="@string/subject"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16sp"
-                    app:setCustomFont="@string/font_poppins_bold" />
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:layout_width="wrap_content"
@@ -137,7 +138,7 @@
                     android:text="@string/remark"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16sp"
-                    app:setCustomFont="@string/font_poppins_bold" />
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:layout_width="wrap_content"
