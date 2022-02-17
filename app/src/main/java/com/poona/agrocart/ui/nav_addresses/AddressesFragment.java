@@ -23,12 +23,15 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -80,6 +83,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
     }
 
     private int deletePosition = 0;
+    private View itemView;
     private void setRvAdapter() {
         addressArrayList = new ArrayList<>();
 
@@ -94,7 +98,8 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
             redirectToAddressFormWithData(view);
         });
 
-        addressesAdapter.setOnDeleteButtonClickListener(position -> {
+        addressesAdapter.setOnDeleteButtonClickListener((itemView, position) -> {
+            this.itemView = itemView;
             this.deletePosition = position;
             dialogDeleteAddress();
         });
@@ -267,15 +272,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, baseResponse.getMessage());
-                        addressArrayList.remove(deletePosition);
-                        addressesAdapter.notifyDataSetChanged();
-                        if(addressArrayList != null && addressArrayList.size() > 0) {
-                            fragmentAddressesBinding.rlErrorMessage.setVisibility(View.GONE);
-                            fragmentAddressesBinding.rvAddress.setVisibility(View.VISIBLE);
-                        } else {
-                            fragmentAddressesBinding.rlErrorMessage.setVisibility(View.VISIBLE);
-                            fragmentAddressesBinding.rvAddress.setVisibility(View.GONE);
-                        }
+                        deleteItem();
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors
@@ -305,6 +302,26 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
         HashMap<String, String> map = new HashMap<>();
         map.put(ADDRESS_ID, addressArrayList.get(deletePosition).getAddressPrimaryId());
         return map;
+    }
+
+    private void deleteItem() {
+
+        Animation anim = AnimationUtils.loadAnimation(requireContext(),
+                android.R.anim.slide_out_right);
+        anim.setDuration(300);
+        itemView.startAnimation(anim);
+
+        new Handler().postDelayed(() -> {
+            addressArrayList.remove(deletePosition);
+            addressesAdapter.notifyDataSetChanged();
+            if(addressArrayList != null && addressArrayList.size() > 0) {
+                fragmentAddressesBinding.rlErrorMessage.setVisibility(View.GONE);
+                fragmentAddressesBinding.rvAddress.setVisibility(View.VISIBLE);
+            } else {
+                fragmentAddressesBinding.rlErrorMessage.setVisibility(View.VISIBLE);
+                fragmentAddressesBinding.rvAddress.setVisibility(View.GONE);
+            }
+        }, anim.getDuration());
     }
 
     @Override

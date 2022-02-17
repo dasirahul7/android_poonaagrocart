@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.nav_addresses;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -28,7 +29,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
 
     private OnDeleteButtonClickListener onDeleteButtonClickListener;
     public interface OnDeleteButtonClickListener {
-        void onItemClick(int position);
+        void onItemClick(View itemView, int position);
     }
     public void setOnDeleteButtonClickListener(OnDeleteButtonClickListener listener) {
         onDeleteButtonClickListener = listener;
@@ -81,7 +82,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
                 notifyDataSetChanged();
                 if (onDeleteButtonClickListener != null) {
                     if (selectedDeleteItem != RecyclerView.NO_POSITION) {
-                        onDeleteButtonClickListener.onItemClick(selectedDeleteItem);
+                        onDeleteButtonClickListener.onItemClick(rvAddressBinding.getRoot(), selectedDeleteItem);
                     }
                 }
             });
