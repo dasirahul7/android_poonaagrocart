@@ -19,15 +19,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
 import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
+
 
 public class FavouriteItemsFragment extends BaseFragment
 {
@@ -40,6 +41,7 @@ public class FavouriteItemsFragment extends BaseFragment
 
     View view;
     private String TAG= FavouriteItemsFragment.class.getSimpleName();
+    private SwipeRefreshLayout rlRefreshPage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,9 +52,9 @@ public class FavouriteItemsFragment extends BaseFragment
         fragmentFavouriteItemsBinding.setFaqViewModel(favouriteViewModel);
         fragmentFavouriteItemsBinding.setLifecycleOwner(this);
 
-         initTitleBar(getString(R.string.menu_favourite));
-         initView();
-         setAdaptor();
+        initTitleBar(getString(R.string.menu_favourite));
+        initView();
+        setAdaptor();
 
 
         return view;
@@ -73,7 +75,7 @@ public class FavouriteItemsFragment extends BaseFragment
         //Initializing our superheroes list
         favouriteItemsList = new ArrayList<>();
 
-       // refreshLayout.setRefreshing(false);
+        rlRefreshPage.setRefreshing(false);
         //initializing our adapter
         favouriteItemAdapter = new FavouriteItemAdapter(context, favouriteItemsList, this);
 
@@ -91,6 +93,7 @@ public class FavouriteItemsFragment extends BaseFragment
 
     private void initView() {
         rvFavouriteItems=fragmentFavouriteItemsBinding.rvFavouriteItems;
+        rlRefreshPage=fragmentFavouriteItemsBinding.rlRefreshPage;
     }
 
     private void callFavouriteAPi(ProgressDialog progressDialog) {
