@@ -22,6 +22,7 @@
 
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/nv_main_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/_70sdp"

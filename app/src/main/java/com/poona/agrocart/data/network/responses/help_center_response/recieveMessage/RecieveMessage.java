@@ -11,16 +11,16 @@ public class RecieveMessage {
 
     @SerializedName("user_tickets_details")
     @Expose
-    private List<UserTicketsDetail> userTicketsDetails = null;
+    private List<com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.UserTicketsDetail> userTicketsDetails = null;
     @SerializedName("all_chats")
     @Expose
     private List<AllChat> allChats = null;
 
-    public List<UserTicketsDetail> getUserTicketsDetails() {
+    public List<com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.UserTicketsDetail> getUserTicketsDetails() {
         return userTicketsDetails;
     }
 
-    public void setUserTicketsDetails(List<UserTicketsDetail> userTicketsDetails) {
+    public void setUserTicketsDetails(List<com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.UserTicketsDetail> userTicketsDetails) {
         this.userTicketsDetails = userTicketsDetails;
     }
 
