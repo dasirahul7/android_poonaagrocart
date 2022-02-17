@@ -99,7 +99,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private ArrayList<StoreBannerResponse.StoreBanner> storeBannerList = new ArrayList<>();
     private ArrayList<String> BasketIds = new ArrayList<>();
 
-    private final int limit = 3;
+    private final int limit = 10;
     private int categoryOffset = 0,basketOffset = 0,bestSellingOffset=0,
             seasonalOffset=0,exclusiveOffset=0,productOffset=0;
     private View root;
@@ -147,7 +147,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //        setStoreBanner(root);
         initClick();
         checkEmpties();
-        setPaginationForLists();
+//        setPaginationForLists();
 
         return root;
 

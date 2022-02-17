@@ -58,7 +58,7 @@ public class HomeActivity extends BaseActivity {
     private static final String TAG = HomeActivity.class.getSimpleName();
     private AppBarConfiguration mAppBarConfiguration;
     public ActivityHomeBinding binding;
-    public DrawerLayout drawer;
+    private DrawerLayout drawer;
     private NavigationView navigationView;
     private NavController navController;
     public Toolbar toolbar;
@@ -148,12 +148,6 @@ public class HomeActivity extends BaseActivity {
         signOut.setOnMenuItemClickListener(item -> {
             drawer.closeDrawer(GravityCompat.START);
             showLogoutConfirmationDialog();
-            /*try {
-                //signOutApiCall(showCircleProgressDialog(HomeActivity.this,""));
-                showLogoutConfirmationDialog();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
             return true;
         });
 
