@@ -1,10 +1,10 @@
 
-package com.poona.agrocart.data.network.reponses.favoutiteResponse;
+package com.poona.agrocart.data.network.responses.favoutiteResponse;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
 
 public class FavouriteListResponse extends BaseResponse {
 

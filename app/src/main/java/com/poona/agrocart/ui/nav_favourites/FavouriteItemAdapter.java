@@ -9,17 +9,15 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteListResponse;
+import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
 import com.poona.agrocart.databinding.RowFavouriteListItemBinding;
-import com.poona.agrocart.databinding.RowProductItemBinding;
 import com.poona.agrocart.ui.home.OnPlusClick;
 import com.poona.agrocart.ui.home.OnProductClick;
-import com.poona.agrocart.ui.home.model.ProductOld;
+
 
 import java.util.ArrayList;
 
