@@ -14,10 +14,8 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.BasketDetailsResponse;
-import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
-import com.poona.agrocart.ui.basket_detail.model.BasketDetail;
+import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
 
 import java.util.ArrayList;

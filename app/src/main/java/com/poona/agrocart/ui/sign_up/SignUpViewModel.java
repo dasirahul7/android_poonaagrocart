@@ -6,20 +6,15 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.AreaResponse;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.SignInResponse;
-import com.poona.agrocart.ui.sign_in.SignInFragment;
+import com.poona.agrocart.data.network.responses.BaseResponse;
 
 import java.util.HashMap;
 

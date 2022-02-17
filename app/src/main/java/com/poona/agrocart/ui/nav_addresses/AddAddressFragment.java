@@ -3,27 +3,18 @@ package com.poona.agrocart.ui.nav_addresses;
 import static android.app.Activity.RESULT_OK;
 import static android.provider.ContactsContract.CommonDataKinds.StructuredPostal.CITY;
 
+import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_TYPE;
-import static com.poona.agrocart.app.AppConstants.ALTERNATE_MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.APARTMENT_NAME;
 import static com.poona.agrocart.app.AppConstants.AREA_;
 import static com.poona.agrocart.app.AppConstants.AREA_ID;
 import static com.poona.agrocart.app.AppConstants.CITY_;
 import static com.poona.agrocart.app.AppConstants.CITY_ID;
-import static com.poona.agrocart.app.AppConstants.DATE_OF_BIRTH;
-import static com.poona.agrocart.app.AppConstants.EMAIL;
-import static com.poona.agrocart.app.AppConstants.GENDER;
-import static com.poona.agrocart.app.AppConstants.GOOGLE_MAP_ADDRESS;
 import static com.poona.agrocart.app.AppConstants.HOUSE_NO;
 import static com.poona.agrocart.app.AppConstants.LANDMARK;
-import static com.poona.agrocart.app.AppConstants.LATITUDE;
-import static com.poona.agrocart.app.AppConstants.LONGITUDE;
 import static com.poona.agrocart.app.AppConstants.MOBILE;
-import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
 import static com.poona.agrocart.app.AppConstants.NAME;
 import static com.poona.agrocart.app.AppConstants.PIN_CODE;
-import static com.poona.agrocart.app.AppConstants.PROFILE_IMAGE;
-import static com.poona.agrocart.app.AppConstants.STATE_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -53,31 +44,24 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.AreaResponse;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.CityResponse;
-import com.poona.agrocart.data.network.reponses.ProfileResponse;
+import com.poona.agrocart.data.network.responses.AreaResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.databinding.FragmentAddressesFormBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.nav_addresses.map_view.SimplePlacePicker;
 import com.poona.agrocart.ui.nav_profile.CustomArrayAdapter;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 public class AddAddressFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     private static final String TAG = AddAddressFragment.class.getSimpleName();
@@ -97,6 +81,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private int check = 0;
     private CityResponse cityResponse = null;
     private AreaResponse areaResponse = null;
+
+    private boolean checkIsValidPinCode = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,6 +113,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private void initView() {
         fragmentAddressesFormBinding.tvCurrentLocation.setOnClickListener(this);
         fragmentAddressesFormBinding.btnAddAddress.setOnClickListener(this);
+        fragmentAddressesFormBinding.btCheckAvailability.setOnClickListener(this);
 
         Typeface poppinsRegularFont = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_medium));
         fragmentAddressesFormBinding.rbHome.setTypeface(poppinsRegularFont);
@@ -163,6 +150,10 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                 getUserInputAndSetIntoPojo();
                 checkValidInputFields();
                 break;
+            case R.id.bt_check_availability:
+                getUserInputAndSetIntoPojo();
+                checkValidPinCodeEntered();
+                break;
         }
     }
 
@@ -189,6 +180,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 /*basicDetails.setCity(adapterView.getItemAtPosition(i).toString());
                 addressesViewModel.city.setValue(basicDetails.getCity());*/
+                hideKeyBoard(requireActivity());
                 if (cityList != null) {
                     System.out.println("selected city " + cityList.get(i).getId());
                     selectedCityId = cityList.get(i).getId();
@@ -236,6 +228,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 /*basicDetails.setArea(adapterView.getItemAtPosition(i).toString());
                 addressesViewModel.area.setValue(basicDetails.getArea());*/
+                hideKeyBoard(requireActivity());
                 if (areaList != null) {
                     System.out.println("selected area " + areaList.get(i).getId());
                     selectedAreaId = areaList.get(i).getId();
@@ -403,9 +396,23 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         }
     }
 
+    private void checkValidPinCodeEntered() {
+        int errorCodePinCode = basicDetails.isValidPinCode();
+        if(errorCodePinCode == 0) {
+            errorToast(requireActivity(), getString(R.string.pin_code_should_not_be_empty));
+        } else if(errorCodePinCode == 1) {
+            errorToast(requireActivity(), getString(R.string.invalid_pin_code));
+        } else {
+            if (isConnectingToInternet(context))
+                checkPinCodeAvailableApi(showCircleProgressDialog(context, ""));
+            else
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+    }
+
     private void callAddAddressApi(ProgressDialog progressDialog) {
         /*print user input parameters*/
-        for (Map.Entry<String, String> entry : addAddressParameters().entrySet()) {
+        for (Map.Entry<String, String> entry : addAddressParameters(false).entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }
 
@@ -439,18 +446,60 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         };
 
         addressesViewModel
-                .addAddressResponse(progressDialog, AddAddressFragment.this, addAddressParameters())
+                .addAddressResponse(progressDialog, AddAddressFragment.this, addAddressParameters(false))
                 .observe(getViewLifecycleOwner(), updateProfileResponseObserver);
     }
 
-    private HashMap<String, String> addAddressParameters() {
+    private void callUpdateAddressApi(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : addAddressParameters(true).entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+
+        androidx.lifecycle.Observer<BaseResponse> updateProfileResponseObserver = profileResponse -> {
+            if (profileResponse != null) {
+                progressDialog.dismiss();
+                Log.e("Update Address Api Response", new Gson().toJson(profileResponse));
+                switch (profileResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, ""+profileResponse.getMessage());
+                        Navigation.findNavController(view).popBackStack();
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_402://Validation Errors
+                        goToAskAndDismiss(profileResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, profileResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(profileResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, profileResponse.getMessage());
+                        break;
+                }
+            } else {
+                progressDialog.dismiss();
+            }
+        };
+
+        addressesViewModel
+                .updateAddressResponse(progressDialog, AddAddressFragment.this, addAddressParameters(true))
+                .observe(getViewLifecycleOwner(), updateProfileResponseObserver);
+    }
+
+    private HashMap<String, String> addAddressParameters(boolean isUpdate) {
         HashMap<String, String> map = new HashMap<>();
 
+        if(isUpdate)
+            map.put(ADDRESS_ID, basicDetails.getAddressId());
         map.put(ADDRESS_TYPE, basicDetails.getAddressType());
         map.put(NAME, basicDetails.getName());
         map.put(MOBILE, basicDetails.getMobileNumber());
-        map.put(CITY_, basicDetails.getCity());
-        map.put(AREA_, basicDetails.getArea());
+        map.put(CITY_ID, basicDetails.getCity());
+        map.put(AREA_ID, basicDetails.getArea());
         map.put(PIN_CODE, basicDetails.getPinCode());
         map.put(APARTMENT_NAME, basicDetails.getApartmentName());
         map.put(HOUSE_NO, basicDetails.getHouseNumber());
@@ -460,6 +509,54 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         map.put(LONGITUDE, basicDetails.getLongitude());
         map.put(GOOGLE_MAP_ADDRESS, basicDetails.getMapAddress());*/
 
+        return map;
+    }
+
+    private void checkPinCodeAvailableApi(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : checkPinCodeAvailableParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+
+        androidx.lifecycle.Observer<BaseResponse> updateProfileResponseObserver = baseResponse -> {
+            if (baseResponse != null) {
+                progressDialog.dismiss();
+                Log.e("Check Pin Code Api Response", new Gson().toJson(baseResponse));
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, ""+baseResponse.getMessage());
+                        checkIsValidPinCode = true;
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_402://Validation Errors
+                        checkIsValidPinCode = false;
+                        goToAskAndDismiss(baseResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        checkIsValidPinCode = true;
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+            } else {
+                progressDialog.dismiss();
+            }
+        };
+
+        addressesViewModel
+                .checkPinCodeAvailableResponse(progressDialog, AddAddressFragment.this, checkPinCodeAvailableParameters())
+                .observe(getViewLifecycleOwner(), updateProfileResponseObserver);
+    }
+
+    private HashMap<String, String> checkPinCodeAvailableParameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(PIN_CODE, basicDetails.getPinCode());
         return map;
     }
 
@@ -597,6 +694,10 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     callAreaApi(showCircleProgressDialog(context, ""));
                 } else if(from == 2) {
                     callAddAddressApi(showCircleProgressDialog(context, ""));
+                } else if(from == 3) {
+                    checkPinCodeAvailableApi(showCircleProgressDialog(context, ""));
+                } else if(from == 4) {
+                    callUpdateAddressApi(showCircleProgressDialog(context, ""));
                 }
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

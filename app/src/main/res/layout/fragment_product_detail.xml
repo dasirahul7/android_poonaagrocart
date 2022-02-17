@@ -7,7 +7,7 @@
 
         <variable
             name="productDetailModule"
-            type="com.poona.agrocart.data.network.reponses.ProductDetailsResponse.ProductDetails" />
+            type="com.poona.agrocart.data.network.responses.ProductDetailsResponse.ProductDetails" />
     </data>
 
     <ScrollView
@@ -204,7 +204,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_strikethrough"
-                        android:text="@{`Rs.`+productDetailModule.unit.sellingPrice}"
                         android:textColor="@color/colorGrey"
                         android:textSize="@dimen/_12sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -213,7 +212,6 @@
                         android:id="@+id/tv_offer_price"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="@{`Rs. `+productDetailModule.unit.offerPrice}"                        android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_24sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -257,7 +255,6 @@
                                 android:layout_width="@dimen/_25sdp"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:text="@string/_1"
                                 android:textAlignment="center"
                                 android:textColor="@color/clr_enter_otp"
                                 android:textSize="@dimen/_18sp"

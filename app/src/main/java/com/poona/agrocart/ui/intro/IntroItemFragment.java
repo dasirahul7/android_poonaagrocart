@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
+import com.poona.agrocart.data.network.responses.IntroScreenResponse;
 import com.poona.agrocart.databinding.FragmentIntroScreenItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
 

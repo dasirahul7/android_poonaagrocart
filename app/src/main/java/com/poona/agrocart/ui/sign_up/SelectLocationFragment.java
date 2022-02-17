@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,9 +28,9 @@ import androidx.navigation.Navigation;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.AreaResponse;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.CityResponse;
+import com.poona.agrocart.data.network.responses.AreaResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.databinding.FragmentSelectLocationBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;

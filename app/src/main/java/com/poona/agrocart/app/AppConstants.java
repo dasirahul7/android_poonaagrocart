@@ -72,8 +72,11 @@ public class AppConstants {
     public static final String MY_PROFILE_API = "profile-view-customer";
     public static final String ADDRESS_LIST_API = "address-view";
     public static final String ADD_ADDRESS_API = "address-add";
+    public static final String UPDATE_ADDRESS_API = "address-update";
+    public static final String DELETE_ADDRESS_API = "address-delete";
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
+    public static final String CHECK_VALID_PIN_CODE_API = "check-pincode-availablity";
     /*Home screen APIs*/
     public static final String HOME_API = "home";
     public static final String HOME_BANNER_API = "home-screen-banner";
@@ -109,6 +112,8 @@ public class AppConstants {
     public static final String TICKET_TYPE = "ticket-type";
     public static final String VIEW_TICKET = "view-ticket";
     public static final String ISSUE_TICKET = "issue-ticket";
+    public static final String VIEW_CHATS = "view-chats";
+    public static final String REPLY_TO_TICKET = "reply-to-ticket";
 
 
     /*Product list API*/
@@ -197,6 +202,7 @@ public class AppConstants {
     public static final String DATE_OF_BIRTH = "date_of_birth";
 
     /*add address post parameters*/
+    public static final String ADDRESS_ID = "address_primary_id";
     public static final String ADDRESS_TYPE = "address_type";
     public static final String MOBILE = "mobile";
     public static final String CITY_ = "city_id_fk";
@@ -227,7 +233,7 @@ public class AppConstants {
     public static final Object IS_NOTIFICATION_RECEIVED = "IS_NOTIFICATION_RECEIVED";
 
     //Help center
-    public static final String TICKET_ID = "TICKET_ID";
+    //public static final String TICKET_ID = "TICKET_ID";
     public static final String STATUS = "STATUS";
     public static final String REMARK = "REMARK";
     public static final String DATE = "DATE";
@@ -237,6 +243,8 @@ public class AppConstants {
     public static final String ISSUE_ID = "issue_id";
     public static final String TICKET_SUBJECT = "subject";
     public static final String TICKET_REMARK = "remark";
+    public static final String TICKET_ID = "ticket_id";
+    public static final String MESSAGE = "message";
 
     //SharedPreferences keys
     public static String CART_LIST = "CART_LIST";

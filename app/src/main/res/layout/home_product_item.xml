@@ -7,7 +7,7 @@
 
         <variable
             name="homeProductModel"
-            type="com.poona.agrocart.data.network.reponses.ProductListResponse.Product" />
+            type="com.poona.agrocart.data.network.responses.ProductListResponse.Product" />
 
     </data>
 

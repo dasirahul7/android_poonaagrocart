@@ -26,46 +26,36 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.GravityCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
-import com.poona.agrocart.app.AppUtils;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.ExclusiveResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.BannerResponse;
-import com.poona.agrocart.data.network.reponses.BasketResponse;
-import com.poona.agrocart.data.network.reponses.BestSellingResponse;
-import com.poona.agrocart.data.network.reponses.CategoryResponse;
-import com.poona.agrocart.data.network.reponses.HomeResponse;
-import com.poona.agrocart.data.network.reponses.ProductListResponse;
-import com.poona.agrocart.data.network.reponses.SeasonalProductResponse;
-import com.poona.agrocart.data.network.reponses.StoreBannerResponse;
+import com.poona.agrocart.data.network.responses.BannerResponse;
+import com.poona.agrocart.data.network.responses.BasketResponse;
+import com.poona.agrocart.data.network.responses.BestSellingResponse;
+import com.poona.agrocart.data.network.responses.CategoryResponse;
+import com.poona.agrocart.data.network.responses.HomeResponse;
+import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
+import com.poona.agrocart.data.network.responses.StoreBannerResponse;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
@@ -78,7 +68,6 @@ import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -110,7 +99,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private ArrayList<StoreBannerResponse.StoreBanner> storeBannerList = new ArrayList<>();
     private ArrayList<String> BasketIds = new ArrayList<>();
 
-    private final int limit = 3;
+    private final int limit = 10;
     private int categoryOffset = 0,basketOffset = 0,bestSellingOffset=0,
             seasonalOffset=0,exclusiveOffset=0,productOffset=0;
     private View root;
@@ -139,6 +128,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         root = fragmentHomeBinding.getRoot();
         clearLists();
+        setCategoryRv();
         if (isConnectingToInternet(context)) {
 //            callHomeApi(showCircleProgressDialog(context,""),offset);
             callBannerApi(showCircleProgressDialog(context, ""));
@@ -157,7 +147,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //        setStoreBanner(root);
         initClick();
         checkEmpties();
-        setPaginationForLists();
+//        setPaginationForLists();
 
         return root;
 
@@ -286,8 +276,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             categories.addAll(homeResponse.getResponse().getCategoryData());
             System.out.println("categories "+categories.size());
             fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
-            setCategoryRv();
-            categoryAdapter.notifyDataSetChanged();
         }else makeInVisible(fragmentHomeBinding.recCategory,
                 fragmentHomeBinding.rlCategory);
 
@@ -1023,10 +1011,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                     && categoryResponse.getCategoryData().getCategoryList().size() > 0) {
                                 makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
                                 categories.addAll(categoryResponse.getCategoryData().getCategoryList());
+                                categoryAdapter.notifyDataSetChanged();
                                 System.out.println("categories "+categories.size());
                                 fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
-                                setCategoryRv();
-                                categoryAdapter.notifyDataSetChanged();
                             }
                         }
                         break;
@@ -1172,6 +1159,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         HashMap<String, String> map = new HashMap<>();
         switch (api){
             case CATEGORY:
+                System.out.println("categoryOffset"+categoryOffset);
             map.put(AppConstants.OFFSET, String.valueOf(categoryOffset));
             break;
             case BASKET:

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.CategoryResponse;
+import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.databinding.RowCategoryItemBinding;
 
 import java.util.ArrayList;

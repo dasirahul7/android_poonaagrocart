@@ -9,7 +9,6 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,7 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.gson.Gson;
@@ -32,7 +30,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentCmsBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.data.network.reponses.CmsResponse;
+import com.poona.agrocart.data.network.responses.CmsResponse;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.sign_in.SignInFragment;
 import com.poona.agrocart.ui.sign_up.SignUpFragment;
