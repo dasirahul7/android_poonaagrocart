@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_addresses;
 
+import static com.poona.agrocart.app.AppConstants.ADDRESS_DETAILS;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_TYPE;
 import static com.poona.agrocart.app.AppConstants.APARTMENT_NAME;
@@ -83,6 +84,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
     }
 
     private int deletePosition = 0;
+    private int editPosition = 0;
     private View itemView;
     private void setRvAdapter() {
         addressArrayList = new ArrayList<>();
@@ -95,6 +97,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
         rvAddress.setAdapter(addressesAdapter);
 
         addressesAdapter.setOnEditButtonClickListener(position -> {
+            this.editPosition = position;
             redirectToAddressFormWithData(view);
         });
 
@@ -132,6 +135,8 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
 
     private void redirectToAddressFormWithData(View v) {
         Bundle bundle = new Bundle();
+        AddressesResponse.Address address = addressArrayList.get(editPosition);
+        bundle.putSerializable(ADDRESS_DETAILS, address);
         Navigation.findNavController(v).navigate(R.id.action_nav_address_to_addressesFormFragment2, bundle);
     }
 
@@ -196,7 +201,17 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                                 address.setName(name);
                                 address.setMobile(mobileNumber);
                                 address.setAddressType(addressType);
+                                address.setHouseNo(houseNumber);
+                                address.setAppartmentName(apartmentName);
+                                address.setStreet(street);
+                                address.setLandmark(landmark);
+                                address.setAreaIdFk(area);
+                                address.setCityIdFk(city);
+                                address.setPincode(pinCode);
                                 address.setFullAddress(fullAddressSb.toString());
+                                address.setLatitude(fullAddressSb.toString());
+                                address.setLongitude(fullAddressSb.toString());
+
                                 addressArrayList.set(i, address);
                             }
                         }

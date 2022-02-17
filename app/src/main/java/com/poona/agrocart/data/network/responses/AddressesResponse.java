@@ -3,9 +3,10 @@ package com.poona.agrocart.data.network.responses;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class AddressesResponse extends BaseResponse {
+public class AddressesResponse extends BaseResponse implements Serializable{
     @SerializedName("data")
     @Expose
     private List<Address> addresses = null;
@@ -18,7 +19,7 @@ public class AddressesResponse extends BaseResponse {
         this.addresses = addresses;
     }
 
-    public static class Address {
+    public static class Address implements Serializable {
 
         @SerializedName("name")
         @Expose

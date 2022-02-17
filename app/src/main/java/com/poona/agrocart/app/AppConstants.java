@@ -202,6 +202,7 @@ public class AppConstants {
     public static final String DATE_OF_BIRTH = "date_of_birth";
 
     /*add address post parameters*/
+    public static final String ADDRESS_DETAILS = "address_details";
     public static final String ADDRESS_ID = "address_primary_id";
     public static final String ADDRESS_TYPE = "address_type";
     public static final String MOBILE = "mobile";

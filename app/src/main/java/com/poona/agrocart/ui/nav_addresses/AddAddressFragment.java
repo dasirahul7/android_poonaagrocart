@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.nav_addresses;
 
 import static androidx.core.content.ContextCompat.checkSelfPermission;
+import static com.poona.agrocart.app.AppConstants.ADDRESS_DETAILS;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_TYPE;
 import static com.poona.agrocart.app.AppConstants.APARTMENT_NAME;
@@ -44,6 +45,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -51,6 +53,7 @@ import androidx.navigation.Navigation;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.data.network.responses.AreaResponse;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.CityResponse;
@@ -87,9 +90,11 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
     private boolean checkIsValidPinCode = false;
 
+    private AddressesResponse.Address address = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragmentAddressesFormBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_addresses_form, container, false);
+        fragmentAddressesFormBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_addresses_form, container, false);
 
         addressesViewModel = new ViewModelProvider(this).get(AddressesViewModel.class);
         fragmentAddressesFormBinding.setAddressesViewModel(addressesViewModel);
@@ -97,11 +102,11 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         fragmentAddressesFormBinding.setLifecycleOwner(this);
         view = fragmentAddressesFormBinding.getRoot();
 
-        initView();
-
         basicDetails = new BasicDetails();
         cityList = new ArrayList<>();
         areaList = new ArrayList<>();
+
+        initView();
 
         if (isConnectingToInternet(context)) {
             hideKeyBoard(requireActivity());
@@ -176,6 +181,61 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                 launchGoogleMapIntent();
             }
         });
+
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            if(bundle.getSerializable(ADDRESS_DETAILS) != null) {
+                address = (AddressesResponse.Address) bundle.getSerializable(ADDRESS_DETAILS);
+
+                if(address.getAddressPrimaryId() != null && !TextUtils.isEmpty(address.getAddressPrimaryId()))
+                    basicDetails.setId(address.getAddressPrimaryId());
+                if(address.getAddressType() != null && !TextUtils.isEmpty(address.getAddressType()))
+                    basicDetails.setAddressType(address.getAddressType());
+                if(address.getName() != null && !TextUtils.isEmpty(address.getName()))
+                    basicDetails.setName(address.getName());
+                if(address.getMobile() != null && !TextUtils.isEmpty(address.getMobile()))
+                    basicDetails.setMobileNumber(address.getMobile());
+                if(address.getCityIdFk() != null && !TextUtils.isEmpty(address.getCityIdFk()))
+                    basicDetails.setCity(address.getCityIdFk());
+                if(address.getAreaIdFk() != null && !TextUtils.isEmpty(address.getAreaIdFk()))
+                    basicDetails.setArea(address.getAreaIdFk());
+                if(address.getPincode() != null && !TextUtils.isEmpty(address.getPincode()))
+                    basicDetails.setPinCode(address.getPincode());
+                if(address.getAppartmentName() != null && !TextUtils.isEmpty(address.getAppartmentName()))
+                    basicDetails.setApartmentName(address.getAppartmentName());
+                if(address.getHouseNo() != null && !TextUtils.isEmpty(address.getHouseNo()))
+                    basicDetails.setHouseNumber(address.getHouseNo());
+                if(address.getStreet() != null && !TextUtils.isEmpty(address.getStreet()))
+                    basicDetails.setStreet(address.getStreet());
+                if(address.getLandmark() != null && !TextUtils.isEmpty(address.getLandmark()))
+                    basicDetails.setLandmark(address.getLandmark());
+                if(address.getLatitude() != null && !TextUtils.isEmpty(address.getLatitude()))
+                    basicDetails.setLatitude(address.getLatitude());
+                if(address.getLongitude() != null && !TextUtils.isEmpty(address.getLongitude()))
+                    basicDetails.setLongitude(address.getLongitude());
+                if(address.getMapAddress() != null && !TextUtils.isEmpty(address.getMapAddress()))
+                    basicDetails.setMapAddress(address.getMapAddress());
+
+                addressesViewModel.addressType.setValue(basicDetails.getAddressType());
+                if(addressesViewModel.addressType.getValue().equalsIgnoreCase("home")) {
+                    fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_home);
+                } else if(addressesViewModel.addressType.getValue().equalsIgnoreCase("office")) {
+                    fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_office);
+                } else if(addressesViewModel.addressType.getValue().equalsIgnoreCase("other")) {
+                    fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_other);
+                }
+
+                addressesViewModel.name.setValue(basicDetails.getName());
+                addressesViewModel.mobile.setValue(basicDetails.getMobileNumber());
+                addressesViewModel.city.setValue(basicDetails.getCity());
+                addressesViewModel.area.setValue(basicDetails.getArea());
+                addressesViewModel.pinCode.setValue(basicDetails.getPinCode());
+                addressesViewModel.apartmentName.setValue(basicDetails.getApartmentName());
+                addressesViewModel.houseNumber.setValue(basicDetails.getHouseNumber());
+                addressesViewModel.landmark.setValue(basicDetails.getLandmark());
+                addressesViewModel.street.setValue(basicDetails.getStreet());
+            }
+        }
     }
 
     @Override
