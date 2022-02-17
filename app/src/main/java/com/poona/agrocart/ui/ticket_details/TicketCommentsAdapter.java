@@ -9,16 +9,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.AllChat;
 import com.poona.agrocart.databinding.RvTicketCommentBinding;
 import com.poona.agrocart.ui.ticket_details.model.Comment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TicketCommentsAdapter extends RecyclerView.Adapter<TicketCommentsAdapter.CommentViewHolder>
 {
-    private final ArrayList<Comment> commentArrayList;
+    private final ArrayList<AllChat> commentArrayList;
 
-    public TicketCommentsAdapter(ArrayList<Comment> commentArrayList)
+    public TicketCommentsAdapter(ArrayList<AllChat> commentArrayList)
     {
         this.commentArrayList = commentArrayList;
     }
@@ -35,7 +37,7 @@ public class TicketCommentsAdapter extends RecyclerView.Adapter<TicketCommentsAd
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position)
     {
-        final Comment comment = commentArrayList.get(position);
+        final AllChat comment = commentArrayList.get(position);
         holder.rvTicketCommentBinding.setComment(comment);
         holder.bind(comment);
     }
@@ -56,7 +58,7 @@ public class TicketCommentsAdapter extends RecyclerView.Adapter<TicketCommentsAd
             this.rvTicketCommentBinding = rvTicketCommentBinding;
         }
 
-        public void bind(Comment comment)
+        public void bind(AllChat comment)
         {
             rvTicketCommentBinding.setVariable(BR.comment,comment);
             rvTicketCommentBinding.executePendingBindings();

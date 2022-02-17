@@ -8,6 +8,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.TICKET_ID;
 import static com.poona.agrocart.app.AppConstants.TICKET_REMARK;
 import static com.poona.agrocart.app.AppConstants.TICKET_SUBJECT;
 
@@ -17,6 +18,7 @@ import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +27,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+
 import android.widget.Spinner;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,7 +48,9 @@ import com.poona.agrocart.data.network.responses.help_center_response.TicketList
 import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.databinding.FragmentHelpCenterBinding;
 import com.poona.agrocart.ui.BaseFragment;
+
 import com.poona.agrocart.ui.nav_help_center.Adaptor.TicketTypeAdaptor;
+
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomEditText;
 
@@ -50,7 +58,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class HelpCenterFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener
+public class HelpCenterFragment extends BaseFragment implements  NetworkExceptionListener, TicketsAdapter.OnTicketClickListener
 {
     private FragmentHelpCenterBinding fragmentHelpCenterBinding;
     private HelpCenterViewModel helpCenterViewModel;
@@ -62,6 +70,10 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
     private Spinner spinTicketType;
     private String ticketId = "", strTicketName = "";
     private CustomEditText etSubject, etDescription;
+    private View view;
+
+    /*View.OnClickListener,*/
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -70,7 +82,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
         fragmentHelpCenterBinding.setLifecycleOwner(this);
         helpCenterViewModel=new ViewModelProvider(this).get(HelpCenterViewModel.class);
         fragmentHelpCenterBinding.setHelpCenterViewModel(helpCenterViewModel);
-        final View view = fragmentHelpCenterBinding.getRoot();
+        view = fragmentHelpCenterBinding.getRoot();
 
         initView();
 
@@ -93,9 +105,10 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
     private void initView()
     {
         rvTickets=fragmentHelpCenterBinding.rvTickets;
-        fragmentHelpCenterBinding.btnCreateNewTicket.setOnClickListener(this);
+        fragmentHelpCenterBinding.btnCreateNewTicket.setOnClickListener(view1 -> {
+            raiseNewTicketDialog();
+        });
         initTitleBar(getString(R.string.menu_addresses));
-        fragmentHelpCenterBinding.btnCreateNewTicket.setOnClickListener(this);
     }
 
     private void setRvAdapter()
@@ -107,7 +120,7 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
         rvTickets.setLayoutManager(linearLayoutManager);
 
         callTicketListApi(showCircleProgressDialog(context, ""),"RecyclerView");
-        ticketsAdapter = new TicketsAdapter(ticketArrayList,getContext());
+        ticketsAdapter = new TicketsAdapter(ticketArrayList,HelpCenterFragment.this,this);
         rvTickets.setAdapter(ticketsAdapter);
 
         //Pagination in scroll view
@@ -202,14 +215,16 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
     }
 
 
-    @Override
+    /*@Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_create_new_ticket:
                raiseNewTicketDialog();
                 break;
         }
-    }
+
+
+    }*/
 
     // Dialog for create ticket
     public void raiseNewTicketDialog() {
@@ -393,6 +408,17 @@ public class HelpCenterFragment extends BaseFragment implements View.OnClickList
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         }, context);
+
+    }
+
+    @Override
+    public void itemViewClick(TicketListResponse.TicketList.UserTicket ticket) {
+        infoToast(context,ticket.getTicketNo());
+//        String strTicketId = ticket.getTicketId();
+        Bundle bundle = new Bundle();
+        bundle.putString(TICKET_ID, ticket.getTicketId());
+        NavHostFragment.findNavController(HelpCenterFragment.this).navigate(R.id.action_nav_help_center_to_nav_ticket_detail,bundle);
+       // NavHostFragment.findNavController(HelpCenterFragment.this).navigate(R.id.action_nav_help_center_to_nav_ticket_detail,bundle);
 
     }
 }
