@@ -413,7 +413,7 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
 
     @Override
     public void itemViewClick(TicketListResponse.TicketList.UserTicket ticket) {
-        infoToast(context,ticket.getTicketNo());
+
 //        String strTicketId = ticket.getTicketId();
         Bundle bundle = new Bundle();
         bundle.putString(TICKET_ID, ticket.getTicketId());

@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.ticket_details;
 
+import static com.poona.agrocart.app.AppConstants.MESSAGE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.help_center_response.SendMessageResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.AllChat;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
@@ -33,6 +35,7 @@ import com.poona.agrocart.data.network.responses.help_center_response.recieveMes
 import com.poona.agrocart.databinding.FragmentTicketDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 
+import com.poona.agrocart.ui.nav_help_center.HelpCenterFragment;
 import com.poona.agrocart.widgets.CustomEditText;
 
 import java.util.ArrayList;
@@ -41,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class TicketDetailFragment extends BaseFragment
+public class TicketDetailFragment extends BaseFragment implements NetworkExceptionListener
 {
     private FragmentTicketDetailBinding fragmentTicketDetailBinding;
     private TicketDetailsViewModel  ticketDetailsViewModel;
@@ -72,7 +75,6 @@ public class TicketDetailFragment extends BaseFragment
             strTicketId = getArguments().getString(TICKET_ID);
         }
         initTitleWithBackBtn(getString(R.string.menu_help_center));
-
         initView();
         setRvAdapter();
         onClick();
@@ -83,6 +85,7 @@ public class TicketDetailFragment extends BaseFragment
 
     private void initView()
     {
+
         rvTicketOrders=fragmentTicketDetailBinding.rvTicketComments;
         tvMessage=fragmentTicketDetailBinding.etMessage;
         ivSendMessage=fragmentTicketDetailBinding.ivSendMessage;
@@ -90,7 +93,7 @@ public class TicketDetailFragment extends BaseFragment
 
 
     private void onClick() {
-        strMessage = ticketDetailsViewModel.etMessage.getValue();
+       strMessage = ticketDetailsViewModel.etMessage.getValue();
 
         ivSendMessage.setOnClickListener(view1 -> {
             if(isConnectingToInternet(context)){
@@ -131,7 +134,13 @@ public class TicketDetailFragment extends BaseFragment
 
         //Adding adapter to recyclerview
         rvTicketOrders.setAdapter(ticketCommentsAdapter);
-        callReceiveMessageApi(showCircleProgressDialog(context,""));
+
+        if(isConnectingToInternet(context)){
+            callReceiveMessageApi(showCircleProgressDialog(context,""));
+        }else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+
 
     }
 
@@ -223,6 +232,7 @@ public class TicketDetailFragment extends BaseFragment
                 }
                 switch (sendMessageResponse.getStatus()) {
                     case STATUS_CODE_200://success
+
                         if (sendMessageResponse.getData() != null){
                             ticketDetailsViewModel.etMessage.setValue("");
                             successToast(context,sendMessageResponse.getMessage());
@@ -257,8 +267,25 @@ public class TicketDetailFragment extends BaseFragment
         HashMap<String, String> map = new HashMap<>();
 
         map.put(TICKET_ID, strTicketId);
-       // map.put(MESSAGE, ticketDetailsViewModel.etMessage.setValue(""));
+        map.put(MESSAGE, ticketDetailsViewModel.etMessage.getValue());
 
         return map;
+    }
+
+    @Override
+    public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), TicketDetailFragment.this,() -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if(from == 0) {
+                    callReceiveMessageApi(showCircleProgressDialog(context, ""));
+                }else if(from == 1) {
+                    callSendMessageApi(showCircleProgressDialog(context,""));
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+
     }
 }

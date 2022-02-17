@@ -134,7 +134,7 @@ public class TicketDetailsViewModel extends AndroidViewModel {
                             sendMessageResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) ticketDetailFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) ticketDetailFragment).onNetworkException(1,"");
                         }
                         Log.e(TAG, e.getMessage());
                     }
