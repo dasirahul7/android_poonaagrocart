@@ -31,7 +31,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -133,6 +135,30 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                 case R.id.rb_other:
                     addressesViewModel.addressType.setValue("other");
                     break;
+            }
+        });
+
+        fragmentAddressesFormBinding.etPincode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 6) {
+                    checkIsValidPinCode = false;
+                    fragmentAddressesFormBinding.etPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    hideKeyBoard(requireActivity());
+                    getUserInputAndSetIntoPojo();
+                    checkValidPinCodeEntered();
+                } else {
+                    checkIsValidPinCode = false;
+                    fragmentAddressesFormBinding.etPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                }
             }
         });
     }
@@ -392,7 +418,11 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         } else if(errorCodeLandmark == 0) {
             errorToast(requireActivity(), getString(R.string.landmark_should_not_be_empty));
         } else {
-            callAddAddressApi(showCircleProgressDialog(context, ""));
+            if(checkIsValidPinCode) {
+                callAddAddressApi(showCircleProgressDialog(context, ""));
+            } else {
+                errorToast(requireActivity(), getString(R.string.invalid_pin_code));
+            }
         }
     }
 
@@ -526,15 +556,18 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, ""+baseResponse.getMessage());
                         checkIsValidPinCode = true;
+                        fragmentAddressesFormBinding.etPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_sign_up_mobile_check, 0);
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors
                         checkIsValidPinCode = false;
+                        fragmentAddressesFormBinding.etPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         goToAskAndDismiss(baseResponse.getMessage(), context);
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_404://Validation Errors
-                        checkIsValidPinCode = true;
+                        checkIsValidPinCode = false;
+                        fragmentAddressesFormBinding.etPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         warningToast(context, baseResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
@@ -616,8 +649,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-    private String [] countryListIso = {"eg","sau","om","mar","usa","ind"};
-    private String [] addressLanguageList = {"en","ar"};
+    private final String [] countryListIso = {"eg","sau","om","mar","usa","ind"};
+    private final String [] addressLanguageList = {"en","ar"};
     private void selectLocationOnMap() {
         String apiKey = "";
 
