@@ -6,6 +6,7 @@ import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.AREA_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.BASKET_DETAIL_API;
+import static com.poona.agrocart.app.AppConstants.CART_LIST_API;
 import static com.poona.agrocart.app.AppConstants.CHECK_VALID_PIN_CODE_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.CITY_WITH_ID_API;
@@ -60,6 +61,7 @@ import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.HomeResponse;
+import com.poona.agrocart.data.network.responses.cartResponse.MyCartResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.CreateTicketResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.SendMessageResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
@@ -83,6 +85,7 @@ import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
@@ -294,6 +297,11 @@ public interface ApiInterface {
     /*Favourite Response*/
     @GET(FAVOURITE_LIST_API)
     Single<FavouriteListResponse> getFavouriteList();
+
+    /*Cart List Response*/
+    @FormUrlEncoded
+    @POST(CART_LIST_API)
+    Single<MyCartResponse> getAllCartList(@FieldMap HashMap<String,String> hashMap);
 
     /*Home API*/
     @FormUrlEncoded

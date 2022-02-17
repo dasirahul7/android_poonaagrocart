@@ -1,5 +1,5 @@
 
-package com.poona.agrocart.data.network.cartResponse;
+package com.poona.agrocart.data.network.responses.cartResponse;
 
 import java.util.ArrayList;
 import com.google.gson.annotations.Expose;

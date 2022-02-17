@@ -22,6 +22,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -33,14 +34,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -263,9 +261,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
             fragmentHomeBinding.recProduct.setHasFixedSize(true);
             fragmentHomeBinding.recProduct.setLayoutManager(productManager);
-            productListAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail,product -> {
+            productListAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail,(product, position) ->  {
                 if (product.getInCart()==0)
-                addToCartProduct(product,"Product");
+                addToCartProduct(product,"Product", position);
             });
             fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
         }else makeInVisible(fragmentHomeBinding.recProduct, null);
@@ -335,9 +333,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //                            offerProducts = exclusiveResponse.getExclusiveData().getExclusivesList();
             makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
             // Redirect to ProductOld details
-            offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), this::toProductDetail, product -> {
+            offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), this::toProductDetail, (product, position) -> {
                 if(product.getInCart()==0)
-                addToCartProduct( product, "Offer");
+                addToCartProduct( product, "Offer",position);
             });
             exclusiveOfferManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
             fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);
@@ -362,10 +360,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
 //                            bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
             bestSellingManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-            bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), this::toProductDetail, product -> {
-                if(product.getInCart()==0)
-                addToCartProduct( product, "Best");
-            });
             fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
             fragmentHomeBinding.recBestSelling.setLayoutManager(bestSellingManager);
             fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
@@ -746,9 +740,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recProduct.setHasFixedSize(true);
                             fragmentHomeBinding.recProduct.setLayoutManager(productManager);
-                            productListAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail,product -> {
-                               if(product.getInCart()==0)
-                                addToCartProduct(product,"Product");
+                            productListAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail,(product, position) ->  {
+                                   addToCartProduct(product,"Product",position);
                             });
                             fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
 //
@@ -855,9 +848,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
 //                            bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
                             bestSellingManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-                            bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), this::toProductDetail, product -> {
+                            bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), this::toProductDetail, (product, position) -> {
                                 if(product.getInCart()==0)
-                                addToCartProduct( product, "Best");
+                                addToCartProduct( product, "Best", position);
                             });
                             fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recBestSelling.setLayoutManager(bestSellingManager);
@@ -889,23 +882,23 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     //Add to CART
     private void addToCartProduct(ProductListResponse.Product product,
-                                  String addType) {
+                                  String addType, int position) {
         Observer<BaseResponse> baseResponseObserver = response -> {
             if (response != null) {
                 Log.e(TAG, "addToCartProduct: " + new Gson().toJson(response));
                 switch (response.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, response.getMessage());
-//                        if (addType.equalsIgnoreCase("BEST")) {
-//                            bestSellings.clear();
-//                            callBestSellingApi(showCircleProgressDialog(context, ""), limit, offset,"load");
-//                        } else if (addType.equalsIgnoreCase("Offer")){
-//                            offerProducts.clear();
-//                            callExclusiveOfferApi(showCircleProgressDialog(context, ""), limit, offset,"load");
-//                        }else {
-//                            productList.clear();
-//                            callProductListApi(showCircleProgressDialog(context,""),limit,offset,"load");
-//                        }
+                        if (addType.equalsIgnoreCase("BEST")) {
+                            bestSellings.clear();
+                            callBestSellingApi(null,"load");
+                        } else if (addType.equalsIgnoreCase("Offer")){
+                            offerProducts.clear();
+                            callExclusiveOfferApi(null, "load");
+                        }else {
+                            productList.clear();
+                            callProductListApi(null,"load");
+                        }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -952,8 +945,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //                            offerProducts = exclusiveResponse.getExclusiveData().getExclusivesList();
                             makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
                             // Redirect to ProductOld details
-                            offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), this::toProductDetail, product -> {
-                                addToCartProduct( product, "Offer");
+                            offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), this::toProductDetail, (product, position) ->  {
+                                addToCartProduct( product, "Offer", position);
                             });
                             exclusiveOfferManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
                             fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);

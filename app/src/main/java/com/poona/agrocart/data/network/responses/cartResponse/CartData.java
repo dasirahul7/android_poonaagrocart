@@ -1,5 +1,5 @@
 
-package com.poona.agrocart.data.network.cartResponse;
+package com.poona.agrocart.data.network.responses.cartResponse;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -42,6 +42,15 @@ public class CartData {
     @SerializedName("unit_name")
     @Expose
     private String unitName;
+    @SerializedName("basket_id_fk")
+    @Expose
+    private String basketIdFk;
+    @SerializedName("basket_name")
+    @Expose
+    private String basketName;
+    @SerializedName("basket_rate")
+    @Expose
+    private String basketRate;
 
     public String getItemType() {
         return itemType;
@@ -139,4 +148,27 @@ public class CartData {
         this.unitName = unitName;
     }
 
+    public String getBasketIdFk() {
+        return basketIdFk;
+    }
+
+    public void setBasketIdFk(String basketIdFk) {
+        this.basketIdFk = basketIdFk;
+    }
+
+    public String getBasketName() {
+        return basketName;
+    }
+
+    public void setBasketName(String basketName) {
+        this.basketName = basketName;
+    }
+
+    public String getBasketRate() {
+        return basketRate;
+    }
+
+    public void setBasketRate(String basketRate) {
+        this.basketRate = basketRate;
+    }
 }

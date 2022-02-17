@@ -369,7 +369,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             case R.id.iv_minus:
                 decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
                         fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivPlus);
-                updateQuantityApi(showCircleProgressDialog(context, ""), details);
                 break;
             case R.id.iv_plus:
                 addOrRemoveFromCart();
@@ -615,6 +614,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         } else {
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
+            updateQuantityApi(showCircleProgressDialog(context, ""), details);
         }
         details.setQuantity(quantity);
         AppUtils.setMinusButton(quantity, view);

@@ -1,40 +1,57 @@
 package com.poona.agrocart.ui.nav_my_cart;
 
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
+import com.poona.agrocart.data.network.responses.cartResponse.CartData;
+import com.poona.agrocart.data.network.responses.cartResponse.MyCartResponse;
+import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.FragmentMyCartBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.CustomDialogInterface;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.model.ProductOld;
+import com.poona.agrocart.ui.nav_favourites.FavouriteItemAdapter;
+import com.poona.agrocart.ui.nav_favourites.FavouriteViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class MyCartFragment extends BaseFragment implements View.OnClickListener {
+public class MyCartFragment extends BaseFragment implements View.OnClickListener, CartItemsAdapter.OnClickCart {
     private FragmentMyCartBinding fragmentMyCartBinding;
     private MyCartViewModel myCartViewModel;
     private RecyclerView rvCart;
     private LinearLayoutManager linearLayoutManager;
-    private CartItemsAdapter cartItemsAdapter;
-    private ArrayList<ProductOld> cartItemArrayList = new ArrayList<>();
-    ArrayList<ProductOld> cartList = new ArrayList<>();
+    private CartItemsAdapter cartItemAdapter;
+    private ArrayList<CartData> cartItemsList = new ArrayList<>();
     private View navHostFragment;
     private ViewGroup.MarginLayoutParams navHostMargins;
     private float scale;
     private AppSharedPreferences mSessionManager;
+    private SwipeRefreshLayout rlRefreshPage;
 
     @Override
     public void onPause() {
@@ -71,12 +88,14 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         final View view = fragmentMyCartBinding.getRoot();
         myCartViewModel = new ViewModelProvider(this).get(MyCartViewModel.class);
         mSessionManager = new AppSharedPreferences(requireActivity());
+        initTitleBar("My Basket");
         initView();
         setRvAdapter();
         return view;
     }
 
     private void initView() {
+        rlRefreshPage = fragmentMyCartBinding.rlRefreshPage;
         fragmentMyCartBinding.btnPlaceOrder.setOnClickListener(this);
         fragmentMyCartBinding.continueBtn.setOnClickListener(this);
         initTitleBar(getString(R.string.my_cart));
@@ -99,29 +118,83 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
     @SuppressLint("NotifyDataSetChanged")
     private void setRvAdapter() {
-        cartList = mSessionManager.getSavedCartList(AppConstants.CART_LIST);
-            myCartViewModel.liveProductList.setValue(cartList);
-            if (cartList!=null&&cartList.size()>0) {
-                myCartViewModel.getCartList().observe(getViewLifecycleOwner(), products -> {
-                    cartItemArrayList = products;
-                    cartItemsAdapter = new CartItemsAdapter(cartItemArrayList);
-                    rvCart.setAdapter(cartItemsAdapter);
-                    linearLayoutManager = new LinearLayoutManager(requireContext());
-                    rvCart.setHasFixedSize(true);
-                    rvCart.setLayoutManager(linearLayoutManager);
-                    // adapter interface
-                    cartItemsAdapter.setOnCartItemClick(position -> {
-                        cartItemArrayList.remove(position);
-                        cartItemsAdapter.notifyItemRemoved(position);
-                        checkEmptyCart();
-                    });
-                });
-            }else checkEmptyCart();
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        rvCart.setHasFixedSize(true);
+        rvCart.setLayoutManager(linearLayoutManager);
+
+        //Initializing our superheroes list
+        cartItemsList = new ArrayList<>();
+
+        rlRefreshPage.setRefreshing(false);
+        //initializing our adapter
+        cartItemAdapter = new CartItemsAdapter(cartItemsList, this);
+
+        //Adding adapter to recyclerview
+        rvCart.setAdapter(cartItemAdapter);
+
+        //Calling method to get data to fetch data
+        if (isConnectingToInternet(context)) {
+            callMyCarListApi(showCircleProgressDialog(context, ""));
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+    }
+
+    private void callMyCarListApi(ProgressDialog progressDialog) {
+        @SuppressLint("NotifyDataSetChanged")
+        Observer<MyCartResponse> myCartResponseObserver = myCartResponse -> {
+
+            if (myCartResponse != null){
+                Log.e("Cart List Response", new Gson().toJson(myCartResponse));
+                if (progressDialog !=null){
+                    progressDialog.dismiss();
+                }
+                switch (myCartResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        if (myCartResponse.getData() != null
+                                && myCartResponse.getData().size() > 0){
+
+                            fragmentMyCartBinding.emptyLayout.setVisibility(View.GONE);
+                            fragmentMyCartBinding.itamLayout.setVisibility(View.VISIBLE);
+                            cartItemsList.addAll(myCartResponse.getData());
+                            cartItemAdapter.notifyDataSetChanged();
+                        }
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                        warningToast(context, myCartResponse.getMessage());
+                        break;
+                    case STATUS_CODE_404://Record not Found
+                        /* show empty screen message */
+                        fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
+                        fragmentMyCartBinding.itamLayout.setVisibility(View.GONE);
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        warningToast(context, myCartResponse.getMessage());
+                        goToAskSignInSignUpScreen();
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, myCartResponse.getMessage());
+                        break;
+                }
+            }else{
+                if (progressDialog !=null){
+                    progressDialog.dismiss();
+                }
+            }
+        };
+        myCartViewModel.CartLisResponseLiveData(progressDialog,paramCart(),MyCartFragment.this);
+
 
     }
 
+    private HashMap<String, String> paramCart() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(AppConstants.CUSTOMER_ID, preferences.getUid());
+        return map;
+    }
+
     private void checkEmptyCart() {
-        if (cartItemArrayList.size()>0)
+        if (cartItemsList.size()>0)
             return;
         else {
             fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
@@ -144,7 +217,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
                     @Override
                     public void onNoClick() {
-
                     }
                 });
                 break;
@@ -171,8 +243,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     private void deleteAllItems() {
         fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
         fragmentMyCartBinding.continueBtn.setVisibility(View.VISIBLE);
-        cartItemArrayList.clear();
-        cartItemsAdapter.notifyDataSetChanged();
+        cartItemsList.clear();
+        cartItemAdapter.notifyDataSetChanged();
         setRvAdapter();
     }
 
@@ -184,4 +256,13 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
+    @Override
+    public void onItemClick(CartData cartData) {
+
+    }
+
+    @Override
+    public void onPlusCart(CartData cartData) {
+
+    }
 }

@@ -116,7 +116,8 @@ public class AppConstants {
     public static final String VIEW_CHATS = "view-chats";
     public static final String REPLY_TO_TICKET = "reply-to-ticket";
 
-
+/*Cart lis api*/
+    public static final String CART_LIST_API ="view-cart";
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
 
