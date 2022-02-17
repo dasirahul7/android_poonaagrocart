@@ -5,6 +5,7 @@ import static com.poona.agrocart.app.AppConstants.AllExclusive;
 import static com.poona.agrocart.app.AppConstants.AllSelling;
 import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
+import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
 import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
@@ -32,15 +33,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
@@ -54,6 +59,7 @@ import com.poona.agrocart.data.network.responses.BestSellingResponse;
 import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.data.network.responses.HomeResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.responses.StoreBannerResponse;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
@@ -129,8 +135,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         root = fragmentHomeBinding.getRoot();
         clearLists();
         setCategoryRv();
+//        setUserProfile(showCircleProgressDialog(context,""));
         if (isConnectingToInternet(context)) {
-//            callHomeApi(showCircleProgressDialog(context,""),offset);
+            callHomeApi(showCircleProgressDialog(context,""),offset);
             callBannerApi(showCircleProgressDialog(context, ""));
             callCategoryApi(showCircleProgressDialog(context, ""),"load");
             callBasketApi(showCircleProgressDialog(context, ""), "load");
@@ -153,6 +160,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     }
 
+    private void setUserProfile(ProgressDialog progressDialog) {
+        Observer<ProfileResponse> profileResponseObserver = profileResponse -> {
+            if (profileResponse!=null){
+                preferences.setUserProfile(profileResponse.getProfile().getImage());
+                preferences.setUserName(profileResponse.getProfile().getName());
+                NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+                View headerView = navigationView.getHeaderView(0);
+                System.out.println("name "+profileResponse.getProfile().getName());
+            }
+        };
+        homeViewModel.getViewProfileResponse(progressDialog,profileParam(preferences.getUid()),
+                HomeFragment.this)
+                .observe(getViewLifecycleOwner(),profileResponseObserver);
+    }
+
     private void callHomeApi(ProgressDialog progressDialog, int offset) {
     Observer<HomeResponse> homeResponseObserver = homeResponse -> {
         if (homeResponse!=null){
@@ -161,25 +183,30 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             switch (homeResponse.getStatus()){
                     case STATUS_CODE_200://Record Create/Update Successfully
                         //First load Banner
-                        if (homeResponse.getResponse().getBannerDetails()!=null
-                                && homeResponse.getResponse().getBannerDetails().size() > 0) {
-                            banners = homeResponse.getResponse().getBannerDetails();
-                            rvBanners();
-                        }
+//                        if (homeResponse.getResponse().getBannerDetails()!=null
+//                                && homeResponse.getResponse().getBannerDetails().size() > 0) {
+//                            banners = homeResponse.getResponse().getBannerDetails();
+//                            rvBanners();
+//                        }
                         //Load Ctegory
-                        rvCategory(homeResponse);
-                        //Load Basket Data
-                        rvBasketList(homeResponse);
-                        //Load Exclusive List
-                        rvExclusive(homeResponse);
-                        //Best Selling
-                        rvBestSelling(homeResponse);
-                        //Seasonal Product
-                        rvSeasonalList(homeResponse);
-                        //Product List
-                        rvProductLis(homeResponse);
-                        //Our Store Banner
-                        setStoreBanner(homeResponse);
+//                        rvCategory(homeResponse);
+//                        //Load Basket Data
+//                        rvBasketList(homeResponse);
+//                        //Load Exclusive List
+//                        rvExclusive(homeResponse);
+//                        //Best Selling
+//                        rvBestSelling(homeResponse);
+//                        //Seasonal Product
+//                        rvSeasonalList(homeResponse);
+//                        //Product List
+//                        rvProductLis(homeResponse);
+//                        //Our Store Banner
+//                        setStoreBanner(homeResponse);
+                        if (homeResponse.getResponse().getUserData()!=null){
+                            preferences.setUserProfile(homeResponse.getResponse().getUserData().get(0).getImage());
+                            preferences.setUserName(homeResponse.getResponse().getUserData().get(0).getUserName());
+                            System.out.println("name "+homeResponse.getResponse().getUserData().get(0).getUserName());
+                        }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -237,6 +264,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             fragmentHomeBinding.recProduct.setHasFixedSize(true);
             fragmentHomeBinding.recProduct.setLayoutManager(productManager);
             productListAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail,product -> {
+                if (product.getInCart()==0)
                 addToCartProduct(product,"Product");
             });
             fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
@@ -308,6 +336,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
             // Redirect to ProductOld details
             offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), this::toProductDetail, product -> {
+                if(product.getInCart()==0)
                 addToCartProduct( product, "Offer");
             });
             exclusiveOfferManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
@@ -334,6 +363,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //                            bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
             bestSellingManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
             bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), this::toProductDetail, product -> {
+                if(product.getInCart()==0)
                 addToCartProduct( product, "Best");
             });
             fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
@@ -717,6 +747,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             fragmentHomeBinding.recProduct.setHasFixedSize(true);
                             fragmentHomeBinding.recProduct.setLayoutManager(productManager);
                             productListAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail,product -> {
+                               if(product.getInCart()==0)
                                 addToCartProduct(product,"Product");
                             });
                             fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
@@ -825,6 +856,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //                            bestSellings = bestSellingResponse.getBestSellingData().getBestSellingProductList();
                             bestSellingManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
                             bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), this::toProductDetail, product -> {
+                                if(product.getInCart()==0)
                                 addToCartProduct( product, "Best");
                             });
                             fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
@@ -1237,6 +1269,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         map.put(PRODUCT_ID, product.getProductId());
         map.put(PU_ID, product.getUnit().getpId());
         map.put(QUANTITY, "1");
+        return map;
+    }
+    private HashMap<String, String> profileParam(String userId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(CUSTOMER_ID,userId);
         return map;
     }
 

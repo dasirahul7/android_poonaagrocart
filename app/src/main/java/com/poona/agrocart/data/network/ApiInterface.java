@@ -45,6 +45,7 @@ import static com.poona.agrocart.app.AppConstants.UPDATE_MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_CHATS;
 import static com.poona.agrocart.app.AppConstants.VIEW_GALLERY;
+import static com.poona.agrocart.app.AppConstants.VIEW_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_TICKET;
 
 import com.poona.agrocart.data.network.responses.AddressesResponse;
@@ -309,5 +310,9 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(REPLY_TO_TICKET)
-    Single<SendMessageResponse> getSenderMessage(@FieldMap HashMap<String, String> sendMessageParameters);;
+    Single<SendMessageResponse> getSenderMessage(@FieldMap HashMap<String, String> sendMessageParameters);
+
+    @FormUrlEncoded
+    @POST(VIEW_PROFILE_API)
+    Single<ProfileResponse> getViewProfileResponse(@FieldMap HashMap<String,String> hashMap);
 }

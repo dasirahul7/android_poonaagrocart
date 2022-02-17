@@ -38,9 +38,31 @@ public class SignInResponse extends BaseResponse{
         @SerializedName("id")
         @Expose
         private String id;
+        @SerializedName("name")
+        @Expose
+        private String userName;
         @SerializedName("status")
         @Expose
         private Integer status;
+        @SerializedName("image")
+        @Expose
+        private String image;
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
 
         public String getMobile() {
             return mobile;

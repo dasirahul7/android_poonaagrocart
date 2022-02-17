@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.home;
 
 import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
+import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 
@@ -35,14 +36,21 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.ApiClientAuth;
+import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.ActivityHomeBinding;
 import com.poona.agrocart.ui.BaseActivity;
+import com.poona.agrocart.ui.nav_profile.MyProfileViewModel;
 import com.poona.agrocart.ui.sign_in.SignInViewModel;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
@@ -51,6 +59,11 @@ import com.poona.agrocart.widgets.imageview.CircularImageView;
 
 import java.util.HashMap;
 import java.util.Objects;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.observers.DisposableSingleObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.HttpException;
 
 
 public class HomeActivity extends BaseActivity {
@@ -78,12 +91,47 @@ public class HomeActivity extends BaseActivity {
         toolbar = binding.appBarHome.toolbar;
 //        backBtn = binding.appBarHome.backImg;
         initToolbar();
+//        setUserProfile(showCircleProgressDialog(HomeActivity.this,""),profileParam(preferences.getUid()));
         initNavigation();
         setCustomDrawerIconInFragments();
         checkForAppUpdate();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
+    private HashMap<String, String> profileParam(String userId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(CUSTOMER_ID,userId);
+        return map;
+    }
+
+    private void setUserProfile(ProgressDialog progressDialog,HashMap<String,String> hashMap) {
+        ApiClientAuth.getClient(HomeActivity.this)
+                .create(ApiInterface.class)
+                .getViewProfileResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<ProfileResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProfileResponse profileResponse) {
+                        if (profileResponse!=null){
+                            if(progressDialog!=null)
+                                progressDialog.dismiss();
+                            Log.e(TAG, "onSuccess: "+new Gson().toJson(profileResponse) );
+                            preferences.setUserProfile(profileResponse.getProfile().getImage());
+                            preferences.setUserName(profileResponse.getProfile().getName());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        ProfileResponse response = new ProfileResponse();
+                        Log.e(TAG, "onError: "+new Gson().toJson(response) );
+                    }
+                });
+
     }
 
     private void initToolbar() {
@@ -156,9 +204,13 @@ public class HomeActivity extends BaseActivity {
         tvUserName = headerView.findViewById(R.id.tv_user_name);
         ImageView editImg = headerView.findViewById(R.id.edit_img);
         civProfilePhoto = headerView.findViewById(R.id.civ_profile_photo);
-        tvUserName.setText("Hello!");
+        Glide.with(HomeActivity.this)
+                .load(preferences.getUserProfile())
+                .placeholder(R.drawable.ic_profile_white)
+                .into(civProfilePhoto);
         tvUserName.setSelected(true);
-        rlEditProfile.setOnClickListener(v -> {
+        tvUserName.setText("Hello!"+preferences.getUserName());
+        editImg.setOnClickListener(v -> {
             drawer.closeDrawer(GravityCompat.START);
             initTitleBar(getString(R.string.menu_my_profile));
             navController.navigate(R.id.action_nav_home_to_nav_profile);

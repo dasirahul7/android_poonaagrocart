@@ -88,7 +88,6 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
                     onPlusClickListener.OnPlusClick(product);
                     products.get(getAdapterPosition()).setInCart(1);
                     notifyItemChanged(getAdapterPosition());
-
             });
         }
     }

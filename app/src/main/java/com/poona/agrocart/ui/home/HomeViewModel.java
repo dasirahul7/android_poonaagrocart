@@ -25,12 +25,14 @@ import com.poona.agrocart.data.network.responses.BestSellingResponse;
 import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.data.network.responses.HomeResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.responses.StoreBannerResponse;
 import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -41,11 +43,11 @@ import retrofit2.HttpException;
 public class HomeViewModel extends AndroidViewModel {
     private String TAG = HomeViewModel.class.getSimpleName();
 
+    private MutableLiveData<ProfileResponse.Profile> profileMutableLiveData;
     private MutableLiveData<ArrayList<ProductOld>> liveDataCartProduct;
     //    private MutableLiveData<ArrayList<Category>> liveDataCategory;
 
     private MutableLiveData<ArrayList<ProductOld>> savesProductInBasket;
-
 
 
     public HomeViewModel(@NonNull Application application) {
@@ -53,8 +55,9 @@ public class HomeViewModel extends AndroidViewModel {
         //init all mutable liveData
         liveDataCartProduct = new MutableLiveData<>();
         savesProductInBasket = new MutableLiveData<>();
+        profileMutableLiveData = new MutableLiveData<>();
+        profileMutableLiveData.setValue(null);
         initCartItems();
-//        initSeasonalBanner();
     }
 
 
@@ -517,6 +520,46 @@ public class HomeViewModel extends AndroidViewModel {
                     }
                 });
         return homeResponseMutableLiveData;
+    }
+//View Profile
+    public LiveData<ProfileResponse> getViewProfileResponse(ProgressDialog progressDialog,
+                                                            HashMap<String,String> hashMap,
+                                                            HomeFragment homeFragment){
+        MutableLiveData<ProfileResponse> responseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(homeFragment.getContext())
+                .create(ApiInterface.class)
+                .getViewProfileResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<ProfileResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProfileResponse profileResponse) {
+                        if (profileResponse!=null){
+                            if(progressDialog!=null)
+                                progressDialog.dismiss();
+                            Log.e(TAG, "onSuccess: "+new Gson().toJson(profileResponse) );
+                            responseMutableLiveData.setValue(profileResponse);
+                            profileMutableLiveData.setValue(profileResponse.getProfile());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        ProfileResponse response = new ProfileResponse();
+                        try{
+                            response = gson.fromJson(((HttpException) e).response().errorBody().toString(),
+                                    ProfileResponse.class);
+                            responseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(9,"");
+                        }
+                    }
+                });
+
+        return responseMutableLiveData;
     }
 
 }
