@@ -113,6 +113,7 @@
                     android:background="@drawable/background_edit_profile"
                     android:text="@={addressesViewModel.name}"
                     android:singleLine="true"
+                    android:inputType="textCapWords"
                     android:imeOptions="actionNext"/>
 
             </LinearLayout>
@@ -122,14 +123,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/ll_address_type">
+                app:layout_constraintTop_toBottomOf="@+id/ll_name">
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_mobile_text"
                     style="@style/FormTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/name" />
+                    android:text="@string/mobile_no" />
 
 
                 <com.poona.agrocart.widgets.CustomEditText
@@ -140,6 +141,9 @@
                     android:background="@drawable/background_edit_profile"
                     android:text="@={addressesViewModel.mobile}"
                     android:singleLine="true"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:maxLength="10"
                     android:imeOptions="actionNext"/>
 
             </LinearLayout>
@@ -244,23 +248,19 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="50"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/_2sdp">
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        style="@style/FormTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pin_code"
-                        android:visibility="invisible"/>
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:gravity="bottom">
 
                     <com.poona.agrocart.widgets.CustomButton
                         android:id="@+id/bt_check_availability"
-                        style="@style/FormEdittextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_32sdp"
+                        android:layout_marginHorizontal="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_marginBottom="@dimen/_6sdp"
                         android:singleLine="true"
                         android:background="@drawable/bg_green_border"
                         android:gravity="center|center_vertical"

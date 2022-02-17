@@ -13,11 +13,11 @@ import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,54 +28,53 @@ import androidx.navigation.Navigation;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.AreaResponse;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.CityResponse;
+import com.poona.agrocart.data.network.responses.AreaResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.databinding.FragmentSelectLocationBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.login.CommonViewModel;
+import com.poona.agrocart.ui.nav_profile.CustomArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class SelectLocationFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
-
+    private static final String TAG = SelectLocationFragment.class.getSimpleName();
     private FragmentSelectLocationBinding fragmentSelectLocationBinding;
 
-    private List<AreaResponse.Area> areaArrayList;
-    private List<CityResponse.City> cityArrayList;
+    private List<BasicDetails> cityList;
+    private List<BasicDetails> areaList;
+
     private BasicDetails basicDetails;
     private CommonViewModel commonViewModel;
     private SelectLocationViewModel selectLocationViewModel;
 
-    private String selectedCityId = "1";
-    private String selectedAreaId = "1";
+    private String selectedCityId = "0";
+    private String selectedAreaId = "0";
     private String selectedCity, selectedArea;
 
-    private View rootSelectView;
-    private List<String> areas;
-    private List<String> cities;
-    private List<String> areaIds;
-    private List<String> cityIds;
+    private View view;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentSelectLocationBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_location, container, false);
         fragmentSelectLocationBinding.setLifecycleOwner(this);
-        rootSelectView = fragmentSelectLocationBinding.getRoot();
+        view = fragmentSelectLocationBinding.getRoot();
 
-        initViews(rootSelectView);
+        initViews(view);
 
         ivBack.setOnClickListener(v -> {
-            Navigation.findNavController(rootSelectView).popBackStack();
+            Navigation.findNavController(view).popBackStack();
         });
 
-        return rootSelectView;
+        return view;
     }
 
     private void initViews(View view) {
@@ -88,49 +87,165 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
 
         basicDetails = new BasicDetails();
-        areaArrayList = new ArrayList<>();
-        cityArrayList = new ArrayList<>();
-        callAreaApi(showCircleProgressDialog(context, ""));
-        callCityApi(showCircleProgressDialog(context, ""));
-        setUpSpinnerCity();
-        setUpSpinnerArea();
+        cityList = new ArrayList<>();
+        areaList = new ArrayList<>();
+
+        if (isConnectingToInternet(context)) {
+            hideKeyBoard(requireActivity());
+            callCityApi(showCircleProgressDialog(context, ""));
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+    }
+
+    private int check = 0;
+    private CityResponse cityResponse = null;
+    private AreaResponse areaResponse = null;
+    private void setupCitySpinner() {
+        BasicDetails basicDetails2 = new BasicDetails();
+        basicDetails2.setId("0");
+        basicDetails2.setName("Select");
+        cityList.add(basicDetails2);
+
+        if(cityResponse != null && cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
+            for(int i = 0; i < cityResponse.getCities().size(); i++) {
+                BasicDetails basicDetails = new BasicDetails();
+                basicDetails.setId(cityResponse.getCities().get(i).getId());
+                basicDetails.setName(cityResponse.getCities().get(i).getCityName());
+                cityList.add(basicDetails);
+            }
+        }
+
+        CustomArrayAdapter cityArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, cityList);
+        fragmentSelectLocationBinding.spinnerCity.setAdapter(cityArrayAdapter);
+
+        fragmentSelectLocationBinding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                basicDetails.setCity(adapterView.getItemAtPosition(i).toString());
+                commonViewModel.city.setValue(basicDetails.getCity());
+                if (cityList != null) {
+                    System.out.println("selected city " + cityList.get(i).getId());
+                    selectedCityId = cityList.get(i).getId();
+                    selectedCity = cityList.get(i).getName();
+
+                    if(++check > 1)
+                        callAreaApi(showCircleProgressDialog(context, ""));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        /*for first time*/
+        setupAreaSpinner();
+    }
+
+    private void setupAreaSpinner() {
+        if(areaList != null && areaList.size() > 0) {
+            areaList.clear();
+        }
+
+        BasicDetails basicDetails3 = new BasicDetails();
+        basicDetails3.setId("0");
+        basicDetails3.setName("Select");
+        areaList.add(basicDetails3);
+
+        if(areaResponse != null && areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
+            for(int i = 0; i < areaResponse.getAreas().size(); i++) {
+                BasicDetails basicDetails = new BasicDetails();
+                basicDetails.setId(areaResponse.getAreas().get(i).getId());
+                basicDetails.setName(areaResponse.getAreas().get(i).getAreaName());
+                areaList.add(basicDetails);
+            }
+        }
+
+        CustomArrayAdapter areaArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, areaList);
+        fragmentSelectLocationBinding.spinnerArea.setAdapter(areaArrayAdapter);
+
+        fragmentSelectLocationBinding.spinnerArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                basicDetails.setArea(adapterView.getItemAtPosition(i).toString());
+                commonViewModel.area.setValue(basicDetails.getArea());
+                if (areaList != null) {
+                    System.out.println("selected area " + areaList.get(i).getId());
+                    selectedAreaId = areaList.get(i).getId();
+                    selectedArea = areaList.get(i).getName();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    /*City API*/
+    private void callCityApi(ProgressDialog showCircleProgressDialog) {
+        Observer<CityResponse> cityResponseObserver = cityResponse -> {
+            if (cityResponse != null) {
+                switch (cityResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (cityResponse.getStatus() == 200) {
+                            if (cityResponse.getCities() != null) {
+                                if (cityResponse.getCities().size() > 0) {
+                                    this.cityResponse = cityResponse;
+                                    setupCitySpinner();
+                                }
+
+                            }
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, cityResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(cityResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, cityResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        selectLocationViewModel.getCityResponse(showCircleProgressDialog, SelectLocationFragment.this)
+                .observe(getViewLifecycleOwner(), cityResponseObserver);
     }
 
     /* Area API*/
     private void callAreaApi(ProgressDialog showCircleProgressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : getAreaParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+
         Observer<AreaResponse> areaResponseObserver = areaResponse -> {
             if (areaResponse != null) {
                 showCircleProgressDialog.dismiss();
                 switch (areaResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (areaResponse.getStatus() == 200) {
-                            successToast(context, "" + areaResponse.getMessage());
-//                            Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
                             if (areaResponse.getAreas() != null) {
                                 if (areaResponse.getAreas().size() > 0) {
-                                    areaArrayList = areaResponse.getAreas();
-                                    areas = new ArrayList<>();
-                                    areaIds = new ArrayList<>();
-                                    for (AreaResponse.Area area : areaArrayList) {
-                                        areas.add(area.getAreaName());
-                                        areaIds.add(area.getId());
-                                        System.out.println("area " + area.getAreaName());
-                                    }
-                                    ArrayAdapter<String> areasArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.text_spinner, areas);
-                                    areasArrayAdapter.setDropDownViewResource(R.layout.text_spinner);
-                                    selectedAreaId = areaArrayList.get(0).getId();
-                                    selectedArea = areaArrayList.get(0).getAreaName();
-//                                    ArrayAdapter<Areas> areasArrayAdapter = new ArrayAdapter<Areas>(getContext(), R.layout.text_spinner, areaArrayList);
-//                                    areasArrayAdapter.setDropDownViewResource(R.layout.text_spinner);
-                                    fragmentSelectLocationBinding.spinnerArea.setAdapter(areasArrayAdapter);
+                                    this.areaResponse = areaResponse;
+                                    setupAreaSpinner();
                                 }
                             }
-
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
-                    case STATUS_CODE_404://Validation Errors
+                    case STATUS_CODE_404://No records found
+                        this.areaResponse = null;
+                        setupAreaSpinner();
                         warningToast(context, areaResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
@@ -143,105 +258,25 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
 
             }
         };
-        selectLocationViewModel.getAreaResponse(showCircleProgressDialog, SelectLocationFragment.this)
+        selectLocationViewModel.getAreaResponse(showCircleProgressDialog,
+                SelectLocationFragment.this, getAreaParameters())
                 .observe(getViewLifecycleOwner(), areaResponseObserver);
     }
 
-    /* City API*/
-    private void callCityApi(ProgressDialog showCircleProgressDialog) {
-        Observer<CityResponse> cityResponseObserver = new Observer<CityResponse>() {
-            @Override
-            public void onChanged(CityResponse cityResponse) {
-                if (cityResponse != null) {
-                    switch (cityResponse.getStatus()) {
-                        case STATUS_CODE_200://Record Create/Update Successfully
-                            if (cityResponse.getStatus() == 200) {
-                                successToast(context, "" + cityResponse.getMessage());
-//                            Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment,bundle);
-                                if (cityResponse.getCities() != null) {
-                                    if (cityResponse.getCities().size() > 0) {
-                                        cityArrayList = cityResponse.getCities();
-                                        cityIds = new ArrayList<>();
-                                        cities = new ArrayList<>();
-                                        for (CityResponse.City city : cityArrayList) {
-                                            cities.add(city.getCityName());
-                                            cityIds.add(city.getId());
-                                            System.out.println("city " + city.getCityName());
-                                        }
-                                        ArrayAdapter<String> areasArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.text_spinner, cities);
-                                        areasArrayAdapter.setDropDownViewResource(R.layout.text_spinner);
-                                        selectedCityId = cityIds.get(0);
-                                        selectedCity = cities.get(0);
-                                        fragmentSelectLocationBinding.spinnerCity.setAdapter(areasArrayAdapter);
-                                    }
-
-                                }
-                            }
-                            break;
-                        case STATUS_CODE_403://Validation Errors
-                        case STATUS_CODE_400://Validation Errors
-                        case STATUS_CODE_404://Validation Errors
-                            warningToast(context, cityResponse.getMessage());
-                            break;
-                        case STATUS_CODE_401://Unauthorized user
-                            goToAskSignInSignUpScreen(cityResponse.getMessage(), context);
-                            break;
-                        case STATUS_CODE_405://Method Not Allowed
-                            infoToast(context, cityResponse.getMessage());
-                            break;
-                    }
-
-                }
-            }
-        };
-        selectLocationViewModel.getCityResponse(showCircleProgressDialog, SelectLocationFragment.this)
-                .observe(getViewLifecycleOwner(), cityResponseObserver);
-    }
-
-
-    private void setUpSpinnerArea() {
-        fragmentSelectLocationBinding.spinnerArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                basicDetails.setArea(parent.getItemAtPosition(position).toString());
-                if (areaIds != null) {
-                    System.out.println("selected area " + areaIds.get(position));
-                    selectedAreaId = areaIds.get(position);
-                    selectedArea = areas.get(position);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-
-    private void setUpSpinnerCity() {
-        fragmentSelectLocationBinding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                basicDetails.setCity(parent.getItemAtPosition(position).toString());
-                commonViewModel.city.setValue(basicDetails.getCity());
-                if (cityArrayList != null) {
-                    System.out.println("selected city " + cityArrayList.get(position).getId());
-                    selectedCityId = cityArrayList.get(position).getId();
-                    selectedCity = cityArrayList.get(position).getCityName();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+    private HashMap<String, String> getAreaParameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(CITY_ID, selectedCityId);
+        return map;
     }
 
     @Override
     public void onClick(View v) {
-//        if (selectedArea==null|| selectedCity ==null)
-//            warningToast(context,"select city and area");
-        callUpdateLocationApi(showCircleProgressDialog(context, ""));
-
+        if (isConnectingToInternet(context)) {
+            hideKeyBoard(requireActivity());
+            callUpdateLocationApi(showCircleProgressDialog(context, ""));
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
     }
 
     /* Update Location API*/
@@ -253,7 +288,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                         if (updateLocationResponse.getStatus() == 200) {
                             successToast(context, "" + updateLocationResponse.getMessage());
                             preferences.setUserAddress(selectedArea + ", " + selectedCity);
-                            redirectToLoginFragment(rootSelectView);
+                            redirectToLoginFragment(view);
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -268,7 +303,6 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                         infoToast(context, updateLocationResponse.getMessage());
                         break;
                 }
-
             }
         };
         selectLocationViewModel.updateLocation(showCircleProgressDialog, updateLocationParams(),

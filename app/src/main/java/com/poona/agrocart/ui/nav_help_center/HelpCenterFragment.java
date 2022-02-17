@@ -43,9 +43,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.help_center_response.CreateTicketResponse;
-import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
-import com.poona.agrocart.data.network.reponses.help_center_response.TicketTypeResponse;
+import com.poona.agrocart.data.network.responses.help_center_response.CreateTicketResponse;
+import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
+import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.databinding.FragmentHelpCenterBinding;
 import com.poona.agrocart.ui.BaseFragment;
 

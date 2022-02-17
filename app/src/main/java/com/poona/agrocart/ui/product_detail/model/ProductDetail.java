@@ -1,7 +1,6 @@
 package com.poona.agrocart.ui.product_detail.model;
 
-import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
-import com.poona.agrocart.data.network.reponses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
 import com.poona.agrocart.ui.basket_detail.model.ProductItem;
 import com.poona.agrocart.ui.basket_detail.model.Subscription;
 

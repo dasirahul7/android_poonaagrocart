@@ -15,9 +15,8 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.SignInResponse;
-import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
-import com.poona.agrocart.ui.sign_in.SignInFragment;
+import com.poona.agrocart.data.network.responses.SignInResponse;
+import com.poona.agrocart.data.network.responses.VerifyOtpResponse;
 
 import java.util.HashMap;
 
@@ -36,7 +35,7 @@ public class VerifyOtpViewModel extends AndroidViewModel {
         otp = new MutableLiveData<>();
     }
 
-    //Verify Otp API Response
+    //Verify Otp API ResponseData
     public LiveData<VerifyOtpResponse> submitVerifyOtp(ProgressDialog progressDialog,
                                                         HashMap<String, String> hashMap,
                                                         VerifyOtpFragment verifyOtpFragment)

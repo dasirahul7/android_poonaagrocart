@@ -141,53 +141,12 @@
             android:layout_height="wrap_content">
 
             <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_terms_policy"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.9"
                 android:drawablePadding="@dimen/alerter_padding_half"
                 android:text="@string/by_continuing_you_agree"
-                android:textSize="@dimen/_14sp"
-                app:setCustomFont="@string/font_poppins_regular" />
-
-            <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/tv_terms_of_service"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.1"
-                android:textColor="@color/selectedGreen"
-                android:textSize="@dimen/_14sp"
-                android:drawablePadding="@dimen/alerter_padding_half"
-                android:text="@string/terms_of_service"
-                app:setCustomFont="@string/font_poppins_semi_bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_privacy_policy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginHorizontal="@dimen/_24sdp"
-            app:layout_constraintTop_toBottomOf="@+id/ll_terms_of_service"
-            android:orientation="horizontal"
-            android:weightSum="100">
-
-            <com.poona.agrocart.widgets.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/alerter_padding_half"
-                android:text="@string/and"
-                android:textSize="@dimen/_14sp"
-                app:setCustomFont="@string/font_poppins_regular" />
-
-            <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/tv_privacy_policy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/alerter_padding_half"
-                android:text=" Privacy Policy"
-                android:textColor="@color/selectedGreen"
                 android:textSize="@dimen/_14sp"
                 app:setCustomFont="@string/font_poppins_semi_bold" />
 

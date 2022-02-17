@@ -14,7 +14,12 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.AddressesResponse;
+import com.poona.agrocart.data.network.responses.AddressesResponse;
+import com.poona.agrocart.data.network.responses.AreaResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.CityResponse;
+
+import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -90,6 +95,251 @@ public class AddressesViewModel extends AndroidViewModel {
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
                             ((NetworkExceptionListener) addressesFragment).onNetworkException(0, "");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return responseMutableLiveData;
+    }
+
+    public LiveData<CityResponse> getCityResponse(ProgressDialog progressDialog,
+                                                  AddAddressFragment addAddressFragment) {
+        MutableLiveData<CityResponse> cityResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(addAddressFragment.getContext())
+                .create(ApiInterface.class)
+                .getCityResponse()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<CityResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull CityResponse cityResponse) {
+                        if (cityResponse != null) {
+                            progressDialog.dismiss();
+                            cityResponseMutableLiveData.setValue(cityResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        CityResponse cityResponse = new CityResponse();
+                        try {
+                            cityResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    CityResponse.class);
+
+                            cityResponseMutableLiveData.setValue(cityResponse);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(0,"");
+                        }
+
+                    }
+                });
+
+        return cityResponseMutableLiveData;
+    }
+
+    public LiveData<AreaResponse> getAreaResponse(ProgressDialog progressDialog,
+                                                  AddAddressFragment addAddressFragment,
+                                                  HashMap<String, String> hashmap) {
+        MutableLiveData<AreaResponse> areaResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(addAddressFragment.getContext())
+                .create(ApiInterface.class)
+                .getAreaResponse(hashmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<AreaResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull AreaResponse areaResponse) {
+                        if (areaResponse != null) {
+                            progressDialog.dismiss();
+                            areaResponseMutableLiveData.setValue(areaResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        AreaResponse response = new AreaResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    AreaResponse.class);
+
+                            areaResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(1,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return areaResponseMutableLiveData;
+    }
+
+    public LiveData<BaseResponse> addAddressResponse(ProgressDialog progressDialog,
+                                                     AddAddressFragment addAddressFragment,
+                                                     HashMap<String, String> hashmap) {
+        MutableLiveData<BaseResponse> responseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(addAddressFragment.getContext())
+                .create(ApiInterface.class)
+                .addAddressResponse(hashmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            responseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            responseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(2,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return responseMutableLiveData;
+    }
+
+    public LiveData<BaseResponse> updateAddressResponse(ProgressDialog progressDialog,
+                                                     AddAddressFragment addAddressFragment,
+                                                     HashMap<String, String> hashmap) {
+        MutableLiveData<BaseResponse> responseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(addAddressFragment.getContext())
+                .create(ApiInterface.class)
+                .updateAddressResponse(hashmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            responseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            responseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(4,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return responseMutableLiveData;
+    }
+
+    public LiveData<BaseResponse> deleteAddressResponse(ProgressDialog progressDialog,
+                                                     AddressesFragment addAddressFragment,
+                                                     HashMap<String, String> hashmap) {
+        MutableLiveData<BaseResponse> responseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(addAddressFragment.getContext())
+                .create(ApiInterface.class)
+                .deleteAddressResponse(hashmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            responseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            responseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(1,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return responseMutableLiveData;
+    }
+
+    public LiveData<BaseResponse> checkPinCodeAvailableResponse(ProgressDialog progressDialog,
+                                                     AddAddressFragment addAddressFragment,
+                                                     HashMap<String, String> hashmap) {
+        MutableLiveData<BaseResponse> responseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(addAddressFragment.getContext())
+                .create(ApiInterface.class)
+                .checkPinCodeAvailableResponse(hashmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            responseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            responseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(3,"");
                         }
 
                         Log.e(TAG, e.getMessage());

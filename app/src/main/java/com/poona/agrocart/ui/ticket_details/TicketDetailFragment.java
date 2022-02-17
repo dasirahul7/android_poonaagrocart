@@ -1,7 +1,5 @@
 package com.poona.agrocart.ui.ticket_details;
 
-
-import static com.poona.agrocart.app.AppConstants.MESSAGE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -27,10 +25,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.help_center_response.SendMessageResponse;
-import com.poona.agrocart.data.network.reponses.help_center_response.recieveMessage.AllChat;
-import com.poona.agrocart.data.network.reponses.help_center_response.recieveMessage.RecieveMessageResponse;
-import com.poona.agrocart.data.network.reponses.help_center_response.recieveMessage.UserTicketsDetail;
+import com.poona.agrocart.data.network.responses.help_center_response.SendMessageResponse;
+import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.AllChat;
+import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
+import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.UserTicketsDetail;
+import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
 import com.poona.agrocart.databinding.FragmentTicketDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 

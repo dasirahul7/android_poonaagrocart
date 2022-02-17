@@ -124,7 +124,7 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
     private void callStoreDetailsApi (ProgressDialog progressDialog){
         Observer<OurStoreViewDataResponse> ourStoreViewDataResponseObserver = ourStoreViewDataResponse -> {
             if (ourStoreViewDataResponse != null){
-                Log.e("Our Store Details Api Response", new Gson().toJson(ourStoreViewDataResponse));
+                Log.e("Our Store Details Api ResponseData", new Gson().toJson(ourStoreViewDataResponse));
                 if (progressDialog !=null){
                     progressDialog.dismiss();
                 }

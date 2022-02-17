@@ -14,9 +14,9 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.AreaResponse;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
-import com.poona.agrocart.data.network.reponses.CityResponse;
+import com.poona.agrocart.data.network.responses.AreaResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.CityResponse;
 
 import java.util.HashMap;
 
@@ -33,12 +33,13 @@ public class SelectLocationViewModel extends AndroidViewModel {
     }
 
     public LiveData<AreaResponse> getAreaResponse(ProgressDialog progressDialog,
-                                                  SelectLocationFragment selectLocationFragment) {
+                                                  SelectLocationFragment selectLocationFragment,
+                                                  HashMap<String, String> hashmap) {
         MutableLiveData<AreaResponse> areaResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(selectLocationFragment.getContext())
                 .create(ApiInterface.class)
-                .getAreaResponse()
+                .getAreaResponse(hashmap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<AreaResponse>() {
@@ -46,7 +47,6 @@ public class SelectLocationViewModel extends AndroidViewModel {
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull AreaResponse areaResponse) {
                         if (areaResponse != null) {
                             progressDialog.dismiss();
-                            Log.d(TAG, "onSuccess: " + areaResponse.getAreas().size());
                             areaResponseMutableLiveData.setValue(areaResponse);
                         }
                     }

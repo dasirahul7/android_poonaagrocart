@@ -8,13 +8,10 @@ import org.json.JSONArray;
  * Created by Rahul Dasi on 6/10/2020
  */
 public class AppConstants {
-    /*Development URL*/
-    //public static final String BASE_URL = "";
+    /*m-staging URL*/
+    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing/";
 
-    /*Live URL*/
-    public static final String BASE_URL = "http://cmsweb.m-staging.in/poona_agro_testing/";
-
-    /*Live Base URL for Image, Document*/
+    /*m-staging Base URL for Image, Document*/
     public static final String IMAGE_DOC_BASE_URL = "";
 
     /*API methods*/
@@ -32,8 +29,6 @@ public class AppConstants {
     public static final String FROM_LOG_OUT = "fromLogOut";
     public static final String IS_VERIFIED = "verify";
     public static final String GOOGLE_API_KEY = "google_api_key";
-//    public static final String IS_REGISTERED = "registered";
-//    public static final String IS_LOCATED = "located";
     public static final String IS_SKIP_BANK_DETAILS = "isSkippedBankDetails";
     public static final String IS_REMEMBER = "isRemember";
     public static final String BASE_AUTH_USERNAME = "BaseAuthUsername";
@@ -70,13 +65,20 @@ public class AppConstants {
     public static final String REGISTER_API = "register-customer";
     public static final String INTRO_SCREEN_API = "screen-customer";
     public static final String STATE_API = "state";
-    public static final String AREA_API = "area";
     public static final String CITY_API = "city";
+    public static final String AREA_API = "area";
+    public static final String CITY_WITH_ID_API = "city-by-state-id";
+    public static final String AREA_WITH_ID_API = "area-by-city-id";
     public static final String MY_PROFILE_API = "profile-view-customer";
     public static final String ADDRESS_LIST_API = "address-view";
+    public static final String ADD_ADDRESS_API = "address-add";
+    public static final String UPDATE_ADDRESS_API = "address-update";
+    public static final String DELETE_ADDRESS_API = "address-delete";
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
+    public static final String CHECK_VALID_PIN_CODE_API = "check-pincode-availablity";
     /*Home screen APIs*/
+    public static final String HOME_API = "home";
     public static final String HOME_BANNER_API = "home-screen-banner";
     public static final String HOME_CATEGORY_API = "category-list";
     public static final String HOME_BASKET_API = "basket-list";
@@ -87,8 +89,11 @@ public class AppConstants {
     public static final String HOME_STORE_BANNER_API = "store-banner";
     public static final String SIGN_OUT_API = "logout-customer";
     public static final String ADD_TO_FAVOURITE = "add-to-favourite";
+    public static final String REMOVE_FAVOURITE = "remove-from-favourite";
+
     /*Favourite API's*/
     public static final String FAVOURITE_LIST_API = "view-favourite-list";
+
     /*Offer & Coupon APIs*/
     public static final String COUPON_API = "coupon-list";
 
@@ -183,6 +188,7 @@ public class AppConstants {
     public static final String ADD_TO_PRODUCT ="add-to-cart-product";
     public static final String PU_ID ="pu_id";
     public static final String QUANTITY ="quantity";
+
     /*Category types*/
     public static final String BASKET = "0";
     public static final String PRODUCT = "1";
@@ -195,6 +201,20 @@ public class AppConstants {
     public static final String GENDER = "gender";
     public static final String DATE_OF_BIRTH = "date_of_birth";
 
+    /*add address post parameters*/
+    public static final String ADDRESS_ID = "address_primary_id";
+    public static final String ADDRESS_TYPE = "address_type";
+    public static final String MOBILE = "mobile";
+    public static final String CITY_ = "city_id_fk";
+    public static final String AREA_ = "area_id_fk";
+    public static final String PIN_CODE = "pincode";
+    public static final String APARTMENT_NAME = "appartment_name";
+    public static final String HOUSE_NO = "house_no";
+    public static final String STREET = "street";
+    public static final String LANDMARK = "landmark";
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
+    public static final String GOOGLE_MAP_ADDRESS = "map_address";
 
     /*
      * id to handle the notification in the notification tray

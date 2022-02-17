@@ -3,6 +3,7 @@ package com.poona.agrocart.ui;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LOGOUT;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -32,6 +35,7 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.firebase.PushNotification;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
@@ -60,8 +64,6 @@ public abstract class BaseActivity extends AppCompatActivity
         super.onResume();
         checkNewAppVersionState();
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, final int resultCode, Intent intent) {
@@ -290,6 +292,4 @@ public abstract class BaseActivity extends AppCompatActivity
         dialog.setContentView(R.layout.circular_progresbar);
         return dialog;
     }
-
-
 }

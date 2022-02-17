@@ -47,11 +47,12 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp"
                     android:visibility="gone"
-                    app:setCustomFont="@string/font_poppins_regular" />
+                    app:setCustomFont="@string/font_poppins_regular"
+                    tools:ignore="RtlSymmetry" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/_120sdp"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
@@ -61,11 +62,20 @@
                     android:drawableTint="@color/title_black"
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    android:singleLine="true"
                     android:text="@string/address_location"
                     android:textColor="@color/title_black"
-                    android:textSize="@dimen/_14sp"
+                    android:textSize="@dimen/_16sp"
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:freezesText="true"
                     app:setCustomFont="@string/font_poppins_regular" />
                 <RelativeLayout
                     android:visibility="gone"
@@ -77,22 +87,23 @@
                     android:layout_height="wrap_content">
 
                     <com.poona.agrocart.widgets.CustomTextView
+                        android:visibility="gone"
                         android:id="@+id/tv_brand"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toStartOf="@+id/txt_organic"
                         android:background="@drawable/bg_offer_yellow"
-                        android:gravity="center_vertical"
+                        android:gravity="center_vertical|center"
                         android:includeFontPadding="false"
                         android:paddingHorizontal="@dimen/_5sdp"
                         android:paddingVertical="@dimen/_5sdp"
-                        android:text="brand - name"
                         android:textColor="@color/white"
                         android:textSize="@dimen/offer_txt_size"
                         android:textStyle="bold"
                         app:setCustomFont="@string/font_poppins_regular" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:id="@+id/txt_organic"
                         style="@style/organic_button_style"
                         android:layout_width="wrap_content"

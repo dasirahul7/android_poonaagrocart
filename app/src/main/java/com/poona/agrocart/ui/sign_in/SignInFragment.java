@@ -1,6 +1,5 @@
 package com.poona.agrocart.ui.sign_in;
 
-import static com.poona.agrocart.app.AppConstants.CMS_NAME;
 import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.MOBILE_NUMBER;
@@ -19,7 +18,12 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +32,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -41,7 +46,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
-import com.poona.agrocart.data.network.reponses.SignInResponse;
+import com.poona.agrocart.data.network.responses.SignInResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,8 +76,6 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
     private void initView(View view) {
         fragmentSignInBinding.ivSignUp.setOnClickListener(this);
-        fragmentSignInBinding.tvTermsOfService.setOnClickListener(this);
-        fragmentSignInBinding.tvPrivacyPolicy.setOnClickListener(this);
 
         basicDetails = new BasicDetails();
 
@@ -83,6 +86,36 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
         //hide keyboard after entering mobile number
         setUpTextWatcher();
+        SpannableString ssTermsPolicy = new SpannableString(getResources().getString(R.string.by_continuing_you_agree));
+        ClickableSpan clickableSpanTerms = new ClickableSpan() {
+            @Override
+            public void onClick(View view) {
+                redirectToCmsFragment(1); //Terms & Condition
+            }
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        };
+        ssTermsPolicy.setSpan(clickableSpanTerms, 31, 47, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        ClickableSpan clickableSpanPolicy = new ClickableSpan() {
+            @Override
+            public void onClick(View view) {
+                redirectToCmsFragment(2); //Privacy Policy
+            }
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        };
+        ssTermsPolicy.setSpan(clickableSpanPolicy, 52, 64, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        fragmentSignInBinding.tvTermsPolicy.setText(ssTermsPolicy);
+        fragmentSignInBinding.tvTermsPolicy.setMovementMethod(LinkMovementMethod.getInstance());
+        fragmentSignInBinding.tvTermsPolicy.setHighlightColor(ContextCompat.getColor(context, R.color.colorPrimary));
     }
 
     public void setUpCountryCodePicker() {
@@ -138,12 +171,12 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
             case R.id.iv_sign_up:
                 signInAndRedirectToVerifyOtp(v);
                 break;
-            case R.id.tv_terms_of_service:
+            /*case R.id.tv_terms_of_service:
                 redirectToCmsFragment(1); //Terms & Condition
                 break;
             case R.id.tv_privacy_policy:
                 redirectToCmsFragment(2); //Privacy Policy
-                break;
+                break;*/
         }
     }
 
@@ -151,7 +184,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         Bundle bundle = new Bundle();
         bundle.putString(FROM_SCREEN, TAG);
         bundle.putInt(CMS_TYPE, from);
-        Navigation.findNavController(rootView).navigate(R.id.action_signInFragment_to_cmsFragment, bundle);
+        Navigation.findNavController(rootView).navigate(R.id.action_to_cmsFragment, bundle);
     }
 
     private void signInAndRedirectToVerifyOtp(View v) {
@@ -184,7 +217,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         Observer<SignInResponse> signInResponseObserver = signInResponse -> {
             if (signInResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Sign In Api Response", new Gson().toJson(signInResponse));
+                Log.e("Sign In Api ResponseData", new Gson().toJson(signInResponse));
                 switch (signInResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if(signInResponse.getUser() != null){

@@ -4,7 +4,7 @@
     <data>
         <variable
             name="galleryVideo"
-            type="com.poona.agrocart.data.network.reponses.galleryResponse.GalleryVideo" />
+            type="com.poona.agrocart.data.network.responses.galleryResponse.GalleryVideo" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_main_layout"

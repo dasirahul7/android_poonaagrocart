@@ -14,9 +14,7 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.IntroScreenResponse;
-import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
-import com.poona.agrocart.ui.basket_detail.model.Subscription;
+import com.poona.agrocart.data.network.responses.IntroScreenResponse;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;

@@ -9,7 +9,6 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,7 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.gson.Gson;
@@ -32,9 +30,10 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentCmsBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.data.network.reponses.CmsResponse;
+import com.poona.agrocart.data.network.responses.CmsResponse;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.sign_in.SignInFragment;
+import com.poona.agrocart.ui.sign_up.SignUpFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +50,7 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
 
     private String fromScreen = "";
     private final String fromScreenSignIn = SignInFragment.class.getSimpleName();
+    private final String fromScreenSignUp = SignUpFragment.class.getSimpleName();
     private final String fromScreenHome = HomeActivity.class.getSimpleName();
     private int cmsType = 0;
 
@@ -72,7 +72,7 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
         }
 
         /*visible back button action bar if navigating from  sign in screen*/
-        if(fromScreen.equals(fromScreenSignIn)) {
+        if(fromScreen.equals(fromScreenSignIn) || fromScreen.equals(fromScreenSignUp)) {
             fragmentCmsBinding.actionBar.setVisibility(View.VISIBLE);
             /*set title to toolbar*/
             if(cmsType == 0) {
@@ -115,7 +115,7 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
     private void callCmsApi(ProgressDialog progressDialog) {
         Observer<CmsResponse> aboutUsResponseObserver = cmsResponse -> {
             if (cmsResponse != null) {
-                Log.e("Cms Api Response", new Gson().toJson(cmsResponse));
+                Log.e("Cms Api ResponseData", new Gson().toJson(cmsResponse));
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }

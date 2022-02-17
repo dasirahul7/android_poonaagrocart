@@ -31,8 +31,8 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryImage;
-import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryResponse;
+import com.poona.agrocart.data.network.responses.galleryResponse.GalleryImage;
+import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
 import com.poona.agrocart.databinding.FragmentPhotoBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_gallery.adapter.PhotoAdapter;
@@ -124,7 +124,7 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
 
         @SuppressLint("NotifyDataSetChanged") Observer<GalleryResponse>galleryResponseObserver = galleryResponse -> {
             if (galleryResponse != null){
-                Log.e("Gallery Image Api Response", new Gson().toJson(galleryResponse));
+                Log.e("Gallery Image Api ResponseData", new Gson().toJson(galleryResponse));
                 if (progressDialog !=null){
                     progressDialog.dismiss();
                 }

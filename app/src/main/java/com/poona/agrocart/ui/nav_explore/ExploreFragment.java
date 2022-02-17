@@ -31,7 +31,7 @@ import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.CategoryResponse;
+import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.databinding.FragmentExploreBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_explore.adapter.ExploreItemAdapter;
@@ -124,7 +124,7 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
         Observer<CategoryResponse> categoryResponseObserver = categoryResponse -> {
             if (categoryResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Category Api Response", new Gson().toJson(categoryResponse));
+                Log.e("Category Api ResponseData", new Gson().toJson(categoryResponse));
                 switch (categoryResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if(categoryResponse.getCategoryData() != null){
@@ -142,8 +142,8 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
                                     bundle.putString(CATEGORY_ID, items.getId());
                                     bundle.putString(LIST_TITLE, items.getName());
                                     bundle.putString(LIST_TYPE, items.getType());
-//                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_explore_to_nav_products_list, bundle);
-                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_explore_to_nav_products_list, bundle);
+//                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
 
                                 });
                                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);

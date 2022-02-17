@@ -38,8 +38,8 @@ import android.widget.VideoView;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryResponse;
-import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryVideo;
+import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
+import com.poona.agrocart.data.network.responses.galleryResponse.GalleryVideo;
 import com.poona.agrocart.databinding.FragmentVideoBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_gallery.adapter.VideoAdapter;
@@ -113,7 +113,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
 
         @SuppressLint("NotifyDataSetChanged") Observer<GalleryResponse> galleryResponseObserver = galleryResponse -> {
             if (galleryResponse != null){
-                Log.e("Gallery Video Api Response", new Gson().toJson(galleryResponse));
+                Log.e("Gallery Video Api ResponseData", new Gson().toJson(galleryResponse));
                 if (progressDialog !=null){
                     progressDialog.dismiss();
                 }

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.databinding.RowExclusiveItemBinding;
 
 import java.util.ArrayList;
@@ -85,9 +85,10 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
                 }
             });
             rowExclusiveItemBinding.imgPlus.setOnClickListener(view1 -> {
-                onPlusClickListener.OnPlusClick(product);
-                products.get(getAdapterPosition()).setInCart(1);
-                notifyItemChanged(getAdapterPosition());
+                    onPlusClickListener.OnPlusClick(product);
+                    products.get(getAdapterPosition()).setInCart(1);
+                    notifyItemChanged(getAdapterPosition());
+
             });
         }
     }

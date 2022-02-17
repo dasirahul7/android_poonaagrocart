@@ -7,11 +7,10 @@
 
         <variable
             name="storeBanner"
-            type="com.poona.agrocart.data.network.reponses.StoreBannerResponse.StoreBanner" />
+            type="com.poona.agrocart.data.network.responses.StoreBannerResponse.StoreBanner" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/home_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -25,6 +24,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
+                android:id="@+id/home_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/home_bottom_margin"

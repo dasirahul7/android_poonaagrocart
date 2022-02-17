@@ -7,7 +7,7 @@
 
         <variable
             name="moduleCoupon"
-            type="com.poona.agrocart.data.network.reponses.CouponResponse.Coupon" />
+            type="com.poona.agrocart.data.network.responses.CouponResponse.Coupon" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

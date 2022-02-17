@@ -16,10 +16,10 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.AreaResponse;
-import com.poona.agrocart.data.network.reponses.CityResponse;
-import com.poona.agrocart.data.network.reponses.ProfileResponse;
-import com.poona.agrocart.data.network.reponses.StateResponse;
+import com.poona.agrocart.data.network.responses.AreaResponse;
+import com.poona.agrocart.data.network.responses.CityResponse;
+import com.poona.agrocart.data.network.responses.ProfileResponse;
+import com.poona.agrocart.data.network.responses.StateResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,39 +75,6 @@ public class MyProfileViewModel extends AndroidViewModel {
         dateOfBirth.setValue("");
     }
 
-    public Observable<List<String>> getCommonApiResponses(Context context, HashMap<String, String> profileHashMapData) {
-        Observable<ProfileResponse> profileResponseObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).getProfileObservableResponse(profileHashMapData);
-        Observable<StateResponse> stateResponseObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).getStateObservableResponse();
-        Observable<CityResponse> cityResponseObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).getCityObservableResponse();
-        Observable<AreaResponse> areaResponseObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).getAreaObservableResponse();
-
-        @SuppressLint("LongLogTag") Observable<List<String>> observableResult =
-                Observable.zip(
-                        profileResponseObservable.subscribeOn(Schedulers.io()),
-                        stateResponseObservable.subscribeOn(Schedulers.io()),
-                        cityResponseObservable.subscribeOn(Schedulers.io()),
-                        areaResponseObservable.subscribeOn(Schedulers.io()),
-                        (profileResponse, stateResponse, cityResponse, areaResponse) -> {
-                            //Log.e("Profile Api Response", new Gson().toJson(profileResponse));
-                            //Log.e("State Api Response", new Gson().toJson(stateResponse));
-                            //Log.e("City Api Response", new Gson().toJson(cityResponse));
-                            //Log.e("Area Api Response", new Gson().toJson(areaResponse));
-
-                            List<String> list = new ArrayList();
-                            list.add(new Gson().toJson(profileResponse));
-                            list.add(new Gson().toJson(stateResponse));
-                            list.add(new Gson().toJson(cityResponse));
-                            list.add(new Gson().toJson(areaResponse));
-                            return list;
-                        });
-
-        return observableResult;
-    }
-
     public LiveData<ProfileResponse> updateProfileResponse(ProgressDialog progressDialog,
                                                            EditProfileFragment editProfileFragment,
                                                            HashMap<String, RequestBody> profileMap,
@@ -140,6 +107,133 @@ public class MyProfileViewModel extends AndroidViewModel {
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
                             ((NetworkExceptionListener) editProfileFragment).onNetworkException(0, "");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return responseMutableLiveData;
+    }
+
+    public Observable<List<String>> getProfileStateResponses(Context context,
+                                                             HashMap<String, String> cityHashMap) {
+        Observable<ProfileResponse> profileResponseObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).getProfileObservableResponse(cityHashMap);
+        Observable<StateResponse> stateResponseObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).getStateObservableResponse();
+
+        @SuppressLint("LongLogTag") Observable<List<String>> observableResult =
+                Observable.zip(
+                        profileResponseObservable.subscribeOn(Schedulers.io()),
+                        stateResponseObservable.subscribeOn(Schedulers.io()),
+                        (profileResponse, stateResponse) -> {
+                            //Log.e("Profile Api ResponseData", new Gson().toJson(cityResponse));
+                            //Log.e("State Api ResponseData", new Gson().toJson(areaResponse));
+
+                            List<String> list = new ArrayList();
+                            list.add(new Gson().toJson(profileResponse));
+                            list.add(new Gson().toJson(stateResponse));
+                            return list;
+                        });
+
+        return observableResult;
+    }
+
+    public Observable<List<String>> getCityAreaResponses(Context context,
+                                                         HashMap<String, String> cityHashMap,
+                                                         HashMap<String, String> areaHashMap) {
+        Observable<CityResponse> cityResponseObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).getCityObservableResponse(cityHashMap);
+        Observable<AreaResponse> areaResponseObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).getAreaObservableResponse(areaHashMap);
+
+        @SuppressLint("LongLogTag") Observable<List<String>> observableResult =
+                Observable.zip(
+                        cityResponseObservable.subscribeOn(Schedulers.io()),
+                        areaResponseObservable.subscribeOn(Schedulers.io()),
+                        (cityResponse, areaResponse) -> {
+                            //Log.e("City Api ResponseData", new Gson().toJson(cityResponse));
+                            //Log.e("Area Api ResponseData", new Gson().toJson(areaResponse));
+
+                            List<String> list = new ArrayList();
+                            list.add(new Gson().toJson(cityResponse));
+                            list.add(new Gson().toJson(areaResponse));
+                            return list;
+                        });
+
+        return observableResult;
+    }
+
+    public LiveData<CityResponse> getCityResponse(ProgressDialog progressDialog,
+                                                  EditProfileFragment editProfileFragment,
+                                                  HashMap<String, String> areaParameters) {
+        MutableLiveData<CityResponse> responseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(editProfileFragment.getContext())
+                .create(ApiInterface.class)
+                .getCityResponse(areaParameters)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<CityResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull CityResponse cityResponse) {
+                        progressDialog.dismiss();
+                        responseMutableLiveData.setValue(cityResponse);
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        CityResponse response = new CityResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    CityResponse.class);
+
+                            responseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            //((NetworkExceptionListener) editProfileFragment).onNetworkException(0, "");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return responseMutableLiveData;
+    }
+
+    public LiveData<AreaResponse> getAreaResponse(ProgressDialog progressDialog,
+                                                  EditProfileFragment editProfileFragment,
+                                                  HashMap<String, String> areaParameters) {
+        MutableLiveData<AreaResponse> responseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(editProfileFragment.getContext())
+                .create(ApiInterface.class)
+                .getAreaResponse(areaParameters)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<AreaResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull AreaResponse areaResponse) {
+                        progressDialog.dismiss();
+                        responseMutableLiveData.setValue(areaResponse);
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        AreaResponse response = new AreaResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    AreaResponse.class);
+
+                            responseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            //((NetworkExceptionListener) editProfileFragment).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());

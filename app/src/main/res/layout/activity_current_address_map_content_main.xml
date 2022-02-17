@@ -28,7 +28,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_pin_red"
+            android:src="@drawable/ic_pin_green"
             android:translationY="-18dp"
             android:visibility="invisible" />
 
@@ -39,7 +39,10 @@
         style="@style/MaterialSearchBarLight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_14sdp"
+        android:layout_marginStart="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:layout_marginEnd="@dimen/_14sdp"
+        android:layout_marginBottom="@dimen/_14sdp"
         android:elevation="3dp"
         android:outlineProvider="bounds"
         app:mt_hint="@string/search_place"
@@ -89,15 +92,16 @@
 
                 <ImageView
                     android:id="@+id/small_pin"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_pin_red"
-                    android:visibility="visible" />
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:src="@drawable/ic_location"
+                    android:visibility="visible"
+                    app:tint="@color/colorAccent"/>
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
                     android:visibility="gone" />
@@ -114,7 +118,7 @@
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                     android:textColor="@android:color/primary_text_light"
                     android:textSize="16sp"
-                    tools:text="" />
+                    tools:text="Rehab Mall 2, Cairo Governorate, Egypt" />
 
             </LinearLayout>
 
@@ -135,12 +139,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/_8sdp"
-                    android:background="@drawable/background_button_red"
-                    android:textColor="@color/background_button_selector_red"
+                    android:background="@drawable/button_green"
+                    android:textColor="@color/background_color_white_green"
                     android:gravity="center|center_vertical"
                     android:minHeight="0dp"
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_6sdp"
+                    android:paddingTop="@dimen/_6sdp"
+                    android:paddingBottom="@dimen/_8sdp"
                     android:text="@string/confirm_location"
                     android:textAllCaps="false"
                     android:textSize="@dimen/_18sp"

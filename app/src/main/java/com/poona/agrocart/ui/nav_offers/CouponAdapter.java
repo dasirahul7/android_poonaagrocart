@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.CouponResponse;
+import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.databinding.RowCouponItemBinding;
 
 import java.util.ArrayList;
@@ -25,15 +25,17 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     private TermsAndConditionClickItem termsAndConditionClickItem;
 
 
-    public CouponAdapter(ArrayList<CouponResponse.Coupon> coupons, Context context, CouponFragment couponFragment) {
+    public CouponAdapter(ArrayList<CouponResponse.Coupon> coupons,
+                         Context context, CouponFragment couponFragment,TermsAndConditionClickItem termsAndConditionClickItem) {
         this.coupons = coupons;
         this.context = context;
         this.couponFragment = couponFragment;
-        this.termsAndConditionClickItem = couponFragment;
+        this.termsAndConditionClickItem = termsAndConditionClickItem;
     }
 
     public interface TermsAndConditionClickItem{
         void itemViewClick(int position);
+        void onCopyClick(CouponResponse.Coupon coupon);
     }
 
     @NonNull
@@ -81,7 +83,6 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
                     }
                 }
             });
-
         }
 
         public void bind(CouponResponse.Coupon coupon) {
@@ -90,6 +91,10 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
            /* rowCouponItemBinding.imgInfo.setOnClickListener(v -> {
                 couponFragment.termsDialog();
             });*/
+            rowCouponItemBinding.tvCouponCode.setOnClickListener(view -> {
+                termsAndConditionClickItem.onCopyClick(coupon);
+            });
+
         }
     }
 }

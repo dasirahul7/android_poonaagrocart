@@ -11,7 +11,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.BannerResponse;
+import com.poona.agrocart.data.network.responses.BannerResponse;
 
 import java.util.ArrayList;
 

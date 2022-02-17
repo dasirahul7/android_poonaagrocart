@@ -7,7 +7,7 @@
 
         <variable
             name="productModule"
-            type="com.poona.agrocart.data.network.reponses.ProductListResponse.Product" />
+            type="com.poona.agrocart.data.network.responses.ProductListResponse.Product" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

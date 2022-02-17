@@ -15,10 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
-import com.poona.agrocart.data.network.reponses.help_center_response.TicketListResponse;
+import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
 import com.poona.agrocart.databinding.RvTicketBinding;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 

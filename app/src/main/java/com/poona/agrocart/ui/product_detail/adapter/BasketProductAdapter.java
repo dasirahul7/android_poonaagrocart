@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.BasketResponse;
+import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.databinding.RvBasketContentsListBinding;
 
 import java.util.ArrayList;

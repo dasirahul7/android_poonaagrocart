@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.help_center_response.TicketTypeResponse;
+import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
 
 import java.util.List;
 

@@ -15,9 +15,9 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryImage;
-import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryResponse;
-import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryVideo;
+import com.poona.agrocart.data.network.responses.galleryResponse.GalleryImage;
+import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
+import com.poona.agrocart.data.network.responses.galleryResponse.GalleryVideo;
 import com.poona.agrocart.ui.nav_gallery.fragment.PhotoGalleryFragment;
 import com.poona.agrocart.ui.nav_gallery.fragment.VideoGalleryFragment;
 

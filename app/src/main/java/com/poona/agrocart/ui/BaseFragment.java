@@ -97,6 +97,7 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
     }
+
     @SuppressLint("ResourceType")
     protected void initTitleWithBackBtn(String title) {
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
@@ -130,11 +131,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void loadingImage(Context context, String url, ImageView imageView) {
-        Glide.with(context)
-                .load(url)
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.background_bottom_navigation_screen).into(imageView);
-
+        try {
+            Glide.with(context)
+                    .load(url)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.background_bottom_navigation_screen).into(imageView);
+        } catch (Exception e) {
+            imageView.setImageResource(R.drawable.placeholder);
+        }
     }
 
     protected void successToast(Context context, String message) {

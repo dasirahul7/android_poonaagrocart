@@ -4,7 +4,8 @@ import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 
-import android.app.Dialog;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,18 +14,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
@@ -40,7 +39,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.reponses.BaseResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.ActivityHomeBinding;
 import com.poona.agrocart.ui.BaseActivity;
@@ -59,7 +58,7 @@ public class HomeActivity extends BaseActivity {
     private static final String TAG = HomeActivity.class.getSimpleName();
     private AppBarConfiguration mAppBarConfiguration;
     public ActivityHomeBinding binding;
-    private DrawerLayout drawer;
+    public DrawerLayout drawer;
     private NavigationView navigationView;
     private NavController navController;
     public Toolbar toolbar;
@@ -163,10 +162,12 @@ public class HomeActivity extends BaseActivity {
         tvUserName = headerView.findViewById(R.id.tv_user_name);
         ImageView editImg = headerView.findViewById(R.id.edit_img);
         civProfilePhoto = headerView.findViewById(R.id.civ_profile_photo);
-        tvUserName.setText("Hello! Ranju");
+        tvUserName.setText("Hello!");
+        tvUserName.setSelected(true);
         rlEditProfile.setOnClickListener(v -> {
             drawer.closeDrawer(GravityCompat.START);
-            navController.navigate(R.id.nav_profile);
+            initTitleBar(getString(R.string.menu_my_profile));
+            navController.navigate(R.id.action_nav_home_to_nav_profile);
         });
     }
 
@@ -253,6 +254,26 @@ public class HomeActivity extends BaseActivity {
         bundle.putString(FROM_SCREEN, TAG);
         bundle.putInt(CMS_TYPE, from);
         navController.navigate(R.id.action_nav_cms, bundle);
+    }
+
+    //Title and app logo on actionBar
+    @SuppressLint("ResourceType")
+    protected void initTitleBar(String title) {
+        binding.appBarHome.toolbar.post(() -> {
+            Drawable d = ResourcesCompat.getDrawable(getResources(),
+                    R.drawable.menu_icon_toggle, null);
+            binding.appBarHome.toolbar.setNavigationIcon(d);
+            binding.appBarHome.toolbar.setPadding(0, 0, 0, 0);
+        });
+        binding.appBarHome.textTitle.setVisibility(View.VISIBLE);
+        binding.appBarHome.imgDelete.setVisibility(View.GONE);
+        binding.appBarHome.basketMenu.setVisibility(View.GONE);
+        binding.appBarHome.tvAddress.setVisibility(View.GONE);
+        binding.appBarHome.logImg.setVisibility(View.GONE);
+        binding.appBarHome.rlProductTag.setVisibility(View.GONE);
+        binding.appBarHome.textTitle.setText(title);
+        binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
+        binding.appBarHome.textTitle.setTextColor(Color.parseColor(getString(R.color.black)));
     }
 
     private void showLogoutConfirmationDialog() {

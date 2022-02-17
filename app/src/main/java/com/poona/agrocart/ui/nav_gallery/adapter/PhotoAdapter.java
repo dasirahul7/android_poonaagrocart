@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
-import com.poona.agrocart.data.network.reponses.galleryResponse.GalleryImage;
+import com.poona.agrocart.data.network.responses.galleryResponse.GalleryImage;
 import com.poona.agrocart.databinding.RowPhotoItemBinding;
 import com.poona.agrocart.ui.nav_gallery.fragment.PhotoGalleryFragment;
 

@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
-import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteLisResponse;
+import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteLisResponse;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -40,11 +40,7 @@ public class FavouriteViewModel extends AndroidViewModel {
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull FavouriteLisResponse favouriteLisResponse) {
                         if (favouriteLisResponse!=null){
                             progressDialog.dismiss();
-                            Log.e(TAG, "onSuccess: "+new Gson().toJson(favouriteLisResponse));
                             favouriteLisResponseMutableLiveData.setValue(favouriteLisResponse);
-                            if (favouriteLisResponse.getFavouriteList()!=null){
-                                Log.e(TAG, "onSuccess: "+favouriteLisResponse.getFavouriteList().size() );
-                            }
                         }
                     }
 

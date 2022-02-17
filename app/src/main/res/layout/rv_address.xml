@@ -6,7 +6,7 @@
 
         <variable
             name="address"
-            type="com.poona.agrocart.ui.nav_addresses.model.Address" />
+            type="com.poona.agrocart.data.network.responses.AddressesResponse.Address" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="@dimen/_6sdp"
-            app:cardCornerRadius="@dimen/_16sdp"
+            app:cardCornerRadius="@dimen/_10sdp"
             app:cardElevation="3dp"
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/_10sdp"
@@ -42,9 +42,10 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_user"
                         android:drawablePadding="@dimen/_2sdp"
-                        android:text="@string/ayush_shah"
+                        android:text="@={address.name}"
                         android:textColor="@color/color_order_view_username"
                         android:textSize="@dimen/_16sp"
+                        android:includeFontPadding="false"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <LinearLayout
@@ -57,11 +58,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/_2sdp"
-                            android:text="@string/home"
+                            android:text="@={address.addressType}"
                             android:gravity="center"
                             android:background="@drawable/bg_type_of_address_tag"
                             android:textColor="@color/color_type_of_address"
                             android:textSize="@dimen/_14sp"
+                            android:includeFontPadding="false"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     </LinearLayout>
@@ -73,10 +75,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:drawableStart="@drawable/ic_mobile_no"
-                    android:drawablePadding="@dimen/_7sdp"
-                    android:text="@string/_91_986_095_3315"
+                    android:drawablePadding="@dimen/_2sdp"
+                    android:text="@={address.mobile}"
                     android:textColor="@color/color_order_view_username"
                     android:textSize="@dimen/_14sp"
+                    android:includeFontPadding="false"
                     app:setCustomFont="@string/font_poppins_regular" />
 
                 <LinearLayout
@@ -94,10 +97,11 @@
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_3sdp"
-                        android:text="@string/nand_nivas_building_floor_3_b_3_lane_no_13_bhatrau_nivas_vishrantwadi_pune_411015"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        android:text="@={address.fullAddress}"
                         android:textColor="@color/color_order_view_username"
                         android:textSize="@dimen/_14sp"
+                        android:includeFontPadding="false"
                         app:setCustomFont="@string/font_poppins_regular" />
                 </LinearLayout>
 
@@ -118,20 +122,16 @@
                         android:layout_weight="50"
                         android:layout_height="wrap_content">
 
-                        <CheckBox
+                        <com.poona.agrocart.widgets.CustomCheckBox
                             android:id="@+id/cb_default"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp" />
-
-                        <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="@dimen/_2sdp"
-                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_height="@dimen/_20sdp"
                             android:text="@string/default_address"
                             android:gravity="center"
                             android:textColor="@color/color_default_address"
                             android:textSize="@dimen/_16sp"
+                            android:paddingStart="@dimen/_4sdp"
+                            android:includeFontPadding="false"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     </LinearLayout>
@@ -148,6 +148,7 @@
                             android:paddingEnd="@dimen/_16sdp">
 
                             <ImageView
+                                android:id="@+id/iv_edit_address"
                                 android:layout_width="@dimen/_20sdp"
                                 android:layout_height="@dimen/_18sdp"
                                 android:src="@drawable/ic_pencil" />
@@ -160,6 +161,7 @@
                                 android:layout_marginEnd="@dimen/_20sdp" />
 
                             <ImageView
+                                android:id="@+id/iv_delete_address"
                                 android:layout_width="@dimen/_20sdp"
                                 android:layout_height="@dimen/_18sdp"
                                 android:src="@drawable/ic_delete" />

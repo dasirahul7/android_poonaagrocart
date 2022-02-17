@@ -6,13 +6,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.poona.agrocart.data.network.reponses.BasketResponse;
-import com.poona.agrocart.data.network.reponses.ProductDetailsResponse;
-import com.poona.agrocart.ui.basket_detail.BasketDetailFragment;
 import com.poona.agrocart.ui.seasonal.SeasonalRegFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener
 {

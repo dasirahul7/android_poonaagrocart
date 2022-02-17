@@ -39,8 +39,8 @@ import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.reponses.SignInResponse;
-import com.poona.agrocart.data.network.reponses.VerifyOtpResponse;
+import com.poona.agrocart.data.network.responses.SignInResponse;
+import com.poona.agrocart.data.network.responses.VerifyOtpResponse;
 import com.poona.agrocart.databinding.FragmentVerifyOtpBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
@@ -203,7 +203,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         Observer<VerifyOtpResponse> verifyOtpResponseObserver = verifyOtpResponse -> {
             if (verifyOtpResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Verify Otp Api Response", new Gson().toJson(verifyOtpResponse));
+                Log.e("Verify Otp Api ResponseData", new Gson().toJson(verifyOtpResponse));
                 switch (verifyOtpResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (verifyOtpResponse.getMessage() != null) {
@@ -214,6 +214,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                                 Intent intent = new Intent(context, HomeActivity.class);
                                 preferences.setUid(verifyOtpResponse.getUser().getUserId());
                                 preferences.setUserMobile(verifyOtpResponse.getUser().getUserMobile());
+                                preferences.setUserAddress(verifyOtpResponse.getUser().getCityName()+","+verifyOtpResponse.getUser().getStateName());
                                 preferences.setUserCountry(bundle.getString(COUNTRY_CODE));
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -256,7 +257,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         Observer<SignInResponse> signInResponseObserver = resendOtpResponse -> {
             if (resendOtpResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Verify Otp Api Response", new Gson().toJson(resendOtpResponse));
+                Log.e("Verify Otp Api ResponseData", new Gson().toJson(resendOtpResponse));
                 switch (resendOtpResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (resendOtpResponse.getMessage() != null) {
