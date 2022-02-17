@@ -29,6 +29,7 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
 
     public interface OnProductClickListener{
         void onProductClick(ProductListResponse.Product product);
+        void onAddClick(String productId, String unitID,int position);
     }
 
     @NonNull
@@ -44,9 +45,14 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position)
     {
-        final ProductListResponse.Product vegetable = vegetableArrayList.get(position);
-        holder.productListItemBinding.setProductModule(vegetable);
-        holder.bind(vegetable);
+        final ProductListResponse.Product product = vegetableArrayList.get(position);
+        holder.productListItemBinding.setProductModule(product);
+        holder.bind(product);
+        //Add to CART API
+        holder.productListItemBinding.imgPlus.setOnClickListener(view -> {
+            if (product.getInCart()==0)
+            onProductClickListener.onAddClick(product.getProductId(), product.getUnit().getpId(),position);
+        });
     }
 
     @Override
@@ -74,8 +80,9 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
         {
             productListItemBinding.setVariable(BR.productModule, product);
             productListItemBinding.executePendingBindings();
-//            if (Product.isInBasket())
-//                productListItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
+            if (product.getInCart()==1)
+                productListItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
+            else productListItemBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
 //            if (Product.isOrganic())
 //                productListItemBinding.txtOrganic.setVisibility(View.VISIBLE);
 //            if (Product.getWeight().equals("0")) {
