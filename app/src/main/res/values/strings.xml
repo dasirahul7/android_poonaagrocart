@@ -144,7 +144,7 @@
     <string name="menu_help_center">Help Center</string>
     <string name="menu_terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="menu_our_store">Our Store</string>
-    <string name="menu_sign_out">SignOut</string>
+    <string name="menu_sign_out">Sign Out</string>
     <string name="menu_shop">Shop</string>
     <!--    Home Screen-->
     <string name="shop_by_category">Shop by Category</string>
