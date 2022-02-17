@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
@@ -40,6 +41,7 @@ public class FavouriteItemsFragment extends BaseFragment
 
     View view;
     private String TAG= FavouriteItemsFragment.class.getSimpleName();
+    private SwipeRefreshLayout rlRefreshPage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,7 +75,7 @@ public class FavouriteItemsFragment extends BaseFragment
         //Initializing our superheroes list
         favouriteItemsList = new ArrayList<>();
 
-        // refreshLayout.setRefreshing(false);
+        rlRefreshPage.setRefreshing(false);
         //initializing our adapter
         favouriteItemAdapter = new FavouriteItemAdapter(context, favouriteItemsList, this);
 
@@ -91,6 +93,7 @@ public class FavouriteItemsFragment extends BaseFragment
 
     private void initView() {
         rvFavouriteItems=fragmentFavouriteItemsBinding.rvFavouriteItems;
+        rlRefreshPage=fragmentFavouriteItemsBinding.rlRefreshPage;
     }
 
     private void callFavouriteAPi(ProgressDialog progressDialog) {
