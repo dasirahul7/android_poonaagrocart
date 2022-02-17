@@ -162,7 +162,12 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         if (productDetailsResponse.getProductDetails() != null) {
                             fragmentProductDetailBinding.itemLayout.setVisibility(View.VISIBLE);
                             details = productDetailsResponse.getProductDetails();
-                            details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
+                            if (details.getIsCart()==1){
+                                for (ProductListResponse.ProductUnit unit:details.getProductUnits()){
+                                    if (unit.getInCart()==1)
+                                        details.setUnit(unit);
+                                }
+                            }else details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
                             setDetailsValue();
                             changePriceAndUnit(details.getUnit(), false);
                             fragmentProductDetailBinding.setProductDetailModule(details);

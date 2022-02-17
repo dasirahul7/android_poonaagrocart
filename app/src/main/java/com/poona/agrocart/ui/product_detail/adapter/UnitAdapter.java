@@ -24,7 +24,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.WeightHolder> 
 
     private List<ProductListResponse.ProductUnit> weight = new ArrayList<>();
     private final Context context;
-    private int mSelectedItem = 0;
+    private int mSelectedItem = -1;
     private OnUnitClickListener onUnitClickListener;
     private int isInCart;
 
@@ -36,7 +36,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.WeightHolder> 
         this.onUnitClickListener = onUnitClickListener;
     }
     public interface OnUnitClickListener{
-        void OnUniClick(ProductListResponse.ProductUnit unit);
+        void OnUnitClick(ProductListResponse.ProductUnit unit);
     }
 
     @NonNull
@@ -46,18 +46,26 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.WeightHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WeightHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WeightHolder holder, @SuppressLint("RecyclerView") int position) {
+        ProductListResponse.ProductUnit unit = weight.get(position);
         holder.weightTxt.setText(MessageFormat.format("{0}{1}", weight.get(position).getWeight(), weight.get(position).getUnitName()));
-        holder.radioButton.setChecked(mSelectedItem == position);
-            if (mSelectedItem == position) {
-                holder.weightCard.setStrokeColor(ContextCompat.getColor(context, R.color.weight_border_color));
-                holder.weightTxt.setBackgroundColor(ContextCompat.getColor(context, R.color.weight_fill_color));
-                holder.weightTxt.setTextColor(ContextCompat.getColor(context, R.color.weight_border_color));
-            } else {
-                holder.weightCard.setStrokeColor(ContextCompat.getColor(context, R.color.color_horizontal_line));
-                holder.weightTxt.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-                holder.weightTxt.setTextColor(ContextCompat.getColor(context, R.color.color_grey_txt));
-            }
+          if (unit.getInCart()==1){
+              mSelectedItem = position;
+              holder.weightCard.setStrokeColor(ContextCompat.getColor(context, R.color.weight_border_color));
+              holder.weightTxt.setBackgroundColor(ContextCompat.getColor(context, R.color.weight_fill_color));
+              holder.weightTxt.setTextColor(ContextCompat.getColor(context, R.color.weight_border_color));
+          }else {
+              holder.radioButton.setChecked(mSelectedItem == position);
+              if (mSelectedItem == position) {
+                  holder.weightCard.setStrokeColor(ContextCompat.getColor(context, R.color.weight_border_color));
+                  holder.weightTxt.setBackgroundColor(ContextCompat.getColor(context, R.color.weight_fill_color));
+                  holder.weightTxt.setTextColor(ContextCompat.getColor(context, R.color.weight_border_color));
+              } else {
+                  holder.weightCard.setStrokeColor(ContextCompat.getColor(context, R.color.color_horizontal_line));
+                  holder.weightTxt.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                  holder.weightTxt.setTextColor(ContextCompat.getColor(context, R.color.color_grey_txt));
+              }
+          }
     }
 
     @Override
@@ -79,7 +87,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.WeightHolder> 
             itemView.setOnClickListener(v -> {
                 if (isInCart==0) {
                     mSelectedItem = getAdapterPosition();
-                    onUnitClickListener.OnUniClick(weight.get(getAdapterPosition()));
+                    onUnitClickListener.OnUnitClick(weight.get(getAdapterPosition()));
                     notifyDataSetChanged();
                 }
             });
