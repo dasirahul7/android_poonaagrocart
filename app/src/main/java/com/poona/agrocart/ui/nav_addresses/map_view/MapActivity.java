@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.nav_addresses.map_view;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
@@ -56,13 +57,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
+import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.nav_addresses.AddressesAdapter;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
 import com.skyfishjy.library.RippleBackground;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -88,9 +93,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     //variables
     private String addressOutput;
-    private String state;
-    private String city;
-    private String area;
+    private String state = "";
+    private String city = "";
+    private String area = "";
+    private String pincode = "";
+
+    private String houseNumber = "";
+    private String street = "";
+    private String landmark = "";
+
     private int addressResultCode;
     private boolean isSupportedArea;
     private LatLng currentMarkerPosition;
@@ -103,8 +114,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private static final String TAG = MapActivity.class.getSimpleName();
 
-    private AppSharedPreferences preferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +125,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void initViews(){
-        preferences = new AppSharedPreferences(this);
+        //this.listener = (OnGetAddressFromGoogleMapListener) this;
+
         materialSearchBar = findViewById(R.id.searchBar);
         CustomButton submitLocationButton = findViewById(R.id.submit_location_button);
         fabFindMyLocation = findViewById(R.id.fab_find_my_location);
@@ -303,9 +313,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             Intent data = new Intent();
             data.putExtra(SimplePlacePicker.SELECTED_ADDRESS, addressOutput);
+            data.putExtra(SimplePlacePicker.SELECTED_HOUSE_NUMBER, houseNumber);
+            data.putExtra(SimplePlacePicker.SELECTED_STREET, street);
+            data.putExtra(SimplePlacePicker.SELECTED_LANDMARK, landmark);
             data.putExtra(SimplePlacePicker.SELECTED_STATE, state);
             data.putExtra(SimplePlacePicker.SELECTED_CITY, city);
             data.putExtra(SimplePlacePicker.SELECTED_AREA, area);
+            data.putExtra(SimplePlacePicker.SELECTED_PIN_CODE, pincode);
             data.putExtra(SimplePlacePicker.LOCATION_LAT_EXTRA, currentMarkerPosition.latitude);
             data.putExtra(SimplePlacePicker.LOCATION_LNG_EXTRA, currentMarkerPosition.longitude);
             setResult(RESULT_OK, data);
@@ -552,26 +566,42 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             // Display the address string
             // or an error message sent from the intent service.
             addressOutput = resultData.getString(SimplePlacePicker.RESULT_DATA_KEY);
-            if (addressOutput == null)
-            {
+            if (addressOutput == null) {
                 addressOutput = "";
             }
 
+            houseNumber = resultData.getString(SimplePlacePicker.SELECTED_HOUSE_NUMBER);
+            if (houseNumber == null) {
+                houseNumber = "";
+            }
+
+            street = resultData.getString(SimplePlacePicker.SELECTED_STREET);
+            if (street == null) {
+                street = "";
+            }
+
+            landmark = resultData.getString(SimplePlacePicker.SELECTED_LANDMARK);
+            if (landmark == null) {
+                landmark = "";
+            }
+
+            pincode = resultData.getString(SimplePlacePicker.SELECTED_PIN_CODE);
+            if (pincode == null) {
+                pincode = "";
+            }
+
             state = resultData.getString(SimplePlacePicker.SELECTED_STATE);
-            if (state == null)
-            {
+            if (state == null) {
                 state = "";
             }
 
             city = resultData.getString(SimplePlacePicker.SELECTED_CITY);
-            if (city == null)
-            {
+            if (city == null) {
                 city = "";
             }
 
             area = resultData.getString(SimplePlacePicker.SELECTED_AREA);
-            if (area == null)
-            {
+            if (area == null) {
                 area = "";
             }
 

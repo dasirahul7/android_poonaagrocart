@@ -1,17 +1,16 @@
 package com.poona.agrocart.ui.nav_addresses;
 
-import static android.app.Activity.RESULT_OK;
-import static android.provider.ContactsContract.CommonDataKinds.StructuredPostal.CITY;
-
+import static androidx.core.content.ContextCompat.checkSelfPermission;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_TYPE;
 import static com.poona.agrocart.app.AppConstants.APARTMENT_NAME;
-import static com.poona.agrocart.app.AppConstants.AREA_;
 import static com.poona.agrocart.app.AppConstants.AREA_ID;
-import static com.poona.agrocart.app.AppConstants.CITY_;
 import static com.poona.agrocart.app.AppConstants.CITY_ID;
+import static com.poona.agrocart.app.AppConstants.GOOGLE_MAP_ADDRESS;
 import static com.poona.agrocart.app.AppConstants.HOUSE_NO;
 import static com.poona.agrocart.app.AppConstants.LANDMARK;
+import static com.poona.agrocart.app.AppConstants.LATITUDE;
+import static com.poona.agrocart.app.AppConstants.LONGITUDE;
 import static com.poona.agrocart.app.AppConstants.MOBILE;
 import static com.poona.agrocart.app.AppConstants.NAME;
 import static com.poona.agrocart.app.AppConstants.PIN_CODE;
@@ -40,9 +39,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -57,6 +57,7 @@ import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.databinding.FragmentAddressesFormBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
+import com.poona.agrocart.ui.nav_addresses.map_view.MapActivity;
 import com.poona.agrocart.ui.nav_addresses.map_view.SimplePlacePicker;
 import com.poona.agrocart.ui.nav_profile.CustomArrayAdapter;
 
@@ -161,6 +162,20 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                 }
             }
         });
+
+        multiplePermissionActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
+            Log.d("PERMISSIONS", "Launcher result: " + isGranted.toString());
+            if (isGranted.containsValue(false)) {
+                // Permission is granted. Continue the action or workflow in your app.
+                Log.d("PERMISSIONS", "At least one of the permissions was not granted, launching again...");
+                errorToast(context, getResources().getString(R.string.ensure_your_all_permissions));
+                //multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
+            } else {
+                // You must grant user permission for access device location first
+                // please don't ignore this step >> Ignoring location permission may cause application to crash !
+                launchGoogleMapIntent();
+            }
+        });
     }
 
     @Override
@@ -168,7 +183,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.tv_current_location:
                 if (isConnectingToInternet(context))
-                    gotoGoogleMapAddressPicker();
+                    askPermissions();
                 else
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 break;
@@ -535,9 +550,9 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         map.put(HOUSE_NO, basicDetails.getHouseNumber());
         map.put(STREET, basicDetails.getStreet());
         map.put(LANDMARK, basicDetails.getLandmark());
-        /*map.put(LATITUDE, basicDetails.getLatitude());
+        map.put(LATITUDE, basicDetails.getLatitude());
         map.put(LONGITUDE, basicDetails.getLongitude());
-        map.put(GOOGLE_MAP_ADDRESS, basicDetails.getMapAddress());*/
+        map.put(GOOGLE_MAP_ADDRESS, basicDetails.getMapAddress());
 
         return map;
     }
@@ -593,14 +608,74 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         return map;
     }
 
+    /*
+     * get address from google map start
+     * */
+    private ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
+    final String[] PERMISSIONS = { Manifest.permission.ACCESS_FINE_LOCATION };
+
+    private void askPermissions() {
+        if (!hasPermissions(PERMISSIONS)) {
+            Log.d("PERMISSIONS", "Launching multiple contract permission launcher for ALL required permissions");
+            multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
+        } else {
+            // You must grant user permission for access device location first
+            // please don't ignore this step >> Ignoring location permission may cause application to crash !
+            launchGoogleMapIntent();
+        }
+    }
+
+    private boolean hasPermissions(String[] permissions) {
+        if (permissions != null) {
+            for (String permission : permissions) {
+                if(shouldShowRequestPermissionRationale(permission)){
+                    //denied
+                    Log.d("PERMISSIONS", "Permission denied: " + permission);
+                    return false;
+                } else {
+                    if(checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED){
+                        //allowed
+                        Log.d("PERMISSIONS", "Permission already granted: " + permission);
+                        return true;
+                    } else{
+                        //set to never ask again
+                        //do something here.
+                        Log.d("PERMISSIONS", "Permission Set to never ask again: " + permission);
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    ActivityResultLauncher<Intent> activityGoogleMapLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                if(data != null) {
+                    updateUi(data);
+                }
+            }
+        }
+    });
+
     private void updateUi(Intent data) {
         /*
          * get address from google map start
          * */
         String selectedAddressFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_ADDRESS);
+
+        String selectedHNFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_HOUSE_NUMBER);
+        String selectedStreetFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_STREET);
+        String selectedLandmarkFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_LANDMARK);
+        String selectedPinCodeFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_PIN_CODE);
+
         String selectedStateFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_STATE);
         String selectedCityFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_CITY);
         String selectedAreaFromGoogleMap = data.getStringExtra(SimplePlacePicker.SELECTED_AREA);
+
         String latitude = String.valueOf(data.getDoubleExtra(SimplePlacePicker.LOCATION_LAT_EXTRA, -1));
         String longitude = String.valueOf(data.getDoubleExtra(SimplePlacePicker.LOCATION_LNG_EXTRA, -1));
 
@@ -608,7 +683,55 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                 || TextUtils.isEmpty(selectedAddressFromGoogleMap)) {
             selectedAddressFromGoogleMap = "";
         } else {
+            basicDetails.setMapAddress(selectedAddressFromGoogleMap);
+        }
 
+        if(selectedHNFromGoogleMap == null
+                || TextUtils.isEmpty(selectedHNFromGoogleMap)) {
+            selectedHNFromGoogleMap = "";
+        } else {
+            addressesViewModel.houseNumber.setValue(selectedHNFromGoogleMap);
+            basicDetails.setHouseNumber(selectedHNFromGoogleMap);
+        }
+
+        if(selectedStreetFromGoogleMap == null
+                || TextUtils.isEmpty(selectedStreetFromGoogleMap)) {
+            selectedStreetFromGoogleMap = "";
+        } else {
+            addressesViewModel.street.setValue(selectedStreetFromGoogleMap);
+            basicDetails.setStreet(selectedStreetFromGoogleMap);
+        }
+
+        if(selectedLandmarkFromGoogleMap == null
+                || TextUtils.isEmpty(selectedLandmarkFromGoogleMap)) {
+            selectedLandmarkFromGoogleMap = "";
+        } else {
+            addressesViewModel.landmark.setValue(selectedLandmarkFromGoogleMap);
+            basicDetails.setLandmark(selectedLandmarkFromGoogleMap);
+        }
+
+        if(selectedPinCodeFromGoogleMap == null
+                || TextUtils.isEmpty(selectedPinCodeFromGoogleMap)) {
+            selectedPinCodeFromGoogleMap = "";
+        } else {
+            addressesViewModel.pinCode.setValue(selectedPinCodeFromGoogleMap);
+            basicDetails.setPinCode(selectedPinCodeFromGoogleMap);
+        }
+
+        if(latitude == null
+                || TextUtils.isEmpty(latitude)
+                || latitude.equals("-1")) {
+            latitude = "";
+        } else {
+            basicDetails.setLatitude(latitude);
+        }
+
+        if(longitude == null
+                || TextUtils.isEmpty(longitude)
+                || longitude.equals("-1")) {
+            longitude = "";
+        } else {
+            basicDetails.setLongitude(longitude);
         }
 
         if(selectedStateFromGoogleMap == null
@@ -631,27 +754,35 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         } else {
 
         }
-
-        if(latitude == null
-                || TextUtils.isEmpty(latitude)
-                || latitude.equals("-1")) {
-            latitude = "";
-        } else {
-
-        }
-
-        if(longitude == null
-                || TextUtils.isEmpty(longitude)
-                || longitude.equals("-1")) {
-            longitude = "";
-        } else {
-
-        }
     }
 
+    /**
+     *@param apiKey Required parameter, put your google maps and places api key
+     *               { you must get a places key it's required for search autocomplete }
+     * @param country Optional parameter to restrict autocomplete search to a specific country
+     *                put country ISO like "eg" for Egypt and so on ..
+     *                if there is no value attached to COUNTRY key, search will
+     *                be worldWide
+     * @param language Optional parameter to specify the language of the resulting address
+     *                 could be "en" for English or "ar" for Arabic .
+     *                 If this not specified, resulting address will be English by default
+     *
+     * @param supportedAreas Optional Array of supported areas that user can pick a location from.
+     *                       Please be careful when you put areas as this will be literal comparison.
+     *                       Ex : if you put the value of SUPPORTED_AREAS key
+     *                       to something like {"Cairo"} , user will only be able to select the address
+     *                       that only contains cairo on it, like "zamalec,cairo,Egypt"
+     *                       Also consider adding arabic translation as some google addresses contains
+     *                       booth english and arabic together..
+     *          I KNOW THIS IS A TRICKY ONE BUT I JUST USED IT TO RESTRICT USER SELECTION TO A SPECIFIC
+     *                 COUNTRY AND SAVE MANY NETWORK CALLS AS USERS ALWAYS LIKE TO PLAY WITH MAP ^_^
+     *                       it was something like {"Egypt","مصر"}
+     *                       if this array was empty, the whole world is a supported area , user can
+     *                       pick location anywhere!.
+     */
     private final String [] countryListIso = {"eg","sau","om","mar","usa","ind"};
     private final String [] addressLanguageList = {"en","ar"};
-    private void selectLocationOnMap() {
+    private void launchGoogleMapIntent() {
         String apiKey = "";
 
         if(preferences.getGoogleApiKey() != null && !TextUtils.isEmpty(preferences.getGoogleApiKey()))
@@ -662,48 +793,16 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         String mCountry = countryListIso[5]; // countries
         String mLanguage = addressLanguageList[0]; // english/arabic
         String [] mSupportedAreas = {""} /*fragmentRegisterBinding.etShopAddress.getText().toString().split(",")*/;
-        startMapActivity(apiKey,mCountry,mLanguage,mSupportedAreas);
-    }
 
-    private void gotoGoogleMapAddressPicker() {
-        // You must grant user permission for access device location first
-        // please don't ignore this step >> Ignoring location permission may cause application to crash !
-        if (hasPermissionInManifest(requireActivity(), 1, Manifest.permission.ACCESS_FINE_LOCATION))
-            selectLocationOnMap();
-    }
+        Intent intent = new Intent(context, MapActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(SimplePlacePicker.API_KEY,apiKey);
+        bundle.putString(SimplePlacePicker.COUNTRY, mCountry);
+        bundle.putString(SimplePlacePicker.LANGUAGE, mLanguage);
+        bundle.putStringArray(SimplePlacePicker.SUPPORTED_AREAS, mSupportedAreas);
+        intent.putExtras(bundle);
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SimplePlacePicker.SELECT_LOCATION_REQUEST_CODE
-                && resultCode == RESULT_OK){
-            if (data != null) {
-                updateUi(data);
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @androidx.annotation.NonNull String[] permissions, @androidx.annotation.NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                selectLocationOnMap();
-        }
-    }
-
-    //check for location permission
-    public static boolean hasPermissionInManifest(Activity activity, int requestCode, String permissionName) {
-        if (ContextCompat.checkSelfPermission(activity, permissionName) != PackageManager.PERMISSION_GRANTED)
-        {
-            // No explanation needed, we can request the permission.
-            ActivityCompat.requestPermissions(activity,
-                    new String[]{permissionName},
-                    requestCode);
-        } else {
-            return true;
-        }
-        return false;
+        activityGoogleMapLauncher.launch(intent);
     }
     /*
      * get address from google map end

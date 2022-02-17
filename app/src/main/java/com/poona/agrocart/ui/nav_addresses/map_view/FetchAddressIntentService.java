@@ -6,6 +6,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.ResultReceiver;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.poona.agrocart.R;
@@ -22,6 +23,11 @@ public class FetchAddressIntentService extends IntentService {
     private String state = "";
     private String city = "";
     private String area = "";
+    private String pincode = "";
+
+    private String houseNumber = "";
+    private String street = "";
+    private String landmark = "";
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -51,7 +57,7 @@ public class FetchAddressIntentService extends IntentService {
             addresses = geocoder.getFromLocation(
                     latitude,
                     longitude,
-                    1
+                    5
             );
         } catch (IOException ioException) {
             // Catch network or other I/O problems.
@@ -83,15 +89,39 @@ public class FetchAddressIntentService extends IntentService {
             state = address.getAdminArea();
             city = address.getLocality();
             area = address.getSubLocality();
+            pincode = address.getPostalCode();
 
             Log.i(TAG, getString(R.string.address_found));
+            if(address.getFeatureName() != null && !TextUtils.isEmpty(address.getFeatureName())) {
+                houseNumber = address.getFeatureName();
+            } else {
+                if(address.getSubThoroughfare() != null && !TextUtils.isEmpty(address.getSubThoroughfare())) {
+                    houseNumber = address.getSubThoroughfare();
+                } else {
+                    houseNumber = "";
+                }
+            }
+
+            if(address.getThoroughfare() != null && !TextUtils.isEmpty(address.getThoroughfare())) {
+                street = address.getThoroughfare();
+                landmark = address.getThoroughfare()+", "+area;
+            } else {
+                street = "";
+                landmark = "";
+            }
+
+            Log.i(TAG,"house number: " + houseNumber);
+            Log.i(TAG,"street: " + street);
+            Log.i(TAG,"landmark: " + landmark);
+
+            Log.i(TAG,"name: " + address.getLocality());
             Log.i(TAG, "address : " + result);
             Log.i(TAG, "state : " + state);
             Log.i(TAG, "city : " + city);
             Log.i(TAG, "area : " + area);
+            Log.i(TAG, "pincode : " + pincode);
 
-            deliverResultToReceiver(SimplePlacePicker.SUCCESS_RESULT,
-                    result.toString());
+            deliverResultToReceiver(SimplePlacePicker.SUCCESS_RESULT, result.toString());
         }
 
     }
@@ -99,9 +129,13 @@ public class FetchAddressIntentService extends IntentService {
     private void deliverResultToReceiver(int resultCode, String message) {
         Bundle bundle = new Bundle();
         bundle.putString(SimplePlacePicker.RESULT_DATA_KEY, message);
+        bundle.putString(SimplePlacePicker.SELECTED_HOUSE_NUMBER, houseNumber);
+        bundle.putString(SimplePlacePicker.SELECTED_STREET, street);
+        bundle.putString(SimplePlacePicker.SELECTED_LANDMARK, landmark);
         bundle.putString(SimplePlacePicker.SELECTED_STATE, state);
         bundle.putString(SimplePlacePicker.SELECTED_CITY, city);
         bundle.putString(SimplePlacePicker.SELECTED_AREA, area);
+        bundle.putString(SimplePlacePicker.SELECTED_PIN_CODE, pincode);
         receiver.send(resultCode, bundle);
     }
 }
