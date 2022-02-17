@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
-import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteLisResponse;
+import com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteListResponse;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -27,17 +27,17 @@ public class FavouriteViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public LiveData<FavouriteLisResponse> favouriteLisResponseLiveData(ProgressDialog progressDialog,
-                                                                       FavouriteItemsFragment favouriteItemsFragment){
-        MutableLiveData<FavouriteLisResponse> favouriteLisResponseMutableLiveData = new MutableLiveData<>();
+    public LiveData<FavouriteListResponse> favouriteLisResponseLiveData(ProgressDialog progressDialog,
+                                                                        FavouriteItemsFragment favouriteItemsFragment){
+        MutableLiveData<FavouriteListResponse> favouriteLisResponseMutableLiveData = new MutableLiveData<>();
         ApiClientAuth.getClient(favouriteItemsFragment.getContext())
                 .create(ApiInterface.class)
                 .getFavouriteList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<FavouriteLisResponse>() {
+                .subscribeWith(new DisposableSingleObserver<FavouriteListResponse>() {
                     @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull FavouriteLisResponse favouriteLisResponse) {
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull FavouriteListResponse favouriteLisResponse) {
                         if (favouriteLisResponse!=null){
                             progressDialog.dismiss();
                             favouriteLisResponseMutableLiveData.setValue(favouriteLisResponse);
@@ -48,10 +48,10 @@ public class FavouriteViewModel extends AndroidViewModel {
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
-                        FavouriteLisResponse response = new FavouriteLisResponse();
+                        FavouriteListResponse response = new FavouriteListResponse();
                         try {
                             response = gson.fromJson(((HttpException) e).response().errorBody().string(),
-                                    FavouriteLisResponse.class);
+                                    FavouriteListResponse.class);
 
                             favouriteLisResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
