@@ -78,6 +78,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             itemView.setOnClickListener(view -> {
                 onProductClickListener.onProductClick(product);
             });
+
             productBinding.imgPlus.setOnClickListener(view -> {
                 onPlusClickListener.OnPlusClick(product);
                 products.get(getAdapterPosition()).setInCart(1);

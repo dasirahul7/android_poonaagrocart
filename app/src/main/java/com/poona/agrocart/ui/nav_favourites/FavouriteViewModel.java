@@ -37,7 +37,7 @@ public class FavouriteViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<FavouriteListResponse>() {
                     @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull FavouriteListResponse favouriteLisResponse) {
+                    public void onSuccess(FavouriteListResponse favouriteLisResponse) {
                         if (favouriteLisResponse!=null){
                             progressDialog.dismiss();
                             favouriteLisResponseMutableLiveData.setValue(favouriteLisResponse);
@@ -45,7 +45,7 @@ public class FavouriteViewModel extends AndroidViewModel {
                     }
 
                     @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                    public void onError(Throwable e) {
                         progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         FavouriteListResponse response = new FavouriteListResponse();

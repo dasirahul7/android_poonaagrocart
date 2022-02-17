@@ -12,6 +12,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_fev"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardUseCompatPadding="true"
@@ -33,7 +34,7 @@
                 android:background="@color/white"
                 android:layout_weight="1.1">
                 <ImageView
-                    android:id="@+id/txt_organic"
+                    android:id="@+id/tv_organic"
                     style="@style/organic_button_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,9 +46,8 @@
                     android:id="@+id/iv_profile_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
+                    app:setImage="@{favouriteModelList.featureImg}"
                     android:layout_gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_profile"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize20Percent" />
 
             </LinearLayout>
@@ -73,7 +73,7 @@
                     android:id="@+id/tv_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
+                   android:textAlignment="textStart"
                     android:singleLine="true"
                     android:text="@={favouriteModelList.location}"
                     android:textColor="@color/color_grey_txt"
@@ -99,6 +99,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
+                        android:layout_marginEnd="@dimen/_4sdp"
                         android:background="@drawable/bg_strikethrough"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
@@ -108,7 +109,7 @@
                         android:id="@+id/tv_offerActualPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_4sdp"
+                        android:layout_marginStart="@dimen/_6sdp"
                         android:singleLine="true"
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_15sp"
@@ -119,23 +120,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:weightSum="3"
                 android:layout_marginStart="@dimen/_4sdp"
                 android:layout_weight="1.3">
                 <ImageView
                     android:id="@+id/iv_favourite"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:scaleType="centerInside"
                     android:layout_weight="1"
                     android:src="@drawable/ic_filled_heart" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:layout_weight="1.1"/>
+
 
                 <ImageView
                     android:id="@+id/iv_plus"
                     style="@style/PlusButtonStyle"
-                    android:layout_weight="1"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_weight="0.9"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent"/>
 
             </LinearLayout>
         </LinearLayout>
