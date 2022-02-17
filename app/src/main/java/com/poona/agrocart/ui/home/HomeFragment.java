@@ -99,7 +99,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private ArrayList<StoreBannerResponse.StoreBanner> storeBannerList = new ArrayList<>();
     private ArrayList<String> BasketIds = new ArrayList<>();
 
-    private final int limit = 3;
+    private final int limit = 10;
     private int categoryOffset = 0,basketOffset = 0,bestSellingOffset=0,
             seasonalOffset=0,exclusiveOffset=0,productOffset=0;
     private View root;
@@ -128,6 +128,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         root = fragmentHomeBinding.getRoot();
         clearLists();
+        setCategoryRv();
         if (isConnectingToInternet(context)) {
 //            callHomeApi(showCircleProgressDialog(context,""),offset);
             callBannerApi(showCircleProgressDialog(context, ""));
@@ -146,7 +147,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //        setStoreBanner(root);
         initClick();
         checkEmpties();
-        setPaginationForLists();
+//        setPaginationForLists();
 
         return root;
 
@@ -275,8 +276,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             categories.addAll(homeResponse.getResponse().getCategoryData());
             System.out.println("categories "+categories.size());
             fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
-            setCategoryRv();
-            categoryAdapter.notifyDataSetChanged();
         }else makeInVisible(fragmentHomeBinding.recCategory,
                 fragmentHomeBinding.rlCategory);
 
@@ -1012,10 +1011,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                     && categoryResponse.getCategoryData().getCategoryList().size() > 0) {
                                 makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
                                 categories.addAll(categoryResponse.getCategoryData().getCategoryList());
+                                categoryAdapter.notifyDataSetChanged();
                                 System.out.println("categories "+categories.size());
                                 fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
-                                setCategoryRv();
-                                categoryAdapter.notifyDataSetChanged();
                             }
                         }
                         break;
@@ -1161,6 +1159,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         HashMap<String, String> map = new HashMap<>();
         switch (api){
             case CATEGORY:
+                System.out.println("categoryOffset"+categoryOffset);
             map.put(AppConstants.OFFSET, String.valueOf(categoryOffset));
             break;
             case BASKET:

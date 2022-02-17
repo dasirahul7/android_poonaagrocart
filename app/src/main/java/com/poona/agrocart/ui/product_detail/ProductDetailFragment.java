@@ -207,10 +207,13 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         if (details.getIsO3().equalsIgnoreCase("yes")) {
             txtOrganic.setVisibility(View.VISIBLE);
         } else txtOrganic.setVisibility(View.GONE);
-        if (details.getIsFavourite() == 1)
+        if (details.getIsFavourite() == 1){
+            isFavourite = true;
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
-        else
+        } else{
+            isFavourite = false;
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+        }
         if (details.getIsCart() == 1) {
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
@@ -361,14 +364,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 break;
             case R.id.iv_minus:
                 decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
-                        fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
+                        fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivPlus);
+                increaseQuantityApi(showCircleProgressDialog(context, ""), details);
                 break;
             case R.id.iv_plus:
                 addOrRemoveFromCart();
                 break;
             case R.id.img_minus:
-//                decreaseQuantity(fragmentProductDetailBinding.layoutAdded.tvSubQty.getText().toString(),
-//                        fragmentProductDetailBinding.layoutAdded.tvSubQty, fragmentProductDetailBinding.layoutAdded.imgMinus);
+                //remove subscription
                 break;
             case R.id.iv_favourite:
                 addOrRemoveFromFavourite();
@@ -437,12 +440,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void addOrRemoveFromFavourite() {
-        if (!isFavourite) {
-            callAddToFavouriteApi(showCircleProgressDialog(context, ""), details);
+        if (isFavourite) {
+            addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), false);
         } else {
-            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+            addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), true);
         }
-        isFavourite = !isFavourite;
     }
 
     private void addOrRemoveFromCart() {
@@ -530,7 +532,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
 
     //ADd to favourite API
-    private void callAddToFavouriteApi(ProgressDialog showCircleProgressDialog, ProductDetailsResponse.ProductDetails details) {
+    private void addOrRemoveFavouriteApi(ProgressDialog showCircleProgressDialog, boolean addToFav) {
         Observer<BaseResponse> favouriteResponseObserver = responseFavourite -> {
             if (responseFavourite != null) {
                 showCircleProgressDialog.dismiss();
@@ -538,7 +540,13 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 switch (responseFavourite.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(requireActivity(), responseFavourite.getMessage());
-                        fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
+                        if (addToFav){
+                            isFavourite=true;
+                            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
+                        } else{
+                            isFavourite = false;
+                            fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+                        }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -556,11 +564,12 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
             }
         };
-        productDetailViewModel.addToFavourite(showCircleProgressDialog, favParams(details), ProductDetailFragment.this)
+        //TODO remove from favourite needed
+        productDetailViewModel.addToFavourite(showCircleProgressDialog, favParams(), ProductDetailFragment.this)
                 .observe(getViewLifecycleOwner(), favouriteResponseObserver);
     }
 
-    private HashMap<String, String> favParams(ProductDetailsResponse.ProductDetails details) {
+    private HashMap<String, String> favParams() {
         HashMap<String, String> map = new HashMap<>();
         map.put(AppConstants.ITEM_TYPE, "product");
         map.put(AppConstants.PRODUCT_ID, details.getId());
@@ -595,6 +604,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
         }
+        details.setQuantity(quantity);
         AppUtils.setMinusButton(quantity, view);
     }
 
@@ -652,7 +662,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         callProductDetailsApi(showCircleProgressDialog(context, ""));
                         break;
                     case 1:
-                        callAddToFavouriteApi(showCircleProgressDialog(context,""),details);
+                        if (isFavourite) {
+                            addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), false);
+                        } else {
+                            addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), true);
+                        }
                         break;
                     case 2:
                         addOrRemoveFromCart();

@@ -80,7 +80,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             });
             productBinding.imgPlus.setOnClickListener(view -> {
                 onPlusClickListener.OnPlusClick(product);
-                productBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
+                products.get(getAdapterPosition()).setInCart(1);
                 notifyItemChanged(getAdapterPosition());
             });
 

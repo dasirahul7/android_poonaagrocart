@@ -603,7 +603,11 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), true);
                         break;
                     case 3:
-                        callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), false);
+                        if (!isFavourite) {
+                            callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), true);
+                        } else {
+                            callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), false);
+                        }
                         break;
 
                 }
