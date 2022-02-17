@@ -7,7 +7,7 @@
 
         <variable
             name="favouriteModelList"
-            type="com.poona.agrocart.data.network.reponses.favoutiteResponse.FavouriteListResponse.Favourite" />
+            type="com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse.Favourite" />
 
     </data>
 
