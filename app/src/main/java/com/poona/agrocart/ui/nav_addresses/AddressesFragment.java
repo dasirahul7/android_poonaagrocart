@@ -103,13 +103,12 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
         });
 
         addressesAdapter.setOnDefaultAddressClickListener((itemView, position) -> {
-            if(addressArrayList.size() > 1) {
-                this.deletePosition = position;
-                if (isConnectingToInternet(context)) {
-                    setDefaultAddressApi(showCircleProgressDialog(context, ""));
-                } else {
-                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-                }
+            this.itemView = itemView;
+            this.deletePosition = position;
+            if (isConnectingToInternet(context)) {
+                setDefaultAddressApi(showCircleProgressDialog(context, ""));
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         });
 
@@ -160,89 +159,10 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                         fragmentAddressesBinding.rvAddress.setVisibility(View.VISIBLE);
                         addressArrayList.addAll(addressesResponse.getAddresses());
 
-                        if(addressArrayList != null && addressArrayList.size() > 0) {
-                            for(int i = 0; i < addressArrayList.size(); i++) {
-                                AddressesResponse.Address address = new AddressesResponse.Address();
-
-                                String id = addressArrayList.get(i).getAddressPrimaryId();
-                                String name = addressArrayList.get(i).getName();
-                                String mobileNumber = addressArrayList.get(i).getMobile();
-                                String addressType = addressArrayList.get(i).getAddressType();
-
-                                if(addressType != null
-                                        && !TextUtils.isEmpty(addressType)
-                                        && addressType.equals("home"))
-                                    addressType = "Home";
-                                else if(addressType != null
-                                        && !TextUtils.isEmpty(addressType)
-                                        && addressType.equals("office"))
-                                    addressType = "Office";
-                                else if(addressType != null
-                                        && !TextUtils.isEmpty(addressType)
-                                        && addressType.equals("other"))
-                                    addressType = "Other";
-
-                                String houseNumber = addressArrayList.get(i).getHouseNo();
-                                String apartmentName = addressArrayList.get(i).getAppartmentName();
-                                String street = addressArrayList.get(i).getStreet();
-                                String landmark = addressArrayList.get(i).getLandmark();
-                                String stateId = addressArrayList.get(i).getStateId();
-                                String state = addressArrayList.get(i).getStateName();
-                                String cityId = addressArrayList.get(i).getCityId();
-                                String city = addressArrayList.get(i).getCityName();
-                                String areaId = addressArrayList.get(i).getAreaId();
-                                String area = addressArrayList.get(i).getAreaName();
-                                String pinCode = addressArrayList.get(i).getPincode();
-                                String mapAddress = addressArrayList.get(i).getMapAddress();
-                                String latitude = addressArrayList.get(i).getLatitude();
-                                String longitude = addressArrayList.get(i).getLongitude();
-                                String isDefaultAddress = addressArrayList.get(i).getIsDefault();
-
-                                StringBuilder fullAddressSb = new StringBuilder();
-                                if(houseNumber != null && !TextUtils.isEmpty(houseNumber))
-                                    fullAddressSb.append(houseNumber+", ");
-                                if(apartmentName != null && !TextUtils.isEmpty(apartmentName))
-                                    fullAddressSb.append(apartmentName+", ");
-                                if(street != null && !TextUtils.isEmpty(street))
-                                    fullAddressSb.append(street+", ");
-                                if(landmark != null && !TextUtils.isEmpty(landmark))
-                                    fullAddressSb.append(landmark+", ");
-                                if(area != null && !TextUtils.isEmpty(area))
-                                    fullAddressSb.append(area+", ");
-                                if(city != null && !TextUtils.isEmpty(city))
-                                    fullAddressSb.append(city+", ");
-                                if(pinCode != null && !TextUtils.isEmpty(pinCode))
-                                    fullAddressSb.append(pinCode);
-
-                                address.setAddressPrimaryId(id);
-                                address.setName(name);
-                                address.setMobile(mobileNumber);
-                                address.setAddressType(addressType);
-                                address.setHouseNo(houseNumber);
-                                address.setAppartmentName(apartmentName);
-                                address.setStreet(street);
-                                address.setLandmark(landmark);
-                                address.setStateId(stateId);
-                                address.setStateName(state);
-                                address.setCityId(cityId);
-                                address.setCityName(city);
-                                address.setAreaId(areaId);
-                                address.setAreaName(area);
-                                address.setPincode(pinCode);
-                                address.setFullAddress(fullAddressSb.toString());
-                                address.setMapAddress(mapAddress);
-                                address.setLatitude(latitude);
-                                address.setLongitude(longitude);
-                                address.setIsDefault(isDefaultAddress);
-
-                                addressArrayList.set(i, address);
-                            }
-                        }
-
                         stateId = addressesResponse.getStateDetails().getStateId();
                         state = addressesResponse.getStateDetails().getStateName();
 
-                        addressesAdapter.notifyDataSetChanged();
+                        updateAddressArrayList(-1);
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors
@@ -268,6 +188,167 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
         addressesViewModel
                 .getAddressesResponse(progressDialog, AddressesFragment.this)
                 .observe(getViewLifecycleOwner(), responseObserver);
+    }
+
+    private void updateAddressArrayList(int position) {
+        if(addressArrayList != null && addressArrayList.size() > 0) {
+            for(int i = 0; i < addressArrayList.size(); i++) {
+                AddressesResponse.Address address = new AddressesResponse.Address();
+
+                String id = addressArrayList.get(i).getAddressPrimaryId();
+                String name = addressArrayList.get(i).getName();
+                String mobileNumber = addressArrayList.get(i).getMobile();
+                String addressType = addressArrayList.get(i).getAddressType();
+
+                if(addressType != null
+                        && !TextUtils.isEmpty(addressType)
+                        && addressType.equals("home"))
+                    addressType = "Home";
+                else if(addressType != null
+                        && !TextUtils.isEmpty(addressType)
+                        && addressType.equals("office"))
+                    addressType = "Office";
+                else if(addressType != null
+                        && !TextUtils.isEmpty(addressType)
+                        && addressType.equals("other"))
+                    addressType = "Other";
+
+                String houseNumber = addressArrayList.get(i).getHouseNo();
+                String apartmentName = addressArrayList.get(i).getAppartmentName();
+                String street = addressArrayList.get(i).getStreet();
+                String landmark = addressArrayList.get(i).getLandmark();
+                String stateId = addressArrayList.get(i).getStateId();
+                String state = addressArrayList.get(i).getStateName();
+                String cityId = addressArrayList.get(i).getCityId();
+                String city = addressArrayList.get(i).getCityName();
+                String areaId = addressArrayList.get(i).getAreaId();
+                String area = addressArrayList.get(i).getAreaName();
+                String pinCode = addressArrayList.get(i).getPincode();
+                String mapAddress = addressArrayList.get(i).getMapAddress();
+                String latitude = addressArrayList.get(i).getLatitude();
+                String longitude = addressArrayList.get(i).getLongitude();
+                String isDefaultAddress = addressArrayList.get(i).getIsDefault();
+
+                StringBuilder fullAddressSb = new StringBuilder();
+                if(houseNumber != null && !TextUtils.isEmpty(houseNumber))
+                    fullAddressSb.append(houseNumber+", ");
+                if(apartmentName != null && !TextUtils.isEmpty(apartmentName))
+                    fullAddressSb.append(apartmentName+", ");
+                if(street != null && !TextUtils.isEmpty(street))
+                    fullAddressSb.append(street+", ");
+                if(landmark != null && !TextUtils.isEmpty(landmark))
+                    fullAddressSb.append(landmark+", ");
+                if(area != null && !TextUtils.isEmpty(area))
+                    fullAddressSb.append(area+", ");
+                if(city != null && !TextUtils.isEmpty(city))
+                    fullAddressSb.append(city+", ");
+                if(pinCode != null && !TextUtils.isEmpty(pinCode))
+                    fullAddressSb.append(pinCode);
+
+                address.setAddressPrimaryId(id);
+                address.setName(name);
+                address.setMobile(mobileNumber);
+                address.setAddressType(addressType);
+                address.setHouseNo(houseNumber);
+                address.setAppartmentName(apartmentName);
+                address.setStreet(street);
+                address.setLandmark(landmark);
+                address.setStateId(stateId);
+                address.setStateName(state);
+                address.setCityId(cityId);
+                address.setCityName(city);
+                address.setAreaId(areaId);
+                address.setAreaName(area);
+                address.setPincode(pinCode);
+                address.setFullAddress(fullAddressSb.toString());
+                address.setMapAddress(mapAddress);
+                address.setLatitude(latitude);
+                address.setLongitude(longitude);
+                if(position != -1)
+                    address.setIsDefault("no");
+                else
+                    address.setIsDefault(isDefaultAddress);
+
+                addressArrayList.set(i, address);
+            }
+            if(position != -1) {
+                AddressesResponse.Address address = new AddressesResponse.Address();
+
+                String id = addressArrayList.get(position).getAddressPrimaryId();
+                String name = addressArrayList.get(position).getName();
+                String mobileNumber = addressArrayList.get(position).getMobile();
+                String addressType = addressArrayList.get(position).getAddressType();
+
+                if(addressType != null
+                        && !TextUtils.isEmpty(addressType)
+                        && addressType.equals("home"))
+                    addressType = "Home";
+                else if(addressType != null
+                        && !TextUtils.isEmpty(addressType)
+                        && addressType.equals("office"))
+                    addressType = "Office";
+                else if(addressType != null
+                        && !TextUtils.isEmpty(addressType)
+                        && addressType.equals("other"))
+                    addressType = "Other";
+
+                String houseNumber = addressArrayList.get(position).getHouseNo();
+                String apartmentName = addressArrayList.get(position).getAppartmentName();
+                String street = addressArrayList.get(position).getStreet();
+                String landmark = addressArrayList.get(position).getLandmark();
+                String stateId = addressArrayList.get(position).getStateId();
+                String state = addressArrayList.get(position).getStateName();
+                String cityId = addressArrayList.get(position).getCityId();
+                String city = addressArrayList.get(position).getCityName();
+                String areaId = addressArrayList.get(position).getAreaId();
+                String area = addressArrayList.get(position).getAreaName();
+                String pinCode = addressArrayList.get(position).getPincode();
+                String mapAddress = addressArrayList.get(position).getMapAddress();
+                String latitude = addressArrayList.get(position).getLatitude();
+                String longitude = addressArrayList.get(position).getLongitude();
+                String isDefaultAddress = "yes";
+
+                StringBuilder fullAddressSb = new StringBuilder();
+                if(houseNumber != null && !TextUtils.isEmpty(houseNumber))
+                    fullAddressSb.append(houseNumber+", ");
+                if(apartmentName != null && !TextUtils.isEmpty(apartmentName))
+                    fullAddressSb.append(apartmentName+", ");
+                if(street != null && !TextUtils.isEmpty(street))
+                    fullAddressSb.append(street+", ");
+                if(landmark != null && !TextUtils.isEmpty(landmark))
+                    fullAddressSb.append(landmark+", ");
+                if(area != null && !TextUtils.isEmpty(area))
+                    fullAddressSb.append(area+", ");
+                if(city != null && !TextUtils.isEmpty(city))
+                    fullAddressSb.append(city+", ");
+                if(pinCode != null && !TextUtils.isEmpty(pinCode))
+                    fullAddressSb.append(pinCode);
+
+                address.setAddressPrimaryId(id);
+                address.setName(name);
+                address.setMobile(mobileNumber);
+                address.setAddressType(addressType);
+                address.setHouseNo(houseNumber);
+                address.setAppartmentName(apartmentName);
+                address.setStreet(street);
+                address.setLandmark(landmark);
+                address.setStateId(stateId);
+                address.setStateName(state);
+                address.setCityId(cityId);
+                address.setCityName(city);
+                address.setAreaId(areaId);
+                address.setAreaName(area);
+                address.setPincode(pinCode);
+                address.setFullAddress(fullAddressSb.toString());
+                address.setMapAddress(mapAddress);
+                address.setLatitude(latitude);
+                address.setLongitude(longitude);
+                address.setIsDefault(isDefaultAddress);
+
+                addressArrayList.set(position, address);
+            }
+        }
+        addressesAdapter.notifyDataSetChanged();
     }
 
     public void dialogDeleteAddress() {
@@ -358,7 +439,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, ""+baseResponse.getMessage());
-                        //getAddressesListApi(showCircleProgressDialog(context, ""));
+                        updateAddressArrayList(deletePosition);
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors

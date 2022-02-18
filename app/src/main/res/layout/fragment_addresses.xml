@@ -14,12 +14,12 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".ui.nav_addresses.AddressesFragment"
         android:scrollbars="none">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.nav_addresses.AddressesFragment">
+            android:layout_height="match_parent">
 
             <com.poona.agrocart.widgets.CustomButton
                 android:id="@+id/btn_add_address"
@@ -46,16 +46,24 @@
                 style="?android:attr/borderlessButtonStyle"
                 app:setCustomFont="@string/font_poppins_semi_bold"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_address"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:visibility="visible"
-                android:nestedScrollingEnabled="true"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_14sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_add_address" />
+                app:layout_constraintTop_toBottomOf="@+id/btn_add_address">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:visibility="visible"
+                    android:nestedScrollingEnabled="true" />
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_error_message"
