@@ -49,6 +49,7 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:launchSingleTop="true"
+            app:popUpToSaveState="true"
             app:popUpTo="@+id/nav_explore"
             app:popUpToInclusive="true"/>
     </fragment>
@@ -268,15 +269,6 @@
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"/>
-
-
-        <action
-            android:id="@+id/action_nav_help_center_to_nav_orders"
-            app:destination="@id/nav_orders" />
-        <action
-            android:id="@+id/action_nav_help_center_to_ticketFragment"
-            app:destination="@id/ticketFragment" />
-
     </fragment>
 
 
@@ -473,7 +465,7 @@
         android:label="BasketDetailFragment" />
     <fragment
         android:id="@+id/ticketFragment"
-        android:name="com.poona.agrocart.ui.ticket_details.TicketFragment"
+        android:name="com.poona.agrocart.ui.ticket_details.TicketDetailFragment"
         android:label="TicketFragment" />
 
 </navigation>

@@ -10,6 +10,8 @@ import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
 import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
+import static com.poona.agrocart.app.AppConstants.PU_ID;
+import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -17,6 +19,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
@@ -38,9 +41,11 @@ import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.data.network.responses.BestSellingResponse;
+import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
 import com.poona.agrocart.data.network.responses.ProductListByResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.databinding.FragmentProductListBinding;
@@ -55,7 +60,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ProductListFragment extends BaseFragment implements NetworkExceptionListener {
+public class ProductListFragment extends BaseFragment implements NetworkExceptionListener, ProductGridAdapter.OnProductClickListener {
     private static final String TAG = ProductListFragment.class.getSimpleName();
     private FragmentProductListBinding fragmentProductListBinding;
     private ProductListViewModel productListViewModel;
@@ -405,7 +410,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private void makeProductListing() {
         if (productArrayList != null && productArrayList.size() > 0) {
             fragmentProductListBinding.tvNoData.setVisibility(View.GONE);
-            productGridAdapter = new ProductGridAdapter(productArrayList, this::redirectToProductsDetail);
+            productGridAdapter = new ProductGridAdapter(productArrayList, this);
             rvVegetables.setAdapter(productGridAdapter);
         }
 
@@ -483,5 +488,57 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
             }
         }, context);
 
+    }
+
+    @Override
+    public void onProductClick(ProductListResponse.Product product) {
+        redirectToProductsDetail(product);
+    }
+
+    @Override
+    public void onAddClick(String productId, String unitId,int position) {
+        callAddToCartProductApi(productId,unitId,position);
+    }
+
+    private void callAddToCartProductApi(String productId,String unitId,int position) {
+        @SuppressLint("NotifyDataSetChanged") Observer<BaseResponse> addToCartObserver = baseResponse -> {
+            if (baseResponse!=null){
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(requireActivity(), baseResponse.getMessage());
+                        productArrayList.get(position).setInCart(1);
+                        productGridAdapter.notifyDataSetChanged();
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        productListViewModel.addToCartProductApiCall(addToCartParam(productId,unitId),ProductListFragment.this)
+                .observe(getViewLifecycleOwner(),addToCartObserver);
+    }
+
+    private HashMap<String, String> addToCartParam(String itemId,String unitId) {
+        HashMap<String, String> map = new HashMap<>();
+        if (unitId!=null) {
+            map.put(PRODUCT_ID, itemId);
+            map.put(PU_ID, unitId);
+        }
+//        else {
+//            map.put(BASKET_ID, itemId);
+//        }
+        map.put(QUANTITY, "1");
+        return map;
     }
 }

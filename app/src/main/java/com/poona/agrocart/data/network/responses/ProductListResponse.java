@@ -246,6 +246,16 @@ public class ProductListResponse extends BaseResponse{
         @SerializedName("unit_name")
         @Expose
         private String unitName;
+        @SerializedName("in_cart")
+        private int inCart;
+
+        public int getInCart() {
+            return inCart;
+        }
+
+        public void setInCart(int inCart) {
+            this.inCart = inCart;
+        }
 
         public String getpId() {
             return pId;

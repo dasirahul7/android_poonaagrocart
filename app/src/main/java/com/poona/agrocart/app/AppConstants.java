@@ -75,6 +75,7 @@ public class AppConstants {
     public static final String UPDATE_ADDRESS_API = "address-update";
     public static final String DELETE_ADDRESS_API = "address-delete";
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
+    public static final String VIEW_PROFILE_API = "view-profile";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
     public static final String CHECK_VALID_PIN_CODE_API = "check-pincode-availablity";
     /*Home screen APIs*/
@@ -115,7 +116,8 @@ public class AppConstants {
     public static final String VIEW_CHATS = "view-chats";
     public static final String REPLY_TO_TICKET = "reply-to-ticket";
 
-
+/*Cart lis api*/
+    public static final String CART_LIST_API ="view-cart";
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
 
@@ -165,6 +167,7 @@ public class AppConstants {
     public static final String MOBILE_NUMBER = "mobile";
     public static final String OTP = "otp";
     public static final String USERNAME = "username";
+    public static final String USERPROFILE = "profile";
     public static final String EMAIL = "email";
     public static final String STATE_ID = "state_id";
     public static final String AREA_ID = "area_id";

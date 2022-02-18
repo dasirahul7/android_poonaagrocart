@@ -1,9 +1,16 @@
 
 package com.poona.agrocart.data.network.responses.favoutiteResponse;
 
+import androidx.databinding.BindingAdapter;
+
 import java.util.List;
+
+import com.bumptech.glide.Glide;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 
 public class FavouriteListResponse extends BaseResponse {
@@ -70,6 +77,12 @@ public class FavouriteListResponse extends BaseResponse {
         @SerializedName("selling_price")
         @Expose
         private String selling_price;
+        @SerializedName("is_o3")
+        @Expose
+        private String is_o3;
+        @SerializedName("in_cart")
+        @Expose
+        private int inCart;
 
         public String getItemType() {
             return itemType;
@@ -198,5 +211,29 @@ public class FavouriteListResponse extends BaseResponse {
         public void setSelling_price(String selling_price) {
             this.selling_price = selling_price;
         }
+
+        public String getIs_o3() {
+            return is_o3;
+        }
+
+        public void setIs_o3(String is_o3) {
+            this.is_o3 = is_o3;
+        }
+
+        public int getInCart() {
+            return inCart;
+        }
+
+        public void setInCart(int inCart) {
+            this.inCart = inCart;
+        }
+    }
+
+    @BindingAdapter("setImage")
+    public static void loadImage(ShapeableImageView view, String imageUrl) {
+        Glide.with(view.getContext())
+                .load(AppConstants.IMAGE_DOC_BASE_URL+imageUrl)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder).into(view);
     }
 }

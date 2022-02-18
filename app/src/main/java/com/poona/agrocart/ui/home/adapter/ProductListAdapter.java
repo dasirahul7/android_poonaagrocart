@@ -47,6 +47,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         ProductListResponse.Product product = products.get(position);
             productBinding.setHomeProductModel(product);
             holder.bindProduct(product,position);
+        productBinding.imgPlus.setOnClickListener(view -> {
+            onPlusClickListener.OnPlusClick(product,position);
+        });
+
     }
 
     @Override
@@ -78,12 +82,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             itemView.setOnClickListener(view -> {
                 onProductClickListener.onProductClick(product);
             });
-            productBinding.imgPlus.setOnClickListener(view -> {
-                onPlusClickListener.OnPlusClick(product);
-                products.get(getAdapterPosition()).setInCart(1);
-                notifyItemChanged(getAdapterPosition());
-            });
-
+            if (product.getInCart()==1)
+                productBinding.ivPlus.setEnabled(false);
         }
 
     }

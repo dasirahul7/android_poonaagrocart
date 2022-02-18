@@ -6,6 +6,7 @@ import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.AREA_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.BASKET_DETAIL_API;
+import static com.poona.agrocart.app.AppConstants.CART_LIST_API;
 import static com.poona.agrocart.app.AppConstants.CHECK_VALID_PIN_CODE_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.CITY_WITH_ID_API;
@@ -45,6 +46,7 @@ import static com.poona.agrocart.app.AppConstants.UPDATE_MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_CHATS;
 import static com.poona.agrocart.app.AppConstants.VIEW_GALLERY;
+import static com.poona.agrocart.app.AppConstants.VIEW_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_TICKET;
 
 import com.poona.agrocart.data.network.responses.AddressesResponse;
@@ -59,6 +61,7 @@ import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.HomeResponse;
+import com.poona.agrocart.data.network.responses.cartResponse.MyCartResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.CreateTicketResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.SendMessageResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
@@ -76,41 +79,14 @@ import com.poona.agrocart.data.network.responses.VerifyOtpResponse;
 import com.poona.agrocart.data.network.responses.CmsResponse;
 import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
-import com.poona.agrocart.data.network.responses.AddressesResponse;
-import com.poona.agrocart.data.network.responses.AreaResponse;
-import com.poona.agrocart.data.network.responses.BannerResponse;
-import com.poona.agrocart.data.network.responses.BaseResponse;
-import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
-import com.poona.agrocart.data.network.responses.BasketResponse;
-import com.poona.agrocart.data.network.responses.BestSellingResponse;
-import com.poona.agrocart.data.network.responses.CategoryResponse;
-import com.poona.agrocart.data.network.responses.CityResponse;
-import com.poona.agrocart.data.network.responses.CouponResponse;
-import com.poona.agrocart.data.network.responses.ExclusiveResponse;
-import com.poona.agrocart.data.network.responses.HomeResponse;
 import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
-import com.poona.agrocart.data.network.responses.help_center_response.CreateTicketResponse;
-import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
-import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
-import com.poona.agrocart.data.network.responses.IntroScreenResponse;
-import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
-import com.poona.agrocart.data.network.responses.ProductListByResponse;
-import com.poona.agrocart.data.network.responses.ProductListResponse;
-import com.poona.agrocart.data.network.responses.ProfileResponse;
-import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
-import com.poona.agrocart.data.network.responses.SignInResponse;
-import com.poona.agrocart.data.network.responses.StateResponse;
-import com.poona.agrocart.data.network.responses.StoreBannerResponse;
-import com.poona.agrocart.data.network.responses.VerifyOtpResponse;
-import com.poona.agrocart.data.network.responses.CmsResponse;
-import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
-import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
@@ -322,6 +298,11 @@ public interface ApiInterface {
     @GET(FAVOURITE_LIST_API)
     Single<FavouriteListResponse> getFavouriteList();
 
+    /*Cart List Response*/
+    @FormUrlEncoded
+    @POST(CART_LIST_API)
+    Single<MyCartResponse> getAllCartList(@FieldMap HashMap<String,String> hashMap);
+
     /*Home API*/
     @FormUrlEncoded
     @POST(HOME_API)
@@ -337,5 +318,9 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(REPLY_TO_TICKET)
-    Single<SendMessageResponse> getSenderMessage(@FieldMap HashMap<String, String> sendMessageParameters);;
+    Single<SendMessageResponse> getSenderMessage(@FieldMap HashMap<String, String> sendMessageParameters);
+
+    @FormUrlEncoded
+    @POST(VIEW_PROFILE_API)
+    Single<ProfileResponse> getViewProfileResponse(@FieldMap HashMap<String,String> hashMap);
 }

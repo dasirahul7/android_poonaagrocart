@@ -162,7 +162,12 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         if (productDetailsResponse.getProductDetails() != null) {
                             fragmentProductDetailBinding.itemLayout.setVisibility(View.VISIBLE);
                             details = productDetailsResponse.getProductDetails();
-                            details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
+                            if (details.getIsCart()==1){
+                                for (ProductListResponse.ProductUnit unit:details.getProductUnits()){
+                                    if (unit.getInCart()==1)
+                                        details.setUnit(unit);
+                                }
+                            }else details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
                             setDetailsValue();
                             changePriceAndUnit(details.getUnit(), false);
                             fragmentProductDetailBinding.setProductDetailModule(details);
@@ -218,7 +223,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
             if (details.getQuantity() > 0) {
-                successToast(context, "added");
                 fragmentProductDetailBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
                 changePriceAndUnit(details.getUnit(), false);
             }
@@ -365,7 +369,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             case R.id.iv_minus:
                 decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
                         fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivPlus);
-                increaseQuantityApi(showCircleProgressDialog(context, ""), details);
                 break;
             case R.id.iv_plus:
                 addOrRemoveFromCart();
@@ -453,7 +456,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         } else {
             increaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
                     fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivPlus);
-            increaseQuantityApi(showCircleProgressDialog(context, ""), details);
+            updateQuantityApi(showCircleProgressDialog(context, ""), details);
         }
     }
 
@@ -495,8 +498,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 .observe(getViewLifecycleOwner(), addToCartResponseObserver);
     }
 
-    private void increaseQuantityApi(ProgressDialog showCircleProgressDialog,
-                                  ProductDetailsResponse.ProductDetails details) {
+    private void updateQuantityApi(ProgressDialog showCircleProgressDialog,
+                                   ProductDetailsResponse.ProductDetails details) {
         Observer<BaseResponse> addToCartResponseObserver = addToCartResponse -> {
             if (addToCartResponse != null) {
                 showCircleProgressDialog.dismiss();
@@ -539,12 +542,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 Log.e(TAG, "callAddToFavouriteApi: " + responseFavourite.getMessage());
                 switch (responseFavourite.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(requireActivity(), responseFavourite.getMessage());
+                        Log.e(TAG, "addOrRemoveFavouriteApi: "+responseFavourite.getMessage() );
                         if (addToFav){
                             isFavourite=true;
+                            successToast(requireActivity(), "Added to favourite");
                             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
                         } else{
                             isFavourite = false;
+                            successToast(context,"Removed from favourite");
                             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
                         }
                         break;
@@ -564,9 +569,15 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
             }
         };
-        //TODO remove from favourite needed
-        productDetailViewModel.addToFavourite(showCircleProgressDialog, favParams(), ProductDetailFragment.this)
-                .observe(getViewLifecycleOwner(), favouriteResponseObserver);
+        if (addToFav){
+
+            productDetailViewModel.addToFavourite(showCircleProgressDialog, favParams(), ProductDetailFragment.this)
+                    .observe(getViewLifecycleOwner(), favouriteResponseObserver);
+        }else {
+            productDetailViewModel.removeFromFavoriteResponse(showCircleProgressDialog,favParams(),
+                    ProductDetailFragment.this)
+                    .observe(getViewLifecycleOwner(),favouriteResponseObserver);
+        }
     }
 
     private HashMap<String, String> favParams() {
@@ -603,6 +614,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         } else {
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
+            updateQuantityApi(showCircleProgressDialog(context, ""), details);
         }
         details.setQuantity(quantity);
         AppUtils.setMinusButton(quantity, view);

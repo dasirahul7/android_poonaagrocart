@@ -9,6 +9,8 @@ import static com.poona.agrocart.app.AppConstants.IS_LOGGED_IN;
 import static com.poona.agrocart.app.AppConstants.IS_READ_INTRO;
 import static com.poona.agrocart.app.AppConstants.IS_VERIFIED;
 import static com.poona.agrocart.app.AppConstants.PREFERENCES_NAME;
+import static com.poona.agrocart.app.AppConstants.USERNAME;
+import static com.poona.agrocart.app.AppConstants.USERPROFILE;
 import static com.poona.agrocart.app.AppConstants.USER_ADDRESS;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
@@ -19,6 +21,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.io.File;
@@ -39,7 +42,7 @@ public class AppSharedPreferences
     //Shared preferences mode
     int PRIVATE_MODE = 0;
 
-    private String fireBaseToken, authorizationToken,uid,userMobile,userCountry, userAddress,baseAuthUsername, baseAuthPassword;
+    private String fireBaseToken, authorizationToken,uid,userMobile,userCountry, userAddress,baseAuthUsername, baseAuthPassword,userName,userProfile;
     private int newOrderCount;
     private boolean isLoggedIn,isIntroRead, fromLogOut, isVerified;
     private String userType;
@@ -140,6 +143,27 @@ public class AppSharedPreferences
         return preferences.getString(COUNTRY_CODE,"");
     }
 
+    public String getUserName() {
+        return this.preferences.getString(USERNAME,"");
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+        this.editor.putString(USERNAME,userName);
+        this.editor.commit();
+    }
+
+    public String getUserProfile() {
+        return this.preferences.getString(USERPROFILE,"");
+    }
+
+    public void setUserProfile(String userProfile) {
+        this.userProfile = userProfile;
+        this.editor.putString(USERPROFILE,userProfile);
+        this.editor.commit();
+    }
+
+
     public void setUserCountry(String userCountry) {
         this.userCountry = userCountry;
         this.editor.putString(COUNTRY_CODE,userCountry);
@@ -155,6 +179,7 @@ public class AppSharedPreferences
         this.editor.putString(USER_ADDRESS,userAddress);
         this.editor.commit();
     }
+
 
     public void clearSharedPreferences(Context context)
     {

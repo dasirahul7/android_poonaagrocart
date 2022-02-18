@@ -16,6 +16,7 @@ import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
+import com.poona.agrocart.ui.basket_detail.BasketDetailFragment;
 
 import java.util.HashMap;
 
@@ -114,6 +115,50 @@ public class ProductDetailViewModel extends AndroidViewModel {
                 });
         return baseResponseMutableLiveData;
     }
+
+    /*Remove from favourite*/
+    public LiveData<BaseResponse> removeFromFavoriteResponse(ProgressDialog progressDialog,
+                                                             HashMap<String,String> hashMap,
+                                                             ProductDetailFragment productDetailFragment){
+        MutableLiveData<BaseResponse> removeFromFavouriteResponseObserver  = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(productDetailFragment.getContext())
+                .create(ApiInterface.class)
+                .removeFromFavouriteResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse!=null){
+                            progressDialog.dismiss();
+                            removeFromFavouriteResponseObserver.setValue(baseResponse);
+                            Log.e(TAG, "Remove from Favourite onSuccess: "+new Gson().toJson(baseResponse));
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            removeFromFavouriteResponseObserver.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(1,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return removeFromFavouriteResponseObserver;
+
+    }
+
 
     //Add To Cart Product
     public LiveData<BaseResponse> addToCartProductLiveData(ProgressDialog progressDialog,

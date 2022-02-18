@@ -1,6 +1,8 @@
 package com.poona.agrocart.ui.search;
 
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
+import static com.poona.agrocart.app.AppConstants.PU_ID;
+import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
@@ -10,6 +12,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -29,9 +32,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.databinding.FragmentSearchBinding;
 import com.poona.agrocart.ui.BaseFragment;
@@ -207,13 +212,38 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         fragmentSearchBinding.recProduct.setNestedScrollingEnabled(false);
         fragmentSearchBinding.recProduct.setHasFixedSize(true);
         fragmentSearchBinding.recProduct.setLayoutManager(linearLayoutManager);
-        searchAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail,product -> {
-//            addToCartProduct(showCircleProgressDialog(context,""),product,"Product");
-        });
+        searchAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, this::addToCartProduct);
         fragmentSearchBinding.recProduct.setAdapter(searchAdapter);
     }
 
-    private void addToCartProduct(ProgressDialog showCircleProgressDialog, ProductListResponse.Product product, String product1) {
+    private void addToCartProduct(ProductListResponse.Product product, int position) {
+    @SuppressLint("NotifyDataSetChanged") Observer<BaseResponse> baseResponseObserver = response -> {
+        if (response != null) {
+            Log.e(TAG, "addToCartProduct: " + new Gson().toJson(response));
+            switch (response.getStatus()) {
+                case STATUS_CODE_200://Record Create/Update Successfully
+                    successToast(context, response.getMessage());
+                        productList.get(position).setInCart(1);
+                        searchAdapter.notifyDataSetChanged();
+                    break;
+                case STATUS_CODE_403://Validation Errors
+                case STATUS_CODE_400://Validation Errors
+                case STATUS_CODE_404://Validation Errors
+                    warningToast(context, response.getMessage());
+                    break;
+                case STATUS_CODE_401://Unauthorized user
+                    goToAskSignInSignUpScreen(response.getMessage(), context);
+                    break;
+                case STATUS_CODE_405://Method Not Allowed
+                    infoToast(context, response.getMessage());
+                    break;
+            }
+
+        }
+
+    };
+    searchViewModel.addToCartProductLiveData(paramAddToCart(product),SearchFragment.this)
+            .observe(getViewLifecycleOwner(),baseResponseObserver);
     }
 
     public void toProductDetail(ProductListResponse.Product product) {
@@ -228,6 +258,13 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
         map.put(AppConstants.SEARCH, fragmentSearchBinding.etSearch.getText().toString().trim());
+        return map;
+    }
+  private HashMap<String, String> paramAddToCart(ProductListResponse.Product product) {
+      HashMap<String, String> map = new HashMap<>();
+      map.put(PRODUCT_ID, product.getProductId());
+      map.put(PU_ID, product.getUnit().getpId());
+      map.put(QUANTITY, "1");
         return map;
     }
 

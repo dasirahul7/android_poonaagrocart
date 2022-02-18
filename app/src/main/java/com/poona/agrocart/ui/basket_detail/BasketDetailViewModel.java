@@ -177,7 +177,7 @@ public class BasketDetailViewModel extends AndroidViewModel {
 
     }
 
-    /*REmove from favrouite*/
+    /*Remove from favrouite*/
     public LiveData<BaseResponse> removeFromFavoriteResponse(ProgressDialog progressDialog,
                                                                 HashMap<String,String> hashMap,
                                                                 BasketDetailFragment basketDetailFragment){
