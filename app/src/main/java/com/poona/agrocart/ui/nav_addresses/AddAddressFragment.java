@@ -617,6 +617,12 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         map.put(HOUSE_NO, basicDetails.getHouseNumber());
         map.put(STREET, basicDetails.getStreet());
         map.put(LANDMARK, basicDetails.getLandmark());
+        if(basicDetails.getLatitude() == null)
+            basicDetails.setLatitude("");
+        if(basicDetails.getLongitude() == null)
+            basicDetails.setLongitude("");
+        if(basicDetails.getMapAddress() == null)
+            basicDetails.setMapAddress("");
         map.put(LATITUDE, basicDetails.getLatitude());
         map.put(LONGITUDE, basicDetails.getLongitude());
         map.put(GOOGLE_MAP_ADDRESS, basicDetails.getMapAddress());

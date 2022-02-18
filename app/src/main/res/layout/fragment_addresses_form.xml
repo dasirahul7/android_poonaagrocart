@@ -439,7 +439,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="@dimen/_4sdp"
-                app:cardBackgroundColor="@color/colorLightGrey"
+                app:cardBackgroundColor="@color/color_subscription_plan"
                 android:layout_marginVertical="@dimen/_8sdp"
                 android:layout_marginHorizontal="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -460,6 +460,8 @@
                         android:text="@string/chosen_address_from_map"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18sp"
+                        app:setCustomFont="@string/font_poppins_semi_bold"
+                        android:includeFontPadding="false"
                         android:layout_toLeftOf="@+id/iv_remove_map_address"/>
 
                     <ImageView
@@ -468,6 +470,7 @@
                         android:layout_height="@dimen/_14sdp"
                         android:src="@drawable/ic_cross"
                         app:tint="@color/black"
+                        android:padding="@dimen/_2sdp"
                         android:layout_alignParentEnd="true"/>
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -479,7 +482,9 @@
                         android:layout_marginTop="@dimen/_1sdp"
                         android:text="@={addressesViewModel.mapAddress}"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_16sp" />
+                        android:textSize="@dimen/_16sp"
+                        android:includeFontPadding="false"
+                        app:setCustomFont="@string/font_poppins_regular"/>
 
                 </RelativeLayout>
 
