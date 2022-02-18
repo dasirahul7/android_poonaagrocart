@@ -177,8 +177,12 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                                 String apartmentName = addressArrayList.get(i).getAppartmentName();
                                 String street = addressArrayList.get(i).getStreet();
                                 String landmark = addressArrayList.get(i).getLandmark();
-                                String area = addressArrayList.get(i).getAreaName();
+                                String stateId = addressArrayList.get(i).getStateId();
+                                String state = addressArrayList.get(i).getStateName();
+                                String cityId = addressArrayList.get(i).getCityId();
                                 String city = addressArrayList.get(i).getCityName();
+                                String areaId = addressArrayList.get(i).getAreaId();
+                                String area = addressArrayList.get(i).getAreaName();
                                 String pinCode = addressArrayList.get(i).getPincode();
 
                                 StringBuilder fullAddressSb = new StringBuilder();
@@ -205,8 +209,12 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                                 address.setAppartmentName(apartmentName);
                                 address.setStreet(street);
                                 address.setLandmark(landmark);
-                                address.setAreaIdFk(area);
-                                address.setCityIdFk(city);
+                                address.setStateId(stateId);
+                                address.setStateName(state);
+                                address.setCityId(cityId);
+                                address.setCityName(city);
+                                address.setAreaId(areaId);
+                                address.setAreaName(area);
                                 address.setPincode(pinCode);
                                 address.setFullAddress(fullAddressSb.toString());
                                 address.setLatitude(fullAddressSb.toString());
@@ -346,7 +354,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                 hideKeyBoard(requireActivity());
                 if(from == 0) {
                     getAddressesListApi(showCircleProgressDialog(context, ""));
-                } else if(from == 0) {
+                } else if(from == 1) {
                     deleteAddressApi(showCircleProgressDialog(context, ""));
                 }
             } else {

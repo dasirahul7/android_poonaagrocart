@@ -1,7 +1,9 @@
 package com.poona.agrocart.ui.nav_addresses;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,9 +21,12 @@ import com.poona.agrocart.data.network.responses.AreaResponse;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.CityResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
@@ -346,5 +351,30 @@ public class AddressesViewModel extends AndroidViewModel {
                     }
                 });
         return responseMutableLiveData;
+    }
+
+    public Observable<List<String>> getCityAreaResponses(Context context,
+                                                         HashMap<String, String> cityHashMap,
+                                                         HashMap<String, String> areaHashMap) {
+        Observable<CityResponse> cityResponseObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).getCityObservableResponse(cityHashMap);
+        Observable<AreaResponse> areaResponseObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).getAreaObservableResponse(areaHashMap);
+
+        @SuppressLint("LongLogTag") Observable<List<String>> observableResult =
+                Observable.zip(
+                        cityResponseObservable.subscribeOn(Schedulers.io()),
+                        areaResponseObservable.subscribeOn(Schedulers.io()),
+                        (cityResponse, areaResponse) -> {
+                            //Log.e("City Api ResponseData", new Gson().toJson(cityResponse));
+                            //Log.e("Area Api ResponseData", new Gson().toJson(areaResponse));
+
+                            List<String> list = new ArrayList();
+                            list.add(new Gson().toJson(cityResponse));
+                            list.add(new Gson().toJson(areaResponse));
+                            return list;
+                        });
+
+        return observableResult;
     }
 }

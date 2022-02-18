@@ -11,6 +11,18 @@ public class AddressesResponse extends BaseResponse implements Serializable{
     @Expose
     private List<Address> addresses = null;
 
+    @SerializedName("state_details")
+    @Expose
+    private StateDetails stateDetails = null;
+
+    public StateDetails getStateDetails() {
+        return stateDetails;
+    }
+
+    public void setStateDetails(StateDetails stateDetails) {
+        this.stateDetails = stateDetails;
+    }
+
     public List<Address> getAddresses() {
         return addresses;
     }
@@ -63,12 +75,18 @@ public class AddressesResponse extends BaseResponse implements Serializable{
         @SerializedName("map_address")
         @Expose
         private String mapAddress;
-        @SerializedName("city_id_fk")
+        @SerializedName("state_id")
         @Expose
-        private String cityIdFk;
-        @SerializedName("area_id_fk")
+        private String stateId;
+        @SerializedName("city_id")
         @Expose
-        private String areaIdFk;
+        private String cityId;
+        @SerializedName("area_id")
+        @Expose
+        private String areaId;
+        @SerializedName("state_name")
+        @Expose
+        private String stateName;
         @SerializedName("city_name")
         @Expose
         private String cityName;
@@ -189,20 +207,36 @@ public class AddressesResponse extends BaseResponse implements Serializable{
             this.mapAddress = mapAddress;
         }
 
-        public String getCityIdFk() {
-            return cityIdFk;
+        public String getStateId() {
+            return stateId;
         }
 
-        public void setCityIdFk(String cityIdFk) {
-            this.cityIdFk = cityIdFk;
+        public void setStateId(String stateId) {
+            this.stateId = stateId;
         }
 
-        public String getAreaIdFk() {
-            return areaIdFk;
+        public String getCityId() {
+            return cityId;
         }
 
-        public void setAreaIdFk(String areaIdFk) {
-            this.areaIdFk = areaIdFk;
+        public void setCityId(String cityId) {
+            this.cityId = cityId;
+        }
+
+        public String getAreaId() {
+            return areaId;
+        }
+
+        public void setAreaId(String areaId) {
+            this.areaId = areaId;
+        }
+
+        public String getStateName() {
+            return stateName;
+        }
+
+        public void setStateName(String stateName) {
+            this.stateName = stateName;
         }
 
         public String getCityName() {
@@ -227,6 +261,31 @@ public class AddressesResponse extends BaseResponse implements Serializable{
 
         public void setFullAddress(String fullAddress) {
             this.fullAddress = fullAddress;
+        }
+    }
+
+    private static class StateDetails {
+        @SerializedName("state_id")
+        @Expose
+        private String stateId;
+        @SerializedName("stateName")
+        @Expose
+        private String stateName;
+
+        public String getStateId() {
+            return stateId;
+        }
+
+        public void setStateId(String stateId) {
+            this.stateId = stateId;
+        }
+
+        public String getStateName() {
+            return stateName;
+        }
+
+        public void setStateName(String stateName) {
+            this.stateName = stateName;
         }
     }
 }

@@ -5,7 +5,9 @@ import static com.poona.agrocart.app.AppConstants.ADDRESS_DETAILS;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_TYPE;
 import static com.poona.agrocart.app.AppConstants.APARTMENT_NAME;
+import static com.poona.agrocart.app.AppConstants.AREA_;
 import static com.poona.agrocart.app.AppConstants.AREA_ID;
+import static com.poona.agrocart.app.AppConstants.CITY_;
 import static com.poona.agrocart.app.AppConstants.CITY_ID;
 import static com.poona.agrocart.app.AppConstants.GOOGLE_MAP_ADDRESS;
 import static com.poona.agrocart.app.AppConstants.HOUSE_NO;
@@ -15,6 +17,7 @@ import static com.poona.agrocart.app.AppConstants.LONGITUDE;
 import static com.poona.agrocart.app.AppConstants.MOBILE;
 import static com.poona.agrocart.app.AppConstants.NAME;
 import static com.poona.agrocart.app.AppConstants.PIN_CODE;
+import static com.poona.agrocart.app.AppConstants.STATE_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -51,6 +54,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.AddressesResponse;
@@ -59,15 +64,23 @@ import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.databinding.FragmentAddressesFormBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.nav_addresses.map_view.MapActivity;
 import com.poona.agrocart.ui.nav_addresses.map_view.SimplePlacePicker;
 import com.poona.agrocart.ui.nav_profile.CustomArrayAdapter;
+import com.poona.agrocart.ui.nav_profile.EditProfileFragment;
 
+import java.lang.reflect.Type;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import retrofit2.HttpException;
 
 public class AddAddressFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     private static final String TAG = AddAddressFragment.class.getSimpleName();
@@ -80,9 +93,10 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private List<BasicDetails> areaList;
 
     private BasicDetails basicDetails;
+    private String selectedStateId = "0";
     private String selectedCityId = "0";
     private String selectedAreaId = "0";
-    private String selectedCity, selectedArea;
+    private String selectedState, selectedCity, selectedArea;
 
     private int check = 0;
     private CityResponse cityResponse = null;
@@ -107,13 +121,6 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         areaList = new ArrayList<>();
 
         initView();
-
-        if (isConnectingToInternet(context)) {
-            hideKeyBoard(requireActivity());
-            callCityApi(showCircleProgressDialog(context, ""));
-        } else {
-            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-        }
 
         return view;
     }
@@ -187,54 +194,26 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             if(bundle.getSerializable(ADDRESS_DETAILS) != null) {
                 address = (AddressesResponse.Address) bundle.getSerializable(ADDRESS_DETAILS);
 
-                if(address.getAddressPrimaryId() != null && !TextUtils.isEmpty(address.getAddressPrimaryId()))
-                    basicDetails.setId(address.getAddressPrimaryId());
-                if(address.getAddressType() != null && !TextUtils.isEmpty(address.getAddressType()))
-                    basicDetails.setAddressType(address.getAddressType());
-                if(address.getName() != null && !TextUtils.isEmpty(address.getName()))
-                    basicDetails.setName(address.getName());
-                if(address.getMobile() != null && !TextUtils.isEmpty(address.getMobile()))
-                    basicDetails.setMobileNumber(address.getMobile());
-                if(address.getCityIdFk() != null && !TextUtils.isEmpty(address.getCityIdFk()))
-                    basicDetails.setCity(address.getCityIdFk());
-                if(address.getAreaIdFk() != null && !TextUtils.isEmpty(address.getAreaIdFk()))
-                    basicDetails.setArea(address.getAreaIdFk());
-                if(address.getPincode() != null && !TextUtils.isEmpty(address.getPincode()))
-                    basicDetails.setPinCode(address.getPincode());
-                if(address.getAppartmentName() != null && !TextUtils.isEmpty(address.getAppartmentName()))
-                    basicDetails.setApartmentName(address.getAppartmentName());
-                if(address.getHouseNo() != null && !TextUtils.isEmpty(address.getHouseNo()))
-                    basicDetails.setHouseNumber(address.getHouseNo());
-                if(address.getStreet() != null && !TextUtils.isEmpty(address.getStreet()))
-                    basicDetails.setStreet(address.getStreet());
-                if(address.getLandmark() != null && !TextUtils.isEmpty(address.getLandmark()))
-                    basicDetails.setLandmark(address.getLandmark());
-                if(address.getLatitude() != null && !TextUtils.isEmpty(address.getLatitude()))
-                    basicDetails.setLatitude(address.getLatitude());
-                if(address.getLongitude() != null && !TextUtils.isEmpty(address.getLongitude()))
-                    basicDetails.setLongitude(address.getLongitude());
-                if(address.getMapAddress() != null && !TextUtils.isEmpty(address.getMapAddress()))
-                    basicDetails.setMapAddress(address.getMapAddress());
+                selectedStateId = address.getStateId();
+                selectedState = address.getStateName();
 
-                addressesViewModel.addressType.setValue(basicDetails.getAddressType());
-                if(addressesViewModel.addressType.getValue().equalsIgnoreCase("home")) {
-                    fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_home);
-                } else if(addressesViewModel.addressType.getValue().equalsIgnoreCase("office")) {
-                    fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_office);
-                } else if(addressesViewModel.addressType.getValue().equalsIgnoreCase("other")) {
-                    fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_other);
-                }
+                selectedCityId = address.getCityId();
+                selectedCity = address.getCityName();
 
-                addressesViewModel.name.setValue(basicDetails.getName());
-                addressesViewModel.mobile.setValue(basicDetails.getMobileNumber());
-                addressesViewModel.city.setValue(basicDetails.getCity());
-                addressesViewModel.area.setValue(basicDetails.getArea());
-                addressesViewModel.pinCode.setValue(basicDetails.getPinCode());
-                addressesViewModel.apartmentName.setValue(basicDetails.getApartmentName());
-                addressesViewModel.houseNumber.setValue(basicDetails.getHouseNumber());
-                addressesViewModel.landmark.setValue(basicDetails.getLandmark());
-                addressesViewModel.street.setValue(basicDetails.getStreet());
+                selectedAreaId = address.getAreaId();
+                selectedArea = address.getAreaName();
             }
+        }
+
+        if (isConnectingToInternet(context)) {
+            hideKeyBoard(requireActivity());
+            if(address != null) {
+                getCityAreaApiResponses(showCircleProgressDialog(context, ""));
+            } else {
+                callCityApi(showCircleProgressDialog(context, ""));
+            }
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
     }
 
@@ -258,18 +237,23 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         }
     }
 
+    private int checkCity = 0;
     private void setupCitySpinner() {
-        BasicDetails basicDetails2 = new BasicDetails();
-        basicDetails2.setId("0");
-        basicDetails2.setName("Select");
-        cityList.add(basicDetails2);
+        if(cityList != null && cityList.size() > 0) {
+            cityList.clear();
+        }
+
+        BasicDetails basicDetails = new BasicDetails();
+        basicDetails.setId("0");
+        basicDetails.setName("Select");
+        cityList.add(basicDetails);
 
         if(cityResponse != null && cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
             for(int i = 0; i < cityResponse.getCities().size(); i++) {
-                BasicDetails basicDetails = new BasicDetails();
-                basicDetails.setId(cityResponse.getCities().get(i).getId());
-                basicDetails.setName(cityResponse.getCities().get(i).getCityName());
-                cityList.add(basicDetails);
+                BasicDetails details = new BasicDetails();
+                details.setId(cityResponse.getCities().get(i).getId());
+                details.setName(cityResponse.getCities().get(i).getCityName());
+                cityList.add(details);
             }
         }
 
@@ -279,16 +263,20 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         fragmentAddressesFormBinding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                /*basicDetails.setCity(adapterView.getItemAtPosition(i).toString());
-                addressesViewModel.city.setValue(basicDetails.getCity());*/
-                hideKeyBoard(requireActivity());
+                basicDetails.setCity(adapterView.getItemAtPosition(i).toString());
+                addressesViewModel.city.setValue(basicDetails.getCity());
                 if (cityList != null) {
                     System.out.println("selected city " + cityList.get(i).getId());
                     selectedCityId = cityList.get(i).getId();
                     selectedCity = cityList.get(i).getName();
 
-                    if(++check > 1)
-                        callAreaApi(showCircleProgressDialog(context, ""));
+                    if(address != null) {
+                        if(++checkCity > 2 && !selectedCityId.equals("0"))
+                            callAreaApi(showCircleProgressDialog(context, ""));
+                    } else {
+                        if(++checkCity > 1 && !selectedCityId.equals("0"))
+                            callAreaApi(showCircleProgressDialog(context, ""));
+                    }
                 }
             }
 
@@ -307,17 +295,17 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             areaList.clear();
         }
 
-        BasicDetails basicDetails3 = new BasicDetails();
-        basicDetails3.setId("0");
-        basicDetails3.setName("Select");
-        areaList.add(basicDetails3);
+        BasicDetails basicDetails = new BasicDetails();
+        basicDetails.setId("0");
+        basicDetails.setName("Select");
+        areaList.add(basicDetails);
 
         if(areaResponse != null && areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
             for(int i = 0; i < areaResponse.getAreas().size(); i++) {
-                BasicDetails basicDetails = new BasicDetails();
-                basicDetails.setId(areaResponse.getAreas().get(i).getId());
-                basicDetails.setName(areaResponse.getAreas().get(i).getAreaName());
-                areaList.add(basicDetails);
+                BasicDetails details = new BasicDetails();
+                details.setId(areaResponse.getAreas().get(i).getId());
+                details.setName(areaResponse.getAreas().get(i).getAreaName());
+                areaList.add(details);
             }
         }
 
@@ -327,9 +315,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         fragmentAddressesFormBinding.spinnerArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                /*basicDetails.setArea(adapterView.getItemAtPosition(i).toString());
-                addressesViewModel.area.setValue(basicDetails.getArea());*/
-                hideKeyBoard(requireActivity());
+                basicDetails.setArea(adapterView.getItemAtPosition(i).toString());
+                addressesViewModel.area.setValue(basicDetails.getArea());
                 if (areaList != null) {
                     System.out.println("selected area " + areaList.get(i).getId());
                     selectedAreaId = areaList.get(i).getId();
@@ -603,16 +590,19 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         map.put(ADDRESS_TYPE, basicDetails.getAddressType());
         map.put(NAME, basicDetails.getName());
         map.put(MOBILE, basicDetails.getMobileNumber());
-        map.put(CITY_ID, basicDetails.getCity());
-        map.put(AREA_ID, basicDetails.getArea());
+        map.put(CITY_, basicDetails.getCity());
+        map.put(AREA_, basicDetails.getArea());
         map.put(PIN_CODE, basicDetails.getPinCode());
         map.put(APARTMENT_NAME, basicDetails.getApartmentName());
         map.put(HOUSE_NO, basicDetails.getHouseNumber());
         map.put(STREET, basicDetails.getStreet());
         map.put(LANDMARK, basicDetails.getLandmark());
-        map.put(LATITUDE, basicDetails.getLatitude());
-        map.put(LONGITUDE, basicDetails.getLongitude());
-        map.put(GOOGLE_MAP_ADDRESS, basicDetails.getMapAddress());
+        if(basicDetails.getLatitude() != null && TextUtils.isEmpty(basicDetails.getLatitude()))
+            map.put(LATITUDE, basicDetails.getLatitude());
+        if(basicDetails.getLongitude() != null && TextUtils.isEmpty(basicDetails.getLongitude()))
+            map.put(LONGITUDE, basicDetails.getLongitude());
+        if(basicDetails.getMapAddress() != null && TextUtils.isEmpty(basicDetails.getMapAddress()))
+            map.put(GOOGLE_MAP_ADDRESS, basicDetails.getMapAddress());
 
         return map;
     }
@@ -666,6 +656,137 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         HashMap<String, String> map = new HashMap<>();
         map.put(PIN_CODE, basicDetails.getPinCode());
         return map;
+    }
+
+    private void getCityAreaApiResponses(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        addressesViewModel.getCityAreaResponses(context, getCityParameters(), getAreaParameters())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new io.reactivex.rxjava3.core.Observer<List<String>>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<String> strings) {
+                        Type cityType = new TypeToken<CityResponse>(){}.getType();
+                        cityResponse = new GsonBuilder().create().fromJson(strings.get(0), cityType);
+
+                        Type areaType = new TypeToken<AreaResponse>(){}.getType();
+                        areaResponse = new GsonBuilder().create().fromJson(strings.get(1), areaType);
+
+                        setupCitySpinner();
+                        setDefaultSelectedValues();
+
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Gson gson = new GsonBuilder().create();
+                        if(e instanceof HttpException) {
+                            try {
+                                cityResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CityResponse.class);
+                                areaResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), AreaResponse.class);
+
+                                setupCitySpinner();
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                                showServerErrorDialog(getString(R.string.for_better_user_experience), AddAddressFragment.this, () -> {
+                                    if (isConnectingToInternet(context)) {
+                                        getCityAreaApiResponses(showCircleProgressDialog(context, ""));
+                                    } else {
+                                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                                    }
+                                }, context);
+                            }
+                        } else {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        progressDialog.dismiss();
+                    }
+                });
+    }
+
+    private HashMap<String, String> getCityParameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(STATE_ID, selectedStateId);
+        return map;
+    }
+
+    private void setDefaultSelectedValues() {
+        if(address != null) {
+            if(address.getAddressPrimaryId() != null && !TextUtils.isEmpty(address.getAddressPrimaryId()))
+                basicDetails.setId(address.getAddressPrimaryId());
+            if(address.getAddressType() != null && !TextUtils.isEmpty(address.getAddressType()))
+                basicDetails.setAddressType(address.getAddressType());
+            if(address.getName() != null && !TextUtils.isEmpty(address.getName()))
+                basicDetails.setName(address.getName());
+            if(address.getMobile() != null && !TextUtils.isEmpty(address.getMobile()))
+                basicDetails.setMobileNumber(address.getMobile());
+            if(selectedCityId != null && !TextUtils.isEmpty(selectedCityId)) {
+                basicDetails.setCity(selectedCityId);
+                addressesViewModel.city.setValue(basicDetails.getCity());
+                if(cityList != null && cityList.size() > 0) {
+                    for(int i = 0; i < cityList.size(); i++) {
+                        if(cityList.get(i).getId().equals(addressesViewModel.city.getValue())) {
+                            fragmentAddressesFormBinding.spinnerCity.setSelection(i);
+                        }
+                    }
+                }
+            }
+            if(selectedAreaId != null && !TextUtils.isEmpty(selectedAreaId)) {
+                basicDetails.setArea(selectedAreaId);
+                addressesViewModel.area.setValue(basicDetails.getArea());
+                if(areaList != null && areaList.size() > 0) {
+                    for(int i = 0; i < areaList.size(); i++) {
+                        if(areaList.get(i).getId().equals(addressesViewModel.area.getValue())) {
+                            fragmentAddressesFormBinding.spinnerArea.setSelection(i);
+                        }
+                    }
+                }
+            }
+            if(address.getPincode() != null && !TextUtils.isEmpty(address.getPincode()))
+                basicDetails.setPinCode(address.getPincode());
+            if(address.getAppartmentName() != null && !TextUtils.isEmpty(address.getAppartmentName()))
+                basicDetails.setApartmentName(address.getAppartmentName());
+            if(address.getHouseNo() != null && !TextUtils.isEmpty(address.getHouseNo()))
+                basicDetails.setHouseNumber(address.getHouseNo());
+            if(address.getStreet() != null && !TextUtils.isEmpty(address.getStreet()))
+                basicDetails.setStreet(address.getStreet());
+            if(address.getLandmark() != null && !TextUtils.isEmpty(address.getLandmark()))
+                basicDetails.setLandmark(address.getLandmark());
+            if(address.getLatitude() != null && !TextUtils.isEmpty(address.getLatitude()))
+                basicDetails.setLatitude(address.getLatitude());
+            if(address.getLongitude() != null && !TextUtils.isEmpty(address.getLongitude()))
+                basicDetails.setLongitude(address.getLongitude());
+            if(address.getMapAddress() != null && !TextUtils.isEmpty(address.getMapAddress()))
+                basicDetails.setMapAddress(address.getMapAddress());
+
+            addressesViewModel.addressType.setValue(basicDetails.getAddressType());
+            if(addressesViewModel.addressType.getValue().equalsIgnoreCase("home")) {
+                fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_home);
+            } else if(addressesViewModel.addressType.getValue().equalsIgnoreCase("office")) {
+                fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_office);
+            } else if(addressesViewModel.addressType.getValue().equalsIgnoreCase("other")) {
+                fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_other);
+            }
+
+            addressesViewModel.name.setValue(basicDetails.getName());
+            addressesViewModel.mobile.setValue(basicDetails.getMobileNumber());
+
+            addressesViewModel.pinCode.setValue(basicDetails.getPinCode());
+            addressesViewModel.apartmentName.setValue(basicDetails.getApartmentName());
+            addressesViewModel.houseNumber.setValue(basicDetails.getHouseNumber());
+            addressesViewModel.landmark.setValue(basicDetails.getLandmark());
+            addressesViewModel.street.setValue(basicDetails.getStreet());
+        }
     }
 
     /*
@@ -883,6 +1004,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     checkPinCodeAvailableApi(showCircleProgressDialog(context, ""));
                 } else if(from == 4) {
                     callUpdateAddressApi(showCircleProgressDialog(context, ""));
+                } else if(from == 5) {
+                    getCityAreaApiResponses(showCircleProgressDialog(context, ""));
                 }
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
