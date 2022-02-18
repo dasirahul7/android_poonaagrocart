@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/placeholder.xml" value="0.185" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.16847826086956522" />
         <entry key="app/src/main/res/layout/content_splash_activity.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/dialog_delete_notification.xml" value="0.17889492753623187" />
         <entry key="app/src/main/res/layout/fragment_favourite_items.xml" value="0.16983695652173914" />
         <entry key="app/src/main/res/layout/fragment_splash_screen.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/home_product_item.xml" value="0.25" />

@@ -14,6 +14,9 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
+import com.poona.agrocart.data.network.responses.favoutiteResponse.RemoveFavouriteListResponse;
+
+import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -64,5 +67,44 @@ public class FavouriteViewModel extends AndroidViewModel {
                 });
         return  favouriteLisResponseMutableLiveData;
 
+    }
+
+    public LiveData<RemoveFavouriteListResponse> removeFavouriteLisResponseLiveData(ProgressDialog progressDialog,
+                                                                                    HashMap<String, String> removeFavourite, FavouriteItemsFragment favouriteItemsFragment) {
+
+        MutableLiveData<RemoveFavouriteListResponse> removeFavouriteListResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(favouriteItemsFragment.getContext())
+                .create(ApiInterface.class)
+                .getRemoveFavouriteList(removeFavourite)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<RemoveFavouriteListResponse>() {
+                    @Override
+                    public void onSuccess(RemoveFavouriteListResponse favouriteLisResponse) {
+                        if (favouriteLisResponse!=null){
+                            progressDialog.dismiss();
+                            removeFavouriteListResponseMutableLiveData.setValue(favouriteLisResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        RemoveFavouriteListResponse response = new RemoveFavouriteListResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    RemoveFavouriteListResponse.class);
+
+                            removeFavouriteListResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+//                            ((NetworkExceptionListener) homeFragment).onNetworkException(1,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return removeFavouriteListResponseMutableLiveData;
     }
 }

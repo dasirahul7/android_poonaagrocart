@@ -34,21 +34,21 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
                                 FavouriteItemsFragment favouriteItemsFragment) {
         this.favouriteArrayList = favouriteItemsList;
         this.bdContext = context;
-       // this.onPlusClick = favouriteItemsFragment;
-       // this.onProductClick = favouriteItemsFragment;
-       // this.onFavouriteClick = favouriteItemsFragment;
+        this.onPlusClick = favouriteItemsFragment;
+        this.onProductClick = favouriteItemsFragment;
+        this.onFavouriteClick = favouriteItemsFragment;
     }
 
     public interface OnPlusClick {
-        void addToCartClickItem(String position);
+        void addToCartClickItem(int position);
     }
 
     public interface OnProductClick {
-        void toProductDetailClickItem(String position);
+        void toProductDetailClickItem(int position);
     }
 
     public interface OnFavouriteClick {
-        void removeFavouriteClickItem(String position);
+        void removeFavouriteClickItem(int position);
     }
 
 
@@ -113,13 +113,29 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
             favouriteListItemBinding.executePendingBindings();
 
             productBinding.ivPlus.setOnClickListener(view -> {
-              //  onPlusClick.addToCartClickItem();
+                if (onPlusClick != null) {
+                    int postion = getAdapterPosition();
+                    if (postion != RecyclerView.NO_POSITION) {
+                        onPlusClick.addToCartClickItem(postion);
+                    }
+                }
             });
             productBinding.ivFavourite.setOnClickListener(view -> {
-
+                if (onFavouriteClick != null) {
+                    int postion = getAdapterPosition();
+                    if (postion != RecyclerView.NO_POSITION) {
+                        onFavouriteClick.removeFavouriteClickItem(postion);
+                    }
+                }
             });
             productBinding.cvFev.setOnClickListener(view -> {
 
+                if (onProductClick != null) {
+                    int postion = getAdapterPosition();
+                    if (postion != RecyclerView.NO_POSITION) {
+                        onProductClick.toProductDetailClickItem(postion);
+                    }
+                }
             });
         }
     }

@@ -32,6 +32,7 @@ import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.REMOVE_FAVOURITE;
+import static com.poona.agrocart.app.AppConstants.REMOVE_FAVOURITE_ITEM_API;
 import static com.poona.agrocart.app.AppConstants.REPLY_TO_TICKET;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
 import static com.poona.agrocart.app.AppConstants.STATE_API;
@@ -59,6 +60,7 @@ import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.HomeResponse;
+import com.poona.agrocart.data.network.responses.favoutiteResponse.RemoveFavouriteListResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.CreateTicketResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.SendMessageResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
@@ -322,6 +324,10 @@ public interface ApiInterface {
     @GET(FAVOURITE_LIST_API)
     Single<FavouriteListResponse> getFavouriteList();
 
+    @FormUrlEncoded
+    @POST(REMOVE_FAVOURITE_ITEM_API)
+    Single<RemoveFavouriteListResponse> getRemoveFavouriteList( @FieldMap HashMap<String, String> removeFavourite);
+
     /*Home API*/
     @FormUrlEncoded
     @POST(HOME_API)
@@ -338,4 +344,6 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(REPLY_TO_TICKET)
     Single<SendMessageResponse> getSenderMessage(@FieldMap HashMap<String, String> sendMessageParameters);;
+
+
 }

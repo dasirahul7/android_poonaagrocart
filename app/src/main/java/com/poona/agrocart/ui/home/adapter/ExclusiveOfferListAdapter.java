@@ -32,6 +32,7 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
         this.bdContext = bdContext;this.onProductClickListener = onProductClickListener;
         this.onPlusClickListener = onPlusClickListener;
     }
+
     public interface OnProductClickListener{
         void onProductClick(ProductListResponse.Product product);
     }
