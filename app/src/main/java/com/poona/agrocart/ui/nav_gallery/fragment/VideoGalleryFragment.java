@@ -32,9 +32,21 @@ import android.view.Window;
 
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.VideoView;
 
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
@@ -61,6 +73,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     private RecyclerView rvVideo;
     private VideoAdapter videoAdapter;
     private  ProgressBar progressDialog;
+    private MediaController mediaController;
 
 
     public static VideoGalleryFragment newInstance() {
@@ -167,7 +180,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         //Adding adapter to recyclerview
         rvVideo.setAdapter(videoAdapter);
     }
-
+    //String strVideoView = galleryVideoList.get(position).getVideoUrl();
     /*Video Player Dialogue*/
     public void VideoPlayerDialog(int position) {
         Dialog dialog = new Dialog(getActivity());
@@ -175,54 +188,18 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.video_image_pop_up_dailog);
-        progressDialog = dialog.findViewById(R.id.progress);
-        MediaController mediaController = new MediaController(getActivity());
-        VideoView videoView = dialog.findViewById(R.id.VideoView);
-        progressDialog.setVisibility(View.VISIBLE);
+        PlayerView playerView = dialog.findViewById(R.id.pv_video_player);
+        ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
 
-
-       // videoView.setMediaController(new MediaController(getContext()));
-
-
-       /* Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+ /* Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("**");  // change *//*
         i.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"video/mp4", "video/quicktime"});
         startActivityForResult(i, requestCode);*/
-        /*
-        Glide.with(context)
-                .load(IMAGE_DOC_BASE_URL+galleryVideoList.get(position).getVideoImage())
-                .into(imageView);*/
 
-        //String strVideoView = galleryVideoList.get(position).getVideoUrl();
+
         String strVideoView = "https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/sample-mp4-file.mp4";
-        Uri uri = Uri.parse(strVideoView);
-        videoView.setVideoURI(uri);
-        videoView.setZOrderOnTop(true);
-        //videoView.start();
 
-        // perform set on prepared listener event on video view
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                videoView.setZOrderOnTop(false);
-                progressDialog.setVisibility(View.GONE);
-                videoView.setMediaController(mediaController);
-                videoView.start();
-               // mediaController.setAnchorView(videoView);
-         // do something when video is ready to play
-
-            }
-        });
-
-        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
-        {
-            public void onCompletion(MediaPlayer mp)
-            {
-                // Do whatever u need to do here
-                dialog.dismiss();
-            }
-        });
 
         dialog.show();
     }
@@ -247,4 +224,5 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
             }
         }, context);
     }
+
 }

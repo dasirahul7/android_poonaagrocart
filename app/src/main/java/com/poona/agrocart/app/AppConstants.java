@@ -115,6 +115,9 @@ public class AppConstants {
     public static final String VIEW_CHATS = "view-chats";
     public static final String REPLY_TO_TICKET = "reply-to-ticket";
 
+    /*Setting Api*/
+    public static final String UPDATE_CONFIGURATION = "update-configuration";
+    public static final String VIEW_CONFIGURATION = "view-configuration";
 
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
@@ -258,4 +261,9 @@ public class AppConstants {
 
     /*Store Parameter*/
     public static String STORE_ID = "store_id";
+
+    /*Setting Parameter*/
+
+    public static String EMAIL_NOTIFICATION_STATUS = "email_notification_status";
+    public static String APP_NOTIFICATION_STATUS = "app_notification_status";
 }
