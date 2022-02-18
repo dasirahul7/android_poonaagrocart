@@ -349,7 +349,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     selectedStateId = stateList.get(i).getId();
                     selectedState = stateList.get(i).getName();
 
-                    if(++checkState > 2 && !selectedStateId.equals("0"))
+                    if(++checkState > 1 && !selectedStateId.equals("0"))
                         callCityApi(showCircleProgressDialog(context, ""));
                 }
             }
@@ -397,7 +397,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     selectedCityId = cityList.get(i).getId();
                     selectedCity = cityList.get(i).getName();
 
-                    if(++checkCity > 2 && !selectedCityId.equals("0"))
+                    if(++checkCity > 1 && !selectedCityId.equals("0"))
                         callAreaApi(showCircleProgressDialog(context, ""));
                 }
             }
