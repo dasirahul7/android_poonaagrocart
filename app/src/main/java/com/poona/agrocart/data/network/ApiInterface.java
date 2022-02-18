@@ -35,6 +35,7 @@ import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.REMOVE_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.REPLY_TO_TICKET;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
+import static com.poona.agrocart.app.AppConstants.SET_DEFAULT_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.STATE_API;
 import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
@@ -185,6 +186,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(CHECK_VALID_PIN_CODE_API)
     Single<BaseResponse> checkPinCodeAvailableResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(SET_DEFAULT_ADDRESS_API)
+    Single<BaseResponse> setDefaultAddressResponse(@FieldMap HashMap<String, String> data);
 
     //Home Banner API
     @GET(HOME_BANNER_API)

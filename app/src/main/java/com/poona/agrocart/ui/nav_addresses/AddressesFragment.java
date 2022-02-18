@@ -27,7 +27,6 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -79,8 +78,8 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
         return view;
     }
 
-    private int deletePosition = 0;
     private int editPosition = 0;
+    private int deletePosition = 0;
     private View itemView;
     private void setRvAdapter() {
         addressArrayList = new ArrayList<>();
@@ -101,6 +100,17 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
             this.itemView = itemView;
             this.deletePosition = position;
             dialogDeleteAddress();
+        });
+
+        addressesAdapter.setOnDefaultAddressClickListener((itemView, position) -> {
+            if(addressArrayList.size() > 1) {
+                this.deletePosition = position;
+                if (isConnectingToInternet(context)) {
+                    setDefaultAddressApi(showCircleProgressDialog(context, ""));
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
         });
 
         if (isConnectingToInternet(context)) {
@@ -186,6 +196,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                                 String mapAddress = addressArrayList.get(i).getMapAddress();
                                 String latitude = addressArrayList.get(i).getLatitude();
                                 String longitude = addressArrayList.get(i).getLongitude();
+                                String isDefaultAddress = addressArrayList.get(i).getIsDefault();
 
                                 StringBuilder fullAddressSb = new StringBuilder();
                                 if(houseNumber != null && !TextUtils.isEmpty(houseNumber))
@@ -222,6 +233,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                                 address.setMapAddress(mapAddress);
                                 address.setLatitude(latitude);
                                 address.setLongitude(longitude);
+                                address.setIsDefault(isDefaultAddress);
 
                                 addressArrayList.set(i, address);
                             }
@@ -290,7 +302,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
 
     private void deleteAddressApi(ProgressDialog progressDialog) {
         /*print user input parameters*/
-        for (Map.Entry<String, String> entry : deleteAddressParameters().entrySet()) {
+        for (Map.Entry<String, String> entry : getAddressIdParameter().entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }
 
@@ -323,14 +335,54 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
         };
 
         addressesViewModel
-                .deleteAddressResponse(progressDialog, AddressesFragment.this, deleteAddressParameters())
+                .deleteAddressResponse(progressDialog, AddressesFragment.this, getAddressIdParameter())
                 .observe(getViewLifecycleOwner(), responseObserver);
     }
 
-    private HashMap<String, String> deleteAddressParameters() {
+    private HashMap<String, String> getAddressIdParameter() {
         HashMap<String, String> map = new HashMap<>();
         map.put(ADDRESS_ID, addressArrayList.get(deletePosition).getAddressPrimaryId());
         return map;
+    }
+
+    private void setDefaultAddressApi(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : getAddressIdParameter().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+
+        androidx.lifecycle.Observer<BaseResponse> updateProfileResponseObserver = baseResponse -> {
+            if (baseResponse != null) {
+                progressDialog.dismiss();
+                Log.e("Check Pin Code Api Response", new Gson().toJson(baseResponse));
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, ""+baseResponse.getMessage());
+                        //getAddressesListApi(showCircleProgressDialog(context, ""));
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_402://Validation Errors
+                        goToAskAndDismiss(baseResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://UnsetDefaultAddressParametersauthorized user
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+            } else {
+                progressDialog.dismiss();
+            }
+        };
+
+        addressesViewModel
+                .setDefaultAddressResponse(progressDialog, AddressesFragment.this, getAddressIdParameter())
+                .observe(getViewLifecycleOwner(), updateProfileResponseObserver);
     }
 
     private void deleteItem() {
@@ -362,6 +414,8 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                     getAddressesListApi(showCircleProgressDialog(context, ""));
                 } else if(from == 1) {
                     deleteAddressApi(showCircleProgressDialog(context, ""));
+                } else if(from == 2) {
+                    setDefaultAddressApi(showCircleProgressDialog(context, ""));
                 }
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

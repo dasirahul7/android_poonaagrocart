@@ -283,10 +283,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     selectedCityId = cityList.get(i).getId();
                     selectedCity = cityList.get(i).getName();
 
-                    if(address != null) {
-                        if(++checkCity > 1 && !selectedCityId.equals("0"))
-                            callAreaApi(showCircleProgressDialog(context, ""));
-                    }
+                    if(++checkCity > 1 && !selectedCityId.equals("0"))
+                        callAreaApi(showCircleProgressDialog(context, ""));
                 }
             }
 
@@ -441,7 +439,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             }
         }
 
-        basicDetails.setAddressId(address.getAddressPrimaryId());
+        if(address != null && address.getAddressPrimaryId() != null)
+            basicDetails.setAddressId(address.getAddressPrimaryId());
         basicDetails.setAddressType(addressesViewModel.addressType.getValue());
         basicDetails.setName(addressesViewModel.name.getValue());
         basicDetails.setMobileNumber(addressesViewModel.mobile.getValue());

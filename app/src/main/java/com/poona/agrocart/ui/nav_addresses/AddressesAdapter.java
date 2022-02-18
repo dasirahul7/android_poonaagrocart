@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_addresses;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,14 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
         onDeleteButtonClickListener = listener;
     }
 
+    private OnDefaultAddressClickListener onDefaultAddressClickListener;
+    public interface OnDefaultAddressClickListener {
+        void onItemClick(View itemView, int position);
+    }
+    public void setOnDefaultAddressClickListener(OnDefaultAddressClickListener listener) {
+        onDefaultAddressClickListener = listener;
+    }
+
     public AddressesAdapter(ArrayList<AddressesResponse.Address> addressArrayList) {
         this.addressArrayList = addressArrayList;
     }
@@ -44,13 +53,24 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
     public AddressViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RvAddressBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_address, parent, false);
-        return new AddressesAdapter.AddressViewHolder(binding, onEditButtonClickListener, onDeleteButtonClickListener);
+        return new AddressesAdapter.AddressViewHolder(binding, onEditButtonClickListener, onDeleteButtonClickListener, onDefaultAddressClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AddressViewHolder holder, int position) {
         final AddressesResponse.Address address = addressArrayList.get(position);
         holder.rvAddressBinding.setAddress(address);
+
+        if(address.getIsDefault() != null && !TextUtils.isEmpty(address.getIsDefault())
+                && address.getIsDefault().equals("yes") || addressArrayList.size() == 1) {
+            holder.rvAddressBinding.cbDefault.setClickable(false);
+            holder.rvAddressBinding.cbDefault.setChecked(true);
+        }
+        else {
+            holder.rvAddressBinding.cbDefault.setClickable(true);
+            holder.rvAddressBinding.cbDefault.setChecked(false);
+        }
+
         holder.bind(address);
     }
 
@@ -63,7 +83,8 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
         RvAddressBinding rvAddressBinding;
         int selectedEditItem = 0;
         int selectedDeleteItem = 0;
-        public AddressViewHolder(RvAddressBinding rvAddressBinding, OnEditButtonClickListener onEditButtonClickListener, OnDeleteButtonClickListener onDeleteButtonClickListener) {
+        int selectedDefaultAddressItem = 0;
+        public AddressViewHolder(RvAddressBinding rvAddressBinding, OnEditButtonClickListener onEditButtonClickListener, OnDeleteButtonClickListener onDeleteButtonClickListener, OnDefaultAddressClickListener onDefaultAddressClickListener) {
             super(rvAddressBinding.getRoot());
             this.rvAddressBinding = rvAddressBinding;
 
@@ -83,6 +104,16 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
                 if (onDeleteButtonClickListener != null) {
                     if (selectedDeleteItem != RecyclerView.NO_POSITION) {
                         onDeleteButtonClickListener.onItemClick(rvAddressBinding.getRoot(), selectedDeleteItem);
+                    }
+                }
+            });
+
+            rvAddressBinding.cbDefault.setOnClickListener(view -> {
+                selectedDefaultAddressItem = getAdapterPosition();
+                notifyDataSetChanged();
+                if (onDefaultAddressClickListener != null) {
+                    if (selectedDefaultAddressItem != RecyclerView.NO_POSITION) {
+                        onDefaultAddressClickListener.onItemClick(rvAddressBinding.getRoot(), selectedDefaultAddressItem);
                     }
                 }
             });

@@ -55,7 +55,6 @@ public class AppConstants {
     public static final int STATUS_CODE_405 = 405; //record or data not found response code
     public static final int STATUS_CODE_2 = 2; //inactive user
     public static final int STATUS_CODE_1 = 1;
-
     /*API names here*/
     /*login & register APIs*/
     public static final String FROM_SCREEN = "from_screen";
@@ -70,14 +69,10 @@ public class AppConstants {
     public static final String CITY_WITH_ID_API = "city-by-state-id";
     public static final String AREA_WITH_ID_API = "area-by-city-id";
     public static final String MY_PROFILE_API = "profile-view-customer";
-    public static final String ADDRESS_LIST_API = "address-view";
-    public static final String ADD_ADDRESS_API = "address-add";
-    public static final String UPDATE_ADDRESS_API = "address-update";
-    public static final String DELETE_ADDRESS_API = "address-delete";
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String VIEW_PROFILE_API = "view-profile";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
-    public static final String CHECK_VALID_PIN_CODE_API = "check-pincode-availablity";
+
     /*Home screen APIs*/
     public static final String HOME_API = "home";
     public static final String HOME_BANNER_API = "home-screen-banner";
@@ -116,14 +111,23 @@ public class AppConstants {
     public static final String VIEW_CHATS = "view-chats";
     public static final String REPLY_TO_TICKET = "reply-to-ticket";
 
-/*Cart lis api*/
+    /*Cart lis api*/
     public static final String CART_LIST_API ="view-cart";
+
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
 
     /*Basket detail API*/
     public static final String BASKET_DETAIL_API="basket-details";
     public static final String PRODUCT_DETAIL_API="product-details";
+
+    /*Addresses screen apis*/
+    public static final String ADDRESS_LIST_API = "address-view";
+    public static final String ADD_ADDRESS_API = "address-add";
+    public static final String UPDATE_ADDRESS_API = "address-update";
+    public static final String DELETE_ADDRESS_API = "address-delete";
+    public static final String CHECK_VALID_PIN_CODE_API = "check-pincode-availablity";
+    public static final String SET_DEFAULT_ADDRESS_API = "make-address-default";
 
     /*Favourite Api Keys*/
     public static final String ITEM_TYPE ="item_type";
