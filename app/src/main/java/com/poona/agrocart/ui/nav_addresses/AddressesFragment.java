@@ -99,7 +99,11 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
         addressesAdapter.setOnDeleteButtonClickListener((itemView, position) -> {
             this.itemView = itemView;
             this.deletePosition = position;
-            dialogDeleteAddress();
+            if(!addressArrayList.get(position).getIsDefault().equals("yes")) {
+                dialogDeleteAddress();
+            } else {
+                warningToast(context, "You cannot delete this address.\nPlease change your default address & try it to delete!");
+            }
         });
 
         addressesAdapter.setOnDefaultAddressClickListener((itemView, position) -> {
