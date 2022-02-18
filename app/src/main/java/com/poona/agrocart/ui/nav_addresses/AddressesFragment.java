@@ -102,7 +102,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
             if(!addressArrayList.get(position).getIsDefault().equals("yes")) {
                 dialogDeleteAddress();
             } else {
-                warningToast(context, "You cannot delete this address.\nPlease change your default address & try it to delete!");
+                warningToast(context, "You cannot delete this address.\nPlease change your default address & try it delete!");
             }
         });
 
