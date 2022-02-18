@@ -90,6 +90,7 @@
                         android:textColor="@color/dark_green_color"
                         android:textSize="@dimen/medium_txt_size"
                         android:includeFontPadding="false"
+                        android:layout_marginTop="-4dp"
                         app:setCustomFont="@string/font_poppins_medium" />
 
                     <com.poona.agrocart.widgets.CustomTextView
