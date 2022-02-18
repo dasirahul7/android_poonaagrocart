@@ -55,6 +55,7 @@ public class AppConstants {
     public static final int STATUS_CODE_405 = 405; //record or data not found response code
     public static final int STATUS_CODE_2 = 2; //inactive user
     public static final int STATUS_CODE_1 = 1;
+
     /*API names here*/
     /*login & register APIs*/
     public static final String FROM_SCREEN = "from_screen";
@@ -111,6 +112,10 @@ public class AppConstants {
     public static final String ISSUE_TICKET = "issue-ticket";
     public static final String VIEW_CHATS = "view-chats";
     public static final String REPLY_TO_TICKET = "reply-to-ticket";
+
+    /*Setting Api*/
+    public static final String UPDATE_CONFIGURATION = "update-configuration";
+    public static final String VIEW_CONFIGURATION = "view-configuration";
 
     /*Cart lis api*/
     public static final String CART_LIST_API ="view-cart";
@@ -270,4 +275,9 @@ public class AppConstants {
 
     /*Store Parameter*/
     public static String STORE_ID = "store_id";
+
+    /*Setting Parameter*/
+
+    public static String EMAIL_NOTIFICATION_STATUS = "email_notification_status";
+    public static String APP_NOTIFICATION_STATUS = "app_notification_status";
 }

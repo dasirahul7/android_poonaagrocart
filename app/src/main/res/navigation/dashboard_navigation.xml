@@ -269,6 +269,12 @@
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"/>
+
+
+        <action
+            android:id="@+id/action_nav_help_center_to_nav_orders"
+            app:destination="@id/nav_orders" />
+
     </fragment>
 
 
@@ -463,9 +469,5 @@
         android:id="@+id/basketDetailFragment"
         android:name="com.poona.agrocart.ui.basket_detail.BasketDetailFragment"
         android:label="BasketDetailFragment" />
-    <fragment
-        android:id="@+id/ticketFragment"
-        android:name="com.poona.agrocart.ui.ticket_details.TicketDetailFragment"
-        android:label="TicketFragment" />
 
 </navigation>

@@ -43,10 +43,12 @@ import static com.poona.agrocart.app.AppConstants.STORE_LIST;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.TICKET_TYPE;
 import static com.poona.agrocart.app.AppConstants.UPDATE_ADDRESS_API;
+import static com.poona.agrocart.app.AppConstants.UPDATE_CONFIGURATION;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VERIFY_OTP_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_CHATS;
+import static com.poona.agrocart.app.AppConstants.VIEW_CONFIGURATION;
 import static com.poona.agrocart.app.AppConstants.VIEW_GALLERY;
 import static com.poona.agrocart.app.AppConstants.VIEW_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_TICKET;
@@ -110,6 +112,8 @@ import com.poona.agrocart.data.network.responses.StoreBannerResponse;
 import com.poona.agrocart.data.network.responses.VerifyOtpResponse;
 import com.poona.agrocart.data.network.responses.CmsResponse;
 import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
+import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
+import com.poona.agrocart.data.network.responses.settingResponse.ViewConfigurationResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
@@ -323,14 +327,6 @@ public interface ApiInterface {
     @POST(ADD_TO_PRODUCT)
     Single<BaseResponse> addToCartProductResponse(@FieldMap HashMap<String,String> hashMap);
 
-    /*Favourite ResponseData*/
-    @GET(TICKET_TYPE)
-    Single<TicketTypeResponse> getTicketType();
-
-    @FormUrlEncoded
-    @POST(VIEW_TICKET)
-    Single<TicketListResponse> getTicketList(@FieldMap HashMap<String, String> ticketListInputParameter);
-
     /*Favourite Response*/
     @GET(FAVOURITE_LIST_API)
     Single<FavouriteListResponse> getFavouriteList();
@@ -349,6 +345,14 @@ public interface ApiInterface {
     @POST(HOME_API)
     Single<HomeResponse> getHomeAllData(@FieldMap HashMap<String, String> hashMap);
 
+    /*Help Center Here*/
+    @GET(TICKET_TYPE)
+    Single<TicketTypeResponse> getTicketType();
+
+    @FormUrlEncoded
+    @POST(VIEW_TICKET)
+    Single<TicketListResponse> getTicketList(@FieldMap HashMap<String, String> ticketListInputParameter);
+
     @FormUrlEncoded
     @POST(ISSUE_TICKET)
     Single<CreateTicketResponse> getCreateTicket(@FieldMap HashMap<String, String> createTicketInputParameter);
@@ -364,4 +368,12 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(VIEW_PROFILE_API)
     Single<ProfileResponse> getViewProfileResponse(@FieldMap HashMap<String,String> hashMap);
+
+    /*Setting Here*/
+    @FormUrlEncoded
+    @POST(UPDATE_CONFIGURATION)
+    Single<UpdateConfigurationResponse> getNotificationSetting(@FieldMap HashMap<String, Integer> notificationInputParameter);
+
+    @GET(VIEW_CONFIGURATION)
+    Single<ViewConfigurationResponse> getUpdatedNotification();
 }
