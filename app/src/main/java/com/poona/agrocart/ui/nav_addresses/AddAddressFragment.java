@@ -17,6 +17,7 @@ import static com.poona.agrocart.app.AppConstants.LONGITUDE;
 import static com.poona.agrocart.app.AppConstants.MOBILE;
 import static com.poona.agrocart.app.AppConstants.NAME;
 import static com.poona.agrocart.app.AppConstants.PIN_CODE;
+import static com.poona.agrocart.app.AppConstants.STATE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STATE_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
@@ -204,14 +205,22 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                 selectedArea = address.getAreaName();
 
                 fragmentAddressesFormBinding.clMain.setVisibility(View.GONE);
+            } else if(bundle.getSerializable(STATE_DETAILS) != null) {
+                address = (AddressesResponse.Address) bundle.getSerializable(STATE_DETAILS);
+
+                selectedStateId = address.getStateId();
+                selectedState = address.getStateName();
+
+                fragmentAddressesFormBinding.clMain.setVisibility(View.GONE);
             }
         }
 
         if (isConnectingToInternet(context)) {
             hideKeyBoard(requireActivity());
-            if(address != null) {
+            assert bundle != null;
+            if(bundle.getSerializable(ADDRESS_DETAILS) != null) {
                 getCityAreaApiResponses(showCircleProgressDialog(context, ""));
-            } else {
+            } else if(bundle.getSerializable(STATE_DETAILS) != null) {
                 callCityApi(showCircleProgressDialog(context, ""));
             }
         } else {
@@ -273,9 +282,6 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     selectedCity = cityList.get(i).getName();
 
                     if(address != null) {
-                        if(++checkCity > 2 && !selectedCityId.equals("0"))
-                            callAreaApi(showCircleProgressDialog(context, ""));
-                    } else {
                         if(++checkCity > 1 && !selectedCityId.equals("0"))
                             callAreaApi(showCircleProgressDialog(context, ""));
                     }
@@ -335,6 +341,11 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
     /*City API*/
     private void callCityApi(ProgressDialog showCircleProgressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : getCityParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+
         Observer<CityResponse> cityResponseObserver = cityResponse -> {
             if (cityResponse != null) {
                 switch (cityResponse.getStatus()) {
@@ -343,9 +354,9 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                             if (cityResponse.getCities() != null) {
                                 if (cityResponse.getCities().size() > 0) {
                                     this.cityResponse = cityResponse;
+                                    fragmentAddressesFormBinding.clMain.setVisibility(View.VISIBLE);
                                     setupCitySpinner();
                                 }
-
                             }
                         }
                         break;
@@ -364,7 +375,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
             }
         };
-        addressesViewModel.getCityResponse(showCircleProgressDialog, AddAddressFragment.this)
+        addressesViewModel.getCityResponse(showCircleProgressDialog, AddAddressFragment.this, getCityParameters())
                 .observe(getViewLifecycleOwner(), cityResponseObserver);
     }
 

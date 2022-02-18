@@ -109,12 +109,13 @@ public class AddressesViewModel extends AndroidViewModel {
     }
 
     public LiveData<CityResponse> getCityResponse(ProgressDialog progressDialog,
-                                                  AddAddressFragment addAddressFragment) {
+                                                  AddAddressFragment addAddressFragment,
+                                                  HashMap<String, String> hashmap) {
         MutableLiveData<CityResponse> cityResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(addAddressFragment.getContext())
                 .create(ApiInterface.class)
-                .getCityResponse()
+                .getCityResponse(hashmap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<CityResponse>() {

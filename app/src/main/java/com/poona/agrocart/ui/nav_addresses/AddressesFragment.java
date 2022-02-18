@@ -11,6 +11,7 @@ import static com.poona.agrocart.app.AppConstants.LANDMARK;
 import static com.poona.agrocart.app.AppConstants.MOBILE;
 import static com.poona.agrocart.app.AppConstants.NAME;
 import static com.poona.agrocart.app.AppConstants.PIN_CODE;
+import static com.poona.agrocart.app.AppConstants.STATE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -66,6 +67,9 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
     private ArrayList<AddressesResponse.Address> addressArrayList;
 
     private View view;
+
+    private String stateId = "";
+    private String state = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -130,7 +134,12 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void redirectToAddressForm(View v) {
-        Navigation.findNavController(v).navigate(R.id.action_nav_address_to_addressesFormFragment2);
+        Bundle bundle = new Bundle();
+        AddressesResponse.Address address = new AddressesResponse.Address();
+        address.setStateId(stateId);
+        address.setStateName(state);
+        bundle.putSerializable(STATE_DETAILS, address);
+        Navigation.findNavController(v).navigate(R.id.action_nav_address_to_addressesFormFragment2, bundle);
     }
 
     private void redirectToAddressFormWithData(View v) {
@@ -223,6 +232,9 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                                 addressArrayList.set(i, address);
                             }
                         }
+
+                        stateId = addressesResponse.getStateDetails().getStateId();
+                        state = addressesResponse.getStateDetails().getStateName();
 
                         addressesAdapter.notifyDataSetChanged();
                         break;

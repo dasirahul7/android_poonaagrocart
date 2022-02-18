@@ -264,7 +264,7 @@ public class AddressesResponse extends BaseResponse implements Serializable{
         }
     }
 
-    private static class StateDetails {
+    public static class StateDetails {
         @SerializedName("state_id")
         @Expose
         private String stateId;
