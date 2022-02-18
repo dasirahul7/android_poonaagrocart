@@ -23,10 +23,14 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -36,6 +40,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
@@ -73,6 +81,7 @@ import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -1117,6 +1126,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding.tvAllBasket.setOnClickListener(this);
         fragmentHomeBinding.tvAllExclusive.setOnClickListener(this);
         fragmentHomeBinding.tvAllSelling.setOnClickListener(this);
+        fragmentHomeBinding.imgMice.setOnClickListener(this);
     }
 
     private void getBasketItems() {
@@ -1292,9 +1302,39 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 bundle.putString(FROM_SCREEN, AllExclusive);
                 NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
                 break;
+            case R.id.img_mice:
+                startVoiceInput();
+                break;
         }
     }
 
+    private void startVoiceInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Search Store...");
+        try {
+            recognizerIntentLauncher.launch(intent);
+        } catch (ActivityNotFoundException a) {
+
+        }
+    }
+
+    ActivityResultLauncher<Intent> recognizerIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                ArrayList<String> resultArrayList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if(resultArrayList.get(0) != null && !TextUtils.isEmpty(resultArrayList.get(0))) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(SEARCH_TYPE, SEARCH_PRODUCT);
+                    bundle.putString(SEARCH_KEY, resultArrayList.get(0));
+                    NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_searchFragment, bundle);
+                }
+            }
+        }
+    });
 
     @Override
     public void onNetworkException(int from, String type) {
