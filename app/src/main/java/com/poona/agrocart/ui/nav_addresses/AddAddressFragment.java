@@ -202,6 +202,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
                 selectedAreaId = address.getAreaId();
                 selectedArea = address.getAreaName();
+
+                fragmentAddressesFormBinding.clMain.setVisibility(View.GONE);
             }
         }
 
@@ -722,6 +724,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
     private void setDefaultSelectedValues() {
         if(address != null) {
+            fragmentAddressesFormBinding.clMain.setVisibility(View.VISIBLE);
+
             if(address.getAddressPrimaryId() != null && !TextUtils.isEmpty(address.getAddressPrimaryId()))
                 basicDetails.setId(address.getAddressPrimaryId());
             if(address.getAddressType() != null && !TextUtils.isEmpty(address.getAddressType()))

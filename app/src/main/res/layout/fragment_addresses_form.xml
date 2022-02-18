@@ -17,6 +17,7 @@
         tools:context=".ui.nav_addresses.AddAddressFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
