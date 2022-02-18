@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.20833333333333334" />
+        <entry key="../../../.gradle/caches/transforms-3/77a1cb7360ff899d361eb44fd82aba10/transformed/jetified-MaterialSearchBar-0.8.2/res/drawable/round_corners.xml" value="0.18" />
         <entry key="../../.gradle/caches/transforms-3/74c8d3b93df5ec37a852dbd0ebdf6ff9/transformed/jetified-tooltipindicator-0.0.1/res/drawable/tooltip_indicator_rounded_line_selected.xml" value="0.1527777777777778" />
         <entry key="../../.gradle/caches/transforms-3/74c8d3b93df5ec37a852dbd0ebdf6ff9/transformed/jetified-tooltipindicator-0.0.1/res/drawable/tooltip_indicator_rounded_line_unselected.xml" value="0.1527777777777778" />
         <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.1" />
@@ -211,6 +212,7 @@
         <entry key="app/src/main/res/layout/fragment_dash_board2.xml" value="0.1431159420289855" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.12129629629629629" />
         <entry key="app/src/main/res/layout/fragment_favourite_items.xml" value="0.13405797101449277" />
+        <entry key="app/src/main/res/layout/fragment_help_center.xml" value="0.15092592592592594" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_intro.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_intro_item.xml" value="0.22" />
@@ -276,7 +278,7 @@
         <entry key="app/src/main/res/layout/rv_product_comment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/rv_store.xml" value="0.22" />
         <entry key="app/src/main/res/layout/rv_ticket.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/rv_ticket_comment.xml" value="0.15534420289855072" />
+        <entry key="app/src/main/res/layout/rv_ticket_comment.xml" value="0.33" />
         <entry key="app/src/main/res/layout/store_location_fragment.xml" value="0.16" />
         <entry key="app/src/main/res/layout/text_spinner_wallet_transactions.xml" value="0.13958333333333334" />
         <entry key="app/src/main/res/layout/toast_layout.xml" value="0.9" />

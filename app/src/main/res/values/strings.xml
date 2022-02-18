@@ -205,6 +205,7 @@
     <string name="payment_type">Payment Type - UPI</string>
     <string name="upi">UPI</string>
     <string name="remark">Remark</string>
+    <string name="replied">Replied -</string>
     <string name="test_order_cancelled">Test Order Cancelled</string>
     <string name="expected_delivery_date">Expected Delivery Date : </string>
     <string name="sep_30_2021_9_00_am_12_00pm"> Sep 30 2021 20.15 AM</string>

@@ -70,10 +70,11 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
     private Spinner spinTicketType;
     private String ticketId = "", strTicketName = "";
     private CustomEditText etSubject, etDescription;
-    private View view;
+    private View view, navHostFragment;
+    private ViewGroup.MarginLayoutParams navHostMargins;
+    private float scale;
 
     /*View.OnClickListener,*/
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -85,8 +86,6 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
         view = fragmentHelpCenterBinding.getRoot();
 
         initView();
-
-
         initTitleBar(getString(R.string.menu_help_center));
 
         return view;
@@ -95,6 +94,7 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
     @Override
     public void onResume() {
         super.onResume();
+
         if(isConnectingToInternet(context)) {
             setRvAdapter();
         }else{
@@ -413,7 +413,7 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
 
     @Override
     public void itemViewClick(TicketListResponse.TicketList.UserTicket ticket) {
-        infoToast(context,ticket.getTicketNo());
+
 //        String strTicketId = ticket.getTicketId();
         Bundle bundle = new Bundle();
         bundle.putString(TICKET_ID, ticket.getTicketId());

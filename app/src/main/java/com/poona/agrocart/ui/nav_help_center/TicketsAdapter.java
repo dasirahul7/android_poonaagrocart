@@ -18,6 +18,8 @@ import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
 import com.poona.agrocart.databinding.RvTicketBinding;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,15 +57,15 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketVi
         holder.rvTicketBinding.setTicket(ticket);
         holder.bind(ticket);
 
-       /* holder.rvTicketBinding.cardViewTicket.setOnClickListener(view -> {
-            Bundle bundle=new Bundle();
-            bundle.putString(AppConstants.TICKET_ID,ticketArrayList.get(position).getTicketNo());
-            bundle.putString(AppConstants.STATUS,ticketArrayList.get(position).getStatus());
-            bundle.putString(AppConstants.REMARK,ticketArrayList.get(position).getRemark());
-            bundle.putString(AppConstants.DATE,ticketArrayList.get(position).getCreatedOn());
-            bundle.putString(AppConstants.SUBJECT,ticketArrayList.get(position).getSubject());
-            Navigation.findNavController(view).navigate(R.id.action_nav_help_center_to_nav_ticket_detail,bundle);
-        });*/
+        String selectedDate = ticket.getCreatedOn();
+
+        String txtDisplayDate="";
+        try {
+            txtDisplayDate = helpCenterFragment.formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "MMM dd, yyyy hh:mm aa");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        holder.rvTicketBinding.tvDate.setText(txtDisplayDate);
     }
 
     @Override

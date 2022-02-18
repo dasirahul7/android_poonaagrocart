@@ -61,7 +61,6 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     private RecyclerView rvVideo;
     private VideoAdapter videoAdapter;
     private  ProgressBar progressDialog;
-    private MediaController mediaController;
 
 
     public static VideoGalleryFragment newInstance() {
@@ -177,6 +176,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.video_image_pop_up_dailog);
         progressDialog = dialog.findViewById(R.id.progress);
+        MediaController mediaController = new MediaController(getActivity());
         VideoView videoView = dialog.findViewById(R.id.VideoView);
         progressDialog.setVisibility(View.VISIBLE);
 
@@ -207,6 +207,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
             public void onPrepared(MediaPlayer mp) {
                 videoView.setZOrderOnTop(false);
                 progressDialog.setVisibility(View.GONE);
+                videoView.setMediaController(mediaController);
                 videoView.start();
                // mediaController.setAnchorView(videoView);
          // do something when video is ready to play
