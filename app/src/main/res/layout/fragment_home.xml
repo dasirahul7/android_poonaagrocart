@@ -78,7 +78,7 @@
                     <com.github.demono.AutoScrollViewPager
                         android:id="@+id/view_pager_banner"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_130sdp" />
+                        android:layout_height="@dimen/_150sdp" />
                     <!--Banner dots-->
                     <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
                         android:id="@+id/dots_indicator"

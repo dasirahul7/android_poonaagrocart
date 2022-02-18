@@ -15,7 +15,7 @@
         app:cardCornerRadius="@dimen/_15sdp"
         app:cardUseCompatPadding="true"
         app:strokeColor="@color/clr_custom_edit_text_otp"
-        app:strokeWidth="1dp">
+        app:strokeWidth="0.5dp">
         <LinearLayout
             android:padding="@dimen/_5sdp"
             android:id="@+id/cat_row"
@@ -23,22 +23,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/img_layout"
                 app:cardElevation="0dp"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_height="@dimen/_70sdp">
-                <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_height="@dimen/_70sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
+
+                <ImageView
+                    android:id="@+id/catImg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white">
-                    <ImageView
-                        android:id="@+id/catImg"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        setImage="@{categoryModule.categoryImage}"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:adjustViewBounds="true"
+                    setImage="@{categoryModule.categoryImage}"/>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -49,9 +48,11 @@
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:text="@{categoryModule.categoryName}"
                 android:textColor="@color/green_txt_color"
                 android:textSize="@dimen/category_txt_size"
+                android:includeFontPadding="false"
                 app:setCustomFont="@string/font_poppins_semi_bold" />
 
         </LinearLayout>
