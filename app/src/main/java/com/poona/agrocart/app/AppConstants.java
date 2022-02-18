@@ -89,6 +89,7 @@ public class AppConstants {
 
     /*Favourite API's*/
     public static final String FAVOURITE_LIST_API = "view-favourite-list";
+    public static final String REMOVE_FAVOURITE_ITEM_API = "remove-from-favourite";
 
     /*Offer & Coupon APIs*/
     public static final String COUPON_API = "coupon-list";
