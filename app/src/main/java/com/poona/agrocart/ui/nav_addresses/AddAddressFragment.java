@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_addresses;
 
+import static android.provider.ContactsContract.CommonDataKinds.StructuredPostal.CITY;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_DETAILS;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
@@ -603,8 +604,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         map.put(ADDRESS_TYPE, basicDetails.getAddressType());
         map.put(NAME, basicDetails.getName());
         map.put(MOBILE, basicDetails.getMobileNumber());
-        map.put(CITY_, basicDetails.getCity());
-        map.put(AREA_, basicDetails.getArea());
+        map.put(CITY_ID, basicDetails.getCity());
+        map.put(AREA_ID, basicDetails.getArea());
         map.put(PIN_CODE, basicDetails.getPinCode());
         map.put(APARTMENT_NAME, basicDetails.getApartmentName());
         map.put(HOUSE_NO, basicDetails.getHouseNumber());

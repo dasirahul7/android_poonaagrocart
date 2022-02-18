@@ -109,7 +109,7 @@
     <string name="menu_our_policy">Our Policies</string>
     <string name="username_should_not_be_empty">Username should not be empty!</string>
     <string name="please_enter_valid_email_id">Please enter valid Email ID!</string>
-    <string name="address_location">Address , Location</string>
+    <string name="address_location">Address, Location</string>
     <string name="user">Hello! User</string>
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>

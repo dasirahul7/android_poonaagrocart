@@ -28,6 +28,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -180,29 +181,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             Log.e(TAG, "callHomeApi: ");
             switch (homeResponse.getStatus()){
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        //First load Banner
-//                        if (homeResponse.getResponse().getBannerDetails()!=null
-//                                && homeResponse.getResponse().getBannerDetails().size() > 0) {
-//                            banners = homeResponse.getResponse().getBannerDetails();
-//                            rvBanners();
-//                        }
-                        //Load Ctegory
-//                        rvCategory(homeResponse);
-//                        //Load Basket Data
-//                        rvBasketList(homeResponse);
-//                        //Load Exclusive List
-//                        rvExclusive(homeResponse);
-//                        //Best Selling
-//                        rvBestSelling(homeResponse);
-//                        //Seasonal Product
-//                        rvSeasonalList(homeResponse);
-//                        //Product List
-//                        rvProductLis(homeResponse);
-//                        //Our Store Banner
-//                        setStoreBanner(homeResponse);
-                        if (homeResponse.getResponse().getUserData()!=null){
+                        if (homeResponse.getResponse().getUserData() != null){
                             preferences.setUserProfile(homeResponse.getResponse().getUserData().get(0).getImage());
                             preferences.setUserName(homeResponse.getResponse().getUserData().get(0).getUserName());
+
+                            if(homeResponse.getResponse().getUserData().get(0).getImage() != null
+                                    && !TextUtils.isEmpty(homeResponse.getResponse().getUserData().get(0).getImage())) {
+                                ((HomeActivity)context).tvUserName.setText("Hello! "+homeResponse.getResponse().getUserData().get(0).getUserName());
+                                loadingImage(context, homeResponse.getResponse().getUserData().get(0).getImage(), ((HomeActivity)context).civProfilePhoto);
+                            }
+
                             System.out.println("name "+homeResponse.getResponse().getUserData().get(0).getUserName());
                         }
                         break;
