@@ -42,6 +42,7 @@ public class AddressesViewModel extends AndroidViewModel {
     public MutableLiveData<String> apartmentName;
     public MutableLiveData<String> houseNumber;
     public MutableLiveData<String> landmark;
+    public MutableLiveData<String> mapAddress;
     public MutableLiveData<String> street;
 
     public AddressesViewModel(@NonNull Application application) {
@@ -57,6 +58,7 @@ public class AddressesViewModel extends AndroidViewModel {
         apartmentName =new MutableLiveData<>();
         street=new MutableLiveData<>();
         landmark=new MutableLiveData<>();
+        mapAddress=new MutableLiveData<>();
 
         addressType.setValue("");
         name.setValue("");
@@ -68,6 +70,7 @@ public class AddressesViewModel extends AndroidViewModel {
         apartmentName.setValue("");
         street.setValue("");
         landmark.setValue("");
+        mapAddress.setValue("");
     }
 
     public LiveData<AddressesResponse> getAddressesResponse(ProgressDialog progressDialog,
@@ -109,13 +112,12 @@ public class AddressesViewModel extends AndroidViewModel {
     }
 
     public LiveData<CityResponse> getCityResponse(ProgressDialog progressDialog,
-                                                  AddAddressFragment addAddressFragment,
-                                                  HashMap<String, String> hashmap) {
+                                                  AddAddressFragment addAddressFragment) {
         MutableLiveData<CityResponse> cityResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(addAddressFragment.getContext())
                 .create(ApiInterface.class)
-                .getCityResponse(hashmap)
+                .getCityResponse()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<CityResponse>() {
@@ -354,11 +356,9 @@ public class AddressesViewModel extends AndroidViewModel {
         return responseMutableLiveData;
     }
 
-    public Observable<List<String>> getCityAreaResponses(Context context,
-                                                         HashMap<String, String> cityHashMap,
-                                                         HashMap<String, String> areaHashMap) {
+    public Observable<List<String>> getCityAreaResponses(Context context, HashMap<String, String> areaHashMap) {
         Observable<CityResponse> cityResponseObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).getCityObservableResponse(cityHashMap);
+                .getClient(context).create(ApiInterface.class).getCityObservableResponse();
         Observable<AreaResponse> areaResponseObservable = ApiClientAuth
                 .getClient(context).create(ApiInterface.class).getAreaObservableResponse(areaHashMap);
 

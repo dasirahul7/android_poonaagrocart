@@ -1,14 +1,13 @@
 package com.poona.agrocart.ui.nav_addresses;
 
-import static android.provider.ContactsContract.CommonDataKinds.StructuredPostal.CITY;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_DETAILS;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_TYPE;
+import static com.poona.agrocart.app.AppConstants.ADD_ADDRESS_DETAILS;
+import static com.poona.agrocart.app.AppConstants.ADD_UPDATE_ADDRESS_DETAILS;
 import static com.poona.agrocart.app.AppConstants.APARTMENT_NAME;
-import static com.poona.agrocart.app.AppConstants.AREA_;
 import static com.poona.agrocart.app.AppConstants.AREA_ID;
-import static com.poona.agrocart.app.AppConstants.CITY_;
 import static com.poona.agrocart.app.AppConstants.CITY_ID;
 import static com.poona.agrocart.app.AppConstants.GOOGLE_MAP_ADDRESS;
 import static com.poona.agrocart.app.AppConstants.HOUSE_NO;
@@ -18,7 +17,6 @@ import static com.poona.agrocart.app.AppConstants.LONGITUDE;
 import static com.poona.agrocart.app.AppConstants.MOBILE;
 import static com.poona.agrocart.app.AppConstants.NAME;
 import static com.poona.agrocart.app.AppConstants.PIN_CODE;
-import static com.poona.agrocart.app.AppConstants.STATE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STATE_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
@@ -28,6 +26,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import static com.poona.agrocart.app.AppConstants.STREET;
+import static com.poona.agrocart.app.AppConstants.UPDATE_ADDRESS_DETAILS;
 
 import android.Manifest;
 import android.app.Activity;
@@ -50,7 +49,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -66,15 +64,12 @@ import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.databinding.FragmentAddressesFormBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.login.BasicDetails;
 import com.poona.agrocart.ui.nav_addresses.map_view.MapActivity;
 import com.poona.agrocart.ui.nav_addresses.map_view.SimplePlacePicker;
 import com.poona.agrocart.ui.nav_profile.CustomArrayAdapter;
-import com.poona.agrocart.ui.nav_profile.EditProfileFragment;
 
 import java.lang.reflect.Type;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,6 +102,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private boolean checkIsValidPinCode = false;
 
     private AddressesResponse.Address address = null;
+    private String addOrUpdate = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -131,6 +127,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         fragmentAddressesFormBinding.tvCurrentLocation.setOnClickListener(this);
         fragmentAddressesFormBinding.btnAddAddress.setOnClickListener(this);
         fragmentAddressesFormBinding.btCheckAvailability.setOnClickListener(this);
+        fragmentAddressesFormBinding.ivRemoveMapAddress.setOnClickListener(this);
 
         Typeface poppinsRegularFont = Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_poppins_medium));
         fragmentAddressesFormBinding.rbHome.setTypeface(poppinsRegularFont);
@@ -193,39 +190,36 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            if(bundle.getSerializable(ADDRESS_DETAILS) != null) {
-                address = (AddressesResponse.Address) bundle.getSerializable(ADDRESS_DETAILS);
-
-                selectedStateId = address.getStateId();
-                selectedState = address.getStateName();
-
-                selectedCityId = address.getCityId();
-                selectedCity = address.getCityName();
-
-                selectedAreaId = address.getAreaId();
-                selectedArea = address.getAreaName();
-
+            if(bundle.getString(ADD_UPDATE_ADDRESS_DETAILS) != null) {
+                addOrUpdate = bundle.getString(ADD_UPDATE_ADDRESS_DETAILS);
                 fragmentAddressesFormBinding.clMain.setVisibility(View.GONE);
-            } else if(bundle.getSerializable(STATE_DETAILS) != null) {
-                address = (AddressesResponse.Address) bundle.getSerializable(STATE_DETAILS);
+                if(addOrUpdate.equals(ADD_ADDRESS_DETAILS)) {
+                    if (isConnectingToInternet(context)) {
+                        hideKeyBoard(requireActivity());
+                        callCityApi(showCircleProgressDialog(context, ""));
+                    } else {
+                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                    }
+                } else if(addOrUpdate.equals(UPDATE_ADDRESS_DETAILS)) {
+                    address = (AddressesResponse.Address) bundle.getSerializable(ADDRESS_DETAILS);
 
-                selectedStateId = address.getStateId();
-                selectedState = address.getStateName();
+                    selectedStateId = address.getStateId();
+                    selectedState = address.getStateName();
 
-                fragmentAddressesFormBinding.clMain.setVisibility(View.GONE);
+                    selectedCityId = address.getCityId();
+                    selectedCity = address.getCityName();
+
+                    selectedAreaId = address.getAreaId();
+                    selectedArea = address.getAreaName();
+
+                    if (isConnectingToInternet(context)) {
+                        hideKeyBoard(requireActivity());
+                        getCityAreaApiResponses(showCircleProgressDialog(context, ""));
+                    } else {
+                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                    }
+                }
             }
-        }
-
-        if (isConnectingToInternet(context)) {
-            hideKeyBoard(requireActivity());
-            assert bundle != null;
-            if(bundle.getSerializable(ADDRESS_DETAILS) != null) {
-                getCityAreaApiResponses(showCircleProgressDialog(context, ""));
-            } else if(bundle.getSerializable(STATE_DETAILS) != null) {
-                callCityApi(showCircleProgressDialog(context, ""));
-            }
-        } else {
-            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
     }
 
@@ -245,6 +239,13 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             case R.id.bt_check_availability:
                 getUserInputAndSetIntoPojo();
                 checkValidPinCodeEntered();
+                break;
+            case R.id.iv_remove_map_address:
+                fragmentAddressesFormBinding.mcvChosenAddressFromMap.setVisibility(View.GONE);
+                addressesViewModel.mapAddress.setValue("");
+                basicDetails.setLatitude("");
+                basicDetails.setLongitude("");
+                basicDetails.setMapAddress("");
                 break;
         }
     }
@@ -342,11 +343,6 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
     /*City API*/
     private void callCityApi(ProgressDialog showCircleProgressDialog) {
-        /*print user input parameters*/
-        for (Map.Entry<String, String> entry : getCityParameters().entrySet()) {
-            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
-        }
-
         Observer<CityResponse> cityResponseObserver = cityResponse -> {
             if (cityResponse != null) {
                 switch (cityResponse.getStatus()) {
@@ -376,7 +372,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
             }
         };
-        addressesViewModel.getCityResponse(showCircleProgressDialog, AddAddressFragment.this, getCityParameters())
+        addressesViewModel.getCityResponse(showCircleProgressDialog, AddAddressFragment.this)
                 .observe(getViewLifecycleOwner(), cityResponseObserver);
     }
 
@@ -445,6 +441,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             }
         }
 
+        basicDetails.setAddressId(address.getAddressPrimaryId());
         basicDetails.setAddressType(addressesViewModel.addressType.getValue());
         basicDetails.setName(addressesViewModel.name.getValue());
         basicDetails.setMobileNumber(addressesViewModel.mobile.getValue());
@@ -495,7 +492,16 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             errorToast(requireActivity(), getString(R.string.landmark_should_not_be_empty));
         } else {
             if(checkIsValidPinCode) {
-                callAddAddressApi(showCircleProgressDialog(context, ""));
+                hideKeyBoard(requireActivity());
+                if (isConnectingToInternet(context)) {
+                    if(addOrUpdate.equals(ADD_ADDRESS_DETAILS)) {
+                        callAddAddressApi(showCircleProgressDialog(context, ""));
+                    } else if(addOrUpdate.equals(UPDATE_ADDRESS_DETAILS)) {
+                        callUpdateAddressApi(showCircleProgressDialog(context, ""));
+                    }
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
             } else {
                 errorToast(requireActivity(), getString(R.string.invalid_pin_code));
             }
@@ -611,13 +617,9 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         map.put(HOUSE_NO, basicDetails.getHouseNumber());
         map.put(STREET, basicDetails.getStreet());
         map.put(LANDMARK, basicDetails.getLandmark());
-        if(basicDetails.getLatitude() != null && TextUtils.isEmpty(basicDetails.getLatitude()))
-            map.put(LATITUDE, basicDetails.getLatitude());
-        if(basicDetails.getLongitude() != null && TextUtils.isEmpty(basicDetails.getLongitude()))
-            map.put(LONGITUDE, basicDetails.getLongitude());
-        if(basicDetails.getMapAddress() != null && TextUtils.isEmpty(basicDetails.getMapAddress()))
-            map.put(GOOGLE_MAP_ADDRESS, basicDetails.getMapAddress());
-
+        map.put(LATITUDE, basicDetails.getLatitude());
+        map.put(LONGITUDE, basicDetails.getLongitude());
+        map.put(GOOGLE_MAP_ADDRESS, basicDetails.getMapAddress());
         return map;
     }
 
@@ -673,8 +675,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     }
 
     private void getCityAreaApiResponses(ProgressDialog progressDialog) {
-        /*print user input parameters*/
-        addressesViewModel.getCityAreaResponses(context, getCityParameters(), getAreaParameters())
+        addressesViewModel.getCityAreaResponses(context, getAreaParameters())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new io.reactivex.rxjava3.core.Observer<List<String>>() {
                     @Override
@@ -782,8 +783,11 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                 basicDetails.setLatitude(address.getLatitude());
             if(address.getLongitude() != null && !TextUtils.isEmpty(address.getLongitude()))
                 basicDetails.setLongitude(address.getLongitude());
-            if(address.getMapAddress() != null && !TextUtils.isEmpty(address.getMapAddress()))
+            if(address.getMapAddress() != null && !TextUtils.isEmpty(address.getMapAddress())) {
+                fragmentAddressesFormBinding.mcvChosenAddressFromMap.setVisibility(View.VISIBLE);
                 basicDetails.setMapAddress(address.getMapAddress());
+                addressesViewModel.mapAddress.setValue(basicDetails.getMapAddress());
+            }
 
             addressesViewModel.addressType.setValue(basicDetails.getAddressType());
             if(addressesViewModel.addressType.getValue().equalsIgnoreCase("home")) {

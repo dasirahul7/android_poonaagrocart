@@ -2,16 +2,8 @@ package com.poona.agrocart.ui.nav_addresses;
 
 import static com.poona.agrocart.app.AppConstants.ADDRESS_DETAILS;
 import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
-import static com.poona.agrocart.app.AppConstants.ADDRESS_TYPE;
-import static com.poona.agrocart.app.AppConstants.APARTMENT_NAME;
-import static com.poona.agrocart.app.AppConstants.AREA_;
-import static com.poona.agrocart.app.AppConstants.CITY_;
-import static com.poona.agrocart.app.AppConstants.HOUSE_NO;
-import static com.poona.agrocart.app.AppConstants.LANDMARK;
-import static com.poona.agrocart.app.AppConstants.MOBILE;
-import static com.poona.agrocart.app.AppConstants.NAME;
-import static com.poona.agrocart.app.AppConstants.PIN_CODE;
-import static com.poona.agrocart.app.AppConstants.STATE_DETAILS;
+import static com.poona.agrocart.app.AppConstants.ADD_ADDRESS_DETAILS;
+import static com.poona.agrocart.app.AppConstants.ADD_UPDATE_ADDRESS_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -19,7 +11,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_402;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
-import static com.poona.agrocart.app.AppConstants.STREET;
+import static com.poona.agrocart.app.AppConstants.UPDATE_ADDRESS_DETAILS;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -135,15 +127,13 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
 
     private void redirectToAddressForm(View v) {
         Bundle bundle = new Bundle();
-        AddressesResponse.Address address = new AddressesResponse.Address();
-        address.setStateId(stateId);
-        address.setStateName(state);
-        bundle.putSerializable(STATE_DETAILS, address);
+        bundle.putString(ADD_UPDATE_ADDRESS_DETAILS, ADD_ADDRESS_DETAILS);
         Navigation.findNavController(v).navigate(R.id.action_nav_address_to_addressesFormFragment2, bundle);
     }
 
     private void redirectToAddressFormWithData(View v) {
         Bundle bundle = new Bundle();
+        bundle.putString(ADD_UPDATE_ADDRESS_DETAILS, UPDATE_ADDRESS_DETAILS);
         AddressesResponse.Address address = addressArrayList.get(editPosition);
         bundle.putSerializable(ADDRESS_DETAILS, address);
         Navigation.findNavController(v).navigate(R.id.action_nav_address_to_addressesFormFragment2, bundle);
@@ -193,6 +183,9 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                                 String areaId = addressArrayList.get(i).getAreaId();
                                 String area = addressArrayList.get(i).getAreaName();
                                 String pinCode = addressArrayList.get(i).getPincode();
+                                String mapAddress = addressArrayList.get(i).getMapAddress();
+                                String latitude = addressArrayList.get(i).getLatitude();
+                                String longitude = addressArrayList.get(i).getLongitude();
 
                                 StringBuilder fullAddressSb = new StringBuilder();
                                 if(houseNumber != null && !TextUtils.isEmpty(houseNumber))
@@ -226,8 +219,9 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                                 address.setAreaName(area);
                                 address.setPincode(pinCode);
                                 address.setFullAddress(fullAddressSb.toString());
-                                address.setLatitude(fullAddressSb.toString());
-                                address.setLongitude(fullAddressSb.toString());
+                                address.setMapAddress(mapAddress);
+                                address.setLatitude(latitude);
+                                address.setLongitude(longitude);
 
                                 addressArrayList.set(i, address);
                             }

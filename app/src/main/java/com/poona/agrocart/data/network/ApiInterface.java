@@ -148,6 +148,9 @@ public interface ApiInterface {
     @POST(CITY_WITH_ID_API)
     Observable<CityResponse> getCityObservableResponse(@FieldMap HashMap<String, String> data);
 
+    @GET(CITY_API)
+    Observable<CityResponse> getCityObservableResponse();
+
     @FormUrlEncoded
     @POST(AREA_WITH_ID_API)
     Observable<AreaResponse> getAreaObservableResponse(@FieldMap HashMap<String, String> data);

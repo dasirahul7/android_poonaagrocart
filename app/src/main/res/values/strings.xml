@@ -190,6 +190,7 @@
     <string name="landmark">Landmark</string>
     <string name="or">OR</string>
     <string name="use_current_location">Use Current Location</string>
+    <string name="chosen_address_from_map">Your chosen address from google map</string>
     <string name="add_address">Add Address</string>
     <string name="addresses_form">Addresses Form</string>
 
