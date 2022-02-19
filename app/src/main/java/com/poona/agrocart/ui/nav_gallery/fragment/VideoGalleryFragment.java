@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -37,12 +38,20 @@ import android.widget.VideoView;
 
 
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
@@ -74,6 +83,8 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     private VideoAdapter videoAdapter;
     private  ProgressBar progressDialog;
     private MediaController mediaController;
+    private PlayerView playerView;
+    private SimpleExoPlayer simpleExoPlayer;
 
 
     public static VideoGalleryFragment newInstance() {
@@ -188,15 +199,13 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.video_image_pop_up_dailog);
-        PlayerView playerView = dialog.findViewById(R.id.pv_video_player);
+        playerView = dialog.findViewById(R.id.pv_video_player);
         ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
-
  /* Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("**");  // change *//*
         i.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"video/mp4", "video/quicktime"});
         startActivityForResult(i, requestCode);*/
-
 
         String strVideoView = "https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/sample-mp4-file.mp4";
 

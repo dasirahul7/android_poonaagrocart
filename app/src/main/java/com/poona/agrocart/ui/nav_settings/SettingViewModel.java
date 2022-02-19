@@ -42,7 +42,7 @@ public class SettingViewModel extends AndroidViewModel {
     }
 
     public LiveData<UpdateConfigurationResponse> getNotificationUpdate(ProgressDialog progressDialog, Context context
-            , HashMap<String, Integer> notificationInputParameter, SettingsFragment settingsFragment) {
+            , HashMap<String, String> notificationInputParameter, SettingsFragment settingsFragment) {
         MutableLiveData<UpdateConfigurationResponse> notificationSettingResponseMutableLiveData = new MutableLiveData<>();
 
                  ApiClientAuth.getClient(context)

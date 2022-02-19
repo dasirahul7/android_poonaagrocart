@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
+import com.poona.agrocart.BuildConfig;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.ViewConfigurationResponse;
@@ -37,7 +38,7 @@ public class SettingsFragment extends BaseFragment
     private SettingViewModel settingViewModel;
     private View view;
     private SwitchCompat emailNotification, appNotification;
-    private int strAppNotification , strEmailNotification;
+    private String strAppNotification , strEmailNotification;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -59,6 +60,7 @@ public class SettingsFragment extends BaseFragment
 
 
         initView();
+        settingViewModel.version.setValue(BuildConfig.VERSION_NAME);
         setClickListener();
 
 
@@ -72,10 +74,10 @@ public class SettingsFragment extends BaseFragment
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (compoundButton.getId() == R.id.sc_app_notification) {
                     if (isChecked){
-                        strAppNotification = 1;
+                        strAppNotification = "1";
                         callNotificationUpdate(showCircleProgressDialog(context, ""));
                     } else {
-                        strAppNotification = 0;
+                        strAppNotification ="0";
                         callNotificationUpdate(showCircleProgressDialog(context, ""));
                     }
                 }
@@ -89,10 +91,10 @@ public class SettingsFragment extends BaseFragment
 
                 if (compoundButton.getId() == R.id.sc_email_notification) {
                     if (isChecked){
-                        strEmailNotification = 1;
+                        strEmailNotification = "1";
                         callNotificationUpdate(showCircleProgressDialog(context, ""));
                     } else {
-                        strEmailNotification = 0;
+                        strEmailNotification = "0";
                         callNotificationUpdate(showCircleProgressDialog(context, ""));
                     }
                 }
@@ -119,19 +121,19 @@ public class SettingsFragment extends BaseFragment
                             String strEmailFiled = viewConfigurationResponse.getData().get(2).getEmailNotificationStatus();
                             String strAppFiled = viewConfigurationResponse.getData().get(2).getAppNotificationStatus();
 
-                            if(strEmailFiled.equals(1)){
-                                strEmailNotification = 1;
+                            if(strEmailFiled.equalsIgnoreCase("1")){
+                                strEmailNotification = "1";
                                 emailNotification.setChecked(true);
                             }else {
-                                strEmailNotification = 0;
+                                strEmailNotification = "0";
                                 emailNotification.setChecked(false);
                             }
 
-                            if(strAppFiled.equals(1)){
-                                strAppNotification = 1;
+                            if(strAppFiled.equalsIgnoreCase("1")){
+                                strAppNotification = "1";
                                 appNotification.setChecked(true);
                             }else {
-                                strAppNotification = 0;
+                                strAppNotification = "0";
                                 appNotification.setChecked(false);
                             }
                         }
@@ -170,8 +172,7 @@ public class SettingsFragment extends BaseFragment
                 }
                 switch (updateConfigurationResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        //callUpdatedNotificationApi(showCircleProgressDialog(context, ""));
-                        successToast(context, updateConfigurationResponse.getMessage());
+                        callUpdatedNotificationApi(showCircleProgressDialog(context, ""));
                         break;
                     case STATUS_CODE_400://Validation Errors
                         warningToast(context, updateConfigurationResponse.getMessage());
@@ -198,10 +199,10 @@ public class SettingsFragment extends BaseFragment
                 .observe(getViewLifecycleOwner(), updateConfigurationResponseObserver);
     }
 
-    private HashMap<String, Integer> NotificationInputParameter() {
-        HashMap<String, Integer> map = new HashMap<>();
+    private HashMap<String, String> NotificationInputParameter() {
+        HashMap<String, String> map = new HashMap<>();
         map.put(EMAIL_NOTIFICATION_STATUS, strEmailNotification);
-        map.put(APP_NOTIFICATION_STATUS, strAppNotification);
+        map.put(APP_NOTIFICATION_STATUS,strAppNotification);
 
         return map;
     }

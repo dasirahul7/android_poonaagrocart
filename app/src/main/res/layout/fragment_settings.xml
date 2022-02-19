@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_16sdp"
                     android:layout_marginTop="@dimen/_30sdp"
-                    android:text="@string/app_version_1_0_12"
+                    android:text="@{@string/app_version_1_0_12 + settingViewModel.version}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
