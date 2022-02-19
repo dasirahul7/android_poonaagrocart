@@ -91,7 +91,7 @@ public class SettingViewModel extends AndroidViewModel {
             , Context context, SettingsFragment settingsFragment) {
         MutableLiveData<ViewConfigurationResponse> updateConfigurationResponseMutableLiveData = new MutableLiveData<>();
 
-        ApiClientAuth.getClient(context)
+                 ApiClientAuth.getClient(context)
                 .create(ApiInterface.class)
                 .getUpdatedNotification()
                 .subscribeOn(Schedulers.io())

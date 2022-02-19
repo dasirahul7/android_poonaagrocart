@@ -37,7 +37,7 @@ public class SettingsFragment extends BaseFragment
     private SettingViewModel settingViewModel;
     private View view;
     private SwitchCompat emailNotification, appNotification;
-    private Integer strAppNotification , strEmailNotification;
+    private int strAppNotification , strEmailNotification;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -50,14 +50,18 @@ public class SettingsFragment extends BaseFragment
 
         initTitleBar(getString(R.string.settings));
 
-        initView();
-        setClickListener();
 
         if (isConnectingToInternet(context)) {
-           // callUpdatedNotificationApi(showCircleProgressDialog(context, ""));
+            callUpdatedNotificationApi(showCircleProgressDialog(context, ""));
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
+
+
+        initView();
+        setClickListener();
+
+
 
         return view;
     }
@@ -66,7 +70,6 @@ public class SettingsFragment extends BaseFragment
         appNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                Toast.makeText(context, ""+strAppNotification, Toast.LENGTH_SHORT).show();
                 if (compoundButton.getId() == R.id.sc_app_notification) {
                     if (isChecked){
                         strAppNotification = 1;
@@ -83,7 +86,6 @@ public class SettingsFragment extends BaseFragment
         emailNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                Toast.makeText(context, ""+strEmailNotification, Toast.LENGTH_SHORT).show();
 
                 if (compoundButton.getId() == R.id.sc_email_notification) {
                     if (isChecked){
@@ -114,10 +116,10 @@ public class SettingsFragment extends BaseFragment
                 switch (viewConfigurationResponse.getStatus()) {
                     case STATUS_CODE_200://success
                         if(viewConfigurationResponse.getData() != null){
-                            Integer strEmail = Integer.valueOf(viewConfigurationResponse.getData().get(0).getEmailNotificationStatus());
-                            Integer strApp = Integer.valueOf(viewConfigurationResponse.getData().get(0).getAppNotificationStatus());
+                            String strEmailFiled = viewConfigurationResponse.getData().get(2).getEmailNotificationStatus();
+                            String strAppFiled = viewConfigurationResponse.getData().get(2).getAppNotificationStatus();
 
-                            if(strEmail.equals(1)){
+                            if(strEmailFiled.equals(1)){
                                 strEmailNotification = 1;
                                 emailNotification.setChecked(true);
                             }else {
@@ -125,19 +127,13 @@ public class SettingsFragment extends BaseFragment
                                 emailNotification.setChecked(false);
                             }
 
-                            if(strApp.equals(1)){
+                            if(strAppFiled.equals(1)){
                                 strAppNotification = 1;
                                 appNotification.setChecked(true);
                             }else {
                                 strAppNotification = 0;
                                 appNotification.setChecked(false);
                             }
-
-                            /*String strAndroid = viewConfigurationResponse.getData().get(0).getConfigurationName();
-                            if(strAndroid.equalsIgnoreCase("Android App Version")) {
-                                settingViewModel.appVersion.setValue(viewConfigurationResponse.getData().get(0).getConfigurationName());
-                                settingViewModel.version.setValue(viewConfigurationResponse.getData().get(0).getConfigurationValue());
-                            }*/
                         }
                         break;
                     case STATUS_CODE_400://Validation Errors
@@ -174,7 +170,7 @@ public class SettingsFragment extends BaseFragment
                 }
                 switch (updateConfigurationResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        callUpdatedNotificationApi(showCircleProgressDialog(context, ""));
+                        //callUpdatedNotificationApi(showCircleProgressDialog(context, ""));
                         successToast(context, updateConfigurationResponse.getMessage());
                         break;
                     case STATUS_CODE_400://Validation Errors
