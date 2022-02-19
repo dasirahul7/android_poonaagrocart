@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_8sdp"
-            android:elevation="@dimen/_6sdp"
+            android:elevation="@dimen/_8sdp"
             app:cardCornerRadius="@dimen/_12sdp"
             app:cardElevation="3dp"
             app:cardUseCompatPadding="true"

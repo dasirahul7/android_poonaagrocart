@@ -12,10 +12,11 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/_160sdp"
     android:background="@color/exp_card_color1"
-    app:cardCornerRadius="@dimen/_15sdp"
+    app:cardCornerRadius="@dimen/_12sdp"
     app:cardUseCompatPadding="true"
     app:strokeColor="@color/exp_border1"
-    app:strokeWidth="1dp">
+    app:strokeWidth="0.5dp">
+
     <LinearLayout
         android:padding="@dimen/_5sdp"
         android:id="@+id/itemLayout"
@@ -23,19 +24,22 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/itemImgLayout"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp"
-            app:cardCornerRadius="@dimen/_12sdp"
+            app:cardCornerRadius="@dimen/_8sdp"
             app:cardElevation="0dp"
             app:cardUseCompatPadding="true">
+
             <LinearLayout
                 android:background="@color/exp_card_color1"
                 android:layout_gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageView
                     android:id="@+id/itemImg"
                     android:layout_width="match_parent"

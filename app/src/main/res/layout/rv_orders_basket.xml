@@ -22,7 +22,7 @@
             app:cardElevation="3dp"
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/_5sdp"
-            app:strokeWidth="@dimen/_1sdp"
+            app:strokeWidth="0.5dp"
             app:strokeColor="@color/color_border_light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

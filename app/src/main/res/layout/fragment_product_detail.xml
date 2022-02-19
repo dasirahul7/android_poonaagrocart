@@ -292,7 +292,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ll_price_and_qty"
                     app:strokeColor="@color/orange_border_color"
-                    app:strokeWidth="@dimen/_1sdp">
+                    app:strokeWidth="0.5dp">
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="match_parent"

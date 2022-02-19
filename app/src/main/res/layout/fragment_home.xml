@@ -114,6 +114,7 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentStart="true"
                         android:fontFamily="@font/poppins"
+                        android:includeFontPadding="false"
                         android:text="@string/shop_by_category"
                         android:textColor="@color/black"
                         android:textSize="@dimen/xx_large_txt_size"
@@ -129,19 +130,21 @@
                         android:text="@string/see_all"
                         android:textColor="@color/colorGreenButton"
                         android:textSize="@dimen/_16sp"
+                        android:includeFontPadding="false"
                         app:setCustomFont="@string/font_poppins_regular" />
 
                 </RelativeLayout>
+
                 <!--Category RecyclerView-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rec_category"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:paddingHorizontal="@dimen/home_horizontal_padding"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     tools:ignore="RtlSymmetry" />
-                <!--BasketDetail-->
 
+                <!--BasketDetail-->
                 <RelativeLayout
                     android:id="@+id/rl_basket"
                     android:layout_width="match_parent"
@@ -156,6 +159,7 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentStart="true"
                         android:fontFamily="@font/poppins"
+                        android:includeFontPadding="false"
                         android:text="@string/baskets"
                         android:textColor="@color/black"
                         android:textSize="@dimen/xx_large_txt_size"
@@ -171,6 +175,7 @@
                         android:text="@string/see_all"
                         android:textColor="@color/colorGreenButton"
                         android:textSize="@dimen/_16sp"
+                        android:includeFontPadding="false"
                         app:setCustomFont="@string/font_poppins_regular" />
 
                 </RelativeLayout>
@@ -180,7 +185,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:paddingHorizontal="@dimen/home_horizontal_padding" />
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:paddingHorizontal="@dimen/_15sdp" />
 
 
                 <!--Best Selling-->
@@ -201,6 +207,7 @@
                         android:text="@string/best_selling"
                         android:textColor="@color/black"
                         android:textSize="@dimen/xx_large_txt_size"
+                        android:includeFontPadding="false"
                         app:fontFamily="@font/poppins" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -211,6 +218,7 @@
                         android:layout_centerVertical="true"
                         android:fontFamily="@font/poppins"
                         android:text="@string/see_all"
+                        android:includeFontPadding="false"
                         android:textColor="@color/colorGreenButton"
                         android:textSize="@dimen/_16sp" />
 
@@ -221,7 +229,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:paddingHorizontal="@dimen/home_horizontal_padding"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     tools:ignore="RtlSymmetry" />
 
                 <!-- Seasonal Banners-->
@@ -229,9 +238,9 @@
                     android:id="@+id/rec_seasonal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginVertical="@dimen/_10sdp"
                     android:clipToPadding="false"
-                    android:paddingHorizontal="@dimen/home_horizontal_padding"
+                    android:paddingHorizontal="@dimen/_15sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
                     tools:ignore="RtlSymmetry" />
 
                 <!--Product Offers-->
@@ -252,6 +261,7 @@
                         android:text="@string/exclusive_offer"
                         android:textColor="@color/black"
                         android:textSize="@dimen/xx_large_txt_size"
+                        android:includeFontPadding="false"
                         app:fontFamily="@font/poppins" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -262,6 +272,7 @@
                         android:layout_centerVertical="true"
                         android:fontFamily="@font/poppins"
                         android:text="@string/see_all"
+                        android:includeFontPadding="false"
                         android:textColor="@color/colorGreenButton"
                         android:textSize="@dimen/_16sp" />
 
@@ -272,9 +283,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:paddingHorizontal="@dimen/home_horizontal_padding"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     tools:ignore="RtlSymmetry" />
-
 
                 <!--Our Shop-->
                 <com.google.android.material.card.MaterialCardView
@@ -292,7 +303,6 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/green_cart_bg"
                         android:padding="@dimen/_10sdp">
-
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -312,7 +322,7 @@
                                 android:textAllCaps="true"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_20sp"
-                                android:textStyle="bold"
+                                android:includeFontPadding="false"
                                 app:setCustomFont="@string/font_poppins_bold" />
 
                             <com.poona.agrocart.widgets.CustomTextView
@@ -324,7 +334,7 @@
                                 android:text="@{storeBanner.description}"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_12sp"
-                                android:textStyle="bold"
+                                android:includeFontPadding="false"
                                 app:setCustomFont="@string/font_poppins_regular" />
                         </LinearLayout>
 
@@ -389,7 +399,7 @@
                             android:text="@string/o_three_content"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_16sp"
-                            android:textStyle="bold"
+                            android:includeFontPadding="false"
                             app:setCustomFont="@string/font_poppins_bold" />
 
                         <ImageView
@@ -410,8 +420,7 @@
                     android:id="@+id/rec_product"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="@dimen/home_horizontal_padding"
-                    android:paddingEnd="@dimen/home_horizontal_padding" />
+                    android:paddingHorizontal="@dimen/_10sdp" />
             </LinearLayout>
 
 

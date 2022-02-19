@@ -11,11 +11,12 @@
         android:id="@+id/cardview_category"
         android:layout_width="@dimen/_155sdp"
         android:layout_height="@dimen/_130sdp"
-        android:elevation="@dimen/_10sdp"
+        android:elevation="@dimen/_8sdp"
         app:cardCornerRadius="@dimen/_15sdp"
         app:cardUseCompatPadding="true"
         app:strokeColor="@color/clr_custom_edit_text_otp"
         app:strokeWidth="0.5dp">
+
         <LinearLayout
             android:padding="@dimen/_5sdp"
             android:id="@+id/cat_row"
@@ -28,7 +29,6 @@
                 android:id="@+id/img_layout"
                 app:cardElevation="0dp"
                 android:layout_width="@dimen/_80sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_height="@dimen/_70sdp"
                 app:cardCornerRadius="@dimen/_8sdp">
 

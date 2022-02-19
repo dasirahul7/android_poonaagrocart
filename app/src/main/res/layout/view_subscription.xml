@@ -18,10 +18,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_16sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:elevation="@dimen/_6sdp"
+        android:elevation="@dimen/_8sdp"
         app:cardBackgroundColor="@color/color_subscription_plan"
         app:cardCornerRadius="@dimen/_8sdp"
-        app:cardElevation="3dp"
         app:contentPadding="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,7 +121,7 @@
                 app:cardBackgroundColor="@color/color_subscription_plan"
                 app:cardCornerRadius="@dimen/_6sdp"
                 app:strokeColor="@color/colorLightGrey"
-                app:strokeWidth="@dimen/_1sdp">
+                app:strokeWidth="0.5dp">
 
                 <LinearLayout
                     android:id="@+id/edit_layout"
@@ -177,7 +176,7 @@
                 android:id="@+id/tv_start_date"
                 android:background="@drawable/bg_dashboard_et_layout"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:elevation="@dimen/_2sdp"
+                android:elevation="@dimen/_8sdp"
                 android:padding="@dimen/_8sdp"
                 android:hint="@string/select_date"
                 android:textColor="@color/color_grey_txt"

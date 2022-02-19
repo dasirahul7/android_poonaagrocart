@@ -15,8 +15,7 @@
         android:id="@+id/cardview_product"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_110sdp"
-        android:elevation="@dimen/_10sdp"
-        android:padding="@dimen/_10sdp"
+        android:elevation="@dimen/_8sdp"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardUseCompatPadding="true"
         app:strokeColor="@color/clr_custom_edit_text_otp"
@@ -25,7 +24,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/_8sdp"
+            android:padding="@dimen/_10sdp"
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView

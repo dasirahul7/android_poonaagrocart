@@ -18,20 +18,20 @@
             android:layout_height="match_parent"
             android:layout_alignTop="@+id/cv_notification"
             android:layout_alignBottom="@+id/cv_notification"
-            android:elevation="@dimen/_15sdp"
-            app:cardCornerRadius="@dimen/_10sdp"
+            android:elevation="@dimen/_8sdp"
+            app:cardCornerRadius="@dimen/_8sdp"
             app:cardUseCompatPadding="true"
             app:strokeColor="@color/colorLightGrey"
             app:cardBackgroundColor="@color/colorPrimary"
-            app:strokeWidth="1dp" />
+            app:strokeWidth="0.5dp" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_notification"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/_6sdp"
-            android:elevation="@dimen/_15sdp"
-            app:cardCornerRadius="@dimen/_10sdp"
+            android:elevation="@dimen/_8sdp"
+            app:cardCornerRadius="@dimen/_8sdp"
             app:cardUseCompatPadding="true">
 
 

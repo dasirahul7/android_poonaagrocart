@@ -13,10 +13,10 @@
         android:id="@+id/cardview_basket_item"
         android:layout_width="@dimen/_180sdp"
         android:layout_height="@dimen/_80sdp"
-        android:layout_margin="@dimen/_5sdp"
-        android:elevation="@dimen/_10sdp"
+        android:elevation="@dimen/_8sdp"
         app:strokeWidth="0.5dp"
         app:strokeColor="@color/clr_custom_edit_text_otp"
+        android:layout_marginEnd="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_12sdp">
 
         <LinearLayout
@@ -26,6 +26,7 @@
             android:background="@color/basket_color_honey_dew"
             android:gravity="center"
             android:weightSum="2"
+            android:padding="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
