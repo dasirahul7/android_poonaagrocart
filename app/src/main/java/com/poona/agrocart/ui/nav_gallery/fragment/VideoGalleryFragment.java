@@ -9,6 +9,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -26,11 +27,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
 
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -41,10 +44,13 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.TracksInfo;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -53,6 +59,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectorResult;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -106,6 +113,8 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         initViews();
         Log.d("TAG", "onCreateView: video");
@@ -191,17 +200,19 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         //Adding adapter to recyclerview
         rvVideo.setAdapter(videoAdapter);
     }
+
+
     //String strVideoView = galleryVideoList.get(position).getVideoUrl();
     /*Video Player Dialogue*/
     public void VideoPlayerDialog(int position) {
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.video_image_pop_up_dailog);
         playerView = dialog.findViewById(R.id.pv_video_player);
         ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
- /* Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        /* Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("**");  // change *//*
         i.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"video/mp4", "video/quicktime"});
@@ -209,6 +220,93 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
 
         String strVideoView = "https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/sample-mp4-file.mp4";
 
+        simpleExoPlayer = new SimpleExoPlayer.Builder(context).build();
+        playerView.setPlayer(simpleExoPlayer);
+        MediaItem mediaItem = MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+        simpleExoPlayer.addMediaItem(mediaItem);
+        simpleExoPlayer.prepare();
+        simpleExoPlayer.play();
+
+        ImageView pause = playerView.findViewById(R.id.video_pause);
+        ImageView start = playerView.findViewById(R.id.video_play);
+        ImageView forward = playerView.findViewById(R.id.forward);
+
+        forward.setOnClickListener(view -> {
+            simpleExoPlayer.seekForward();
+        });
+
+        pause.setOnClickListener(view -> {
+            pause.setVisibility(View.VISIBLE);
+            start.setVisibility(View.GONE);
+            simpleExoPlayer.setPlayWhenReady(false);
+            simpleExoPlayer.getPlaybackState();
+        });
+
+        pause.playSoundEffect(SoundEffectConstants.CLICK);
+
+        start.setOnClickListener(view -> {
+            pause.setVisibility(View.GONE);
+            start.setVisibility(View.VISIBLE);
+            simpleExoPlayer.setPlayWhenReady(true);
+            simpleExoPlayer.getPlaybackState();
+        });
+
+        simpleExoPlayer.addListener(new Player.Listener() {
+            @Override
+            public void onTimelineChanged(Timeline timeline, int reason) {
+                Player.Listener.super.onTimelineChanged(timeline, reason);
+            }
+
+            @Override
+            public void onTracksInfoChanged(TracksInfo tracksInfo) {
+                Player.Listener.super.onTracksInfoChanged(tracksInfo);
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                switch(playbackState) {
+                    case ExoPlayer.STATE_BUFFERING:
+                        progressBar.setVisibility(View.VISIBLE);
+                        break;
+                    case ExoPlayer.STATE_ENDED:
+                        simpleExoPlayer.seekTo(0);
+                        simpleExoPlayer.setPlayWhenReady(false);
+                        break;
+                    case ExoPlayer.STATE_IDLE:
+                        break;
+                    case ExoPlayer.STATE_READY:
+                        progressBar.setVisibility(View.GONE);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onIsLoadingChanged(boolean isLoading) {
+                Player.Listener.super.onIsLoadingChanged(isLoading);
+            }
+
+            @Override
+            public void onPlaybackStateChanged(int playbackState) {
+                Player.Listener.super.onPlaybackStateChanged(playbackState);
+            }
+
+            @Override
+            public void onPlayWhenReadyChanged(boolean playWhenReady, int reason) {
+                Player.Listener.super.onPlayWhenReadyChanged(playWhenReady, reason);
+            }
+
+            @Override
+            public void onPlaybackSuppressionReasonChanged(int playbackSuppressionReason) {
+                Player.Listener.super.onPlaybackSuppressionReasonChanged(playbackSuppressionReason);
+            }
+
+            @Override
+            public void onSeekForwardIncrementChanged(long seekForwardIncrementMs) {
+                Player.Listener.super.onSeekForwardIncrementChanged(seekForwardIncrementMs);
+            }
+        });
 
         dialog.show();
     }
