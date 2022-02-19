@@ -6,9 +6,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_14sdp"
+        android:background="@drawable/back_rounded_white_alert_dialog"
         android:orientation="vertical"
-        android:background="@drawable/back_rounded_white_alert_dialog">
+        android:padding="@dimen/_14sdp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -37,11 +37,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:includeFontPadding="false"
                 android:lineSpacingExtra="@dimen/_3sdp"
                 android:text="@string/delete_notifications"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16sp"
-                android:includeFontPadding="false"
                 app:setCustomFont="@string/font_poppins_regular" />
 
         </LinearLayout>
@@ -50,56 +50,56 @@
             android:id="@+id/ll_yes_no"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center"
-            android:weightSum="2"
+            android:orientation="horizontal"
             android:padding="@dimen/_12sdp"
+            android:weightSum="2"
             app:layout_constraintTop_toBottomOf="@+id/ll_1">
 
             <com.poona.agrocart.widgets.CustomButton
                 android:id="@+id/yes_btn"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:setCustomFont="@string/font_poppins_regular"
-                android:minHeight="0dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_weight="1.3"
                 android:background="@drawable/background_button_green"
                 android:drawableTint="@color/background_button_selector_white"
-                android:textColor="@color/background_color_white_green"
                 android:gravity="center|center_vertical"
-                android:paddingBottom="@dimen/_6sdp"
+                android:includeFontPadding="false"
+                android:minHeight="0dp"
                 android:paddingTop="@dimen/_6sdp"
+                android:paddingBottom="@dimen/_6sdp"
                 android:text="@string/yes"
                 android:textAllCaps="false"
-                android:includeFontPadding="false"
+                android:textColor="@color/background_color_white_green"
                 android:textSize="@dimen/_16sp"
-                android:layout_weight="1.3"
-                style="?android:attr/borderlessButtonStyle"/>
+                app:setCustomFont="@string/font_poppins_regular" />
 
             <com.poona.agrocart.widgets.CustomButton
                 android:id="@+id/no_btn"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:setCustomFont="@string/font_poppins_regular"
                 android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
-                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_weight="1.2"
                 android:background="@drawable/background_button_red"
-                android:textColor="@color/background_color_orange_white"
                 android:drawableTint="@color/background_color_orange_white"
                 android:gravity="center|center_vertical"
-                android:minHeight="0dp"
                 android:includeFontPadding="false"
-                android:paddingBottom="@dimen/_6sdp"
+                android:minHeight="0dp"
                 android:paddingTop="@dimen/_6sdp"
+                android:paddingBottom="@dimen/_6sdp"
                 android:text="@string/no"
                 android:textAllCaps="false"
+                android:textColor="@color/background_color_orange_white"
                 android:textSize="@dimen/_16sp"
-                android:layout_weight="1.2"
-                style="?android:attr/borderlessButtonStyle"/>
+                app:setCustomFont="@string/font_poppins_regular" />
 
         </LinearLayout>
 

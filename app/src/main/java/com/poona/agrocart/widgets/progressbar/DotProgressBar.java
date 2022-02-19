@@ -14,27 +14,22 @@ import android.view.animation.Transformation;
 import com.poona.agrocart.R;
 
 public class DotProgressBar extends View {
-    // distance between neighbour dot centres
-    private int mDotStep = 20;
-
-    // actual dot radius
-    private int mDotRadius = 5;
-
-    // Bounced Dot Radius
-    private int mBigDotRadius = 8;
-
-    // to get identified in which position dot has to bounce
-    private int mDotPosition;
-
     // specify how many dots you need in a progressbar
     private static final int MIN_COUNT = 1;
     private static final int DEF_COUNT = 10;
     private static final int MAX_COUNT = 100;
-    private int mDotCount = DEF_COUNT;
-
     private static final int MIN_TIMEOUT = 100;
     private static final int DEF_TIMEOUT = 500;
     private static final int MAX_TIMEOUT = 3000;
+    // distance between neighbour dot centres
+    private int mDotStep = 20;
+    // actual dot radius
+    private int mDotRadius = 5;
+    // Bounced Dot Radius
+    private int mBigDotRadius = 8;
+    // to get identified in which position dot has to bounce
+    private int mDotPosition;
+    private int mDotCount = DEF_COUNT;
     private int mTimeout = DEF_TIMEOUT;
 
     private int mDotColor = Color.parseColor("#fd583f");
@@ -58,9 +53,9 @@ public class DotProgressBar extends View {
 
     private void initDotSize() {
         final float scale = getResources().getDisplayMetrics().density;
-        mDotStep = (int)(mDotStep * scale);
-        mDotRadius = (int)(mDotRadius * scale);
-        mBigDotRadius = (int)(mBigDotRadius * scale);
+        mDotStep = (int) (mDotStep * scale);
+        mDotRadius = (int) (mDotRadius * scale);
+        mBigDotRadius = (int) (mBigDotRadius * scale);
     }
 
     private void applyAttrs(Context context, AttributeSet attrs) {
@@ -96,7 +91,7 @@ public class DotProgressBar extends View {
     }
 
     private void createDots(Canvas canvas, Paint paint) {
-        for (int i = 0; i < mDotCount; i++ ) {
+        for (int i = 0; i < mDotCount; i++) {
             int radius = (i == mDotPosition) ? mBigDotRadius : mDotRadius;
             canvas.drawCircle(mDotStep / 2 + (i * mDotStep), mBigDotRadius, radius, paint);
         }

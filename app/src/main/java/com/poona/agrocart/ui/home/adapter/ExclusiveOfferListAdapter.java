@@ -18,28 +18,21 @@ import com.poona.agrocart.databinding.RowExclusiveItemBinding;
 import java.util.ArrayList;
 
 public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOfferListAdapter.ExclusiveItemHolder> {
-    private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
     private final Context bdContext;
+    private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
     private RowExclusiveItemBinding rowExclusiveItemBinding;
-    private OnProductClickListener onProductClickListener;
-    private OnPlusClickListener onPlusClickListener;
+    private final OnProductClickListener onProductClickListener;
+    private final OnPlusClickListener onPlusClickListener;
 
 
     public ExclusiveOfferListAdapter(ArrayList<ProductListResponse.Product> products,
-                                     Context bdContext,OnProductClickListener onProductClickListener,
+                                     Context bdContext, OnProductClickListener onProductClickListener,
                                      OnPlusClickListener onPlusClickListener) {
         this.products = products;
-        this.bdContext = bdContext;this.onProductClickListener = onProductClickListener;
+        this.bdContext = bdContext;
+        this.onProductClickListener = onProductClickListener;
         this.onPlusClickListener = onPlusClickListener;
     }
-
-    public interface OnProductClickListener{
-        void onProductClick(ProductListResponse.Product product);
-    }
-    public interface OnPlusClickListener {
-        void OnPlusClick(ProductListResponse.Product product,int position);
-    }
-
 
     @NonNull
     @Override
@@ -52,9 +45,9 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
     public void onBindViewHolder(@NonNull ExclusiveItemHolder holder, int position) {
         ProductListResponse.Product product = products.get(position);
         rowExclusiveItemBinding.setExclusiveOfferModule(product);
-        holder.bindData(product,position);
+        holder.bindData(product, position);
         rowExclusiveItemBinding.imgPlus.setOnClickListener(view1 -> {
-            onPlusClickListener.OnPlusClick(product,position);
+            onPlusClickListener.OnPlusClick(product, position);
         });
     }
 
@@ -63,6 +56,13 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
         return products.size();
     }
 
+    public interface OnProductClickListener {
+        void onProductClick(ProductListResponse.Product product);
+    }
+
+    public interface OnPlusClickListener {
+        void OnPlusClick(ProductListResponse.Product product, int position);
+    }
 
     public class ExclusiveItemHolder extends RecyclerView.ViewHolder {
         public ExclusiveItemHolder(RowExclusiveItemBinding rowExclusiveItemBinding) {
@@ -79,7 +79,7 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
                 rowExclusiveItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
             if (product.getIsO3().equalsIgnoreCase("yes"))
                 rowExclusiveItemBinding.txtOrganic.setVisibility(View.VISIBLE);
-            if (product.getInCart()==1)
+            if (product.getInCart() == 1)
                 rowExclusiveItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
             else rowExclusiveItemBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -4,6 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ProductOld implements Parcelable {
+    public static final Creator<ProductOld> CREATOR = new Creator<ProductOld>() {
+        @Override
+        public ProductOld createFromParcel(Parcel in) {
+            return new ProductOld(in);
+        }
+
+        @Override
+        public ProductOld[] newArray(int size) {
+            return new ProductOld[size];
+        }
+    };
     String id, name, offer, price, offerPrice, img, location, weight, quantity, brand;
     boolean organic = false;
     boolean inBasket = false, isFavorite = false;
@@ -21,22 +32,6 @@ public class ProductOld implements Parcelable {
         this.location = productLocation;
         this.brand = brand;
         this.isFavorite = isFavourite;
-    }
-
-    public boolean isInBasket() {
-        return inBasket;
-    }
-
-    public void setInBasket(boolean inBasket) {
-        this.inBasket = inBasket;
-    }
-
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
     }
 
     public ProductOld() {
@@ -81,6 +76,22 @@ public class ProductOld implements Parcelable {
         organic = in.readByte() != 0;
     }
 
+    public boolean isInBasket() {
+        return inBasket;
+    }
+
+    public void setInBasket(boolean inBasket) {
+        this.inBasket = inBasket;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
     public String getBrand() {
         return brand;
     }
@@ -88,18 +99,6 @@ public class ProductOld implements Parcelable {
     public void setBrand(String brand) {
         this.brand = brand;
     }
-
-    public static final Creator<ProductOld> CREATOR = new Creator<ProductOld>() {
-        @Override
-        public ProductOld createFromParcel(Parcel in) {
-            return new ProductOld(in);
-        }
-
-        @Override
-        public ProductOld[] newArray(int size) {
-            return new ProductOld[size];
-        }
-    };
 
     public String getLocation() {
         return location;
@@ -140,9 +139,9 @@ public class ProductOld implements Parcelable {
         else {
             float price = Float.parseFloat(this.price);
             float offer = Float.parseFloat(this.offer);
-            float off = (price/ 100.0f)*offer;
-            int offer_price =(int) (price - off);
-            this.offerPrice = "Rs." + String.valueOf(offer_price);
+            float off = (price / 100.0f) * offer;
+            int offer_price = (int) (price - off);
+            this.offerPrice = "Rs." + offer_price;
         }
         return offerPrice;
     }

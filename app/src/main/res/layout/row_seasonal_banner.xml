@@ -26,20 +26,20 @@
                 android:id="@+id/rl_seasonal_view"
                 android:layout_width="@dimen/_250sdp"
                 android:layout_height="@dimen/_120sdp"
-                android:orientation="horizontal"
                 android:background="@drawable/seasonal_banner_bg_yellow"
+                android:orientation="horizontal"
                 android:weightSum="2">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/img_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:cardCornerRadius="@dimen/_8sdp"
-                    app:cardElevation="0dp"
-                    android:layout_marginVertical="@dimen/_12sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_12sdp"
+                    android:layout_weight="1"
                     app:cardBackgroundColor="@android:color/transparent"
-                    android:layout_weight="1">
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="0dp">
 
                     <ImageView
                         android:id="@+id/s_banner_img"
@@ -53,20 +53,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
+                    android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/_12sdp">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_s_place"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
+                        android:includeFontPadding="false"
                         android:text="@{moduleSeasonBanner.sProductPlace}"
                         android:textColor="@color/dark_green_color"
                         android:textSize="@dimen/_20sp"
-                        android:includeFontPadding="false"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -74,23 +74,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
+                        android:includeFontPadding="false"
                         android:text="@{moduleSeasonBanner.seasonalProductName}"
                         android:textColor="@color/dark_green_color"
                         android:textSize="@dimen/_16sp"
-                        android:includeFontPadding="false"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_s_quality"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="-4dp"
                         android:gravity="end"
+                        android:includeFontPadding="false"
                         android:singleLine="true"
                         android:text="@{moduleSeasonBanner.productDetails}"
                         android:textColor="@color/dark_green_color"
                         android:textSize="@dimen/_14sp"
-                        android:includeFontPadding="false"
-                        android:layout_marginTop="-4dp"
                         app:setCustomFont="@string/font_poppins_medium" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -114,8 +114,8 @@
         <View
             android:layout_width="@dimen/_12sdp"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:layout_toRightOf="@+id/cv_seasonal_banner"/>
+            android:layout_toRightOf="@+id/cv_seasonal_banner"
+            android:background="@android:color/transparent" />
 
     </RelativeLayout>
 

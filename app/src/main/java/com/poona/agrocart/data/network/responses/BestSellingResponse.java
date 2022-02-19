@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class BestSellingResponse extends BaseResponse{
+public class BestSellingResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private BestSellingData bestSellingData;
@@ -17,6 +17,7 @@ public class BestSellingResponse extends BaseResponse{
     public void setBestSellingData(BestSellingData bestSellingData) {
         this.bestSellingData = bestSellingData;
     }
+
     public class BestSellingData {
         @SerializedName("best_selling_product_list")
         @Expose

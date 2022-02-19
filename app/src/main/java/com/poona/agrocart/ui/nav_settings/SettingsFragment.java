@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.databinding.DataBindingUtil;
@@ -32,22 +31,20 @@ import com.poona.agrocart.ui.BaseFragment;
 
 import java.util.HashMap;
 
-public class SettingsFragment extends BaseFragment
-{
+public class SettingsFragment extends BaseFragment {
     private FragmentSettingsBinding fragmentSettingsBinding;
     private SettingViewModel settingViewModel;
     private View view;
     private SwitchCompat emailNotification, appNotification;
-    private String strAppNotification , strEmailNotification;
+    private String strAppNotification, strEmailNotification;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        fragmentSettingsBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_settings, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentSettingsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
         fragmentSettingsBinding.setLifecycleOwner(this);
-         settingViewModel=new ViewModelProvider(this).get(SettingViewModel.class);
-         fragmentSettingsBinding.setSettingViewModel(settingViewModel);
-         view = fragmentSettingsBinding.getRoot();
+        settingViewModel = new ViewModelProvider(this).get(SettingViewModel.class);
+        fragmentSettingsBinding.setSettingViewModel(settingViewModel);
+        view = fragmentSettingsBinding.getRoot();
 
         initTitleBar(getString(R.string.settings));
 
@@ -64,7 +61,6 @@ public class SettingsFragment extends BaseFragment
         setClickListener();
 
 
-
         return view;
     }
 
@@ -73,11 +69,11 @@ public class SettingsFragment extends BaseFragment
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (compoundButton.getId() == R.id.sc_app_notification) {
-                    if (isChecked){
+                    if (isChecked) {
                         strAppNotification = "1";
                         callNotificationUpdate(showCircleProgressDialog(context, ""));
                     } else {
-                        strAppNotification ="0";
+                        strAppNotification = "0";
                         callNotificationUpdate(showCircleProgressDialog(context, ""));
                     }
                 }
@@ -90,7 +86,7 @@ public class SettingsFragment extends BaseFragment
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
                 if (compoundButton.getId() == R.id.sc_email_notification) {
-                    if (isChecked){
+                    if (isChecked) {
                         strEmailNotification = "1";
                         callNotificationUpdate(showCircleProgressDialog(context, ""));
                     } else {
@@ -108,31 +104,31 @@ public class SettingsFragment extends BaseFragment
         emailNotification = fragmentSettingsBinding.scEmailNotification;
     }
 
-    private void callUpdatedNotificationApi(ProgressDialog progressDialog){
+    private void callUpdatedNotificationApi(ProgressDialog progressDialog) {
         Observer<ViewConfigurationResponse> viewConfigurationResponseObserver = viewConfigurationResponse -> {
-            if (viewConfigurationResponse != null){
+            if (viewConfigurationResponse != null) {
                 Log.e("UpdatedNotification Api ResponseData", new Gson().toJson(viewConfigurationResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (viewConfigurationResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        if(viewConfigurationResponse.getData() != null){
+                        if (viewConfigurationResponse.getData() != null) {
                             String strEmailFiled = viewConfigurationResponse.getData().get(2).getEmailNotificationStatus();
                             String strAppFiled = viewConfigurationResponse.getData().get(2).getAppNotificationStatus();
 
-                            if(strEmailFiled.equalsIgnoreCase("1")){
+                            if (strEmailFiled.equalsIgnoreCase("1")) {
                                 strEmailNotification = "1";
                                 emailNotification.setChecked(true);
-                            }else {
+                            } else {
                                 strEmailNotification = "0";
                                 emailNotification.setChecked(false);
                             }
 
-                            if(strAppFiled.equalsIgnoreCase("1")){
+                            if (strAppFiled.equalsIgnoreCase("1")) {
                                 strAppNotification = "1";
                                 appNotification.setChecked(true);
-                            }else {
+                            } else {
                                 strAppNotification = "0";
                                 appNotification.setChecked(false);
                             }
@@ -152,8 +148,8 @@ public class SettingsFragment extends BaseFragment
                         infoToast(context, viewConfigurationResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
@@ -162,12 +158,12 @@ public class SettingsFragment extends BaseFragment
                 .observe(getViewLifecycleOwner(), viewConfigurationResponseObserver);
     }
 
-    private void callNotificationUpdate (ProgressDialog progressDialog){
+    private void callNotificationUpdate(ProgressDialog progressDialog) {
         Observer<UpdateConfigurationResponse> updateConfigurationResponseObserver = updateConfigurationResponse -> {
 
-            if (updateConfigurationResponse != null){
+            if (updateConfigurationResponse != null) {
                 Log.e("callNotificationUpdate Api ResponseData", new Gson().toJson(updateConfigurationResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (updateConfigurationResponse.getStatus()) {
@@ -188,8 +184,8 @@ public class SettingsFragment extends BaseFragment
                         infoToast(context, updateConfigurationResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
@@ -202,7 +198,7 @@ public class SettingsFragment extends BaseFragment
     private HashMap<String, String> NotificationInputParameter() {
         HashMap<String, String> map = new HashMap<>();
         map.put(EMAIL_NOTIFICATION_STATUS, strEmailNotification);
-        map.put(APP_NOTIFICATION_STATUS,strAppNotification);
+        map.put(APP_NOTIFICATION_STATUS, strAppNotification);
 
         return map;
     }

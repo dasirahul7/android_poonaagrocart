@@ -1,4 +1,3 @@
-
 package com.poona.agrocart.data.network.responses.help_center_response;
 
 import com.google.gson.annotations.Expose;

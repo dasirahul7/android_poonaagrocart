@@ -41,48 +41,44 @@ public class CmsViewModel extends AndroidViewModel {
                                                 Context context,
                                                 CmsFragment cmsFragment) {
 
-            MutableLiveData<CmsResponse> aboutUsResponseMutableLiveData = new MutableLiveData<>();
+        MutableLiveData<CmsResponse> aboutUsResponseMutableLiveData = new MutableLiveData<>();
 
-            ApiClientAuth.getClient(context)
-                    .create(ApiInterface.class)
-                    .getCmsResponse()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSingleObserver<CmsResponse>() {
-                        @Override
-                        public void onSuccess(@NonNull CmsResponse baseResponse) {
-                            if (progressDialog != null){
-                                progressDialog.dismiss();
-                            }
-                            if (baseResponse != null){
-                                aboutUsResponseMutableLiveData.setValue(baseResponse);
-                            }else {
-                                aboutUsResponseMutableLiveData.setValue(null);
-                            }
+        ApiClientAuth.getClient(context)
+                .create(ApiInterface.class)
+                .getCmsResponse()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<CmsResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull CmsResponse baseResponse) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                        aboutUsResponseMutableLiveData.setValue(baseResponse);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
                         }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            if (progressDialog != null){
-                                progressDialog.dismiss();
-                            }
+                        Gson gson = new GsonBuilder().create();
+                        CmsResponse baseResponse = new CmsResponse();
+                        try {
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CmsResponse.class);
 
-                            Gson gson = new GsonBuilder().create();
-                            CmsResponse baseResponse = new CmsResponse();
-                            try {
-                                baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CmsResponse.class);
-
-                                aboutUsResponseMutableLiveData.setValue(baseResponse);
-                            } catch (Exception exception) {
-                                Log.e(TAG, exception.getMessage());
-                                ((NetworkExceptionListener) cmsFragment)
-                                        .onNetworkException(0, "");
-                            }
-                            Log.e(TAG, e.getMessage());
+                            aboutUsResponseMutableLiveData.setValue(baseResponse);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) cmsFragment)
+                                    .onNetworkException(0, "");
                         }
-                    });
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
 
-            return aboutUsResponseMutableLiveData;
+        return aboutUsResponseMutableLiveData;
 
     }
 }

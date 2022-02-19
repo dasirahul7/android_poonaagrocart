@@ -1,11 +1,10 @@
-
 package com.poona.agrocart.data.network.responses.help_center_response;
-
-import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.poona.agrocart.data.network.responses.BaseResponse;
+
+import java.util.List;
 
 public class TicketTypeResponse extends BaseResponse {
 

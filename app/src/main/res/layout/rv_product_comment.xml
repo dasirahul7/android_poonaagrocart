@@ -33,11 +33,11 @@
                 android:weightSum="100">
 
                 <com.poona.agrocart.widgets.imageview.CircularImageView
+                    setImage="@{productComment.userImg}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
-                    setImage="@{productComment.userImg}"
-                    app:civ_border_width="@dimen/_1sdp"
-                    app:civ_border_color="#979797" />
+                    app:civ_border_color="#979797"
+                    app:civ_border_width="@dimen/_1sdp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -46,15 +46,15 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <com.poona.agrocart.widgets.CustomTextView
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
+                            android:layout_weight="1"
                             android:gravity="start"
                             android:text="@{productComment.userName}"
                             android:textColor="@color/black"
@@ -62,11 +62,11 @@
                             app:setCustomFont="@string/font_poppins_semi_bold" />
 
                         <com.poona.agrocart.widgets.CustomTextView
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:layout_marginEnd="@dimen/_4sdp"
+                            android:layout_weight="1"
                             android:gravity="end"
                             android:text="@{productComment.date}"
                             android:textColor="@color/color_grey_txt"
@@ -76,12 +76,12 @@
                     </LinearLayout>
 
                     <RatingBar
-                        android:layout_margin="-5dp"
-                        android:layout_marginStart="-20dp"
                         android:id="@+id/rating_bar"
                         style="@style/Widget.AppCompat.RatingBar.Indicator"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_margin="-5dp"
+                        android:layout_marginStart="-20dp"
                         android:numStars="5"
                         android:scaleX="0.7"
                         android:scaleY="0.7"

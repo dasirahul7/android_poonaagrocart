@@ -16,9 +16,7 @@ import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.help_center_response.SendMessageResponse;
-import com.poona.agrocart.data.network.responses.help_center_response.SendMessageResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
-import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 
 import java.util.HashMap;
 
@@ -30,11 +28,11 @@ import retrofit2.HttpException;
 public class TicketDetailsViewModel extends AndroidViewModel {
     private static final String TAG = TicketDetailsViewModel.class.getSimpleName();
 
-    public MutableLiveData<String> ticketId ;
-    public MutableLiveData<String> ticketDate ;
-    public MutableLiveData<String> status ;
-    public MutableLiveData<String> subject ;
-    public MutableLiveData<String> remark ;
+    public MutableLiveData<String> ticketId;
+    public MutableLiveData<String> ticketDate;
+    public MutableLiveData<String> status;
+    public MutableLiveData<String> subject;
+    public MutableLiveData<String> remark;
     public MutableLiveData<String> etMessage;
 
     public TicketDetailsViewModel(@NonNull Application application) {
@@ -72,11 +70,7 @@ public class TicketDetailsViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@NonNull RecieveMessageResponse baseResponse) {
                         progressDialog.dismiss();
-                        if (baseResponse != null){
-                            recieveMessageResponseMutableLiveData.setValue(baseResponse);
-                        }else {
-                            recieveMessageResponseMutableLiveData.setValue(null);
-                        }
+                        recieveMessageResponseMutableLiveData.setValue(baseResponse);
                     }
 
                     @Override
@@ -91,7 +85,7 @@ public class TicketDetailsViewModel extends AndroidViewModel {
                             recieveMessageResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) ticketDetailFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) ticketDetailFragment).onNetworkException(0, "");
                         }
                         Log.e(TAG, e.getMessage());
                     }
@@ -115,11 +109,7 @@ public class TicketDetailsViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@NonNull SendMessageResponse baseResponse) {
                         progressDialog.dismiss();
-                        if (baseResponse != null){
-                            sendMessageResponseMutableLiveData.setValue(baseResponse);
-                        }else {
-                            sendMessageResponseMutableLiveData.setValue(null);
-                        }
+                        sendMessageResponseMutableLiveData.setValue(baseResponse);
                     }
 
                     @Override
@@ -134,7 +124,7 @@ public class TicketDetailsViewModel extends AndroidViewModel {
                             sendMessageResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) ticketDetailFragment).onNetworkException(1,"");
+                            ((NetworkExceptionListener) ticketDetailFragment).onNetworkException(1, "");
                         }
                         Log.e(TAG, e.getMessage());
                     }

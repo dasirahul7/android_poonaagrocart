@@ -27,15 +27,11 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.responses.cartResponse.CartData;
 import com.poona.agrocart.data.network.responses.cartResponse.MyCartResponse;
-import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.FragmentMyCartBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.CustomDialogInterface;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.home.model.ProductOld;
-import com.poona.agrocart.ui.nav_favourites.FavouriteItemAdapter;
-import com.poona.agrocart.ui.nav_favourites.FavouriteViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -144,15 +140,15 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         @SuppressLint("NotifyDataSetChanged")
         Observer<MyCartResponse> myCartResponseObserver = myCartResponse -> {
 
-            if (myCartResponse != null){
+            if (myCartResponse != null) {
                 Log.e("Cart List Response", new Gson().toJson(myCartResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (myCartResponse.getStatus()) {
                     case STATUS_CODE_200://success
                         if (myCartResponse.getData() != null
-                                && myCartResponse.getData().size() > 0){
+                                && myCartResponse.getData().size() > 0) {
 
                             fragmentMyCartBinding.emptyLayout.setVisibility(View.GONE);
                             fragmentMyCartBinding.itamLayout.setVisibility(View.VISIBLE);
@@ -176,13 +172,13 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                         infoToast(context, myCartResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
         };
-        myCartViewModel.CartLisResponseLiveData(progressDialog,paramCart(),MyCartFragment.this);
+        myCartViewModel.CartLisResponseLiveData(progressDialog, paramCart(), MyCartFragment.this);
 
 
     }
@@ -194,7 +190,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void checkEmptyCart() {
-        if (cartItemsList.size()>0)
+        if (cartItemsList.size() > 0)
             return;
         else {
             fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);

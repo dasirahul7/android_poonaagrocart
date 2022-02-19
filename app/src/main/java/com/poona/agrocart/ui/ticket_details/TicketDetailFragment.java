@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -32,11 +31,8 @@ import com.poona.agrocart.data.network.responses.help_center_response.SendMessag
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.AllChat;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.UserTicketsDetail;
-import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
 import com.poona.agrocart.databinding.FragmentTicketDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
-
-import com.poona.agrocart.ui.nav_help_center.HelpCenterFragment;
 import com.poona.agrocart.widgets.CustomEditText;
 import com.poona.agrocart.widgets.CustomTextView;
 
@@ -47,17 +43,16 @@ import java.util.List;
 import java.util.Map;
 
 
-public class TicketDetailFragment extends BaseFragment implements NetworkExceptionListener
-{
+public class TicketDetailFragment extends BaseFragment implements NetworkExceptionListener {
+    private static final String TAG = TicketDetailFragment.class.getSimpleName();
     private FragmentTicketDetailBinding fragmentTicketDetailBinding;
-    private TicketDetailsViewModel  ticketDetailsViewModel;
+    private TicketDetailsViewModel ticketDetailsViewModel;
     private RecyclerView rvTicketOrders;
     private LinearLayoutManager linearLayoutManager;
     private TicketCommentsAdapter ticketCommentsAdapter;
     private ArrayList<AllChat> allChatList = new ArrayList<>();
-    private List<UserTicketsDetail> userTicketsDetails = new ArrayList<>();
+    private final List<UserTicketsDetail> userTicketsDetails = new ArrayList<>();
     private View view;
-    private static final String TAG = TicketDetailFragment.class.getSimpleName();
     private CustomEditText tvMessage;
     private CustomTextView tvDate;
     private ImageView ivSendMessage;
@@ -77,12 +72,11 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
 
     @SuppressLint("ResourceType")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        fragmentTicketDetailBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_ticket_detail, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentTicketDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_ticket_detail, container, false);
         fragmentTicketDetailBinding.setLifecycleOwner(this);
-         view = fragmentTicketDetailBinding.getRoot();
-        ticketDetailsViewModel=new ViewModelProvider(this).get(TicketDetailsViewModel.class);
+        view = fragmentTicketDetailBinding.getRoot();
+        ticketDetailsViewModel = new ViewModelProvider(this).get(TicketDetailsViewModel.class);
         fragmentTicketDetailBinding.setTicket(ticketDetailsViewModel);
 
         fragmentTicketDetailBinding.clMainLayout.setVisibility(View.GONE);
@@ -95,7 +89,7 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
         setRvAdapter();
         onClick();
 
-         scale = getResources().getDisplayMetrics().density;
+        scale = getResources().getDisplayMetrics().density;
 
         requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
 
@@ -108,43 +102,41 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
     }
 
 
-
     private void setBottomMarginInDps(int i) {
         int dpAsPixels = (int) (i * scale + 0.5f);
         navHostMargins.bottomMargin = dpAsPixels;
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
         setBottomMarginInDps(0);
 
-        if(isConnectingToInternet(context)){
-          setRvAdapter();
-        }else {
+        if (isConnectingToInternet(context)) {
+            setRvAdapter();
+        } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
 
     }
 
     private void initView() {
-        rvTicketOrders=fragmentTicketDetailBinding.rvTicketComments;
-        tvMessage=fragmentTicketDetailBinding.etChatMessage;
-        ivSendMessage=fragmentTicketDetailBinding.ivSendMessage;
-        tvDate= fragmentTicketDetailBinding.tvDate;
+        rvTicketOrders = fragmentTicketDetailBinding.rvTicketComments;
+        tvMessage = fragmentTicketDetailBinding.etChatMessage;
+        ivSendMessage = fragmentTicketDetailBinding.ivSendMessage;
+        tvDate = fragmentTicketDetailBinding.tvDate;
     }
 
 
     private void onClick() {
 
 
-
         ivSendMessage.setOnClickListener(view1 -> {
             strMessage = ticketDetailsViewModel.etMessage.getValue();
-            if(isConnectingToInternet(context)){
-                if(!strMessage.equalsIgnoreCase(""))
+            if (isConnectingToInternet(context)) {
+                if (!strMessage.equalsIgnoreCase(""))
                     callSendMessageApi(showCircleProgressDialog(context, ""));
-            }else {
+            } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         });
@@ -169,7 +161,7 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
 
     private void setRvAdapter() {
 
-        allChatList=new ArrayList<>();
+        allChatList = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(context);
 
         rvTicketOrders.setHasFixedSize(true);
@@ -177,14 +169,14 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
         rvTicketOrders.setLayoutManager(linearLayoutManager);
         linearLayoutManager.setStackFromEnd(true);
         //initializing our adapter
-        ticketCommentsAdapter = new TicketCommentsAdapter(allChatList,this,context);
+        ticketCommentsAdapter = new TicketCommentsAdapter(allChatList, this, context);
 
         //Adding adapter to recyclerview
         rvTicketOrders.setAdapter(ticketCommentsAdapter);
 
-        if(isConnectingToInternet(context)){
-            callReceiveMessageApi(showCircleProgressDialog(context,""));
-        }else {
+        if (isConnectingToInternet(context)) {
+            callReceiveMessageApi(showCircleProgressDialog(context, ""));
+        } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
 
@@ -192,59 +184,57 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
     }
 
 
-
-    private  void callReceiveMessageApi(ProgressDialog progressDialog){
+    private void callReceiveMessageApi(ProgressDialog progressDialog) {
 
         @SuppressLint("NotifyDataSetChanged") Observer<RecieveMessageResponse> recieveMessageResponseObserver = recieveMessageResponse -> {
             fragmentTicketDetailBinding.clMainLayout.setVisibility(View.VISIBLE);
-            if (recieveMessageResponse != null){
+            if (recieveMessageResponse != null) {
 
                 Log.e("Receive Message Api Response", new Gson().toJson(recieveMessageResponse));
 
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (recieveMessageResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                       userTicketsDetails.clear();
-                       allChatList.clear();
+                        userTicketsDetails.clear();
+                        allChatList.clear();
 
-                       if (recieveMessageResponse.getData().getUserTicketsDetails() != null &&
-                       recieveMessageResponse.getData().getUserTicketsDetails().size() > 0){
-                           userTicketsDetails.addAll(recieveMessageResponse.getData().getUserTicketsDetails());
-                           ticketDetailsViewModel.ticketId.setValue(userTicketsDetails.get(0).getTicketNo());
-                           ticketDetailsViewModel.ticketDate.setValue(userTicketsDetails.get(0).getCreatedOn());
-                           ticketDetailsViewModel.subject.setValue(userTicketsDetails.get(0).getSubject());
-                           ticketDetailsViewModel.remark.setValue(userTicketsDetails.get(0).getRemark());
+                        if (recieveMessageResponse.getData().getUserTicketsDetails() != null &&
+                                recieveMessageResponse.getData().getUserTicketsDetails().size() > 0) {
+                            userTicketsDetails.addAll(recieveMessageResponse.getData().getUserTicketsDetails());
+                            ticketDetailsViewModel.ticketId.setValue(userTicketsDetails.get(0).getTicketNo());
+                            ticketDetailsViewModel.ticketDate.setValue(userTicketsDetails.get(0).getCreatedOn());
+                            ticketDetailsViewModel.subject.setValue(userTicketsDetails.get(0).getSubject());
+                            ticketDetailsViewModel.remark.setValue(userTicketsDetails.get(0).getRemark());
 
-                           if(userTicketsDetails.get(0).getStatus().equalsIgnoreCase("Pending")){
-                               fragmentTicketDetailBinding.tvTicketStatus.setTextColor(ContextCompat.getColor(context, R.color.color_pending));
-                               ticketDetailsViewModel.status.setValue(userTicketsDetails.get(0).getStatus());
-                           }else if(userTicketsDetails.get(0).getStatus().equalsIgnoreCase("Ongoing")){
-                               fragmentTicketDetailBinding.tvTicketStatus.setTextColor(ContextCompat.getColor(context, R.color.color_ongoing));
-                               ticketDetailsViewModel.status.setValue(userTicketsDetails.get(0).getStatus());
+                            if (userTicketsDetails.get(0).getStatus().equalsIgnoreCase("Pending")) {
+                                fragmentTicketDetailBinding.tvTicketStatus.setTextColor(ContextCompat.getColor(context, R.color.color_pending));
+                                ticketDetailsViewModel.status.setValue(userTicketsDetails.get(0).getStatus());
+                            } else if (userTicketsDetails.get(0).getStatus().equalsIgnoreCase("Ongoing")) {
+                                fragmentTicketDetailBinding.tvTicketStatus.setTextColor(ContextCompat.getColor(context, R.color.color_ongoing));
+                                ticketDetailsViewModel.status.setValue(userTicketsDetails.get(0).getStatus());
 
-                           }
+                            }
 
-                           String selectedDate = userTicketsDetails.get(0).getCreatedOn();
+                            String selectedDate = userTicketsDetails.get(0).getCreatedOn();
 
-                           String txtDisplayDate = "";
-                           try {
-                               txtDisplayDate = formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "MMM dd, yyyy hh:mm aa");
-                           } catch (ParseException e) {
-                               e.printStackTrace();
-                           }
-                           ticketDetailsViewModel.ticketDate.setValue(txtDisplayDate);
+                            String txtDisplayDate = "";
+                            try {
+                                txtDisplayDate = formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "MMM dd, yyyy hh:mm aa");
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            ticketDetailsViewModel.ticketDate.setValue(txtDisplayDate);
 
 
+                        }
 
-                       }
-
-                       if(recieveMessageResponse.getData().getAllChats() != null &&
-                       recieveMessageResponse.getData().getAllChats().size() > 0){
-                           allChatList.addAll(recieveMessageResponse.getData().getAllChats());
-                           ticketCommentsAdapter.notifyDataSetChanged();
-                       }
+                        if (recieveMessageResponse.getData().getAllChats() != null &&
+                                recieveMessageResponse.getData().getAllChats().size() > 0) {
+                            allChatList.addAll(recieveMessageResponse.getData().getAllChats());
+                            ticketCommentsAdapter.notifyDataSetChanged();
+                        }
                         break;
                     case STATUS_CODE_400://Validation Errors
                         warningToast(context, recieveMessageResponse.getMsg());
@@ -259,8 +249,8 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
                         infoToast(context, recieveMessageResponse.getMsg());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
@@ -270,32 +260,31 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
                 .observe(getViewLifecycleOwner(), recieveMessageResponseObserver);
     }
 
-    private HashMap<String, String> RecieveMessageInputParameter(){
+    private HashMap<String, String> RecieveMessageInputParameter() {
         HashMap<String, String> map = new HashMap<>();
         map.put(TICKET_ID, strTicketId);
         return map;
     }
 
 
-
-    private  void callSendMessageApi(ProgressDialog progressDialog){
+    private void callSendMessageApi(ProgressDialog progressDialog) {
         // print user input parameters
         for (Map.Entry<String, String> entry : SendMessageParameters().entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }
         Observer<SendMessageResponse> sendMessageResponseObserver = sendMessageResponse -> {
-            if (sendMessageResponse != null){
+            if (sendMessageResponse != null) {
                 Log.e("Send Message Api Response", new Gson().toJson(sendMessageResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (sendMessageResponse.getStatus()) {
                     case STATUS_CODE_200://success
 
-                        if (sendMessageResponse.getData() != null){
+                        if (sendMessageResponse.getData() != null) {
                             ticketDetailsViewModel.etMessage.setValue("");
-                            successToast(context,sendMessageResponse.getMessage());
-                            callReceiveMessageApi(showCircleProgressDialog(context,""));
+                            successToast(context, sendMessageResponse.getMessage());
+                            callReceiveMessageApi(showCircleProgressDialog(context, ""));
                         }
                         break;
                     case STATUS_CODE_400://Validation Errors
@@ -311,8 +300,8 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
                         infoToast(context, sendMessageResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
@@ -333,13 +322,13 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
 
     @Override
     public void onNetworkException(int from, String type) {
-        showServerErrorDialog(getString(R.string.for_better_user_experience), TicketDetailFragment.this,() -> {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), TicketDetailFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
-                if(from == 0) {
+                if (from == 0) {
                     callReceiveMessageApi(showCircleProgressDialog(context, ""));
-                }else if(from == 1) {
-                    callSendMessageApi(showCircleProgressDialog(context,""));
+                } else if (from == 1) {
+                    callSendMessageApi(showCircleProgressDialog(context, ""));
                 }
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

@@ -1,4 +1,3 @@
-
 package com.poona.agrocart.ui.nav_stores.model;
 
 import com.google.gson.annotations.Expose;

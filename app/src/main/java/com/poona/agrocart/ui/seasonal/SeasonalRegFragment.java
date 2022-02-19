@@ -1,14 +1,13 @@
 package com.poona.agrocart.ui.seasonal;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
 import com.poona.agrocart.databinding.FragmentSeasonalRegBinding;
@@ -25,13 +24,13 @@ import java.util.ArrayList;
  */
 public class SeasonalRegFragment extends BaseFragment {
 
+    public int count = 0;
+    public ViewPager vpImages;
     private FragmentSeasonalRegBinding fragmentSeasonalRegBinding;
     private SeasonalViewModel seasonalViewModel;
     private View seasonRoot;
     private SeasonalProductResponse.SeasonalProduct seasonalProduct;
-    public int count=0;
     private ProductImagesAdapter productImagesAdapter;
-    public ViewPager vpImages;
     private DotsIndicator dotsIndicator;
 
     public static SeasonalRegFragment newInstance(String param1, String param2) {
@@ -66,9 +65,9 @@ public class SeasonalRegFragment extends BaseFragment {
         dotsIndicator = fragmentSeasonalRegBinding.dotsIndicator;
         initTitleWithBackBtn("Seasonal Product Registration");
         ArrayList<String> images = new ArrayList<>();
-        seasonalProduct  = new SeasonalProductResponse.SeasonalProduct();
+        seasonalProduct = new SeasonalProductResponse.SeasonalProduct();
         for (int i = 0; i < 3; i++)
-        images.add(getArguments() != null ? getArguments().getString("image") : null);
+            images.add(getArguments() != null ? getArguments().getString("image") : null);
         System.out.println(getArguments().getString("image"));
         seasonalProduct.setSeasProductImages(images);
         setViewPagerAdapterItems();
@@ -78,8 +77,8 @@ public class SeasonalRegFragment extends BaseFragment {
     private void setViewPagerAdapterItems() {
 
         count = seasonalProduct.getSeasProductImages().size();
-        productImagesAdapter = new ProductImagesAdapter(getChildFragmentManager(),SeasonalRegFragment.this,
-                getChildFragmentManager(), seasonalProduct.getSeasProductImages(),1);
+        productImagesAdapter = new ProductImagesAdapter(getChildFragmentManager(), SeasonalRegFragment.this,
+                getChildFragmentManager(), seasonalProduct.getSeasProductImages(), 1);
         vpImages.setAdapter(productImagesAdapter);
         productImagesAdapter.notifyDataSetChanged();
         vpImages.addOnPageChangeListener(productImagesAdapter);

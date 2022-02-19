@@ -10,11 +10,15 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.MediaController;
+import android.widget.ProgressBar;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,39 +27,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-
-
-import android.widget.MediaController;
-import android.widget.ProgressBar;
-import android.widget.SeekBar;
-import android.widget.VideoView;
-
-
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
@@ -75,13 +48,13 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.OnVideoClickListener, NetworkExceptionListener {
-   private List<GalleryVideo> galleryVideoList = new ArrayList<>();
+    private final List<GalleryVideo> galleryVideoList = new ArrayList<>();
     private FragmentVideoBinding videoFragmentBinding;
     private GalleryViewModel videoViewModel;
     private View videoView;
     private RecyclerView rvVideo;
     private VideoAdapter videoAdapter;
-    private  ProgressBar progressDialog;
+    private ProgressBar progressDialog;
     private MediaController mediaController;
     private PlayerView playerView;
     private SimpleExoPlayer simpleExoPlayer;
@@ -119,7 +92,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         if (isConnectingToInternet(context)) {
             callGalleryVideoApi(showCircleProgressDialog(context, ""));
         } else {
-            showNotifyAlert(requireActivity(),getString(R.string.info),getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            showNotifyAlert(requireActivity(), getString(R.string.info), getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
     }
 
@@ -132,22 +105,22 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         rvVideo = videoFragmentBinding.rvVideo;
     }
 
-    private void callGalleryVideoApi(ProgressDialog progressDialog){
+    private void callGalleryVideoApi(ProgressDialog progressDialog) {
 
         @SuppressLint("NotifyDataSetChanged") Observer<GalleryResponse> galleryResponseObserver = galleryResponse -> {
-            if (galleryResponse != null){
+            if (galleryResponse != null) {
                 Log.e("Gallery Video Api ResponseData", new Gson().toJson(galleryResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (galleryResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
 
                         if (galleryResponse.getData().getGalleryVideo() != null &&
-                                galleryResponse.getData().getGalleryVideo().size() > 0){
+                                galleryResponse.getData().getGalleryVideo().size() > 0) {
                             galleryVideoList.clear();
                             galleryVideoList.addAll(galleryResponse.getData().getGalleryVideo());
-                           setGallery(galleryVideoList);
+                            setGallery(galleryVideoList);
 
                             /*if(ourStoreListResponse.getData() != null){
                                 llEmptyLayout.setVisibility(View.INVISIBLE);
@@ -166,8 +139,8 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
                         infoToast(context, galleryResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
@@ -184,13 +157,14 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         rvVideo.setLayoutManager(linearLayoutManager);
 
         //initializing our adapter
-        videoAdapter = new VideoAdapter(context, galleryVideoList,this);
-        GridLayoutManager eLayoutManager = new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
+        videoAdapter = new VideoAdapter(context, galleryVideoList, this);
+        GridLayoutManager eLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
         rvVideo.setLayoutManager(eLayoutManager);
         rvVideo.setItemAnimator(new DefaultItemAnimator());
         //Adding adapter to recyclerview
         rvVideo.setAdapter(videoAdapter);
     }
+
     //String strVideoView = galleryVideoList.get(position).getVideoUrl();
     /*Video Player Dialogue*/
     public void VideoPlayerDialog(int position) {
@@ -219,7 +193,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     }
 
     @Override
-    public void onNetworkException(int from,String type) {
+    public void onNetworkException(int from, String type) {
 
         showServerErrorDialog(getString(R.string.for_better_user_experience), VideoGalleryFragment.this, () -> {
             if (isConnectingToInternet(context)) {

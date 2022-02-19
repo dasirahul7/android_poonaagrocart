@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class ProductDetailsResponse extends BaseResponse {
-@SerializedName("product_details")
+    @SerializedName("product_details")
     @Expose
     private ProductDetails productDetails;
 

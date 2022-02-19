@@ -19,10 +19,10 @@ import java.util.List;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder> {
 
-    private Context pContext;
+    private final Context pContext;
     private List<GalleryImage> galleryImages = new ArrayList<>();
     private RowPhotoItemBinding photoItemBinding;
-    private OnPhotoClickListener onPhotoClickListener;
+    private final OnPhotoClickListener onPhotoClickListener;
     private PhotoGalleryFragment photoGalleryFragment;
     private ImageView imageView;
 
@@ -32,12 +32,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder>
         this.galleryImages = galleryImages;
         this.onPhotoClickListener = photoGalleryFragment;
 
-    }
-
-
-    public interface OnPhotoClickListener{
-
-        void itemViewClick(int position);
     }
 
     @NonNull
@@ -66,6 +60,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder>
         return galleryImages.size();
     }
 
+    public interface OnPhotoClickListener {
+
+        void itemViewClick(int position);
+    }
+
     public class PhotoHolder extends RecyclerView.ViewHolder {
         RowPhotoItemBinding photoItemBinding;
 
@@ -73,7 +72,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder>
             super(rowPhotoItemBinding.getRoot());
             photoItemBinding = rowPhotoItemBinding;
 
-            itemView.setOnClickListener(v ->{
+            itemView.setOnClickListener(v -> {
                 if (onPhotoClickListener != null) {
                     int postion = getAdapterPosition();
                     if (postion != RecyclerView.NO_POSITION) {

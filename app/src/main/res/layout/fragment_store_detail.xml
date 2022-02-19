@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.nav_stores.StoreDetailFragment">
@@ -20,23 +19,23 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/_20sdp"
-            android:layout_marginHorizontal="@dimen/_15sdp">
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:paddingBottom="@dimen/_20sdp">
 
             <androidx.cardview.widget.CardView
-                app:cardCornerRadius="@dimen/_10sdp"
                 android:id="@+id/location_card"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_120sdp"
                 android:layout_marginVertical="@dimen/_10sdp"
+                app:cardCornerRadius="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/green_cart_bg"
-                    android:padding="@dimen/_10sdp"
-                    >
+                    android:padding="@dimen/_10sdp">
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_store_name"
@@ -50,8 +49,8 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_24sp"
                         android:textStyle="bold"
-                        app:textAllCaps="false"
-                        app:setCustomFont="@string/font_poppins_bold"/>
+                        app:setCustomFont="@string/font_poppins_bold"
+                        app:textAllCaps="false" />
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_store_location"
@@ -119,7 +118,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/view1"
                 app:setCustomFont="@string/font_poppins_regular" />
 
-           <!-- android:text="@{storeDetailViewModel.aboutStore}"-->
+            <!-- android:text="@{storeDetailViewModel.aboutStore}"-->
 
             <View
                 android:id="@+id/view2"
@@ -135,8 +134,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_10sdp"
                 android:drawableStart="@drawable/ic_phone"
-                android:paddingVertical="@dimen/_10sdp"
                 android:drawablePadding="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
                 android:text="@{storeDetailViewModel.contactPersonalNumber}"
                 android:textColor="@color/store_txt_color"
                 android:textSize="@dimen/_16sp"
@@ -148,8 +147,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:drawableStart="@drawable/ic_location"
-                android:paddingVertical="@dimen/_10sdp"
                 android:drawablePadding="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
                 android:text="@{storeDetailViewModel.personalAddress}"
                 android:textColor="@color/store_txt_color"
                 android:textSize="@dimen/_16sp"
@@ -175,17 +174,17 @@
             </androidx.cardview.widget.CardView>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                app:elevation="@dimen/_10sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
-                app:backgroundTint="@android:color/white"
-                android:src="@drawable/ic_send"
                 android:cropToPadding="false"
-                app:tint="@color/color_blue"
+                android:src="@drawable/ic_send"
+                app:backgroundTint="@android:color/white"
+                app:elevation="@dimen/_10sdp"
                 app:fabCustomSize="@dimen/_40sdp"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView"
-                app:layout_constraintEnd_toEndOf="@+id/cardView" />
+                app:layout_constraintEnd_toEndOf="@+id/cardView"
+                app:tint="@color/color_blue" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

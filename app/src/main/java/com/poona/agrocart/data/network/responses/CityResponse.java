@@ -2,9 +2,10 @@ package com.poona.agrocart.data.network.responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
-public class CityResponse extends BaseResponse{
+public class CityResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private List<City> cities = null;

@@ -14,11 +14,7 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.responses.cartResponse.MyCartResponse;
-import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
-import com.poona.agrocart.ui.home.model.ProductOld;
-import com.poona.agrocart.ui.nav_favourites.FavouriteItemsFragment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -36,8 +32,8 @@ public class MyCartViewModel extends AndroidViewModel {
     }
 
     public LiveData<MyCartResponse> CartLisResponseLiveData(ProgressDialog progressDialog,
-                                                                        HashMap <String,String> hashMap,
-                                                                        MyCartFragment myCartFragment) {
+                                                            HashMap<String, String> hashMap,
+                                                            MyCartFragment myCartFragment) {
         MutableLiveData<MyCartResponse> myCartResponseMutableLiveData = new MutableLiveData<>();
         ApiClientAuth.getClient(myCartFragment.getContext())
                 .create(ApiInterface.class)

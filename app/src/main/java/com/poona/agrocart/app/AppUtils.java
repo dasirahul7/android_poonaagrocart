@@ -48,15 +48,11 @@ public class AppUtils {
         return checkConnection;
     }
 
-    public static ProgressDialog showCircleProgressDialog(Context context, String message)
-    {
+    public static ProgressDialog showCircleProgressDialog(Context context, String message) {
         ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(context, R.style.CustomProgressDialog));
-        try
-        {
+        try {
             dialog.show();
-        }
-        catch (WindowManager.BadTokenException e)
-        {
+        } catch (WindowManager.BadTokenException e) {
 
         }
         dialog.setCancelable(false);
@@ -66,32 +62,28 @@ public class AppUtils {
         return dialog;
     }
 
-    public static void successToast(Context context, String message)
-    {
+    public static void successToast(Context context, String message) {
         CustomToast.Config.getInstance()
                 .setToastTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/poppins/poppins_regular.ttf"))
                 .apply();
         CustomToast.success(context, message, Toast.LENGTH_SHORT, true).show();
     }
 
-    public static void errorToast(Context context, String message)
-    {
+    public static void errorToast(Context context, String message) {
         CustomToast.Config.getInstance()
                 .setToastTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/poppins/poppins_regular.ttf"))
                 .apply();
         CustomToast.error(context, message, Toast.LENGTH_LONG, true).show();
     }
 
-    public static void infoToast(Context context, String message)
-    {
+    public static void infoToast(Context context, String message) {
         CustomToast.Config.getInstance()
                 .setToastTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/poppins/poppins_regular.ttf"))
                 .apply();
         CustomToast.info(context, message, Toast.LENGTH_LONG, true).show();
     }
 
-    public static void warningToast(Context context, String message)
-    {
+    public static void warningToast(Context context, String message) {
         CustomToast.Config.getInstance()
                 .setToastTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/poppins/poppins_regular.ttf"))
                 .apply();
@@ -107,17 +99,15 @@ public class AppUtils {
                 .show();
     }
 
-    public static void hideKeyBoard(Activity activity)
-    {
+    public static void hideKeyBoard(Activity activity) {
         View view = activity.getCurrentFocus();
-        if (view != null)
-        {
+        if (view != null) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    public static void setImage(ImageView view, String img){
+    public static void setImage(ImageView view, String img) {
         try {
             Glide.with(view.getContext())
                     .load(img)
@@ -127,10 +117,11 @@ public class AppUtils {
             e.printStackTrace();
         }
     }
-    public static void setMinusButton(int quantity,View view) {
-        if (quantity>1){
+
+    public static void setMinusButton(int quantity, View view) {
+        if (quantity > 1) {
             view.setBackgroundResource(R.drawable.bg_green_square);
-        }else {
+        } else {
             view.setBackgroundResource(R.drawable.bg_grey_square);
         }
     }

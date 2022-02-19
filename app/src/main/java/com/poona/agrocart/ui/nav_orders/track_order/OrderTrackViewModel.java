@@ -9,12 +9,10 @@ import androidx.lifecycle.MutableLiveData;
 import com.poona.agrocart.R;
 import com.poona.agrocart.ui.nav_orders.model.Order;
 
-public class OrderTrackViewModel extends AndroidViewModel
-{
-    private MutableLiveData<Order> orderMutableLiveData;
+public class OrderTrackViewModel extends AndroidViewModel {
+    private final MutableLiveData<Order> orderMutableLiveData;
 
-    public OrderTrackViewModel(@NonNull Application application)
-    {
+    public OrderTrackViewModel(@NonNull Application application) {
         super(application);
         orderMutableLiveData = new MutableLiveData<>();
         Order trackOrder = new Order(application.getString(R.string._paac002),

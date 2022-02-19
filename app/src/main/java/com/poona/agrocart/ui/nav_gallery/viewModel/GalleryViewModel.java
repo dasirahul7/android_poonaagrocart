@@ -21,7 +21,6 @@ import com.poona.agrocart.data.network.responses.galleryResponse.GalleryVideo;
 import com.poona.agrocart.ui.nav_gallery.fragment.PhotoGalleryFragment;
 import com.poona.agrocart.ui.nav_gallery.fragment.VideoGalleryFragment;
 
-
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -53,19 +52,15 @@ public class GalleryViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<GalleryResponse>() {
                     @Override
                     public void onSuccess(@NonNull GalleryResponse baseResponse) {
-                        if (progressDialog != null){
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
-                        if (baseResponse != null){
-                            galleryResponseMutableLiveData.setValue(baseResponse);
-                        }else {
-                            galleryResponseMutableLiveData.setValue(null);
-                        }
+                        galleryResponseMutableLiveData.setValue(baseResponse);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if (progressDialog != null){
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
 
@@ -74,15 +69,11 @@ public class GalleryViewModel extends AndroidViewModel {
                         try {
                             baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), GalleryResponse.class);
 
-                            if (baseResponse != null){
-                                galleryResponseMutableLiveData.setValue(baseResponse);
-                            }else {
-                                galleryResponseMutableLiveData.setValue(null);
-                            }
+                            galleryResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
                             ((NetworkExceptionListener) photoGalleryFragment)
-                                    .onNetworkException(0,"");
+                                    .onNetworkException(0, "");
                         }
                         Log.e(TAG, e.getMessage());
                     }
@@ -102,19 +93,15 @@ public class GalleryViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<GalleryResponse>() {
                     @Override
                     public void onSuccess(@NonNull GalleryResponse baseResponse) {
-                        if (progressDialog != null){
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
-                        if (baseResponse != null){
-                            galleryResponseMutableLiveData.setValue(baseResponse);
-                        }else {
-                            galleryResponseMutableLiveData.setValue(null);
-                        }
+                        galleryResponseMutableLiveData.setValue(baseResponse);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if (progressDialog != null){
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
 
@@ -123,15 +110,11 @@ public class GalleryViewModel extends AndroidViewModel {
                         try {
                             baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), GalleryResponse.class);
 
-                            if (baseResponse != null){
-                                galleryResponseMutableLiveData.setValue(baseResponse);
-                            }else {
-                                galleryResponseMutableLiveData.setValue(null);
-                            }
+                            galleryResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
                             ((NetworkExceptionListener) videoGalleryFragment)
-                                    .onNetworkException(0,"");
+                                    .onNetworkException(0, "");
                         }
                         Log.e(TAG, e.getMessage());
                     }

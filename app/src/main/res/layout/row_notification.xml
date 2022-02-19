@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="moduleNotification"
             type="com.poona.agrocart.ui.nav_notification.Notification" />
@@ -19,10 +20,10 @@
             android:layout_alignTop="@+id/cv_notification"
             android:layout_alignBottom="@+id/cv_notification"
             android:elevation="@dimen/_8sdp"
+            app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="@dimen/_8sdp"
             app:cardUseCompatPadding="true"
             app:strokeColor="@color/colorLightGrey"
-            app:cardBackgroundColor="@color/colorPrimary"
             app:strokeWidth="0.5dp" />
 
         <com.google.android.material.card.MaterialCardView
@@ -70,9 +71,9 @@
                         android:layout_height="0dp"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="0.3"
-                        android:paddingEnd="0dp"
                         android:lineSpacingExtra="@dimen/_1sdp"
                         android:paddingTop="@dimen/_5sdp"
+                        android:paddingEnd="0dp"
                         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi semper egestas at cursus maecenas duis enim sit ipsum. Ri amet tristique comm."
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
@@ -83,11 +84,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:drawableStart="@drawable/ic_grey_calender"
-                        android:gravity="center_vertical"
                         android:drawablePadding="@dimen/_5sdp"
-                        android:text="@{moduleNotification.date}"
-                        android:padding="@dimen/_5sdp"
+                        android:gravity="center_vertical"
                         android:includeFontPadding="false"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@{moduleNotification.date}"
                         android:textColor="@color/color_order_date_and_time"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />

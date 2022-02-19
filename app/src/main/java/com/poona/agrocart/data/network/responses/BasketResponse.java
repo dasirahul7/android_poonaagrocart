@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasketResponse extends BaseResponse{
+public class BasketResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private BasketData data;
@@ -20,7 +20,8 @@ public class BasketResponse extends BaseResponse{
     public void setData(BasketData data) {
         this.data = data;
     }
-    public class BasketData{
+
+    public class BasketData {
         @SerializedName("basket_list")
         @Expose
         private ArrayList<Basket> baskets;
@@ -33,6 +34,7 @@ public class BasketResponse extends BaseResponse{
             this.baskets = baskets;
         }
     }
+
     public class Basket {
         @SerializedName("basket_id")
         @Expose

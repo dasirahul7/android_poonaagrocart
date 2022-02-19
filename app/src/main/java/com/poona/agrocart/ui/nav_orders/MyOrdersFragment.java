@@ -25,9 +25,8 @@ public class MyOrdersFragment extends BaseFragment {
     private LinearLayoutManager linearLayoutManager;
     private OrdersAdapter ordersAdapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        fragmentMyOrdersBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_my_orders, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentMyOrdersBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_orders, container, false);
         fragmentMyOrdersBinding.setLifecycleOwner(this);
 
         View root = fragmentMyOrdersBinding.getRoot();
@@ -39,37 +38,31 @@ public class MyOrdersFragment extends BaseFragment {
         return root;
     }
 
-    private void setRvAdapter(View view)
-    {
-        orderArrayList=new ArrayList<>();
+    private void setRvAdapter(View view) {
+        orderArrayList = new ArrayList<>();
         prepareListingData();
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvOrders.setHasFixedSize(true);
         rvOrders.setLayoutManager(linearLayoutManager);
 
-        ordersAdapter = new OrdersAdapter(orderArrayList,context,view);
+        ordersAdapter = new OrdersAdapter(orderArrayList, context, view);
         rvOrders.setAdapter(ordersAdapter);
     }
 
-    private void prepareListingData()
-    {
-        for(int i = 0; i < 4; i++)
-        {
+    private void prepareListingData() {
+        for (int i = 0; i < 4; i++) {
             Order order = new Order();
             order.setOrderId(getString(R.string._1200283e));
             order.setDateAndTime(getString(R.string.sep_30_2021_20_15_am));
             order.setAmount(getString(R.string.rs_800));
-            if(i==0) {
+            if (i == 0) {
                 order.setStatus(getString(R.string.in_process));
-            }
-            else if(i==1) {
+            } else if (i == 1) {
                 order.setStatus(getString(R.string.delivered));
-            }
-            else if(i==2) {
+            } else if (i == 2) {
                 order.setStatus(getString(R.string.confirmed));
-            }
-            else {
+            } else {
                 order.setStatus(getString(R.string.cancelled));
             }
             order.setQuantity(getString(R.string._25));
@@ -78,14 +71,12 @@ public class MyOrdersFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         super.onDestroyView();
         fragmentMyOrdersBinding = null;
     }
 
-    private void initView()
-    {
-        rvOrders=fragmentMyOrdersBinding.rvOrders;
+    private void initView() {
+        rvOrders = fragmentMyOrdersBinding.rvOrders;
     }
 }

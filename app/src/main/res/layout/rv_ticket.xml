@@ -42,17 +42,17 @@
                         android:layout_weight="60"
                         android:orientation="vertical">
 
-                            <com.poona.agrocart.widgets.CustomTextView
-                                android:id="@+id/tv_ticket_id"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_3sdp"
-                                android:gravity="start"
-                                android:singleLine="true"
-                                android:text="@{`Ticket Id- `+ticket.ticketNo}"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_14sp"
-                                app:setCustomFont="@string/font_poppins_semi_bold" />
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_ticket_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            android:gravity="start"
+                            android:singleLine="true"
+                            android:text="@{`Ticket Id- `+ticket.ticketNo}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sp"
+                            app:setCustomFont="@string/font_poppins_semi_bold" />
 
 
                         <com.poona.agrocart.widgets.CustomTextView

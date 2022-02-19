@@ -11,6 +11,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -19,13 +25,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -46,18 +45,18 @@ import java.util.List;
  * Use the {@link PhotoGalleryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.OnPhotoClickListener, NetworkExceptionListener {
+public class PhotoGalleryFragment extends BaseFragment implements PhotoAdapter.OnPhotoClickListener, NetworkExceptionListener {
     private FragmentPhotoBinding fragmentPhotoBinding;
     private GalleryViewModel photoViewModel;
     private View photoView;
-    private List<GalleryImage> galleryImages = new ArrayList<>();
+    private final List<GalleryImage> galleryImages = new ArrayList<>();
     private RecyclerView rvPhoto;
     private PhotoAdapter photoAdapter;
     private LinearLayoutManager linearLayoutManager;
 
     public static PhotoGalleryFragment newInstance() {
         PhotoGalleryFragment fragment = new PhotoGalleryFragment();
-      //  GalleryImage = photos.getValue();
+        //  GalleryImage = photos.getValue();
         return fragment;
     }
 
@@ -74,7 +73,7 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
         // Inflate the layout for this fragment
         initViews();
         callGalleryAPI();
-        Log.e("TAG", "onCreateView: photo " );
+        Log.e("TAG", "onCreateView: photo ");
         return photoView;
     }
 
@@ -82,7 +81,7 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
         if (isConnectingToInternet(context)) {
             callGalleryImageApi(showCircleProgressDialog(context, ""));
         } else {
-            showNotifyAlert(requireActivity(),getString(R.string.info),getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            showNotifyAlert(requireActivity(), getString(R.string.info), getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
     }
 
@@ -113,28 +112,28 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
 
         //initializing our adapter
         photoAdapter = new PhotoAdapter(context, galleryImages, this);
-        GridLayoutManager eLayoutManager = new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
+        GridLayoutManager eLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
         rvPhoto.setLayoutManager(eLayoutManager);
         rvPhoto.setItemAnimator(new DefaultItemAnimator());
         //Adding adapter to recyclerview
         rvPhoto.setAdapter(photoAdapter);
     }
 
-    private void callGalleryImageApi(ProgressDialog progressDialog){
+    private void callGalleryImageApi(ProgressDialog progressDialog) {
 
-        @SuppressLint("NotifyDataSetChanged") Observer<GalleryResponse>galleryResponseObserver = galleryResponse -> {
-            if (galleryResponse != null){
+        @SuppressLint("NotifyDataSetChanged") Observer<GalleryResponse> galleryResponseObserver = galleryResponse -> {
+            if (galleryResponse != null) {
                 Log.e("Gallery Image Api ResponseData", new Gson().toJson(galleryResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (galleryResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
 
                         if (galleryResponse.getData().getGalleryImage() != null &&
-                        galleryResponse.getData().getGalleryImage().size() > 0){
-                         galleryImages.clear();
-                           galleryImages.addAll(galleryResponse.getData().getGalleryImage());
+                                galleryResponse.getData().getGalleryImage().size() > 0) {
+                            galleryImages.clear();
+                            galleryImages.addAll(galleryResponse.getData().getGalleryImage());
                             setGallery(galleryImages);
 
                             /*if(ourStoreListResponse.getData() != null){
@@ -154,8 +153,8 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
                         infoToast(context, galleryResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
@@ -175,7 +174,7 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
         dialog.setContentView(R.layout.photo_image_pop_up_dailog);
         ImageView popUpImage = dialog.findViewById(R.id.iv_pop_up_image);
         Glide.with(context)
-                .load(IMAGE_DOC_BASE_URL+galleryImages.get(position).getGalleryImage())
+                .load(IMAGE_DOC_BASE_URL + galleryImages.get(position).getGalleryImage())
                 .into(popUpImage);
 
 
@@ -188,7 +187,7 @@ public class PhotoGalleryFragment extends BaseFragment implements  PhotoAdapter.
     }
 
     @Override
-    public void onNetworkException(int from,String type) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), PhotoGalleryFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());

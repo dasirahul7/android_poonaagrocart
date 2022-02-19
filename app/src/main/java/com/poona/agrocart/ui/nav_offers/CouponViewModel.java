@@ -32,8 +32,8 @@ public class CouponViewModel extends AndroidViewModel {
     }
 
     public LiveData<CouponResponse> couponResponseLiveData(ProgressDialog progressDialog,
-                                                           HashMap<String,String> hashMap,
-                                                           CouponFragment couponFragment){
+                                                           HashMap<String, String> hashMap,
+                                                           CouponFragment couponFragment) {
         MutableLiveData<CouponResponse> couponResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(couponFragment.getContext())
@@ -44,7 +44,7 @@ public class CouponViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<CouponResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull CouponResponse couponResponse) {
-                        if (couponResponse!=null){
+                        if (couponResponse != null) {
                             progressDialog.dismiss();
                             couponResponseMutableLiveData.setValue(couponResponse);
                         }
@@ -57,13 +57,13 @@ public class CouponViewModel extends AndroidViewModel {
                         Gson gson = new GsonBuilder().create();
 
                         CouponResponse couponResponse = new CouponResponse();
-                        try{
+                        try {
                             couponResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     CouponResponse.class);
                             couponResponseMutableLiveData.setValue(couponResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) couponFragment).onNetworkException(5,"");
+                            ((NetworkExceptionListener) couponFragment).onNetworkException(5, "");
                         }
 
                     }

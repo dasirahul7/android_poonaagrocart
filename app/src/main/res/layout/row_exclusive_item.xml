@@ -84,13 +84,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
+                    android:includeFontPadding="false"
                     android:paddingHorizontal="@dimen/_5sdp"
                     android:singleLine="true"
                     android:text="@{exclusiveOfferModule.productName}"
                     android:textColor="@color/blue_txt_color"
                     android:textSize="@dimen/_16sp"
                     android:textStyle="bold"
-                    android:includeFontPadding="false"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 <com.poona.agrocart.widgets.CustomTextView
@@ -100,8 +100,8 @@
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:drawablePadding="-5dp"
                     android:gravity="center_vertical"
-                    android:singleLine="true"
                     android:includeFontPadding="false"
+                    android:singleLine="true"
                     android:text="@{exclusiveOfferModule.location}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
@@ -113,11 +113,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:text="@{exclusiveOfferModule.accurateWeight}"
+                    android:includeFontPadding="false"
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:includeFontPadding="false"
+                    android:text="@{exclusiveOfferModule.accurateWeight}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp" />
 
@@ -126,13 +126,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
+                    android:includeFontPadding="false"
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
                     android:text="@string/out_of_stock"
                     android:textColor="@color/red_text_color"
                     android:textSize="@dimen/_14sp"
-                    android:includeFontPadding="false"
                     android:visibility="gone" />
 
 
@@ -149,11 +149,11 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_strikethrough"
                         android:gravity="center"
+                        android:includeFontPadding="false"
                         android:singleLine="true"
+                        android:text="@{`Rs.`+exclusiveOfferModule.unit.sellingPrice}"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
-                        android:includeFontPadding="false"
-                        android:text="@{`Rs.`+exclusiveOfferModule.unit.sellingPrice}"
                         app:setCustomFont="@string/font_poppins_regular"
                         tools:ignore="RtlSymmetry" />
 
@@ -163,11 +163,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_5sdp"
                         android:gravity="center"
+                        android:includeFontPadding="false"
                         android:singleLine="true"
                         android:text="@{`Rs.`+exclusiveOfferModule.unit.offerPrice}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16sp"
-                        android:includeFontPadding="false"
                         app:setCustomFont="@string/font_montserrat_regular"
                         tools:ignore="RtlSymmetry" />
                 </LinearLayout>

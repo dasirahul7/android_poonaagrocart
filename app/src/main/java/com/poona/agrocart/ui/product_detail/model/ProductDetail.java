@@ -27,9 +27,9 @@ public class ProductDetail extends ProductDetailsResponse {
     public String productReview;
     public String ratings;
     public String productOfferMsg;
-    public Boolean basket=false;
-    public Boolean organic=false;
-    public Boolean isFavourite=false;
+    public Boolean basket = false;
+    public Boolean organic = false;
+    public Boolean isFavourite = false;
     public String brand;
     // Basket details
     private Subscription subscription;
@@ -57,12 +57,12 @@ public class ProductDetail extends ProductDetailsResponse {
         return organic;
     }
 
-    public Boolean isOrganic() {
-        return organic;
-    }
-
     public void setOrganic(Boolean organic) {
         this.organic = organic;
+    }
+
+    public Boolean isOrganic() {
+        return organic;
     }
 
     public String getBrand() {

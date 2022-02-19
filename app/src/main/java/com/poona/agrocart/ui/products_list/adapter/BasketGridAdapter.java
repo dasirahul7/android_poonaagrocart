@@ -15,22 +15,19 @@ import com.poona.agrocart.ui.home.adapter.BasketAdapter;
 
 import java.util.ArrayList;
 
-public class BasketGridAdapter extends RecyclerView.Adapter<BasketGridAdapter.BasketGridHolder>
-{
+public class BasketGridAdapter extends RecyclerView.Adapter<BasketGridAdapter.BasketGridHolder> {
     private final ArrayList<BasketResponse.Basket> basketArrayList;
     private RowBasketListItemBinding rowBasketBinding;
-    private BasketAdapter.OnBasketClickListener onBasketClickListener;
+    private final BasketAdapter.OnBasketClickListener onBasketClickListener;
 
-    public BasketGridAdapter(ArrayList<BasketResponse.Basket> basketArrayList, BasketAdapter.OnBasketClickListener onBasketClickListener)
-    {
+    public BasketGridAdapter(ArrayList<BasketResponse.Basket> basketArrayList, BasketAdapter.OnBasketClickListener onBasketClickListener) {
         this.basketArrayList = basketArrayList;
         this.onBasketClickListener = onBasketClickListener;
     }
 
     @NonNull
     @Override
-    public BasketGridHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public BasketGridHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RowBasketListItemBinding binding = DataBindingUtil.inflate
                 (LayoutInflater.from(parent.getContext()),
                         R.layout.row_basket_list_item, parent, false);
@@ -38,8 +35,7 @@ public class BasketGridAdapter extends RecyclerView.Adapter<BasketGridAdapter.Ba
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BasketGridHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull BasketGridHolder holder, int position) {
         final BasketResponse.Basket vegetable = basketArrayList.get(position);
         holder.basketListItemBinding.setBasket(vegetable);
         holder.bind(vegetable);
@@ -50,8 +46,7 @@ public class BasketGridAdapter extends RecyclerView.Adapter<BasketGridAdapter.Ba
         return basketArrayList.size();
     }
 
-    public class BasketGridHolder extends RecyclerView.ViewHolder
-    {
+    public class BasketGridHolder extends RecyclerView.ViewHolder {
         RowBasketListItemBinding basketListItemBinding;
 
         public BasketGridHolder(RowBasketListItemBinding productListItemBinding) {
@@ -59,9 +54,8 @@ public class BasketGridAdapter extends RecyclerView.Adapter<BasketGridAdapter.Ba
             this.basketListItemBinding = productListItemBinding;
         }
 
-            public void bind(BasketResponse.Basket basket)
-        {
-            basketListItemBinding.setVariable(BR.basket,basket);
+        public void bind(BasketResponse.Basket basket) {
+            basketListItemBinding.setVariable(BR.basket, basket);
             basketListItemBinding.executePendingBindings();
             itemView.setOnClickListener(view -> {
                 onBasketClickListener.OnBasketClick(basket);

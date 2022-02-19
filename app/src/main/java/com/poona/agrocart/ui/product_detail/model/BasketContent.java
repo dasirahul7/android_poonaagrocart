@@ -1,7 +1,6 @@
 package com.poona.agrocart.ui.product_detail.model;
 
-public class BasketContent
-{
+public class BasketContent {
     private String contentName;
     private String contentWeight;
 

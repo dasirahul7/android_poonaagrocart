@@ -3,17 +3,13 @@ package com.poona.agrocart.ui;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.LOGOUT;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,9 +17,6 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -35,7 +28,6 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.firebase.PushNotification;
-import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
@@ -43,19 +35,15 @@ import com.poona.agrocart.widgets.CustomTextView;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public abstract class BaseActivity extends AppCompatActivity
-{
+public abstract class BaseActivity extends AppCompatActivity {
     private static final int REQ_CODE_VERSION_UPDATE = 530;
     private static final String TAG = BaseActivity.class.getSimpleName();
+    protected PushNotification pushNotification;
     private AppUpdateManager appUpdateManager;
     private InstallStateUpdatedListener installStateUpdatedListener;
 
-    protected PushNotification pushNotification;
-
-
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
     }
 
@@ -115,7 +103,7 @@ public abstract class BaseActivity extends AppCompatActivity
                     appUpdateManager.registerListener(installStateUpdatedListener);
                     // Start an update.
                     startAppUpdateFlexible(appUpdateInfo);
-                } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) ) {
+                } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
                     // Start an update.
                     startAppUpdateImmediate(appUpdateInfo);
                 }
@@ -156,8 +144,7 @@ public abstract class BaseActivity extends AppCompatActivity
      * Displays the snackbar notification and call to action.
      * Needed only for Flexible app update
      */
-    protected void popupForCompleteUpdateAndUnregister()
-    {
+    protected void popupForCompleteUpdateAndUnregister() {
         /*Snackbar snackbar = Snackbar.make(coordinatorLayoutMain, getString(R.string.update_downloaded), Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(R.string.restart, (View.OnClickListener) view -> appUpdateManager.completeUpdate());
         snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorRed));
@@ -201,12 +188,11 @@ public abstract class BaseActivity extends AppCompatActivity
             appUpdateManager.unregisterListener(installStateUpdatedListener);
     }
 
-    private void showUpdateSuccessPopup()
-    {
+    private void showUpdateSuccessPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.StyleDataConfirmationDialog));
 
         LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_logout,null);
+        View dialogView = inflater.inflate(R.layout.dialog_logout, null);
 
         builder.setView(dialogView);
         builder.setCancelable(false);
@@ -280,6 +266,7 @@ public abstract class BaseActivity extends AppCompatActivity
         startActivity(intent);
         this.finish();
     }
+
     public ProgressDialog showCircleProgressDialog(Context context, String message) {
         ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(context, R.style.CustomProgressDialog));
         try {

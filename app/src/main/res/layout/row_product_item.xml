@@ -154,7 +154,6 @@
                 tools:ignore="RelativeOverlap" />
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/iv_favourite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -162,7 +161,8 @@
                 android:layout_alignEnd="@+id/img_plus"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_filled_heart" />
+                android:src="@drawable/ic_filled_heart"
+                android:visibility="gone" />
 
 
             <ImageView
@@ -174,11 +174,11 @@
                 android:layout_alignParentBottom="true" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:visibility="gone"
                 android:id="@+id/close_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentEnd="true">
+                android:layout_alignParentEnd="true"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/iv_cross"

@@ -1,7 +1,7 @@
 package com.poona.agrocart.ui.order_summary.model;
 
 public class Address {
-    String addTitle,addContent;
+    String addTitle, addContent;
 
     public Address(String addTitle, String addContent) {
         this.addTitle = addTitle;

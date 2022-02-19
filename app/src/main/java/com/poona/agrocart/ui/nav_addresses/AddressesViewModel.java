@@ -32,7 +32,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
 
 public class AddressesViewModel extends AndroidViewModel {
-    private String TAG = AddressesViewModel.class.getSimpleName();
     public MutableLiveData<String> addressType;
     public MutableLiveData<String> name;
     public MutableLiveData<String> mobile;
@@ -44,21 +43,22 @@ public class AddressesViewModel extends AndroidViewModel {
     public MutableLiveData<String> landmark;
     public MutableLiveData<String> mapAddress;
     public MutableLiveData<String> street;
+    private final String TAG = AddressesViewModel.class.getSimpleName();
 
     public AddressesViewModel(@NonNull Application application) {
         super(application);
 
-        addressType=new MutableLiveData<>();
-        name=new MutableLiveData<>();
-        mobile=new MutableLiveData<>();
-        city=new MutableLiveData<>();
-        area=new MutableLiveData<>();
-        pinCode =new MutableLiveData<>();
-        houseNumber=new MutableLiveData<>();
-        apartmentName =new MutableLiveData<>();
-        street=new MutableLiveData<>();
-        landmark=new MutableLiveData<>();
-        mapAddress=new MutableLiveData<>();
+        addressType = new MutableLiveData<>();
+        name = new MutableLiveData<>();
+        mobile = new MutableLiveData<>();
+        city = new MutableLiveData<>();
+        area = new MutableLiveData<>();
+        pinCode = new MutableLiveData<>();
+        houseNumber = new MutableLiveData<>();
+        apartmentName = new MutableLiveData<>();
+        street = new MutableLiveData<>();
+        landmark = new MutableLiveData<>();
+        mapAddress = new MutableLiveData<>();
 
         addressType.setValue("");
         name.setValue("");
@@ -142,7 +142,7 @@ public class AddressesViewModel extends AndroidViewModel {
                             cityResponseMutableLiveData.setValue(cityResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(0, "");
                         }
 
                     }
@@ -183,7 +183,7 @@ public class AddressesViewModel extends AndroidViewModel {
                             areaResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(1,"");
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(1, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -224,7 +224,7 @@ public class AddressesViewModel extends AndroidViewModel {
                             responseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(2,"");
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(2, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -234,8 +234,8 @@ public class AddressesViewModel extends AndroidViewModel {
     }
 
     public LiveData<BaseResponse> updateAddressResponse(ProgressDialog progressDialog,
-                                                     AddAddressFragment addAddressFragment,
-                                                     HashMap<String, String> hashmap) {
+                                                        AddAddressFragment addAddressFragment,
+                                                        HashMap<String, String> hashmap) {
         MutableLiveData<BaseResponse> responseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(addAddressFragment.getContext())
@@ -265,7 +265,7 @@ public class AddressesViewModel extends AndroidViewModel {
                             responseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(4,"");
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(4, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -275,8 +275,8 @@ public class AddressesViewModel extends AndroidViewModel {
     }
 
     public LiveData<BaseResponse> deleteAddressResponse(ProgressDialog progressDialog,
-                                                     AddressesFragment addAddressFragment,
-                                                     HashMap<String, String> hashmap) {
+                                                        AddressesFragment addAddressFragment,
+                                                        HashMap<String, String> hashmap) {
         MutableLiveData<BaseResponse> responseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(addAddressFragment.getContext())
@@ -306,7 +306,7 @@ public class AddressesViewModel extends AndroidViewModel {
                             responseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(1,"");
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(1, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -316,8 +316,8 @@ public class AddressesViewModel extends AndroidViewModel {
     }
 
     public LiveData<BaseResponse> checkPinCodeAvailableResponse(ProgressDialog progressDialog,
-                                                     AddAddressFragment addAddressFragment,
-                                                     HashMap<String, String> hashmap) {
+                                                                AddAddressFragment addAddressFragment,
+                                                                HashMap<String, String> hashmap) {
         MutableLiveData<BaseResponse> responseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(addAddressFragment.getContext())
@@ -347,7 +347,7 @@ public class AddressesViewModel extends AndroidViewModel {
                             responseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(3,"");
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(3, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -357,8 +357,8 @@ public class AddressesViewModel extends AndroidViewModel {
     }
 
     public LiveData<BaseResponse> setDefaultAddressResponse(ProgressDialog progressDialog,
-                                                                AddressesFragment addAddressFragment,
-                                                                HashMap<String, String> hashmap) {
+                                                            AddressesFragment addAddressFragment,
+                                                            HashMap<String, String> hashmap) {
         MutableLiveData<BaseResponse> responseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(addAddressFragment.getContext())
@@ -388,7 +388,7 @@ public class AddressesViewModel extends AndroidViewModel {
                             responseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(2,"");
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(2, "");
                         }
 
                         Log.e(TAG, e.getMessage());

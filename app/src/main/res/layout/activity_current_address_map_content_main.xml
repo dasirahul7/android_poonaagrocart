@@ -11,7 +11,7 @@
         android:id="@+id/map_fragment"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.skyfishjy.library.RippleBackground
         android:id="@+id/ripple_bg"
@@ -57,14 +57,14 @@
         android:id="@+id/fab_find_my_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/cv_address"
+        android:layout_alignParentEnd="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/_16sdp"
+        android:clickable="true"
         android:src="@drawable/ic_current_location"
         app:backgroundTint="@color/white"
-        android:layout_above="@+id/cv_address"
-        app:rippleColor="@color/colorAccent"
-        android:clickable="true"
-        android:layout_alignParentEnd="true"/>
+        app:rippleColor="@color/colorAccent" />
 
 
     <androidx.cardview.widget.CardView
@@ -72,12 +72,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/_14sdp"
+        android:layout_marginRight="@dimen/_14sdp"
+        android:layout_marginBottom="@dimen/_14sdp"
         android:elevation="5dp"
         app:cardCornerRadius="9dp"
-        app:contentPadding="8dp"
-        android:layout_marginRight="@dimen/_14sdp"
-        android:layout_marginLeft="@dimen/_14sdp"
-        android:layout_marginBottom="@dimen/_14sdp">
+        app:contentPadding="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                     android:layout_height="@dimen/_22sdp"
                     android:src="@drawable/ic_location"
                     android:visibility="visible"
-                    app:tint="@color/colorAccent"/>
+                    app:tint="@color/colorAccent" />
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
@@ -111,10 +111,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:includeFontPadding="false"
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
                     android:paddingBottom="10dp"
-                    android:includeFontPadding="false"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                     android:textColor="@android:color/primary_text_light"
                     android:textSize="16sp"
@@ -128,27 +128,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/_14sdp"
                 android:paddingLeft="@dimen/_40sdp"
+                android:paddingTop="@dimen/_14sdp"
                 android:paddingRight="@dimen/_40sdp"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
                 <com.poona.agrocart.widgets.CustomButton
                     android:id="@+id/submit_location_button"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:background="@drawable/button_green"
-                    android:textColor="@color/background_color_white_green"
                     android:gravity="center|center_vertical"
                     android:minHeight="0dp"
                     android:paddingTop="@dimen/_6sdp"
                     android:paddingBottom="@dimen/_8sdp"
                     android:text="@string/confirm_location"
                     android:textAllCaps="false"
-                    android:textSize="@dimen/_18sp"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    android:textColor="@color/background_color_white_green"
+                    android:textSize="@dimen/_18sp" />
 
 
             </LinearLayout>

@@ -1,7 +1,7 @@
 package com.poona.agrocart.ui.nav_explore.model;
 
 public class FilterItem {
-    String id,Name;
+    String id, Name;
     boolean isSelected;
 
     public FilterItem(String id, String name, boolean isSelected) {

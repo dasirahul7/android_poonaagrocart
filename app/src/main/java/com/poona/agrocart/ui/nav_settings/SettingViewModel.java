@@ -34,8 +34,8 @@ public class SettingViewModel extends AndroidViewModel {
     public SettingViewModel(@NonNull Application application) {
         super(application);
 
-        appVersion  = new MutableLiveData<>();
-        version  = new MutableLiveData<>();
+        appVersion = new MutableLiveData<>();
+        version = new MutableLiveData<>();
 
         appVersion.setValue("");
         version.setValue("");
@@ -45,7 +45,7 @@ public class SettingViewModel extends AndroidViewModel {
             , HashMap<String, String> notificationInputParameter, SettingsFragment settingsFragment) {
         MutableLiveData<UpdateConfigurationResponse> notificationSettingResponseMutableLiveData = new MutableLiveData<>();
 
-                 ApiClientAuth.getClient(context)
+        ApiClientAuth.getClient(context)
                 .create(ApiInterface.class)
                 .getNotificationSetting(notificationInputParameter)
                 .subscribeOn(Schedulers.io())
@@ -53,19 +53,15 @@ public class SettingViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<UpdateConfigurationResponse>() {
                     @Override
                     public void onSuccess(@NonNull UpdateConfigurationResponse baseResponse) {
-                        if (progressDialog != null){
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
-                        if (baseResponse != null) {
-                            notificationSettingResponseMutableLiveData.setValue(baseResponse);
-                        } else {
-                            notificationSettingResponseMutableLiveData.setValue(null);
-                        }
+                        notificationSettingResponseMutableLiveData.setValue(baseResponse);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if (progressDialog != null){
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
 
@@ -75,7 +71,7 @@ public class SettingViewModel extends AndroidViewModel {
                             baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), UpdateConfigurationResponse.class);
 
                             notificationSettingResponseMutableLiveData.setValue(baseResponse);
-                        }catch (Exception exception) {
+                        } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
                             ((NetworkExceptionListener) settingsFragment)
                                     .onNetworkException(0, "");
@@ -91,7 +87,7 @@ public class SettingViewModel extends AndroidViewModel {
             , Context context, SettingsFragment settingsFragment) {
         MutableLiveData<ViewConfigurationResponse> updateConfigurationResponseMutableLiveData = new MutableLiveData<>();
 
-                 ApiClientAuth.getClient(context)
+        ApiClientAuth.getClient(context)
                 .create(ApiInterface.class)
                 .getUpdatedNotification()
                 .subscribeOn(Schedulers.io())
@@ -99,19 +95,15 @@ public class SettingViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<ViewConfigurationResponse>() {
                     @Override
                     public void onSuccess(@NonNull ViewConfigurationResponse baseResponse) {
-                        if (progressDialog != null){
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
-                        if (baseResponse != null) {
-                            updateConfigurationResponseMutableLiveData.setValue(baseResponse);
-                        } else {
-                            updateConfigurationResponseMutableLiveData.setValue(null);
-                        }
+                        updateConfigurationResponseMutableLiveData.setValue(baseResponse);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if (progressDialog != null){
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
 
@@ -121,7 +113,7 @@ public class SettingViewModel extends AndroidViewModel {
                             baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), ViewConfigurationResponse.class);
 
                             updateConfigurationResponseMutableLiveData.setValue(baseResponse);
-                        }catch (Exception exception) {
+                        } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
                             ((NetworkExceptionListener) settingsFragment)
                                     .onNetworkException(0, "");

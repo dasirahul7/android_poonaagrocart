@@ -20,8 +20,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public class Alerter
-{
+public class Alerter {
     private static WeakReference<Activity> activityWeakReference;
 
     private Alert alert;

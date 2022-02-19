@@ -61,10 +61,13 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
 
     private String stateId = "";
     private String state = "";
+    private int editPosition = 0;
+    private int deletePosition = 0;
+    private View itemView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragmentAddressesBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_addresses, container, false);
+        fragmentAddressesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_addresses, container, false);
 
         addressesViewModel = new ViewModelProvider(this).get(AddressesViewModel.class);
         fragmentAddressesBinding.setAddressesViewModel(addressesViewModel);
@@ -78,9 +81,6 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
         return view;
     }
 
-    private int editPosition = 0;
-    private int deletePosition = 0;
-    private View itemView;
     private void setRvAdapter() {
         addressArrayList = new ArrayList<>();
 
@@ -99,7 +99,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
         addressesAdapter.setOnDeleteButtonClickListener((itemView, position) -> {
             this.itemView = itemView;
             this.deletePosition = position;
-            if(!addressArrayList.get(position).getIsDefault().equals("yes")) {
+            if (!addressArrayList.get(position).getIsDefault().equals("yes")) {
                 dialogDeleteAddress();
             } else {
                 warningToast(context, "You cannot delete this address.\nPlease change your default address & try it delete!");
@@ -195,8 +195,8 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void updateAddressArrayList(int position) {
-        if(addressArrayList != null && addressArrayList.size() > 0) {
-            for(int i = 0; i < addressArrayList.size(); i++) {
+        if (addressArrayList != null && addressArrayList.size() > 0) {
+            for (int i = 0; i < addressArrayList.size(); i++) {
                 AddressesResponse.Address address = new AddressesResponse.Address();
 
                 String id = addressArrayList.get(i).getAddressPrimaryId();
@@ -204,15 +204,15 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                 String mobileNumber = addressArrayList.get(i).getMobile();
                 String addressType = addressArrayList.get(i).getAddressType();
 
-                if(addressType != null
+                if (addressType != null
                         && !TextUtils.isEmpty(addressType)
                         && addressType.equals("home"))
                     addressType = "Home";
-                else if(addressType != null
+                else if (addressType != null
                         && !TextUtils.isEmpty(addressType)
                         && addressType.equals("office"))
                     addressType = "Office";
-                else if(addressType != null
+                else if (addressType != null
                         && !TextUtils.isEmpty(addressType)
                         && addressType.equals("other"))
                     addressType = "Other";
@@ -234,19 +234,19 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                 String isDefaultAddress = addressArrayList.get(i).getIsDefault();
 
                 StringBuilder fullAddressSb = new StringBuilder();
-                if(houseNumber != null && !TextUtils.isEmpty(houseNumber))
-                    fullAddressSb.append(houseNumber+", ");
-                if(apartmentName != null && !TextUtils.isEmpty(apartmentName))
-                    fullAddressSb.append(apartmentName+", ");
-                if(street != null && !TextUtils.isEmpty(street))
-                    fullAddressSb.append(street+", ");
-                if(landmark != null && !TextUtils.isEmpty(landmark))
-                    fullAddressSb.append(landmark+", ");
-                if(area != null && !TextUtils.isEmpty(area))
-                    fullAddressSb.append(area+", ");
-                if(city != null && !TextUtils.isEmpty(city))
-                    fullAddressSb.append(city+", ");
-                if(pinCode != null && !TextUtils.isEmpty(pinCode))
+                if (houseNumber != null && !TextUtils.isEmpty(houseNumber))
+                    fullAddressSb.append(houseNumber + ", ");
+                if (apartmentName != null && !TextUtils.isEmpty(apartmentName))
+                    fullAddressSb.append(apartmentName + ", ");
+                if (street != null && !TextUtils.isEmpty(street))
+                    fullAddressSb.append(street + ", ");
+                if (landmark != null && !TextUtils.isEmpty(landmark))
+                    fullAddressSb.append(landmark + ", ");
+                if (area != null && !TextUtils.isEmpty(area))
+                    fullAddressSb.append(area + ", ");
+                if (city != null && !TextUtils.isEmpty(city))
+                    fullAddressSb.append(city + ", ");
+                if (pinCode != null && !TextUtils.isEmpty(pinCode))
                     fullAddressSb.append(pinCode);
 
                 address.setAddressPrimaryId(id);
@@ -268,14 +268,14 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                 address.setMapAddress(mapAddress);
                 address.setLatitude(latitude);
                 address.setLongitude(longitude);
-                if(position != -1)
+                if (position != -1)
                     address.setIsDefault("no");
                 else
                     address.setIsDefault(isDefaultAddress);
 
                 addressArrayList.set(i, address);
             }
-            if(position != -1) {
+            if (position != -1) {
                 AddressesResponse.Address address = new AddressesResponse.Address();
 
                 String id = addressArrayList.get(position).getAddressPrimaryId();
@@ -283,15 +283,15 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                 String mobileNumber = addressArrayList.get(position).getMobile();
                 String addressType = addressArrayList.get(position).getAddressType();
 
-                if(addressType != null
+                if (addressType != null
                         && !TextUtils.isEmpty(addressType)
                         && addressType.equals("home"))
                     addressType = "Home";
-                else if(addressType != null
+                else if (addressType != null
                         && !TextUtils.isEmpty(addressType)
                         && addressType.equals("office"))
                     addressType = "Office";
-                else if(addressType != null
+                else if (addressType != null
                         && !TextUtils.isEmpty(addressType)
                         && addressType.equals("other"))
                     addressType = "Other";
@@ -313,19 +313,19 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                 String isDefaultAddress = "yes";
 
                 StringBuilder fullAddressSb = new StringBuilder();
-                if(houseNumber != null && !TextUtils.isEmpty(houseNumber))
-                    fullAddressSb.append(houseNumber+", ");
-                if(apartmentName != null && !TextUtils.isEmpty(apartmentName))
-                    fullAddressSb.append(apartmentName+", ");
-                if(street != null && !TextUtils.isEmpty(street))
-                    fullAddressSb.append(street+", ");
-                if(landmark != null && !TextUtils.isEmpty(landmark))
-                    fullAddressSb.append(landmark+", ");
-                if(area != null && !TextUtils.isEmpty(area))
-                    fullAddressSb.append(area+", ");
-                if(city != null && !TextUtils.isEmpty(city))
-                    fullAddressSb.append(city+", ");
-                if(pinCode != null && !TextUtils.isEmpty(pinCode))
+                if (houseNumber != null && !TextUtils.isEmpty(houseNumber))
+                    fullAddressSb.append(houseNumber + ", ");
+                if (apartmentName != null && !TextUtils.isEmpty(apartmentName))
+                    fullAddressSb.append(apartmentName + ", ");
+                if (street != null && !TextUtils.isEmpty(street))
+                    fullAddressSb.append(street + ", ");
+                if (landmark != null && !TextUtils.isEmpty(landmark))
+                    fullAddressSb.append(landmark + ", ");
+                if (area != null && !TextUtils.isEmpty(area))
+                    fullAddressSb.append(area + ", ");
+                if (city != null && !TextUtils.isEmpty(city))
+                    fullAddressSb.append(city + ", ");
+                if (pinCode != null && !TextUtils.isEmpty(pinCode))
                     fullAddressSb.append(pinCode);
 
                 address.setAddressPrimaryId(id);
@@ -442,7 +442,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                 Log.e("Check Pin Code Api Response", new Gson().toJson(baseResponse));
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(context, ""+baseResponse.getMessage());
+                        successToast(context, "" + baseResponse.getMessage());
                         updateAddressArrayList(deletePosition);
                         break;
                     case STATUS_CODE_400://Validation Errors
@@ -480,7 +480,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
         new Handler().postDelayed(() -> {
             addressArrayList.remove(deletePosition);
             addressesAdapter.notifyDataSetChanged();
-            if(addressArrayList != null && addressArrayList.size() > 0) {
+            if (addressArrayList != null && addressArrayList.size() > 0) {
                 fragmentAddressesBinding.rlErrorMessage.setVisibility(View.GONE);
                 fragmentAddressesBinding.rvAddress.setVisibility(View.VISIBLE);
             } else {
@@ -492,14 +492,14 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onNetworkException(int from, String type) {
-        showServerErrorDialog(getString(R.string.for_better_user_experience), AddressesFragment.this,() -> {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), AddressesFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
-                if(from == 0) {
+                if (from == 0) {
                     getAddressesListApi(showCircleProgressDialog(context, ""));
-                } else if(from == 1) {
+                } else if (from == 1) {
                     deleteAddressApi(showCircleProgressDialog(context, ""));
-                } else if(from == 2) {
+                } else if (from == 2) {
                     setDefaultAddressApi(showCircleProgressDialog(context, ""));
                 }
             } else {

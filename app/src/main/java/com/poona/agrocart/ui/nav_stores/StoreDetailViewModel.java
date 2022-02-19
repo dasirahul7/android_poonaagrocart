@@ -14,11 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
-import com.poona.agrocart.ui.nav_stores.model.OurStoreListData;
-import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
-import com.poona.agrocart.ui.nav_stores.model.Store;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
-import com.poona.agrocart.ui.nav_stores.model.store_details.StoreDetail;
 
 import java.util.HashMap;
 
@@ -29,7 +25,7 @@ import retrofit2.HttpException;
 
 public class StoreDetailViewModel extends AndroidViewModel {
     private static final String TAG = OurStoreViewModel.class.getSimpleName();
-   // public MutableLiveData<StoreDetail> storeMutableLiveData;
+    // public MutableLiveData<StoreDetail> storeMutableLiveData;
     public MutableLiveData<String> storeName;
     public MutableLiveData<String> aboutStore;
     public MutableLiveData<String> contactPersonalNumber;
@@ -76,11 +72,7 @@ public class StoreDetailViewModel extends AndroidViewModel {
                         public void onSuccess(@NonNull OurStoreViewDataResponse baseResponse) {
                             progressDialog.dismiss();
 
-                            if (baseResponse != null){
-                                ourStoreViewDataResponseMutableLiveData.setValue(baseResponse);
-                            }else {
-                                ourStoreViewDataResponseMutableLiveData.setValue(null);
-                            }
+                            ourStoreViewDataResponseMutableLiveData.setValue(baseResponse);
                         }
 
                         @Override
@@ -92,7 +84,7 @@ public class StoreDetailViewModel extends AndroidViewModel {
                                 baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), OurStoreViewDataResponse.class);
 
                                 ourStoreViewDataResponseMutableLiveData.setValue(baseResponse);
-                            }  catch (Exception exception) {
+                            } catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
                                /* ((NetworkExceptionListener) supportTicketFragment)
                                         .onNetworkException(0,"");*/

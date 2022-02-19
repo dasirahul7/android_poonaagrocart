@@ -1,7 +1,7 @@
 package com.poona.agrocart.ui.nav_orders.model;
 
 public class OrderDetails {
-    String successTitleMsg,successMsg;
+    String successTitleMsg, successMsg;
 
     public OrderDetails(String successTitleMsg, String successMsg) {
         this.successTitleMsg = successTitleMsg;

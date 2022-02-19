@@ -62,9 +62,10 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
     private View verifyView;
     private Bundle bundle;
 
-    private String strPattern = "\\d(?=\\d{3})";
+    private final String strPattern = "\\d(?=\\d{3})";
     private String phone;
     private String otp = "";
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -140,7 +141,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
             public void afterTextChanged(Editable s) {
                 if (s.length() == 4) {
                     hideKeyBoard(requireActivity());
-                    if(s.toString().equals(basicDetails.getOtp())) {
+                    if (s.toString().equals(basicDetails.getOtp())) {
                         checkValidEnteredOtp();
                     }
                 }
@@ -214,18 +215,17 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                                 Intent intent = new Intent(context, HomeActivity.class);
                                 preferences.setUid(verifyOtpResponse.getUser().getUserId());
                                 preferences.setUserMobile(verifyOtpResponse.getUser().getUserMobile());
-                                preferences.setUserAddress(verifyOtpResponse.getUser().getCityName()+","+verifyOtpResponse.getUser().getStateName());
+                                preferences.setUserAddress(verifyOtpResponse.getUser().getCityName() + "," + verifyOtpResponse.getUser().getStateName());
                                 preferences.setUserCountry(bundle.getString(COUNTRY_CODE));
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 requireActivity().finish();
                                 startActivity(intent);
-                            } else
-                            {
+                            } else {
                                 Bundle bundle = new Bundle();
-                                bundle.putString(USER_ID,verifyOtpResponse.getUser().getUserId());
-                                bundle.putString(USER_MOBILE,verifyOtpResponse.getUser().getUserMobile());
-                                bundle.putString(COUNTRY_CODE,bundle.getString(COUNTRY_CODE));
+                                bundle.putString(USER_ID, verifyOtpResponse.getUser().getUserId());
+                                bundle.putString(USER_MOBILE, verifyOtpResponse.getUser().getUserMobile());
+                                bundle.putString(COUNTRY_CODE, bundle.getString(COUNTRY_CODE));
                                 preferences.setUserMobile(verifyOtpResponse.getUser().getUserMobile());
                                 Navigation.findNavController(verifyView).navigate(R.id.action_verifyOtpFragment_to_signUpFragment, bundle);
                             }

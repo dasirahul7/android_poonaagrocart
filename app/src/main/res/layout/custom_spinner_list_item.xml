@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tv_spinner_title"
     style="?android:attr/spinnerItemStyle"
-    android:singleLine="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
-    android:textSize="@dimen/_14sp"
-    android:textColor="@color/color_spinner"
-    app:setCustomFont="@string/font_poppins_regular"
     android:paddingEnd="@dimen/_10sdp"
-    android:textAlignment="inherit" />
+    android:singleLine="true"
+    android:textAlignment="inherit"
+    android:textColor="@color/color_spinner"
+    android:textSize="@dimen/_14sp"
+    app:setCustomFont="@string/font_poppins_regular" />

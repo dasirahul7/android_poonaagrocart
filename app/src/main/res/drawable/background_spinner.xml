@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-        <item android:gravity="bottom">
-            <shape>
-                <size android:height="1dp" />
-                <solid android:color="#E2E2E2" />
-            </shape>
-        </item>
-        <item
-            android:bottom="@dimen/_8sdp"
-            android:drawable="@drawable/ic_spinner"
-            android:width="@dimen/_10sdp"
-            android:height="@dimen/_5sdp"
-            android:gravity="end|bottom" />
+    <item android:gravity="bottom">
+        <shape>
+            <size android:height="1dp" />
+            <solid android:color="#E2E2E2" />
+        </shape>
+    </item>
+    <item
+        android:width="@dimen/_10sdp"
+        android:height="@dimen/_5sdp"
+        android:bottom="@dimen/_8sdp"
+        android:drawable="@drawable/ic_spinner"
+        android:gravity="end|bottom" />
 </layer-list>

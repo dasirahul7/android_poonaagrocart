@@ -81,32 +81,68 @@ import retrofit2.HttpException;
 
 public class AddAddressFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     private static final String TAG = AddAddressFragment.class.getSimpleName();
+    final String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION};
+    /**
+     * @param apiKey Required parameter, put your google maps and places api key
+     * { you must get a places key it's required for search autocomplete }
+     * @param country Optional parameter to restrict autocomplete search to a specific country
+     * put country ISO like "eg" for Egypt and so on ..
+     * if there is no value attached to COUNTRY key, search will
+     * be worldWide
+     * @param language Optional parameter to specify the language of the resulting address
+     * could be "en" for English or "ar" for Arabic .
+     * If this not specified, resulting address will be English by default
+     * @param supportedAreas Optional Array of supported areas that user can pick a location from.
+     * Please be careful when you put areas as this will be literal comparison.
+     * Ex : if you put the value of SUPPORTED_AREAS key
+     * to something like {"Cairo"} , user will only be able to select the address
+     * that only contains cairo on it, like "zamalec,cairo,Egypt"
+     * Also consider adding arabic translation as some google addresses contains
+     * booth english and arabic together..
+     * I KNOW THIS IS A TRICKY ONE BUT I JUST USED IT TO RESTRICT USER SELECTION TO A SPECIFIC
+     * COUNTRY AND SAVE MANY NETWORK CALLS AS USERS ALWAYS LIKE TO PLAY WITH MAP ^_^
+     * it was something like {"Egypt","مصر"}
+     * if this array was empty, the whole world is a supported area , user can
+     * pick location anywhere!.
+     */
+    private final String[] countryListIso = {"eg", "sau", "om", "mar", "usa", "ind"};
+    private final String[] addressLanguageList = {"en", "ar"};
     private FragmentAddressesFormBinding fragmentAddressesFormBinding;
     private AddressesViewModel addressesViewModel;
-
     private View view;
-
     private List<BasicDetails> cityList;
     private List<BasicDetails> areaList;
-
     private BasicDetails basicDetails;
+    ActivityResultLauncher<Intent> activityGoogleMapLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                if (data != null) {
+                    updateUi(data);
+                }
+            }
+        }
+    });
     private String selectedStateId = "0";
     private String selectedCityId = "0";
     private String selectedAreaId = "0";
     private String selectedState, selectedCity, selectedArea;
-
-    private int check = 0;
+    private final int check = 0;
     private CityResponse cityResponse = null;
     private AreaResponse areaResponse = null;
-
     private boolean checkIsValidPinCode = false;
-
     private AddressesResponse.Address address = null;
     private String addOrUpdate = "";
+    private int checkCity = 0;
+    /*
+     * get address from google map start
+     * */
+    private ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragmentAddressesFormBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_addresses_form, container, false);
+        fragmentAddressesFormBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_addresses_form, container, false);
 
         addressesViewModel = new ViewModelProvider(this).get(AddressesViewModel.class);
         fragmentAddressesFormBinding.setAddressesViewModel(addressesViewModel);
@@ -137,7 +173,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         initTitleWithBackBtn(getString(R.string.addresses_form));
 
         fragmentAddressesFormBinding.rgAddressesType.setOnCheckedChangeListener((group, checkedId) -> {
-            switch(checkedId){
+            switch (checkedId) {
                 case R.id.rb_home:
                     addressesViewModel.addressType.setValue("home");
                     break;
@@ -189,18 +225,18 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         });
 
         Bundle bundle = getArguments();
-        if(bundle != null) {
-            if(bundle.getString(ADD_UPDATE_ADDRESS_DETAILS) != null) {
+        if (bundle != null) {
+            if (bundle.getString(ADD_UPDATE_ADDRESS_DETAILS) != null) {
                 addOrUpdate = bundle.getString(ADD_UPDATE_ADDRESS_DETAILS);
                 fragmentAddressesFormBinding.clMain.setVisibility(View.GONE);
-                if(addOrUpdate.equals(ADD_ADDRESS_DETAILS)) {
+                if (addOrUpdate.equals(ADD_ADDRESS_DETAILS)) {
                     if (isConnectingToInternet(context)) {
                         hideKeyBoard(requireActivity());
                         callCityApi(showCircleProgressDialog(context, ""));
                     } else {
                         showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                     }
-                } else if(addOrUpdate.equals(UPDATE_ADDRESS_DETAILS)) {
+                } else if (addOrUpdate.equals(UPDATE_ADDRESS_DETAILS)) {
                     address = (AddressesResponse.Address) bundle.getSerializable(ADDRESS_DETAILS);
 
                     selectedStateId = address.getStateId();
@@ -250,9 +286,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-    private int checkCity = 0;
     private void setupCitySpinner() {
-        if(cityList != null && cityList.size() > 0) {
+        if (cityList != null && cityList.size() > 0) {
             cityList.clear();
         }
 
@@ -261,8 +296,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         basicDetails.setName("Select");
         cityList.add(basicDetails);
 
-        if(cityResponse != null && cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
-            for(int i = 0; i < cityResponse.getCities().size(); i++) {
+        if (cityResponse != null && cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
+            for (int i = 0; i < cityResponse.getCities().size(); i++) {
                 BasicDetails details = new BasicDetails();
                 details.setId(cityResponse.getCities().get(i).getId());
                 details.setName(cityResponse.getCities().get(i).getCityName());
@@ -283,7 +318,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     selectedCityId = cityList.get(i).getId();
                     selectedCity = cityList.get(i).getName();
 
-                    if(++checkCity > 1 && !selectedCityId.equals("0"))
+                    if (++checkCity > 1 && !selectedCityId.equals("0"))
                         callAreaApi(showCircleProgressDialog(context, ""));
                 }
             }
@@ -299,7 +334,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     }
 
     private void setupAreaSpinner() {
-        if(areaList != null && areaList.size() > 0) {
+        if (areaList != null && areaList.size() > 0) {
             areaList.clear();
         }
 
@@ -308,8 +343,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         basicDetails.setName("Select");
         areaList.add(basicDetails);
 
-        if(areaResponse != null && areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
-            for(int i = 0; i < areaResponse.getAreas().size(); i++) {
+        if (areaResponse != null && areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
+            for (int i = 0; i < areaResponse.getAreas().size(); i++) {
                 BasicDetails details = new BasicDetails();
                 details.setId(areaResponse.getAreas().get(i).getId());
                 details.setName(areaResponse.getAreas().get(i).getAreaName());
@@ -424,22 +459,22 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     }
 
     private void getUserInputAndSetIntoPojo() {
-        if(cityList != null && cityList.size() > 0) {
-            for(int i = 0; i < cityList.size(); i++) {
-                if(cityList.get(i).getName().equals(fragmentAddressesFormBinding.spinnerCity.getSelectedItem().toString())) {
+        if (cityList != null && cityList.size() > 0) {
+            for (int i = 0; i < cityList.size(); i++) {
+                if (cityList.get(i).getName().equals(fragmentAddressesFormBinding.spinnerCity.getSelectedItem().toString())) {
                     addressesViewModel.city.setValue(cityList.get(i).getId());
                 }
             }
         }
-        if(areaList != null && areaList.size() > 0) {
-            for(int i = 0; i < areaList.size(); i++) {
-                if(areaList.get(i).getName().equals(fragmentAddressesFormBinding.spinnerArea.getSelectedItem().toString())) {
+        if (areaList != null && areaList.size() > 0) {
+            for (int i = 0; i < areaList.size(); i++) {
+                if (areaList.get(i).getName().equals(fragmentAddressesFormBinding.spinnerArea.getSelectedItem().toString())) {
                     addressesViewModel.area.setValue(areaList.get(i).getId());
                 }
             }
         }
 
-        if(address != null && address.getAddressPrimaryId() != null)
+        if (address != null && address.getAddressPrimaryId() != null)
             basicDetails.setAddressId(address.getAddressPrimaryId());
         basicDetails.setAddressType(addressesViewModel.addressType.getValue());
         basicDetails.setName(addressesViewModel.name.getValue());
@@ -465,37 +500,37 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         int errorCodeStreet = basicDetails.isValidStreet();
         int errorCodeLandmark = basicDetails.isValidLandmark();
 
-        if(errorCodeAddressType == 0) {
+        if (errorCodeAddressType == 0) {
             errorToast(requireActivity(), getString(R.string.address_type_should_not_be_empty));
-        } else if(errorCodeName == 0) {
+        } else if (errorCodeName == 0) {
             errorToast(requireActivity(), getString(R.string.name_should_not_be_empty));
-        } else if(errorCodeMobileNumber == 0) {
+        } else if (errorCodeMobileNumber == 0) {
             errorToast(requireActivity(), getString(R.string.mobile_number_should_not_be_empty));
-        } else if(errorCodeMobileNumber == 1) {
+        } else if (errorCodeMobileNumber == 1) {
             errorToast(requireActivity(), getString(R.string.enter_valid_mobile_number));
-        } else if(errorCodeCity == 0) {
+        } else if (errorCodeCity == 0) {
             errorToast(requireActivity(), getString(R.string.please_select_city));
-        } else if(errorCodeArea == 0) {
+        } else if (errorCodeArea == 0) {
             errorToast(requireActivity(), getString(R.string.please_select_area));
-        } else if(errorCodePinCode == 0) {
+        } else if (errorCodePinCode == 0) {
             errorToast(requireActivity(), getString(R.string.pin_code_should_not_be_empty));
-        } else if(errorCodePinCode == 1) {
+        } else if (errorCodePinCode == 1) {
             errorToast(requireActivity(), getString(R.string.invalid_pin_code));
-        } else if(errorCodeApartmentName == 0) {
+        } else if (errorCodeApartmentName == 0) {
             errorToast(requireActivity(), getString(R.string.apartment_name_should_not_be_empty));
-        } else if(errorCodeHouseNumber == 0) {
+        } else if (errorCodeHouseNumber == 0) {
             errorToast(requireActivity(), getString(R.string.number_should_not_be_empty));
-        } else if(errorCodeStreet == 0) {
+        } else if (errorCodeStreet == 0) {
             errorToast(requireActivity(), getString(R.string.street_should_not_be_empty));
-        } else if(errorCodeLandmark == 0) {
+        } else if (errorCodeLandmark == 0) {
             errorToast(requireActivity(), getString(R.string.landmark_should_not_be_empty));
         } else {
-            if(checkIsValidPinCode) {
+            if (checkIsValidPinCode) {
                 hideKeyBoard(requireActivity());
                 if (isConnectingToInternet(context)) {
-                    if(addOrUpdate.equals(ADD_ADDRESS_DETAILS)) {
+                    if (addOrUpdate.equals(ADD_ADDRESS_DETAILS)) {
                         callAddAddressApi(showCircleProgressDialog(context, ""));
-                    } else if(addOrUpdate.equals(UPDATE_ADDRESS_DETAILS)) {
+                    } else if (addOrUpdate.equals(UPDATE_ADDRESS_DETAILS)) {
                         callUpdateAddressApi(showCircleProgressDialog(context, ""));
                     }
                 } else {
@@ -509,9 +544,9 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
     private void checkValidPinCodeEntered() {
         int errorCodePinCode = basicDetails.isValidPinCode();
-        if(errorCodePinCode == 0) {
+        if (errorCodePinCode == 0) {
             errorToast(requireActivity(), getString(R.string.pin_code_should_not_be_empty));
-        } else if(errorCodePinCode == 1) {
+        } else if (errorCodePinCode == 1) {
             errorToast(requireActivity(), getString(R.string.invalid_pin_code));
         } else {
             if (isConnectingToInternet(context))
@@ -533,7 +568,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                 Log.e("Add Address Api Response", new Gson().toJson(profileResponse));
                 switch (profileResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(context, ""+profileResponse.getMessage());
+                        successToast(context, "" + profileResponse.getMessage());
                         Navigation.findNavController(view).popBackStack();
                         break;
                     case STATUS_CODE_400://Validation Errors
@@ -573,7 +608,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                 Log.e("Update Address Api Response", new Gson().toJson(profileResponse));
                 switch (profileResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(context, ""+profileResponse.getMessage());
+                        successToast(context, "" + profileResponse.getMessage());
                         Navigation.findNavController(view).popBackStack();
                         break;
                     case STATUS_CODE_400://Validation Errors
@@ -604,7 +639,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private HashMap<String, String> addAddressParameters(boolean isUpdate) {
         HashMap<String, String> map = new HashMap<>();
 
-        if(isUpdate)
+        if (isUpdate)
             map.put(ADDRESS_ID, basicDetails.getAddressId());
         map.put(ADDRESS_TYPE, basicDetails.getAddressType());
         map.put(NAME, basicDetails.getName());
@@ -616,11 +651,11 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         map.put(HOUSE_NO, basicDetails.getHouseNumber());
         map.put(STREET, basicDetails.getStreet());
         map.put(LANDMARK, basicDetails.getLandmark());
-        if(basicDetails.getLatitude() == null)
+        if (basicDetails.getLatitude() == null)
             basicDetails.setLatitude("");
-        if(basicDetails.getLongitude() == null)
+        if (basicDetails.getLongitude() == null)
             basicDetails.setLongitude("");
-        if(basicDetails.getMapAddress() == null)
+        if (basicDetails.getMapAddress() == null)
             basicDetails.setMapAddress("");
         map.put(LATITUDE, basicDetails.getLatitude());
         map.put(LONGITUDE, basicDetails.getLongitude());
@@ -640,7 +675,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                 Log.e("Check Pin Code Api Response", new Gson().toJson(baseResponse));
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(context, ""+baseResponse.getMessage());
+                        successToast(context, "" + baseResponse.getMessage());
                         checkIsValidPinCode = true;
                         fragmentAddressesFormBinding.etPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_sign_up_mobile_check, 0);
                         break;
@@ -690,10 +725,12 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<String> strings) {
-                        Type cityType = new TypeToken<CityResponse>(){}.getType();
+                        Type cityType = new TypeToken<CityResponse>() {
+                        }.getType();
                         cityResponse = new GsonBuilder().create().fromJson(strings.get(0), cityType);
 
-                        Type areaType = new TypeToken<AreaResponse>(){}.getType();
+                        Type areaType = new TypeToken<AreaResponse>() {
+                        }.getType();
                         areaResponse = new GsonBuilder().create().fromJson(strings.get(1), areaType);
 
                         setupCitySpinner();
@@ -705,7 +742,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         Gson gson = new GsonBuilder().create();
-                        if(e instanceof HttpException) {
+                        if (e instanceof HttpException) {
                             try {
                                 cityResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CityResponse.class);
                                 areaResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), AreaResponse.class);
@@ -741,65 +778,65 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     }
 
     private void setDefaultSelectedValues() {
-        if(address != null) {
+        if (address != null) {
             fragmentAddressesFormBinding.clMain.setVisibility(View.VISIBLE);
 
-            if(address.getAddressPrimaryId() != null && !TextUtils.isEmpty(address.getAddressPrimaryId()))
+            if (address.getAddressPrimaryId() != null && !TextUtils.isEmpty(address.getAddressPrimaryId()))
                 basicDetails.setId(address.getAddressPrimaryId());
-            if(address.getAddressType() != null && !TextUtils.isEmpty(address.getAddressType()))
+            if (address.getAddressType() != null && !TextUtils.isEmpty(address.getAddressType()))
                 basicDetails.setAddressType(address.getAddressType());
-            if(address.getName() != null && !TextUtils.isEmpty(address.getName()))
+            if (address.getName() != null && !TextUtils.isEmpty(address.getName()))
                 basicDetails.setName(address.getName());
-            if(address.getMobile() != null && !TextUtils.isEmpty(address.getMobile()))
+            if (address.getMobile() != null && !TextUtils.isEmpty(address.getMobile()))
                 basicDetails.setMobileNumber(address.getMobile());
-            if(selectedCityId != null && !TextUtils.isEmpty(selectedCityId)) {
+            if (selectedCityId != null && !TextUtils.isEmpty(selectedCityId)) {
                 basicDetails.setCity(selectedCityId);
                 addressesViewModel.city.setValue(basicDetails.getCity());
-                if(cityList != null && cityList.size() > 0) {
-                    for(int i = 0; i < cityList.size(); i++) {
-                        if(cityList.get(i).getId().equals(addressesViewModel.city.getValue())) {
+                if (cityList != null && cityList.size() > 0) {
+                    for (int i = 0; i < cityList.size(); i++) {
+                        if (cityList.get(i).getId().equals(addressesViewModel.city.getValue())) {
                             fragmentAddressesFormBinding.spinnerCity.setSelection(i);
                         }
                     }
                 }
             }
-            if(selectedAreaId != null && !TextUtils.isEmpty(selectedAreaId)) {
+            if (selectedAreaId != null && !TextUtils.isEmpty(selectedAreaId)) {
                 basicDetails.setArea(selectedAreaId);
                 addressesViewModel.area.setValue(basicDetails.getArea());
-                if(areaList != null && areaList.size() > 0) {
-                    for(int i = 0; i < areaList.size(); i++) {
-                        if(areaList.get(i).getId().equals(addressesViewModel.area.getValue())) {
+                if (areaList != null && areaList.size() > 0) {
+                    for (int i = 0; i < areaList.size(); i++) {
+                        if (areaList.get(i).getId().equals(addressesViewModel.area.getValue())) {
                             fragmentAddressesFormBinding.spinnerArea.setSelection(i);
                         }
                     }
                 }
             }
-            if(address.getPincode() != null && !TextUtils.isEmpty(address.getPincode()))
+            if (address.getPincode() != null && !TextUtils.isEmpty(address.getPincode()))
                 basicDetails.setPinCode(address.getPincode());
-            if(address.getAppartmentName() != null && !TextUtils.isEmpty(address.getAppartmentName()))
+            if (address.getAppartmentName() != null && !TextUtils.isEmpty(address.getAppartmentName()))
                 basicDetails.setApartmentName(address.getAppartmentName());
-            if(address.getHouseNo() != null && !TextUtils.isEmpty(address.getHouseNo()))
+            if (address.getHouseNo() != null && !TextUtils.isEmpty(address.getHouseNo()))
                 basicDetails.setHouseNumber(address.getHouseNo());
-            if(address.getStreet() != null && !TextUtils.isEmpty(address.getStreet()))
+            if (address.getStreet() != null && !TextUtils.isEmpty(address.getStreet()))
                 basicDetails.setStreet(address.getStreet());
-            if(address.getLandmark() != null && !TextUtils.isEmpty(address.getLandmark()))
+            if (address.getLandmark() != null && !TextUtils.isEmpty(address.getLandmark()))
                 basicDetails.setLandmark(address.getLandmark());
-            if(address.getLatitude() != null && !TextUtils.isEmpty(address.getLatitude()))
+            if (address.getLatitude() != null && !TextUtils.isEmpty(address.getLatitude()))
                 basicDetails.setLatitude(address.getLatitude());
-            if(address.getLongitude() != null && !TextUtils.isEmpty(address.getLongitude()))
+            if (address.getLongitude() != null && !TextUtils.isEmpty(address.getLongitude()))
                 basicDetails.setLongitude(address.getLongitude());
-            if(address.getMapAddress() != null && !TextUtils.isEmpty(address.getMapAddress())) {
+            if (address.getMapAddress() != null && !TextUtils.isEmpty(address.getMapAddress())) {
                 fragmentAddressesFormBinding.mcvChosenAddressFromMap.setVisibility(View.VISIBLE);
                 basicDetails.setMapAddress(address.getMapAddress());
                 addressesViewModel.mapAddress.setValue(basicDetails.getMapAddress());
             }
 
             addressesViewModel.addressType.setValue(basicDetails.getAddressType());
-            if(addressesViewModel.addressType.getValue().equalsIgnoreCase("home")) {
+            if (addressesViewModel.addressType.getValue().equalsIgnoreCase("home")) {
                 fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_home);
-            } else if(addressesViewModel.addressType.getValue().equalsIgnoreCase("office")) {
+            } else if (addressesViewModel.addressType.getValue().equalsIgnoreCase("office")) {
                 fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_office);
-            } else if(addressesViewModel.addressType.getValue().equalsIgnoreCase("other")) {
+            } else if (addressesViewModel.addressType.getValue().equalsIgnoreCase("other")) {
                 fragmentAddressesFormBinding.rgAddressesType.check(R.id.rb_other);
             }
 
@@ -813,12 +850,6 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             addressesViewModel.street.setValue(basicDetails.getStreet());
         }
     }
-
-    /*
-     * get address from google map start
-     * */
-    private ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
-    final String[] PERMISSIONS = { Manifest.permission.ACCESS_FINE_LOCATION };
 
     private void askPermissions() {
         if (!hasPermissions(PERMISSIONS)) {
@@ -834,16 +865,16 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private boolean hasPermissions(String[] permissions) {
         if (permissions != null) {
             for (String permission : permissions) {
-                if(shouldShowRequestPermissionRationale(permission)){
+                if (shouldShowRequestPermissionRationale(permission)) {
                     //denied
                     Log.d("PERMISSIONS", "Permission denied: " + permission);
                     return false;
                 } else {
-                    if(checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED){
+                    if (checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
                         //allowed
                         Log.d("PERMISSIONS", "Permission already granted: " + permission);
                         return true;
-                    } else{
+                    } else {
                         //set to never ask again
                         //do something here.
                         Log.d("PERMISSIONS", "Permission Set to never ask again: " + permission);
@@ -854,18 +885,6 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         }
         return false;
     }
-
-    ActivityResultLauncher<Intent> activityGoogleMapLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == Activity.RESULT_OK) {
-                Intent data = result.getData();
-                if(data != null) {
-                    updateUi(data);
-                }
-            }
-        }
-    });
 
     private void updateUi(Intent data) {
         /*
@@ -885,14 +904,14 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         String latitude = String.valueOf(data.getDoubleExtra(SimplePlacePicker.LOCATION_LAT_EXTRA, -1));
         String longitude = String.valueOf(data.getDoubleExtra(SimplePlacePicker.LOCATION_LNG_EXTRA, -1));
 
-        if(selectedAddressFromGoogleMap == null
+        if (selectedAddressFromGoogleMap == null
                 || TextUtils.isEmpty(selectedAddressFromGoogleMap)) {
             selectedAddressFromGoogleMap = "";
         } else {
             basicDetails.setMapAddress(selectedAddressFromGoogleMap);
         }
 
-        if(selectedHNFromGoogleMap == null
+        if (selectedHNFromGoogleMap == null
                 || TextUtils.isEmpty(selectedHNFromGoogleMap)) {
             selectedHNFromGoogleMap = "";
         } else {
@@ -900,7 +919,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             basicDetails.setHouseNumber(selectedHNFromGoogleMap);
         }
 
-        if(selectedStreetFromGoogleMap == null
+        if (selectedStreetFromGoogleMap == null
                 || TextUtils.isEmpty(selectedStreetFromGoogleMap)) {
             selectedStreetFromGoogleMap = "";
         } else {
@@ -908,7 +927,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             basicDetails.setStreet(selectedStreetFromGoogleMap);
         }
 
-        if(selectedLandmarkFromGoogleMap == null
+        if (selectedLandmarkFromGoogleMap == null
                 || TextUtils.isEmpty(selectedLandmarkFromGoogleMap)) {
             selectedLandmarkFromGoogleMap = "";
         } else {
@@ -916,7 +935,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             basicDetails.setLandmark(selectedLandmarkFromGoogleMap);
         }
 
-        if(selectedPinCodeFromGoogleMap == null
+        if (selectedPinCodeFromGoogleMap == null
                 || TextUtils.isEmpty(selectedPinCodeFromGoogleMap)) {
             selectedPinCodeFromGoogleMap = "";
         } else {
@@ -924,7 +943,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             basicDetails.setPinCode(selectedPinCodeFromGoogleMap);
         }
 
-        if(latitude == null
+        if (latitude == null
                 || TextUtils.isEmpty(latitude)
                 || latitude.equals("-1")) {
             latitude = "";
@@ -932,7 +951,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             basicDetails.setLatitude(latitude);
         }
 
-        if(longitude == null
+        if (longitude == null
                 || TextUtils.isEmpty(longitude)
                 || longitude.equals("-1")) {
             longitude = "";
@@ -940,21 +959,21 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             basicDetails.setLongitude(longitude);
         }
 
-        if(selectedStateFromGoogleMap == null
+        if (selectedStateFromGoogleMap == null
                 || TextUtils.isEmpty(selectedStateFromGoogleMap)) {
             selectedStateFromGoogleMap = "";
         } else {
 
         }
 
-        if(selectedCityFromGoogleMap == null
+        if (selectedCityFromGoogleMap == null
                 || TextUtils.isEmpty(selectedCityFromGoogleMap)) {
             selectedCityFromGoogleMap = "";
         } else {
 
         }
 
-        if(selectedAreaFromGoogleMap == null
+        if (selectedAreaFromGoogleMap == null
                 || TextUtils.isEmpty(selectedAreaFromGoogleMap)) {
             selectedAreaFromGoogleMap = "";
         } else {
@@ -962,47 +981,21 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-    /**
-     *@param apiKey Required parameter, put your google maps and places api key
-     *               { you must get a places key it's required for search autocomplete }
-     * @param country Optional parameter to restrict autocomplete search to a specific country
-     *                put country ISO like "eg" for Egypt and so on ..
-     *                if there is no value attached to COUNTRY key, search will
-     *                be worldWide
-     * @param language Optional parameter to specify the language of the resulting address
-     *                 could be "en" for English or "ar" for Arabic .
-     *                 If this not specified, resulting address will be English by default
-     *
-     * @param supportedAreas Optional Array of supported areas that user can pick a location from.
-     *                       Please be careful when you put areas as this will be literal comparison.
-     *                       Ex : if you put the value of SUPPORTED_AREAS key
-     *                       to something like {"Cairo"} , user will only be able to select the address
-     *                       that only contains cairo on it, like "zamalec,cairo,Egypt"
-     *                       Also consider adding arabic translation as some google addresses contains
-     *                       booth english and arabic together..
-     *          I KNOW THIS IS A TRICKY ONE BUT I JUST USED IT TO RESTRICT USER SELECTION TO A SPECIFIC
-     *                 COUNTRY AND SAVE MANY NETWORK CALLS AS USERS ALWAYS LIKE TO PLAY WITH MAP ^_^
-     *                       it was something like {"Egypt","مصر"}
-     *                       if this array was empty, the whole world is a supported area , user can
-     *                       pick location anywhere!.
-     */
-    private final String [] countryListIso = {"eg","sau","om","mar","usa","ind"};
-    private final String [] addressLanguageList = {"en","ar"};
     private void launchGoogleMapIntent() {
         String apiKey = "";
 
-        if(preferences.getGoogleApiKey() != null && !TextUtils.isEmpty(preferences.getGoogleApiKey()))
+        if (preferences.getGoogleApiKey() != null && !TextUtils.isEmpty(preferences.getGoogleApiKey()))
             apiKey = preferences.getGoogleApiKey(); //dynamic
         else
             apiKey = "AIzaSyDi2KxP5vuvOxYO1qA2i5Ehx-yXY7hcN1Q"; // static
 
         String mCountry = countryListIso[5]; // countries
         String mLanguage = addressLanguageList[0]; // english/arabic
-        String [] mSupportedAreas = {""} /*fragmentRegisterBinding.etShopAddress.getText().toString().split(",")*/;
+        String[] mSupportedAreas = {""} /*fragmentRegisterBinding.etShopAddress.getText().toString().split(",")*/;
 
         Intent intent = new Intent(context, MapActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString(SimplePlacePicker.API_KEY,apiKey);
+        bundle.putString(SimplePlacePicker.API_KEY, apiKey);
         bundle.putString(SimplePlacePicker.COUNTRY, mCountry);
         bundle.putString(SimplePlacePicker.LANGUAGE, mLanguage);
         bundle.putStringArray(SimplePlacePicker.SUPPORTED_AREAS, mSupportedAreas);
@@ -1016,20 +1009,20 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void onNetworkException(int from, String type) {
-        showServerErrorDialog(getString(R.string.for_better_user_experience), AddAddressFragment.this,() -> {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), AddAddressFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
-                if(from == 0) {
+                if (from == 0) {
                     callCityApi(showCircleProgressDialog(context, ""));
-                } else if(from == 1) {
+                } else if (from == 1) {
                     callAreaApi(showCircleProgressDialog(context, ""));
-                } else if(from == 2) {
+                } else if (from == 2) {
                     callAddAddressApi(showCircleProgressDialog(context, ""));
-                } else if(from == 3) {
+                } else if (from == 3) {
                     checkPinCodeAvailableApi(showCircleProgressDialog(context, ""));
-                } else if(from == 4) {
+                } else if (from == 4) {
                     callUpdateAddressApi(showCircleProgressDialog(context, ""));
-                } else if(from == 5) {
+                } else if (from == 5) {
                     getCityAreaApiResponses(showCircleProgressDialog(context, ""));
                 }
             } else {

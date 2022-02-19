@@ -27,7 +27,8 @@ public class IntroScreenViewModel extends AndroidViewModel {
     public IntroScreenViewModel(@NonNull Application application) {
         super(application);
     }
-    public LiveData<IntroScreenResponse> getIntroScreenResponse(ProgressDialog progressDialog,IntroScreenFragment introScreenFragment){
+
+    public LiveData<IntroScreenResponse> getIntroScreenResponse(ProgressDialog progressDialog, IntroScreenFragment introScreenFragment) {
         MutableLiveData<IntroScreenResponse> introScreenResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(introScreenFragment.getContext())
@@ -38,7 +39,7 @@ public class IntroScreenViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<IntroScreenResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull IntroScreenResponse introScreenResponse) {
-                        if (introScreenResponse!=null){
+                        if (introScreenResponse != null) {
                             progressDialog.dismiss();
                             introScreenResponseMutableLiveData.setValue(introScreenResponse);
                         }
@@ -57,7 +58,7 @@ public class IntroScreenViewModel extends AndroidViewModel {
                             introScreenResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) introScreenFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) introScreenFragment).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());

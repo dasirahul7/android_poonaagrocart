@@ -16,19 +16,18 @@ import com.poona.agrocart.ui.BaseFragment;
 
 import java.util.ArrayList;
 
-public class OrderViewFragment extends BaseFragment implements View.OnClickListener{
+public class OrderViewFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentOrderViewBinding fragmentOrderViewBinding;
     private RecyclerView rvBasketListItems;
     private LinearLayoutManager linearLayoutManager;
     private BasketItemsAdapter basketItemsAdapter;
     private ArrayList<BasketItem> basketItemList;
-    private boolean isBasketVisible=true;
+    private boolean isBasketVisible = true;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        fragmentOrderViewBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_order_view, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentOrderViewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_view, container, false);
         fragmentOrderViewBinding.setLifecycleOwner(this);
         final View view = fragmentOrderViewBinding.getRoot();
 
@@ -40,25 +39,20 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         return view;
     }
 
-    private void initView()
-    {
+    private void initView() {
         fragmentOrderViewBinding.btnTrackOrder.setOnClickListener(this);
 
-        Bundle bundle=this.getArguments();
-        isBasketVisible=bundle.getBoolean("isBasketVisible");
-        rvBasketListItems=fragmentOrderViewBinding.rvBasketItems;
-        if(isBasketVisible)
-        {
+        Bundle bundle = this.getArguments();
+        isBasketVisible = bundle.getBoolean("isBasketVisible");
+        rvBasketListItems = fragmentOrderViewBinding.rvBasketItems;
+        if (isBasketVisible) {
             setBasketContentsVisible();
-        }
-        else
-        {
+        } else {
             showProductDetails();
         }
     }
 
-    private void showProductDetails()
-    {
+    private void showProductDetails() {
         fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.GONE);
         fragmentOrderViewBinding.tvProductDetails.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.VISIBLE);
@@ -66,8 +60,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         fragmentOrderViewBinding.line2.setVisibility(View.GONE);
     }
 
-    private void setBasketContentsVisible()
-    {
+    private void setBasketContentsVisible() {
         fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.tvProductDetails.setVisibility(View.GONE);
         fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
@@ -75,32 +68,29 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         fragmentOrderViewBinding.line2.setVisibility(View.VISIBLE);
     }
 
-    private void setRVAdapter()
-    {
-        basketItemList=new ArrayList<>();
+    private void setRVAdapter() {
+        basketItemList = new ArrayList<>();
         prepareListingData();
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvBasketListItems.setHasFixedSize(true);
         rvBasketListItems.setLayoutManager(linearLayoutManager);
 
-        basketItemsAdapter = new BasketItemsAdapter(basketItemList,isBasketVisible,getContext());
+        basketItemsAdapter = new BasketItemsAdapter(basketItemList, isBasketVisible, getContext());
         rvBasketListItems.setAdapter(basketItemsAdapter);
     }
 
-    private void prepareListingData()
-    {
-        for(int i = 0; i < 4; i++)
-        {
+    private void prepareListingData() {
+        for (int i = 0; i < 4; i++) {
             BasketItem basketItem = new BasketItem();
             basketItem.setNameOfProduct("ABC");
             basketItem.setWeight("250gms");
             basketItem.setQuantity(getString(R.string.sample_unit));
             basketItem.setDate("22nd Sept 2021");
             basketItem.setTime("9.00 am to 9.00 pm");
-            if(i==0)
+            if (i == 0)
                 basketItem.setDeliveryStatus("Delivered");
-            else if(i==2 || i==3)
+            else if (i == 2 || i == 3)
                 basketItem.setDeliveryStatus("Confirmed");
             else
                 basketItem.setDeliveryStatus("In transist");
@@ -110,20 +100,18 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.btn_track_order:
                 redirectToTrackOrderFragment(v);
                 break;
         }
     }
 
-    private void redirectToTrackOrderFragment(View view)
-    {
+    private void redirectToTrackOrderFragment(View view) {
         if (isConnectingToInternet(context))
-        Navigation.findNavController(view).navigate(R.id.action_orderViewFragment_to_nav_order_track);
-        else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            Navigation.findNavController(view).navigate(R.id.action_orderViewFragment_to_nav_order_track);
+        else
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
     }
 }

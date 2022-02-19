@@ -19,14 +19,9 @@ public class IntroPagerAdapter extends FragmentPagerAdapter implements ViewPager
     private final IntroScreenFragment context;
 
     private final FragmentManager fragmentManager;
-    private int lastPosition = 0;
     private final ArrayList<IntroScreenResponse.Intro> intros;
-
-    public interface OnChangeButtonCaptionListener {
-        void onAddText(int position);
-    }
-
     public OnChangeButtonCaptionListener onChangeButtonCaptionListener;
+    private int lastPosition = 0;
 
     public IntroPagerAdapter(IntroScreenFragment context, FragmentManager fm,
                              OnChangeButtonCaptionListener onChangeButtonCaptionListener, ArrayList<IntroScreenResponse.Intro> introList) {
@@ -39,7 +34,7 @@ public class IntroPagerAdapter extends FragmentPagerAdapter implements ViewPager
 
     @Override
     public Fragment getItem(int position) {
-        return IntroItemFragment.newInstance(context, position,intros);
+        return IntroItemFragment.newInstance(context, position, intros);
     }
 
     @Override
@@ -56,21 +51,20 @@ public class IntroPagerAdapter extends FragmentPagerAdapter implements ViewPager
     public void onPageSelected(int position) {
         if (lastPosition > position) {
             System.out.println("Scrolled Left");
-        }else if (lastPosition < position) {
+        } else if (lastPosition < position) {
             System.out.println("Scrolled  Right");
         }
         lastPosition = position;
 
-        System.out.println("Last Position: "+lastPosition);
+        System.out.println("Last Position: " + lastPosition);
 
-            onChangeButtonCaptionListener.onAddText(position);
+        onChangeButtonCaptionListener.onAddText(position);
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
 
     }
-
 
     @SuppressWarnings("ConstantConditions")
     public LinearLayout getRootView(int position) {
@@ -88,5 +82,9 @@ public class IntroPagerAdapter extends FragmentPagerAdapter implements ViewPager
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         super.destroyItem(container, position, object);
+    }
+
+    public interface OnChangeButtonCaptionListener {
+        void onAddText(int position);
     }
 }

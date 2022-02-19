@@ -27,11 +27,14 @@ import android.widget.TextView;
  * For disable arrow key
  *
  * @author Chaos
- *         31/03/2018
+ * 31/03/2018
  */
 class DefaultMovementMethod implements MovementMethod {
 
     private static DefaultMovementMethod sInstance;
+
+    private DefaultMovementMethod() {
+    }
 
     public static MovementMethod getInstance() {
         if (sInstance == null) {
@@ -39,9 +42,6 @@ class DefaultMovementMethod implements MovementMethod {
         }
 
         return sInstance;
-    }
-
-    private DefaultMovementMethod() {
     }
 
     @Override

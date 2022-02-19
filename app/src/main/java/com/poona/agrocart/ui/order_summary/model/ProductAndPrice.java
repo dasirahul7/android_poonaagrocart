@@ -1,7 +1,6 @@
 package com.poona.agrocart.ui.order_summary.model;
 
-public class ProductAndPrice
-{
+public class ProductAndPrice {
     private String productName, dividedPrice, finalPrice;
 
     public String getProductName() {

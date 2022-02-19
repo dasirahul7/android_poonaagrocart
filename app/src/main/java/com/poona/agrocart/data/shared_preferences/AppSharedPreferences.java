@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.io.File;
@@ -31,8 +30,7 @@ import java.util.ArrayList;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public class AppSharedPreferences
-{
+public class AppSharedPreferences {
     //Shared Preferences
     SharedPreferences preferences;
     //Editor for Shared preferences
@@ -41,15 +39,14 @@ public class AppSharedPreferences
     Context context;
     //Shared preferences mode
     int PRIVATE_MODE = 0;
-
-    private String fireBaseToken, authorizationToken,uid,userMobile,userCountry, userAddress,baseAuthUsername, baseAuthPassword,userName,userProfile;
+    String googleApiKey;
+    private String fireBaseToken, authorizationToken, uid, userMobile, userCountry, userAddress, baseAuthUsername, baseAuthPassword, userName, userProfile;
     private int newOrderCount;
-    private boolean isLoggedIn,isIntroRead, fromLogOut, isVerified;
+    private boolean isLoggedIn, isIntroRead, fromLogOut, isVerified;
     private String userType;
 
     //Constructor
-    public AppSharedPreferences(Context context)
-    {
+    public AppSharedPreferences(Context context) {
         this.context = context;
         preferences = this.context.getSharedPreferences(PREFERENCES_NAME, PRIVATE_MODE);
         editor = preferences.edit();
@@ -59,8 +56,7 @@ public class AppSharedPreferences
         return this.preferences.getString(FCM_TOKEN, "");
     }
 
-    public void setFCMToken(String deviceToken)
-    {
+    public void setFCMToken(String deviceToken) {
         this.fireBaseToken = deviceToken;
         this.editor.putString(FCM_TOKEN, deviceToken);
         this.editor.commit();
@@ -75,6 +71,7 @@ public class AppSharedPreferences
         this.editor.putBoolean(IS_LOGGED_IN, isLoggedIn);
         this.editor.commit();
     }
+
     public boolean getIsIntroRead() {
         return this.preferences.getBoolean(IS_READ_INTRO, false);
     }
@@ -86,15 +83,14 @@ public class AppSharedPreferences
     }
 
     public boolean isVerified() {
-        return this.preferences.getBoolean(IS_VERIFIED,false);
+        return this.preferences.getBoolean(IS_VERIFIED, false);
     }
 
     public void seIstVerified(boolean verified) {
         this.isVerified = verified;
-        this.editor.putBoolean(IS_VERIFIED,verified);
+        this.editor.putBoolean(IS_VERIFIED, verified);
         this.editor.commit();
     }
-
 
     public boolean getFromLogOut() {
         return this.preferences.getBoolean(FROM_LOG_OUT, false);
@@ -108,8 +104,8 @@ public class AppSharedPreferences
 
     public String getAuthorizationToken() {
         /*
-        * default value is app name, if it is empty then app will crash
-        * */
+         * default value is app name, if it is empty then app will crash
+         * */
         return this.preferences.getString(AUTHORIZATION_TOKEN, context.getResources().getString(R.string.app_name));
     }
 
@@ -120,80 +116,74 @@ public class AppSharedPreferences
     }
 
     public String getUid() {
-        return preferences.getString(USER_ID,"");
+        return preferences.getString(USER_ID, "");
     }
 
     public void setUid(String uid) {
         this.uid = uid;
-        this.editor.putString(USER_ID,uid);
+        this.editor.putString(USER_ID, uid);
         this.editor.apply();
     }
 
     public String getUserMobile() {
-        return preferences.getString(USER_MOBILE,"");
+        return preferences.getString(USER_MOBILE, "");
     }
 
     public void setUserMobile(String userMobile) {
         this.userMobile = userMobile;
-        this.editor.putString(USER_MOBILE,userMobile);
+        this.editor.putString(USER_MOBILE, userMobile);
         this.editor.commit();
     }
 
     public String getUserCountry() {
-        return preferences.getString(COUNTRY_CODE,"");
+        return preferences.getString(COUNTRY_CODE, "");
+    }
+
+    public void setUserCountry(String userCountry) {
+        this.userCountry = userCountry;
+        this.editor.putString(COUNTRY_CODE, userCountry);
+        this.editor.commit();
     }
 
     public String getUserName() {
-        return this.preferences.getString(USERNAME,"");
+        return this.preferences.getString(USERNAME, "");
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
-        this.editor.putString(USERNAME,userName);
+        this.editor.putString(USERNAME, userName);
         this.editor.commit();
     }
 
     public String getUserProfile() {
-        return this.preferences.getString(USERPROFILE,"");
+        return this.preferences.getString(USERPROFILE, "");
     }
 
     public void setUserProfile(String userProfile) {
         this.userProfile = userProfile;
-        this.editor.putString(USERPROFILE,userProfile);
-        this.editor.commit();
-    }
-
-
-    public void setUserCountry(String userCountry) {
-        this.userCountry = userCountry;
-        this.editor.putString(COUNTRY_CODE,userCountry);
+        this.editor.putString(USERPROFILE, userProfile);
         this.editor.commit();
     }
 
     public String getUserAddress() {
-        return preferences.getString(USER_ADDRESS,"");
+        return preferences.getString(USER_ADDRESS, "");
     }
 
     public void setUserAddress(String userAddress) {
         this.userAddress = userAddress;
-        this.editor.putString(USER_ADDRESS,userAddress);
+        this.editor.putString(USER_ADDRESS, userAddress);
         this.editor.commit();
     }
 
-
-    public void clearSharedPreferences(Context context)
-    {
+    public void clearSharedPreferences(Context context) {
         File dir = new File(context.getFilesDir().getParent() + "/shared_prefs/");
         context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE).edit().clear().apply();
 
         //delete the file
-        if (dir.exists() && dir.isDirectory())
-        {
+        if (dir.exists() && dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++)
-            {
-                if(children[i].replace(".xml", "").equals(PREFERENCES_NAME))
-                {
+            for (int i = 0; i < children.length; i++) {
+                if (children[i].replace(".xml", "").equals(PREFERENCES_NAME)) {
                     context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE).edit().clear().apply();
                     new File(dir, children[i]).delete();
                 }
@@ -201,34 +191,38 @@ public class AppSharedPreferences
         }
     }
 
-    public void saveCartArrayList(ArrayList<ProductOld> list, String key){
+    public void saveCartArrayList(ArrayList<ProductOld> list, String key) {
 
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString(key, json);
         editor.apply();     // This line is IMPORTANT !!!
     }
-    public void saveFavArrayList(ArrayList<ProductOld> list, String key){
+
+    public void saveFavArrayList(ArrayList<ProductOld> list, String key) {
 
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString(key, json);
         editor.apply();     // This line is IMPORTANT !!!
     }
-    public ArrayList<ProductOld> getSavedCartList(String key){
+
+    public ArrayList<ProductOld> getSavedCartList(String key) {
         Gson gson = new Gson();
         String json = preferences.getString(key, null);
-        Type type = new TypeToken<ArrayList<ProductOld>>() {}.getType();
-        return gson.fromJson(json, type);
-    }
-    public ArrayList<ProductOld> getSavedFavList(String key){
-        Gson gson = new Gson();
-        String json = preferences.getString(key, null);
-        Type type = new TypeToken<ArrayList<ProductOld>>() {}.getType();
+        Type type = new TypeToken<ArrayList<ProductOld>>() {
+        }.getType();
         return gson.fromJson(json, type);
     }
 
-    String googleApiKey;
+    public ArrayList<ProductOld> getSavedFavList(String key) {
+        Gson gson = new Gson();
+        String json = preferences.getString(key, null);
+        Type type = new TypeToken<ArrayList<ProductOld>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
     public String getGoogleApiKey() {
         return this.preferences.getString(GOOGLE_API_KEY, "");
     }

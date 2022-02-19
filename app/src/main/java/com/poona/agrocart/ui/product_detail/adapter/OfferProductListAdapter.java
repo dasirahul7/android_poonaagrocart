@@ -20,12 +20,18 @@ import com.poona.agrocart.ui.home.model.ProductOld;
 import java.util.ArrayList;
 
 public class OfferProductListAdapter extends RecyclerView.Adapter<OfferProductListAdapter.BestSellingHolder> {
-    private ArrayList<ProductOld> productOlds = new ArrayList<>();
     private final Context bdContext;
-    private RowBestSellingItemBinding bestSellingBinding;
     private final View view;
+    private ArrayList<ProductOld> productOlds = new ArrayList<>();
+    private RowBestSellingItemBinding bestSellingBinding;
     private OnPlusClick onPlusClick;
     private OnProductClick onProductClick;
+
+    public OfferProductListAdapter(ArrayList<ProductOld> productOlds, Context bdContext, View view) {
+        this.productOlds = productOlds;
+        this.bdContext = bdContext;
+        this.view = view;
+    }
 
     public void setOnPlusClick(OnPlusClick onPlusClick) {
         this.onPlusClick = onPlusClick;
@@ -33,12 +39,6 @@ public class OfferProductListAdapter extends RecyclerView.Adapter<OfferProductLi
 
     public void setOnProductClick(OnProductClick onProductClick) {
         this.onProductClick = onProductClick;
-    }
-
-    public OfferProductListAdapter(ArrayList<ProductOld> productOlds, Context bdContext, View view) {
-        this.productOlds = productOlds;
-        this.bdContext = bdContext;
-        this.view = view;
     }
 
     @NonNull
@@ -52,7 +52,7 @@ public class OfferProductListAdapter extends RecyclerView.Adapter<OfferProductLi
     public void onBindViewHolder(@NonNull BestSellingHolder holder, int position) {
         ProductOld productOld = productOlds.get(position);
         bestSellingBinding.setProductOldModule(productOld);
-        holder.bindData(productOld,position);
+        holder.bindData(productOld, position);
     }
 
     @Override

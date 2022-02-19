@@ -1,7 +1,7 @@
 package com.poona.agrocart.ui.nav_notification;
 
 public class Notification {
-    String id , content,date;
+    String id, content, date;
 
     public Notification(String id, String content, String date) {
         this.id = id;

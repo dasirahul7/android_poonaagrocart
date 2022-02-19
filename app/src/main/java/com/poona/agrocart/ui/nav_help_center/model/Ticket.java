@@ -1,8 +1,7 @@
 package com.poona.agrocart.ui.nav_help_center.model;
 
-public class Ticket
-{
-    private String ticketId,dateAndTime,status,subject,remark;
+public class Ticket {
+    private String ticketId, dateAndTime, status, subject, remark;
 
     public String getTicketId() {
         return ticketId;

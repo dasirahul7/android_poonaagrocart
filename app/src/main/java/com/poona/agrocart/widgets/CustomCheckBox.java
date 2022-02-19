@@ -44,7 +44,7 @@ public class CustomCheckBox extends AppCompatCheckBox {
         try {
             typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {
-            Log.e(TAG, "Unable to load typeface: "+e.getMessage());
+            Log.e(TAG, "Unable to load typeface: " + e.getMessage());
             return false;
         }
 

@@ -17,19 +17,16 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public class PoonaAgroCartApplication extends Application
-{
+public class PoonaAgroCartApplication extends Application {
     private static PoonaAgroCartApplication instance;
 
-    public static PoonaAgroCartApplication getInstance()
-    {
+    public static PoonaAgroCartApplication getInstance() {
         return instance;
     }
 
-    public static Context getContext()
-    {
+    public static Context getContext() {
         return instance;
-    }   
+    }
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -38,14 +35,13 @@ public class PoonaAgroCartApplication extends Application
     }
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         instance = this;
         super.onCreate();
 
         /*
-        * this code will handle RxJava network exceptions and app will not crash
-        * */
+         * this code will handle RxJava network exceptions and app will not crash
+         * */
         RxJavaPlugins.setErrorHandler(e -> {
             if (e instanceof UndeliverableException) {
                 e = e.getCause();

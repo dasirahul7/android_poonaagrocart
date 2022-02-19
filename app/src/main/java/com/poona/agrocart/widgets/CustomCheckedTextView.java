@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatCheckedTextView;
-import androidx.appcompat.widget.AppCompatRadioButton;
 
 import com.poona.agrocart.R;
 
@@ -47,7 +46,7 @@ public class CustomCheckedTextView extends AppCompatCheckedTextView {
         try {
             typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {
-            Log.e(TAG, "Unable to load typeface: "+e.getMessage());
+            Log.e(TAG, "Unable to load typeface: " + e.getMessage());
             return false;
         }
 

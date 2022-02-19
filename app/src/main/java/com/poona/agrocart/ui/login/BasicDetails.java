@@ -233,36 +233,39 @@ public class BasicDetails {
         this.addressId = addressId;
     }
 
-    public int isValidMobileNumber(){
-        if(TextUtils.isEmpty(this.mobileNumber)) {
+    public int isValidMobileNumber() {
+        if (TextUtils.isEmpty(this.mobileNumber)) {
             return 0;
-        } else if(!TextUtils.isEmpty(this.mobileNumber) && this.mobileNumber.length()<10){
+        } else if (!TextUtils.isEmpty(this.mobileNumber) && this.mobileNumber.length() < 10) {
             return 1;
-        } else { return -1; }
+        } else {
+            return -1;
+        }
     }
 
-    public int isValidAlternateMobileNumber(){
+    public int isValidAlternateMobileNumber() {
         /*if(TextUtils.isEmpty(this.alternateMobileNumber)) {
             return 0;
-        } else*/ if(!TextUtils.isEmpty(this.alternateMobileNumber) && this.alternateMobileNumber.length()<10) {
+        } else*/
+        if (!TextUtils.isEmpty(this.alternateMobileNumber) && this.alternateMobileNumber.length() < 10) {
             return 0;
         } else {
             return -1;
         }
     }
 
-    public int isValidOtp(){
-        if(TextUtils.isEmpty(this.otp)) {
+    public int isValidOtp() {
+        if (TextUtils.isEmpty(this.otp)) {
             return 0;
-        } else if(!TextUtils.isEmpty(this.otp) && this.otp.length() < 4) {
+        } else if (!TextUtils.isEmpty(this.otp) && this.otp.length() < 4) {
             return 1;
         } else {
             return -1;
         }
     }
 
-    public int isValidUserName(){
-        if(TextUtils.isEmpty(this.userName)){
+    public int isValidUserName() {
+        if (TextUtils.isEmpty(this.userName)) {
             return 0;
         } else {
             return -1;
@@ -270,16 +273,16 @@ public class BasicDetails {
     }
 
     public int isValidEmailId() {
-        if(TextUtils.isEmpty(this.emailId)){
+        if (TextUtils.isEmpty(this.emailId)) {
             return 0;
-        } else if(!TextUtils.isEmpty(this.emailId) && !isValidEmailId(this.emailId)) {
+        } else if (!TextUtils.isEmpty(this.emailId) && !isValidEmailId(this.emailId)) {
             return 1;
         } else {
             return -1;
         }
     }
 
-    private boolean isValidEmailId(String email){
+    private boolean isValidEmailId(String email) {
         return Pattern.compile("^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
                 + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
                 + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
@@ -289,118 +292,115 @@ public class BasicDetails {
     }
 
     public int isValidCity() {
-        if(TextUtils.isEmpty(this.city) || this.city.equals("0")){
+        if (TextUtils.isEmpty(this.city) || this.city.equals("0")) {
             return 0;
         } else {
             return -1;
         }
     }
 
-    public int isValidArea(){
-        if(TextUtils.isEmpty(this.area) || this.area.equals("0")){
+    public int isValidArea() {
+        if (TextUtils.isEmpty(this.area) || this.area.equals("0")) {
             return 0;
         } else {
             return -1;
         }
     }
 
-    public int isValidPinCode(){
-        if(TextUtils.isEmpty(this.pinCode)){
+    public int isValidPinCode() {
+        if (TextUtils.isEmpty(this.pinCode)) {
             return 0;
-        } else if(!TextUtils.isEmpty(this.pinCode) && this.pinCode.length() < 6) {
+        } else if (!TextUtils.isEmpty(this.pinCode) && this.pinCode.length() < 6) {
             return 1;
         } else {
             return -1;
         }
     }
 
-    public int isValidCountryCode(){
-        if(TextUtils.isEmpty(this.countryCode)){
+    public int isValidCountryCode() {
+        if (TextUtils.isEmpty(this.countryCode)) {
             return 0;
         } else {
             return -1;
         }
     }
 
-    public int isValidPassword(){
-        if(TextUtils.isEmpty(this.password)){
+    public int isValidPassword() {
+        if (TextUtils.isEmpty(this.password)) {
             return 0;
         } else {
             return -1;
         }
     }
 
-    public int isValidName(){
-        if(TextUtils.isEmpty(this.name)){
+    public int isValidName() {
+        if (TextUtils.isEmpty(this.name)) {
             return 0;
         } else {
             return -1;
         }
     }
 
-    public int isValidAddressType(){
-        if(TextUtils.isEmpty(this.addressType)){
+    public int isValidAddressType() {
+        if (TextUtils.isEmpty(this.addressType)) {
             return 0;
         } else {
             return -1;
         }
     }
 
-    public int isValidApartmentName(){
-        if(TextUtils.isEmpty(this.apartmentName)){
+    public int isValidApartmentName() {
+        if (TextUtils.isEmpty(this.apartmentName)) {
             return 0;
         } else {
             return -1;
         }
     }
 
-    public int isValidHouseNumber(){
-        if(TextUtils.isEmpty(this.houseNumber)){
+    public int isValidHouseNumber() {
+        if (TextUtils.isEmpty(this.houseNumber)) {
             return 0;
         } else {
             return -1;
         }
     }
 
-    public int isValidLandmark(){
-        if(TextUtils.isEmpty(this.landmark)){
+    public int isValidLandmark() {
+        if (TextUtils.isEmpty(this.landmark)) {
             return 0;
         } else {
             return -1;
         }
     }
 
-    public int isValidStreet(){
-        if(TextUtils.isEmpty(this.street)){
+    public int isValidStreet() {
+        if (TextUtils.isEmpty(this.street)) {
             return 0;
         } else {
             return -1;
         }
     }
 
-    public int isValidState(){
-        if(TextUtils.isEmpty(this.state) || this.state.equals("0")){
+    public int isValidState() {
+        if (TextUtils.isEmpty(this.state) || this.state.equals("0")) {
             return 0;
-        }
-        else{
+        } else {
             return -1;
         }
     }
 
-    public int isValidGender(){
-        if(TextUtils.isEmpty(this.gender)){
+    public int isValidGender() {
+        if (TextUtils.isEmpty(this.gender)) {
             return 0;
-        }
-        else{
+        } else {
             return -1;
         }
     }
 
-    public int isValidDob(){
-        if(TextUtils.isEmpty(this.dob)){
+    public int isValidDob() {
+        if (TextUtils.isEmpty(this.dob)) {
             return 0;
-        }
-        else{
+        } else {
             return -1;
         }
     }

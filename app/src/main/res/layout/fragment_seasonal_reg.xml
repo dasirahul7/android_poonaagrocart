@@ -65,8 +65,8 @@
                 android:id="@+id/ll_seasonal_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -96,15 +96,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:maxLines="4"
-                    android:text="@string/sample_about_seasonal"/>
+                    android:text="@string/sample_about_seasonal" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:padding="@dimen/_2sdp"
                     android:gravity="start"
+                    android:padding="@dimen/_2sdp"
                     android:text="@string/name"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16sp"
@@ -113,20 +113,20 @@
 
                 <com.poona.agrocart.widgets.CustomEditText
                     android:id="@+id/et_username"
-                    android:padding="@dimen/_12sdp"
-                    android:singleLine="true"
-                    android:layout_marginStart="-8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="-8dp"
                     android:background="@drawable/background_with_shadow_edittext"
+                    android:padding="@dimen/_12sdp"
+                    android:singleLine="true"
                     app:layout_constraintTop_toBottomOf="@+id/tv_name_text" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_mobile_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_2sdp"
                     android:gravity="start"
+                    android:padding="@dimen/_2sdp"
                     android:text="@string/mobile_no"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16sp"
@@ -135,29 +135,29 @@
 
                 <com.poona.agrocart.widgets.CustomEditText
                     android:id="@+id/et_mobile_no"
-                    android:layout_marginStart="-8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="-8dp"
                     android:background="@drawable/background_with_shadow_edittext"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_name_text"
+                    android:digits="@string/digits"
+                    android:imeOptions="actionSend"
                     android:inputType="phone"
+                    android:maxLength="10"
                     android:padding="@dimen/_12sdp"
                     android:singleLine="true"
-                    android:digits="@string/digits"
-                    android:maxLength="10"
                     android:textSize="@dimen/_16sp"
-                    app:setCustomFont="@string/font_poppins_regular"
-                    android:imeOptions="actionSend"/>
+                    app:layout_constraintTop_toBottomOf="@+id/tv_name_text"
+                    app:setCustomFont="@string/font_poppins_regular" />
 
                 <!--Quantity here-->
                 <LinearLayout
                     android:id="@+id/ll_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
                     android:layout_marginStart="-10dp"
                     android:layout_marginEnd="-10dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
                     app:layout_constraintTop_toBottomOf="@id/et_mobile_no">
 
                     <LinearLayout
@@ -211,8 +211,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:padding="@dimen/_2sdp"
                     android:gravity="start"
+                    android:padding="@dimen/_2sdp"
                     android:text="@string/address"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16sp"
@@ -221,14 +221,15 @@
 
                 <com.poona.agrocart.widgets.CustomEditText
                     android:id="@+id/et_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-8dp"
+                    android:background="@drawable/background_with_shadow_edittext"
                     android:imeOptions="actionNext"
                     android:padding="@dimen/_12sdp"
                     android:singleLine="true"
-                    android:layout_marginStart="-8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_with_shadow_edittext"
                     app:layout_constraintTop_toBottomOf="@+id/tv_name_text" />
+
                 <com.poona.agrocart.widgets.CustomButton
                     android:id="@+id/btn_register"
                     style="?android:attr/borderlessButtonStyle"

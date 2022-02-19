@@ -13,7 +13,6 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.databinding.RvAddressBinding;
-import com.poona.agrocart.ui.nav_my_cart.CartItemsAdapter;
 
 import java.util.ArrayList;
 
@@ -21,31 +20,23 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
     private final ArrayList<AddressesResponse.Address> addressArrayList;
 
     private OnEditButtonClickListener onEditButtonClickListener;
-    public interface OnEditButtonClickListener {
-        void onItemClick(int position);
+    private OnDeleteButtonClickListener onDeleteButtonClickListener;
+    private OnDefaultAddressClickListener onDefaultAddressClickListener;
+
+    public AddressesAdapter(ArrayList<AddressesResponse.Address> addressArrayList) {
+        this.addressArrayList = addressArrayList;
     }
+
     public void setOnEditButtonClickListener(OnEditButtonClickListener listener) {
         onEditButtonClickListener = listener;
     }
 
-    private OnDeleteButtonClickListener onDeleteButtonClickListener;
-    public interface OnDeleteButtonClickListener {
-        void onItemClick(View itemView, int position);
-    }
     public void setOnDeleteButtonClickListener(OnDeleteButtonClickListener listener) {
         onDeleteButtonClickListener = listener;
     }
 
-    private OnDefaultAddressClickListener onDefaultAddressClickListener;
-    public interface OnDefaultAddressClickListener {
-        void onItemClick(View itemView, int position);
-    }
     public void setOnDefaultAddressClickListener(OnDefaultAddressClickListener listener) {
         onDefaultAddressClickListener = listener;
-    }
-
-    public AddressesAdapter(ArrayList<AddressesResponse.Address> addressArrayList) {
-        this.addressArrayList = addressArrayList;
     }
 
     @NonNull
@@ -61,12 +52,11 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
         final AddressesResponse.Address address = addressArrayList.get(position);
         holder.rvAddressBinding.setAddress(address);
 
-        if(address.getIsDefault() != null && !TextUtils.isEmpty(address.getIsDefault())
+        if (address.getIsDefault() != null && !TextUtils.isEmpty(address.getIsDefault())
                 && address.getIsDefault().equals("yes") || addressArrayList.size() == 1) {
             holder.rvAddressBinding.cbDefault.setClickable(false);
             holder.rvAddressBinding.cbDefault.setChecked(true);
-        }
-        else {
+        } else {
             holder.rvAddressBinding.cbDefault.setClickable(true);
             holder.rvAddressBinding.cbDefault.setChecked(false);
         }
@@ -79,11 +69,24 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
         return addressArrayList.size();
     }
 
+    public interface OnEditButtonClickListener {
+        void onItemClick(int position);
+    }
+
+    public interface OnDeleteButtonClickListener {
+        void onItemClick(View itemView, int position);
+    }
+
+    public interface OnDefaultAddressClickListener {
+        void onItemClick(View itemView, int position);
+    }
+
     public class AddressViewHolder extends RecyclerView.ViewHolder {
         RvAddressBinding rvAddressBinding;
         int selectedEditItem = 0;
         int selectedDeleteItem = 0;
         int selectedDefaultAddressItem = 0;
+
         public AddressViewHolder(RvAddressBinding rvAddressBinding, OnEditButtonClickListener onEditButtonClickListener, OnDeleteButtonClickListener onDeleteButtonClickListener, OnDefaultAddressClickListener onDefaultAddressClickListener) {
             super(rvAddressBinding.getRoot());
             this.rvAddressBinding = rvAddressBinding;

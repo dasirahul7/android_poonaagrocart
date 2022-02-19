@@ -12,15 +12,13 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentOrderTrackBinding;
 import com.poona.agrocart.ui.BaseFragment;
 
-public class OrderTrackFragment extends BaseFragment
-{
+public class OrderTrackFragment extends BaseFragment {
     private FragmentOrderTrackBinding fragmentOrderTrackBinding;
     private OrderTrackViewModel orderTrackViewModel;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        fragmentOrderTrackBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_order_track, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentOrderTrackBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_track, container, false);
         fragmentOrderTrackBinding.setLifecycleOwner(this);
 
         View root = fragmentOrderTrackBinding.getRoot();
@@ -31,17 +29,15 @@ public class OrderTrackFragment extends BaseFragment
         return root;
     }
 
-    private void setValues()
-    {
+    private void setValues() {
         orderTrackViewModel = new ViewModelProvider(this).get(OrderTrackViewModel.class);
         orderTrackViewModel.getOrderMutableLiveData().observe(getViewLifecycleOwner(),
                 order -> {
-            fragmentOrderTrackBinding.setOrderTrackViewModel(orderTrackViewModel);
-        });
+                    fragmentOrderTrackBinding.setOrderTrackViewModel(orderTrackViewModel);
+                });
     }
 
-    private void initView()
-    {
+    private void initView() {
         initTitleWithBackBtn(getString(R.string.order_track));
     }
 }

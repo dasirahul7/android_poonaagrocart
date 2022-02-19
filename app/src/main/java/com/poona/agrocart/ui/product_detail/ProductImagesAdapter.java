@@ -10,16 +10,13 @@ import com.poona.agrocart.ui.seasonal.SeasonalRegFragment;
 
 import java.util.ArrayList;
 
-public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener
-{
+public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
+    private final FragmentManager fragmentManager;
+    private final ArrayList<String> imgsList;
     private ProductDetailFragment context;
     private SeasonalRegFragment fragment;
-    private final FragmentManager fragmentManager;
     private int lastPosition = 0;
-    private final ArrayList<String> imgsList;
     private int imageType = 0;
-
-
 
 
     public ProductImagesAdapter(ProductDetailFragment context, FragmentManager fm, ArrayList<String> imgsList) {
@@ -30,7 +27,7 @@ public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPa
     }
 
     public ProductImagesAdapter(@NonNull FragmentManager fm, SeasonalRegFragment context, FragmentManager fragmentManager,
-                                ArrayList<String> imgsList,int imageType) {
+                                ArrayList<String> imgsList, int imageType) {
         super(fm);
         this.fragment = context;
         this.fragmentManager = fragmentManager;
@@ -40,30 +37,29 @@ public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPa
 
 
     @Override
-    public Fragment getItem(int position)
-    {
-        if (imageType==0)
-        return ProductImageFragment.newInstance(context, position,imgsList);
-        else return ProductImageFragment.newInstance(fragment,position,imgsList);
+    public Fragment getItem(int position) {
+        if (imageType == 0)
+            return ProductImageFragment.newInstance(context, position, imgsList);
+        else return ProductImageFragment.newInstance(fragment, position, imgsList);
     }
 
     @Override
-    public int getCount()
-    {
-        if (imageType==0)
-        return context.count;
+    public int getCount() {
+        if (imageType == 0)
+            return context.count;
         else return fragment.count;
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
 
     @Override
-    public void onPageSelected(int position)
-    {
+    public void onPageSelected(int position) {
         lastPosition = position;
     }
 
     @Override
-    public void onPageScrollStateChanged(int state) { }
+    public void onPageScrollStateChanged(int state) {
+    }
 }

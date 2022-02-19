@@ -64,29 +64,22 @@ public class PinView extends AppCompatEditText {
     private static final int VIEW_TYPE_RECTANGLE = 0;
     private static final int VIEW_TYPE_LINE = 1;
     private static final int VIEW_TYPE_NONE = 2;
-
-    private int mViewType;
-
-    private int mPinItemCount;
-
-    private int mPinItemWidth;
-    private int mPinItemHeight;
-    private int mPinItemRadius;
-    private int mPinItemSpacing;
-
     private final Paint mPaint;
     private final TextPaint mAnimatorTextPaint = new TextPaint();
-
-    private ColorStateList mLineColor;
-    private int mCurLineColor = Color.BLACK;
-    private int mLineWidth;
-
     private final Rect mTextRect = new Rect();
     private final RectF mItemBorderRect = new RectF();
     private final RectF mItemLineRect = new RectF();
     private final Path mPath = new Path();
     private final PointF mItemCenterPoint = new PointF();
-
+    private final int mViewType;
+    private int mPinItemCount;
+    private int mPinItemWidth;
+    private int mPinItemHeight;
+    private int mPinItemRadius;
+    private int mPinItemSpacing;
+    private ColorStateList mLineColor;
+    private int mCurLineColor = Color.BLACK;
+    private int mLineWidth;
     private ValueAnimator mDefaultAddAnimator;
     private boolean isAnimationEnable = false;
     private boolean isPasswordHidden;
@@ -104,13 +97,6 @@ public class PinView extends AppCompatEditText {
     private boolean mHideLineWhenFilled;
 
     private String mTransformed;
-
-    private void init() {
-        if (!isInEditMode()) {
-            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), getResources().getString(R.string.font_poppins_regular));
-            setTypeface(tf);
-        }
-    }
 
     public PinView(Context context) {
         this(context, null);
@@ -144,7 +130,7 @@ public class PinView extends AppCompatEditText {
                 res.getDimensionPixelSize(R.dimen.pv_pin_view_item_size));
         mPinItemWidth = (int) a.getDimension(R.styleable.PinView_itemWidth,
                 res.getDimensionPixelSize(R.dimen.pv_pin_view_item_size));
-        mPinItemSpacing = (int) a.getDimensionPixelSize(R.styleable.PinView_itemSpacing,
+        mPinItemSpacing = a.getDimensionPixelSize(R.styleable.PinView_itemSpacing,
                 res.getDimensionPixelSize(R.dimen.pv_pin_view_item_spacing));
         mPinItemRadius = (int) a.getDimension(R.styleable.PinView_itemRadius, 0);
         mLineWidth = (int) a.getDimension(R.styleable.PinView_lineWidth,
@@ -178,6 +164,24 @@ public class PinView extends AppCompatEditText {
         isPasswordHidden = isPasswordInputType(getInputType());
     }
 
+    private static boolean isPasswordInputType(int inputType) {
+        final int variation =
+                inputType & (EditorInfo.TYPE_MASK_CLASS | EditorInfo.TYPE_MASK_VARIATION);
+        return variation
+                == (EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_PASSWORD)
+                || variation
+                == (EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD)
+                || variation
+                == (EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD);
+    }
+
+    private void init() {
+        if (!isInEditMode()) {
+            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), getResources().getString(R.string.font_poppins_regular));
+            setTypeface(tf);
+        }
+    }
+
     // preserve the legacy behavior: isPasswordHidden controlled by inputType
     @Override
     public void setInputType(int type) {
@@ -188,20 +192,20 @@ public class PinView extends AppCompatEditText {
     /**
      * new behavior: reveal or hide the pins programmatically
      *
-     * @param hidden True to hide, false to reveal the text
+     * @returns True if the pins are currently hidden
      */
-    public void setPasswordHidden(boolean hidden) {
-        isPasswordHidden = hidden;
-        requestLayout();
+    public boolean isPasswordHidden() {
+        return isPasswordHidden;
     }
 
     /**
      * new behavior: reveal or hide the pins programmatically
      *
-     * @returns True if the pins are currently hidden
+     * @param hidden True to hide, false to reveal the text
      */
-    public boolean isPasswordHidden() {
-        return isPasswordHidden;
+    public void setPasswordHidden(boolean hidden) {
+        isPasswordHidden = hidden;
+        requestLayout();
     }
 
     @Override
@@ -674,17 +678,6 @@ public class PinView extends AppCompatEditText {
         mItemCenterPoint.set(cx, cy);
     }
 
-    private static boolean isPasswordInputType(int inputType) {
-        final int variation =
-                inputType & (EditorInfo.TYPE_MASK_CLASS | EditorInfo.TYPE_MASK_VARIATION);
-        return variation
-                == (EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_PASSWORD)
-                || variation
-                == (EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD)
-                || variation
-                == (EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD);
-    }
-
     @Override
     protected MovementMethod getDefaultMovementMethod() {
         // we don't need arrow key.
@@ -745,6 +738,14 @@ public class PinView extends AppCompatEditText {
     }
 
     /**
+     * @return Returns the width of the item's line.
+     * @see #setLineWidth(int)
+     */
+    public int getLineWidth() {
+        return mLineWidth;
+    }
+
+    /**
      * Sets the line width.
      *
      * @attr ref R.styleable#PinView_lineWidth
@@ -757,11 +758,11 @@ public class PinView extends AppCompatEditText {
     }
 
     /**
-     * @return Returns the width of the item's line.
-     * @see #setLineWidth(int)
+     * @return Returns the count of items.
+     * @see #setItemCount(int)
      */
-    public int getLineWidth() {
-        return mLineWidth;
+    public int getItemCount() {
+        return mPinItemCount;
     }
 
     /**
@@ -777,11 +778,11 @@ public class PinView extends AppCompatEditText {
     }
 
     /**
-     * @return Returns the count of items.
-     * @see #setItemCount(int)
+     * @return Returns the radius of square.
+     * @see #setItemRadius(int)
      */
-    public int getItemCount() {
-        return mPinItemCount;
+    public int getItemRadius() {
+        return mPinItemRadius;
     }
 
     /**
@@ -797,11 +798,12 @@ public class PinView extends AppCompatEditText {
     }
 
     /**
-     * @return Returns the radius of square.
-     * @see #setItemRadius(int)
+     * @return Returns the spacing between two items.
+     * @see #setItemSpacing(int)
      */
-    public int getItemRadius() {
-        return mPinItemRadius;
+    @Px
+    public int getItemSpacing() {
+        return mPinItemSpacing;
     }
 
     /**
@@ -816,12 +818,11 @@ public class PinView extends AppCompatEditText {
     }
 
     /**
-     * @return Returns the spacing between two items.
-     * @see #setItemSpacing(int)
+     * @return Returns the height of item.
+     * @see #setItemHeight(int)
      */
-    @Px
-    public int getItemSpacing() {
-        return mPinItemSpacing;
+    public int getItemHeight() {
+        return mPinItemHeight;
     }
 
     /**
@@ -837,11 +838,11 @@ public class PinView extends AppCompatEditText {
     }
 
     /**
-     * @return Returns the height of item.
-     * @see #setItemHeight(int)
+     * @return Returns the width of item.
+     * @see #setItemWidth(int)
      */
-    public int getItemHeight() {
-        return mPinItemHeight;
+    public int getItemWidth() {
+        return mPinItemWidth;
     }
 
     /**
@@ -854,14 +855,6 @@ public class PinView extends AppCompatEditText {
         mPinItemWidth = itemWidth;
         checkItemRadius();
         requestLayout();
-    }
-
-    /**
-     * @return Returns the width of item.
-     * @see #setItemWidth(int)
-     */
-    public int getItemWidth() {
-        return mPinItemWidth;
     }
 
     /**
@@ -899,6 +892,7 @@ public class PinView extends AppCompatEditText {
     }
 
     //region ItemBackground
+
     /**
      * Set the item background to a given resource. The resource should refer to
      * a Drawable object or 0 to remove the item background.
@@ -945,6 +939,14 @@ public class PinView extends AppCompatEditText {
     //region Cursor
 
     /**
+     * @return Returns the width (in pixels) of cursor.
+     * @see #setCursorWidth(int)
+     */
+    public int getCursorWidth() {
+        return mCursorWidth;
+    }
+
+    /**
      * Sets the width (in pixels) of cursor.
      *
      * @attr ref R.styleable#PinView_cursorWidth
@@ -958,11 +960,13 @@ public class PinView extends AppCompatEditText {
     }
 
     /**
-     * @return Returns the width (in pixels) of cursor.
-     * @see #setCursorWidth(int)
+     * Gets the cursor color.
+     *
+     * @return Return current cursor color.
+     * @see #setCursorColor(int)
      */
-    public int getCursorWidth() {
-        return mCursorWidth;
+    public int getCursorColor() {
+        return mCursorColor;
     }
 
     /**
@@ -981,14 +985,9 @@ public class PinView extends AppCompatEditText {
         }
     }
 
-    /**
-     * Gets the cursor color.
-     *
-     * @return Return current cursor color.
-     * @see #setCursorColor(int)
-     */
-    public int getCursorColor() {
-        return mCursorColor;
+    @Override
+    public boolean isCursorVisible() {
+        return isCursorVisible;
     }
 
     @Override
@@ -998,11 +997,6 @@ public class PinView extends AppCompatEditText {
             invalidateCursor(isCursorVisible);
             makeBlink();
         }
-    }
-
-    @Override
-    public boolean isCursorVisible() {
-        return isCursorVisible;
     }
 
     @Override
@@ -1075,6 +1069,54 @@ public class PinView extends AppCompatEditText {
         mCursorHeight = mPinItemHeight - getTextSize() > delta ? getTextSize() + delta : getTextSize();
     }
 
+    //region Selection Menu
+    private void disableSelectionMenu() {
+        setCustomSelectionActionModeCallback(new DefaultActionModeCallback());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setCustomInsertionActionModeCallback(new DefaultActionModeCallback() {
+                @Override
+                public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                    menu.removeItem(android.R.id.autofill);
+                    return true;
+                }
+            });
+        }
+    }
+    //endregion
+
+    @Override
+    public boolean isSuggestionsEnabled() {
+        return false;
+    }
+
+    private int dpToPx(float dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
+    }
+    //endregion
+
+    private static class DefaultActionModeCallback implements ActionMode.Callback {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+
+        }
+    }
+
     private class Blink implements Runnable {
         private boolean mCancelled;
 
@@ -1101,54 +1143,6 @@ public class PinView extends AppCompatEditText {
 
         void uncancel() {
             mCancelled = false;
-        }
-    }
-    //endregion
-
-    //region Selection Menu
-    private void disableSelectionMenu() {
-        setCustomSelectionActionModeCallback(new DefaultActionModeCallback());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setCustomInsertionActionModeCallback(new DefaultActionModeCallback() {
-                @Override
-                public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                    menu.removeItem(android.R.id.autofill);
-                    return true;
-                }
-            });
-        }
-    }
-
-    @Override
-    public boolean isSuggestionsEnabled() {
-        return false;
-    }
-    //endregion
-
-    private int dpToPx(float dp) {
-        return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
-    }
-
-    private static class DefaultActionModeCallback implements ActionMode.Callback {
-
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            return false;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-
         }
     }
 }

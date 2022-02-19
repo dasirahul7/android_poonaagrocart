@@ -1,9 +1,8 @@
 package com.poona.agrocart.ui.nav_orders.model;
 
-public class Order
-{
-    private String orderId,dateAndTime,status,amount,quantity;
-    private String expectedDeliveryDate, customerName, mobileNumber,address;
+public class Order {
+    private String orderId, dateAndTime, status, amount, quantity;
+    private String expectedDeliveryDate, customerName, mobileNumber, address;
 
     public Order() {
     }

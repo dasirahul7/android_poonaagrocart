@@ -1,7 +1,7 @@
 package com.poona.agrocart.ui.basket_detail.model;
 
 public class ProductItem {
-    String name ,weight;
+    String name, weight;
 
     public ProductItem() {
     }

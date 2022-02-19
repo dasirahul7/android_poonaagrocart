@@ -23,15 +23,14 @@ import java.util.Map;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingService
-{
+public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = PoonaAgroCartFirebaseMessagingService.class.getSimpleName();
-
+    private static final String CHANNEL_ID = "PoonaAgroCartChannelId";
     private AppSharedPreferences preference;
-
     private Context context;
 
-    public PoonaAgroCartFirebaseMessagingService() { }
+    public PoonaAgroCartFirebaseMessagingService() {
+    }
 
     @Override
     public void onNewToken(String s) {
@@ -46,7 +45,7 @@ public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingServ
         context = getApplicationContext();
         preference = new AppSharedPreferences(this);
 
-        if(remoteMessage == null)
+        if (remoteMessage == null)
             return;
 
         //Check if message contains a notification payload.
@@ -55,22 +54,20 @@ public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingServ
             handleNotification(remoteMessage.getNotification().getBody());
         }
 
-        if (remoteMessage.getData().size() > 0)
-        {
-            Log.e(TAG, "onMessageReceived Data: " + remoteMessage.getData().toString());
+        if (remoteMessage.getData().size() > 0) {
+            Log.e(TAG, "onMessageReceived Data: " + remoteMessage.getData());
             Map<String, String> params = remoteMessage.getData();
 
             /*
-            * print map
-            * */
-            for (Map.Entry<String, String> entry : params.entrySet())
-            {
+             * print map
+             * */
+            for (Map.Entry<String, String> entry : params.entrySet()) {
                 Log.e(TAG, "Key : " + entry.getKey() + " : : " + entry.getValue());
             }
 
             /*
-            * convert map to json object
-            * */
+             * convert map to json object
+             * */
             JSONObject jsonObject = new JSONObject(params);
             handleNotificationData(jsonObject);
         }
@@ -82,40 +79,75 @@ public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingServ
             Intent pushNotification = new Intent(PUSH_NOTIFICATION);
             pushNotification.putExtra("message", message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-        }else{
+        } else {
             // If the app is in background, firebase itself handles the notification
         }
     }
 
-    private void handleNotificationData(JSONObject jsonObject)
-    {
+    private void handleNotificationData(JSONObject jsonObject) {
         String title = "", subtitle = "", message = "", messageBy = "", notificationType = "", msgCount = "",
                 redirectType = "", vibrate = "", orderNo = "", orderId = "", tickerText = "", userType = "";
 
-        try { title = jsonObject.getString("title"); }
-        catch (Exception e) { title = ""; }
-        try { subtitle = jsonObject.getString("subtitle"); }
-        catch (Exception e) { subtitle = ""; }
-        try { message = jsonObject.getString("message"); }
-        catch (Exception e) { message = ""; }
-        try { messageBy = jsonObject.getString("message_by"); }
-        catch (Exception e) { messageBy = ""; }
-        try { notificationType = jsonObject.getString("notification_type"); }
-        catch (Exception e) { notificationType = ""; }
-        try { msgCount = jsonObject.getString("msgcnt"); }
-        catch (Exception e) { msgCount = ""; }
-        try { redirectType = jsonObject.getString("redirect_type"); }
-        catch (Exception e) { redirectType = ""; }
-        try { vibrate = jsonObject.getString("vibrate"); }
-        catch (Exception e) { vibrate = ""; }
-        try { orderNo = jsonObject.getString("order_no"); }
-        catch (Exception e) { orderNo = ""; }
-        try { orderId = jsonObject.getString("order_id"); }
-        catch (Exception e) { orderId = ""; }
-        try { tickerText = jsonObject.getString("tickerText"); }
-        catch (Exception e) { tickerText = ""; }
-        try { userType = jsonObject.getString("user_type"); }
-        catch (Exception e) { userType = ""; }
+        try {
+            title = jsonObject.getString("title");
+        } catch (Exception e) {
+            title = "";
+        }
+        try {
+            subtitle = jsonObject.getString("subtitle");
+        } catch (Exception e) {
+            subtitle = "";
+        }
+        try {
+            message = jsonObject.getString("message");
+        } catch (Exception e) {
+            message = "";
+        }
+        try {
+            messageBy = jsonObject.getString("message_by");
+        } catch (Exception e) {
+            messageBy = "";
+        }
+        try {
+            notificationType = jsonObject.getString("notification_type");
+        } catch (Exception e) {
+            notificationType = "";
+        }
+        try {
+            msgCount = jsonObject.getString("msgcnt");
+        } catch (Exception e) {
+            msgCount = "";
+        }
+        try {
+            redirectType = jsonObject.getString("redirect_type");
+        } catch (Exception e) {
+            redirectType = "";
+        }
+        try {
+            vibrate = jsonObject.getString("vibrate");
+        } catch (Exception e) {
+            vibrate = "";
+        }
+        try {
+            orderNo = jsonObject.getString("order_no");
+        } catch (Exception e) {
+            orderNo = "";
+        }
+        try {
+            orderId = jsonObject.getString("order_id");
+        } catch (Exception e) {
+            orderId = "";
+        }
+        try {
+            tickerText = jsonObject.getString("tickerText");
+        } catch (Exception e) {
+            tickerText = "";
+        }
+        try {
+            userType = jsonObject.getString("user_type");
+        } catch (Exception e) {
+            userType = "";
+        }
 
         PushNotification pushNotification = new PushNotification();
         pushNotification.setTitle(title);
@@ -134,9 +166,7 @@ public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingServ
         showNotification(pushNotification);
     }
 
-    private static final String CHANNEL_ID = "PoonaAgroCartChannelId";
-    private void showNotification(PushNotification pushNotification)
-    {
+    private void showNotification(PushNotification pushNotification) {
         // Create an Intent for the activity you want to start
 //        Intent resultIntent = null;
 //        Bundle bundle = new Bundle();

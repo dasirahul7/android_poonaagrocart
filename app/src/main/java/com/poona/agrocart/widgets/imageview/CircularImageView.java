@@ -334,6 +334,11 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
     }
 
     @Override
+    public int getImageAlpha() {
+        return mImageAlpha;
+    }
+
+    @Override
     public void setImageAlpha(int alpha) {
         alpha &= 0xFF;
 
@@ -352,8 +357,8 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
     }
 
     @Override
-    public int getImageAlpha() {
-        return mImageAlpha;
+    public ColorFilter getColorFilter() {
+        return mColorFilter;
     }
 
     @Override
@@ -370,11 +375,6 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
             mBitmapPaint.setColorFilter(cf);
             invalidate();
         }
-    }
-
-    @Override
-    public ColorFilter getColorFilter() {
-        return mColorFilter;
     }
 
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
@@ -439,7 +439,7 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
     }
 
     private RectF calculateBounds() {
-        int availableWidth  = getWidth() - getPaddingLeft() - getPaddingRight();
+        int availableWidth = getWidth() - getPaddingLeft() - getPaddingRight();
         int availableHeight = getHeight() - getPaddingTop() - getPaddingBottom();
 
         int sideLength = Math.min(availableWidth, availableHeight);

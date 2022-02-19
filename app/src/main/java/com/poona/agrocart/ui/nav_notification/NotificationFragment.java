@@ -41,7 +41,7 @@ public class NotificationFragment extends BaseFragment {
         mViewModel = new ViewModelProvider(this).get(NotificationViewModel.class);
         View view = notificationBinding.getRoot();
         initTitleBar(getString(R.string.menu_notification));
-         ((HomeActivity)requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.VISIBLE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.VISIBLE);
         setNotificationItems();
 
         OnsetClickListener();
@@ -50,23 +50,23 @@ public class NotificationFragment extends BaseFragment {
 
     private void OnsetClickListener() {
 
-        ((HomeActivity)requireActivity()).binding.appBarHome.imgDelete.setOnClickListener(view1 -> {
-            ((HomeActivity)requireActivity()).binding.appBarHome.imgDelete.setClickable(false);
+        ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setOnClickListener(view1 -> {
+            ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setClickable(false);
             NotificationDeleteDialog();
 
             new Handler().postDelayed(() -> {
-                ((HomeActivity)requireActivity()).binding.appBarHome.imgDelete.setClickable(true);
+                ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setClickable(true);
             }, 500);
         });
     }
 
     private void setNotificationItems() {
-        mViewModel.arrayListMutableLiveData.observe(requireActivity(),notifications -> {
-           notificationAdapter = new NotificationAdapter(notifications,getActivity());
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false);
+        mViewModel.arrayListMutableLiveData.observe(requireActivity(), notifications -> {
+            notificationAdapter = new NotificationAdapter(notifications, getActivity());
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
             notificationBinding.rvNotification.setLayoutManager(layoutManager);
             notificationBinding.rvNotification.setHasFixedSize(true);
-           notificationBinding.rvNotification.setAdapter(notificationAdapter);
+            notificationBinding.rvNotification.setAdapter(notificationAdapter);
         });
     }
 

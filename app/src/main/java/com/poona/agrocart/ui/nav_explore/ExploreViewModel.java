@@ -60,7 +60,7 @@ public class ExploreViewModel extends ViewModel {
                             categoryResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) exploreFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) exploreFragment).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());

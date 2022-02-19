@@ -22,6 +22,7 @@ import java.util.Objects;
 
 public class SignInTermsFragment extends BaseFragment {
     private FragmentTermsConditionBinding termsConditionBinding;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

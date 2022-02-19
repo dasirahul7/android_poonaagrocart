@@ -14,11 +14,10 @@ import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
-import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.data.network.responses.BestSellingResponse;
+import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.ProductListByResponse;
-import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 
 import java.util.HashMap;
 
@@ -43,7 +42,7 @@ public class ProductListViewModel extends AndroidViewModel {
     public LiveData<ProductListByResponse> productListByResponseLiveData(ProgressDialog progressDialog,
                                                                          HashMap<String, String> hashMap,
                                                                          ProductListFragment productListFragment,
-                                                                         String apiFrom){
+                                                                         String apiFrom) {
         MutableLiveData<ProductListByResponse> productListByResponseMutableLiveData = new MutableLiveData<>();
         ApiClientAuth.getClient(productListFragment.getContext())
                 .create(ApiInterface.class)
@@ -53,10 +52,10 @@ public class ProductListViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<ProductListByResponse>() {
                     @Override
                     public void onSuccess(@NonNull ProductListByResponse productListByResponse) {
-                       if (productListByResponse!=null){
-                           progressDialog.dismiss();
-                           productListByResponseMutableLiveData.setValue(productListByResponse);
-                       }
+                        if (productListByResponse != null) {
+                            progressDialog.dismiss();
+                            productListByResponseMutableLiveData.setValue(productListByResponse);
+                        }
                     }
 
                     @Override
@@ -128,9 +127,9 @@ public class ProductListViewModel extends AndroidViewModel {
 
     /*All BestSelling ResponseData here*/
     public LiveData<BestSellingResponse> allBestSellingResponseLiveData(ProgressDialog progressDialog,
-                                                                     HashMap<String, String> hashMap,
-                                                                     ProductListFragment productListFragment,
-                                                                     String listType) {
+                                                                        HashMap<String, String> hashMap,
+                                                                        ProductListFragment productListFragment,
+                                                                        String listType) {
         MutableLiveData<BestSellingResponse> bestSellingResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(productListFragment.getContext())
@@ -161,7 +160,7 @@ public class ProductListViewModel extends AndroidViewModel {
                             bestSellingResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productListFragment).onNetworkException(2,listType);
+                            ((NetworkExceptionListener) productListFragment).onNetworkException(2, listType);
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -169,13 +168,13 @@ public class ProductListViewModel extends AndroidViewModel {
                 });
         return bestSellingResponseMutableLiveData;
     }
-    
+
     /*All Exclusive ResponseData here*/
 
     public LiveData<ExclusiveResponse> allExclusiveResponseLiveData(ProgressDialog progressDialog,
-                                                                 HashMap<String, String> hashMap,
-                                                                 ProductListFragment productListFragment,
-                                                                 String loadType) {
+                                                                    HashMap<String, String> hashMap,
+                                                                    ProductListFragment productListFragment,
+                                                                    String loadType) {
         MutableLiveData<ExclusiveResponse> exclusiveResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(productListFragment.getContext())
@@ -206,7 +205,7 @@ public class ProductListViewModel extends AndroidViewModel {
                             exclusiveResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productListFragment).onNetworkException(3,loadType);
+                            ((NetworkExceptionListener) productListFragment).onNetworkException(3, loadType);
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -217,8 +216,8 @@ public class ProductListViewModel extends AndroidViewModel {
 
     /*Add to cart API*/
     public LiveData<BaseResponse> addToCartProductApiCall(
-            HashMap<String,String> hashMap,
-                                                           ProductListFragment productListFragment){
+            HashMap<String, String> hashMap,
+            ProductListFragment productListFragment) {
         MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(productListFragment.getContext())
@@ -229,8 +228,8 @@ public class ProductListViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
-                        if (baseResponse!=null){
-                            Log.e(TAG, "add to cart onSuccess: "+new Gson().toJson(baseResponse));
+                        if (baseResponse != null) {
+                            Log.e(TAG, "add to cart onSuccess: " + new Gson().toJson(baseResponse));
                             baseResponseMutableLiveData.setValue(baseResponse);
                         }
                     }
@@ -239,14 +238,14 @@ public class ProductListViewModel extends AndroidViewModel {
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         Gson gson = new GsonBuilder().create();
                         BaseResponse response = new BaseResponse();
-                        try{
+                        try {
                             response = gson.fromJson(((HttpException) e).response().errorBody().toString(),
                                     BaseResponse.class);
 
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productListFragment).onNetworkException(4,"");
+                            ((NetworkExceptionListener) productListFragment).onNetworkException(4, "");
                         }
                     }
                 });

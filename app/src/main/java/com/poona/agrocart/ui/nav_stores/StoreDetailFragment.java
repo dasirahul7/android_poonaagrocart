@@ -44,11 +44,11 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
 
     private static final String TAG = "StoreDetailFragment";
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private static StoreDetail storeValue;
     private StoreDetailViewModel storeDetailViewModel;
     private FragmentStoreDetailBinding fragmentStoreDetailBinding;
-    private static StoreDetail storeValue;
-    private List<StoreDetail> storeDetails = new ArrayList<>();
-    private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private final List<StoreDetail> storeDetails = new ArrayList<>();
     private MapView mapView;
     private GoogleMap gmap;
     private boolean locationPermissionGranted;
@@ -74,7 +74,7 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         storeDetailViewModel = new ViewModelProvider(this).get(StoreDetailViewModel.class);
-        fragmentStoreDetailBinding = FragmentStoreDetailBinding.inflate(inflater,container,false);
+        fragmentStoreDetailBinding = FragmentStoreDetailBinding.inflate(inflater, container, false);
         fragmentStoreDetailBinding.setLifecycleOwner(this);
         View view = fragmentStoreDetailBinding.getRoot();
         initTitleWithBackBtn(getString(R.string.store_location));
@@ -89,10 +89,11 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         mapView = fragmentStoreDetailBinding.mapView;
         mapView.onCreate(mapViewBundle);
         mapView.getMapAsync(this);
-        if (isConnectingToInternet(context)){
+        if (isConnectingToInternet(context)) {
             /*Call Our Store Detail API here*/
             callStoreDetailsApi(showCircleProgressDialog(context, ""));
-        }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        } else
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
         return view;
     }
@@ -121,11 +122,11 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
 
     }
 
-    private void callStoreDetailsApi (ProgressDialog progressDialog){
+    private void callStoreDetailsApi(ProgressDialog progressDialog) {
         Observer<OurStoreViewDataResponse> ourStoreViewDataResponseObserver = ourStoreViewDataResponse -> {
-            if (ourStoreViewDataResponse != null){
+            if (ourStoreViewDataResponse != null) {
                 Log.e("Our Store Details Api ResponseData", new Gson().toJson(ourStoreViewDataResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (ourStoreViewDataResponse.getStatus()) {
@@ -140,9 +141,9 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
                             /*About store in the html*/
                             strAboutStore = storeDetails.get(0).getAboutStore();
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                fragmentStoreDetailBinding.tvAboutStore.setText(Html.fromHtml(""+ strAboutStore, Html.FROM_HTML_MODE_COMPACT));
+                                fragmentStoreDetailBinding.tvAboutStore.setText(Html.fromHtml("" + strAboutStore, Html.FROM_HTML_MODE_COMPACT));
                             } else {
-                                fragmentStoreDetailBinding.tvAboutStore.setText(Html.fromHtml(""+ strAboutStore));
+                                fragmentStoreDetailBinding.tvAboutStore.setText(Html.fromHtml("" + strAboutStore));
                             }
                         }
                         break;
@@ -156,8 +157,8 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
                         infoToast(context, ourStoreViewDataResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
@@ -175,9 +176,9 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         storeDetailViewModel.contactPersonalNumber.setValue(storeDetails.get(0).getMobileNo());
         storeDetailViewModel.personalAddress.setValue(storeDetails.get(0).getAddress());
 
-        if (storeDetails.get(0).getStoreImage() != null){
+        if (storeDetails.get(0).getStoreImage() != null) {
             Glide.with(context)
-                    .load(IMAGE_DOC_BASE_URL+storeDetails.get(0).getStoreImage())
+                    .load(IMAGE_DOC_BASE_URL + storeDetails.get(0).getStoreImage())
                     .placeholder(R.drawable.empty_cart_img)
                     .error(R.drawable.empty_cart_img)
                     .into(imageView);

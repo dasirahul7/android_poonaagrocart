@@ -26,9 +26,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
 
 public class VerifyOtpViewModel extends AndroidViewModel {
-    private String TAG = VerifyOtpViewModel.class.getSimpleName();
     public MutableLiveData<String> userMobileMsg;
     public MutableLiveData<String> otp;
+    private final String TAG = VerifyOtpViewModel.class.getSimpleName();
+
     public VerifyOtpViewModel(@NonNull Application application) {
         super(application);
         userMobileMsg = new MutableLiveData<>();
@@ -37,9 +38,8 @@ public class VerifyOtpViewModel extends AndroidViewModel {
 
     //Verify Otp API ResponseData
     public LiveData<VerifyOtpResponse> submitVerifyOtp(ProgressDialog progressDialog,
-                                                        HashMap<String, String> hashMap,
-                                                        VerifyOtpFragment verifyOtpFragment)
-    {
+                                                       HashMap<String, String> hashMap,
+                                                       VerifyOtpFragment verifyOtpFragment) {
         MutableLiveData<VerifyOtpResponse> verifyOtpResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(verifyOtpFragment.getContext())
@@ -68,7 +68,7 @@ public class VerifyOtpViewModel extends AndroidViewModel {
                             verifyOtpResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) verifyOtpFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) verifyOtpFragment).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -81,8 +81,8 @@ public class VerifyOtpViewModel extends AndroidViewModel {
 
     @SuppressLint("CheckResult")
     public LiveData<SignInResponse> resendOtpApi(ProgressDialog progressDialog,
-                                                        HashMap<String, String> hashMap,
-                                                        VerifyOtpFragment verifyOtpFragment) {
+                                                 HashMap<String, String> hashMap,
+                                                 VerifyOtpFragment verifyOtpFragment) {
         MutableLiveData<SignInResponse> resendOtpResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(verifyOtpFragment.getContext())
@@ -111,7 +111,7 @@ public class VerifyOtpViewModel extends AndroidViewModel {
                             resendOtpResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) verifyOtpFragment).onNetworkException(1,"");
+                            ((NetworkExceptionListener) verifyOtpFragment).onNetworkException(1, "");
                         }
 
                         Log.e(TAG, e.getMessage());

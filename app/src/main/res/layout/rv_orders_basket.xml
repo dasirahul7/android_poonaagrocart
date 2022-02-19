@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="basketOrder"
             type="com.poona.agrocart.ui.nav_my_basket.model.BasketOrder" />
@@ -22,30 +22,31 @@
             app:cardElevation="3dp"
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/_5sdp"
-            app:strokeWidth="0.5dp"
-            app:strokeColor="@color/color_border_light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/color_border_light"
+            app:strokeWidth="0.5dp">
 
             <LinearLayout
-                android:paddingHorizontal="@dimen/_5sdp"
-                android:paddingVertical="@dimen/_2sdp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_5sdp"
+                android:paddingVertical="@dimen/_2sdp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="100"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="100">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_weight="50">
+                        android:layout_weight="50"
+                        android:orientation="horizontal">
+
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -56,17 +57,17 @@
                             android:textSize="@dimen/_16sp"
                             app:fontFamily="@font/poppins_semibold" />
 
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_order_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_3sdp"
-                        android:gravity="start"
-                        android:text="@{basketOrder.orderId}"
-                        android:textColor="@color/black"
-                        android:singleLine="true"
-                        android:textSize="@dimen/_16sp"
-                        app:fontFamily="@font/poppins_semibold" />
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_order_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            android:gravity="start"
+                            android:singleLine="true"
+                            android:text="@{basketOrder.orderId}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_16sp"
+                            app:fontFamily="@font/poppins_semibold" />
 
                     </LinearLayout>
 
@@ -93,15 +94,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="100"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="100">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="50">
+                        android:layout_weight="50"
+                        android:orientation="vertical">
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:id="@+id/tv_basket_name"
@@ -112,7 +113,7 @@
                             android:text="@{basketOrder.name}"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_16sp"
-                            app:fontFamily="@font/poppins_semibold"/>
+                            app:fontFamily="@font/poppins_semibold" />
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:id="@+id/tv_price"
@@ -130,8 +131,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="50"
                         android:layout_gravity="bottom"
+                        android:layout_weight="50"
                         android:orientation="vertical">
 
                         <com.poona.agrocart.widgets.CustomTextView
@@ -163,15 +164,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:background="@color/color_dark_divider"
-                    />
+                    android:background="@color/color_dark_divider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="100"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="100">
 
                     <LinearLayout
                         android:layout_width="0dp"

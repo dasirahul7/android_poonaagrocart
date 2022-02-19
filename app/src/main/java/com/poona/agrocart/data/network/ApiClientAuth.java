@@ -29,7 +29,7 @@ public class ApiClientAuth {
     public static Retrofit getClient(Context context) {
         appSharedPreferences = new AppSharedPreferences(context);
 
-        if(okHttpClient == null)
+        if (okHttpClient == null)
             initOkHttp(context);
 
         if (retrofit == null) {

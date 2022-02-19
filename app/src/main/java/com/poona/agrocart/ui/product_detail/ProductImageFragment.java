@@ -18,17 +18,15 @@ import com.poona.agrocart.ui.seasonal.SeasonalRegFragment;
 
 import java.util.ArrayList;
 
-public class ProductImageFragment extends Fragment
-{
+public class ProductImageFragment extends Fragment {
+    private static final String POSITION = "position";
     private static Context context;
     private static ArrayList<String> productImgsList;
     private FragmentProductImageBinding fragmentProductImageBinding;
     private View view;
-    private static final String POSITION = "position";
     private ImageView productImg;
 
-    public static ProductImageFragment newInstance(ProductDetailFragment productDetailFragment, int pos, ArrayList<String> imgs)
-    {
+    public static ProductImageFragment newInstance(ProductDetailFragment productDetailFragment, int pos, ArrayList<String> imgs) {
         context = productDetailFragment.getContext();
         productImgsList = imgs;
         ProductImageFragment fragment = new ProductImageFragment();
@@ -38,8 +36,7 @@ public class ProductImageFragment extends Fragment
         return fragment;
     }
 
-    public static ProductImageFragment newInstance(SeasonalRegFragment seasonalRegFragment, int pos, ArrayList<String> imgs)
-    {
+    public static ProductImageFragment newInstance(SeasonalRegFragment seasonalRegFragment, int pos, ArrayList<String> imgs) {
         context = seasonalRegFragment.getContext();
         productImgsList = imgs;
         ProductImageFragment fragment = new ProductImageFragment();
@@ -48,8 +45,8 @@ public class ProductImageFragment extends Fragment
         fragment.setArguments(bundle);
         return fragment;
     }
-    public static ProductImageFragment newInstance(BasketDetailFragment productDetailFragment, int pos, ArrayList<String> imgs)
-    {
+
+    public static ProductImageFragment newInstance(BasketDetailFragment productDetailFragment, int pos, ArrayList<String> imgs) {
         context = productDetailFragment.getContext();
         productImgsList = imgs;
         ProductImageFragment fragment = new ProductImageFragment();
@@ -60,10 +57,9 @@ public class ProductImageFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final int position = this.getArguments().getInt(POSITION);
-        fragmentProductImageBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_image,container,false);
+        fragmentProductImageBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_image, container, false);
         fragmentProductImageBinding.setLifecycleOwner(this);
         view = fragmentProductImageBinding.getRoot();
         productImg = fragmentProductImageBinding.ivProduct;

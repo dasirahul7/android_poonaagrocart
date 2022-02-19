@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
@@ -26,10 +25,10 @@ import java.util.List;
 
 public class FaqListAdaptor extends RecyclerView.Adapter<FaqListAdaptor.FaqViewHolder> {
     private List<FaqListData> faqListDataList = new ArrayList<>();
-    private Context context;
-    private FaQFragment faQFragment;
+    private final Context context;
+    private final FaQFragment faQFragment;
 
-    public FaqListAdaptor (Context context, List<FaqListData> faqListData, FaQFragment faQFragment){
+    public FaqListAdaptor(Context context, List<FaqListData> faqListData, FaQFragment faQFragment) {
         this.context = context;
         this.faqListDataList = faqListData;
         this.faQFragment = faQFragment;
@@ -40,7 +39,7 @@ public class FaqListAdaptor extends RecyclerView.Adapter<FaqListAdaptor.FaqViewH
     @Override
     public FaqViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         FaqRecyclerViewItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context),
-                R.layout.faq_recycler_view_item,parent,false);
+                R.layout.faq_recycler_view_item, parent, false);
 
         return new FaqListAdaptor.FaqViewHolder(binding);
 
@@ -58,23 +57,23 @@ public class FaqListAdaptor extends RecyclerView.Adapter<FaqListAdaptor.FaqViewH
             @Override
             public void onClick(View v) {
 
-                if(viewHolder.itemView.getTag().equals("more")){
+                if (viewHolder.itemView.getTag().equals("more")) {
                     viewHolder.binding.expandQuestion.setState(MORE, true);
                     faQFragment.collapse(viewHolder.binding.llAnswer);
                     viewHolder.binding.tvQuestion.setTextColor(ContextCompat.getColor(context, R.color.black));
-                    viewHolder.binding.rlMain.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_et_border));
-                    viewHolder.binding.llMain.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_et_border));
+                    viewHolder.binding.rlMain.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_et_border));
+                    viewHolder.binding.llMain.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_et_border));
                     viewHolder.binding.rlMain.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
                     viewHolder.itemView.setTag("less");
                 } else {
                     viewHolder.binding.expandQuestion.setState(LESS, true);
                     faQFragment.expand(viewHolder.binding.llAnswer);
                     viewHolder.binding.tvQuestion.setTextColor(ContextCompat.getColor(context, R.color.white));
-                    viewHolder.binding.rlMain.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_et_border));
-                    viewHolder.binding.llMain.setBackground(ContextCompat.getDrawable(context,R.drawable.background_faq_list));
+                    viewHolder.binding.rlMain.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_et_border));
+                    viewHolder.binding.llMain.setBackground(ContextCompat.getDrawable(context, R.drawable.background_faq_list));
                     viewHolder.binding.tvAnswer.setTextColor(ContextCompat.getColor(context, R.color.black));
                     viewHolder.binding.rlMain.setBackground(ContextCompat.getDrawable(context, R.drawable.background_faq_list_answer));
-                   // viewHolder.binding.rlMain.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                    // viewHolder.binding.rlMain.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
                     viewHolder.itemView.setTag("more");
                 }
             }
@@ -93,10 +92,11 @@ public class FaqListAdaptor extends RecyclerView.Adapter<FaqListAdaptor.FaqViewH
 
         public FaqViewHolder(FaqRecyclerViewItemBinding binding) {
             super(binding.getRoot());
-            this.binding=binding;
+            this.binding = binding;
         }
+
         public void bind(FaqListData faq) {
-            binding.setVariable(BR.faqListData,faq);
+            binding.setVariable(BR.faqListData, faq);
             binding.executePendingBindings();
         }
     }

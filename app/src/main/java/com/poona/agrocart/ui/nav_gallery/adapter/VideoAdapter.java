@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder> {
-    private Context pContext;
+    private final Context pContext;
     private List<GalleryVideo> galleryVideoList = new ArrayList<>();
     private RowVideoItemBinding videoItemBinding;
-    private OnVideoClickListener onVideoClickListener;
+    private final OnVideoClickListener onVideoClickListener;
     private VideoGalleryFragment videoGalleryFragment;
     private ImageView popUpImage;
 
@@ -29,10 +29,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
         this.pContext = pContext;
         this.galleryVideoList = videosList;
         this.onVideoClickListener = videoGalleryFragment;
-    }
-
-    public interface OnVideoClickListener{
-        void itemViewClick(int position);
     }
 
     @NonNull
@@ -74,8 +70,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
         return galleryVideoList.size();
     }
 
+    public interface OnVideoClickListener {
+        void itemViewClick(int position);
+    }
+
     public class VideoHolder extends RecyclerView.ViewHolder {
         RowVideoItemBinding videoHolderBinding;
+
         public VideoHolder(RowVideoItemBinding binding) {
             super(binding.getRoot());
             videoHolderBinding = binding;

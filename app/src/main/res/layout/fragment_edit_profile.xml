@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="myProfileViewModel"
             type="com.poona.agrocart.ui.nav_profile.MyProfileViewModel" />
@@ -37,8 +38,8 @@
                         android:layout_width="@dimen/_100sdp"
                         android:layout_height="@dimen/_100sdp"
                         android:src="@drawable/ic_profile"
-                        app:civ_border_width="@dimen/_1sdp"
-                        app:civ_border_color="#979797" />
+                        app:civ_border_color="#979797"
+                        app:civ_border_width="@dimen/_1sdp" />
                     <!--app:setImageUrl="@{myProfileViewModel.profilePhoto}"-->
 
                     <ImageView
@@ -88,9 +89,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/background_edit_profile"
-                        android:text="@={myProfileViewModel.name}"
+                        android:imeOptions="actionNext"
                         android:singleLine="true"
-                        android:imeOptions="actionNext"/>
+                        android:text="@={myProfileViewModel.name}" />
 
                 </LinearLayout>
 
@@ -112,16 +113,16 @@
                         style="@style/FormEdittextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@drawable/background_edit_profile_mobile"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/ic_sign_up_mobile_check"
+                        android:editable="false"
+                        android:enabled="false"
+                        android:imeOptions="actionNext"
                         android:inputType="number"
                         android:maxLength="10"
-                        android:background="@drawable/background_edit_profile_mobile"
-                        android:drawableEnd="@drawable/ic_sign_up_mobile_check"
-                        android:text="@={myProfileViewModel.mobileNo}"
                         android:singleLine="true"
-                        android:editable="false"
-                        android:clickable="false"
-                        android:enabled="false"
-                        android:imeOptions="actionNext" />
+                        android:text="@={myProfileViewModel.mobileNo}" />
 
                 </LinearLayout>
 
@@ -142,12 +143,12 @@
                         style="@style/FormEdittextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@drawable/background_edit_profile"
+                        android:imeOptions="actionNext"
                         android:inputType="number"
                         android:maxLength="10"
-                        android:background="@drawable/background_edit_profile"
-                        android:text="@={myProfileViewModel.alternateMobileNo}"
                         android:singleLine="true"
-                        android:imeOptions="actionNext" />
+                        android:text="@={myProfileViewModel.alternateMobileNo}" />
 
                 </LinearLayout>
 
@@ -168,11 +169,11 @@
                         style="@style/FormEdittextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="textEmailAddress"
                         android:background="@drawable/background_edit_profile"
-                        android:text="@={myProfileViewModel.emailId}"
+                        android:imeOptions="actionDone"
+                        android:inputType="textEmailAddress"
                         android:singleLine="true"
-                        android:imeOptions="actionDone" />
+                        android:text="@={myProfileViewModel.emailId}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -203,8 +204,8 @@
                             style="@style/FormShortEdittextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_30sdp"
-                            android:paddingEnd="@dimen/_12sdp"
-                            android:background="@drawable/bg_my_profile_spinner" />
+                            android:background="@drawable/bg_my_profile_spinner"
+                            android:paddingEnd="@dimen/_12sdp" />
 
                     </LinearLayout>
 
@@ -284,8 +285,8 @@
                             android:paddingStart="@dimen/_4sdp"
                             android:text="@string/male"
                             android:textSize="@dimen/_14sp"
-                            app:useMaterialThemeColors="false"
                             app:setCustomFont="@string/font_poppins_regular"
+                            app:useMaterialThemeColors="false"
                             tools:ignore="RtlSymmetry" />
 
                         <com.poona.agrocart.widgets.CustomRadioButton
@@ -297,8 +298,8 @@
                             android:paddingStart="@dimen/_4sdp"
                             android:text="@string/female"
                             android:textSize="@dimen/_14sp"
-                            app:useMaterialThemeColors="false"
                             app:setCustomFont="@string/font_poppins_regular"
+                            app:useMaterialThemeColors="false"
                             tools:ignore="RtlSymmetry" />
 
                         <com.poona.agrocart.widgets.CustomRadioButton
@@ -310,8 +311,8 @@
                             android:paddingStart="@dimen/_4sdp"
                             android:text="@string/other"
                             android:textSize="@dimen/_14sp"
-                            app:useMaterialThemeColors="false"
                             app:setCustomFont="@string/font_poppins_regular"
+                            app:useMaterialThemeColors="false"
                             tools:ignore="RtlSymmetry" />
 
                     </RadioGroup>
@@ -337,7 +338,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_my_profile_dob"
-                        android:text="@={myProfileViewModel.dateOfBirth}"/>
+                        android:text="@={myProfileViewModel.dateOfBirth}" />
 
                 </LinearLayout>
 

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class BannerResponse extends BaseResponse{
+public class BannerResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private BannerData bannerData;
@@ -17,19 +17,7 @@ public class BannerResponse extends BaseResponse{
     public void setData(BannerData data) {
         this.bannerData = data;
     }
-    public class BannerData {
-        @SerializedName("banner_details")
-        @Expose
-        private ArrayList<Banner> banners;
 
-        public ArrayList<Banner> getBanners() {
-            return banners;
-        }
-
-        public void setBannerDetailsList(ArrayList<Banner> bannerDetailsList) {
-            this.banners = bannerDetailsList;
-        }
-    }
     public static class Banner {
         @SerializedName("id")
         @Expose
@@ -94,14 +82,6 @@ public class BannerResponse extends BaseResponse{
 
         private boolean isDummy;
 
-        public boolean isDummy() {
-            return isDummy;
-        }
-
-        public void setDummy(boolean dummy) {
-            isDummy = dummy;
-        }
-
         public Banner() {
         }
 
@@ -110,6 +90,14 @@ public class BannerResponse extends BaseResponse{
             this.userType = userType;
             this.advUrl = advUrl;
             this.advImage = advImage;
+        }
+
+        public boolean isDummy() {
+            return isDummy;
+        }
+
+        public void setDummy(boolean dummy) {
+            isDummy = dummy;
         }
 
         public String getId() {
@@ -273,7 +261,7 @@ public class BannerResponse extends BaseResponse{
         }
     }
 
-    public static class BannerState extends Banner{
+    public static class BannerState extends Banner {
         @SerializedName("state_id")
         @Expose
         private String stateId;
@@ -345,6 +333,20 @@ public class BannerResponse extends BaseResponse{
 
         public void setCityName(String cityName) {
             this.cityName = cityName;
+        }
+    }
+
+    public class BannerData {
+        @SerializedName("banner_details")
+        @Expose
+        private ArrayList<Banner> banners;
+
+        public ArrayList<Banner> getBanners() {
+            return banners;
+        }
+
+        public void setBannerDetailsList(ArrayList<Banner> bannerDetailsList) {
+            this.banners = bannerDetailsList;
         }
     }
 }

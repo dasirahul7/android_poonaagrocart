@@ -16,7 +16,6 @@ import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
-import com.poona.agrocart.ui.basket_detail.BasketDetailFragment;
 
 import java.util.HashMap;
 
@@ -35,8 +34,8 @@ public class ProductDetailViewModel extends AndroidViewModel {
     //Product Details API
     public LiveData<ProductDetailsResponse> productDetailsResponseLiveData(ProgressDialog progressDialog,
                                                                            HashMap<String, String> hashMap,
-                                                                           ProductDetailFragment productDetailFragment){
-       MutableLiveData<ProductDetailsResponse> productDetailsResponseMutableLiveData = new MutableLiveData<>();
+                                                                           ProductDetailFragment productDetailFragment) {
+        MutableLiveData<ProductDetailsResponse> productDetailsResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(productDetailFragment.getContext())
                 .create(ApiInterface.class)
@@ -46,7 +45,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<ProductDetailsResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProductDetailsResponse productDetailsResponse) {
-                        if (productDetailsResponse!=null){
+                        if (productDetailsResponse != null) {
                             progressDialog.dismiss();
                             productDetailsResponseMutableLiveData.setValue(productDetailsResponse);
                         }
@@ -65,7 +64,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                             productDetailsResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -78,7 +77,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
 
     public LiveData<BaseResponse> addToFavourite(ProgressDialog progressDialog,
                                                  HashMap<String, String> hashMap,
-                                                 ProductDetailFragment productDetailFragment){
+                                                 ProductDetailFragment productDetailFragment) {
         MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
         ApiClientAuth.getClient(productDetailFragment.getContext())
                 .create(ApiInterface.class)
@@ -88,7 +87,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
-                        if (baseResponse!=null){
+                        if (baseResponse != null) {
                             progressDialog.dismiss();
                             baseResponseMutableLiveData.setValue(baseResponse);
                         }
@@ -107,7 +106,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(1,"");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(1, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -118,9 +117,9 @@ public class ProductDetailViewModel extends AndroidViewModel {
 
     /*Remove from favourite*/
     public LiveData<BaseResponse> removeFromFavoriteResponse(ProgressDialog progressDialog,
-                                                             HashMap<String,String> hashMap,
-                                                             ProductDetailFragment productDetailFragment){
-        MutableLiveData<BaseResponse> removeFromFavouriteResponseObserver  = new MutableLiveData<>();
+                                                             HashMap<String, String> hashMap,
+                                                             ProductDetailFragment productDetailFragment) {
+        MutableLiveData<BaseResponse> removeFromFavouriteResponseObserver = new MutableLiveData<>();
 
         ApiClientAuth.getClient(productDetailFragment.getContext())
                 .create(ApiInterface.class)
@@ -130,10 +129,10 @@ public class ProductDetailViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
-                        if (baseResponse!=null){
+                        if (baseResponse != null) {
                             progressDialog.dismiss();
                             removeFromFavouriteResponseObserver.setValue(baseResponse);
-                            Log.e(TAG, "Remove from Favourite onSuccess: "+new Gson().toJson(baseResponse));
+                            Log.e(TAG, "Remove from Favourite onSuccess: " + new Gson().toJson(baseResponse));
                         }
                     }
 
@@ -149,7 +148,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                             removeFromFavouriteResponseObserver.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(1,"");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(1, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -162,8 +161,8 @@ public class ProductDetailViewModel extends AndroidViewModel {
 
     //Add To Cart Product
     public LiveData<BaseResponse> addToCartProductLiveData(ProgressDialog progressDialog,
-                                                           HashMap<String,String> hashMap,
-                                                           ProductDetailFragment productDetailFragment){
+                                                           HashMap<String, String> hashMap,
+                                                           ProductDetailFragment productDetailFragment) {
         MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(productDetailFragment.getContext())
@@ -174,9 +173,9 @@ public class ProductDetailViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
-                        if (baseResponse!=null){
+                        if (baseResponse != null) {
                             progressDialog.dismiss();
-                            Log.e(TAG, "add to cart onSuccess: "+new Gson().toJson(baseResponse));
+                            Log.e(TAG, "add to cart onSuccess: " + new Gson().toJson(baseResponse));
                             baseResponseMutableLiveData.setValue(baseResponse);
                         }
                     }
@@ -186,20 +185,19 @@ public class ProductDetailViewModel extends AndroidViewModel {
                         progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         BaseResponse response = new BaseResponse();
-                        try{
+                        try {
                             response = gson.fromJson(((HttpException) e).response().errorBody().toString(),
                                     BaseResponse.class);
 
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(2,"");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(2, "");
                         }
                     }
                 });
         return baseResponseMutableLiveData;
     }
-
 
 
 }

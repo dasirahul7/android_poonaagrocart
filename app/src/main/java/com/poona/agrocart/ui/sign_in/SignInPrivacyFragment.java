@@ -22,6 +22,7 @@ import java.util.Objects;
 
 public class SignInPrivacyFragment extends BaseFragment {
     private FragmentTermsConditionBinding fragmentPrivacyPolicyBinding;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

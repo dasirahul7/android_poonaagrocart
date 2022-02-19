@@ -18,7 +18,6 @@ import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,15 +26,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-
 import android.widget.Spinner;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,9 +44,7 @@ import com.poona.agrocart.data.network.responses.help_center_response.TicketList
 import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.databinding.FragmentHelpCenterBinding;
 import com.poona.agrocart.ui.BaseFragment;
-
 import com.poona.agrocart.ui.nav_help_center.Adaptor.TicketTypeAdaptor;
-
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomEditText;
 
@@ -58,30 +52,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class HelpCenterFragment extends BaseFragment implements  NetworkExceptionListener, TicketsAdapter.OnTicketClickListener
-{
+public class HelpCenterFragment extends BaseFragment implements NetworkExceptionListener, TicketsAdapter.OnTicketClickListener {
+    private final int limit = 10;
     private FragmentHelpCenterBinding fragmentHelpCenterBinding;
     private HelpCenterViewModel helpCenterViewModel;
     private RecyclerView rvTickets;
     private LinearLayoutManager linearLayoutManager;
     private TicketsAdapter ticketsAdapter;
     private List<TicketListResponse.TicketList.UserTicket> ticketArrayList = new ArrayList<>();
-    private List<TicketTypeResponse.TicketType> ticketTypeList = new ArrayList<>();
+    private final List<TicketTypeResponse.TicketType> ticketTypeList = new ArrayList<>();
     private Spinner spinTicketType;
     private String ticketId = "", strTicketName = "";
     private CustomEditText etSubject, etDescription;
     private View view, navHostFragment;
     private ViewGroup.MarginLayoutParams navHostMargins;
-    private float scale;
 
     /*View.OnClickListener,*/
+    private float scale;
+    private int offset = 0;
+    private int visibleItemCount = 0;
+    private int totalCount = 0;
+
+    /* Pagination adding to the recycler view */
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        fragmentHelpCenterBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_help_center, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentHelpCenterBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_help_center, container, false);
         fragmentHelpCenterBinding.setLifecycleOwner(this);
-        helpCenterViewModel=new ViewModelProvider(this).get(HelpCenterViewModel.class);
+        helpCenterViewModel = new ViewModelProvider(this).get(HelpCenterViewModel.class);
         fragmentHelpCenterBinding.setHelpCenterViewModel(helpCenterViewModel);
         view = fragmentHelpCenterBinding.getRoot();
 
@@ -95,58 +93,48 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
     public void onResume() {
         super.onResume();
 
-        if(isConnectingToInternet(context)) {
+        if (isConnectingToInternet(context)) {
             setRvAdapter();
-        }else{
+        } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
     }
 
-    private void initView()
-    {
-        rvTickets=fragmentHelpCenterBinding.rvTickets;
+    private void initView() {
+        rvTickets = fragmentHelpCenterBinding.rvTickets;
         fragmentHelpCenterBinding.btnCreateNewTicket.setOnClickListener(view1 -> {
             raiseNewTicketDialog();
         });
         initTitleBar(getString(R.string.menu_addresses));
     }
 
-    private void setRvAdapter()
-    {
-        ticketArrayList=new ArrayList<>();
+    private void setRvAdapter() {
+        ticketArrayList = new ArrayList<>();
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvTickets.setHasFixedSize(true);
         rvTickets.setLayoutManager(linearLayoutManager);
 
-        callTicketListApi(showCircleProgressDialog(context, ""),"RecyclerView");
-        ticketsAdapter = new TicketsAdapter(ticketArrayList,HelpCenterFragment.this,this);
+        callTicketListApi(showCircleProgressDialog(context, ""), "RecyclerView");
+        ticketsAdapter = new TicketsAdapter(ticketArrayList, HelpCenterFragment.this, this);
         rvTickets.setAdapter(ticketsAdapter);
 
         //Pagination in scroll view
         setScrollListener();
     }
 
-    /* Pagination adding to the recycler view */
-
-    private int offset = 0;
-    private final int limit = 10;
-    private int visibleItemCount = 0;
-    private int totalCount = 0;
-
     private void setScrollListener() {
         rvTickets.setNestedScrollingEnabled(true);
-        NestedScrollView nestedScrollView= fragmentHelpCenterBinding.nvMain;
+        NestedScrollView nestedScrollView = fragmentHelpCenterBinding.nvMain;
 
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if(v.getChildAt(v.getChildCount() - 1) != null) {
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
                 visibleItemCount = linearLayoutManager.getItemCount();
 
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount != totalCount) {
                     callTicketListApi(showCircleProgressDialog(context, ""), "onScrolled");
-                }
-                else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+                } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount == totalCount) {
                     infoToast(getActivity(), getString(R.string.no_more_records));
                 }
@@ -156,7 +144,7 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
     }
 
     /*Upload the Ticket list api*/
-    private void callTicketListApi(ProgressDialog progressDialog,String fromFunction) {
+    private void callTicketListApi(ProgressDialog progressDialog, String fromFunction) {
         if (fromFunction.equals("onScrolled")) {
             offset = offset + 1;
         } else {
@@ -164,18 +152,18 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
         }
         @SuppressLint("NotifyDataSetChanged")
         Observer<TicketListResponse> ticketListResponseObserver = ticketListResponse -> {
-            if (ticketListResponse != null){
+            if (ticketListResponse != null) {
                 Log.e(" Ticket list Api Response", new Gson().toJson(ticketListResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (ticketListResponse.getStatus()) {
                     case STATUS_CODE_200://success
                         if (offset == 0)
-                        ticketArrayList.clear();
+                            ticketArrayList.clear();
 
                         totalCount = Integer.parseInt(ticketListResponse.getData().getCountTickets());
-                        if(ticketListResponse.getData() != null){
+                        if (ticketListResponse.getData() != null) {
                             ticketArrayList.addAll(ticketListResponse.getData().getUserTickets());
                             ticketsAdapter.notifyDataSetChanged();
                         }
@@ -195,20 +183,20 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
                         infoToast(context, ticketListResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
         };
 
-        helpCenterViewModel.getTicketListResponse(progressDialog, context,TicketListInputParameter(),
+        helpCenterViewModel.getTicketListResponse(progressDialog, context, TicketListInputParameter(),
                 HelpCenterFragment.this)
                 .observe(getViewLifecycleOwner(), ticketListResponseObserver);
     }
 
-    private HashMap<String , String> TicketListInputParameter() {
-        HashMap<String , String> map = new HashMap<>();
+    private HashMap<String, String> TicketListInputParameter() {
+        HashMap<String, String> map = new HashMap<>();
         map.put(LIMIT, String.valueOf(limit));
         map.put(OFFSET, String.valueOf(offset));
         return map;
@@ -248,9 +236,9 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
         etDescription = dialog.findViewById(R.id.et_description);
         spinTicketType = dialog.findViewById(R.id.spin_ticket);
 
-        if(isConnectingToInternet(context)){
+        if (isConnectingToInternet(context)) {
             callTicketTypeApi(showCircleProgressDialog(context, ""));
-        }else{
+        } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
 
@@ -261,18 +249,18 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
 
         submitButton.setOnClickListener(view -> {
             String strSubject = etSubject.getText().toString();
-            String strDescription =etDescription.getText().toString();
-            if(strTicketName.equalsIgnoreCase("Ticket Type")){
+            String strDescription = etDescription.getText().toString();
+            if (strTicketName.equalsIgnoreCase("Ticket Type")) {
                 warningToast(context, "Please select the Ticket Type");
-            }else if( strSubject.equalsIgnoreCase("")){
+            } else if (strSubject.equalsIgnoreCase("")) {
                 warningToast(context, "Subject Field Should not be empty");
-            }else if(strDescription.equalsIgnoreCase("")){
+            } else if (strDescription.equalsIgnoreCase("")) {
                 warningToast(context, "Remark Field Should not be empty");
-            }else {
+            } else {
 
-                if(isConnectingToInternet(context)){
-                    callCreateTicketApi(showCircleProgressDialog(context,""));
-                }else{
+                if (isConnectingToInternet(context)) {
+                    callCreateTicketApi(showCircleProgressDialog(context, ""));
+                } else {
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 }
 
@@ -284,22 +272,22 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
 
         dialog.show();
     }
-    
-    private void callCreateTicketApi (ProgressDialog progressDialog) {
-        
+
+    private void callCreateTicketApi(ProgressDialog progressDialog) {
+
         Observer<CreateTicketResponse> createTicketResponseObserver = createTicketResponse -> {
-            if (createTicketResponse != null){
+            if (createTicketResponse != null) {
                 etDescription.setText("");
                 etSubject.setText("");
                 Log.e("Create  tickets Api Response", new Gson().toJson(createTicketResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (createTicketResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        successToast(context,createTicketResponse.getMessage());
+                        successToast(context, createTicketResponse.getMessage());
                         /*listing details */
-                        callTicketListApi(showCircleProgressDialog(context, ""),"RecyclerView");
+                        callTicketListApi(showCircleProgressDialog(context, ""), "RecyclerView");
                         break;
                     case STATUS_CODE_400:
                         /* validation message */
@@ -314,22 +302,22 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
                         errorToast(context, createTicketResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
         };
-        helpCenterViewModel.getCreateTicketResponse(progressDialog, context, CreateTicketInputParameter(),HelpCenterFragment.this)
+        helpCenterViewModel.getCreateTicketResponse(progressDialog, context, CreateTicketInputParameter(), HelpCenterFragment.this)
                 .observe(getViewLifecycleOwner(), createTicketResponseObserver);
     }
-    
+
     private HashMap<String, String> CreateTicketInputParameter() {
-        HashMap<String , String> map = new HashMap<>();
+        HashMap<String, String> map = new HashMap<>();
         map.put(ISSUE_ID, ticketId);
         map.put(TICKET_SUBJECT, etSubject.getText().toString());
         map.put(TICKET_REMARK, etDescription.getText().toString());
-        return  map;
+        return map;
     }
 
     private void bindingSpinner(List<TicketTypeResponse.TicketType> ticketTypes) {
@@ -345,6 +333,7 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
                 ticketId = ticketTypes.get(i).getId();
                 strTicketName = ticketTypes.get(i).getTicketType();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 hideKeyBoard(requireActivity());
@@ -352,23 +341,23 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
         });
     }
 
-    private void callTicketTypeApi (ProgressDialog progressDialog){
+    private void callTicketTypeApi(ProgressDialog progressDialog) {
         @SuppressLint("NotifyDataSetChanged")
         Observer<TicketTypeResponse> ticketTypeResponseObserver = ticketTypeResponse -> {
-            if (ticketTypeResponse != null){
+            if (ticketTypeResponse != null) {
                 Log.e("Ticket Type Api Response", new Gson().toJson(ticketTypeResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (ticketTypeResponse.getStatus()) {
                     case STATUS_CODE_200://success
                         if (ticketTypeResponse.getData() != null &&
-                                ticketTypeResponse.getData().size()>0){
+                                ticketTypeResponse.getData().size() > 0) {
                             ticketTypeList.clear();
                             ticketTypeList.add(new TicketTypeResponse.TicketType("0", "Select Type"));
                             ticketTypeList.addAll(ticketTypeResponse.getData());
                             bindingSpinner(ticketTypeList);
-                        }else{
+                        } else {
                             ticketTypeList.add(new TicketTypeResponse.TicketType("0", "Select Type"));
                             bindingSpinner(ticketTypeList);
                         }
@@ -381,8 +370,8 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
                         infoToast(context, ticketTypeResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
@@ -394,14 +383,14 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
 
     @Override
     public void onNetworkException(int from, String type) {
-        showServerErrorDialog(getString(R.string.for_better_user_experience), HelpCenterFragment.this,() -> {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), HelpCenterFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
-                if(from == 0) {
+                if (from == 0) {
                     callTicketTypeApi(showCircleProgressDialog(context, ""));
-                }else if(from == 1){
-                    callTicketListApi(showCircleProgressDialog(context,""), "RecyclerView");
-                }else if(from == 2){
+                } else if (from == 1) {
+                    callTicketListApi(showCircleProgressDialog(context, ""), "RecyclerView");
+                } else if (from == 2) {
                     callCreateTicketApi(showCircleProgressDialog(context, ""));
                 }
             } else {
@@ -417,8 +406,8 @@ public class HelpCenterFragment extends BaseFragment implements  NetworkExceptio
 //        String strTicketId = ticket.getTicketId();
         Bundle bundle = new Bundle();
         bundle.putString(TICKET_ID, ticket.getTicketId());
-        NavHostFragment.findNavController(HelpCenterFragment.this).navigate(R.id.action_nav_help_center_to_nav_ticket_detail,bundle);
-       // NavHostFragment.findNavController(HelpCenterFragment.this).navigate(R.id.action_nav_help_center_to_nav_ticket_detail,bundle);
+        NavHostFragment.findNavController(HelpCenterFragment.this).navigate(R.id.action_nav_help_center_to_nav_ticket_detail, bundle);
+        // NavHostFragment.findNavController(HelpCenterFragment.this).navigate(R.id.action_nav_help_center_to_nav_ticket_detail,bundle);
 
     }
 }

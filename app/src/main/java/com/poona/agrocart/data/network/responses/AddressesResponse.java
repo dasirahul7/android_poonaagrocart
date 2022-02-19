@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class AddressesResponse extends BaseResponse implements Serializable{
+public class AddressesResponse extends BaseResponse implements Serializable {
     @SerializedName("data")
     @Expose
     private List<Address> addresses = null;

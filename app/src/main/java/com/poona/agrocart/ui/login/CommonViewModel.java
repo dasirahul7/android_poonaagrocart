@@ -6,8 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-public class CommonViewModel extends AndroidViewModel 
-{
+public class CommonViewModel extends AndroidViewModel {
     public MutableLiveData<String> mobileNo;
     public MutableLiveData<String> countryCode;
 
@@ -19,22 +18,21 @@ public class CommonViewModel extends AndroidViewModel
 
     public MutableLiveData<String> city;
     public MutableLiveData<String> area;
-    
-    public CommonViewModel(@NonNull Application application)
-    {
+
+    public CommonViewModel(@NonNull Application application) {
         super(application);
 
-        mobileNo=new MutableLiveData<>();
-        countryCode=new MutableLiveData<>();
+        mobileNo = new MutableLiveData<>();
+        countryCode = new MutableLiveData<>();
 
-        otp=new MutableLiveData<>();
+        otp = new MutableLiveData<>();
 
-        userName=new MutableLiveData<>();
-        otpMobileMsg =new MutableLiveData<>();
-        emailId=new MutableLiveData<>();
+        userName = new MutableLiveData<>();
+        otpMobileMsg = new MutableLiveData<>();
+        emailId = new MutableLiveData<>();
 
-        city=new MutableLiveData<>();
-        area=new MutableLiveData<>();
+        city = new MutableLiveData<>();
+        area = new MutableLiveData<>();
 
         mobileNo.setValue("");
         countryCode.setValue("");

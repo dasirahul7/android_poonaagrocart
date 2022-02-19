@@ -24,14 +24,14 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
 
 public class FavouriteViewModel extends AndroidViewModel {
-    private String TAG = FavouriteViewModel.class.getSimpleName();
+    private final String TAG = FavouriteViewModel.class.getSimpleName();
 
     public FavouriteViewModel(@NonNull Application application) {
         super(application);
     }
 
     public LiveData<FavouriteListResponse> favouriteLisResponseLiveData(ProgressDialog progressDialog,
-                                                                        FavouriteItemsFragment favouriteItemsFragment){
+                                                                        FavouriteItemsFragment favouriteItemsFragment) {
         MutableLiveData<FavouriteListResponse> favouriteLisResponseMutableLiveData = new MutableLiveData<>();
         ApiClientAuth.getClient(favouriteItemsFragment.getContext())
                 .create(ApiInterface.class)
@@ -41,7 +41,7 @@ public class FavouriteViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<FavouriteListResponse>() {
                     @Override
                     public void onSuccess(FavouriteListResponse favouriteLisResponse) {
-                        if (favouriteLisResponse!=null){
+                        if (favouriteLisResponse != null) {
                             progressDialog.dismiss();
                             favouriteLisResponseMutableLiveData.setValue(favouriteLisResponse);
                         }
@@ -65,7 +65,7 @@ public class FavouriteViewModel extends AndroidViewModel {
                         Log.e(TAG, e.getMessage());
                     }
                 });
-        return  favouriteLisResponseMutableLiveData;
+        return favouriteLisResponseMutableLiveData;
 
     }
 
@@ -81,7 +81,7 @@ public class FavouriteViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<RemoveFavouriteListResponse>() {
                     @Override
                     public void onSuccess(RemoveFavouriteListResponse favouriteLisResponse) {
-                        if (favouriteLisResponse!=null){
+                        if (favouriteLisResponse != null) {
                             progressDialog.dismiss();
                             removeFavouriteListResponseMutableLiveData.setValue(favouriteLisResponse);
                         }

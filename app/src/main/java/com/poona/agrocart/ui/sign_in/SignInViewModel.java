@@ -28,7 +28,7 @@ import retrofit2.HttpException;
 
 public class SignInViewModel extends AndroidViewModel {
 
-    private String TAG = SignInViewModel.class.getSimpleName();
+    private final String TAG = SignInViewModel.class.getSimpleName();
 
     public SignInViewModel(@NonNull Application application) {
         super(application);
@@ -66,7 +66,7 @@ public class SignInViewModel extends AndroidViewModel {
                             signInResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) signInFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) signInFragment).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -75,9 +75,10 @@ public class SignInViewModel extends AndroidViewModel {
 
         return signInResponseMutableLiveData;
     }
+
     public LiveData<BaseResponse> signOutApiResponse(ProgressDialog progressDialog,
-                                                      HashMap<String, String> hashMap,
-                                                      HomeActivity homeActivity) {
+                                                     HashMap<String, String> hashMap,
+                                                     HomeActivity homeActivity) {
         MutableLiveData<BaseResponse> signOutResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(homeActivity.getApplicationContext())
@@ -106,7 +107,7 @@ public class SignInViewModel extends AndroidViewModel {
                             signOutResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeActivity).onNetworkException(0,"");
+                            ((NetworkExceptionListener) homeActivity).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());

@@ -30,17 +30,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class WalletTransactionFragment extends BaseFragment implements View.OnClickListener
-{
+public class WalletTransactionFragment extends BaseFragment implements View.OnClickListener {
+    private final boolean isWallet = true;
+    private final String[] status = {"Paid", "Refund", "Added"};
+    long fromTime = 0;
     private FragmentWalletTransactionBinding fragmentWalletTransactionBinding;
     private RecyclerView rvTransactions;
     private LinearLayoutManager linearLayoutManager;
     private BasketOrdersAdapter basketOrdersAdapter;
     private ArrayList<BasketOrder> transactionsArrayList;
-    private final boolean isWallet = true;
-    private final String[] status = {"Paid", "Refund", "Added"};
-    private Calendar calendarFrom,calendarTo;
-    long fromTime = 0;
+    private Calendar calendarFrom, calendarTo;
     private DatePickerDialog datePickerDialog;
 
     @Override
@@ -67,8 +66,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         return view;
     }
 
-    private void initView()
-    {
+    private void initView() {
         fragmentWalletTransactionBinding.tvFromDate.setOnClickListener(this);
         fragmentWalletTransactionBinding.tvToDate.setOnClickListener(this);
         fragmentWalletTransactionBinding.btnAdd.setOnClickListener(this);
@@ -80,8 +78,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         setupSpinner();
     }
 
-    private void initCalendarVars()
-    {
+    private void initCalendarVars() {
         DatePickerDialog datePickerDialog = null;
 
         calendarTo = Calendar.getInstance();
@@ -94,8 +91,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
 
     }
 
-    private void setRvAdapter(View view)
-    {
+    private void setRvAdapter(View view) {
         transactionsArrayList = new ArrayList<>();
         prepareListingData();
 
@@ -107,8 +103,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         rvTransactions.setAdapter(basketOrdersAdapter);
     }
 
-    private void prepareListingData()
-    {
+    private void prepareListingData() {
         for (int i = 0; i < 2; i++) {
             BasketOrder basketOrder = new BasketOrder();
             basketOrder.setOrderId(getString(R.string._paac002));
@@ -121,8 +116,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         }
     }
 
-    private void setupSpinner()
-    {
+    private void setupSpinner() {
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, status);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
         fragmentWalletTransactionBinding.spinnerPaid.setAdapter(arrayAdapter);
@@ -137,8 +131,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_from_date:
                 showFromCalendar();
@@ -152,8 +145,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         }
     }
 
-    private void showToCalendar()
-    {
+    private void showToCalendar() {
         datePickerDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -175,22 +167,21 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         datePickerDialog.show();
     }
 
-    public void showFromCalendar()
-    {
+    public void showFromCalendar() {
         datePickerDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    String txtDisplayDate = null;
-                    String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
-                    try {
-                        txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    fragmentWalletTransactionBinding.tvFromDate.setText(txtDisplayDate);
-                    fragmentWalletTransactionBinding.tvToDate.setEnabled(true);
+                String txtDisplayDate = null;
+                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                try {
+                    txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                fragmentWalletTransactionBinding.tvFromDate.setText(txtDisplayDate);
+                fragmentWalletTransactionBinding.tvToDate.setEnabled(true);
 
-                    fromTime=getTimeInMillies(txtDisplayDate);
+                fromTime = getTimeInMillies(txtDisplayDate);
 
                 calendarFrom.set(year, month, dayOfMonth);
             }
@@ -201,18 +192,14 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         datePickerDialog.show();
     }
 
-    private long getTimeInMillies(String txtDisplayDate)
-    {
-        long timeInLong=0;
+    private long getTimeInMillies(String txtDisplayDate) {
+        long timeInLong = 0;
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
-        try
-        {
+        try {
             Date mDate = sdf.parse(txtDisplayDate);
             timeInLong = mDate.getTime();
-        }
-        catch (ParseException e)
-        {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return timeInLong;
@@ -227,9 +214,9 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         LinearLayout walletDialog = dialog.findViewById(R.id.wallet_dialog);
         CustomTextView tvContent = dialog.findViewById(R.id.tv_content);
         CustomTextView tvTitle = dialog.findViewById(R.id.dialog_title);
-            tvTitle.setText(R.string.entr_amount);
-            walletDialog.setVisibility(View.VISIBLE);
-            tvContent.setVisibility(View.INVISIBLE);
+        tvTitle.setText(R.string.entr_amount);
+        walletDialog.setVisibility(View.VISIBLE);
+        tvContent.setVisibility(View.INVISIBLE);
         closeImg.setOnClickListener(v -> {
             dialog.dismiss();
         });

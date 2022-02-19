@@ -18,24 +18,19 @@ import java.util.ArrayList;
 
 public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHolder> {
 
-    private ArrayList<CouponResponse.Coupon> coupons = new ArrayList<>();
     private final Context context;
+    private ArrayList<CouponResponse.Coupon> coupons = new ArrayList<>();
     private RowCouponItemBinding rowCouponItemBinding;
-    private CouponFragment couponFragment;
-    private TermsAndConditionClickItem termsAndConditionClickItem;
+    private final CouponFragment couponFragment;
+    private final TermsAndConditionClickItem termsAndConditionClickItem;
 
 
     public CouponAdapter(ArrayList<CouponResponse.Coupon> coupons,
-                         Context context, CouponFragment couponFragment,TermsAndConditionClickItem termsAndConditionClickItem) {
+                         Context context, CouponFragment couponFragment, TermsAndConditionClickItem termsAndConditionClickItem) {
         this.coupons = coupons;
         this.context = context;
         this.couponFragment = couponFragment;
         this.termsAndConditionClickItem = termsAndConditionClickItem;
-    }
-
-    public interface TermsAndConditionClickItem{
-        void itemViewClick(int position);
-        void onCopyClick(CouponResponse.Coupon coupon);
     }
 
     @NonNull
@@ -51,14 +46,14 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
         CouponResponse.Coupon coupon = coupons.get(position);
         rowCouponItemBinding.setModuleCoupon(coupon);
         holder.bind(coupon);
-        if (Integer.parseInt(coupon.getId()) % 3 == 1){
+        if (Integer.parseInt(coupon.getId()) % 3 == 1) {
             rowCouponItemBinding.couponRow.setBackgroundResource(R.drawable.coupon_green);
             rowCouponItemBinding.tvCouponCode.setTextColor(context.getColor(R.color.light_green_txt_color));
             rowCouponItemBinding.mcvCouponCode.setStrokeColor(context.getColor(R.color.light_green_txt_color));
         }
-        if (Integer.parseInt(coupon.getId())% 3 == 2)
+        if (Integer.parseInt(coupon.getId()) % 3 == 2)
             rowCouponItemBinding.couponRow.setBackgroundResource(R.drawable.coupon_blue);
-        if (Integer.parseInt(coupon.getId()) % 3 == 0){
+        if (Integer.parseInt(coupon.getId()) % 3 == 0) {
             rowCouponItemBinding.couponRow.setBackgroundResource(R.drawable.coupon_pink);
             rowCouponItemBinding.tvCouponCode.setTextColor(context.getColor(R.color.red_text_color));
             rowCouponItemBinding.mcvCouponCode.setStrokeColor(context.getColor(R.color.red_text_color));
@@ -69,6 +64,12 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
     @Override
     public int getItemCount() {
         return coupons.size();
+    }
+
+    public interface TermsAndConditionClickItem {
+        void itemViewClick(int position);
+
+        void onCopyClick(CouponResponse.Coupon coupon);
     }
 
     public class CouponHolder extends RecyclerView.ViewHolder {

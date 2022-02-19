@@ -489,7 +489,7 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="registration">Registration</string>
     <string name="special_rate_for_subscription">Special rate for subscription</string>
 
-           <!--Common Text-->
+    <!--Common Text-->
     <string name="delete_notifications">Do you really want to delete all notifications?</string>
 
     <!--cms pages error messages-->
@@ -519,7 +519,6 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="confirm_location">Confirm Location</string>
     <string name="search_place">Search a place</string>
     <string name="failed_select_location">failed to select location please try again</string>
-
 
 
     <!--Warning Toasts -->

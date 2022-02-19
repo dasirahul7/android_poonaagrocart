@@ -2,7 +2,6 @@ package com.poona.agrocart.ui.order_summary.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
@@ -10,16 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
-import com.poona.agrocart.databinding.DialogDeliveryOptionsBinding;
-import com.poona.agrocart.databinding.RowAddressRadioBinding;
 import com.poona.agrocart.databinding.RowDeliveryOptionRadioBinding;
 import com.poona.agrocart.ui.order_summary.model.DeliverySlot;
 
 import java.util.ArrayList;
 
 public class DeliveryDialogAdapter extends RecyclerView.Adapter<DeliveryDialogAdapter.DeliveryItemHolder> {
-    private ArrayList<DeliverySlot> deliverySlots;
-    private Context dlContext;
+    private final ArrayList<DeliverySlot> deliverySlots;
+    private final Context dlContext;
     private RowDeliveryOptionRadioBinding deliveryOptionsBinding;
     private int mSelectedItem = -1;
     private CompoundButton lastCheckedRB;
@@ -32,7 +29,7 @@ public class DeliveryDialogAdapter extends RecyclerView.Adapter<DeliveryDialogAd
     @NonNull
     @Override
     public DeliveryItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        deliveryOptionsBinding = RowDeliveryOptionRadioBinding.inflate(LayoutInflater.from(dlContext),parent,false);
+        deliveryOptionsBinding = RowDeliveryOptionRadioBinding.inflate(LayoutInflater.from(dlContext), parent, false);
         return new DeliveryItemHolder(deliveryOptionsBinding);
     }
 
@@ -43,12 +40,12 @@ public class DeliveryDialogAdapter extends RecyclerView.Adapter<DeliveryDialogAd
         holder.optionsBinding.rdSlot.setChecked(mSelectedItem == position);
         holder.optionsBinding.rdSlot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean radioBoolean ) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean radioBoolean) {
                 if (lastCheckedRB != null) {
                     lastCheckedRB.setChecked(false);
                 }
                 //store the clicked radiobutton
-                lastCheckedRB =  holder.optionsBinding.rdSlot;
+                lastCheckedRB = holder.optionsBinding.rdSlot;
             }
         });
 
@@ -61,13 +58,15 @@ public class DeliveryDialogAdapter extends RecyclerView.Adapter<DeliveryDialogAd
     }
 
     public class DeliveryItemHolder extends RecyclerView.ViewHolder {
-        private RowDeliveryOptionRadioBinding optionsBinding;
+        private final RowDeliveryOptionRadioBinding optionsBinding;
+
         public DeliveryItemHolder(@NonNull RowDeliveryOptionRadioBinding binding) {
             super(binding.getRoot());
             this.optionsBinding = binding;
         }
-        public void sotBind(DeliverySlot slot){
-            optionsBinding.setVariable(BR.modelDeliverySlot,slot);
+
+        public void sotBind(DeliverySlot slot) {
+            optionsBinding.setVariable(BR.modelDeliverySlot, slot);
             optionsBinding.executePendingBindings();
             itemView.setOnClickListener(v -> {
                 mSelectedItem = getAdapterPosition();
