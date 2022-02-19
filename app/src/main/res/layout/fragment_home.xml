@@ -117,7 +117,7 @@
                         android:includeFontPadding="false"
                         android:text="@string/shop_by_category"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/xx_large_txt_size"
+                        android:textSize="@dimen/_20sp"
                         app:fontFamily="@font/poppins" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -162,7 +162,7 @@
                         android:includeFontPadding="false"
                         android:text="@string/baskets"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/xx_large_txt_size"
+                        android:textSize="@dimen/_20sp"
                         app:fontFamily="@font/poppins" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -206,7 +206,7 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/best_selling"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/xx_large_txt_size"
+                        android:textSize="@dimen/_20sp"
                         android:includeFontPadding="false"
                         app:fontFamily="@font/poppins" />
 
@@ -260,7 +260,7 @@
                         android:fontFamily="@font/poppins"
                         android:text="@string/exclusive_offer"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/xx_large_txt_size"
+                        android:textSize="@dimen/_20sp"
                         android:includeFontPadding="false"
                         app:fontFamily="@font/poppins" />
 

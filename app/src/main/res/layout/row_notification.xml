@@ -75,7 +75,7 @@
                         android:paddingTop="@dimen/_5sdp"
                         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi semper egestas at cursus maecenas duis enim sit ipsum. Ri amet tristique comm."
                         android:textColor="@color/color_grey_txt"
-                        android:textSize="@dimen/medium_txt_size"
+                        android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -89,7 +89,7 @@
                         android:padding="@dimen/_5sdp"
                         android:includeFontPadding="false"
                         android:textColor="@color/color_order_date_and_time"
-                        android:textSize="@dimen/medium_txt_size"
+                        android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
                 </LinearLayout>
 

@@ -11,7 +11,7 @@
     <dimen name="_20sp">20sp</dimen>
     <dimen name="_22sp">22sp</dimen>
     <dimen name="_24sp">24sp</dimen>
-
+    <dimen name="_28sp">28sp</dimen>
 
     <!--Alerter-->
     <dimen name="alerter_padding_small">4dp</dimen>
@@ -22,45 +22,18 @@
     <dimen name="alerter_alert_min_height">64dp</dimen>
     <dimen name="alerter_alert_max_height">84dp</dimen>
     <dimen name="alerter_alert_icn_size">38dp</dimen>
-    <dimen name="_28sp">28sp</dimen>
-    <dimen name="activity_horizontal_margin">10dp</dimen>
-    <dimen name="activity_vertical_margin">10dp</dimen>
-    <dimen name="normal">16sp</dimen>
-    <dimen name="nav_header_vertical_spacing">8dp</dimen>
-    <dimen name="nav_header_height">140dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="cat_txt_size">18sp</dimen>
-    <dimen name="category_txt_size">16sp</dimen>
-    <dimen name="offer_txt_size">14sp</dimen>
-    <dimen name="large">20sp</dimen>
 
     <dimen name="design_navigation_padding_top_default" tools:override="true">0dp</dimen>
     <dimen name="design_navigation_separator_vertical_padding" tools:override="true">0dp</dimen>
     <dimen name="design_navigation_padding_bottom" tools:override="true">0dp</dimen>
     
-<!--    Home screen spacing-->
+    <!--Home screen spacing-->
     <dimen name="horizontal_margin">@dimen/_15sdp</dimen>
     <dimen name="home_bottom_margin">@dimen/_15sdp</dimen>
     <dimen name="vertical_margin">@dimen/_10sdp</dimen>
     <dimen name="home_horizontal_padding">@dimen/_10sdp</dimen>
     <dimen name="product_box_padding">@dimen/_8sdp</dimen>
     <dimen name="button_horizontal_margin">@dimen/_20sdp</dimen>
-
-
-<!--    ProductOld List Sizes-->
-    <dimen name="search_hint_size">@dimen/_14sp</dimen>
-
-<!--    Text Sizes-->
-    <dimen name="button_txt_size">@dimen/_18sp</dimen>
-    <dimen name="small_txt_size">@dimen/_12sp</dimen>
-    <dimen name="medium_txt_size">@dimen/_14sp</dimen>
-    <dimen name="large_txt_size">@dimen/_16sp</dimen>
-    <dimen name="x_large_txt_size">@dimen/_18sp</dimen>
-    <dimen name="xx_large_txt_size">@dimen/_20sp</dimen>
-    <dimen name="title_txt_size">@dimen/_24sp</dimen>
-    <dimen name="xl_txt_size">@dimen/_20sdp</dimen>
-    <dimen name="xxl_txt_size">@dimen/_18sdp</dimen>
-    <dimen name="very_large">@dimen/_25sdp</dimen>
 
     <!--PinView-->
     <dimen name="pv_pin_view_item_size">48dp</dimen>

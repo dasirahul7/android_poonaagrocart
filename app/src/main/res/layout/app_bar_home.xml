@@ -95,7 +95,7 @@
                         android:paddingHorizontal="@dimen/_5sdp"
                         android:paddingVertical="@dimen/_5sdp"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/offer_txt_size"
+                        android:textSize="@dimen/_14sp"
                         android:textStyle="bold"
                         app:setCustomFont="@string/font_poppins_regular" />
 

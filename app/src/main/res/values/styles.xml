@@ -274,7 +274,7 @@
     <!--ProductOld item styles-->
     <style name="ProductNameStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/blue_txt_color</item>
-        <item name="android:textSize">@dimen/cat_txt_size</item>
+        <item name="android:textSize">@dimen/_18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="setCustomFont">@string/font_poppins_semi_bold</item>
         <item name="singleLine">true</item>
