@@ -372,7 +372,7 @@ public interface ApiInterface {
     /*Setting Here*/
     @FormUrlEncoded
     @POST(UPDATE_CONFIGURATION)
-    Single<UpdateConfigurationResponse> getNotificationSetting(@FieldMap HashMap<String, Integer> notificationInputParameter);
+    Single<UpdateConfigurationResponse> getNotificationSetting(@FieldMap HashMap<String, String> notificationInputParameter);
 
     @GET(VIEW_CONFIGURATION)
     Single<ViewConfigurationResponse> getUpdatedNotification();
