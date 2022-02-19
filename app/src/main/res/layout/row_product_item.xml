@@ -12,7 +12,6 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-
         android:id="@+id/cardview_product"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_110sdp"
@@ -26,16 +25,16 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/_8sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/img_layout"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_12sdp"
+                app:cardCornerRadius="@dimen/_8sdp"
                 app:cardElevation="0dp">
 
                 <ImageView
@@ -157,8 +156,6 @@
                 android:id="@+id/iv_favourite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/img_plus"
-                android:layout_alignEnd="@+id/img_plus"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_filled_heart"
@@ -166,10 +163,10 @@
 
 
             <ImageView
-                android:id="@+id/add"
+                android:id="@+id/ic_add_to_cart"
                 style="@style/PlusButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_28sdp"
+                android:layout_height="@dimen/_28sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true" />
 
@@ -183,39 +180,44 @@
                 <ImageView
                     android:id="@+id/iv_cross"
                     android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_13sdp"
+                    android:layout_height="@dimen/_15sdp"
                     android:src="@drawable/ic_cross"
+                    android:padding="@dimen/_3sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_plus"
                     style="@style/PlusButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/et_quantity"
-                    android:layout_width="@dimen/_20sdp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="false"
                     android:gravity="center|center_vertical"
                     android:text="@string/_1"
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16sp"
+                    android:includeFontPadding="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/iv_plus"
                     app:layout_constraintTop_toTopOf="@+id/iv_minus"
-                    app:setCustomFont="@string/font_poppins_regular" />
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
 
                 <ImageView
                     android:id="@+id/iv_minus"
                     style="@style/MinusButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/et_quantity" />
 

@@ -38,7 +38,9 @@
         <entry key="app/src/main/res/drawable/bg_green_coupon.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/bg_green_rectangle.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/bg_green_rounded.xml" value="0.1935185185185185" />
+        <entry key="app/src/main/res/drawable/bg_green_square.xml" value="0.12" />
         <entry key="app/src/main/res/drawable/bg_green_tickect.xml" value="0.20615384615384616" />
+        <entry key="app/src/main/res/drawable/bg_grey_square.xml" value="0.12" />
         <entry key="app/src/main/res/drawable/bg_login_et_fields.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_my_profile_dob.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_my_profile_spinner.xml" value="0.1" />
@@ -86,6 +88,7 @@
         <entry key="app/src/main/res/drawable/ic_camera_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_check_mark.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_coupons_offers.xml" value="0.19907407407407407" />
+        <entry key="app/src/main/res/drawable/ic_cross.xml" value="0.134" />
         <entry key="app/src/main/res/drawable/ic_cross_cancel.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_current_location.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_default_profile_img.xml" value="0.14351851851851852" />
@@ -228,7 +231,7 @@
         <entry key="app/src/main/res/layout/fragment_location.xml" value="0.14130434782608695" />
         <entry key="app/src/main/res/layout/fragment_log_in.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_my_basket.xml" value="0.11684782608695653" />
-        <entry key="app/src/main/res/layout/fragment_my_cart.xml" value="0.15489130434782608" />
+        <entry key="app/src/main/res/layout/fragment_my_cart.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_my_orders.xml" value="0.14855072463768115" />
         <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.19" />
         <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.11684782608695653" />

@@ -14,6 +14,8 @@ import static com.poona.agrocart.app.AppConstants.CITY_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
 import static com.poona.agrocart.app.AppConstants.COUPON_API;
 import static com.poona.agrocart.app.AppConstants.DELETE_ADDRESS_API;
+import static com.poona.agrocart.app.AppConstants.DELETE_CART_ITEM_API;
+import static com.poona.agrocart.app.AppConstants.DELETE_CART_LIST_API;
 import static com.poona.agrocart.app.AppConstants.FAQ;
 import static com.poona.agrocart.app.AppConstants.FAVOURITE_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_API;
@@ -306,7 +308,17 @@ public interface ApiInterface {
     /*Cart List Response*/
     @FormUrlEncoded
     @POST(CART_LIST_API)
-    Single<MyCartResponse> getAllCartList(@FieldMap HashMap<String, String> hashMap);
+    Single<MyCartResponse> getMyCartListingResponse(@FieldMap HashMap<String, String> hashMap);
+
+    /*Delete Cart Item Response*/
+    @FormUrlEncoded
+    @POST(DELETE_CART_ITEM_API)
+    Single<BaseResponse> deleteCartItemResponse(@FieldMap HashMap<String, String> hashMap);
+
+    /*Delete Cart List Response*/
+    @FormUrlEncoded
+    @POST(DELETE_CART_LIST_API)
+    Single<BaseResponse> deleteCartListResponse(@FieldMap HashMap<String, String> hashMap);
 
     @FormUrlEncoded
     @POST(REMOVE_FAVOURITE_ITEM_API)

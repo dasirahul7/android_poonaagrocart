@@ -115,6 +115,8 @@ public class AppConstants {
 
     /*Cart lis api*/
     public static final String CART_LIST_API = "view-cart";
+    public static final String DELETE_CART_ITEM_API = "delete-cart-by-id";
+    public static final String DELETE_CART_LIST_API = "delete-cart-all";
 
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
@@ -228,6 +230,11 @@ public class AppConstants {
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
     public static final String GOOGLE_MAP_ADDRESS = "map_address";
+
+    /*
+    * Cart Screen Parameters
+    * */
+    public static final String CART_ID = "cart_id";
 
     /*
      * id to handle the notification in the notification tray

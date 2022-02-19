@@ -12,47 +12,82 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.cartResponse.CartData;
 import com.poona.agrocart.databinding.RowProductItemBinding;
+import com.poona.agrocart.ui.nav_addresses.AddressesAdapter;
 
 import java.util.ArrayList;
 
 public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.CartItemsViewHolder> {
     private final ArrayList<CartData> cartItemArrayList;
-    private final OnClickCart onCartItemClick;
-    private RowProductItemBinding rvCartItemBinding;
+    private RowProductItemBinding rowProductItemBinding;
 
-    public CartItemsAdapter(ArrayList<CartData> cartItemArrayList, OnClickCart onCartItemClick) {
+    private OnCartItemClickListener onCartItemClickListener;
+    private OnCartAddCountClickListener onCartAddCountClickListener;
+    private OnCartMinusCountClickListener onCartMinusCountClickListener;
+    private OnCartItemDeleteClickListener onCartItemDeleteClickListener;
+
+    public interface OnCartItemClickListener {
+        void onCartItemClick(int position);
+    }
+
+    public interface OnCartAddCountClickListener {
+        void onCartAddCountClick(int position);
+    }
+
+    public interface OnCartMinusCountClickListener {
+        void onCartMinusCountClick(int position);
+    }
+
+    public interface OnCartItemDeleteClickListener {
+        void onCartItemDeleteClick(int position);
+    }
+
+    public void setOnCartItemClick(OnCartItemClickListener listener) {
+        onCartItemClickListener = listener;
+    }
+
+    public void setOnCartAddMinusCountClick(OnCartAddCountClickListener listener) {
+        onCartAddCountClickListener = listener;
+    }
+
+    public void setOnCartMinusCountClick(OnCartMinusCountClickListener listener) {
+        onCartMinusCountClickListener = listener;
+    }
+
+    public void setOnDeleteCartItemClick(OnCartMinusCountClickListener listener) {
+        onCartMinusCountClickListener = listener;
+    }
+
+    public CartItemsAdapter(ArrayList<CartData> cartItemArrayList) {
         this.cartItemArrayList = cartItemArrayList;
-        this.onCartItemClick = onCartItemClick;
     }
 
     @NonNull
     @Override
     public CartItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        rvCartItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+        rowProductItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.row_product_item, parent, false);
-        return new CartItemsAdapter.CartItemsViewHolder(rvCartItemBinding);
+        return new CartItemsAdapter.CartItemsViewHolder(rowProductItemBinding,
+                onCartItemClickListener,
+                onCartAddCountClickListener,
+                onCartMinusCountClickListener,
+                onCartItemDeleteClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CartItemsViewHolder holder, int position) {
         final CartData cartItem = cartItemArrayList.get(position);
-        holder.rvCartItemBinding.setProductOldModule(cartItem);
+        holder.rowProductItemBinding.setProductOldModule(cartItem);
         holder.bind(cartItem, position);
         if (cartItem.getItemType().equalsIgnoreCase("basket")) {
-            rvCartItemBinding.tvName.setText(cartItem.getBasketName());
-            rvCartItemBinding.tvOfferPrice.setText("RS." + cartItem.getBasketRate());
-//            rvCartItemBinding.tv.setVisibility(View.INVISIBLE);
-            rvCartItemBinding.tvLocation.setText(cartItem.getLocation());
-//            rvCartItemBinding.tvOfferPrice.setVisibility(View.INVISIBLE);
-            rvCartItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
+            rowProductItemBinding.tvName.setText(cartItem.getBasketName());
+            rowProductItemBinding.tvOfferPrice.setText("RS." + cartItem.getBasketRate());
+            rowProductItemBinding.tvLocation.setText(cartItem.getLocation());
+            rowProductItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
         } else {
-            rvCartItemBinding.tvName.setText(cartItem.getProductName());
-            rvCartItemBinding.tvOfferPrice.setText("RS." + cartItem.getPricePerQuantity());
-//            rvCartItemBinding.tvSellingPrice.setText("RS."+favourite.getSelling_price());
-            rvCartItemBinding.tvWeight.setText(cartItem.getWeight() + "" + cartItem.getUnitName());
-
+            rowProductItemBinding.tvName.setText(cartItem.getProductName());
+            rowProductItemBinding.tvOfferPrice.setText("RS." + cartItem.getPricePerQuantity());
+            rowProductItemBinding.tvWeight.setText(cartItem.getWeight() + "" + cartItem.getUnitName());
         }
-
     }
 
     @Override
@@ -60,56 +95,97 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         return cartItemArrayList.size();
     }
 
-    public interface OnClickCart {
-        void onItemClick(CartData cartData);
-
-        void onPlusCart(CartData cartData);
-    }
-
     public class CartItemsViewHolder extends RecyclerView.ViewHolder {
-        RowProductItemBinding rvCartItemBinding;
-        OnClickCart onCartItemClick;
+        RowProductItemBinding rowProductItemBinding;
+        private int selectedCartItem = 0;
+        private int selectedAddCartItem = 0;
+        private int selectedMinusCartItem = 0;
+        private int selectedDeleteItem = 0;
+        public CartItemsViewHolder(RowProductItemBinding rowProductItemBinding,
+                                   OnCartItemClickListener onCartItemClickListener,
+                                   OnCartAddCountClickListener onCartAddCountClickListener,
+                                   OnCartMinusCountClickListener onCartMinusCountClickListener,
+                                   OnCartItemDeleteClickListener onCartItemDeleteClickListener) {
+            super(rowProductItemBinding.getRoot());
+            this.rowProductItemBinding = rowProductItemBinding;
 
-        public CartItemsViewHolder(RowProductItemBinding rvCartItemBinding) {
-            super(rvCartItemBinding.getRoot());
-            this.rvCartItemBinding = rvCartItemBinding;
-            this.onCartItemClick = onCartItemClick;
-            this.rvCartItemBinding.txtItemOffer.setVisibility(View.GONE);
-            this.rvCartItemBinding.closeLayout.setVisibility(View.VISIBLE);
-            rvCartItemBinding.ivPlus.setOnClickListener(v -> {
-                increaseQuantity();
+            this.rowProductItemBinding.txtItemOffer.setVisibility(View.GONE);
+            this.rowProductItemBinding.icAddToCart.setVisibility(View.GONE);
+            this.rowProductItemBinding.closeLayout.setVisibility(View.VISIBLE);
+
+            rowProductItemBinding.getRoot().setOnClickListener(view -> {
+                selectedCartItem = getAdapterPosition();
+                notifyDataSetChanged();
+                if (onCartItemClickListener != null) {
+                    if (selectedCartItem != RecyclerView.NO_POSITION) {
+                        onCartItemClickListener.onCartItemClick(selectedCartItem);
+                    }
+                }
             });
+
+            rowProductItemBinding.ivPlus.setOnClickListener(view -> {
+                selectedAddCartItem = getAdapterPosition();
+                notifyDataSetChanged();
+                if (onCartAddCountClickListener != null) {
+                    if (selectedAddCartItem != RecyclerView.NO_POSITION) {
+                        onCartAddCountClickListener.onCartAddCountClick(selectedAddCartItem);
+                    }
+                }
+            });
+
+            rowProductItemBinding.ivMinus.setOnClickListener(view -> {
+                selectedMinusCartItem = getAdapterPosition();
+                notifyDataSetChanged();
+                if (onCartMinusCountClickListener != null) {
+                    if (selectedMinusCartItem != RecyclerView.NO_POSITION) {
+                        onCartMinusCountClickListener.onCartMinusCountClick(selectedMinusCartItem);
+                    }
+                }
+            });
+
+            rowProductItemBinding.ivCross.setOnClickListener(view -> {
+                selectedDeleteItem = getAdapterPosition();
+                notifyDataSetChanged();
+                if (onCartItemDeleteClickListener != null) {
+                    if (selectedDeleteItem != RecyclerView.NO_POSITION) {
+                        onCartItemDeleteClickListener.onCartItemDeleteClick(selectedDeleteItem);
+                    }
+                }
+            });
+
+            /*rowProductItemBinding.ivPlus.setOnClickListener(v -> {
+                increaseQuantity();
+            });*/
         }
 
 
         private void decreaseQuantity() {
-            int quantity = Integer.parseInt(rvCartItemBinding.etQuantity.getText().toString());
+            int quantity = Integer.parseInt(rowProductItemBinding.etQuantity.getText().toString());
             if (quantity > 1) {
                 quantity--;
-                rvCartItemBinding.etQuantity.setText(String.valueOf(quantity));
+                rowProductItemBinding.etQuantity.setText(String.valueOf(quantity));
                 setMinus(quantity);
             }
         }
 
         private void increaseQuantity() {
-            int quantity = Integer.parseInt(rvCartItemBinding.etQuantity.getText().toString());
+            int quantity = Integer.parseInt(rowProductItemBinding.etQuantity.getText().toString());
             quantity++;
-            rvCartItemBinding.etQuantity.setText(String.valueOf(quantity));
+            rowProductItemBinding.etQuantity.setText(String.valueOf(quantity));
             setMinus(quantity);
         }
 
         private void setMinus(int quantity) {
             if (quantity > 1) {
-                rvCartItemBinding.ivMinus.setBackgroundResource(R.drawable.bg_green_square);
+                rowProductItemBinding.ivMinus.setBackgroundResource(R.drawable.bg_green_square);
             } else {
-                rvCartItemBinding.ivMinus.setBackgroundResource(R.drawable.bg_grey_square);
+                rowProductItemBinding.ivMinus.setBackgroundResource(R.drawable.bg_grey_square);
             }
         }
 
         public void bind(CartData cartItem, int position) {
-            rvCartItemBinding.setVariable(BR.cartItem, cartItem);
-            rvCartItemBinding.executePendingBindings();
+            //rowProductItemBinding.setVariable(BR.cartItem, cartItem);
+            rowProductItemBinding.executePendingBindings();
         }
     }
-
 }
