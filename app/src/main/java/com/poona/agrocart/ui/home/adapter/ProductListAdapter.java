@@ -15,6 +15,7 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.databinding.HomeProductItemBinding;
+import com.poona.agrocart.databinding.RowExclusiveItemBinding;
 
 import java.util.ArrayList;
 
@@ -22,14 +23,21 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private final Context bdContext;
     private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
     private HomeProductItemBinding productBinding;
-    private final ExclusiveOfferListAdapter.OnProductClickListener onProductClickListener;
-    private final ExclusiveOfferListAdapter.OnPlusClickListener onPlusClickListener;
+    private final OnProductClickListener onProductClickListener;
+    private final OnPlusClickListener onPlusClickListener;
 
+    public interface OnProductClickListener {
+        void onProductClick(ProductListResponse.Product product);
+    }
+
+    public interface OnPlusClickListener {
+        void OnPlusClick(HomeProductItemBinding homeProductItemBinding, ProductListResponse.Product product, int position);
+    }
 
     public ProductListAdapter(ArrayList<ProductListResponse.Product> products,
                               FragmentActivity context,
-                              ExclusiveOfferListAdapter.OnProductClickListener onProductClickListener,
-                              ExclusiveOfferListAdapter.OnPlusClickListener onPlusClickListener) {
+                              OnProductClickListener onProductClickListener,
+                              OnPlusClickListener onPlusClickListener) {
         this.products = products;
         this.bdContext = context;
         this.onProductClickListener = onProductClickListener;
@@ -48,7 +56,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         productBinding.setHomeProductModel(product);
         holder.bindProduct(product, position);
         productBinding.imgPlus.setOnClickListener(view -> {
-            onPlusClickListener.OnPlusClick(product, position);
+            onPlusClickListener.OnPlusClick(productBinding, product, position);
         });
 
     }

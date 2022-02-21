@@ -136,8 +136,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         cartItemAdapter.setOnDeleteCartItemClick(position -> {
             this.deleteItemPosition = position;
             if (isConnectingToInternet(context)) {
-                Toast.makeText(context, ""+position, Toast.LENGTH_SHORT).show();
-                //deleteCartItemApi(showCircleProgressDialog(context, ""));
+                deleteCartItemApi(showCircleProgressDialog(context, ""));
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }

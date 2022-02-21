@@ -47,7 +47,7 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
         rowExclusiveItemBinding.setExclusiveOfferModule(product);
         holder.bindData(product, position);
         rowExclusiveItemBinding.imgPlus.setOnClickListener(view1 -> {
-            onPlusClickListener.OnPlusClick(product, position);
+            onPlusClickListener.OnPlusClick(rowExclusiveItemBinding, product, position);
         });
     }
 
@@ -61,7 +61,7 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
     }
 
     public interface OnPlusClickListener {
-        void OnPlusClick(ProductListResponse.Product product, int position);
+        void OnPlusClick(RowExclusiveItemBinding rowExclusiveItemBinding, ProductListResponse.Product product, int position);
     }
 
     public class ExclusiveItemHolder extends RecyclerView.ViewHolder {

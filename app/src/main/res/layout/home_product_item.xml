@@ -183,6 +183,36 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true" />
 
+            <RelativeLayout
+                android:id="@+id/rl_add_to_cart_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/img_plus_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/bg_green_square"
+                    android:scaleType="center" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_alignStart="@+id/img_plus_"
+                    android:layout_alignEnd="@+id/img_plus_"
+                    android:layout_alignTop="@+id/img_plus_"
+                    android:layout_alignBottom="@+id/img_plus_"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/white"
+                    android:background="@android:color/transparent"/>
+
+            </RelativeLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/close_layout"
                 android:layout_width="wrap_content"
