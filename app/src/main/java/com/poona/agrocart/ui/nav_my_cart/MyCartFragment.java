@@ -33,6 +33,7 @@ import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.cartResponse.CartData;
 import com.poona.agrocart.data.network.responses.cartResponse.MyCartResponse;
 import com.poona.agrocart.databinding.FragmentMyCartBinding;
+import com.poona.agrocart.databinding.RowProductItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.CustomDialogInterface;
 import com.poona.agrocart.ui.home.HomeActivity;
@@ -121,22 +122,18 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
         });
 
-        cartItemAdapter.setOnCartAddMinusCountClick(position -> {
+        cartItemAdapter.setOnCartAddMinusCountClick((position, binding) -> {
 
         });
 
-        cartItemAdapter.setOnCartMinusCountClick(position -> {
+        cartItemAdapter.setOnCartMinusCountClick((position, binding) -> {
 
         });
 
-        cartItemAdapter.setOnCartMinusCountClick(position -> {
-
-        });
-
-        cartItemAdapter.setOnDeleteCartItemClick(position -> {
+        cartItemAdapter.setOnDeleteCartItemClick((position, binding) -> {
             this.deleteItemPosition = position;
             if (isConnectingToInternet(context)) {
-                deleteCartItemApi(showCircleProgressDialog(context, ""));
+                deleteCartItemApi(binding);
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
@@ -153,6 +150,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             }
         });
 
+        fragmentMyCartBinding.llMain.setVisibility(View.GONE);
         if (isConnectingToInternet(context)) {
             callMyCarListApi(showCircleProgressDialog(context, ""));
         } else {
@@ -177,11 +175,15 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_200://success
                         if (myCartResponse.getData() != null
                                 && myCartResponse.getData().size() > 0) {
-
                             fragmentMyCartBinding.emptyLayout.setVisibility(View.GONE);
                             fragmentMyCartBinding.llMain.setVisibility(View.VISIBLE);
                             cartItemsList.addAll(myCartResponse.getData());
                             cartItemAdapter.notifyDataSetChanged();
+                        } else {
+                            requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
+                            setBottomMarginInDps(50);
+                            fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
+                            fragmentMyCartBinding.llMain.setVisibility(View.GONE);
                         }
                         break;
                     case STATUS_CODE_400://Validation Errors
@@ -189,6 +191,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                         break;
                     case STATUS_CODE_404://Record not Found
                         /* show empty screen message */
+                        requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
+                        setBottomMarginInDps(50);
                         fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
                         fragmentMyCartBinding.llMain.setVisibility(View.GONE);
                         break;
@@ -209,8 +213,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         myCartViewModel
                 .getMyCartListingResponse(progressDialog, myCartParameters(), MyCartFragment.this)
                 .observe(getViewLifecycleOwner(), myCartResponseObserver);
-
-        myCartViewModel.getMyCartListingResponse(progressDialog, myCartParameters(), MyCartFragment.this);
     }
 
     private HashMap<String, String> myCartParameters() {
@@ -219,7 +221,9 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         return map;
     }
 
-    private void deleteCartItemApi(ProgressDialog progressDialog) {
+    private void deleteCartItemApi(RowProductItemBinding binding) {
+        binding.rlMain.setVisibility(View.GONE);
+        binding.rlLoader.setVisibility(View.VISIBLE);
         /*print user input parameters*/
         for (Map.Entry<String, String> entry : getCartItemIdParameter().entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
@@ -227,7 +231,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
         androidx.lifecycle.Observer<BaseResponse> responseObserver = baseResponse -> {
             if (baseResponse != null) {
-                progressDialog.dismiss();
+                binding.rlMain.setVisibility(View.VISIBLE);
+                binding.rlLoader.setVisibility(View.GONE);
                 Log.e("Delete Address Api ResponseData", new Gson().toJson(baseResponse));
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
@@ -249,12 +254,13 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                         break;
                 }
             } else {
-                progressDialog.dismiss();
+                binding.rlMain.setVisibility(View.VISIBLE);
+                binding.rlLoader.setVisibility(View.GONE);
             }
         };
 
         myCartViewModel
-                .deleteCartItemResponse(progressDialog,  getCartItemIdParameter(), MyCartFragment.this)
+                .deleteCartItemResponse(getCartItemIdParameter(), MyCartFragment.this)
                 .observe(getViewLifecycleOwner(), responseObserver);
     }
 

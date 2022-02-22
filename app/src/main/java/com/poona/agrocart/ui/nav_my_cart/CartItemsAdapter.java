@@ -30,15 +30,15 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
     }
 
     public interface OnCartAddCountClickListener {
-        void onCartAddCountClick(int position);
+        void onCartAddCountClick(int position, RowProductItemBinding binding);
     }
 
     public interface OnCartMinusCountClickListener {
-        void onCartMinusCountClick(int position);
+        void onCartMinusCountClick(int position, RowProductItemBinding binding);
     }
 
     public interface OnCartItemDeleteClickListener {
-        void onCartItemDeleteClick(int position);
+        void onCartItemDeleteClick(int position, RowProductItemBinding binding);
     }
 
     public void setOnCartItemClick(OnCartItemClickListener listener) {
@@ -53,8 +53,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         onCartMinusCountClickListener = listener;
     }
 
-    public void setOnDeleteCartItemClick(OnCartMinusCountClickListener listener) {
-        onCartMinusCountClickListener = listener;
+    public void setOnDeleteCartItemClick(OnCartItemDeleteClickListener listener) {
+        onCartItemDeleteClickListener = listener;
     }
 
     public CartItemsAdapter(ArrayList<CartData> cartItemArrayList) {
@@ -113,7 +113,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             this.rowProductItemBinding.icAddToCart.setVisibility(View.GONE);
             this.rowProductItemBinding.closeLayout.setVisibility(View.VISIBLE);
 
-            rowProductItemBinding.getRoot().setOnClickListener(view -> {
+            /*rowProductItemBinding.getRoot().setOnClickListener(view -> {
                 selectedCartItem = getAdapterPosition();
                 notifyDataSetChanged();
                 if (onCartItemClickListener != null) {
@@ -121,14 +121,14 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
                         onCartItemClickListener.onCartItemClick(selectedCartItem);
                     }
                 }
-            });
+            });*/
 
             rowProductItemBinding.ivPlus.setOnClickListener(view -> {
                 selectedAddCartItem = getAdapterPosition();
                 notifyDataSetChanged();
                 if (onCartAddCountClickListener != null) {
                     if (selectedAddCartItem != RecyclerView.NO_POSITION) {
-                        onCartAddCountClickListener.onCartAddCountClick(selectedAddCartItem);
+                        onCartAddCountClickListener.onCartAddCountClick(selectedAddCartItem, rowProductItemBinding);
                     }
                 }
             });
@@ -138,7 +138,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
                 notifyDataSetChanged();
                 if (onCartMinusCountClickListener != null) {
                     if (selectedMinusCartItem != RecyclerView.NO_POSITION) {
-                        onCartMinusCountClickListener.onCartMinusCountClick(selectedMinusCartItem);
+                        onCartMinusCountClickListener.onCartMinusCountClick(selectedMinusCartItem, rowProductItemBinding);
                     }
                 }
             });
@@ -148,7 +148,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
                 notifyDataSetChanged();
                 if (onCartItemDeleteClickListener != null) {
                     if (selectedDeleteItem != RecyclerView.NO_POSITION) {
-                        onCartItemDeleteClickListener.onCartItemDeleteClick(selectedDeleteItem);
+                        onCartItemDeleteClickListener.onCartItemDeleteClick(selectedDeleteItem, rowProductItemBinding);
                     }
                 }
             });
