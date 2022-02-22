@@ -87,8 +87,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     private void initView() {
         initTitleBar(getString(R.string.my_cart));
 
-        ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.VISIBLE);
-
         rvMyCart = fragmentMyCartBinding.rvMyCart;
         scale = getResources().getDisplayMetrics().density;
 
@@ -177,6 +175,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                                 && myCartResponse.getData().size() > 0) {
                             fragmentMyCartBinding.emptyLayout.setVisibility(View.GONE);
                             fragmentMyCartBinding.llMain.setVisibility(View.VISIBLE);
+                            ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.VISIBLE);
                             cartItemsList.addAll(myCartResponse.getData());
                             cartItemAdapter.notifyDataSetChanged();
                         } else {
@@ -184,6 +183,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                             setBottomMarginInDps(50);
                             fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
                             fragmentMyCartBinding.llMain.setVisibility(View.GONE);
+                            ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
                         }
                         break;
                     case STATUS_CODE_400://Validation Errors
@@ -195,6 +195,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                         setBottomMarginInDps(50);
                         fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
                         fragmentMyCartBinding.llMain.setVisibility(View.GONE);
+                        ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         warningToast(context, myCartResponse.getMessage());

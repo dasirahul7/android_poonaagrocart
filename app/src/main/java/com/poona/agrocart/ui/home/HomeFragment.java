@@ -287,14 +287,30 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void setHomeResponse() {
-        if(homeResponse != null) {
-            preferences.setUserProfile(homeResponse.getResponse().getUserData().get(0).getImage());
-            preferences.setUserName(homeResponse.getResponse().getUserData().get(0).getUserName());
+        if (homeResponse != null) {
+            switch (homeResponse.getStatus()) {
+                case STATUS_CODE_200://Record Create/Update Successfully
+                    preferences.setUserProfile(homeResponse.getResponse().getUserData().get(0).getImage());
+                    preferences.setUserName(homeResponse.getResponse().getUserData().get(0).getUserName());
 
-            if (homeResponse.getResponse().getUserData().get(0).getImage() != null
-                    && !TextUtils.isEmpty(homeResponse.getResponse().getUserData().get(0).getImage())) {
-                ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getResponse().getUserData().get(0).getUserName());
-                loadingImage(context, homeResponse.getResponse().getUserData().get(0).getImage(), ((HomeActivity) context).civProfilePhoto);
+                    if (homeResponse.getResponse().getUserData().get(0).getImage() != null
+                            && !TextUtils.isEmpty(homeResponse.getResponse().getUserData().get(0).getImage())) {
+                        ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getResponse().getUserData().get(0).getUserName());
+                        loadingImage(context, homeResponse.getResponse().getUserData().get(0).getImage(), ((HomeActivity) context).civProfilePhoto);
+                    }
+                    ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setText(homeResponse.getResponse().getUserData().get(0).getCityName() + ", " + homeResponse.getResponse().getUserData().get(0).getAreaName());
+                    break;
+                case STATUS_CODE_403://Validation Errors
+                case STATUS_CODE_400://Validation Errors
+                case STATUS_CODE_404://Validation Errors
+                    warningToast(context, homeResponse.getMessage());
+                    break;
+                case STATUS_CODE_401://Unauthorized user
+                    goToAskSignInSignUpScreen(homeResponse.getMessage(), context);
+                    break;
+                case STATUS_CODE_405://Method Not Allowed
+                    infoToast(context, homeResponse.getMessage());
+                    break;
             }
         }
     }
