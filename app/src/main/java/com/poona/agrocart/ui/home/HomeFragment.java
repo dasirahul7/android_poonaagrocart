@@ -27,6 +27,7 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
@@ -51,7 +52,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -67,9 +67,7 @@ import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.HomeResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
-import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
-import com.poona.agrocart.data.network.responses.StateResponse;
 import com.poona.agrocart.data.network.responses.StoreBannerResponse;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.databinding.HomeProductItemBinding;
@@ -82,8 +80,8 @@ import com.poona.agrocart.ui.home.adapter.ExclusiveOfferListAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.SeasonalBannerAdapter;
 import com.poona.agrocart.ui.home.model.ProductOld;
-import com.poona.agrocart.ui.nav_profile.EditProfileFragment;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -292,13 +290,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 case STATUS_CODE_200://Record Create/Update Successfully
                     preferences.setUserProfile(homeResponse.getResponse().getUserData().get(0).getImage());
                     preferences.setUserName(homeResponse.getResponse().getUserData().get(0).getUserName());
+                    preferences.setUserAddress(homeResponse.getResponse().getUserData().get(0).getCityName() + ", " + homeResponse.getResponse().getUserData().get(0).getAreaName());
 
                     if (homeResponse.getResponse().getUserData().get(0).getImage() != null
                             && !TextUtils.isEmpty(homeResponse.getResponse().getUserData().get(0).getImage())) {
                         ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getResponse().getUserData().get(0).getUserName());
                         loadingImage(context, homeResponse.getResponse().getUserData().get(0).getImage(), ((HomeActivity) context).civProfilePhoto);
                     }
-                    ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setText(homeResponse.getResponse().getUserData().get(0).getCityName() + ", " + homeResponse.getResponse().getUserData().get(0).getAreaName());
+
+                    activeHomeTitleBar();
                     break;
                 case STATUS_CODE_403://Validation Errors
                 case STATUS_CODE_400://Validation Errors
@@ -1346,7 +1346,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     public void onResume() {
         try {
             fragmentHomeBinding.etSearch.setText("");
-            activeHomeTitleBar();
+            //activeHomeTitleBar();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1372,15 +1372,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setSelected(true);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setText(preferences.getUserAddress());
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.VISIBLE);
-//        NavigationView navigationView = ((HomeActivity) requireActivity()).binding.navView;
-//        View headerView = navigationView.getHeaderView(0);
-//        RelativeLayout rlEditProfile = headerView.findViewById(R.id.rl_edit_profile);
-//        rlEditProfile.setOnClickListener(v -> {
-//            ((HomeActivity) requireActivity()).drawer.closeDrawer(GravityCompat.START);
-//            Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_profile);
-////            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_profile);
-//        });
-
     }
 
     @Override
@@ -1453,21 +1444,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         } catch (ActivityNotFoundException a) {
 
         }
-    }
-
-    private void setUserProfile(ProgressDialog progressDialog) {
-        Observer<ProfileResponse> profileResponseObserver = profileResponse -> {
-            if (profileResponse != null) {
-                preferences.setUserProfile(profileResponse.getProfile().getImage());
-                preferences.setUserName(profileResponse.getProfile().getName());
-                NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
-                View headerView = navigationView.getHeaderView(0);
-                System.out.println("name " + profileResponse.getProfile().getName());
-            }
-        };
-        homeViewModel.getViewProfileResponse(progressDialog, profileParam(preferences.getUid()),
-                HomeFragment.this)
-                .observe(getViewLifecycleOwner(), profileResponseObserver);
     }
 
     @Override
