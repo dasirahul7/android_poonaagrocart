@@ -60,7 +60,7 @@
             android:layout_weight="0.6"
             app:buffered_color="@color/bg_grey"
             app:played_color="@color/errorColor"
-            app:unplayed_color="@color/black" />
+            app:unplayed_color="@color/white" />
 
 
         <com.poona.agrocart.widgets.CustomTextView

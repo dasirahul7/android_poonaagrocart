@@ -209,6 +209,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
+        dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.video_image_pop_up_dailog);
         playerView = dialog.findViewById(R.id.pv_video_player);
         ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
@@ -236,20 +237,23 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         });
 
         pause.setOnClickListener(view -> {
-            pause.setVisibility(View.VISIBLE);
-            start.setVisibility(View.GONE);
-            simpleExoPlayer.setPlayWhenReady(false);
-            simpleExoPlayer.getPlaybackState();
+            if(simpleExoPlayer.isPlaying()){
+                pause.setVisibility(View.VISIBLE);
+                simpleExoPlayer.setPlayWhenReady(true);
+            }else {
+                start.setVisibility(View.VISIBLE);
+                simpleExoPlayer.getPlaybackState();
+            }
         });
 
-        pause.playSoundEffect(SoundEffectConstants.CLICK);
+       /* pause.playSoundEffect(SoundEffectConstants.CLICK);
 
         start.setOnClickListener(view -> {
             pause.setVisibility(View.GONE);
             start.setVisibility(View.VISIBLE);
-            simpleExoPlayer.setPlayWhenReady(true);
+            simpleExoPlayer.setPlayWhenReady(false);
             simpleExoPlayer.getPlaybackState();
-        });
+        });*/
 
         simpleExoPlayer.addListener(new Player.Listener() {
             @Override
@@ -283,11 +287,6 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
             }
 
             @Override
-            public void onIsLoadingChanged(boolean isLoading) {
-                Player.Listener.super.onIsLoadingChanged(isLoading);
-            }
-
-            @Override
             public void onPlaybackStateChanged(int playbackState) {
                 Player.Listener.super.onPlaybackStateChanged(playbackState);
             }
@@ -308,8 +307,12 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
             }
         });
 
+
+
         dialog.show();
     }
+
+
 
     @Override
     public void itemViewClick(int position) {

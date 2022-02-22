@@ -8,7 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/back_rounded_white_alert_dialog"
+        android:backgroundTint="@color/black"
         android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:src="@drawable/ic_cross_cancel" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -19,13 +27,12 @@
                 android:id="@+id/pv_video_player"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_240sdp"
-                app:resize_mode="fit"
-                app:hide_on_touch="true"
-                app:show_timeout="5000"
-                app:use_controller="true"
                 android:background="@android:color/transparent"
-                app:controller_layout_id="@layout/custom_media_controller" />
-
+                app:controller_layout_id="@layout/custom_media_controller"
+                app:hide_on_touch="true"
+                app:resize_mode="fit"
+                app:show_timeout="5000"
+                app:use_controller="true" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
