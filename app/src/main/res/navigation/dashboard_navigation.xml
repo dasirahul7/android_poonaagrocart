@@ -111,7 +111,23 @@
     <fragment
         android:id="@+id/nav_favourite"
         android:name="com.poona.agrocart.ui.nav_favourites.FavouriteItemsFragment"
-        tools:layout="@layout/fragment_favourite_items" />
+        tools:layout="@layout/fragment_favourite_items" >
+        <action
+            android:id="@+id/action_nav_favourite_to_basketDetailFragment"
+            app:destination="@id/basketDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_nav_favourite_to_nav_product_details2"
+            app:destination="@id/nav_product_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
 
     <!--Favourite To Carts Action-->
     <action
