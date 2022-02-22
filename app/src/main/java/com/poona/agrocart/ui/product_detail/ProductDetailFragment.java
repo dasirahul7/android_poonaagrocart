@@ -41,6 +41,7 @@ import com.poona.agrocart.ui.home.model.ProductOld;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.OfferProductListAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
+import com.poona.agrocart.ui.product_detail.adapter.ProductImagesAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.UnitAdapter;
 import com.poona.agrocart.ui.product_detail.model.BasketContent;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
@@ -337,7 +338,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             images.add(details.getProductImgs().get(i).getProductImg());
         count = details.getProductImgs().size();
         if (count >= 0) {
-
             productImagesAdapter = new ProductImagesAdapter(ProductDetailFragment.this,
                     getChildFragmentManager(), images);
             vpImages.setAdapter(productImagesAdapter);

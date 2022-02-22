@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
@@ -11,59 +12,99 @@
         <item
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_my_order"
-            android:title="@string/menu_my_orders" />
+            android:title="@string/menu_my_orders"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_address"
             android:icon="@drawable/ic_address"
-            android:title="@string/menu_addresses" />
+            android:title="@string/menu_addresses"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_store"
             android:icon="@drawable/ic_our_store"
-            android:title="@string/menu_our_store" />
+            android:title="@string/menu_our_store"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_basket"
             android:icon="@drawable/ic_my_basket"
-            android:title="@string/menu_my_basket_subs" />
+            android:title="@string/menu_my_basket_subs"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_wallet"
             android:icon="@drawable/ic_wallet"
-            android:title="@string/menu_wallet_payments" />
+            android:title="@string/menu_wallet_payments"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_offer"
             android:icon="@drawable/ic_offers"
-            android:title="@string/menu_offer_coupons" />
+            android:title="@string/menu_offer_coupons"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_notification"
             android:icon="@drawable/ic_notifications"
-            android:title="@string/menu_notification" />
+            android:title="@string/menu_notification"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
 
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_gallery_icon"
-            android:title="@string/menu_gallery" />
+            android:title="@string/menu_gallery"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_cms"
             android:icon="@drawable/ic_about_us"
-            android:title="@string/menu_about_us" />
+            android:title="@string/menu_about_us"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_faq"
             android:icon="@drawable/ic_faq"
-            android:title="@string/menu_faq" />
+            android:title="@string/menu_faq"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_help_center"
             android:icon="@drawable/ic_help_center"
-            android:title="@string/menu_help_center" />
+            android:title="@string/menu_help_center"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_privacy"
             android:icon="@drawable/ic_privacy_policy"
-            android:title="@string/menu_our_policy" />
+            android:title="@string/menu_our_policy"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_setting"
-            android:title="@string/menu_settings" />
+            android:title="@string/menu_settings"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="false"
+            app:popUpToSaveState="true"/>
         <item
             android:id="@+id/nav_signout"
             android:icon="@drawable/ic_signout"
-            android:title="@string/menu_sign_out" />
+            android:title="@string/menu_sign_out"
+            />
     </group>
 </menu>

@@ -19,15 +19,14 @@ import java.util.ArrayList;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder> {
 
     private final Context context;
-    private final View view;
     private ArrayList<CategoryResponse.Category> categories = new ArrayList<>();
     private RowCategoryItemBinding categoryBinding;
     private final OnCategoryClickListener onCategoryClickListener;
 
-    public CategoryAdapter(ArrayList<CategoryResponse.Category> categories, Context context, View view, OnCategoryClickListener onCategoryClickListener) {
+    public CategoryAdapter(ArrayList<CategoryResponse.Category> categories,
+                           Context context, OnCategoryClickListener onCategoryClickListener) {
         this.categories = categories;
         this.context = context;
-        this.view = view;
         this.onCategoryClickListener = onCategoryClickListener;
     }
 
