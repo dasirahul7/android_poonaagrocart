@@ -209,10 +209,11 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
         dialog.setContentView(R.layout.video_image_pop_up_dailog);
         playerView = dialog.findViewById(R.id.pv_video_player);
         ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
+        ImageView crossImage = dialog.findViewById(R.id.iv_close_dialog);
         /* Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("**");  // change *//*
@@ -236,35 +237,23 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
             simpleExoPlayer.seekForward();
         });
 
-        pause.setOnClickListener(view -> {
+        start.setOnClickListener(view -> {
             if(simpleExoPlayer.isPlaying()){
                 pause.setVisibility(View.VISIBLE);
-                simpleExoPlayer.setPlayWhenReady(true);
-            }else {
-                start.setVisibility(View.VISIBLE);
-                simpleExoPlayer.getPlaybackState();
+                start.setVisibility(View.GONE);
+                simpleExoPlayer.setPlayWhenReady(false);
             }
         });
 
-       /* pause.playSoundEffect(SoundEffectConstants.CLICK);
+        pause.setOnClickListener(view -> {
 
-        start.setOnClickListener(view -> {
-            pause.setVisibility(View.GONE);
             start.setVisibility(View.VISIBLE);
-            simpleExoPlayer.setPlayWhenReady(false);
+            pause.setVisibility(View.GONE);
+            simpleExoPlayer.setPlayWhenReady(true);
             simpleExoPlayer.getPlaybackState();
-        });*/
+        });
 
         simpleExoPlayer.addListener(new Player.Listener() {
-            @Override
-            public void onTimelineChanged(Timeline timeline, int reason) {
-                Player.Listener.super.onTimelineChanged(timeline, reason);
-            }
-
-            @Override
-            public void onTracksInfoChanged(TracksInfo tracksInfo) {
-                Player.Listener.super.onTracksInfoChanged(tracksInfo);
-            }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -285,29 +274,12 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
                         break;
                 }
             }
-
-            @Override
-            public void onPlaybackStateChanged(int playbackState) {
-                Player.Listener.super.onPlaybackStateChanged(playbackState);
-            }
-
-            @Override
-            public void onPlayWhenReadyChanged(boolean playWhenReady, int reason) {
-                Player.Listener.super.onPlayWhenReadyChanged(playWhenReady, reason);
-            }
-
-            @Override
-            public void onPlaybackSuppressionReasonChanged(int playbackSuppressionReason) {
-                Player.Listener.super.onPlaybackSuppressionReasonChanged(playbackSuppressionReason);
-            }
-
-            @Override
-            public void onSeekForwardIncrementChanged(long seekForwardIncrementMs) {
-                Player.Listener.super.onSeekForwardIncrementChanged(seekForwardIncrementMs);
-            }
         });
 
-
+        crossImage.setOnClickListener(view -> {
+            simpleExoPlayer.stop();
+            dialog.dismiss();
+        });
 
         dialog.show();
     }

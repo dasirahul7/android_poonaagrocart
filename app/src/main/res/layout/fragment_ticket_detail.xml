@@ -33,7 +33,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
@@ -175,40 +175,44 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_ticket_comments"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="@dimen/_5sdp" />
+                    android:layout_weight="0.6"
+                    android:orientation="vertical"
+                    android:stateListAnimator="@null">
 
+                    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/btn_asset_photo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:src="@drawable/ic_live_chat" />-->
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_ticket_comments"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_5sdp" />
+                </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:layout_gravity="bottom|right"
+                    android:src="@drawable/ic_live_chat"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
 
-        <!--  <LinearLayout
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:orientation="vertical"
-                 android:layout_weight="1"
-                 android:layout_marginBottom="@dimen/_12sdp"
-                 android:background="@drawable/rectangle_policy">
 
-                 <ImageView
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:paddingVertical="@dimen/_10sdp"
-                     android:layout_gravity="center"
-                     android:src="@drawable/ic_chat_boat"/>
-
-                 <com.poona.agrocart.widgets.CustomTextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_gravity="center"
-                     android:text="Live Chat"
-                     android:textSize="@dimen/_8sdp"
-                     app:setCustomFont="@string/font_poppins_regular"/>
-
-             </LinearLayout>-->
         <RelativeLayout
             android:id="@+id/layout_chatbox"
             android:layout_width="match_parent"
