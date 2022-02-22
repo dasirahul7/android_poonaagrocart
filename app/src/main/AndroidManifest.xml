@@ -29,7 +29,7 @@
     <queries>
         <intent>
             <action android:name="android.intent.action.GET_CONTENT" />
-            <data android:mimeType="image/*"/>
+            <data android:mimeType="image/*" />
         </intent>
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
@@ -45,7 +45,9 @@
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="upi" android:host="pay"/>
+            <data
+                android:host="pay"
+                android:scheme="upi" />
         </intent>
         <package android:name="com.android.chrome" />
     </queries>
@@ -96,7 +98,7 @@
             android:name=".ui.home.HomeActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode= "stateAlwaysHidden|adjustPan"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <activity
             android:name=".ui.splash_screen.SplashScreenActivity"

@@ -280,11 +280,11 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         tvtTitle.setText(R.string.exp_date);
         RecyclerView rvDelivery = dialog.findViewById(R.id.rv_address);
         ArrayList<DeliverySlot> deliverySlots = new ArrayList<>();
-        deliverySlots.add(new DeliverySlot(" 9 AM  to 12 PM",true));
-        deliverySlots.add(new DeliverySlot("12 PM  to 3 PM",true));
-        deliverySlots.add(new DeliverySlot(" 3 PM  to 6 PM",true));
-        deliverySlots.add(new DeliverySlot(" 6 PM  to 9 PM",true));
-        DeliveryDialogAdapter deliveryDialogAdapter = new DeliveryDialogAdapter(deliverySlots,context);
+        deliverySlots.add(new DeliverySlot(" 9 AM  to 12 PM", true));
+        deliverySlots.add(new DeliverySlot("12 PM  to 3 PM", true));
+        deliverySlots.add(new DeliverySlot(" 3 PM  to 6 PM", true));
+        deliverySlots.add(new DeliverySlot(" 6 PM  to 9 PM", true));
+        DeliveryDialogAdapter deliveryDialogAdapter = new DeliveryDialogAdapter(deliverySlots, context);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         rvDelivery.setLayoutManager(layoutManager);
         rvDelivery.setAdapter(deliveryDialogAdapter);
@@ -321,7 +321,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 }
                 try {
 
-                    if (tvDate!= null) {
+                    if (tvDate != null) {
                         tvDate.setText(txtDisplayDate);
                     }
                 } catch (Exception e) {

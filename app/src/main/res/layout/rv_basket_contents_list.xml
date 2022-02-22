@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="basketContent"
             type="com.poona.agrocart.data.network.responses.BasketResponse.BasketProduct" />
@@ -11,10 +12,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100"
         android:layout_marginVertical="@dimen/_5sdp"
-        >
+        android:orientation="horizontal"
+        android:weightSum="100">
 
         <com.poona.agrocart.widgets.CustomTextView
             android:id="@+id/tv_content_name"
@@ -22,22 +22,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="50"
             android:text="@{basketContent.productName}"
-            android:textSize="@dimen/_14sp"
-            app:setCustomFont="@string/font_poppins_semi_bold"
             android:textColor="@color/black"
-            />
+            android:textSize="@dimen/_14sp"
+            app:setCustomFont="@string/font_poppins_semi_bold" />
 
         <com.poona.agrocart.widgets.CustomTextView
             android:id="@+id/tv_content_weight"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="@{basketContent.weightAndUnit}"
             android:gravity="end"
-            android:textSize="@dimen/_14sp"
-            app:setCustomFont="@string/font_poppins_regular"
+            android:text="@{basketContent.weightAndUnit}"
             android:textColor="@color/color_basket_content_weight"
-            />
+            android:textSize="@dimen/_14sp"
+            app:setCustomFont="@string/font_poppins_regular" />
 
     </LinearLayout>
 

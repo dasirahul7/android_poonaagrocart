@@ -7,10 +7,19 @@ import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 
-public class ProductComment
-{
-    private String userName,date,comment,userImg;
+public class ProductComment {
+    private String userName, date, comment, userImg;
     private float rating;
+
+    @BindingAdapter("setImage")
+    public static void setImage(ImageView view, String img) {
+        if (img.endsWith(".jpg") || img.endsWith(".jpeg"))
+            view.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        Glide.with(view.getContext())
+                .load(img)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder).into(view);
+    }
 
     public String getUserName() {
         return userName;
@@ -50,15 +59,5 @@ public class ProductComment
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    @BindingAdapter("setImage")
-    public static void setImage(ImageView view, String img){
-        if (img.endsWith(".jpg")||img.endsWith(".jpeg"))
-            view.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Glide.with(view.getContext())
-                .load(img)
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder).into(view);
     }
 }

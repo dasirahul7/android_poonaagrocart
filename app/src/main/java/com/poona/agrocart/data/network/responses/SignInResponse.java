@@ -3,7 +3,7 @@ package com.poona.agrocart.data.network.responses;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SignInResponse extends BaseResponse{
+public class SignInResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private User user;
@@ -47,6 +47,50 @@ public class SignInResponse extends BaseResponse{
         @SerializedName("image")
         @Expose
         private String image;
+        @SerializedName("city_id")
+        @Expose
+        private String cityId;
+        @SerializedName("city_name")
+        @Expose
+        private String cityName;
+        @SerializedName("area_id")
+        @Expose
+        private String areaId;
+        @SerializedName("area_name")
+        @Expose
+        private String areaName;
+
+        public String getCityId() {
+            return cityId;
+        }
+
+        public void setCityId(String cityId) {
+            this.cityId = cityId;
+        }
+
+        public String getCityName() {
+            return cityName;
+        }
+
+        public void setCityName(String cityName) {
+            this.cityName = cityName;
+        }
+
+        public String getAreaId() {
+            return areaId;
+        }
+
+        public void setAreaId(String areaId) {
+            this.areaId = areaId;
+        }
+
+        public String getAreaName() {
+            return areaName;
+        }
+
+        public void setAreaName(String areaName) {
+            this.areaName = areaName;
+        }
 
         public String getImage() {
             return image;

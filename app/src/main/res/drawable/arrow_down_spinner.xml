@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list android:shape="rectangle"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
 
     <item>
-    <shape>
+        <shape>
 
-    <corners android:radius="@dimen/_7sdp"/>
-    <solid android:color="@color/white"/>
+            <corners android:radius="@dimen/_7sdp" />
+            <solid android:color="@color/white" />
 
-    </shape>
+        </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_black_down_arrow"
         android:width="@dimen/_10sdp"
         android:height="@dimen/_5sdp"
-        android:gravity="end|center_vertical"
+        android:drawable="@drawable/ic_black_down_arrow"
         android:end="@dimen/_10sdp"
-        android:start="@dimen/_10sdp"/>
+        android:gravity="end|center_vertical"
+        android:start="@dimen/_10sdp" />
 
 </layer-list>

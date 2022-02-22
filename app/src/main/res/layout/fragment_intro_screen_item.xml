@@ -16,16 +16,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bottom_shadow"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="@drawable/bottom_shadow">
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/introTitle"
@@ -37,19 +37,19 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_28sdp"
-                app:setCustomFont="@string/font_poppins_regular"/>
+                app:setCustomFont="@string/font_poppins_regular" />
 
             <TextView
                 android:id="@+id/introDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_100sdp"
                 android:gravity="center"
-                android:textSize="@dimen/_16sp"
                 android:paddingHorizontal="@dimen/_16sdp"
                 android:text="Welcome To Poona Agrocart Welcome To Poona Agrocart Welcome To Poona Agrocart Welcome To Poona Agrocart"
                 android:textAlignment="center"
                 android:textColor="@color/colorAppBackground"
-                android:layout_marginBottom="@dimen/_100sdp"/>
+                android:textSize="@dimen/_16sp" />
 
         </LinearLayout>
 

@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@android:id/text1"
     style="?android:attr/spinnerItemStyle"
-    android:singleLine="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
+    android:singleLine="true"
+    android:textAlignment="inherit"
     android:textColor="@color/color_spinner"
-    app:setCustomFont="@string/font_poppins_regular"
-    android:textAlignment="inherit" />
+    app:setCustomFont="@string/font_poppins_regular" />

@@ -18,16 +18,13 @@ import com.poona.agrocart.R;
  * Created by Rahul Dasi on 6/10/2020
  */
 public class CustomTextView extends AppCompatTextView {
+    private static final String TAG = CustomTextView.class.getSimpleName();
+    int actionX, actionY;
     private DrawableClickListener clickListener;
-
     private Drawable drawableRight;
     private Drawable drawableLeft;
     private Drawable drawableTop;
     private Drawable drawableBottom;
-
-    int actionX, actionY;
-
-    private static final String TAG = CustomTextView.class.getSimpleName();
 
     public CustomTextView(Context context) {
         super(context);
@@ -57,7 +54,7 @@ public class CustomTextView extends AppCompatTextView {
         try {
             typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {
-            Log.e(TAG, "Unable to load typeface: "+e.getMessage());
+            Log.e(TAG, "Unable to load typeface: " + e.getMessage());
             return false;
         }
 
@@ -216,9 +213,9 @@ public class CustomTextView extends AppCompatTextView {
     }
 
     public interface DrawableClickListener {
-        enum DrawablePosition {TOP, BOTTOM, LEFT, RIGHT}
-
         void onClick(DrawablePosition target);
+
+        enum DrawablePosition {TOP, BOTTOM, LEFT, RIGHT}
     }
 }
 

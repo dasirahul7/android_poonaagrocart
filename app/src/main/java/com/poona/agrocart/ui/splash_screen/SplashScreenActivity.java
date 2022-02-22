@@ -21,21 +21,16 @@ import com.poona.agrocart.widgets.CustomTextView;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public class SplashScreenActivity extends BaseActivity
-{
+public class SplashScreenActivity extends BaseActivity {
     private static final String TAG = SplashScreenActivity.class.getSimpleName();
-
-    private CoordinatorLayout coordinatorLayoutMain;
-
-
-    Toolbar toolbar;
     public static ImageView ivBack;
     public static CustomTextView title;
+    Toolbar toolbar;
+    private CoordinatorLayout coordinatorLayoutMain;
     private AppBarLayout appBarLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
@@ -47,13 +42,10 @@ public class SplashScreenActivity extends BaseActivity
 //        }
 
 
-
-        if (getIntent().getExtras() != null)
-        {
-            if(getIntent().getExtras().getString(FROM_SCREEN) != null
+        if (getIntent().getExtras() != null) {
+            if (getIntent().getExtras().getString(FROM_SCREEN) != null
                     && getIntent().getExtras().getString(FROM_SCREEN).equals(LOGOUT)/*
-                    || getIntent().getExtras().getString(FROM_SCREEN).equals(PUSH_NOTIFICATIONS)*/)
-            {
+                    || getIntent().getExtras().getString(FROM_SCREEN).equals(PUSH_NOTIFICATIONS)*/) {
 
             }
         }
@@ -77,26 +69,22 @@ public class SplashScreenActivity extends BaseActivity
         }
 
 
-
-
         //check in app update
         checkForAppUpdate();
     }
 
 
-    private void findCompo()
-    {
-        ivBack=findViewById(R.id.iv_back);
-        title=findViewById(R.id.tv_title);
-        toolbar=findViewById(R.id.toolbar_login);
-        appBarLayout=findViewById(R.id.app_bar_layout);
+    private void findCompo() {
+        ivBack = findViewById(R.id.iv_back);
+        title = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar_login);
+        appBarLayout = findViewById(R.id.app_bar_layout);
 
     }
 
 
     @Override
-    public boolean onSupportNavigateUp()
-    {
+    public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }

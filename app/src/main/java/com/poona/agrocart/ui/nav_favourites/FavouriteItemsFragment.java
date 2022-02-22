@@ -42,15 +42,14 @@ import java.util.HashMap;
 
 
 public class FavouriteItemsFragment extends BaseFragment implements FavouriteItemAdapter.OnPlusClick, FavouriteItemAdapter.OnProductClick, FavouriteItemAdapter.OnFavouriteClick {
+    View view;
     private FragmentFavouriteItemsBinding fragmentFavouriteItemsBinding;
     private FavouriteViewModel favouriteViewModel;
     private RecyclerView rvFavouriteItems;
     private LinearLayoutManager linearLayoutManager;
     private FavouriteItemAdapter favouriteItemAdapter;
     private ArrayList<FavouriteListResponse.Favourite> favouriteItemsList = new ArrayList<>();
-
-    View view;
-    private String TAG= FavouriteItemsFragment.class.getSimpleName();
+    private final String TAG = FavouriteItemsFragment.class.getSimpleName();
     private SwipeRefreshLayout rlRefreshPage;
 
     @Override
@@ -58,7 +57,7 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
 
         fragmentFavouriteItemsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_favourite_items, container, false);
         view = fragmentFavouriteItemsBinding.getRoot();
-        favouriteViewModel=new ViewModelProvider(this).get(FavouriteViewModel.class);
+        favouriteViewModel = new ViewModelProvider(this).get(FavouriteViewModel.class);
         fragmentFavouriteItemsBinding.setFaqViewModel(favouriteViewModel);
         fragmentFavouriteItemsBinding.setLifecycleOwner(this);
 
@@ -70,9 +69,9 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
             @Override
             public void onRefresh() {
                 rlRefreshPage.setRefreshing(true);
-                if (isConnectingToInternet(context)){
+                if (isConnectingToInternet(context)) {
                     setAdaptor();
-                }else{
+                } else {
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 }
             }
@@ -113,23 +112,23 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
 
 
     private void initView() {
-        rvFavouriteItems=fragmentFavouriteItemsBinding.rvFavouriteItems;
-        rlRefreshPage=fragmentFavouriteItemsBinding.rlRefreshPage;
+        rvFavouriteItems = fragmentFavouriteItemsBinding.rvFavouriteItems;
+        rlRefreshPage = fragmentFavouriteItemsBinding.rlRefreshPage;
     }
 
     private void callFavouriteAPi(ProgressDialog progressDialog) {
         @SuppressLint("NotifyDataSetChanged")
         Observer<FavouriteListResponse> favouriteLisResponseObserver = favouriteLisResponse -> {
 
-            if (favouriteLisResponse != null){
+            if (favouriteLisResponse != null) {
                 Log.e("Favourite List Response", new Gson().toJson(favouriteLisResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (favouriteLisResponse.getStatus()) {
                     case STATUS_CODE_200://success
                         if (favouriteLisResponse.getFavouriteList() != null
-                                && favouriteLisResponse.getFavouriteList().size() > 0){
+                                && favouriteLisResponse.getFavouriteList().size() > 0) {
 
                             fragmentFavouriteItemsBinding.emptyLayout.setVisibility(View.GONE);
                             fragmentFavouriteItemsBinding.rlMain.setVisibility(View.VISIBLE);
@@ -154,14 +153,14 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                         infoToast(context, favouriteLisResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
         };
 
-        favouriteViewModel.favouriteLisResponseLiveData(progressDialog,FavouriteItemsFragment.this)
+        favouriteViewModel.favouriteLisResponseLiveData(progressDialog, FavouriteItemsFragment.this)
                 .observe(getViewLifecycleOwner(), favouriteLisResponseObserver);
     }
 
@@ -181,7 +180,7 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
         String basketId = favouriteItemsList.get(position).getBasketId();
         String itemType = favouriteItemsList.get(position).getItemType();
         String productId = favouriteItemsList.get(position).getProductId();
-        dialogDeleteAddress(basketId,itemType,productId);
+        dialogDeleteAddress(basketId, itemType, productId);
     }
 
     private void callRemoveFavouriteItemAPi(ProgressDialog progressDialog, String basketId, String itemType, String productId) {
@@ -189,14 +188,14 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
         @SuppressLint("NotifyDataSetChanged")
         Observer<RemoveFavouriteListResponse> removeFavouriteListResponseObserver = removeFavouriteListResponse -> {
 
-            if (removeFavouriteListResponse != null){
+            if (removeFavouriteListResponse != null) {
                 Log.e("Remove Favourite List Response", new Gson().toJson(removeFavouriteListResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (removeFavouriteListResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        successToast(context,removeFavouriteListResponse.getMessage());
+                        successToast(context, removeFavouriteListResponse.getMessage());
                         callFavouriteAPi(showCircleProgressDialog(context, ""));
                         break;
                     case STATUS_CODE_400://Validation Errors
@@ -214,29 +213,29 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                         infoToast(context, removeFavouriteListResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
         };
 
-        favouriteViewModel.removeFavouriteLisResponseLiveData(progressDialog,removeFavouriteInputParameter(basketId,itemType,productId),FavouriteItemsFragment.this)
+        favouriteViewModel.removeFavouriteLisResponseLiveData(progressDialog, removeFavouriteInputParameter(basketId, itemType, productId), FavouriteItemsFragment.this)
                 .observe(getViewLifecycleOwner(), removeFavouriteListResponseObserver);
     }
 
     private HashMap<String, String> removeFavouriteInputParameter(String basketId, String itemType, String productId) {
         HashMap<String, String> map = new HashMap<>();
-        map.put(ITEM_TYPE,itemType.toString());
-        if (basketId == null){
-            map.put(BASKET_ID,"");
-        }else {
-            map.put(BASKET_ID,basketId.toString());
+        map.put(ITEM_TYPE, itemType);
+        if (basketId == null) {
+            map.put(BASKET_ID, "");
+        } else {
+            map.put(BASKET_ID, basketId);
         }
-        if (productId == null){
-            map.put(PRODUCT_ID,"");
-        }else {
-            map.put(PRODUCT_ID,productId.toString());
+        if (productId == null) {
+            map.put(PRODUCT_ID, "");
+        } else {
+            map.put(PRODUCT_ID, productId);
         }
         return map;
     }
@@ -262,7 +261,7 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
         buttonYes.setOnClickListener(view -> {
             dialog.dismiss();
             if (isConnectingToInternet(context)) {
-                callRemoveFavouriteItemAPi(showCircleProgressDialog(context, ""),basketId,itemType,productId);
+                callRemoveFavouriteItemAPi(showCircleProgressDialog(context, ""), basketId, itemType, productId);
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }

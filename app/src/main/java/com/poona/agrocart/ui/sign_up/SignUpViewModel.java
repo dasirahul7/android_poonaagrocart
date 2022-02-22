@@ -68,7 +68,7 @@ public class SignUpViewModel extends AndroidViewModel {
                             registrationApiResponse.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) signUpFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) signUpFragment).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());

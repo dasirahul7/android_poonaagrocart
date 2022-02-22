@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class BasketDetailsResponse extends BaseResponse {
-@SerializedName("basket_details")
+    @SerializedName("basket_details")
     @Expose
     private BasketResponse.Basket basketDetail;
 

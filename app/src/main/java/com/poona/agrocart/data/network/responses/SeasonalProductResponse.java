@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class SeasonalProductResponse extends BaseResponse{
+public class SeasonalProductResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private ArrayList<SeasonalProduct> seasonalProducts = null;
@@ -19,7 +19,10 @@ public class SeasonalProductResponse extends BaseResponse{
     public void setSeasonalProducts(ArrayList<SeasonalProduct> seasonalProducts) {
         this.seasonalProducts = seasonalProducts;
     }
+
     public static class SeasonalProduct {
+        public String sProductPlace = "Alphanso", type;
+        public ArrayList<String> seasProductImages;
         @SerializedName("id")
         @Expose
         private String id;
@@ -41,9 +44,6 @@ public class SeasonalProductResponse extends BaseResponse{
         @SerializedName("status")
         @Expose
         private String status;
-        public String sProductPlace ="Alphanso",type;
-
-        public ArrayList<String> seasProductImages;
 
         public ArrayList<String> getSeasProductImages() {
             return seasProductImages;

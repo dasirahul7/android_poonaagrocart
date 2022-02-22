@@ -1,17 +1,13 @@
-
 package com.poona.agrocart.data.network.responses;
 
-import android.service.autofill.UserData;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class ResponseData implements Serializable
-{
+public class ResponseData implements Serializable {
 
     @SerializedName("user_data")
     @Expose
@@ -34,7 +30,7 @@ public class ResponseData implements Serializable
     @SerializedName("seasonal_product")
     @Expose
     private List<SeasonalProductResponse.SeasonalProduct> seasonalProduct = null;
-//    @SerializedName("o_3")
+    //    @SerializedName("o_3")
 //    @Expose
 //    private List<O3> o3 = null;
     @SerializedName("store_banner")

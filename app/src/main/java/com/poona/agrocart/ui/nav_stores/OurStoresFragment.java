@@ -3,13 +3,10 @@ package com.poona.agrocart.ui.nav_stores;
 import static com.poona.agrocart.app.AppConstants.LIMIT;
 import static com.poona.agrocart.app.AppConstants.OFFSET;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
-import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
-import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import static com.poona.agrocart.app.AppConstants.STORE_ID;
-import static com.poona.agrocart.app.AppConstants.TICKET_ID;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -35,27 +32,26 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListData;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.OnStoreClickListener, NetworkExceptionListener
-{
+public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.OnStoreClickListener, NetworkExceptionListener {
+    private final int limit = 10;
     private FragmentOurStoresBinding fragmentOurStoresBinding;
     private OurStoreViewModel ourStoreViewModel;
     private RecyclerView rvOurStores;
     private LinearLayoutManager linearLayoutManager;
     private OurStoreAdapter ourStoreAdapter;
     private ArrayList<OurStoreListData> storeArrayList;
-
-
+    private int offset = 0;
+    private int visibleItemCount = 0;
+    private final int totalCount = 0;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        fragmentOurStoresBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_our_stores, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentOurStoresBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_our_stores, container, false);
         fragmentOurStoresBinding.setLifecycleOwner(this);
-        ourStoreViewModel=new ViewModelProvider(this).get(OurStoreViewModel.class);
+        ourStoreViewModel = new ViewModelProvider(this).get(OurStoreViewModel.class);
         fragmentOurStoresBinding.setOurStoreViewModel(ourStoreViewModel);
         final View view = fragmentOurStoresBinding.getRoot();
 
@@ -65,20 +61,19 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
         return view;
     }
 
-    private void initView()
-    {
-        rvOurStores=fragmentOurStoresBinding.rvOurStores;
+    private void initView() {
+        rvOurStores = fragmentOurStoresBinding.rvOurStores;
         initTitleBar(getString(R.string.our_stores));
 
     }
 
-    private void setRvAdapter()
-    {
-        storeArrayList=new ArrayList<>();
-        if (isConnectingToInternet(context)){
+    private void setRvAdapter() {
+        storeArrayList = new ArrayList<>();
+        if (isConnectingToInternet(context)) {
             /*Call Our Store List API here*/
             callOurStoreListApi(showCircleProgressDialog(context, ""), "RecyclerView");
-        }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        } else
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
         // storeListData();
 
@@ -86,35 +81,30 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
         rvOurStores.setHasFixedSize(true);
         rvOurStores.setLayoutManager(linearLayoutManager);
 
-        ourStoreAdapter = new OurStoreAdapter(storeArrayList, context ,this);
+        ourStoreAdapter = new OurStoreAdapter(storeArrayList, context, this);
         rvOurStores.setAdapter(ourStoreAdapter);
 
         //pagination for list
         setScrollListener();
     }
 
-    private int offset = 0;
-    private final int limit = 10;
-    private int visibleItemCount = 0;
-    private int totalCount = 0;
-
     private void setScrollListener() {
         rvOurStores.setNestedScrollingEnabled(true);
-        NestedScrollView nestedScrollView= fragmentOurStoresBinding.nvOurStore;
+        NestedScrollView nestedScrollView = fragmentOurStoresBinding.nvOurStore;
 
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if(v.getChildAt(v.getChildCount() - 1) != null) {
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
                 visibleItemCount = linearLayoutManager.getItemCount();
 
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount != totalCount) {
-                    if (isConnectingToInternet(context)){
+                    if (isConnectingToInternet(context)) {
                         /*Call Our Store List API here*/
                         callOurStoreListApi(showCircleProgressDialog(context, ""), "onScrolled");
-                    }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                    } else
+                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
-                }
-                else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+                } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount == totalCount) {
                     infoToast(requireActivity(), getString(R.string.no_result_found));  //change
                 }
@@ -123,7 +113,7 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
 
     }
 
-    private void callOurStoreListApi(ProgressDialog progressDialog, String fromFunction){
+    private void callOurStoreListApi(ProgressDialog progressDialog, String fromFunction) {
 
         if (fromFunction.equals("onScrolled")) {
             offset = offset + 2;
@@ -131,9 +121,9 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
             offset = 0;
         }
         @SuppressLint("NotifyDataSetChanged") Observer<OurStoreListResponse> ourStoreListResponseObserver = ourStoreListResponse -> {
-            if (ourStoreListResponse != null){
+            if (ourStoreListResponse != null) {
                 Log.e("Our Store List Api ResponseData", new Gson().toJson(ourStoreListResponse));
-                if (progressDialog !=null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (ourStoreListResponse.getStatus()) {
@@ -144,7 +134,7 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
                             storeArrayList.clear();
 
                         if (ourStoreListResponse.getData() != null
-                                && ourStoreListResponse.getData().size() > 0){
+                                && ourStoreListResponse.getData().size() > 0) {
                             storeArrayList.addAll(ourStoreListResponse.getData());
                             ourStoreAdapter.notifyDataSetChanged();
 
@@ -166,32 +156,32 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
                         infoToast(context, ourStoreListResponse.getMessage());
                         break;
                 }
-            }else{
-                if (progressDialog !=null){
+            } else {
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
             }
         };
 
-        ourStoreViewModel.getOurStoreListResponse(progressDialog, context,ourStoreInputParameter(),
+        ourStoreViewModel.getOurStoreListResponse(progressDialog, context, ourStoreInputParameter(),
                 OurStoresFragment.this)
                 .observe(getViewLifecycleOwner(), ourStoreListResponseObserver);
     }
 
 
-    private HashMap<String, String> ourStoreInputParameter () {
+    private HashMap<String, String> ourStoreInputParameter() {
         HashMap<String, String> map = new HashMap<>();
 
         map.put(LIMIT, String.valueOf(limit));
         map.put(OFFSET, String.valueOf(offset));
         return map;
-}
+    }
 
 
     @Override
     public void itemViewClick(int position) {
 
-        String orderId =storeArrayList.get(position).getId();
+        String orderId = storeArrayList.get(position).getId();
         Bundle bundle = new Bundle();
         bundle.putString(STORE_ID, orderId);
         NavHostFragment.findNavController(OurStoresFragment.this).navigate(R.id.action_nav_store_to_storeLocationFragment, bundle);

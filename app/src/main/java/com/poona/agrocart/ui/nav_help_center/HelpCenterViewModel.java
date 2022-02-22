@@ -47,11 +47,7 @@ public class HelpCenterViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@NonNull TicketTypeResponse baseResponse) {
                         progressDialog.dismiss();
-                        if (baseResponse != null){
-                            ticketTypeResponseMutableLiveData.setValue(baseResponse);
-                        }else {
-                            ticketTypeResponseMutableLiveData.setValue(null);
-                        }
+                        ticketTypeResponseMutableLiveData.setValue(baseResponse);
                     }
 
                     @Override
@@ -66,7 +62,7 @@ public class HelpCenterViewModel extends AndroidViewModel {
                             ticketTypeResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) helpCenterFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) helpCenterFragment).onNetworkException(0, "");
                         }
                         Log.e(TAG, e.getMessage());
                     }
@@ -89,11 +85,7 @@ public class HelpCenterViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@NonNull TicketListResponse baseResponse) {
                         progressDialog.dismiss();
-                        if (baseResponse != null){
-                            ticketListResponseMutableLiveData.setValue(baseResponse);
-                        }else {
-                            ticketListResponseMutableLiveData.setValue(null);
-                        }
+                        ticketListResponseMutableLiveData.setValue(baseResponse);
                     }
 
                     @Override
@@ -108,7 +100,7 @@ public class HelpCenterViewModel extends AndroidViewModel {
                             ticketListResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) helpCenterFragment).onNetworkException(1,"");
+                            ((NetworkExceptionListener) helpCenterFragment).onNetworkException(1, "");
                         }
                         Log.e(TAG, e.getMessage());
                     }
@@ -130,11 +122,7 @@ public class HelpCenterViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@NonNull CreateTicketResponse baseResponse) {
                         progressDialog.dismiss();
-                        if (baseResponse != null){
-                            createTicketResponseMutableLiveData.setValue(baseResponse);
-                        }else {
-                            createTicketResponseMutableLiveData.setValue(null);
-                        }
+                        createTicketResponseMutableLiveData.setValue(baseResponse);
                     }
 
                     @Override
@@ -149,7 +137,7 @@ public class HelpCenterViewModel extends AndroidViewModel {
                             createTicketResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) helpCenterFragment).onNetworkException(2,"");
+                            ((NetworkExceptionListener) helpCenterFragment).onNetworkException(2, "");
                         }
                         Log.e(TAG, e.getMessage());
                     }

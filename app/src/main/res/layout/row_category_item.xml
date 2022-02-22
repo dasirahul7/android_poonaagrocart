@@ -2,11 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data >
+    <data>
+
         <variable
             name="categoryModule"
             type="com.poona.agrocart.data.network.responses.CategoryResponse.Category" />
     </data>
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardview_category"
         android:layout_width="@dimen/_155sdp"
@@ -18,26 +20,26 @@
         app:strokeWidth="0.5dp">
 
         <LinearLayout
-            android:padding="@dimen/_5sdp"
             android:id="@+id/cat_row"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/_5sdp">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/img_layout"
-                app:cardElevation="0dp"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_70sdp"
-                app:cardCornerRadius="@dimen/_8sdp">
+                app:cardCornerRadius="@dimen/_8sdp"
+                app:cardElevation="0dp">
 
                 <ImageView
                     android:id="@+id/catImg"
+                    setImage="@{categoryModule.categoryImage}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    setImage="@{categoryModule.categoryImage}"/>
+                    android:adjustViewBounds="true" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -45,14 +47,14 @@
                 android:id="@+id/txt_cat_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:singleLine="true"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:singleLine="true"
                 android:text="@{categoryModule.categoryName}"
                 android:textColor="@color/green_txt_color"
-                android:textSize="@dimen/category_txt_size"
-                android:includeFontPadding="false"
+                android:textSize="@dimen/_16sp"
                 app:setCustomFont="@string/font_poppins_semi_bold" />
 
         </LinearLayout>

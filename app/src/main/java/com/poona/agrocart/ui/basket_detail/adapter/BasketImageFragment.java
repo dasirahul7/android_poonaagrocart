@@ -18,17 +18,15 @@ import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 
 import java.util.ArrayList;
 
-public class BasketImageFragment extends Fragment
-{
+public class BasketImageFragment extends Fragment {
+    private static final String POSITION = "position";
     private static Context context;
     private static ArrayList<String> productImgsList;
     private FragmentProductImageBinding fragmentProductImageBinding;
     private View view;
-    private static final String POSITION = "position";
     private ImageView productImg;
 
-    public static BasketImageFragment newInstance(ProductDetailFragment productDetailFragment, int pos, ArrayList<String> imgs)
-    {
+    public static BasketImageFragment newInstance(ProductDetailFragment productDetailFragment, int pos, ArrayList<String> imgs) {
         context = productDetailFragment.getContext();
         productImgsList = imgs;
         BasketImageFragment fragment = new BasketImageFragment();
@@ -37,8 +35,8 @@ public class BasketImageFragment extends Fragment
         fragment.setArguments(bundle);
         return fragment;
     }
-    public static BasketImageFragment newInstance(BasketDetailFragment productDetailFragment, int pos, ArrayList<String> imgs)
-    {
+
+    public static BasketImageFragment newInstance(BasketDetailFragment productDetailFragment, int pos, ArrayList<String> imgs) {
         context = productDetailFragment.getContext();
         productImgsList = imgs;
         BasketImageFragment fragment = new BasketImageFragment();
@@ -49,10 +47,9 @@ public class BasketImageFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final int position = this.getArguments().getInt(POSITION);
-        fragmentProductImageBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_image,container,false);
+        fragmentProductImageBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_image, container, false);
         fragmentProductImageBinding.setLifecycleOwner(this);
         view = fragmentProductImageBinding.getRoot();
         productImg = fragmentProductImageBinding.ivProduct;

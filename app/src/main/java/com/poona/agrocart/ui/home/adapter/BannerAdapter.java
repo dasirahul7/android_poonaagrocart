@@ -19,10 +19,10 @@ import java.util.ArrayList;
 public class BannerAdapter extends PagerAdapter {
 
     private final ArrayList<BannerResponse.Banner> banner;
-    private LayoutInflater layoutInflater;
     private final Context context;
+    private LayoutInflater layoutInflater;
 
-    public BannerAdapter(ArrayList<BannerResponse.Banner> banner,Context context) {
+    public BannerAdapter(ArrayList<BannerResponse.Banner> banner, Context context) {
         this.banner = banner;
         this.context = context;
     }
@@ -33,13 +33,13 @@ public class BannerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = this.layoutInflater.inflate(R.layout.row_banner, container, false);
         ImageView imageView = view.findViewById(R.id.imgAd);
-        if (banner.get(position).isDummy()){
+        if (banner.get(position).isDummy()) {
             //set a dummy banner if bo banner is available
             Glide.with(context)
                     .load(R.drawable.ic_logo)
                     .placeholder(R.drawable.ic_banner_placeholder)
                     .into(imageView);
-        }else {
+        } else {
             Glide.with(context)
                     .load(banner.get(position).getAdvImage())
                     .placeholder(R.drawable.ic_banner_placeholder)
@@ -56,11 +56,11 @@ public class BannerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view==object;
+        return view == object;
     }
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView((View) object) ;
+        container.removeView((View) object);
     }
 }

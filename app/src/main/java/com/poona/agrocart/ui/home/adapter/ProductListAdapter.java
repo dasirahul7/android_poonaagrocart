@@ -15,21 +15,29 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.databinding.HomeProductItemBinding;
+import com.poona.agrocart.databinding.RowExclusiveItemBinding;
 
 import java.util.ArrayList;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductHolder> {
-    private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
     private final Context bdContext;
+    private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
     private HomeProductItemBinding productBinding;
-    private ExclusiveOfferListAdapter.OnProductClickListener onProductClickListener;
-    private ExclusiveOfferListAdapter.OnPlusClickListener onPlusClickListener;
+    private final OnProductClickListener onProductClickListener;
+    private final OnPlusClickListener onPlusClickListener;
 
+    public interface OnProductClickListener {
+        void onProductClick(ProductListResponse.Product product);
+    }
+
+    public interface OnPlusClickListener {
+        void OnPlusClick(HomeProductItemBinding homeProductItemBinding, ProductListResponse.Product product, int position);
+    }
 
     public ProductListAdapter(ArrayList<ProductListResponse.Product> products,
                               FragmentActivity context,
-                              ExclusiveOfferListAdapter.OnProductClickListener onProductClickListener,
-                              ExclusiveOfferListAdapter.OnPlusClickListener onPlusClickListener) {
+                              OnProductClickListener onProductClickListener,
+                              OnPlusClickListener onPlusClickListener) {
         this.products = products;
         this.bdContext = context;
         this.onProductClickListener = onProductClickListener;
@@ -45,10 +53,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
         ProductListResponse.Product product = products.get(position);
-            productBinding.setHomeProductModel(product);
-            holder.bindProduct(product,position);
+        productBinding.setHomeProductModel(product);
+        holder.bindProduct(product, position);
         productBinding.imgPlus.setOnClickListener(view -> {
-            onPlusClickListener.OnPlusClick(product,position);
+            onPlusClickListener.OnPlusClick(productBinding, product, position);
         });
 
     }
@@ -64,6 +72,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         public ProductHolder(HomeProductItemBinding productBinding) {
             super(productBinding.getRoot());
         }
+
         //Only ProductOld Item bind
         public void bindProduct(ProductListResponse.Product product, int position) {
             productBinding.setVariable(BR.productModule, product);
@@ -75,14 +84,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             if (product.getIsO3().equalsIgnoreCase("yes"))
                 productBinding.txtOrganic.setVisibility(View.VISIBLE);
             else productBinding.txtOrganic.setVisibility(View.GONE);
-            if (product.getInCart()==1)
+            if (product.getInCart() == 1)
                 productBinding.imgPlus.setImageResource(R.drawable.ic_added);
             else productBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
 
             itemView.setOnClickListener(view -> {
                 onProductClickListener.onProductClick(product);
             });
-            if (product.getInCart()==1)
+            if (product.getInCart() == 1)
                 productBinding.ivPlus.setEnabled(false);
         }
 

@@ -46,11 +46,7 @@ public class OurStoreViewModel extends AndroidViewModel {
                         public void onSuccess(@NonNull OurStoreListResponse baseResponse) {
                             progressDialog.dismiss();
 
-                            if (baseResponse != null){
-                                ourStoreListResponseMutableLiveData.setValue(baseResponse);
-                            }else {
-                                ourStoreListResponseMutableLiveData.setValue(null);
-                            }
+                            ourStoreListResponseMutableLiveData.setValue(baseResponse);
                         }
 
                         @Override
@@ -62,7 +58,7 @@ public class OurStoreViewModel extends AndroidViewModel {
                                 baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), OurStoreListResponse.class);
 
                                 ourStoreListResponseMutableLiveData.setValue(baseResponse);
-                            }  catch (Exception exception) {
+                            } catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
                                /* ((NetworkExceptionListener) supportTicketFragment)
                                         .onNetworkException(0,"");*/

@@ -9,28 +9,28 @@
     <fragment
         android:id="@+id/SplashScreenFragment"
         android:name="com.poona.agrocart.ui.splash_screen.SplashScreenFragment"
-        tools:layout="@layout/fragment_splash_screen" >
+        tools:layout="@layout/fragment_splash_screen">
 
         <!--Splash to intro Screen  action-->
         <action
             android:id="@+id/action_SplashScreenFragment_to_introScreenFragment"
             app:destination="@id/introScreenFragment"
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/SplashScreenFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
+            app:popUpTo="@id/SplashScreenFragment"
+            app:popUpToInclusive="true" />
 
         <!--Splash to Sign action-->
         <action
             android:id="@+id/action_SplashScreenFragment_to_signInFragment"
             app:destination="@id/signInFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/SplashScreenFragment"
             app:popUpToInclusive="true" />
 
@@ -38,23 +38,23 @@
         <action
             android:id="@+id/action_SplashScreenFragment_to_signUpFragment"
             app:destination="@id/signUpFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/SplashScreenFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
 
         <!--Splash to select location action-->
         <action
             android:id="@+id/action_SplashScreenFragment_to_selectLocationFragment"
             app:destination="@id/selectLocationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:popUpTo="@id/SplashScreenFragment"
-            app:exitAnim="@anim/slide_out_left" />
+            app:popUpTo="@id/SplashScreenFragment" />
 
 
     </fragment>
@@ -68,11 +68,11 @@
         <action
             android:id="@+id/action_LogInFragment_to_SignInFragment"
             app:destination="@id/signInFragment"
-            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
+            app:popUpToInclusive="true" />
 
     </fragment>
 
@@ -80,18 +80,18 @@
     <fragment
         android:id="@+id/introScreenFragment"
         android:name="com.poona.agrocart.ui.intro.IntroScreenFragment"
-        tools:layout="@layout/fragment_intro_screen" >
+        tools:layout="@layout/fragment_intro_screen">
 
         <action
             android:id="@+id/action_introScreenFragment_to_SignInFragment"
             app:destination="@id/signInFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popUpToInclusive="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/introScreenFragment"
-            tools:layout="@layout/fragment_intro_screen"/>
+            app:popUpToInclusive="true"
+            tools:layout="@layout/fragment_intro_screen" />
 
     </fragment>
 
@@ -99,15 +99,15 @@
     <fragment
         android:id="@+id/verifyOtpFragment"
         android:name="com.poona.agrocart.ui.verify_otp.VerifyOtpFragment"
-        tools:layout="@layout/fragment_verify_otp" >
+        tools:layout="@layout/fragment_verify_otp">
 
         <action
             android:id="@+id/action_verifyOtpFragment_to_signUpFragment"
             app:destination="@id/signUpFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/verifyOtpFragment"
             app:popUpToInclusive="true" />
 
@@ -117,16 +117,16 @@
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.poona.agrocart.ui.sign_up.SignUpFragment"
-        tools:layout="@layout/fragment_sign_up" >
+        tools:layout="@layout/fragment_sign_up">
 
         <action
             android:id="@+id/action_signUpFragment_to_selectLocationFragment"
             app:destination="@id/selectLocationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:popUpTo="@id/signUpFragment"
-            app:exitAnim="@anim/slide_out_left" />
+            app:popUpTo="@id/signUpFragment" />
 
 
     </fragment>
@@ -141,30 +141,29 @@
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.poona.agrocart.ui.sign_in.SignInFragment"
-        tools:layout="@layout/fragment_sign_in" >
-    </fragment>
+        tools:layout="@layout/fragment_sign_in"></fragment>
 
     <!--Cms Fragment-->
     <fragment
         android:id="@+id/cmsFragment"
         android:name="com.poona.agrocart.ui.nav_cms.CmsFragment"
-        tools:layout="@layout/fragment_cms"/>
+        tools:layout="@layout/fragment_cms" />
 
     <action
         android:id="@+id/action_signInFragment_to_verifyOtpFragment"
         app:destination="@id/verifyOtpFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
 
     <action
         android:id="@+id/action_to_cmsFragment"
         app:destination="@id/cmsFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
 
     <!--Forgot Password Fragment-->
     <fragment
@@ -175,10 +174,10 @@
         <action
             android:id="@+id/action_forgotPasswordFragment_to_LoginFragment"
             app:destination="@id/LoginFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/forgotPasswordFragment"
             app:popUpToInclusive="true" />
 

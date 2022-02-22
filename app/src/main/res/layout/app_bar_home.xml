@@ -10,12 +10,12 @@
     tools:context=".ui.home.HomeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
         android:foregroundTint="@color/black"
-        android:theme="@style/Theme.PoonaAgroCart.AppBarOverlay">
+        android:theme="@style/Theme.PoonaAgroCart.AppBarOverlay"
+        app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -54,7 +54,6 @@
                     android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:maxWidth="@dimen/_160sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_16sdp"
@@ -68,23 +67,24 @@
                     android:includeFontPadding="false"
                     android:lines="1"
                     android:marqueeRepeatLimit="marquee_forever"
+                    android:maxWidth="@dimen/_160sdp"
                     android:scrollHorizontally="true"
                     android:singleLine="true"
                     android:text=""
                     android:textColor="@color/title_black"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_regular" />
+
                 <RelativeLayout
-                    android:visibility="gone"
                     android:id="@+id/rl_product_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_15sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:visibility="gone">
 
                     <com.poona.agrocart.widgets.CustomTextView
-                        android:visibility="gone"
                         android:id="@+id/tv_brand"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -95,12 +95,12 @@
                         android:paddingHorizontal="@dimen/_5sdp"
                         android:paddingVertical="@dimen/_5sdp"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/offer_txt_size"
+                        android:textSize="@dimen/_14sp"
                         android:textStyle="bold"
+                        android:visibility="gone"
                         app:setCustomFont="@string/font_poppins_regular" />
 
                     <ImageView
-                        android:visibility="gone"
                         android:id="@+id/txt_organic"
                         style="@style/organic_button_style"
                         android:layout_width="wrap_content"
@@ -110,6 +110,7 @@
                         android:background="@drawable/bg_organic_sqaure"
                         android:gravity="center"
                         android:src="@drawable/ic_organic"
+                        android:visibility="gone"
                         tools:ignore="RtlHardcoded" />
                 </RelativeLayout>
 

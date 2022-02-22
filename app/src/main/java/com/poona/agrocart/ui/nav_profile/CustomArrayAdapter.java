@@ -16,8 +16,8 @@ import com.poona.agrocart.widgets.CustomTextView;
 import java.util.List;
 
 public class CustomArrayAdapter extends ArrayAdapter<BasicDetails> {
-    private List<BasicDetails> items;
-    private Context context;
+    private final List<BasicDetails> items;
+    private final Context context;
 
     public CustomArrayAdapter(@NonNull Context context, int resource, @NonNull List<BasicDetails> items) {
         super(context, resource, items);

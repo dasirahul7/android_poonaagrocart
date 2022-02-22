@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatRadioButton;
 
 import com.poona.agrocart.R;
@@ -46,7 +45,7 @@ public class CustomRadioButton extends AppCompatRadioButton {
         try {
             typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {
-            Log.e(TAG, "Unable to load typeface: "+e.getMessage());
+            Log.e(TAG, "Unable to load typeface: " + e.getMessage());
             return false;
         }
 

@@ -10,11 +10,22 @@ import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 
 public class Store implements Parcelable {
-    private String id,name,location,img,about,address,contact;
+    public static final Creator<Store> CREATOR = new Creator<Store>() {
+        @Override
+        public Store createFromParcel(Parcel in) {
+            return new Store(in);
+        }
 
-    public Store()
-    {
+        @Override
+        public Store[] newArray(int size) {
+            return new Store[size];
+        }
+    };
+    private String id, name, location, img, about, address, contact;
+
+    public Store() {
     }
+
     public Store(String id, String name, String location, String img) {
         this.id = id;
         this.name = name;
@@ -32,17 +43,13 @@ public class Store implements Parcelable {
         contact = in.readString();
     }
 
-    public static final Creator<Store> CREATOR = new Creator<Store>() {
-        @Override
-        public Store createFromParcel(Parcel in) {
-            return new Store(in);
-        }
-
-        @Override
-        public Store[] newArray(int size) {
-            return new Store[size];
-        }
-    };
+    @BindingAdapter("setStoreImage")
+    public static void setStoreImage(ImageView view, String img) {
+        Glide.with(view.getContext())
+                .load(img)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder).into(view);
+    }
 
     public String getId() {
         return id;
@@ -98,14 +105,6 @@ public class Store implements Parcelable {
 
     public void setContact(String contact) {
         this.contact = contact;
-    }
-
-    @BindingAdapter("setStoreImage")
-    public static void setStoreImage(ImageView view, String img){
-        Glide.with(view.getContext())
-                .load(img)
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder).into(view);
     }
 
     @Override

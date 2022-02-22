@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -14,8 +13,8 @@
         android:id="@+id/coupon_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/coupon_blue"
-        android:layout_margin="@dimen/_10sdp">
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/coupon_blue">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mcv_inner_coupon"
@@ -37,28 +36,28 @@
                 android:includeFontPadding="false"
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:paddingTop="@dimen/_5sdp"
-                android:text="Coupon Code"
                 android:singleLine="true"
+                android:text="Coupon Code"
                 android:textColor="@color/dark_blue_color"
-                android:textSize="@dimen/x_large_txt_size"
+                android:textSize="@dimen/_18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:setCustomFont="@string/font_poppins_bold" />
 
             <com.poona.agrocart.widgets.CustomTextView
-                android:singleLine="true"
                 android:id="@+id/tv_discount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight=".1"
+                android:includeFontPadding="false"
                 android:paddingStart="0dp"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_15sdp"
+                android:singleLine="true"
                 android:text="Discount"
-                android:includeFontPadding="false"
                 android:textColor="@color/dark_blue_color"
-                android:textSize="@dimen/large_txt_size"
+                android:textSize="@dimen/_16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -95,7 +94,7 @@
                         android:singleLine="true"
                         android:text="@{moduleCoupon.couponCode}"
                         android:textColor="@color/dark_blue_color"
-                        android:textSize="@dimen/large"
+                        android:textSize="@dimen/_20sp"
                         android:textStyle="bold"
                         app:setCustomFont="@string/font_poppins_bold" />
 
@@ -112,7 +111,7 @@
                 android:singleLine="true"
                 android:text="@{moduleCoupon.discountPercentage+moduleCoupon+`%`}"
                 android:textColor="@color/dark_blue_color"
-                android:textSize="@dimen/very_large"
+                android:textSize="@dimen/_24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/tv_discount"
                 app:layout_constraintTop_toBottomOf="@+id/tv_discount"
@@ -124,14 +123,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-5dp"
                 android:includeFontPadding="false"
-                android:text="@{`max`+moduleCoupon.discountMaxAmount+moduleCoupon+` Rs.`}"
                 android:paddingHorizontal="@dimen/_5sdp"
-                android:textColor="@color/dark_blue_color"
-                android:textSize="@dimen/small_txt_size"
                 android:singleLine="true"
-                app:setCustomFont="@string/font_poppins_regular"
+                android:text="@{`max`+moduleCoupon.discountMaxAmount+moduleCoupon+` Rs.`}"
+                android:textColor="@color/dark_blue_color"
+                android:textSize="@dimen/_12sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_discount"
-                app:layout_constraintTop_toBottomOf="@+id/tv_discount_value" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_discount_value"
+                app:setCustomFont="@string/font_poppins_regular" />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_valid"
@@ -140,10 +139,10 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:paddingTop="@dimen/_5sdp"
-                android:text="Valid till"
                 android:singleLine="true"
+                android:text="Valid till"
                 android:textColor="@color/dark_blue_color"
-                android:textSize="@dimen/large_txt_size"
+                android:textSize="@dimen/_16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/tv_title"
                 app:layout_constraintTop_toBottomOf="@+id/mcv_coupon_code"
@@ -154,13 +153,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/_5sdp"
+                android:singleLine="true"
                 android:text="@{moduleCoupon.todate}"
                 android:textColor="@color/dark_blue_color"
-                android:textSize="@dimen/small_txt_size"
-                android:singleLine="true"
-                app:setCustomFont="@string/font_poppins_regular"
+                android:textSize="@dimen/_12sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_valid"
-                app:layout_constraintTop_toBottomOf="@+id/tv_valid" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_valid"
+                app:setCustomFont="@string/font_poppins_regular" />
 
 
             <com.poona.agrocart.widgets.CustomTextView
@@ -170,10 +169,10 @@
                 android:gravity="start"
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:paddingTop="@dimen/_5sdp"
-                android:text="Type"
                 android:singleLine="true"
+                android:text="Type"
                 android:textColor="@color/dark_blue_color"
-                android:textSize="@dimen/large_txt_size"
+                android:textSize="@dimen/_16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_valid"
@@ -185,13 +184,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/_5sdp"
+                android:singleLine="true"
                 android:text="@{`Order min Rs.`+moduleCoupon.minOrderAmount}"
                 android:textColor="@color/dark_blue_color"
-                android:textSize="@dimen/small_txt_size"
-                android:singleLine="true"
-                app:setCustomFont="@string/font_poppins_regular"
+                android:textSize="@dimen/_12sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_type"
-                app:layout_constraintTop_toBottomOf="@+id/tv_type" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_type"
+                app:setCustomFont="@string/font_poppins_regular" />
 
             <LinearLayout
                 android:id="@+id/ll_terms_and_cond"
@@ -211,12 +210,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingTop="@dimen/_5sdp"
-                    android:text="@string/menu_terms_conditions"
                     android:singleLine="true"
+                    android:text="@string/menu_terms_conditions"
                     android:textColor="@color/dark_blue_color"
-                    android:textSize="@dimen/small_txt_size"
-                    app:setCustomFont="@string/font_poppins_regular"
-                    />
+                    android:textSize="@dimen/_12sp"
+                    app:setCustomFont="@string/font_poppins_regular" />
 
                 <ImageView
                     android:id="@+id/img_info"
@@ -233,8 +231,8 @@
             android:id="@+id/view_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
-            android:background="@color/dark_blue_color"
             android:layout_marginBottom="@dimen/_30sdp"
+            android:background="@color/dark_blue_color"
             app:layout_constraintBottom_toBottomOf="@+id/mcv_inner_coupon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

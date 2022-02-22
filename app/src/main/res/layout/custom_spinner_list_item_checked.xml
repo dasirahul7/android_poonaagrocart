@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2006 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2006 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,17 +13,16 @@
      limitations under the License.
 -->
 
-<com.poona.agrocart.widgets.CustomCheckedTextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.poona.agrocart.widgets.CustomCheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cct_select"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="@dimen/_14sp"
-    android:gravity="center_vertical"
     android:checkMark="@drawable/ic_check_mark"
+    android:gravity="center_vertical"
     android:includeFontPadding="false"
     android:paddingHorizontal="@dimen/_12sdp"
     android:paddingVertical="@dimen/_10sdp"
     android:singleLine="true"
+    android:textSize="@dimen/_14sp"
     app:setCustomFont="@string/font_poppins_regular" />

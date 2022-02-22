@@ -19,8 +19,7 @@ import com.poona.agrocart.R;
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
-public class CustomToastUtils
-{
+public class CustomToastUtils {
     private CustomToastUtils() {
     }
 
@@ -45,7 +44,7 @@ public class CustomToastUtils
         return AppCompatResources.getDrawable(context, id);
     }
 
-    static int getColor(@NonNull Context context, @ColorRes int color){
+    static int getColor(@NonNull Context context, @ColorRes int color) {
         return ContextCompat.getColor(context, color);
     }
 }

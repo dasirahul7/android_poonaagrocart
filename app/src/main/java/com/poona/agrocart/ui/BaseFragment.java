@@ -44,8 +44,6 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.model.ProductOld;
-import com.poona.agrocart.ui.nav_addresses.map_view.MapActivity;
-import com.poona.agrocart.ui.nav_addresses.map_view.SimplePlacePicker;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
@@ -68,6 +66,24 @@ public abstract class BaseFragment extends Fragment {
     private static final String TAG = BaseFragment.class.getSimpleName();
     public Context context;
     public AppSharedPreferences preferences;
+    /**
+     * Method checks Network Exceptions
+     */
+    private OnDialogRetryClickListener onDialogRetryClickListener;
+    private LocationManager locationManager;
+
+    public static String get_24_to_12_time(String temp_date) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy, hh:mm a");
+        Date date = null;
+        try {
+            date = inputFormat.parse(temp_date);
+        } catch (ParseException | java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        String date_time = outputFormat.format(date);
+        return date_time;
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -76,7 +92,6 @@ public abstract class BaseFragment extends Fragment {
 
         preferences = new AppSharedPreferences(context);
     }
-
 
     //Title and app logo on actionBar
     @SuppressLint("ResourceType")
@@ -177,6 +192,7 @@ public abstract class BaseFragment extends Fragment {
                 .setText(dialogMessage)
                 .show();
     }
+
     protected void showConfirmPopup(Activity activity, String dialogMessage, CustomDialogInterface dialogInterface) {
         final boolean[] flag = new boolean[1];
         Dialog dialog = new Dialog(activity);
@@ -202,7 +218,6 @@ public abstract class BaseFragment extends Fragment {
         dialog.show();
     }
 
-
     /*convert date format, we have to pass from & to date format*/
     public String formatDate(String date,
                              String initDateFormat,
@@ -219,19 +234,6 @@ public abstract class BaseFragment extends Fragment {
         SimpleDateFormat formDate = new SimpleDateFormat("dd-MM-yyyy");
         String strDate = formDate.format(new Date()); // option 2
         return strDate;
-    }
-
-    public static String get_24_to_12_time(String temp_date) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy, hh:mm a");
-        Date date = null;
-        try {
-            date = inputFormat.parse(temp_date);
-        } catch (ParseException | java.text.ParseException e) {
-            e.printStackTrace();
-        }
-        String date_time = outputFormat.format(date);
-        return date_time;
     }
 
     public void hideKeyBoard(Activity activity) {
@@ -324,6 +326,7 @@ public abstract class BaseFragment extends Fragment {
     protected void goToAskSignInSignUpScreen(String message, Context context) {
         goToAskSignInSignUpScreenDialog(message, context);
     }
+
     protected void goToAskAndDismiss(String message, Context context) {
         goToAskAndDismissDialog(message, context);
     }
@@ -334,7 +337,7 @@ public abstract class BaseFragment extends Fragment {
                 R.style.CustomAlertDialog));
 
         LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_text_with_button,null);
+        View dialogView = inflater.inflate(R.layout.dialog_text_with_button, null);
 
         builder.setView(dialogView);
         builder.setCancelable(false);
@@ -403,13 +406,14 @@ public abstract class BaseFragment extends Fragment {
         // Apply the newly created layout parameters to the alert dialog window
         dialog.getWindow().setAttributes(layoutParams);
     }
+
     private void goToAskAndDismissDialog(String message, Context context) {
         AlertDialog.Builder builder = new AlertDialog
                 .Builder(new ContextThemeWrapper(context,
                 R.style.CustomAlertDialog));
 
         LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_text_with_button,null);
+        View dialogView = inflater.inflate(R.layout.dialog_text_with_button, null);
 
         builder.setView(dialogView);
         builder.setCancelable(false);
@@ -488,17 +492,15 @@ public abstract class BaseFragment extends Fragment {
         requireActivity().finish();
     }
 
-    /**
-     * Method checks Network Exceptions
-     */
-    private OnDialogRetryClickListener onDialogRetryClickListener;
-    public interface OnDialogRetryClickListener { void onDialogRetryClick();}
-    public void setOnItemClickListener(OnDialogRetryClickListener listener) { onDialogRetryClickListener = listener; }
+    public void setOnItemClickListener(OnDialogRetryClickListener listener) {
+        onDialogRetryClickListener = listener;
+    }
+
     protected void showServerErrorDialog(String title, Fragment fragment, final OnDialogRetryClickListener listener, Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.StyleDataConfirmationDialog));
 
         LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_server_error,null);
+        View dialogView = inflater.inflate(R.layout.dialog_server_error, null);
 
         builder.setView(dialogView);
         builder.setCancelable(false);
@@ -567,7 +569,6 @@ public abstract class BaseFragment extends Fragment {
         dialog.getWindow().setAttributes(layoutParams);
     }
 
-    private LocationManager locationManager;
     protected boolean checkGpsStatus() {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -663,5 +664,9 @@ public abstract class BaseFragment extends Fragment {
         bundle.putBoolean("isInBasket", productOld.isInBasket());
         bundle.putString("ProductOld", "ProductOld");
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+    }
+
+    public interface OnDialogRetryClickListener {
+        void onDialogRetryClick();
     }
 }

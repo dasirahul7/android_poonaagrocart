@@ -1,9 +1,5 @@
 package com.poona.agrocart.app;
 
-import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-
 /**
  * Created by Rahul Dasi on 6/10/2020
  */
@@ -118,14 +114,16 @@ public class AppConstants {
     public static final String VIEW_CONFIGURATION = "view-configuration";
 
     /*Cart lis api*/
-    public static final String CART_LIST_API ="view-cart";
+    public static final String CART_LIST_API = "view-cart";
+    public static final String DELETE_CART_ITEM_API = "delete-cart-by-id";
+    public static final String DELETE_CART_LIST_API = "delete-cart-all";
 
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
 
     /*Basket detail API*/
-    public static final String BASKET_DETAIL_API="basket-details";
-    public static final String PRODUCT_DETAIL_API="product-details";
+    public static final String BASKET_DETAIL_API = "basket-details";
+    public static final String PRODUCT_DETAIL_API = "product-details";
 
     /*Addresses screen apis*/
     public static final String ADDRESS_LIST_API = "address-view";
@@ -136,7 +134,7 @@ public class AppConstants {
     public static final String SET_DEFAULT_ADDRESS_API = "make-address-default";
 
     /*Favourite Api Keys*/
-    public static final String ITEM_TYPE ="item_type";
+    public static final String ITEM_TYPE = "item_type";
 
     /*See all Listing from home keys*/
     public static final String AllBasket = "Basket";
@@ -193,14 +191,14 @@ public class AppConstants {
     public static final String LIST_TYPE = "list_type";
 
     /*Basket API Keys*/
-    public static final String BASKET_ID ="basket_id";
-    public static final String ADD_TO_BASKET ="add-to-cart-basket";
+    public static final String BASKET_ID = "basket_id";
+    public static final String ADD_TO_BASKET = "add-to-cart-basket";
 
     /*Product API Keys*/
-    public static final String PRODUCT_ID ="product_id";
-    public static final String ADD_TO_PRODUCT ="add-to-cart-product";
-    public static final String PU_ID ="pu_id";
-    public static final String QUANTITY ="quantity";
+    public static final String PRODUCT_ID = "product_id";
+    public static final String ADD_TO_PRODUCT = "add-to-cart-product";
+    public static final String PU_ID = "pu_id";
+    public static final String QUANTITY = "quantity";
 
     /*Category types*/
     public static final String BASKET = "0";
@@ -234,6 +232,11 @@ public class AppConstants {
     public static final String GOOGLE_MAP_ADDRESS = "map_address";
 
     /*
+    * Cart Screen Parameters
+    * */
+    public static final String CART_ID = "cart_id";
+
+    /*
      * id to handle the notification in the notification tray
      * */
     public static final int NOTIFICATION_RANDOM_ID = 0;
@@ -262,17 +265,14 @@ public class AppConstants {
     public static final String TICKET_REMARK = "remark";
     public static final String TICKET_ID = "ticket_id";
     public static final String MESSAGE = "message";
-
-    //SharedPreferences keys
-    public static String CART_LIST = "CART_LIST";
-    public static String FAV_LIST = "FAV_LIST";
     public static final String pId = "PAC";
-
     /*Search Types here*/
     public static final String SEARCH_PRODUCT = "0";
     public static final String SEARCH_CATEGORY = "1";
     public static final String SEARCH_BASKET = "2";
-
+    //SharedPreferences keys
+    public static String CART_LIST = "CART_LIST";
+    public static String FAV_LIST = "FAV_LIST";
     /*Store Parameter*/
     public static String STORE_ID = "store_id";
 

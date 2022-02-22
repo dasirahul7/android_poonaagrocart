@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -43,10 +42,10 @@
                     android:button="@drawable/bg_radio_button"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:textColor="@color/color_wallet_balance"
                     android:text="@{modelDeliverySlot.slotName}"
+                    android:textColor="@color/color_wallet_balance"
                     android:textSize="@dimen/_14sp"
-                    app:setCustomFont="@string/font_poppins_semi_bold"/>
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
             </LinearLayout>
 

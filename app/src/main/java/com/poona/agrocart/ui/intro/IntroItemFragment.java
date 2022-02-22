@@ -20,14 +20,12 @@ import com.poona.agrocart.ui.BaseFragment;
 import java.util.ArrayList;
 
 public class IntroItemFragment extends BaseFragment {
+    private static final String POSITION = "position";
     private static Context context;
     private static ArrayList<IntroScreenResponse.Intro> introList;
     private FragmentIntroScreenItemBinding fragmentIntroItemBinding;
     private View view;
     private SharedPreferences getPreferences;
-    private static final String POSITION = "position";
-
-
     private ImageView introImg;
     private TextView introTitle;
     private TextView introDesc;
@@ -48,10 +46,10 @@ public class IntroItemFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,  ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final int position = this.getArguments().getInt(POSITION);
-        fragmentIntroItemBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_intro_screen_item,container,false);
+        fragmentIntroItemBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_intro_screen_item, container, false);
         fragmentIntroItemBinding.setLifecycleOwner(this);
         view = fragmentIntroItemBinding.itemLayout;
         introImg = fragmentIntroItemBinding.itemImg;
@@ -61,7 +59,7 @@ public class IntroItemFragment extends BaseFragment {
         introTitle.setText(introList.get(position).getTitle());
         introDesc.setText(introList.get(position).getDescription());
 //        introImg.setImageResource(introList.get(position).getImgFile());
-        loadingImage(context,introList.get(position).getImgFile(),fragmentIntroItemBinding.itemImg);
+        loadingImage(context, introList.get(position).getImgFile(), fragmentIntroItemBinding.itemImg);
         return view;
     }
 }

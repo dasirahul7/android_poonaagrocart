@@ -17,25 +17,18 @@ import com.poona.agrocart.databinding.RowProductListItemBinding;
 
 import java.util.ArrayList;
 
-public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.ProductsViewHolder>
-{
+public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.ProductsViewHolder> {
     private final ArrayList<ProductListResponse.Product> vegetableArrayList;
-    private OnProductClickListener onProductClickListener;
+    private final OnProductClickListener onProductClickListener;
 
     public ProductGridAdapter(ArrayList<ProductListResponse.Product> vegetableArrayList, OnProductClickListener onProductClickListener) {
         this.vegetableArrayList = vegetableArrayList;
         this.onProductClickListener = onProductClickListener;
     }
 
-    public interface OnProductClickListener{
-        void onProductClick(ProductListResponse.Product product);
-        void onAddClick(String productId, String unitID,int position);
-    }
-
     @NonNull
     @Override
-    public ProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public ProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RowProductListItemBinding binding = DataBindingUtil.inflate
                 (LayoutInflater.from(parent.getContext()),
                         R.layout.row_product_list_item, parent, false);
@@ -43,15 +36,14 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position) {
         final ProductListResponse.Product product = vegetableArrayList.get(position);
         holder.productListItemBinding.setProductModule(product);
         holder.bind(product);
         //Add to CART API
         holder.productListItemBinding.imgPlus.setOnClickListener(view -> {
-            if (product.getInCart()==0)
-            onProductClickListener.onAddClick(product.getProductId(), product.getUnit().getpId(),position);
+            if (product.getInCart() == 0)
+                onProductClickListener.onAddClick(product.getProductId(), product.getUnit().getpId(), position);
         });
     }
 
@@ -60,27 +52,30 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
         return vegetableArrayList.size();
     }
 
-    public class ProductsViewHolder extends RecyclerView.ViewHolder
-    {
+    public interface OnProductClickListener {
+        void onProductClick(ProductListResponse.Product product);
+
+        void onAddClick(String productId, String unitID, int position);
+    }
+
+    public class ProductsViewHolder extends RecyclerView.ViewHolder {
         RowProductListItemBinding productListItemBinding;
 
         public ProductsViewHolder(RowProductListItemBinding productListItemBinding) {
             super(productListItemBinding.getRoot());
-            this.productListItemBinding=productListItemBinding;
+            this.productListItemBinding = productListItemBinding;
 
         }
 
-        private void redirectToCartScreen(View view)
-        {
+        private void redirectToCartScreen(View view) {
             Navigation.findNavController(view).navigate(R.id.action_nav_products_list_to_nav_cart);
         }
 
 
-        public void bind(ProductListResponse.Product product)
-        {
+        public void bind(ProductListResponse.Product product) {
             productListItemBinding.setVariable(BR.productModule, product);
             productListItemBinding.executePendingBindings();
-            if (product.getInCart()==1)
+            if (product.getInCart() == 1)
                 productListItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
             else productListItemBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
 //            if (Product.isOrganic())
@@ -91,7 +86,7 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
 //                productListItemBinding.txtOutOfStock.setVisibility(View.VISIBLE);
 //                productListItemBinding.imgPlus.setVisibility(View.GONE);
 //            }
-            if (Build.VERSION.SDK_INT<=Build.VERSION_CODES.M){
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                 productListItemBinding.txtItemOfferPrice.setTextSize(14);
             }
             itemView.setOnClickListener(view -> {

@@ -9,6 +9,17 @@ import java.io.Serializable;
  * Created by Rahul Dasi on 6/10/2020
  */
 public class PushNotification implements Parcelable, Serializable {
+    public static final Creator<PushNotification> CREATOR = new Creator<PushNotification>() {
+        @Override
+        public PushNotification createFromParcel(Parcel in) {
+            return new PushNotification(in);
+        }
+
+        @Override
+        public PushNotification[] newArray(int size) {
+            return new PushNotification[size];
+        }
+    };
     String title = "";
     String subtitle = "";
     String message = "";
@@ -22,7 +33,8 @@ public class PushNotification implements Parcelable, Serializable {
     String tickerText = "";
     String userType = "";
 
-    protected PushNotification(){}
+    protected PushNotification() {
+    }
 
     protected PushNotification(Parcel in) {
         title = in.readString();
@@ -38,18 +50,6 @@ public class PushNotification implements Parcelable, Serializable {
         tickerText = in.readString();
         userType = in.readString();
     }
-
-    public static final Creator<PushNotification> CREATOR = new Creator<PushNotification>() {
-        @Override
-        public PushNotification createFromParcel(Parcel in) {
-            return new PushNotification(in);
-        }
-
-        @Override
-        public PushNotification[] newArray(int size) {
-            return new PushNotification[size];
-        }
-    };
 
     public String getTitle() {
         return title;
@@ -87,7 +87,9 @@ public class PushNotification implements Parcelable, Serializable {
         return notificationType;
     }
 
-    public void setNotificationType(String notificationType) { this.notificationType = notificationType; }
+    public void setNotificationType(String notificationType) {
+        this.notificationType = notificationType;
+    }
 
     public String getMsgCount() {
         return msgCount;
@@ -137,9 +139,13 @@ public class PushNotification implements Parcelable, Serializable {
         this.tickerText = tickerText;
     }
 
-    public String getUserType() { return userType; }
+    public String getUserType() {
+        return userType;
+    }
 
-    public void setUserType(String userType) { this.userType = userType; }
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 
     @Override
     public int describeContents() {

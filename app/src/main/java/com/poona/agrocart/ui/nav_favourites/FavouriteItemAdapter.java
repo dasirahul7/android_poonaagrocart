@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -15,20 +14,16 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
 import com.poona.agrocart.databinding.RowFavouriteListItemBinding;
-import com.poona.agrocart.ui.home.OnPlusClick;
-import com.poona.agrocart.ui.home.OnProductClick;
-import com.poona.agrocart.ui.home.model.ProductOld;
-
 
 import java.util.ArrayList;
 
 public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdapter.FavouriteHolder> {
-    private ArrayList<FavouriteListResponse.Favourite> favouriteArrayList = new ArrayList<>();
     private final Context bdContext;
-    private  RowFavouriteListItemBinding favouriteListItemBinding;
-    private OnPlusClick onPlusClick;
-    private OnProductClick onProductClick;
-    private OnFavouriteClick onFavouriteClick;
+    private ArrayList<FavouriteListResponse.Favourite> favouriteArrayList = new ArrayList<>();
+    private RowFavouriteListItemBinding favouriteListItemBinding;
+    private final OnPlusClick onPlusClick;
+    private final OnProductClick onProductClick;
+    private final OnFavouriteClick onFavouriteClick;
 
     public FavouriteItemAdapter(Context context, ArrayList<FavouriteListResponse.Favourite> favouriteItemsList,
                                 FavouriteItemsFragment favouriteItemsFragment) {
@@ -38,19 +33,6 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
         this.onProductClick = favouriteItemsFragment;
         this.onFavouriteClick = favouriteItemsFragment;
     }
-
-    public interface OnPlusClick {
-        void addToCartClickItem(int position);
-    }
-
-    public interface OnProductClick {
-        void toProductDetailClickItem(int position);
-    }
-
-    public interface OnFavouriteClick {
-        void removeFavouriteClickItem(int position);
-    }
-
 
     @NonNull
     @Override
@@ -66,26 +48,26 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
         favouriteListItemBinding.setFavouriteModelList(favourite);
         holder.bindProduct(favourite, position);
 
-        if (favourite.getItemType().equalsIgnoreCase("basket")){
+        if (favourite.getItemType().equalsIgnoreCase("basket")) {
             favouriteListItemBinding.tvName.setText(favourite.getBasketName());
-            favouriteListItemBinding.tvOfferActualPrice.setText("RS."+favourite.getBasketRate());
+            favouriteListItemBinding.tvOfferActualPrice.setText("RS." + favourite.getBasketRate());
             favouriteListItemBinding.tvSellingPrice.setVisibility(View.INVISIBLE);
             favouriteListItemBinding.tvLocation.setVisibility(View.INVISIBLE);
             favouriteListItemBinding.tvOrganic.setVisibility(View.INVISIBLE);
-            if (favourite.getInCart()==1)
+            if (favourite.getInCart() == 1)
                 favouriteListItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
             else favouriteListItemBinding.ivPlus.setImageResource(R.drawable.ic_plus_white);
-        }else {
+        } else {
             favouriteListItemBinding.tvName.setText(favourite.getProductName());
-            favouriteListItemBinding.tvOfferActualPrice.setText("RS."+favourite.getOffer_price());
-            favouriteListItemBinding.tvSellingPrice.setText("RS."+favourite.getSelling_price());
-            favouriteListItemBinding.tvProductWeight.setText(favourite.getWeight()+""+favourite.getUnitName());
+            favouriteListItemBinding.tvOfferActualPrice.setText("RS." + favourite.getOffer_price());
+            favouriteListItemBinding.tvSellingPrice.setText("RS." + favourite.getSelling_price());
+            favouriteListItemBinding.tvProductWeight.setText(favourite.getWeight() + "" + favourite.getUnitName());
             if (favourite.getIs_o3().equalsIgnoreCase("yes"))
                 favouriteListItemBinding.tvOrganic.setVisibility(View.VISIBLE);
             else
                 favouriteListItemBinding.tvOrganic.setVisibility(View.INVISIBLE);
 
-            if (favourite.getInCart()==1)
+            if (favourite.getInCart() == 1)
                 favouriteListItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
             else
                 favouriteListItemBinding.ivPlus.setImageResource(R.drawable.ic_plus_white);
@@ -98,17 +80,31 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
         return favouriteArrayList.size();
     }
 
+
+    public interface OnPlusClick {
+        void addToCartClickItem(int position);
+    }
+
+    public interface OnProductClick {
+        void toProductDetailClickItem(int position);
+    }
+
+    public interface OnFavouriteClick {
+        void removeFavouriteClickItem(int position);
+    }
+
     public class FavouriteHolder extends RecyclerView.ViewHolder {
 
         RowFavouriteListItemBinding productBinding;
+
         // The Landscape Item Holder
         public FavouriteHolder(RowFavouriteListItemBinding productBinding) {
             super(productBinding.getRoot());
-            this.productBinding=productBinding;
+            this.productBinding = productBinding;
         }
 
         //Only ProductOld Item bind
-        public void bindProduct( FavouriteListResponse.Favourite favourite, int position) {
+        public void bindProduct(FavouriteListResponse.Favourite favourite, int position) {
             favouriteListItemBinding.setVariable(BR.productOldModule, favourite);
             favouriteListItemBinding.executePendingBindings();
 

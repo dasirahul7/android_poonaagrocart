@@ -138,15 +138,10 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         }
     }
 
-    public interface BottomSheetListener {
-        void onBottomSheetClick();
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
-
 
     private void collapseView(final View v) {
         final int initialHeight = v.getMeasuredHeight();
@@ -203,6 +198,10 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         // Expansion speed of 1dp/ms
         a.setDuration((int) (targetHeight / v.getContext().getResources().getDisplayMetrics().density + 300));
         v.startAnimation(a);
+    }
+
+    public interface BottomSheetListener {
+        void onBottomSheetClick();
     }
 
 //    @Override

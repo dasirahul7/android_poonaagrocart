@@ -19,7 +19,6 @@ import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.data.network.responses.ProductListByResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
-import com.poona.agrocart.ui.home.HomeFragment;
 
 import java.util.HashMap;
 
@@ -68,7 +67,7 @@ public class SearchViewModel extends AndroidViewModel {
                             productListResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) searchFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) searchFragment).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -78,8 +77,8 @@ public class SearchViewModel extends AndroidViewModel {
     }
 
     //Add to cart
-    public LiveData<BaseResponse> addToCartProductLiveData(HashMap<String,String> hashMap,
-                                                           SearchFragment homeFragment){
+    public LiveData<BaseResponse> addToCartProductLiveData(HashMap<String, String> hashMap,
+                                                           SearchFragment homeFragment) {
         MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(homeFragment.getContext())
@@ -90,8 +89,8 @@ public class SearchViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
-                        if (baseResponse!=null){
-                            Log.e(TAG, "add to cart onSuccess: "+new Gson().toJson(baseResponse));
+                        if (baseResponse != null) {
+                            Log.e(TAG, "add to cart onSuccess: " + new Gson().toJson(baseResponse));
                             baseResponseMutableLiveData.setValue(baseResponse);
                         }
                     }
@@ -100,14 +99,14 @@ public class SearchViewModel extends AndroidViewModel {
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         Gson gson = new GsonBuilder().create();
                         BaseResponse response = new BaseResponse();
-                        try{
+                        try {
                             response = gson.fromJson(((HttpException) e).response().errorBody().toString(),
                                     BaseResponse.class);
 
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(1,"");
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(1, "");
                         }
                     }
                 });
@@ -149,7 +148,7 @@ public class SearchViewModel extends AndroidViewModel {
                                 categoryResponseMutableLiveData.setValue(response);
                             } catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
-                                ((NetworkExceptionListener) searchFragment).onNetworkException(1,"");
+                                ((NetworkExceptionListener) searchFragment).onNetworkException(1, "");
                             }
 
                             Log.e(TAG, e.getMessage());
@@ -159,10 +158,11 @@ public class SearchViewModel extends AndroidViewModel {
         return categoryResponseMutableLiveData;
 
     }
+
     /*Search By category*/
     public LiveData<ProductListByResponse> searchProductByCategory(ProgressDialog progressDialog,
-                                                                  HashMap<String, String> hashMap,
-                                                                  SearchFragment searchFragment) {
+                                                                   HashMap<String, String> hashMap,
+                                                                   SearchFragment searchFragment) {
         MutableLiveData<ProductListByResponse> productListByResponseMutableLiveData = new MutableLiveData<>();
         Observer<ProductListByResponse> productListByResponseObserver = productListByResponse -> {
             ApiClientAuth.getClient(searchFragment.getContext())
@@ -193,7 +193,7 @@ public class SearchViewModel extends AndroidViewModel {
                                 productListByResponseMutableLiveData.setValue(response);
                             } catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
-                                ((NetworkExceptionListener) searchFragment).onNetworkException(1,"");
+                                ((NetworkExceptionListener) searchFragment).onNetworkException(1, "");
                             }
 
                             Log.e(TAG, e.getMessage());

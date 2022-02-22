@@ -1,15 +1,17 @@
 package com.poona.agrocart.ui.nav_explore.model;
 
-import android.widget.ImageView;
-
-import androidx.databinding.BindingAdapter;
-
-import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 
 public class ExploreItems {
-    String id,name,img,type;
-    int border = R.color.exp_card_color1,background=R.color.exp_border1;
+    String id, name, img, type;
+    int border = R.color.exp_card_color1, background = R.color.exp_border1;
+
+    public ExploreItems(String id, String name, String img, String type) {
+        this.id = id;
+        this.name = name;
+        this.img = img;
+        this.type = type;
+    }
 
     public int getBorder() {
         return border;
@@ -26,14 +28,6 @@ public class ExploreItems {
     public void setBackground(int background) {
         this.background = background;
     }
-
-    public ExploreItems(String id, String name, String img,String type) {
-        this.id = id;
-        this.name = name;
-        this.img = img;
-        this.type = type;
-    }
-
 
     public String getType() {
         return type;

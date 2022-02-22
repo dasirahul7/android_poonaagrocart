@@ -14,29 +14,25 @@ import com.poona.agrocart.ui.product_detail.model.ProductComment;
 
 import java.util.ArrayList;
 
-public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductCommentsAdapter.CommentViewHolder>
-{
+public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductCommentsAdapter.CommentViewHolder> {
     private final ArrayList<ProductComment> commentArrayList;
     private final boolean full;
 
-    public ProductCommentsAdapter(ArrayList<ProductComment> commentArrayList, boolean full)
-    {
+    public ProductCommentsAdapter(ArrayList<ProductComment> commentArrayList, boolean full) {
         this.commentArrayList = commentArrayList;
         this.full = full;
     }
 
     @NonNull
     @Override
-    public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RvProductCommentBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_product_comment, parent, false);
         return new ProductCommentsAdapter.CommentViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
         final ProductComment comment = commentArrayList.get(position);
         holder.rvProductCommentBinding.setProductComment(comment);
         holder.bind(comment);
@@ -49,20 +45,17 @@ public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductComments
         else return 3;
     }
 
-    public static class CommentViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class CommentViewHolder extends RecyclerView.ViewHolder {
         RvProductCommentBinding rvProductCommentBinding;
 
-        public CommentViewHolder(RvProductCommentBinding rvProductCommentBinding)
-        {
+        public CommentViewHolder(RvProductCommentBinding rvProductCommentBinding) {
             super(rvProductCommentBinding.getRoot());
             this.rvProductCommentBinding = rvProductCommentBinding;
         }
 
-        public void bind(ProductComment comment)
-        {
+        public void bind(ProductComment comment) {
             rvProductCommentBinding.ratingBar.setRating(comment.getRating());
-            rvProductCommentBinding.setVariable(BR.productComment,comment);
+            rvProductCommentBinding.setVariable(BR.productComment, comment);
             rvProductCommentBinding.executePendingBindings();
         }
     }

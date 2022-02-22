@@ -1,7 +1,6 @@
 package com.poona.agrocart.ui.nav_addresses.model;
 
-public class Address
-{
+public class Address {
     private String name, mobileNumber, address, type;
     private boolean defaultAddress;
 

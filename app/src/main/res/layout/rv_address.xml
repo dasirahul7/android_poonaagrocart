@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -17,7 +17,7 @@
             android:id="@+id/cardview_shpping_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/_8sdp"
+            app:cardElevation="@dimen/_2sdp"
             app:cardCornerRadius="@dimen/_8sdp"
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/_10sdp"
@@ -37,32 +37,32 @@
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="0dp"
-                        android:layout_weight="50"
                         android:layout_height="wrap_content"
+                        android:layout_weight="50"
                         android:drawableStart="@drawable/ic_user"
                         android:drawablePadding="@dimen/_2sdp"
+                        android:includeFontPadding="false"
                         android:text="@={address.name}"
                         android:textColor="@color/color_order_view_username"
                         android:textSize="@dimen/_16sp"
-                        android:includeFontPadding="false"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <LinearLayout
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="50"
-                        android:gravity="end"
-                        android:layout_height="wrap_content">
+                        android:gravity="end">
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="@dimen/_2sdp"
-                            android:text="@={address.addressType}"
-                            android:gravity="center"
                             android:background="@drawable/bg_type_of_address_tag"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="@={address.addressType}"
                             android:textColor="@color/color_type_of_address"
                             android:textSize="@dimen/_14sp"
-                            android:includeFontPadding="false"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     </LinearLayout>
@@ -75,10 +75,10 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:drawableStart="@drawable/ic_mobile_no"
                     android:drawablePadding="@dimen/_2sdp"
+                    android:includeFontPadding="false"
                     android:text="@={address.mobile}"
                     android:textColor="@color/color_order_view_username"
                     android:textSize="@dimen/_14sp"
-                    android:includeFontPadding="false"
                     app:setCustomFont="@string/font_poppins_regular" />
 
                 <LinearLayout
@@ -97,10 +97,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_2sdp"
+                        android:includeFontPadding="false"
                         android:text="@={address.fullAddress}"
                         android:textColor="@color/color_order_view_username"
                         android:textSize="@dimen/_14sp"
-                        android:includeFontPadding="false"
                         app:setCustomFont="@string/font_poppins_regular" />
                 </LinearLayout>
 
@@ -118,27 +118,27 @@
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="50"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50">
 
                         <com.poona.agrocart.widgets.CustomCheckBox
                             android:id="@+id/cb_default"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_20sdp"
-                            android:text="@string/default_address"
                             android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:paddingStart="@dimen/_4sdp"
+                            android:text="@string/default_address"
                             android:textColor="@color/color_default_address"
                             android:textSize="@dimen/_16sp"
-                            android:paddingStart="@dimen/_4sdp"
-                            android:includeFontPadding="false"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="50"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="50">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -154,10 +154,10 @@
 
                             <View
                                 android:layout_width="1dp"
-                                android:layout_marginStart="@dimen/_10sdp"
                                 android:layout_height="match_parent"
-                                android:background="@color/colorLightGrey"
-                                android:layout_marginEnd="@dimen/_20sdp" />
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:background="@color/colorLightGrey" />
 
                             <ImageView
                                 android:id="@+id/iv_delete_address"

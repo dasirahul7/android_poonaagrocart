@@ -16,23 +16,19 @@ import com.poona.agrocart.ui.nav_explore.model.FilterItem;
 import java.util.ArrayList;
 
 public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.FilterViewHolder> {
-    private ArrayList<FilterItem> filterItems = new ArrayList<>();
     private final Context context;
+    private ArrayList<FilterItem> filterItems = new ArrayList<>();
     private RowCheckBoxItemBinding itemBinding;
     private OnFilterClickListener onFilterClickListener;
-
-    public interface OnFilterClickListener {
-        void onItemClick(int position);
-    }
-
-    public void setOnItemClickListener(OnFilterClickListener onFilterClickListener) {
-        this.onFilterClickListener = onFilterClickListener;
-    }
 
     public FilterItemAdapter(ArrayList<FilterItem> filterItems, Context context) {
         this.filterItems = filterItems;
         this.context = context;
 //        this.onItemClickListener = listener;
+    }
+
+    public void setOnItemClickListener(OnFilterClickListener onFilterClickListener) {
+        this.onFilterClickListener = onFilterClickListener;
     }
 
     @NonNull
@@ -50,10 +46,14 @@ public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.Fi
         holder.bindItem(item, onFilterClickListener);
     }
 
-
     @Override
     public int getItemCount() {
         return filterItems.size();
+    }
+
+
+    public interface OnFilterClickListener {
+        void onItemClick(int position);
     }
 
     public class FilterViewHolder extends RecyclerView.ViewHolder {
@@ -61,18 +61,17 @@ public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.Fi
 
         public FilterViewHolder(RowCheckBoxItemBinding itemBinding) {
             super(itemBinding.getRoot());
-            this.itemBinding=itemBinding;
+            this.itemBinding = itemBinding;
         }
 
         public void bindItem(FilterItem item, OnFilterClickListener onFilterClickListener) {
             itemBinding.setModuleFilter(item);
             itemBinding.executePendingBindings();
             itemBinding.checkView.setOnClickListener(v -> {
-                if (itemBinding.checkbox.isChecked()){
+                if (itemBinding.checkbox.isChecked()) {
                     itemBinding.checkbox.setChecked(false);
                     setCheckedView();
-                }
-                else {
+                } else {
                     itemBinding.checkbox.setChecked(true);
                     setCheckedView();
                 }

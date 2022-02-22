@@ -66,8 +66,7 @@ public class FetchAddressIntentService extends IntentService {
         }
         // Handle case where no address was found.
         if (addresses == null || addresses.size() == 0) {
-            if (errorMessage.isEmpty())
-            {
+            if (errorMessage.isEmpty()) {
                 errorMessage = getString(R.string.no_address_found);
                 Log.e(TAG, errorMessage);
             }
@@ -92,29 +91,29 @@ public class FetchAddressIntentService extends IntentService {
             pincode = address.getPostalCode();
 
             Log.i(TAG, getString(R.string.address_found));
-            if(address.getFeatureName() != null && !TextUtils.isEmpty(address.getFeatureName())) {
+            if (address.getFeatureName() != null && !TextUtils.isEmpty(address.getFeatureName())) {
                 houseNumber = address.getFeatureName();
             } else {
-                if(address.getSubThoroughfare() != null && !TextUtils.isEmpty(address.getSubThoroughfare())) {
+                if (address.getSubThoroughfare() != null && !TextUtils.isEmpty(address.getSubThoroughfare())) {
                     houseNumber = address.getSubThoroughfare();
                 } else {
                     houseNumber = "";
                 }
             }
 
-            if(address.getThoroughfare() != null && !TextUtils.isEmpty(address.getThoroughfare())) {
+            if (address.getThoroughfare() != null && !TextUtils.isEmpty(address.getThoroughfare())) {
                 street = address.getThoroughfare();
-                landmark = address.getThoroughfare()+", "+area;
+                landmark = address.getThoroughfare() + ", " + area;
             } else {
                 street = "";
                 landmark = "";
             }
 
-            Log.i(TAG,"house number: " + houseNumber);
-            Log.i(TAG,"street: " + street);
-            Log.i(TAG,"landmark: " + landmark);
+            Log.i(TAG, "house number: " + houseNumber);
+            Log.i(TAG, "street: " + street);
+            Log.i(TAG, "landmark: " + landmark);
 
-            Log.i(TAG,"name: " + address.getLocality());
+            Log.i(TAG, "name: " + address.getLocality());
             Log.i(TAG, "address : " + result);
             Log.i(TAG, "state : " + state);
             Log.i(TAG, "city : " + city);

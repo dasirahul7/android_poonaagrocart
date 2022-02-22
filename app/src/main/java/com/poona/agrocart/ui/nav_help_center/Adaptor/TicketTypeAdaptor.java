@@ -41,15 +41,15 @@ public class TicketTypeAdaptor extends ArrayAdapter<TicketTypeResponse.TicketTyp
                     R.layout.custom_spinner, parent, false);
         }
 
-        TextView textViewShiftName= convertView.findViewById(R.id.text_view_name);
+        TextView textViewShiftName = convertView.findViewById(R.id.text_view_name);
         if (position == 0) {
             // Set the hint text color gray
             textViewShiftName.setTextColor(Color.BLACK);
         } else {
             textViewShiftName.setTextColor(Color.BLACK);
         }
-        TicketTypeResponse.TicketType currentItem=getItem(position);
-        if(currentItem!=null) {
+        TicketTypeResponse.TicketType currentItem = getItem(position);
+        if (currentItem != null) {
             textViewShiftName.setText(currentItem.getTicketType());
             textViewShiftName.setGravity(View.TEXT_ALIGNMENT_TEXT_START);
         }

@@ -97,21 +97,24 @@ import retrofit2.HttpException;
 
 public class EditProfileFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     private static final String TAG = EditProfileFragment.class.getSimpleName();
+    final String[] PERMISSIONS = {
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+    public String fileName = "";
     private FragmentEditProfileBinding fragmentEditProfileBinding;
     private MyProfileViewModel myProfileViewModel;
     private Calendar calendar;
     private int mYear, mMonth, mDay;
     private View view;
-
     private BasicDetails basicDetails;
-
     private String selectedStateId = "0";
     private String selectedCityId = "0";
     private String selectedAreaId = "0";
     private String selectedState = "";
     private String selectedCity = "";
     private String selectedArea = "";
-
     private ProfileResponse profileResponse = null;
     private StateResponse stateResponse = null;
     private CityResponse cityResponse = null;
@@ -119,6 +122,75 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private List<BasicDetails> stateList;
     private List<BasicDetails> cityList;
     private List<BasicDetails> areaList;
+    private int checkState = 0;
+    private int checkCity = 0;
+    private final int checkArea = 0;
+    /*
+     * start to image update
+     * */
+    private Dialog dialogForAddPhotos = null;
+    private File compressedImageFile = null;
+    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+    ActivityResultLauncher<Intent> cropActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                dialogForAddPhotos = null;
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    final Uri resultUri = UCrop.getOutput(data);
+                    try {
+                        File f = new File(resultUri.getPath());
+
+                        /*Compressing gallery image using Compressor library Start*/
+                        compressedImageFile = new Compressor(getActivity()).setQuality(75).compressToFile(f);
+
+                        Bitmap myBitmap = BitmapFactory.decodeFile(compressedImageFile.getAbsolutePath());
+                        fragmentEditProfileBinding.ivProfilePicture.setImageBitmap(myBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+    ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                dialogForAddPhotos = null;
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    final Uri resultUri = getSelectedImageUri(data, 1); //code 1 for camera
+                    File f = new File(resultUri.getPath());
+
+                    /*Cropping image Start*/
+                    String outputFileName = Calendar.getInstance().getTimeInMillis() + ".jpeg";
+                    Uri selectedImage = Uri.fromFile(f);
+                    gotoUCropImageActivity(selectedImage, Uri.fromFile(new File(context.getExternalCacheDir(), outputFileName)));
+                    /*Cropping image End*/
+                }
+            });
+    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+    ActivityResultLauncher<Intent> galleryActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                dialogForAddPhotos = null;
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    final Uri resultUri = getSelectedImageUri(data, 2); //code 2 for gallery
+                    File f = new File(resultUri.getPath());
+
+                    /*Cropping image Start*/
+                    String outputFileName = Calendar.getInstance().getTimeInMillis() + ".jpeg";
+                    Uri selectedImage = Uri.fromFile(f);
+                    gotoUCropImageActivity(selectedImage, Uri.fromFile(new File(context.getExternalCacheDir(), outputFileName)));
+                    /*Cropping image End*/
+                }
+            });
+    private MultipartBody.Part multipartBodyImageFile = null;
+    private ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
+    private String clickedOn = "0";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,7 +207,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         initView();
 
         fragmentEditProfileBinding.rgGender.setOnCheckedChangeListener((group, checkedId) -> {
-            switch(checkedId){
+            switch (checkedId) {
                 case R.id.rb_male:
                     myProfileViewModel.gender.setValue("male");
                     break;
@@ -159,9 +231,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 errorToast(context, getResources().getString(R.string.ensure_your_all_permissions));
                 //multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
             } else {
-                if(clickedOn.equals("gallery")) {
+                if (clickedOn.equals("gallery")) {
                     galleryIntent();
-                } else if(clickedOn.equals("camera")) {
+                } else if (clickedOn.equals("camera")) {
                     cameraIntent();
                 }
             }
@@ -204,10 +276,12 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<String> strings) {
-                        Type profileType = new TypeToken<ProfileResponse>(){}.getType();
+                        Type profileType = new TypeToken<ProfileResponse>() {
+                        }.getType();
                         profileResponse = new GsonBuilder().create().fromJson(strings.get(0), profileType);
 
-                        Type stateType = new TypeToken<StateResponse>(){}.getType();
+                        Type stateType = new TypeToken<StateResponse>() {
+                        }.getType();
                         stateResponse = new GsonBuilder().create().fromJson(strings.get(1), stateType);
 
                         selectedStateId = profileResponse.getProfile().getStateId();
@@ -228,7 +302,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         Gson gson = new GsonBuilder().create();
-                        if(e instanceof HttpException) {
+                        if (e instanceof HttpException) {
                             try {
                                 profileResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), ProfileResponse.class);
                                 stateResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), StateResponse.class);
@@ -270,10 +344,12 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<String> strings) {
-                        Type cityType = new TypeToken<CityResponse>(){}.getType();
+                        Type cityType = new TypeToken<CityResponse>() {
+                        }.getType();
                         cityResponse = new GsonBuilder().create().fromJson(strings.get(0), cityType);
 
-                        Type areaType = new TypeToken<AreaResponse>(){}.getType();
+                        Type areaType = new TypeToken<AreaResponse>() {
+                        }.getType();
                         areaResponse = new GsonBuilder().create().fromJson(strings.get(1), areaType);
 
                         setupCitySpinner();
@@ -285,7 +361,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         Gson gson = new GsonBuilder().create();
-                        if(e instanceof HttpException) {
+                        if (e instanceof HttpException) {
                             try {
                                 cityResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CityResponse.class);
                                 areaResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), AreaResponse.class);
@@ -320,15 +396,14 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         return map;
     }
 
-    private int checkState = 0;
     private void setupStateSpinner() {
         BasicDetails basicDetails = new BasicDetails();
         basicDetails.setId("0");
         basicDetails.setName("Select");
         stateList.add(basicDetails);
 
-        if(stateResponse != null && stateResponse.getStates() != null && stateResponse.getStates().size() > 0) {
-            for(int i = 0; i < stateResponse.getStates().size(); i++) {
+        if (stateResponse != null && stateResponse.getStates() != null && stateResponse.getStates().size() > 0) {
+            for (int i = 0; i < stateResponse.getStates().size(); i++) {
                 BasicDetails details = new BasicDetails();
                 details.setId(stateResponse.getStates().get(i).getId());
                 details.setName(stateResponse.getStates().get(i).getStateName());
@@ -349,7 +424,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     selectedStateId = stateList.get(i).getId();
                     selectedState = stateList.get(i).getName();
 
-                    if(++checkState > 1 && !selectedStateId.equals("0"))
+                    if (++checkState > 1 && !selectedStateId.equals("0"))
                         callCityApi(showCircleProgressDialog(context, ""));
                 }
             }
@@ -364,9 +439,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         setupCitySpinner();
     }
 
-    private int checkCity = 0;
     private void setupCitySpinner() {
-        if(cityList != null && cityList.size() > 0) {
+        if (cityList != null && cityList.size() > 0) {
             cityList.clear();
         }
 
@@ -375,8 +449,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         basicDetails.setName("Select");
         cityList.add(basicDetails);
 
-        if(cityResponse != null && cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
-            for(int i = 0; i < cityResponse.getCities().size(); i++) {
+        if (cityResponse != null && cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
+            for (int i = 0; i < cityResponse.getCities().size(); i++) {
                 BasicDetails details = new BasicDetails();
                 details.setId(cityResponse.getCities().get(i).getId());
                 details.setName(cityResponse.getCities().get(i).getCityName());
@@ -397,7 +471,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     selectedCityId = cityList.get(i).getId();
                     selectedCity = cityList.get(i).getName();
 
-                    if(++checkCity > 1 && !selectedCityId.equals("0"))
+                    if (++checkCity > 1 && !selectedCityId.equals("0"))
                         callAreaApi(showCircleProgressDialog(context, ""));
                 }
             }
@@ -412,9 +486,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         setupAreaSpinner();
     }
 
-    private int checkArea = 0;
     private void setupAreaSpinner() {
-        if(areaList != null && areaList.size() > 0) {
+        if (areaList != null && areaList.size() > 0) {
             areaList.clear();
         }
 
@@ -423,8 +496,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         basicDetails.setName("Select");
         areaList.add(basicDetails);
 
-        if(areaResponse != null && areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
-            for(int i = 0; i < areaResponse.getAreas().size(); i++) {
+        if (areaResponse != null && areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
+            for (int i = 0; i < areaResponse.getAreas().size(); i++) {
                 BasicDetails details = new BasicDetails();
                 details.setId(areaResponse.getAreas().get(i).getId());
                 details.setName(areaResponse.getAreas().get(i).getAreaName());
@@ -552,48 +625,48 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     private void setDefaultSelectedValues() {
-        if(profileResponse != null) {
+        if (profileResponse != null) {
             fragmentEditProfileBinding.rlMainLayout.setVisibility(View.VISIBLE);
 
-            if(profileResponse.getProfile().getImage() != null && !TextUtils.isEmpty(profileResponse.getProfile().getImage())) {
+            if (profileResponse.getProfile().getImage() != null && !TextUtils.isEmpty(profileResponse.getProfile().getImage())) {
                 myProfileViewModel.profilePhoto.setValue(profileResponse.getProfile().getImage());
                 loadingImage(context, myProfileViewModel.profilePhoto.getValue(), fragmentEditProfileBinding.ivProfilePicture);
-                loadingImage(context, myProfileViewModel.profilePhoto.getValue(), ((HomeActivity)context).civProfilePhoto);
+                loadingImage(context, myProfileViewModel.profilePhoto.getValue(), ((HomeActivity) context).civProfilePhoto);
             } else {
                 myProfileViewModel.profilePhoto.setValue("");
             }
 
-            if(profileResponse.getProfile().getName() != null && !TextUtils.isEmpty(profileResponse.getProfile().getName())) {
+            if (profileResponse.getProfile().getName() != null && !TextUtils.isEmpty(profileResponse.getProfile().getName())) {
                 myProfileViewModel.name.setValue(profileResponse.getProfile().getName());
-                ((HomeActivity)context).tvUserName.setText("Hello! "+myProfileViewModel.name.getValue());
+                ((HomeActivity) context).tvUserName.setText("Hello! " + myProfileViewModel.name.getValue());
             } else {
                 myProfileViewModel.name.setValue("");
-                ((HomeActivity)context).tvUserName.setText("Hello!");
+                ((HomeActivity) context).tvUserName.setText("Hello!");
             }
 
-            if(profileResponse.getProfile().getMobile() != null && !TextUtils.isEmpty(profileResponse.getProfile().getMobile())) {
+            if (profileResponse.getProfile().getMobile() != null && !TextUtils.isEmpty(profileResponse.getProfile().getMobile())) {
                 myProfileViewModel.mobileNo.setValue(profileResponse.getProfile().getMobile());
             } else {
                 myProfileViewModel.mobileNo.setValue("");
             }
 
-            if(profileResponse.getProfile().getAlternateMobile() != null && !TextUtils.isEmpty(profileResponse.getProfile().getAlternateMobile())) {
-                myProfileViewModel.alternateMobileNo.setValue(profileResponse.getProfile().getAlternateMobile());;
+            if (profileResponse.getProfile().getAlternateMobile() != null && !TextUtils.isEmpty(profileResponse.getProfile().getAlternateMobile())) {
+                myProfileViewModel.alternateMobileNo.setValue(profileResponse.getProfile().getAlternateMobile());
             } else {
-                myProfileViewModel.alternateMobileNo.setValue("");;
+                myProfileViewModel.alternateMobileNo.setValue("");
             }
 
-            if(profileResponse.getProfile().getEmail() != null && !TextUtils.isEmpty(profileResponse.getProfile().getEmail())) {
+            if (profileResponse.getProfile().getEmail() != null && !TextUtils.isEmpty(profileResponse.getProfile().getEmail())) {
                 myProfileViewModel.emailId.setValue(profileResponse.getProfile().getEmail());
             } else {
                 myProfileViewModel.emailId.setValue("");
             }
 
-            if(profileResponse.getProfile().getStateId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getStateId())) {
+            if (profileResponse.getProfile().getStateId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getStateId())) {
                 myProfileViewModel.state.setValue(profileResponse.getProfile().getStateId());
-                if(stateList != null && stateList.size() > 0) {
-                    for(int i = 0; i < stateList.size(); i++) {
-                        if(stateList.get(i).getId().equals(myProfileViewModel.state.getValue())) {
+                if (stateList != null && stateList.size() > 0) {
+                    for (int i = 0; i < stateList.size(); i++) {
+                        if (stateList.get(i).getId().equals(myProfileViewModel.state.getValue())) {
                             fragmentEditProfileBinding.spinnerState.setSelection(i);
                         }
                     }
@@ -602,11 +675,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 myProfileViewModel.state.setValue("");
             }
 
-            if(profileResponse.getProfile().getCityId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getCityId())) {
+            if (profileResponse.getProfile().getCityId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getCityId())) {
                 myProfileViewModel.city.setValue(profileResponse.getProfile().getCityId());
-                if(cityList != null && cityList.size() > 0) {
-                    for(int i = 0; i < cityList.size(); i++) {
-                        if(cityList.get(i).getId().equals(myProfileViewModel.city.getValue())) {
+                if (cityList != null && cityList.size() > 0) {
+                    for (int i = 0; i < cityList.size(); i++) {
+                        if (cityList.get(i).getId().equals(myProfileViewModel.city.getValue())) {
                             fragmentEditProfileBinding.spinnerCity.setSelection(i);
                         }
                     }
@@ -615,11 +688,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 myProfileViewModel.city.setValue("");
             }
 
-            if(profileResponse.getProfile().getAreaId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getAreaId())) {
+            if (profileResponse.getProfile().getAreaId() != null && !TextUtils.isEmpty(profileResponse.getProfile().getAreaId())) {
                 myProfileViewModel.area.setValue(profileResponse.getProfile().getAreaId());
-                if(areaList != null && areaList.size() > 0) {
-                    for(int i = 0; i < areaList.size(); i++) {
-                        if(areaList.get(i).getId().equals(myProfileViewModel.area.getValue())) {
+                if (areaList != null && areaList.size() > 0) {
+                    for (int i = 0; i < areaList.size(); i++) {
+                        if (areaList.get(i).getId().equals(myProfileViewModel.area.getValue())) {
                             fragmentEditProfileBinding.spinnerArea.setSelection(i);
                         }
                     }
@@ -628,20 +701,20 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 myProfileViewModel.area.setValue("");
             }
 
-            if(profileResponse.getProfile().getGender() != null && !TextUtils.isEmpty(profileResponse.getProfile().getGender())) {
+            if (profileResponse.getProfile().getGender() != null && !TextUtils.isEmpty(profileResponse.getProfile().getGender())) {
                 myProfileViewModel.gender.setValue(profileResponse.getProfile().getGender());
-                if(myProfileViewModel.gender.getValue().equals("male")) {
+                if (myProfileViewModel.gender.getValue().equals("male")) {
                     fragmentEditProfileBinding.rgGender.check(R.id.rb_male);
-                } else if(myProfileViewModel.gender.getValue().equals("female")) {
+                } else if (myProfileViewModel.gender.getValue().equals("female")) {
                     fragmentEditProfileBinding.rgGender.check(R.id.rb_female);
-                } else if(myProfileViewModel.gender.getValue().equals("other")) {
+                } else if (myProfileViewModel.gender.getValue().equals("other")) {
                     fragmentEditProfileBinding.rgGender.check(R.id.rb_other);
                 }
             } else {
                 myProfileViewModel.gender.setValue("");
             }
 
-            if(profileResponse.getProfile().getDateOfBirth() != null && !TextUtils.isEmpty(profileResponse.getProfile().getDateOfBirth())) {
+            if (profileResponse.getProfile().getDateOfBirth() != null && !TextUtils.isEmpty(profileResponse.getProfile().getDateOfBirth())) {
                 try {
                     myProfileViewModel.dateOfBirth.setValue(formatDate(profileResponse.getProfile().getDateOfBirth(), "yyyy-MM-dd", "dd MMM yyyy"));
                 } catch (ParseException e) {
@@ -663,14 +736,14 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
         dpd = new DatePickerDialog(requireContext(), (view, year, month, dayOfMonth) -> {
-                String txtDisplayDate = null;
-                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
-                try {
-                    txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                fragmentEditProfileBinding.tvDateOfBirthInput.setText(txtDisplayDate);
+            String txtDisplayDate = null;
+            String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+            try {
+                txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            fragmentEditProfileBinding.tvDateOfBirthInput.setText(txtDisplayDate);
             calendar.set(year, month, dayOfMonth);
         },
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
@@ -699,23 +772,23 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     private void getUserInputAndSetIntoPojo() {
-        if(stateList != null && stateList.size() > 0) {
-            for(int i = 0; i < stateList.size(); i++) {
-                if(stateList.get(i).getName().equals(fragmentEditProfileBinding.spinnerState.getSelectedItem().toString())) {
+        if (stateList != null && stateList.size() > 0) {
+            for (int i = 0; i < stateList.size(); i++) {
+                if (stateList.get(i).getName().equals(fragmentEditProfileBinding.spinnerState.getSelectedItem().toString())) {
                     myProfileViewModel.state.setValue(stateList.get(i).getId());
                 }
             }
         }
-        if(cityList != null && cityList.size() > 0) {
-            for(int i = 0; i < cityList.size(); i++) {
-                if(cityList.get(i).getName().equals(fragmentEditProfileBinding.spinnerCity.getSelectedItem().toString())) {
+        if (cityList != null && cityList.size() > 0) {
+            for (int i = 0; i < cityList.size(); i++) {
+                if (cityList.get(i).getName().equals(fragmentEditProfileBinding.spinnerCity.getSelectedItem().toString())) {
                     myProfileViewModel.city.setValue(cityList.get(i).getId());
                 }
             }
         }
-        if(areaList != null && areaList.size() > 0) {
-            for(int i = 0; i < areaList.size(); i++) {
-                if(areaList.get(i).getName().equals(fragmentEditProfileBinding.spinnerArea.getSelectedItem().toString())) {
+        if (areaList != null && areaList.size() > 0) {
+            for (int i = 0; i < areaList.size(); i++) {
+                if (areaList.get(i).getName().equals(fragmentEditProfileBinding.spinnerArea.getSelectedItem().toString())) {
                     myProfileViewModel.area.setValue(areaList.get(i).getId());
                 }
             }
@@ -731,6 +804,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         basicDetails.setGender(myProfileViewModel.gender.getValue());
         basicDetails.setDob(myProfileViewModel.dateOfBirth.getValue());
     }
+
     private void checkValidInputFields() {
         int errorCodeName = basicDetails.isValidName();
         int errorCodeMobileNumber = basicDetails.isValidMobileNumber();
@@ -742,27 +816,27 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         int errorCodeGender = basicDetails.isValidGender();
         int errorCodeDob = basicDetails.isValidDob();
 
-        if(errorCodeName == 0) {
+        if (errorCodeName == 0) {
             errorToast(requireActivity(), getString(R.string.name_should_not_be_empty));
-        } else if(errorCodeMobileNumber == 0) {
+        } else if (errorCodeMobileNumber == 0) {
             errorToast(requireActivity(), getString(R.string.mobile_number_should_not_be_empty));
-        } else if(errorCodeMobileNumber == 1) {
+        } else if (errorCodeMobileNumber == 1) {
             errorToast(requireActivity(), getString(R.string.enter_valid_mobile_number));
-        } else if(errorCodeAlternateMobileNumber == 0) {
+        } else if (errorCodeAlternateMobileNumber == 0) {
             errorToast(requireActivity(), getString(R.string.enter_valid_mobile_number));
-        } else if(errorCodeEmailId == 0) {
+        } else if (errorCodeEmailId == 0) {
             errorToast(requireActivity(), getString(R.string.email_id_should_not_be_empty));
-        } else if(errorCodeEmailId == 1) {
+        } else if (errorCodeEmailId == 1) {
             errorToast(requireActivity(), getString(R.string.please_enter_valid_email_id));
-        } else if(errorCodeState == 0) {
+        } else if (errorCodeState == 0) {
             errorToast(requireActivity(), getString(R.string.please_select_state));
-        } else if(errorCodeCity == 0) {
+        } else if (errorCodeCity == 0) {
             errorToast(requireActivity(), getString(R.string.please_select_city));
-        } else if(errorCodeArea == 0) {
+        } else if (errorCodeArea == 0) {
             errorToast(requireActivity(), getString(R.string.please_select_area));
-        } else if(errorCodeGender == 0) {
+        } else if (errorCodeGender == 0) {
             errorToast(requireActivity(), getString(R.string.please_select_gender));
-        } else if(errorCodeDob == 0) {
+        } else if (errorCodeDob == 0) {
             errorToast(requireActivity(), getString(R.string.please_select_dob));
         } else {
             updateProfileApi(showCircleProgressDialog(context, ""));
@@ -781,7 +855,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 Log.e("Update Profile Api Response", new Gson().toJson(profileResponse));
                 switch (profileResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(context, ""+profileResponse.getMessage());
+                        successToast(context, "" + profileResponse.getMessage());
                         NavHostFragment.findNavController(EditProfileFragment.this).popBackStack();
                         break;
                     case STATUS_CODE_400://Validation Errors
@@ -835,10 +909,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         return map;
     }
 
-    /*
-     * start to image update
-     * */
-    private Dialog dialogForAddPhotos = null;
     private void showDialogForAddPhotos() {
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.StyleDataConfirmationDialog));
 
@@ -866,7 +936,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             askPermissions();
         });
 
-        if(myProfileViewModel.profilePhoto.getValue() == null
+        if (myProfileViewModel.profilePhoto.getValue() == null
                 || TextUtils.isEmpty(myProfileViewModel.profilePhoto.getValue())) {
             binding.tvDeletePhoto.setVisibility(GONE);
             binding.horizontalView1.setVisibility(GONE);
@@ -891,11 +961,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
         dialogForAddPhotos.setOnKeyListener(new Dialog.OnKeyListener() {
             @Override
-            public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event)
-            {
+            public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
                 // TODO Auto-generated method stub
-                if (keyCode == KeyEvent.KEYCODE_BACK)
-                {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
                     dialogForAddPhotos.dismiss();
                     dialogForAddPhotos = null;
                 }
@@ -935,84 +1003,14 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         dialogForAddPhotos.getWindow().setAttributes(layoutParams);
     }
 
-    private File compressedImageFile = null;
-    private MultipartBody.Part multipartBodyImageFile = null;
-    final String[] PERMISSIONS = {
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    private ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
-
-    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-    ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                dialogForAddPhotos = null;
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    // There are no request codes
-                    Intent data = result.getData();
-                    final Uri resultUri = getSelectedImageUri(data, 1); //code 1 for camera
-                    File f = new File(resultUri.getPath());
-
-                    /*Cropping image Start*/
-                    String outputFileName = Calendar.getInstance().getTimeInMillis() + ".jpeg";
-                    Uri selectedImage = Uri.fromFile(f);
-                    gotoUCropImageActivity(selectedImage, Uri.fromFile(new File(context.getExternalCacheDir(), outputFileName)));
-                    /*Cropping image End*/
-                }
-            });
-
-    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-    ActivityResultLauncher<Intent> galleryActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                dialogForAddPhotos = null;
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    // There are no request codes
-                    Intent data = result.getData();
-                    final Uri resultUri = getSelectedImageUri(data, 2); //code 2 for gallery
-                    File f = new File(resultUri.getPath());
-
-                    /*Cropping image Start*/
-                    String outputFileName = Calendar.getInstance().getTimeInMillis() + ".jpeg";
-                    Uri selectedImage = Uri.fromFile(f);
-                    gotoUCropImageActivity(selectedImage, Uri.fromFile(new File(context.getExternalCacheDir(), outputFileName)));
-                    /*Cropping image End*/
-                }
-            });
-
-    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-    ActivityResultLauncher<Intent> cropActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                dialogForAddPhotos = null;
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    // There are no request codes
-                    Intent data = result.getData();
-                    final Uri resultUri = UCrop.getOutput(data);
-                    try {
-                        File f = new File(resultUri.getPath());
-
-                        /*Compressing gallery image using Compressor library Start*/
-                        compressedImageFile = new Compressor(getActivity()).setQuality(75).compressToFile(f);
-
-                        Bitmap myBitmap = BitmapFactory.decodeFile(compressedImageFile.getAbsolutePath());
-                        fragmentEditProfileBinding.ivProfilePicture.setImageBitmap(myBitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
     private void askPermissions() {
         if (!hasPermissions(PERMISSIONS)) {
             Log.d("PERMISSIONS", "Launching multiple contract permission launcher for ALL required permissions");
             multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
         } else {
-            if(clickedOn.equals("gallery")) {
+            if (clickedOn.equals("gallery")) {
                 galleryIntent();
-            } else if(clickedOn.equals("camera")) {
+            } else if (clickedOn.equals("camera")) {
                 cameraIntent();
             }
         }
@@ -1021,16 +1019,16 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private boolean hasPermissions(String[] permissions) {
         if (permissions != null) {
             for (String permission : permissions) {
-                if(shouldShowRequestPermissionRationale(permission)){
+                if (shouldShowRequestPermissionRationale(permission)) {
                     //denied
                     Log.d("PERMISSIONS", "Permission denied: " + permission);
                     return false;
                 } else {
-                    if(checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED){
+                    if (checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
                         //allowed
                         Log.d("PERMISSIONS", "Permission already granted: " + permission);
                         return true;
-                    } else{
+                    } else {
                         //set to never ask again
                         //do something here.
                         Log.d("PERMISSIONS", "Permission Set to never ask again: " + permission);
@@ -1042,12 +1040,10 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         return false;
     }
 
-    public String fileName = "";
-    private String clickedOn = "0";
-    public void cameraIntent(){
+    public void cameraIntent() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
-            fileName = Calendar.getInstance().getTimeInMillis() +".jpg";
+            fileName = Calendar.getInstance().getTimeInMillis() + ".jpg";
             File f = new File(context.getExternalCacheDir().getAbsolutePath(), fileName);
             intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName() + ".provider", f));
             cameraActivityResultLauncher.launch(intent);
@@ -1092,7 +1088,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     }
 
                     selectedImage = Uri.fromFile(f);
-                }catch (Exception e){e.printStackTrace();}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 2: //2 is gallery
                 Bitmap bm = null;
@@ -1140,7 +1138,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
                 return cursor.getString(index);
             }
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return contentURI;
     }
 
@@ -1170,12 +1170,12 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void onNetworkException(int from, String type) {
-        showServerErrorDialog(getString(R.string.for_better_user_experience), EditProfileFragment.this,() -> {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), EditProfileFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
-                if(from == 0) {
+                if (from == 0) {
                     updateProfileApi(showCircleProgressDialog(context, ""));
-                } else if(from == 1) {
+                } else if (from == 1) {
 
                 }
             } else {

@@ -27,12 +27,12 @@ import java.util.ArrayList;
 public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapter.OnChangeButtonCaptionListener, OnBackPressedListener, NetworkExceptionListener {
     private final String TAG = "IntroScreenFragment";
     public int count = 0;
+    public ViewPager vpIntro;
+    ArrayList<IntroScreenResponse.Intro> introList;
     private FragmentIntroScreenBinding fragmentIntroScreenBinding;
     private View view;
-    public ViewPager vpIntro;
     private DotsIndicator dotsIndicator;
     private Button btnNext;
-    ArrayList<IntroScreenResponse.Intro> introList;
     private IntroPagerAdapter introPagerAdapter;
     private View introView;
     private IntroScreenViewModel introScreenViewModel;
@@ -66,8 +66,8 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    preferences.setIsIntroRead(true);
-                    NavHostFragment.findNavController(IntroScreenFragment.this).navigate(R.id.action_introScreenFragment_to_SignInFragment);
+                preferences.setIsIntroRead(true);
+                NavHostFragment.findNavController(IntroScreenFragment.this).navigate(R.id.action_introScreenFragment_to_SignInFragment);
             }
         });
 
@@ -76,18 +76,18 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
 
     private void initView() {
         introScreenViewModel = new ViewModelProvider(this).get(IntroScreenViewModel.class);
-        if (isConnectingToInternet(context)){
-            callIntroScreenApi(showCircleProgressDialog(context,""));
-        }else {
+        if (isConnectingToInternet(context)) {
+            callIntroScreenApi(showCircleProgressDialog(context, ""));
+        } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
     }
 
     private void callIntroScreenApi(ProgressDialog progressDialog) {
         Observer<IntroScreenResponse> introScreenResponseObserver = introScreenResponse -> {
-            if (introScreenResponse!=null){
+            if (introScreenResponse != null) {
                 progressDialog.dismiss();
-                if (introScreenResponse.getIntroScreenItem()!=null){
+                if (introScreenResponse.getIntroScreenItem() != null) {
                     introList = introScreenResponse.getIntroScreenItem();
                     if (introList.size() > 0) {
                         count = introList.size();
@@ -100,16 +100,16 @@ public class IntroScreenFragment extends BaseFragment implements IntroPagerAdapt
                 }
             }
         };
-        introScreenViewModel.getIntroScreenResponse(progressDialog,IntroScreenFragment.this)
-                .observe(getViewLifecycleOwner(),introScreenResponseObserver);
+        introScreenViewModel.getIntroScreenResponse(progressDialog, IntroScreenFragment.this)
+                .observe(getViewLifecycleOwner(), introScreenResponseObserver);
     }
 
     @Override
     public void onNetworkException(int from, String type) {
-        showServerErrorDialog(getString(R.string.for_better_user_experience), IntroScreenFragment.this,() -> {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), IntroScreenFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
-                if(from == 0) {
+                if (from == 0) {
                     callIntroScreenApi(showCircleProgressDialog(context, ""));
                 }
             } else {

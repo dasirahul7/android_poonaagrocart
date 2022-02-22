@@ -1,48 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.nav_gallery.fragment.GalleryFragment">
+
     <FrameLayout
-        android:layout_margin="@dimen/_10sdp"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:background="@drawable/bg_et_search"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/bg_et_search"
         android:clipToPadding="false">
 
 
-    <View
-        android:id="@+id/indicator"
-        android:layout_width="0dp"
-        android:layout_gravity="center_vertical"
-        android:layout_height="@dimen/_40sdp"
-        android:background="@drawable/bg_gallery_gradient" />
+        <View
+            android:id="@+id/indicator"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/bg_gallery_gradient" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
-        android:background="@drawable/bg_gallery_tab"
-        app:tabGravity="fill"
-        app:tabIndicatorColor="@android:color/transparent"
-        app:tabMode="fixed"
-        app:tabRippleColor="@null"
-        app:tabIndicatorHeight="0dp"
-        android:padding="@dimen/_10sdp"
-        />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@drawable/bg_gallery_tab"
+            android:padding="@dimen/_10sdp"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabRippleColor="@null" />
     </FrameLayout>
 
     <androidx.viewpager.widget.ViewPager
-        android:layout_margin="@dimen/_5sdp"
         android:id="@+id/vp_gallery"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_5sdp" />
 </LinearLayout>
 

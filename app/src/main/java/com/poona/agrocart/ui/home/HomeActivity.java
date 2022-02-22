@@ -44,13 +44,11 @@ import com.google.gson.GsonBuilder;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
-import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.ActivityHomeBinding;
 import com.poona.agrocart.ui.BaseActivity;
-import com.poona.agrocart.ui.nav_profile.MyProfileViewModel;
 import com.poona.agrocart.ui.sign_in.SignInViewModel;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
@@ -63,24 +61,22 @@ import java.util.Objects;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.HttpException;
 
 
 public class HomeActivity extends BaseActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-    private AppBarConfiguration mAppBarConfiguration;
     public ActivityHomeBinding binding;
+    public Toolbar toolbar;
+    public ImageView backBtn;
+    public CustomTextView tvUserName;
+    public CircularImageView civProfilePhoto;
+    private AppBarConfiguration mAppBarConfiguration;
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private NavController navController;
-    public Toolbar toolbar;
-    public ImageView backBtn;
     private BottomNavigationView bottomNavigationView;
     private AppSharedPreferences preferences;
-
-    public CustomTextView tvUserName;
-    public CircularImageView civProfilePhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,13 +95,14 @@ public class HomeActivity extends BaseActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
+
     private HashMap<String, String> profileParam(String userId) {
         HashMap<String, String> map = new HashMap<>();
-        map.put(CUSTOMER_ID,userId);
+        map.put(CUSTOMER_ID, userId);
         return map;
     }
 
-    private void setUserProfile(ProgressDialog progressDialog,HashMap<String,String> hashMap) {
+    private void setUserProfile(ProgressDialog progressDialog, HashMap<String, String> hashMap) {
         ApiClientAuth.getClient(HomeActivity.this)
                 .create(ApiInterface.class)
                 .getViewProfileResponse(hashMap)
@@ -114,10 +111,10 @@ public class HomeActivity extends BaseActivity {
                 .subscribeWith(new DisposableSingleObserver<ProfileResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProfileResponse profileResponse) {
-                        if (profileResponse!=null){
-                            if(progressDialog!=null)
+                        if (profileResponse != null) {
+                            if (progressDialog != null)
                                 progressDialog.dismiss();
-                            Log.e(TAG, "onSuccess: "+new Gson().toJson(profileResponse) );
+                            Log.e(TAG, "onSuccess: " + new Gson().toJson(profileResponse));
                             preferences.setUserProfile(profileResponse.getProfile().getImage());
                             preferences.setUserName(profileResponse.getProfile().getName());
                         }
@@ -128,7 +125,7 @@ public class HomeActivity extends BaseActivity {
                         progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         ProfileResponse response = new ProfileResponse();
-                        Log.e(TAG, "onError: "+new Gson().toJson(response) );
+                        Log.e(TAG, "onError: " + new Gson().toJson(response));
                     }
                 });
 
@@ -136,7 +133,6 @@ public class HomeActivity extends BaseActivity {
 
     private void initToolbar() {
         setSupportActionBar(binding.appBarHome.toolbar);
-//        binding.appBarHome.backImg.setVisibility(View.GONE);
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -209,7 +205,7 @@ public class HomeActivity extends BaseActivity {
                 .placeholder(R.drawable.ic_profile_white)
                 .into(civProfilePhoto);
         tvUserName.setSelected(true);
-        tvUserName.setText("Hello!"+preferences.getUserName());
+        tvUserName.setText("Hello!" + preferences.getUserName());
         editImg.setOnClickListener(v -> {
             drawer.closeDrawer(GravityCompat.START);
             initTitleBar(getString(R.string.menu_my_profile));
@@ -220,22 +216,23 @@ public class HomeActivity extends BaseActivity {
     private void signOutApiCall(ProgressDialog progressDialog) {
         SignInViewModel signInViewModel = new ViewModelProvider(this).get(SignInViewModel.class);
         Observer<BaseResponse> baseResponseObserver = baseResponse -> {
-            if (baseResponse!=null){
-                if (baseResponse.getStatus()==200){
+            if (baseResponse != null) {
+                if (baseResponse.getStatus() == 200) {
                     drawer.closeDrawer(GravityCompat.START);
-                    Log.e( "signOutApiCall: " ,new Gson().toJson(baseResponse));
+                    Log.e("signOutApiCall: ", new Gson().toJson(baseResponse));
                     AppSharedPreferences preferences = new AppSharedPreferences(this);
                     preferences.clearSharedPreferences(this);
                     Intent intent = new Intent(this, SplashScreenActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
             }
         };
-        signInViewModel.signOutApiResponse(progressDialog,parameters(),HomeActivity.this)
+        signInViewModel.signOutApiResponse(progressDialog, parameters(), HomeActivity.this)
                 .observeForever(baseResponseObserver);
 
     }
+
     private HashMap<String, String> parameters() {
         HashMap<String, String> map = new HashMap<>();
         map.put(USER_ID, preferences.getUid());
@@ -328,7 +325,7 @@ public class HomeActivity extends BaseActivity {
                 R.style.StyleDataConfirmationDialog));
 
         LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_logout,null);
+        View dialogView = inflater.inflate(R.layout.dialog_logout, null);
 
         builder.setView(dialogView);
         builder.setCancelable(true);
@@ -346,13 +343,13 @@ public class HomeActivity extends BaseActivity {
 
         customButtonYes.setOnClickListener(v -> {
             try {
-                signOutApiCall(showCircleProgressDialog(HomeActivity.this,""));
+                signOutApiCall(showCircleProgressDialog(HomeActivity.this, ""));
             } catch (Exception e) {
                 e.printStackTrace();
             }
             dialog.dismiss();
         });
-        customButtonNo.setOnClickListener(v ->{
+        customButtonNo.setOnClickListener(v -> {
             dialog.dismiss();
         });
 

@@ -1,12 +1,11 @@
-
 package com.poona.agrocart.data.network.responses;
-
-import java.util.ArrayList;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class StoreBannerResponse extends BaseResponse{
+import java.util.ArrayList;
+
+public class StoreBannerResponse extends BaseResponse {
 
     @SerializedName("data")
     @Expose
@@ -19,6 +18,7 @@ public class StoreBannerResponse extends BaseResponse{
     public void setStoreBanners(ArrayList<StoreBanner> storeBanners) {
         this.storeBanners = storeBanners;
     }
+
     public class StoreBanner {
         @SerializedName("id")
         @Expose

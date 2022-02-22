@@ -14,8 +14,9 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.nav_addresses.AddressesFragment"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:fillViewport="true"
+        tools:context=".ui.nav_addresses.AddressesFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -23,47 +24,40 @@
 
             <com.poona.agrocart.widgets.CustomButton
                 android:id="@+id/btn_add_address"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
                 android:layout_marginHorizontal="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/button_green"
                 android:drawableStart="@drawable/ic_plus_white"
-                android:padding="@dimen/alerter_padding_small"
                 android:drawableTint="@color/background_color_white_green"
+                android:gravity="center|center_vertical"
+                android:includeFontPadding="false"
+                android:padding="@dimen/alerter_padding_small"
                 android:paddingStart="@dimen/_20sdp"
                 android:text="@string/add_new_address"
+                android:textAllCaps="false"
+                android:textColor="@color/background_color_white_green"
+                android:textSize="@dimen/_18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="RtlSymmetry"
-                android:textColor="@color/background_color_white_green"
-                android:textAllCaps="false"
-                android:includeFontPadding="false"
-                android:layout_gravity="center|center_vertical"
-                android:gravity="center|center_vertical"
-                android:textSize="@dimen/_18sp"
-                style="?android:attr/borderlessButtonStyle"
-                app:setCustomFont="@string/font_poppins_semi_bold"/>
+                app:setCustomFont="@string/font_poppins_semi_bold"
+                tools:ignore="RtlSymmetry" />
 
-            <RelativeLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_address"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="true"
+                android:visibility="visible"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_14sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_add_address">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:visibility="visible"
-                    android:nestedScrollingEnabled="true" />
-
-            </RelativeLayout>
+                app:layout_constraintTop_toBottomOf="@+id/btn_add_address" />
 
             <RelativeLayout
                 android:id="@+id/rl_error_message"
@@ -86,9 +80,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/iv_icon"
                     android:layout_centerHorizontal="true"
+                    android:gravity="center"
                     android:text="There are no addresses found! Please add at least one Address."
                     android:textColor="#808080"
-                    android:gravity="center"
                     android:textSize="@dimen/_22sp" />
 
 

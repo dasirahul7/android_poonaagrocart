@@ -1,9 +1,6 @@
-
 package com.poona.agrocart.data.network.responses.favoutiteResponse;
 
 import androidx.databinding.BindingAdapter;
-
-import java.util.List;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -13,11 +10,21 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 
+import java.util.List;
+
 public class FavouriteListResponse extends BaseResponse {
 
     @SerializedName("favourite_list")
     @Expose
     private List<Favourite> favouriteList = null;
+
+    @BindingAdapter("setImage")
+    public static void loadImage(ShapeableImageView view, String imageUrl) {
+        Glide.with(view.getContext())
+                .load(AppConstants.IMAGE_DOC_BASE_URL + imageUrl)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder).into(view);
+    }
 
     public List<Favourite> getFavouriteList() {
         return favouriteList;
@@ -227,13 +234,5 @@ public class FavouriteListResponse extends BaseResponse {
         public void setInCart(int inCart) {
             this.inCart = inCart;
         }
-    }
-
-    @BindingAdapter("setImage")
-    public static void loadImage(ShapeableImageView view, String imageUrl) {
-        Glide.with(view.getContext())
-                .load(AppConstants.IMAGE_DOC_BASE_URL+imageUrl)
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder).into(view);
     }
 }

@@ -1,9 +1,9 @@
-
 package com.poona.agrocart.data.network.responses;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class CmsResponse extends BaseResponse {
 

@@ -36,9 +36,10 @@ import com.poona.agrocart.ui.home.HomeActivity;
  */
 @SuppressLint("CustomSplashScreen")
 public class SplashScreenFragment extends BaseFragment implements View.OnClickListener {
-    private final int SPLASH_TIME_OUT = 3000;
     private static final String TAG = SplashScreenFragment.class.getName();
+    private final int SPLASH_TIME_OUT = 3000;
     private Context context;
+    private FragmentSplashScreenBinding fragmentSplashScreenBinding;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -46,7 +47,6 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
         this.context = context;
     }
 
-    private FragmentSplashScreenBinding fragmentSplashScreenBinding;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentSplashScreenBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_splash_screen, container, false);
@@ -56,8 +56,8 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
 
         //if(preferences.getFromLogOut())
         //{
-            //preferences.setFromLogOut(false);
-            //SPLASH_TIME_OUT = 300;
+        //preferences.setFromLogOut(false);
+        //SPLASH_TIME_OUT = 300;
         //}
 
         initView(view);
@@ -94,32 +94,33 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
 //                else
 //                {
                 //NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_vegetablesFragment);
-                if (preferences.getIsLoggedIn()){
+                if (preferences.getIsLoggedIn()) {
                     startDashBoard();
-                }else if (preferences.getIsIntroRead())
+                } else if (preferences.getIsIntroRead())
                     checkVerified();
-                else NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_introScreenFragment);
-            }
-            else {
+                else
+                    NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_introScreenFragment);
+            } else {
                 fragmentSplashScreenBinding.linearLayoutNoInternet.setVisibility(View.VISIBLE);
             }
         }, SPLASH_TIME_OUT);
     }
 
     private void checkVerified() {
-        if (preferences.isVerified()){
-            if (!preferences.getUid().isEmpty()){
-                if (!preferences.getUserAddress().isEmpty()){
+        if (preferences.isVerified()) {
+            if (!preferences.getUid().isEmpty()) {
+                if (!preferences.getUserAddress().isEmpty()) {
                     startDashBoard();
-                }else NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_selectLocationFragment);
-            }else {
+                } else
+                    NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_selectLocationFragment);
+            } else {
                 Bundle bundle = new Bundle();
-                bundle.putString(USER_ID,preferences.getUid());
-                bundle.putString(USER_MOBILE,preferences.getUserMobile());
-                bundle.putString(COUNTRY_CODE,preferences.getUserCountry());
-                NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signUpFragment,bundle);
+                bundle.putString(USER_ID, preferences.getUid());
+                bundle.putString(USER_MOBILE, preferences.getUserMobile());
+                bundle.putString(COUNTRY_CODE, preferences.getUserCountry());
+                NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signUpFragment, bundle);
             }
-        }else {
+        } else {
             NavHostFragment.findNavController(SplashScreenFragment.this).navigate(R.id.action_SplashScreenFragment_to_signInFragment);
         }
     }
@@ -152,7 +153,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
                 // Log and toast
                 Activity activity = getActivity();
                 String msg = "";
-                if(activity != null && isAdded()) {
+                if (activity != null && isAdded()) {
                     msg = getString(R.string.msg_token_fmt, token);
                 }
                 Log.d(TAG, msg);
@@ -185,8 +186,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
                 fragmentSplashScreenBinding.linearLayoutNoInternet.setVisibility(View.GONE);
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
-                    public void run()
-                    {
+                    public void run() {
                         startSplash();
                     }
                 }, 300);

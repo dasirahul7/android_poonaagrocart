@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class ProductListResponse extends BaseResponse{
+public class ProductListResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private ProductResponseDt productResponseDt;
@@ -17,6 +17,7 @@ public class ProductListResponse extends BaseResponse{
     public void setProductResponseDt(ProductResponseDt productResponseDt) {
         this.productResponseDt = productResponseDt;
     }
+
     public class ProductResponseDt {
         @SerializedName("product_list")
         @Expose
@@ -41,6 +42,7 @@ public class ProductListResponse extends BaseResponse{
             this.productList = productList;
         }
     }
+
     public class Product {
         @SerializedName("sequence_no")
         @Expose
@@ -282,7 +284,7 @@ public class ProductListResponse extends BaseResponse{
         }
 
         public String getPercDiscount() {
-            return percDiscount+" %off";
+            return percDiscount + " %off";
         }
 
         public void setPercDiscount(String percDiscount) {
@@ -306,15 +308,15 @@ public class ProductListResponse extends BaseResponse{
         }
 
         public String getUnitName() {
-            return " "+unitName;
+            return " " + unitName;
         }
 
         public void setUnitName(String unitName) {
             this.unitName = unitName;
         }
 
-        public String pWeight(){
-            return this.weight+this.unitName;
+        public String pWeight() {
+            return this.weight + this.unitName;
         }
     }
 

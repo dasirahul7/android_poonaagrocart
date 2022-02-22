@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class IntroScreenResponse extends BaseResponse{
+public class IntroScreenResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private ArrayList<Intro> introScreenItem;
@@ -17,6 +17,7 @@ public class IntroScreenResponse extends BaseResponse{
     public void setIntroScreenItem(ArrayList<Intro> introScreenItem) {
         this.introScreenItem = introScreenItem;
     }
+
     public static class Intro {
         @SerializedName("id")
         @Expose

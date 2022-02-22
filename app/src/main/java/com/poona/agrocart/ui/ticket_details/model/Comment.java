@@ -1,8 +1,7 @@
 package com.poona.agrocart.ui.ticket_details.model;
 
-public class Comment
-{
-    private String id,name,replyDate,comment;
+public class Comment {
+    private String id, name, replyDate, comment;
 
     public String getId() {
         return id;

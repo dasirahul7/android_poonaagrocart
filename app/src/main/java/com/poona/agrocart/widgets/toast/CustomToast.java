@@ -25,20 +25,16 @@ import com.poona.agrocart.R;
  */
 
 @SuppressLint("InflateParams")
-public class CustomToast 
-{
+public class CustomToast {
+    public static final int LENGTH_SHORT = Toast.LENGTH_SHORT;
+    public static final int LENGTH_LONG = Toast.LENGTH_LONG;
     private static final Typeface LOADED_TOAST_TYPEFACE = Typeface.create("sans-serif-condensed", Typeface.NORMAL);
     //private static final Typeface LOADED_TOAST_TYPEFACE = Typeface.createFromAsset(getContext().getAssets(), "fonts/myriadpro-regular.ttf");
     private static Typeface currentTypeface = LOADED_TOAST_TYPEFACE;
     private static int textSize = 16; // in SP
-
     private static boolean tintIcon = true;
     private static boolean allowQueue = true;
-
     private static Toast lastToast = null;
-
-    public static final int LENGTH_SHORT = Toast.LENGTH_SHORT;
-    public static final int LENGTH_LONG = Toast.LENGTH_LONG;
 
     private CustomToast() {
         // avoiding instantiation
@@ -317,7 +313,7 @@ public class CustomToast
 
         currentToast.setView(toastLayout);
 
-        if (!allowQueue){
+        if (!allowQueue) {
             if (lastToast != null)
                 lastToast.cancel();
             lastToast = currentToast;

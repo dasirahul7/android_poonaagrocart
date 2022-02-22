@@ -6,11 +6,9 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RowAddressRadioBinding;
 import com.poona.agrocart.ui.order_summary.model.Address;
 
@@ -18,7 +16,7 @@ import java.util.ArrayList;
 
 public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdapter.AddressHolder> {
     private ArrayList<Address> addressList = new ArrayList<>();
-    private Context adContext;
+    private final Context adContext;
     private RowAddressRadioBinding addressItemBinding;
     private int mSelectedItem = -1;
     private CompoundButton lastCheckedRB;
@@ -51,12 +49,12 @@ public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdap
 
         holder.addressBinding.addRadio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean radioBoolean ) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean radioBoolean) {
                 if (lastCheckedRB != null) {
                     lastCheckedRB.setChecked(false);
                 }
                 //store the clicked radiobutton
-                lastCheckedRB =  holder.addressBinding.addRadio;
+                lastCheckedRB = holder.addressBinding.addRadio;
 //                if (radioBoolean) {
 //                    holder.addressBinding.itemCard.setStrokeColor(ContextCompat.getColor(adContext,R.color.colorPrimary));
 //                } else {
@@ -73,7 +71,7 @@ public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdap
     }
 
     public class AddressHolder extends RecyclerView.ViewHolder {
-        private RowAddressRadioBinding addressBinding;
+        private final RowAddressRadioBinding addressBinding;
 
         public AddressHolder(RowAddressRadioBinding rowAddressItemBinding) {
             super(rowAddressItemBinding.getRoot());

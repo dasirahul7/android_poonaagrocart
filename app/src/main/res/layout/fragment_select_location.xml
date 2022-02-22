@@ -58,7 +58,7 @@
                 android:padding="@dimen/alerter_padding_small"
                 android:text="@string/select_location"
                 android:textColor="@color/clr_enter_otp"
-                android:textSize="@dimen/title_txt_size"
+                android:textSize="@dimen/_24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

@@ -2,9 +2,8 @@ package com.poona.agrocart.ui.nav_favourites;
 
 import com.poona.agrocart.ui.home.model.ProductOld;
 
-public class FavouriteItem extends ProductOld
-{
-    private boolean isFavorite ;
+public class FavouriteItem extends ProductOld {
+    private boolean isFavorite;
 
     public FavouriteItem(String id, String name, String weight, String offer,
                          String price, String img, String location, String brand,

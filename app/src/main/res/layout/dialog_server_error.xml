@@ -35,7 +35,7 @@
                         android:layout_height="@dimen/_100sdp"
                         android:layout_marginHorizontal="@dimen/_16sdp"
                         android:src="@drawable/ic_server_error"
-                        android:tint="@color/white"/>
+                        android:tint="@color/white" />
 
                 </LinearLayout>
 
@@ -82,8 +82,8 @@
                         android:layout_width="@dimen/_100sdp"
                         android:layout_height="@dimen/_34sdp"
                         android:layout_gravity="center"
-                        android:layout_marginVertical="@dimen/_4sdp"
                         android:layout_marginHorizontal="@dimen/_22sdp"
+                        android:layout_marginVertical="@dimen/_4sdp"
                         android:background="@drawable/button_green"
                         android:gravity="center"
                         android:includeFontPadding="false"

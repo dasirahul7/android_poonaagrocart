@@ -8,25 +8,23 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
@@ -54,10 +52,11 @@ import java.util.HashMap;
 public class BasketDetailFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
 
     private static final String TAG = BasketDetailFragment.class.getSimpleName();
+    public ViewPager vpImages;
+    public int count = 0;
     private BasketDetailViewModel basketDetailViewModel;
     private FragmentBasketDetailBinding basketDetailsBinding;
     private View rootView;
-    public ViewPager vpImages;
     private DotsIndicator dotsIndicator;
     private RecyclerView rvProductComment;
     private BasketResponse.Basket details;
@@ -65,7 +64,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private BasketProductAdapter basketProductAdapter;
     private RecyclerView rvBasketProducts;
     private LinearLayoutManager linearLayoutManager;
-    public int count = 0;
     private BasketImagesAdapter basketImagesAdapter;
     private ArrayList<ProductComment> commentArrayList;
     private ProductCommentsAdapter productCommentsAdapter;
@@ -275,13 +273,13 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void changePriceValue(BasketResponse.Basket details) {
-        int price,finalPrice,quantity;
+        int price, finalPrice, quantity;
         price = Integer.parseInt(details.getBasketRate());
         quantity = details.getQuantity();
-        finalPrice = price*quantity;
-        if (quantity>0)
-        details.setBasketRate(String.valueOf(finalPrice));
-        basketDetailsBinding.tvPrice.setText("Rs."+details.getBasketRate());
+        finalPrice = price * quantity;
+        if (quantity > 0)
+            details.setBasketRate(String.valueOf(finalPrice));
+        basketDetailsBinding.tvPrice.setText("Rs." + details.getBasketRate());
     }
 
     /*Add To favourite API*/
@@ -293,10 +291,10 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, baseResponse.getMessage());
-                        if (addToFav){
-                            isFavourite=true;
+                        if (addToFav) {
+                            isFavourite = true;
                             basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
-                        } else{
+                        } else {
                             isFavourite = false;
                             basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
                         }
@@ -435,11 +433,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void addOrRemoveFromFavourite() {
-        if (!isFavourite) {
-            callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), true);
-        } else {
-            callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), false);
-        }
+        callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
     }
 
     private void increaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
@@ -571,7 +565,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 else {
                     increaseQuantity(basketDetailsBinding.etQuantity.getText().toString(),
                             basketDetailsBinding.etQuantity, basketDetailsBinding.ivPlus);
-                    increaseQuantityApi(showCircleProgressDialog(context,""));
+                    increaseQuantityApi(showCircleProgressDialog(context, ""));
                 }
                 break;
             case R.id.img_minus:
@@ -603,11 +597,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), true);
                         break;
                     case 3:
-                        if (!isFavourite) {
-                            callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), true);
-                        } else {
-                            callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), false);
-                        }
+                        callAddOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
                         break;
 
                 }

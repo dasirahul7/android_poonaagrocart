@@ -46,7 +46,8 @@ public class MyProfileViewModel extends AndroidViewModel {
     public MutableLiveData<String> gender;
     public MutableLiveData<String> dateOfBirth;
 
-    private Context context;
+    private final Context context;
+
     public MyProfileViewModel(@NonNull Application application) {
         super(application);
 

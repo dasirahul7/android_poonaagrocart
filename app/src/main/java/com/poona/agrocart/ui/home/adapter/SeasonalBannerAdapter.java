@@ -17,19 +17,16 @@ import java.util.ArrayList;
 
 public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAdapter.SeasonBannerHolder> {
     private RowSeasonalBannerBinding seasonalBannerBinding;
-    private Context sbContext;
-    private ArrayList<SeasonalProductResponse.SeasonalProduct> seasonalProducts;
+    private final Context sbContext;
+    private final ArrayList<SeasonalProductResponse.SeasonalProduct> seasonalProducts;
     private View rootView;
-    private OnSeasonalClickListener onSeasonalClickListener;
+    private final OnSeasonalClickListener onSeasonalClickListener;
 
     public SeasonalBannerAdapter(Context sbContext, ArrayList<SeasonalProductResponse.SeasonalProduct> seasonalProducts,
-                                OnSeasonalClickListener onSeasonalClickListener) {
+                                 OnSeasonalClickListener onSeasonalClickListener) {
         this.sbContext = sbContext;
         this.seasonalProducts = seasonalProducts;
         this.onSeasonalClickListener = onSeasonalClickListener;
-    }
-    public interface OnSeasonalClickListener{
-       void onSeasonRegister(SeasonalProductResponse.SeasonalProduct seasonalProduct);
     }
 
     @NonNull
@@ -52,17 +49,22 @@ public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAd
         return seasonalProducts.size();
     }
 
+    public interface OnSeasonalClickListener {
+        void onSeasonRegister(SeasonalProductResponse.SeasonalProduct seasonalProduct);
+    }
+
     public class SeasonBannerHolder extends RecyclerView.ViewHolder {
 
         public SeasonBannerHolder(RowSeasonalBannerBinding binding) {
             super(binding.getRoot());
         }
 
-        private void bindSeasonItem(SeasonalProductResponse.SeasonalProduct seasonalProduct){
+        private void bindSeasonItem(SeasonalProductResponse.SeasonalProduct seasonalProduct) {
             if (seasonalProduct.getType().equals("Green"))
                 seasonalBannerBinding.rlSeasonalView.setBackgroundResource(R.drawable.seasonal_banner_bg_green);
-            else seasonalBannerBinding.rlSeasonalView.setBackgroundResource(R.drawable.seasonal_banner_bg_yellow);
-            seasonalBannerBinding.setVariable(BR.moduleSeasonBanner,seasonalProduct);
+            else
+                seasonalBannerBinding.rlSeasonalView.setBackgroundResource(R.drawable.seasonal_banner_bg_yellow);
+            seasonalBannerBinding.setVariable(BR.moduleSeasonBanner, seasonalProduct);
             seasonalBannerBinding.executePendingBindings();
             seasonalBannerBinding.tvRegister.setOnClickListener(view -> {
                 onSeasonalClickListener.onSeasonRegister(seasonalProduct);

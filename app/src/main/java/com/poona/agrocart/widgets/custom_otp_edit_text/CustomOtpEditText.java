@@ -13,12 +13,11 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import com.poona.agrocart.R;
 
-public class CustomOtpEditText extends AppCompatEditText
-{
+public class CustomOtpEditText extends AppCompatEditText {
+    private final int mMaxLength = 4;
     private float mSpace = 24; //24 dp by default, space between the lines
     private float mNumChars = 4;
     private float mLineSpacing = 8; //8dp by default, height of the text from our lines
-    private final int mMaxLength = 4;
     private float mLineStroke = 2;
     private Paint mLinesPaint;
     private OnClickListener mClickListener;

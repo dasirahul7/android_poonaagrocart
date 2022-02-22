@@ -64,7 +64,7 @@ public class SelectLocationViewModel extends AndroidViewModel {
                             areaResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) selectLocationFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) selectLocationFragment).onNetworkException(0, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -104,7 +104,7 @@ public class SelectLocationViewModel extends AndroidViewModel {
                             cityResponseMutableLiveData.setValue(cityResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) selectLocationFragment).onNetworkException(1,"");
+                            ((NetworkExceptionListener) selectLocationFragment).onNetworkException(1, "");
                         }
 
                     }
@@ -118,38 +118,38 @@ public class SelectLocationViewModel extends AndroidViewModel {
                                                  SelectLocationFragment selectLocationFragment) {
         MutableLiveData<BaseResponse> updateLocationMutableLiveData = new MutableLiveData<>();
 
-            ApiClientAuth.getClient(selectLocationFragment.getContext())
-                    .create(ApiInterface.class)
-                    .updateLocationResponse(updateLocationMap)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
-                        @Override
-                        public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
-                            if (baseResponse!=null){
-                                progressDialog.dismiss();
-                                updateLocationMutableLiveData.setValue(baseResponse);
-                            }
-                        }
-
-                        @Override
-                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+        ApiClientAuth.getClient(selectLocationFragment.getContext())
+                .create(ApiInterface.class)
+                .updateLocationResponse(updateLocationMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse != null) {
                             progressDialog.dismiss();
-
-                            Gson gson = new GsonBuilder().create();
-                            BaseResponse baseResponse = new AreaResponse();
-                             try {
-                                 baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
-                                         BaseResponse.class);
-                                 updateLocationMutableLiveData.setValue(baseResponse);
-                             } catch (Exception exception) {
-                                 Log.e(TAG, exception.getMessage());
-                                 ((NetworkExceptionListener) selectLocationFragment).onNetworkException(2,"");
-                             }
-                            Log.e(TAG, e.getMessage());
+                            updateLocationMutableLiveData.setValue(baseResponse);
                         }
-                    });
+                    }
 
-            return updateLocationMutableLiveData;
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse baseResponse = new AreaResponse();
+                        try {
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+                            updateLocationMutableLiveData.setValue(baseResponse);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) selectLocationFragment).onNetworkException(2, "");
+                        }
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return updateLocationMutableLiveData;
     }
 }

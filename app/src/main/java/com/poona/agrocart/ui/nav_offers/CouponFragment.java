@@ -52,7 +52,8 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
     private FragmentCouponBinding fragmentCouponBinding;
     private CouponAdapter couponAdapter;
     private List<CouponResponse.Coupon> couponArrayList = new ArrayList<>();
-    private int limit =0,offset = 0;
+    private final int limit = 0;
+    private final int offset = 0;
 
 
     public static CouponFragment newInstance() {
@@ -66,14 +67,15 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
         couponViewModel = new ViewModelProvider(this).get(CouponViewModel.class);
         initTitleBar(getString(R.string.menu_offer_coupons));
         if (isConnectingToInternet(context))
-        setAllCoupons(showCircleProgressDialog(context, ""),limit,offset);
-        else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            setAllCoupons(showCircleProgressDialog(context, ""), limit, offset);
+        else
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         View view = fragmentCouponBinding.getRoot();
         return view;
     }
 
-    private void setAllCoupons(ProgressDialog progressDialog,int limit, int offset) {
-        limit +=10;
+    private void setAllCoupons(ProgressDialog progressDialog, int limit, int offset) {
+        limit += 10;
         Observer<CouponResponse> couponResponseObserver = couponResponse -> {
             if (couponResponse != null) {
                 progressDialog.dismiss();
@@ -82,7 +84,7 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (couponResponse.getCoupons().size() > 0) {
                             couponArrayList = couponResponse.getCoupons();
-                            couponAdapter = new CouponAdapter(couponResponse.getCoupons(), requireActivity(), CouponFragment.this,this);
+                            couponAdapter = new CouponAdapter(couponResponse.getCoupons(), requireActivity(), CouponFragment.this, this);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
                             fragmentCouponBinding.rvCoupons.setLayoutManager(layoutManager);
                             fragmentCouponBinding.rvCoupons.setAdapter(couponAdapter);
@@ -105,7 +107,7 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
 
             }
         };
-        couponViewModel.couponResponseLiveData(progressDialog, couponParams(limit, offset),CouponFragment.this)
+        couponViewModel.couponResponseLiveData(progressDialog, couponParams(limit, offset), CouponFragment.this)
                 .observe(getViewLifecycleOwner(), couponResponseObserver);
 
 //        mViewModel.liveCoupons.observe(requireActivity(), coupons -> {
@@ -116,11 +118,11 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
 //        });
     }
 
-    private HashMap<String, String> couponParams(int limit,int offset) {
-            HashMap<String, String> map = new HashMap<>();
-            map.put(AppConstants.LIMIT, String.valueOf(limit));
-            map.put(AppConstants.OFFSET, String.valueOf(offset));
-            return map;
+    private HashMap<String, String> couponParams(int limit, int offset) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(AppConstants.LIMIT, String.valueOf(limit));
+        map.put(AppConstants.OFFSET, String.valueOf(offset));
+        return map;
     }
 
     public void termsDialog(String termsAndCondition) {
@@ -145,9 +147,9 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
         });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            binding.tvContent.setText(Html.fromHtml(""+termsAndCondition, Html.FROM_HTML_MODE_COMPACT));
+            binding.tvContent.setText(Html.fromHtml("" + termsAndCondition, Html.FROM_HTML_MODE_COMPACT));
         } else {
-            binding.tvContent.setText(Html.fromHtml(""+termsAndCondition));
+            binding.tvContent.setText(Html.fromHtml("" + termsAndCondition));
         }
 
         dialog.show();
@@ -202,7 +204,7 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void itemViewClick(int position) {
         String termsConditions = couponArrayList.get(position).getTermsAndCond();
-            termsDialog(termsConditions);
+        termsDialog(termsConditions);
 
     }
 
@@ -211,6 +213,6 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("CouponCode", coupon.getCouponCode());
         clipboard.setPrimaryClip(clip);
-        successToast(context,"Copied to clipBoard");
+        successToast(context, "Copied to clipBoard");
     }
 }

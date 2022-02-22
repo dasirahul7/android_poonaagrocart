@@ -17,6 +17,7 @@ public class ExclusiveResponse extends BaseResponse {
     public void setExclusiveData(ExclusiveData exclusiveData) {
         this.exclusiveData = exclusiveData;
     }
+
     public class ExclusiveData {
         @SerializedName("exclusive_list")
         @Expose

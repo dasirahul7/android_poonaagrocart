@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.nav_notification.NotificationFragment">
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_notification"
-    android:layout_marginHorizontal="@dimen/_10sdp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_notification"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/_10sdp" />
 </FrameLayout>

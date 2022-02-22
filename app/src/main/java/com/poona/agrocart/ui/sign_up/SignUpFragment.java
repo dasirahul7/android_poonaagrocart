@@ -14,20 +14,13 @@ import static com.poona.agrocart.app.AppConstants.USERNAME;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -40,6 +33,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
@@ -67,9 +69,9 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         fragmentSignUpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false);
         fragmentSignUpBinding.setLifecycleOwner(this);
-        view = ((ViewDataBinding) fragmentSignUpBinding).getRoot();
+        view = fragmentSignUpBinding.getRoot();
 
-        signUpViewModel=new ViewModelProvider(this).get(SignUpViewModel.class);
+        signUpViewModel = new ViewModelProvider(this).get(SignUpViewModel.class);
         fragmentSignUpBinding.setSignUpViewModel(signUpViewModel);
 
         initView();
@@ -84,12 +86,12 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
         hideKeyBoard(requireActivity());
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
-        basicDetails=new BasicDetails();
+        basicDetails = new BasicDetails();
 
-        Bundle bundle=getArguments();
-        if(bundle!=null) {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
             fragmentSignUpBinding.etPhoneNo.setText(bundle.getString(AppConstants.USER_MOBILE));
-            Log.d(TAG, "initView: "+bundle.getString(AppConstants.USER_MOBILE));
+            Log.d(TAG, "initView: " + bundle.getString(AppConstants.USER_MOBILE));
 
             basicDetails.setMobileNumber(fragmentSignUpBinding.etPhoneNo.getText().toString());
 
@@ -109,6 +111,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             public void onClick(View view) {
                 redirectToCmsFragment(1); //Terms & Condition
             }
+
             @Override
             public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
@@ -122,6 +125,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             public void onClick(View view) {
                 redirectToCmsFragment(2); //Privacy Policy
             }
+
             @Override
             public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
@@ -136,31 +140,38 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     }
 
     public void setUpCountryCodePicker() {
-        Typeface typeFace=Typeface.createFromAsset(requireContext().getAssets(),getString(R.string.font_poppins_regular));
+        Typeface typeFace = Typeface.createFromAsset(requireContext().getAssets(), getString(R.string.font_poppins_regular));
         fragmentSignUpBinding.countryCodePicker.setTypeFace(typeFace);
         fragmentSignUpBinding.countryCodePicker.setDialogEventsListener(new CountryCodePicker.DialogEventsListener() {
             @Override
             public void onCcpDialogOpen(Dialog dialog) {
-                TextView title=dialog.findViewById(R.id.textView_title);
+                TextView title = dialog.findViewById(R.id.textView_title);
                 title.setText(getString(R.string.select_country));
             }
+
             @Override
-            public void onCcpDialogDismiss(DialogInterface dialogInterface) { }
+            public void onCcpDialogDismiss(DialogInterface dialogInterface) {
+            }
+
             @Override
-            public void onCcpDialogCancel(DialogInterface dialogInterface) { }
+            public void onCcpDialogCancel(DialogInterface dialogInterface) {
+            }
         });
     }
 
     private void setUpTextWatcher() {
         fragmentSignUpBinding.etPhoneNo.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length()==10)
-                {
+                if (s.length() == 10) {
                     hideKeyBoard(requireActivity());
                 }
             }
@@ -185,21 +196,18 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         basicDetails.setMobileNumber(fragmentSignUpBinding.etPhoneNo.getText().toString());
         basicDetails.setEmailId(fragmentSignUpBinding.etEmailId.getText().toString());
 
-        int errorCodeUserName=basicDetails.isValidUserName();
-        int errorCodeEmailId=basicDetails.isValidEmailId();
+        int errorCodeUserName = basicDetails.isValidUserName();
+        int errorCodeEmailId = basicDetails.isValidEmailId();
 
-        if(errorCodeUserName==0){
-            errorToast(requireActivity(),getString(R.string.username_should_not_be_empty));
-        }
-        else if(errorCodeEmailId==1){
-            errorToast(requireActivity(),getString(R.string.please_enter_valid_email_id));
-        }
-        else {
+        if (errorCodeUserName == 0) {
+            errorToast(requireActivity(), getString(R.string.username_should_not_be_empty));
+        } else if (errorCodeEmailId == 1) {
+            errorToast(requireActivity(), getString(R.string.please_enter_valid_email_id));
+        } else {
             if (isConnectingToInternet(context)) {
                 //add API call here
-                callRegisterApi(showCircleProgressDialog(context,""));
-            }
-            else {
+                callRegisterApi(showCircleProgressDialog(context, ""));
+            } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         }
@@ -217,10 +225,10 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 Log.e("Register Api ResponseData", new Gson().toJson(registerResponse));
                 switch (registerResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        if(registerResponse.getStatus() == 200){
-                            successToast(context, ""+registerResponse.getMessage());
+                        if (registerResponse.getStatus() == 200) {
+                            successToast(context, "" + registerResponse.getMessage());
                             Bundle bundle = getArguments();
-                            if (bundle.getString(USER_ID)!=null){
+                            if (bundle.getString(USER_ID) != null) {
                                 preferences.setUid(bundle.getString(USER_ID));
                                 preferences.setUserMobile(bundle.getString(USER_MOBILE));
                             }
@@ -244,8 +252,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 progressDialog.dismiss();
             }
         };
-        signUpViewModel.submitRegistrationApi(progressDialog,signUpParameters(),SignUpFragment.this)
-                .observe(getViewLifecycleOwner(),registerResponseObserver);
+        signUpViewModel.submitRegistrationApi(progressDialog, signUpParameters(), SignUpFragment.this)
+                .observe(getViewLifecycleOwner(), registerResponseObserver);
 
     }
 
@@ -274,10 +282,10 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onNetworkException(int from, String type) {
-        showServerErrorDialog(getString(R.string.for_better_user_experience), SignUpFragment.this,() -> {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), SignUpFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
-                if(from == 0) {
+                if (from == 0) {
                     callRegisterApi(showCircleProgressDialog(context, ""));
                 }
             } else {

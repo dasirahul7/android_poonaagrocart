@@ -16,8 +16,7 @@ import com.poona.agrocart.ui.nav_my_basket.model.BasketOrder;
 
 import java.util.ArrayList;
 
-public class MyBasketFragment extends BaseFragment
-{
+public class MyBasketFragment extends BaseFragment {
     private FragmentMyBasketBinding fragmentMyBasketBinding;
     private RecyclerView rvBasketItems;
     private LinearLayoutManager linearLayoutManager;
@@ -25,9 +24,8 @@ public class MyBasketFragment extends BaseFragment
     private ArrayList<BasketOrder> basketOrderArrayList;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        fragmentMyBasketBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_my_basket, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentMyBasketBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_basket, container, false);
         fragmentMyBasketBinding.setLifecycleOwner(this);
         final View view = fragmentMyBasketBinding.getRoot();
 
@@ -39,28 +37,24 @@ public class MyBasketFragment extends BaseFragment
         return view;
     }
 
-    private void initView()
-    {
-        rvBasketItems=fragmentMyBasketBinding.rvBasketItems;
+    private void initView() {
+        rvBasketItems = fragmentMyBasketBinding.rvBasketItems;
     }
 
-    private void setRvAdapter(View view)
-    {
-        basketOrderArrayList=new ArrayList<>();
+    private void setRvAdapter(View view) {
+        basketOrderArrayList = new ArrayList<>();
         basketListingData();
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvBasketItems.setHasFixedSize(true);
         rvBasketItems.setLayoutManager(linearLayoutManager);
 
-        basketOrdersAdapter = new BasketOrdersAdapter(basketOrderArrayList,view,false);
+        basketOrdersAdapter = new BasketOrdersAdapter(basketOrderArrayList, view, false);
         rvBasketItems.setAdapter(basketOrdersAdapter);
     }
 
-    private void basketListingData()
-    {
-        for(int i = 0; i < 2; i++)
-        {
+    private void basketListingData() {
+        for (int i = 0; i < 2; i++) {
             BasketOrder basketOrder = new BasketOrder();
             basketOrder.setOrderId(getString(R.string._paac002));
             basketOrder.setName(getString(R.string.diet_basket));

@@ -43,10 +43,10 @@ import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.responses.SignInResponse;
 import com.poona.agrocart.databinding.FragmentSignInBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
-import com.poona.agrocart.data.network.responses.SignInResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -92,6 +92,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
             public void onClick(View view) {
                 redirectToCmsFragment(1); //Terms & Condition
             }
+
             @Override
             public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
@@ -105,6 +106,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
             public void onClick(View view) {
                 redirectToCmsFragment(2); //Privacy Policy
             }
+
             @Override
             public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
@@ -201,7 +203,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         } else {
             hideKeyBoard(requireActivity());
             if (isConnectingToInternet(context)) {
-                callSignInApi(showCircleProgressDialog(context,""));
+                callSignInApi(showCircleProgressDialog(context, ""));
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
@@ -220,8 +222,8 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                 Log.e("Sign In Api ResponseData", new Gson().toJson(signInResponse));
                 switch (signInResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        if(signInResponse.getUser() != null){
-                            successToast(context, ""+signInResponse.getUser().getOtp());
+                        if (signInResponse.getUser() != null) {
+                            successToast(context, "" + signInResponse.getUser().getOtp());
                             basicDetails.setOtp(signInResponse.getUser().getOtp());
                             preferences.setAuthorizationToken(signInResponse.getToken());
                             basicDetails.setUserId(signInResponse.getUser().getId());
@@ -266,10 +268,10 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onNetworkException(int from, String type) {
-        showServerErrorDialog(getString(R.string.for_better_user_experience), SignInFragment.this,() -> {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), SignInFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
-                if(from == 0) {
+                if (from == 0) {
                     callSignInApi(showCircleProgressDialog(context, ""));
                 }
             } else {

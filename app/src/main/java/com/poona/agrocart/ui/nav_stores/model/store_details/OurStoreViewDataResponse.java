@@ -1,10 +1,9 @@
-
 package com.poona.agrocart.ui.nav_stores.model.store_details;
-
-import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 
 public class OurStoreViewDataResponse {

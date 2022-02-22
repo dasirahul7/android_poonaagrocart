@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationHolder> {
 
-    private ArrayList<Notification> notifications = new ArrayList<>();
     private final Context context;
+    private ArrayList<Notification> notifications = new ArrayList<>();
     private RowNotificationBinding notificationBinding;
 
     public NotificationAdapter(ArrayList<Notification> notifications, Context context) {
@@ -26,7 +26,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @NonNull
     @Override
     public NotificationHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        notificationBinding = RowNotificationBinding.inflate(LayoutInflater.from(context),parent,false);
+        notificationBinding = RowNotificationBinding.inflate(LayoutInflater.from(context), parent, false);
         return new NotificationHolder(notificationBinding);
     }
 
@@ -47,7 +47,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
 
         public void bindContent(Notification notification) {
-            notificationBinding.setVariable(BR.moduleNotification,notification);
+            notificationBinding.setVariable(BR.moduleNotification, notification);
         }
     }
 }

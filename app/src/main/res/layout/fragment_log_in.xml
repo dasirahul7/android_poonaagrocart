@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="commonViewModel"
             type="com.poona.agrocart.ui.login.CommonViewModel" />
@@ -50,10 +51,10 @@
             android:id="@+id/tv_loging_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_200sdp"
             android:layout_marginEnd="@dimen/_20sdp"
             android:padding="@dimen/alerter_padding_small"
-            android:layout_marginStart="@dimen/_20sdp"
             android:text="@string/loging"
             android:textColor="@color/clr_enter_otp"
             android:textSize="@dimen/_24sp"
@@ -67,13 +68,13 @@
             android:id="@+id/tv_enter_email_password_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_14sp"
-            android:text="@string/enter_your_email_and_password"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            app:layout_constraintEnd_toEndOf="parent"
             android:padding="@dimen/alerter_padding_small"
+            android:text="@string/enter_your_email_and_password"
             android:textColor="@color/color_grey_txt"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_loging_text"
             app:setCustomFont="@string/font_poppins_regular" />
@@ -82,36 +83,35 @@
             android:id="@+id/tv_mobile_no_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             android:padding="@dimen/alerter_padding_small"
             android:text="@string/mobile_no"
             android:textColor="@color/color_grey_txt"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_enter_email_password_text"
             android:textSize="@dimen/_16sp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_enter_email_password_text"
             app:setCustomFont="@string/font_poppins_regular" />
 
         <LinearLayout
             android:id="@+id/ll_et_phone_no"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_22sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/tv_mobile_no_text"
-            android:weightSum="100">
+            android:weightSum="100"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mobile_no_text">
 
             <com.hbb20.CountryCodePicker
                 android:id="@+id/country_code_picker"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:ccp_showNameCode="false"
                 android:layout_weight="25"
+                android:background="@drawable/bg_login_et_fields"
                 app:ccpDialog_textColor="@color/clr_enter_otp"
-                app:ccp_textSize="@dimen/_16sp"
                 app:ccp_showArrow="false"
-                android:background="@drawable/bg_login_et_fields" />
-
+                app:ccp_showNameCode="false"
+                app:ccp_textSize="@dimen/_16sp" />
 
 
             <com.poona.agrocart.widgets.CustomEditText
@@ -119,11 +119,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="75"
-                android:textSize="@dimen/_16sp"
-                android:maxLength="10"
-                android:textColor="@color/clr_enter_otp"
                 android:background="@drawable/bg_login_et_fields"
                 android:inputType="phone"
+                android:maxLength="10"
+                android:textColor="@color/clr_enter_otp"
+                android:textSize="@dimen/_16sp"
                 app:setCustomFont="@string/font_poppins_regular" />
 
 
@@ -134,11 +134,11 @@
             android:id="@+id/tv_password_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_22sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             android:padding="@dimen/alerter_padding_small"
             android:text="@string/password"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
             android:textColor="@color/color_grey_txt"
             android:textSize="@dimen/_16sp"
             app:layout_constraintTop_toBottomOf="@+id/ll_et_phone_no"
@@ -146,19 +146,20 @@
             tools:layout_editor_absoluteX="-8dp" />
 
         <LinearLayout
+            android:id="@+id/ll_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/ll_password"
             android:layout_marginStart="@dimen/_22sdp"
-            android:weightSum="100"
             android:layout_marginEnd="@dimen/_20sdp"
+            android:orientation="horizontal"
+            android:weightSum="100"
             app:layout_constraintTop_toBottomOf="@+id/tv_password_text">
+
             <com.poona.agrocart.widgets.CustomEditText
                 android:id="@+id/et_passoword"
                 android:layout_width="0dp"
-                android:layout_weight="90"
                 android:layout_height="wrap_content"
+                android:layout_weight="90"
                 android:background="@drawable/bg_login_et_fields"
                 android:inputType="textPassword"
                 android:padding="@dimen/_2sdp"
@@ -169,30 +170,31 @@
             <ImageView
                 android:id="@+id/iv_show_hide_password"
                 android:layout_width="0dp"
-                android:layout_weight="10"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_password_hide"
+                android:layout_weight="10"
                 android:background="@drawable/bg_login_et_fields"
                 android:inputType="textPassword"
                 android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_password_hide"
                 android:textSize="@dimen/_16sp"
                 app:setCustomFont="@string/font_poppins_regular" />
 
         </LinearLayout>
+
         <com.poona.agrocart.widgets.CustomTextView
             android:id="@+id/tv_forgot_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_22sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:gravity="end"
             android:padding="@dimen/alerter_padding_small"
             android:text="@string/forgot_password"
             android:textColor="@color/clr_enter_otp"
             android:textSize="@dimen/_14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:layout_marginStart="@dimen/_22sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:gravity="end"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_password"
             app:setCustomFont="@string/font_poppins_regular" />
@@ -202,13 +204,13 @@
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             android:background="@drawable/button_green"
             android:padding="@dimen/alerter_padding_small"
             android:text="@string/login"
             android:textAllCaps="false"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_25sdp"
             android:textColor="@color/background_color_white_green"
             android:textSize="@dimen/_16sp"
             app:layout_constraintTop_toBottomOf="@+id/tv_forgot_password"
@@ -218,14 +220,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            app:layout_constraintTop_toBottomOf="@+id/btn_login"
-            android:gravity="center"
             android:layout_height="wrap_content"
-            >
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/btn_login">
 
 
             <com.poona.agrocart.widgets.CustomTextView
@@ -235,16 +236,17 @@
                 android:text="@string/don_t_have_an_account"
                 android:textColor="@color/clr_enter_otp"
                 android:textSize="@dimen/_14sp"
-                app:setCustomFont="@string/font_poppins_regular"/>
+                app:setCustomFont="@string/font_poppins_regular" />
+
             <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/alerter_padding_small"
                 android:text="@string/sign_up"
-                android:id="@+id/tv_sign_up"
                 android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
                 android:textSize="@dimen/_14sp"
+                android:textStyle="bold"
                 app:setCustomFont="@string/font_poppins_regular" />
         </LinearLayout>
 

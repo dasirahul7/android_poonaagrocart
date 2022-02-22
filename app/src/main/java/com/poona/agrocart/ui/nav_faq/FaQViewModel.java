@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -44,11 +43,7 @@ public class FaQViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@NonNull FaqListResponse baseResponse) {
                         progressDialog.dismiss();
-                        if (baseResponse != null){
-                            addFaqsResponseMutableLiveData.setValue(baseResponse);
-                        }else {
-                            addFaqsResponseMutableLiveData.setValue(null);
-                        }
+                        addFaqsResponseMutableLiveData.setValue(baseResponse);
                     }
 
                     @Override
@@ -63,7 +58,7 @@ public class FaQViewModel extends AndroidViewModel {
                             addFaqsResponseMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) faQFragment).onNetworkException(0,"");
+                            ((NetworkExceptionListener) faQFragment).onNetworkException(0, "");
                         }
                         Log.e(TAG, e.getMessage());
                     }

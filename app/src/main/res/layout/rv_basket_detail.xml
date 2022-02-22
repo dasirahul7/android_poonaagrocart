@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -16,16 +15,16 @@
         android:orientation="vertical">
 
         <View
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:background="@color/color_horizontal_line" />
 
         <LinearLayout
-            android:padding="@dimen/_4sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="@dimen/_4sdp">
 
             <ImageView
                 android:id="@+id/img_product"
@@ -34,18 +33,18 @@
                 android:src="@drawable/img_vegetable_basket" />
 
             <LinearLayout
-                android:layout_gravity="center_vertical"
                 android:id="@+id/ll_basket_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <RelativeLayout
-                    android:padding="@dimen/_2sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_2sdp">
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_product_name"
@@ -92,10 +91,10 @@
 
 
                 <com.poona.agrocart.widgets.CustomTextView
-                    android:padding="@dimen/_2sdp"
                     android:id="@+id/tv_weight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/_2sdp"
                     android:text="@{basketItemModel.weight}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp" />

@@ -15,22 +15,18 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.AllChat;
 import com.poona.agrocart.databinding.RvTicketCommentBinding;
-import com.poona.agrocart.ui.ticket_details.model.Comment;
 import com.poona.agrocart.widgets.imageview.CircularImageView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 
-public class TicketCommentsAdapter extends RecyclerView.Adapter<TicketCommentsAdapter.CommentViewHolder>
-{
+public class TicketCommentsAdapter extends RecyclerView.Adapter<TicketCommentsAdapter.CommentViewHolder> {
     private final ArrayList<AllChat> commentArrayList;
-    private TicketDetailFragment ticketDetailFragment;
+    private final TicketDetailFragment ticketDetailFragment;
     private CircularImageView imageView;
-    private Context context;
+    private final Context context;
 
-    public TicketCommentsAdapter(ArrayList<AllChat> commentArrayList, TicketDetailFragment ticketDetailFragment, Context context)
-    {
+    public TicketCommentsAdapter(ArrayList<AllChat> commentArrayList, TicketDetailFragment ticketDetailFragment, Context context) {
         this.commentArrayList = commentArrayList;
         this.ticketDetailFragment = ticketDetailFragment;
         this.context = context;
@@ -38,33 +34,31 @@ public class TicketCommentsAdapter extends RecyclerView.Adapter<TicketCommentsAd
 
     @NonNull
     @Override
-    public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RvTicketCommentBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_ticket_comment, parent, false);
         return new TicketCommentsAdapter.CommentViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
         AllChat comment = commentArrayList.get(position);
         holder.rvTicketCommentBinding.setComment(comment);
         holder.bind(comment);
 
-        if(comment.getUsername() == null){
+        if (comment.getUsername() == null) {
             holder.rvTicketCommentBinding.tvUserName.setText("N/A");
         }
 
         imageView = holder.rvTicketCommentBinding.ivProfileImage;
         Glide.with(context)
-                .load(IMAGE_DOC_BASE_URL+comment.getImage())
+                .load(IMAGE_DOC_BASE_URL + comment.getImage())
                 .placeholder(R.drawable.ic_profile_white)
                 .error(R.drawable.ic_profile_white)
                 .into(imageView);
 
         String selectedDate = comment.getCreatedOn();
-        String txtDisplayDate="";
+        String txtDisplayDate = "";
         try {
             txtDisplayDate = ticketDetailFragment.formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "dd MMM yyyy");
         } catch (ParseException e) {
@@ -74,24 +68,20 @@ public class TicketCommentsAdapter extends RecyclerView.Adapter<TicketCommentsAd
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return commentArrayList.size();
     }
 
-    public static class CommentViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class CommentViewHolder extends RecyclerView.ViewHolder {
         RvTicketCommentBinding rvTicketCommentBinding;
 
-        public CommentViewHolder(RvTicketCommentBinding rvTicketCommentBinding)
-        {
+        public CommentViewHolder(RvTicketCommentBinding rvTicketCommentBinding) {
             super(rvTicketCommentBinding.getRoot());
             this.rvTicketCommentBinding = rvTicketCommentBinding;
         }
 
-        public void bind(AllChat comment)
-        {
-            rvTicketCommentBinding.setVariable(BR.comment,comment);
+        public void bind(AllChat comment) {
+            rvTicketCommentBinding.setVariable(BR.comment, comment);
             rvTicketCommentBinding.executePendingBindings();
         }
     }

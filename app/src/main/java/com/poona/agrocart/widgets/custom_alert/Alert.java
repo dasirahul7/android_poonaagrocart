@@ -104,7 +104,7 @@ public class Alert extends FrameLayout implements View.OnClickListener, Animatio
         ivIcon = findViewById(R.id.ivIcon);
         tvTitle = findViewById(R.id.tvTitle);
         tvText = findViewById(R.id.tvText);
-        txt_ok= findViewById(R.id.txt_ok);
+        txt_ok = findViewById(R.id.txt_ok);
         txt_ok.setOnClickListener(this);
         flBackground.setOnClickListener(this);
 
@@ -278,6 +278,14 @@ public class Alert extends FrameLayout implements View.OnClickListener, Animatio
         flBackground.setBackgroundColor(color);
     }
 
+    public FrameLayout getAlertBackground() {
+        return flBackground;
+    }
+
+    public TextView getTitle() {
+        return tvTitle;
+    }
+
     /**
      * Sets the Title of the Alert
      *
@@ -285,23 +293,6 @@ public class Alert extends FrameLayout implements View.OnClickListener, Animatio
      */
     public void setTitle(@StringRes final int titleId) {
         setTitle(getContext().getString(titleId));
-    }
-
-    /**
-     * Sets the Text of the Alert
-     *
-     * @param textId String resource id of the Alert text
-     */
-    public void setText(@StringRes final int textId) {
-        setText(getContext().getString(textId));
-    }
-
-    public FrameLayout getAlertBackground() {
-        return flBackground;
-    }
-
-    public TextView getTitle() {
-        return tvTitle;
     }
 
     /**
@@ -318,6 +309,15 @@ public class Alert extends FrameLayout implements View.OnClickListener, Animatio
 
     public TextView getText() {
         return tvText;
+    }
+
+    /**
+     * Sets the Text of the Alert
+     *
+     * @param textId String resource id of the Alert text
+     */
+    public void setText(@StringRes final int textId) {
+        setText(getContext().getString(textId));
     }
 
     /**

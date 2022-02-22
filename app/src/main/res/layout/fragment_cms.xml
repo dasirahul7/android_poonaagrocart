@@ -2,14 +2,14 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="cmsViewModel"
             type="com.poona.agrocart.ui.nav_cms.CmsViewModel" />
 
     </data>
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,10 +30,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/white"
-                android:elevation="0dp"
+                android:contentInsetStart="0dp"
                 android:contentInsetEnd="0dp"
                 android:contentInsetRight="0dp"
-                android:contentInsetStart="0dp"
+                android:elevation="0dp"
                 app:contentInsetEnd="0dp"
                 app:contentInsetLeft="0dp"
                 app:contentInsetRight="0dp"
@@ -48,16 +48,16 @@
                         android:id="@+id/iv_back"
                         android:layout_width="?attr/actionBarSize"
                         android:layout_height="?attr/actionBarSize"
-                        android:src="@drawable/ic_back"
-                        android:padding="@dimen/_14sdp"/>
+                        android:padding="@dimen/_14sdp"
+                        android:src="@drawable/ic_back" />
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
-                        android:layout_centerInParent="true"
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sdp"
@@ -74,8 +74,8 @@
             android:id="@+id/wv_cms"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:layout_below="@id/action_bar"/>
+            android:layout_below="@id/action_bar"
+            android:scrollbars="none" />
 
         <RelativeLayout
             android:id="@+id/rl_message"
@@ -88,13 +88,13 @@
                 android:id="@+id/tv_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
                 android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="@dimen/_22sdp"
+                android:gravity="center"
                 android:text="@string/error_message_terms_and_conditions"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_18sp"
-                android:layout_marginHorizontal="@dimen/_22sdp"
                 app:setCustomFont="@string/font_poppins_regular" />
 
         </RelativeLayout>

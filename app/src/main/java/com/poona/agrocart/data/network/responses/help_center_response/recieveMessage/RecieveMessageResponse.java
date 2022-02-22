@@ -1,10 +1,8 @@
-
 package com.poona.agrocart.data.network.responses.help_center_response.recieveMessage;
 
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessage;
 
 public class RecieveMessageResponse {
 

@@ -45,15 +45,15 @@ import java.util.TimerTask;
 public class ExploreFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
 
     private static final String TAG = ExploreFragment.class.getSimpleName();
+    Timer timer = new Timer();
+    boolean isTyping = false;
     private ExploreViewModel mViewModel;
     private FragmentExploreBinding exploreFragmentBinding;
     private ExploreItemAdapter exploreItemAdapter;
-    private int limit = 0;
-    private int offset = 0;
-    private ArrayList<ExploreItems> exploreItems = new ArrayList<>();
+    private final int limit = 0;
+    private final int offset = 0;
+    private final ArrayList<ExploreItems> exploreItems = new ArrayList<>();
     private View root;
-    Timer timer = new Timer();
-    boolean isTyping = false;
 
     public static ExploreFragment newInstance() {
         return new ExploreFragment();
@@ -62,14 +62,15 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        exploreFragmentBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_explore,container,false);
+        exploreFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_explore, container, false);
         exploreFragmentBinding.setLifecycleOwner(this);
         root = exploreFragmentBinding.getRoot();
         mViewModel = new ViewModelProvider(this).get(ExploreViewModel.class);
         exploreItems.clear();
-        if (isConnectingToInternet(context)){
-            callExploreApi(root,showCircleProgressDialog(context,""),limit,offset);
-        }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        if (isConnectingToInternet(context)) {
+            callExploreApi(root, showCircleProgressDialog(context, ""), limit, offset);
+        } else
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
         initTitleBar(getString(R.string.menu_explore));
         searchCategory(root);
@@ -102,9 +103,10 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
                             getActivity().runOnUiThread(new Runnable() {
                                 public void run() {
                                     exploreItems.clear();
-                                    if (isConnectingToInternet(context)){
-                                        callExploreApi(root,showCircleProgressDialog(context,""),limit,offset);
-                                    }else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                                    if (isConnectingToInternet(context)) {
+                                        callExploreApi(root, showCircleProgressDialog(context, ""), limit, offset);
+                                    } else
+                                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
                                 }
                             });
@@ -127,17 +129,17 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
                 Log.e("Category Api ResponseData", new Gson().toJson(categoryResponse));
                 switch (categoryResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        if(categoryResponse.getCategoryData() != null){
-                            if (categoryResponse.getCategoryData().getCategoryList().size()>0){
+                        if (categoryResponse.getCategoryData() != null) {
+                            if (categoryResponse.getCategoryData().getCategoryList().size() > 0) {
                                 exploreFragmentBinding.tvNoData.setVisibility(View.GONE);
-                                for (CategoryResponse.Category category : categoryResponse.getCategoryData().getCategoryList()){
-                                    ExploreItems expItem = new ExploreItems(category.getId(),category.getCategoryName(),
-                                            category.getCategoryImage(),category.getCategoryType());
+                                for (CategoryResponse.Category category : categoryResponse.getCategoryData().getCategoryList()) {
+                                    ExploreItems expItem = new ExploreItems(category.getId(), category.getCategoryName(),
+                                            category.getCategoryImage(), category.getCategoryType());
                                     expItem.setBackground(R.color.exp_card_color1);
                                     expItem.setBorder(R.color.exp_border1);
                                     exploreItems.add(expItem);
                                 }
-                                exploreItemAdapter = new ExploreItemAdapter(getActivity(),exploreItems,root,items -> {
+                                exploreItemAdapter = new ExploreItemAdapter(getActivity(), exploreItems, root, items -> {
                                     Bundle bundle = new Bundle();
                                     bundle.putString(CATEGORY_ID, items.getId());
                                     bundle.putString(LIST_TITLE, items.getName());
@@ -146,11 +148,11 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
 //                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
 
                                 });
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
                                 exploreFragmentBinding.rvExplore.setLayoutManager(gridLayoutManager);
                                 exploreFragmentBinding.rvExplore.setHasFixedSize(true);
                                 exploreFragmentBinding.rvExplore.setAdapter(exploreItemAdapter);
-                            }else exploreFragmentBinding.tvNoData.setVisibility(View.VISIBLE);
+                            } else exploreFragmentBinding.tvNoData.setVisibility(View.VISIBLE);
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -189,14 +191,14 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
 
 
     @Override
-    public void onNetworkException(int from,String type) {
+    public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), ExploreFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
-                switch (from){
+                switch (from) {
                     case 0:
                         exploreItems.clear();
-                        callExploreApi(root,showCircleProgressDialog(context,""),limit,offset);
+                        callExploreApi(root, showCircleProgressDialog(context, ""), limit, offset);
                         break;
                 }
             } else {

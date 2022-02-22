@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class CategoryResponse extends BaseResponse{
+public class CategoryResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private CategoryData categoryData;
@@ -31,6 +31,7 @@ public class CategoryResponse extends BaseResponse{
             this.categoryList = categoryList;
         }
     }
+
     public class Category {
         @SerializedName("id")
         @Expose

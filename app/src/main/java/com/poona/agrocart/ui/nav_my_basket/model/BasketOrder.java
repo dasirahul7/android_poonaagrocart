@@ -1,8 +1,7 @@
 package com.poona.agrocart.ui.nav_my_basket.model;
 
-public class BasketOrder
-{
-    private String orderId,date,name,price,quantity,transactionId,paymentMode;
+public class BasketOrder {
+    private String orderId, date, name, price, quantity, transactionId, paymentMode;
 
     public String getOrderId() {
         return orderId;

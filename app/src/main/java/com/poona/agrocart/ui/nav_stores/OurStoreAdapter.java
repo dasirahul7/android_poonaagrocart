@@ -4,15 +4,12 @@ package com.poona.agrocart.ui.nav_stores;
 import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
 
 import android.content.Context;
-import android.media.Image;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,15 +20,13 @@ import com.poona.agrocart.ui.nav_stores.model.OurStoreListData;
 
 import java.util.ArrayList;
 
-public class OurStoreAdapter extends RecyclerView.Adapter<OurStoreAdapter.OurStoreViewHolder>
-{
+public class OurStoreAdapter extends RecyclerView.Adapter<OurStoreAdapter.OurStoreViewHolder> {
     private final ArrayList<OurStoreListData> ourStoresList;
-    private Context context;
-    private OnStoreClickListener onStoreClickListener;
+    private final Context context;
+    private final OnStoreClickListener onStoreClickListener;
     private ImageView imageView;
 
-    public OurStoreAdapter(ArrayList<OurStoreListData> ourStoresList, Context context, OurStoresFragment ourStoresFragment)
-    {
+    public OurStoreAdapter(ArrayList<OurStoreListData> ourStoresList, Context context, OurStoresFragment ourStoresFragment) {
         this.context = context;
         this.ourStoresList = ourStoresList;
         this.onStoreClickListener = ourStoresFragment;
@@ -39,22 +34,14 @@ public class OurStoreAdapter extends RecyclerView.Adapter<OurStoreAdapter.OurSto
 
     @NonNull
     @Override
-    public OurStoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public OurStoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RvStoreBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_store, parent, false);
         return new OurStoreAdapter.OurStoreViewHolder(binding);
     }
 
-    public interface OnStoreClickListener {
-        void itemViewClick(int position);
-    }
-
-
-
     @Override
-    public void onBindViewHolder(@NonNull OurStoreViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull OurStoreViewHolder holder, int position) {
         OurStoreListData store = ourStoresList.get(position);
         holder.rvStoreBinding.setStore(store);
         holder.bind(store);
@@ -62,28 +49,27 @@ public class OurStoreAdapter extends RecyclerView.Adapter<OurStoreAdapter.OurSto
         imageView = holder.rvStoreBinding.ivIcon;
         // set page image
         Glide.with(context)
-                .load(IMAGE_DOC_BASE_URL+ourStoresList.get(position).getStoreImage())
+                .load(IMAGE_DOC_BASE_URL + ourStoresList.get(position).getStoreImage())
                 .into(imageView);
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return ourStoresList.size();
     }
 
+    public interface OnStoreClickListener {
+        void itemViewClick(int position);
+    }
 
-
-    public class OurStoreViewHolder extends RecyclerView.ViewHolder
-    {
+    public class OurStoreViewHolder extends RecyclerView.ViewHolder {
         RvStoreBinding rvStoreBinding;
 
-        public OurStoreViewHolder(RvStoreBinding rvStoreBinding)
-        {
+        public OurStoreViewHolder(RvStoreBinding rvStoreBinding) {
             super(rvStoreBinding.getRoot());
-            this.rvStoreBinding=rvStoreBinding;
+            this.rvStoreBinding = rvStoreBinding;
 
-            itemView.setOnClickListener(v ->{
+            itemView.setOnClickListener(v -> {
                 if (onStoreClickListener != null) {
                     int postion = getAdapterPosition();
                     if (postion != RecyclerView.NO_POSITION) {
@@ -100,9 +86,8 @@ public class OurStoreAdapter extends RecyclerView.Adapter<OurStoreAdapter.OurSto
             });*/
         }
 
-        public void bind(OurStoreListData store)
-        {
-            rvStoreBinding.setVariable(BR.store,store);
+        public void bind(OurStoreListData store) {
+            rvStoreBinding.setVariable(BR.store, store);
             rvStoreBinding.executePendingBindings();
         }
     }

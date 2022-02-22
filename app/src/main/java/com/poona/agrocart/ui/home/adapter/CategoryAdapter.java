@@ -18,26 +18,23 @@ import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder> {
 
-    private ArrayList<CategoryResponse.Category> categories = new ArrayList<>();
     private final Context context;
-    private RowCategoryItemBinding categoryBinding;
     private final View view;
-    private OnCategoryClickListener onCategoryClickListener;
+    private ArrayList<CategoryResponse.Category> categories = new ArrayList<>();
+    private RowCategoryItemBinding categoryBinding;
+    private final OnCategoryClickListener onCategoryClickListener;
 
     public CategoryAdapter(ArrayList<CategoryResponse.Category> categories, Context context, View view, OnCategoryClickListener onCategoryClickListener) {
         this.categories = categories;
         this.context = context;
-        this.view=view;
+        this.view = view;
         this.onCategoryClickListener = onCategoryClickListener;
-    }
-    public interface OnCategoryClickListener{
-        void categoryClick(CategoryResponse.Category category);
     }
 
     @NonNull
     @Override
     public CategoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        categoryBinding = DataBindingUtil.inflate(LayoutInflater.from(context),R.layout.row_category_item,parent,false);
+        categoryBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.row_category_item, parent, false);
         return new CategoryHolder(categoryBinding);
     }
 
@@ -53,13 +50,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return categories.size();
     }
 
+    public interface OnCategoryClickListener {
+        void categoryClick(CategoryResponse.Category category);
+    }
+
     public class CategoryHolder extends RecyclerView.ViewHolder {
         public CategoryHolder(RowCategoryItemBinding binding) {
             super(binding.getRoot());
         }
 
         public void bind(CategoryResponse.Category category) {
-            categoryBinding.setVariable(BR.categoryModule,category);
+            categoryBinding.setVariable(BR.categoryModule, category);
             categoryBinding.executePendingBindings();
 
             categoryBinding.cardviewCategory.setOnClickListener(v -> {

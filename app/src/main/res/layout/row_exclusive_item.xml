@@ -47,7 +47,7 @@
                 android:text="@{exclusiveOfferModule.specialOffer}"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="@dimen/offer_txt_size"
+                android:textSize="@dimen/_14sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
@@ -84,13 +84,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
+                    android:includeFontPadding="false"
                     android:paddingHorizontal="@dimen/_5sdp"
                     android:singleLine="true"
                     android:text="@{exclusiveOfferModule.productName}"
                     android:textColor="@color/blue_txt_color"
-                    android:textSize="@dimen/category_txt_size"
+                    android:textSize="@dimen/_16sp"
                     android:textStyle="bold"
-                    android:includeFontPadding="false"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 <com.poona.agrocart.widgets.CustomTextView
@@ -100,8 +100,8 @@
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:drawablePadding="-5dp"
                     android:gravity="center_vertical"
-                    android:singleLine="true"
                     android:includeFontPadding="false"
+                    android:singleLine="true"
                     android:text="@{exclusiveOfferModule.location}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
@@ -113,11 +113,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:text="@{exclusiveOfferModule.accurateWeight}"
+                    android:includeFontPadding="false"
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:includeFontPadding="false"
+                    android:text="@{exclusiveOfferModule.accurateWeight}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp" />
 
@@ -126,13 +126,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
+                    android:includeFontPadding="false"
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
                     android:text="@string/out_of_stock"
                     android:textColor="@color/red_text_color"
                     android:textSize="@dimen/_14sp"
-                    android:includeFontPadding="false"
                     android:visibility="gone" />
 
 
@@ -149,11 +149,11 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_strikethrough"
                         android:gravity="center"
+                        android:includeFontPadding="false"
                         android:singleLine="true"
+                        android:text="@{`Rs.`+exclusiveOfferModule.unit.sellingPrice}"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
-                        android:includeFontPadding="false"
-                        android:text="@{`Rs.`+exclusiveOfferModule.unit.sellingPrice}"
                         app:setCustomFont="@string/font_poppins_regular"
                         tools:ignore="RtlSymmetry" />
 
@@ -163,11 +163,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_5sdp"
                         android:gravity="center"
+                        android:includeFontPadding="false"
                         android:singleLine="true"
                         android:text="@{`Rs.`+exclusiveOfferModule.unit.offerPrice}"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/category_txt_size"
-                        android:includeFontPadding="false"
+                        android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_montserrat_regular"
                         tools:ignore="RtlSymmetry" />
                 </LinearLayout>
@@ -184,6 +184,36 @@
                 android:background="@drawable/bg_green_square"
                 android:scaleType="center"
                 android:src="@drawable/ic_plus_white" />
+
+            <RelativeLayout
+                android:id="@+id/rl_add_to_cart_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/img_plus_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/bg_green_square"
+                    android:scaleType="center" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_alignStart="@+id/img_plus_"
+                    android:layout_alignEnd="@+id/img_plus_"
+                    android:layout_alignTop="@+id/img_plus_"
+                    android:layout_alignBottom="@+id/img_plus_"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/white"
+                    android:background="@android:color/transparent"/>
+
+            </RelativeLayout>
 
 
         </RelativeLayout>

@@ -1,14 +1,13 @@
-
 package com.poona.agrocart.data.network.responses;
 
 import android.text.Html;
 
-import java.util.ArrayList;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CouponResponse extends BaseResponse{
+import java.util.ArrayList;
+
+public class CouponResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private ArrayList<CouponResponse.Coupon> coupons = null;
@@ -20,6 +19,7 @@ public class CouponResponse extends BaseResponse{
     public void setCoupons(ArrayList<CouponResponse.Coupon> coupons) {
         this.coupons = coupons;
     }
+
     public class Coupon {
         @SerializedName("id")
         @Expose
@@ -119,7 +119,7 @@ public class CouponResponse extends BaseResponse{
         }
 
         public String getDiscountPercentage() {
-            return discountPercentage.replace(".00","");
+            return discountPercentage.replace(".00", "");
         }
 
         public void setDiscountPercentage(String discountPercentage) {

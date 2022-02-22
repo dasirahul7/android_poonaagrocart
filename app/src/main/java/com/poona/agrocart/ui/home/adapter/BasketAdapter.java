@@ -16,17 +16,15 @@ import com.poona.agrocart.databinding.RowBasketItemBinding;
 import java.util.ArrayList;
 
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHolder> {
-    private ArrayList<BasketResponse.Basket> baskets = new ArrayList<>();
     private final Context bContext;
+    private ArrayList<BasketResponse.Basket> baskets = new ArrayList<>();
     private RowBasketItemBinding basketItemBinding;
-    private OnBasketClickListener onBasketClickListener;
-    public BasketAdapter(ArrayList<BasketResponse.Basket> baskets, Context context,OnBasketClickListener onBasketClickListener) {
+    private final OnBasketClickListener onBasketClickListener;
+
+    public BasketAdapter(ArrayList<BasketResponse.Basket> baskets, Context context, OnBasketClickListener onBasketClickListener) {
         this.baskets = baskets;
         this.bContext = context;
         this.onBasketClickListener = onBasketClickListener;
-    }
-    public interface OnBasketClickListener{
-        void OnBasketClick(BasketResponse.Basket basket);
     }
 
     @Override
@@ -52,6 +50,10 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
         return baskets.size();
     }
 
+    public interface OnBasketClickListener {
+        void OnBasketClick(BasketResponse.Basket basket);
+    }
+
     public class BasketHolder extends RecyclerView.ViewHolder {
         public BasketHolder(RowBasketItemBinding basketItemBinding) {
             super(basketItemBinding.getRoot());
@@ -59,9 +61,9 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
 
 
         public void bind(BasketResponse.Basket basket) {
-            basketItemBinding.setVariable(BR.basketModule,basket);
+            basketItemBinding.setVariable(BR.basketModule, basket);
             basketItemBinding.executePendingBindings();
-            basketItemBinding.cardviewBasketItem.setOnClickListener(v->{
+            basketItemBinding.cardviewBasketItem.setOnClickListener(v -> {
                 onBasketClickListener.OnBasketClick(basket);
             });
 

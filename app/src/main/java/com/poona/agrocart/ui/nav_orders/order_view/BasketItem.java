@@ -1,8 +1,7 @@
 package com.poona.agrocart.ui.nav_orders.order_view;
 
-public class BasketItem
-{
-    private String imageUrl,nameOfProduct,weight,date,time,deliveryStatus,price,discountedPrice,quantity;
+public class BasketItem {
+    private String imageUrl, nameOfProduct, weight, date, time, deliveryStatus, price, discountedPrice, quantity;
 
     public String getQuantity() {
         return quantity;

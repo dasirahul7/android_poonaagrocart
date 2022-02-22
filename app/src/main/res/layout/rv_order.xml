@@ -49,15 +49,15 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                           <!-- <com.poona.agrocart.widgets.CustomTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_3sdp"
-                                android:gravity="start"
-                                android:text="@string/order_id"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_16sp"
-                                app:setCustomFont="@string/font_poppins_bold" />-->
+                            <!-- <com.poona.agrocart.widgets.CustomTextView
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginStart="@dimen/_3sdp"
+                                 android:gravity="start"
+                                 android:text="@string/order_id"
+                                 android:textColor="@color/black"
+                                 android:textSize="@dimen/_16sp"
+                                 app:setCustomFont="@string/font_poppins_bold" />-->
 
                             <com.poona.agrocart.widgets.CustomTextView
                                 android:id="@+id/tv_order_id"

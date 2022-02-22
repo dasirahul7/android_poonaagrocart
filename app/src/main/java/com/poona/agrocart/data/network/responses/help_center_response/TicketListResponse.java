@@ -1,4 +1,3 @@
-
 package com.poona.agrocart.data.network.responses.help_center_response;
 
 import com.google.gson.annotations.Expose;
@@ -47,7 +46,7 @@ public class TicketListResponse extends BaseResponse {
             this.userTickets = userTickets;
         }
 
-        public  class UserTicket {
+        public class UserTicket {
             @SerializedName("ticket_id")
             @Expose
             private String ticketId;

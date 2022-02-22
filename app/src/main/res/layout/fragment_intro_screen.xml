@@ -21,17 +21,17 @@
             android:id="@+id/dots_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_18sdp"
             app:dotsColor="@color/colorGrey"
             app:dotsCornerRadius="@dimen/_3sdp"
             app:dotsSize="@dimen/_6sdp"
             app:dotsSpacing="@dimen/_4sdp"
             app:dotsWidthFactor="3.0"
-            app:progressMode="true"
-            app:selectedDotColor="@color/colorPrimary"
-            android:layout_marginBottom="@dimen/_18sdp"
             app:layout_constraintBottom_toTopOf="@+id/ll_next"
             app:layout_constraintEnd_toEndOf="@+id/vpIntro"
-            app:layout_constraintStart_toStartOf="@+id/vpIntro" />
+            app:layout_constraintStart_toStartOf="@+id/vpIntro"
+            app:progressMode="true"
+            app:selectedDotColor="@color/colorPrimary" />
 
         <LinearLayout
             android:id="@+id/ll_next"
@@ -44,18 +44,18 @@
 
             <com.poona.agrocart.widgets.CustomButton
                 android:id="@+id/btNext"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_green"
-                android:text="@string/str_get_started"
-                android:textColor="@color/background_color_white_green"
-                android:textAllCaps="false"
-                android:includeFontPadding="false"
                 android:layout_gravity="center|center_vertical"
+                android:background="@drawable/button_green"
                 android:gravity="center|center_vertical"
+                android:includeFontPadding="false"
+                android:text="@string/str_get_started"
+                android:textAllCaps="false"
+                android:textColor="@color/background_color_white_green"
                 android:textSize="@dimen/_18sp"
-                style="?android:attr/borderlessButtonStyle"
-                app:setCustomFont="@string/font_poppins_semi_bold"/>
+                app:setCustomFont="@string/font_poppins_semi_bold" />
 
         </LinearLayout>
 

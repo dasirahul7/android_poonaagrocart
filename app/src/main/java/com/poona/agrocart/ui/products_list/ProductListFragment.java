@@ -42,10 +42,9 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
-import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.data.network.responses.BestSellingResponse;
-import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
+import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.ProductListByResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.databinding.FragmentProductListBinding;
@@ -62,6 +61,10 @@ import java.util.TimerTask;
 
 public class ProductListFragment extends BaseFragment implements NetworkExceptionListener, ProductGridAdapter.OnProductClickListener {
     private static final String TAG = ProductListFragment.class.getSimpleName();
+    private final int limit = 10;
+    //search variables
+    Timer timer = new Timer();
+    boolean isTyping = false;
     private FragmentProductListBinding fragmentProductListBinding;
     private ProductListViewModel productListViewModel;
     private RecyclerView rvVegetables;
@@ -71,14 +74,10 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private BasketGridAdapter basketGridAdapter;
     //argument values
     private String CategoryId, ListTitle, ListType, fromScreen;
-    private final int limit = 10;
     private int visibleItemCount = 0;
-    private int totalCount = 0, offset = 0;
+    private final int totalCount = 0;
+    private int offset = 0;
     private GridLayoutManager gridLayoutManager;
-    //search variables
-    Timer timer = new Timer();
-    boolean isTyping = false;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -130,8 +129,8 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                 seeAllBasketListApi(showCircleProgressDialog(context, ""), loading);
             else if (fromScreen.equalsIgnoreCase(AllSelling)) {
                 seeAllBestSellingApi(showCircleProgressDialog(context, ""), loading);
-            }else if (fromScreen.equalsIgnoreCase(AllExclusive)){
-                seeAllExclusiveApi(showCircleProgressDialog(context,""),loading);
+            } else if (fromScreen.equalsIgnoreCase(AllExclusive)) {
+                seeAllExclusiveApi(showCircleProgressDialog(context, ""), loading);
             }
         } else callProductListApi(showCircleProgressDialog(context, ""), loading);
     }
@@ -150,9 +149,9 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         if (exclusiveResponse.getExclusiveData().getExclusivesList() != null
                                 && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
                             // Exclusive data listing
-                            for (ProductListResponse.Product product :exclusiveResponse.getExclusiveData().getExclusivesList()){
+                            for (ProductListResponse.Product product : exclusiveResponse.getExclusiveData().getExclusivesList()) {
                                 product.setUnit(product.getProductUnits().get(0));
-                                product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
                                 productArrayList.add(product);
                             }
 
@@ -195,9 +194,9 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         //Best selling listing
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null) {
                             if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
-                                for (ProductListResponse.Product product :bestSellingResponse.getBestSellingData().getBestSellingProductList()){
+                                for (ProductListResponse.Product product : bestSellingResponse.getBestSellingData().getBestSellingProductList()) {
                                     product.setUnit(product.getProductUnits().get(0));
-                                    product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                    product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
                                     productArrayList.add(product);
                                 }
 //                                productArrayList = bestSellingResponse.getBestSellingData().getBestSellingProductList();
@@ -289,9 +288,9 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         } else {
                             if (productListByResponse.getProductListResponseDt().getProductList() != null) {
                                 if (productListByResponse.getProductListResponseDt().getProductList().size() > 0) {
-                                    for (ProductListResponse.Product product :productListByResponse.getProductListResponseDt().getProductList()){
+                                    for (ProductListResponse.Product product : productListByResponse.getProductListResponseDt().getProductList()) {
                                         product.setUnit(product.getProductUnits().get(0));
-                                        product.setAccurateWeight(product.getUnit().getWeight()+product.getUnit().getUnitName());
+                                        product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
                                         productArrayList.add(product);
                                     }
 //                                    productArrayList = productListByResponse.getProductListResponseDt().getProductList();
@@ -399,7 +398,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private void makeBasketListing() {
         if (basketArrayList != null && basketArrayList.size() > 0) {
             fragmentProductListBinding.tvNoData.setVisibility(View.GONE);
-            basketGridAdapter = new BasketGridAdapter(basketArrayList,basket -> {
+            basketGridAdapter = new BasketGridAdapter(basketArrayList, basket -> {
                 redirectToBasketDetails(basket);
             });
             rvVegetables.setAdapter(basketGridAdapter);
@@ -454,17 +453,17 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     }
 
     /* Redirect to product detail screen*/
-    private void redirectToProductsDetail(ProductListResponse.Product product)
-    {
+    private void redirectToProductsDetail(ProductListResponse.Product product) {
         Bundle bundle = new Bundle();
-        bundle.putString(PRODUCT_ID,product.getProductId());
-        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
+        bundle.putString(PRODUCT_ID, product.getProductId());
+        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
+
     /*Redirect to Basket Detail screen*/
     private void redirectToBasketDetails(BasketResponse.Basket basket) {
         Bundle bundle = new Bundle();
-        bundle.putString(BASKET_ID,basket.getId());
-        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_home_to_basketDetailFragment,bundle);
+        bundle.putString(BASKET_ID, basket.getId());
+        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_home_to_basketDetailFragment, bundle);
     }
 
     @Override
@@ -483,7 +482,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         seeAllBestSellingApi(showCircleProgressDialog(context, ""), apiFrom);
                         break;
                     case 3:
-                        seeAllExclusiveApi(showCircleProgressDialog(context,""),apiFrom);
+                        seeAllExclusiveApi(showCircleProgressDialog(context, ""), apiFrom);
                 }
             }
         }, context);
@@ -496,13 +495,13 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     }
 
     @Override
-    public void onAddClick(String productId, String unitId,int position) {
-        callAddToCartProductApi(productId,unitId,position);
+    public void onAddClick(String productId, String unitId, int position) {
+        callAddToCartProductApi(productId, unitId, position);
     }
 
-    private void callAddToCartProductApi(String productId,String unitId,int position) {
+    private void callAddToCartProductApi(String productId, String unitId, int position) {
         @SuppressLint("NotifyDataSetChanged") Observer<BaseResponse> addToCartObserver = baseResponse -> {
-            if (baseResponse!=null){
+            if (baseResponse != null) {
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(requireActivity(), baseResponse.getMessage());
@@ -525,13 +524,13 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
 
             }
         };
-        productListViewModel.addToCartProductApiCall(addToCartParam(productId,unitId),ProductListFragment.this)
-                .observe(getViewLifecycleOwner(),addToCartObserver);
+        productListViewModel.addToCartProductApiCall(addToCartParam(productId, unitId), ProductListFragment.this)
+                .observe(getViewLifecycleOwner(), addToCartObserver);
     }
 
-    private HashMap<String, String> addToCartParam(String itemId,String unitId) {
+    private HashMap<String, String> addToCartParam(String itemId, String unitId) {
         HashMap<String, String> map = new HashMap<>();
-        if (unitId!=null) {
+        if (unitId != null) {
             map.put(PRODUCT_ID, itemId);
             map.put(PU_ID, unitId);
         }

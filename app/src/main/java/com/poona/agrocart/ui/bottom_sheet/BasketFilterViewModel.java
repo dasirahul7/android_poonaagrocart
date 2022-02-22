@@ -14,9 +14,10 @@ public class BasketFilterViewModel extends AndroidViewModel {
     private ArrayList<FilterItem> categoryItems;
     private ArrayList<FilterItem> filterItems;
     private ArrayList<FilterItem> brandItems;
-    private MutableLiveData<ArrayList<FilterItem>> categoryLiveData;
-    private MutableLiveData<ArrayList<FilterItem>> filterItemLiveData;
-    private MutableLiveData<ArrayList<FilterItem>> brandItemLiveData;
+    private final MutableLiveData<ArrayList<FilterItem>> categoryLiveData;
+    private final MutableLiveData<ArrayList<FilterItem>> filterItemLiveData;
+    private final MutableLiveData<ArrayList<FilterItem>> brandItemLiveData;
+
     public BasketFilterViewModel(@NonNull Application application) {
         super(application);
         categoryLiveData = new MutableLiveData<>();

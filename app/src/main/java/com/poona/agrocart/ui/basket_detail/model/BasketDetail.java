@@ -160,6 +160,7 @@ public class BasketDetail {
     public void setBasketNoOfRatings(String basketNoOfRatings) {
         this.basketNoOfRatings = basketNoOfRatings;
     }
+
     public ArrayList<ProductComment> getCommentArrayList() {
         return commentArrayList;
     }

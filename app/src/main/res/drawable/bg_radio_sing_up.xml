@@ -1,19 +1,11 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:state_pressed="true"
-        android:drawable="@drawable/ic_green_radio" />
+    <item android:drawable="@drawable/ic_green_radio" android:state_pressed="true" />
 
-    <item
-        android:state_checked="true"
-        android:drawable="@drawable/ic_green_radio" />
+    <item android:drawable="@drawable/ic_green_radio" android:state_checked="true" />
 
-    <item
-        android:state_checked="false"
-        android:drawable="@drawable/ic_white_radio" />
+    <item android:drawable="@drawable/ic_white_radio" android:state_checked="false" />
 
-    <item
-        android:state_pressed="false"
-        android:drawable="@drawable/ic_white_radio" />
+    <item android:drawable="@drawable/ic_white_radio" android:state_pressed="false" />
 
 </selector>

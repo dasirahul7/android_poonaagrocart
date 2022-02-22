@@ -2,7 +2,6 @@ package com.poona.agrocart.ui.nav_addresses.map_view;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
@@ -57,31 +56,25 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
-import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_addresses.AddressesAdapter;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
 import com.skyfishjy.library.RippleBackground;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private static final String TAG = MapActivity.class.getSimpleName();
+    private final float DEFAULT_ZOOM = 17;
     //location
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Location mLAstKnownLocation;
     private LocationCallback locationCallback;
-    private final float DEFAULT_ZOOM = 17;
-
     //places
     private PlacesClient placesClient;
     private List<AutocompletePrediction> predictionList;
-
     //views
     private MaterialSearchBar materialSearchBar;
     private View mapView;
@@ -90,29 +83,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private ProgressBar mProgressBar;
     private ImageView mSmallPinIv;
     private FloatingActionButton fabFindMyLocation;
-
     //variables
     private String addressOutput;
     private String state = "";
     private String city = "";
     private String area = "";
     private String pincode = "";
-
     private String houseNumber = "";
     private String street = "";
     private String landmark = "";
-
     private int addressResultCode;
     private boolean isSupportedArea;
     private LatLng currentMarkerPosition;
-
     //receiving
-    private String mApiKey = "" ;
+    private String mApiKey = "";
     private String[] mSupportedArea = new String[]{};
     private String mCountry = "";
     private String mLanguage = "en";
-
-    private static final String TAG = MapActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +111,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         initMapsAndPlaces();
     }
 
-    private void initViews(){
+    private void initViews() {
         //this.listener = (OnGetAddressFromGoogleMapListener) this;
 
         materialSearchBar = findViewById(R.id.searchBar);
@@ -142,22 +129,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
-    private void receiveIntent(){
+    private void receiveIntent() {
         Intent intent = getIntent();
 
-        if (intent.hasExtra(SimplePlacePicker.API_KEY)){
+        if (intent.hasExtra(SimplePlacePicker.API_KEY)) {
             mApiKey = intent.getStringExtra(SimplePlacePicker.API_KEY);
         }
 
-        if (intent.hasExtra(SimplePlacePicker.COUNTRY)){
+        if (intent.hasExtra(SimplePlacePicker.COUNTRY)) {
             mCountry = intent.getStringExtra(SimplePlacePicker.COUNTRY);
         }
 
-        if (intent.hasExtra(SimplePlacePicker.LANGUAGE)){
+        if (intent.hasExtra(SimplePlacePicker.LANGUAGE)) {
             mLanguage = intent.getStringExtra(SimplePlacePicker.LANGUAGE);
         }
 
-        if (intent.hasExtra(SimplePlacePicker.SUPPORTED_AREAS)){
+        if (intent.hasExtra(SimplePlacePicker.SUPPORTED_AREAS)) {
             mSupportedArea = intent.getStringArrayExtra(SimplePlacePicker.SUPPORTED_AREAS);
         }
     }
@@ -305,7 +292,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-    private void submitResultLocation(){
+    private void submitResultLocation() {
         // if the process of getting address failed or this is not supported area , don't submit
         if (addressResultCode == SimplePlacePicker.FAILURE_RESULT || !isSupportedArea) {
             Toast.makeText(MapActivity.this, R.string.failed_select_location, Toast.LENGTH_SHORT).show();
@@ -440,8 +427,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 showRippleAnimationToMarker();
 
                                 //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLAstKnownLocation.getLatitude(), mLAstKnownLocation.getLongitude()), DEFAULT_ZOOM));
-                            }
-                            else {
+                            } else {
                                 final LocationRequest locationRequest = LocationRequest.create();
                                 locationRequest.setInterval(1000);
                                 locationRequest.setFastestInterval(5000);
@@ -519,7 +505,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private boolean isSupportedArea(String[] supportedAreas) {
-        if (supportedAreas.length==0)
+        if (supportedAreas.length == 0)
             return true;
 
         boolean isSupported = false;

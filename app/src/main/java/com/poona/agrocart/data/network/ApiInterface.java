@@ -1,5 +1,6 @@
 package com.poona.agrocart.data.network;
 
+import static com.poona.agrocart.app.AppConstants.ADDRESS_LIST_API;
 import static com.poona.agrocart.app.AppConstants.ADD_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_BASKET;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
@@ -13,6 +14,8 @@ import static com.poona.agrocart.app.AppConstants.CITY_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
 import static com.poona.agrocart.app.AppConstants.COUPON_API;
 import static com.poona.agrocart.app.AppConstants.DELETE_ADDRESS_API;
+import static com.poona.agrocart.app.AppConstants.DELETE_CART_ITEM_API;
+import static com.poona.agrocart.app.AppConstants.DELETE_CART_LIST_API;
 import static com.poona.agrocart.app.AppConstants.FAQ;
 import static com.poona.agrocart.app.AppConstants.FAVOURITE_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_API;
@@ -28,7 +31,6 @@ import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.ISSUE_TICKET;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
-import static com.poona.agrocart.app.AppConstants.ADDRESS_LIST_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
@@ -37,10 +39,10 @@ import static com.poona.agrocart.app.AppConstants.REMOVE_FAVOURITE_ITEM_API;
 import static com.poona.agrocart.app.AppConstants.REPLY_TO_TICKET;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
 import static com.poona.agrocart.app.AppConstants.SET_DEFAULT_ADDRESS_API;
+import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.STATE_API;
 import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
-import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.TICKET_TYPE;
 import static com.poona.agrocart.app.AppConstants.UPDATE_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_CONFIGURATION;
@@ -62,56 +64,29 @@ import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.data.network.responses.BestSellingResponse;
 import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.data.network.responses.CityResponse;
+import com.poona.agrocart.data.network.responses.CmsResponse;
 import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.HomeResponse;
+import com.poona.agrocart.data.network.responses.IntroScreenResponse;
+import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
+import com.poona.agrocart.data.network.responses.ProductListByResponse;
+import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.ProfileResponse;
+import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
+import com.poona.agrocart.data.network.responses.SignInResponse;
+import com.poona.agrocart.data.network.responses.StateResponse;
+import com.poona.agrocart.data.network.responses.StoreBannerResponse;
+import com.poona.agrocart.data.network.responses.VerifyOtpResponse;
 import com.poona.agrocart.data.network.responses.cartResponse.MyCartResponse;
+import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
 import com.poona.agrocart.data.network.responses.favoutiteResponse.RemoveFavouriteListResponse;
+import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.CreateTicketResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.SendMessageResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
-import com.poona.agrocart.data.network.responses.IntroScreenResponse;
-import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
-import com.poona.agrocart.data.network.responses.ProductListByResponse;
-import com.poona.agrocart.data.network.responses.ProductListResponse;
-import com.poona.agrocart.data.network.responses.ProfileResponse;
-import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
-import com.poona.agrocart.data.network.responses.SignInResponse;
-import com.poona.agrocart.data.network.responses.StateResponse;
-import com.poona.agrocart.data.network.responses.StoreBannerResponse;
-import com.poona.agrocart.data.network.responses.VerifyOtpResponse;
-import com.poona.agrocart.data.network.responses.CmsResponse;
-import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
-import com.poona.agrocart.data.network.responses.AddressesResponse;
-import com.poona.agrocart.data.network.responses.AreaResponse;
-import com.poona.agrocart.data.network.responses.BannerResponse;
-import com.poona.agrocart.data.network.responses.BaseResponse;
-import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
-import com.poona.agrocart.data.network.responses.BasketResponse;
-import com.poona.agrocart.data.network.responses.BestSellingResponse;
-import com.poona.agrocart.data.network.responses.CategoryResponse;
-import com.poona.agrocart.data.network.responses.CityResponse;
-import com.poona.agrocart.data.network.responses.CouponResponse;
-import com.poona.agrocart.data.network.responses.ExclusiveResponse;
-import com.poona.agrocart.data.network.responses.HomeResponse;
-import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
-import com.poona.agrocart.data.network.responses.help_center_response.CreateTicketResponse;
-import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
-import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
-import com.poona.agrocart.data.network.responses.IntroScreenResponse;
-import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
-import com.poona.agrocart.data.network.responses.ProductListByResponse;
-import com.poona.agrocart.data.network.responses.ProductListResponse;
-import com.poona.agrocart.data.network.responses.ProfileResponse;
-import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
-import com.poona.agrocart.data.network.responses.SignInResponse;
-import com.poona.agrocart.data.network.responses.StateResponse;
-import com.poona.agrocart.data.network.responses.StoreBannerResponse;
-import com.poona.agrocart.data.network.responses.VerifyOtpResponse;
-import com.poona.agrocart.data.network.responses.CmsResponse;
-import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.ViewConfigurationResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
@@ -120,7 +95,6 @@ import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResp
 
 import java.util.HashMap;
 
-import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
@@ -224,43 +198,83 @@ public interface ApiInterface {
     @POST(SET_DEFAULT_ADDRESS_API)
     Single<BaseResponse> setDefaultAddressResponse(@FieldMap HashMap<String, String> data);
 
+    /*Home API*/
+    @FormUrlEncoded
+    @POST(HOME_API)
+    Single<HomeResponse> getHomeAllData(@FieldMap HashMap<String, String> hashMap);
+
+    @FormUrlEncoded
+    @POST(HOME_API)
+    Observable<HomeResponse> getHomeAllDataObservable(@FieldMap HashMap<String, String> data);
+
     //Home Banner API
     @GET(HOME_BANNER_API)
     Single<BannerResponse> homeBannerResponse();
+
+    @FormUrlEncoded
+    @POST(HOME_BANNER_API)
+    Observable<BannerResponse> homeBannerResponse(@FieldMap HashMap<String, String> data);
+
+    // Home Store Banner API
+    @GET(HOME_STORE_BANNER_API)
+    Single<StoreBannerResponse> homeStoreBannerResponse();
+
+    @GET(HOME_STORE_BANNER_API)
+    Observable<StoreBannerResponse> homeStoreBannerObservable();
 
     //Home Category API
     @FormUrlEncoded
     @POST(HOME_CATEGORY_API)
     Single<CategoryResponse> homeCategoryResponse(@FieldMap HashMap<String, String> categoryParams);
 
+    @FormUrlEncoded
+    @POST(HOME_CATEGORY_API)
+    Observable<CategoryResponse> homeCategoryObservable(@FieldMap HashMap<String, String> data);
+
     //Home Basket list API
     @FormUrlEncoded
     @POST(HOME_BASKET_API)
     Single<BasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
+
+    @FormUrlEncoded
+    @POST(HOME_BASKET_API)
+    Observable<BasketResponse> homeBasketObservable(@FieldMap HashMap<String, String> data);
 
     //Home Product Offer API
     @FormUrlEncoded
     @POST(HOME_EXCLUSIVE_API)
     Single<ExclusiveResponse> homeExclusiveResponseSingle(@FieldMap HashMap<String, String> hashMap);
 
+    @FormUrlEncoded
+    @POST(HOME_EXCLUSIVE_API)
+    Observable<ExclusiveResponse> homeExclusiveObservable(@FieldMap HashMap<String, String> data);
+
     //Home Best selling API
     @FormUrlEncoded
     @POST(HOME_BEST_SELLING_API)
     Single<BestSellingResponse> homeBestSellingResponseSingle(@FieldMap HashMap<String, String> hashMap);
+
+    @FormUrlEncoded
+    @POST(HOME_BEST_SELLING_API)
+    Observable<BestSellingResponse> homeBestSellingObservable(@FieldMap HashMap<String, String> data);
 
     //Home Seasonal ProductOld API
     @FormUrlEncoded
     @POST(HOME_SEASONAL_LIST_API)
     Single<SeasonalProductResponse> homeSeasonalListResponse(@FieldMap HashMap<String, String> hashMap);
 
+    @FormUrlEncoded
+    @POST(HOME_SEASONAL_LIST_API)
+    Observable<SeasonalProductResponse> homeSeasonalObservable(@FieldMap HashMap<String, String> data);
+
     //Home ProductOld list API
     @FormUrlEncoded
     @POST(HOME_PRODUCT_LIST_API)
     Single<ProductListResponse> homeProductListResponse(@FieldMap HashMap<String, String> hashMap);
 
-    // Home Store Banner API
-    @GET(HOME_STORE_BANNER_API)
-    Single<StoreBannerResponse> homeStoreBannerResponse();
+    @FormUrlEncoded
+    @POST(HOME_PRODUCT_LIST_API)
+    Observable<ProductListResponse> homeProductListObservable(@FieldMap HashMap<String, String> data);
 
     /*Coupon API*/
     @FormUrlEncoded
@@ -280,7 +294,7 @@ public interface ApiInterface {
     /*Product list by Category API*/
     @FormUrlEncoded
     @POST(PRODUCT_LIST_BY_API)
-    Single<ProductListByResponse> productsByCategoryResponse(@FieldMap HashMap<String,String> hashMap);
+    Single<ProductListByResponse> productsByCategoryResponse(@FieldMap HashMap<String, String> hashMap);
 
     @FormUrlEncoded
     @POST(STORE_DETAILS)
@@ -297,7 +311,7 @@ public interface ApiInterface {
     /*Product Details API*/
     @FormUrlEncoded
     @POST(PRODUCT_DETAIL_API)
-    Single<ProductDetailsResponse> getProductDetailsResponse(@FieldMap HashMap<String,String> hashMap);
+    Single<ProductDetailsResponse> getProductDetailsResponse(@FieldMap HashMap<String, String> hashMap);
 
     /*Basket detail API*/
     @FormUrlEncoded
@@ -311,12 +325,12 @@ public interface ApiInterface {
     /*Add to favourite API*/
     @FormUrlEncoded
     @POST(ADD_TO_FAVOURITE)
-    Single<BaseResponse> addToFavouriteResponse(@FieldMap HashMap<String,String> hashMap);
+    Single<BaseResponse> addToFavouriteResponse(@FieldMap HashMap<String, String> hashMap);
 
     /*Remove From Favourite*/
     @FormUrlEncoded
     @POST(REMOVE_FAVOURITE)
-    Single<BaseResponse> removeFromFavouriteResponse(@FieldMap HashMap<String,String> hashMap);
+    Single<BaseResponse> removeFromFavouriteResponse(@FieldMap HashMap<String, String> hashMap);
 
     /*View Gallery ResponseData*/
     @GET(VIEW_GALLERY)
@@ -325,7 +339,7 @@ public interface ApiInterface {
     /*Add to cart Product API*/
     @FormUrlEncoded
     @POST(ADD_TO_PRODUCT)
-    Single<BaseResponse> addToCartProductResponse(@FieldMap HashMap<String,String> hashMap);
+    Single<BaseResponse> addToCartProductResponse(@FieldMap HashMap<String, String> hashMap);
 
     /*Favourite Response*/
     @GET(FAVOURITE_LIST_API)
@@ -334,16 +348,21 @@ public interface ApiInterface {
     /*Cart List Response*/
     @FormUrlEncoded
     @POST(CART_LIST_API)
-    Single<MyCartResponse> getAllCartList(@FieldMap HashMap<String,String> hashMap);
+    Single<MyCartResponse> getMyCartListingResponse(@FieldMap HashMap<String, String> hashMap);
+
+    /*Delete Cart Item Response*/
+    @FormUrlEncoded
+    @POST(DELETE_CART_ITEM_API)
+    Single<BaseResponse> deleteCartItemResponse(@FieldMap HashMap<String, String> hashMap);
+
+    /*Delete Cart List Response*/
+    @FormUrlEncoded
+    @POST(DELETE_CART_LIST_API)
+    Single<BaseResponse> deleteCartListResponse(@FieldMap HashMap<String, String> hashMap);
 
     @FormUrlEncoded
     @POST(REMOVE_FAVOURITE_ITEM_API)
-    Single<RemoveFavouriteListResponse> getRemoveFavouriteList( @FieldMap HashMap<String, String> removeFavourite);
-
-    /*Home API*/
-    @FormUrlEncoded
-    @POST(HOME_API)
-    Single<HomeResponse> getHomeAllData(@FieldMap HashMap<String, String> hashMap);
+    Single<RemoveFavouriteListResponse> getRemoveFavouriteList(@FieldMap HashMap<String, String> removeFavourite);
 
     /*Help Center Here*/
     @GET(TICKET_TYPE)
@@ -367,7 +386,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(VIEW_PROFILE_API)
-    Single<ProfileResponse> getViewProfileResponse(@FieldMap HashMap<String,String> hashMap);
+    Single<ProfileResponse> getViewProfileResponse(@FieldMap HashMap<String, String> hashMap);
 
     /*Setting Here*/
     @FormUrlEncoded

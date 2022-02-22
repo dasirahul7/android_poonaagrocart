@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="verifyOtpViewModel"
             type="com.poona.agrocart.ui.verify_otp.VerifyOtpViewModel" />
@@ -63,20 +64,20 @@
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
 
-<!--                <com.poona.agrocart.widgets.custom_otp_edit_text.CustomOtpEditText-->
-<!--                    android:id="@+id/et_otp"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="@dimen/_40sdp"-->
-<!--                    android:layout_below="@+id/tv_otp_sent"-->
-<!--                    android:layout_marginTop="@dimen/_20sdp"-->
-<!--                    android:layout_marginEnd="@dimen/_80sdp"-->
-<!--                    android:cursorVisible="false"-->
-<!--                    android:inputType="number"-->
-<!--                    android:maxLength="4"-->
-<!--                    android:text="@{commonViewModel.otp}"-->
-<!--                    android:textColor="@color/clr_enter_otp"-->
-<!--                    android:textSize="@dimen/_18sp"-->
-<!--                    android:windowSoftInputMode="stateVisible" />-->
+                <!--                <com.poona.agrocart.widgets.custom_otp_edit_text.CustomOtpEditText-->
+                <!--                    android:id="@+id/et_otp"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="@dimen/_40sdp"-->
+                <!--                    android:layout_below="@+id/tv_otp_sent"-->
+                <!--                    android:layout_marginTop="@dimen/_20sdp"-->
+                <!--                    android:layout_marginEnd="@dimen/_80sdp"-->
+                <!--                    android:cursorVisible="false"-->
+                <!--                    android:inputType="number"-->
+                <!--                    android:maxLength="4"-->
+                <!--                    android:text="@{commonViewModel.otp}"-->
+                <!--                    android:textColor="@color/clr_enter_otp"-->
+                <!--                    android:textSize="@dimen/_18sp"-->
+                <!--                    android:windowSoftInputMode="stateVisible" />-->
 
                 <com.poona.agrocart.widgets.pinview_OTP.PinView
                     android:id="@+id/et_otp"
@@ -123,10 +124,10 @@
                     android:layout_below="@+id/et_otp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:visibility="gone"
                     android:text="(Otp will expire in 60Sec)"
                     android:textColor="@color/red_text_color"
-                    android:textSize="@dimen/_16sp" />
+                    android:textSize="@dimen/_16sp"
+                    android:visibility="gone" />
 
                 <com.poona.agrocart.widgets.CustomButton
                     android:id="@+id/btn_verify_otp"

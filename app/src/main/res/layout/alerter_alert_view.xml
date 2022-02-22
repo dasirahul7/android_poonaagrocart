@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/flAlertBackground"
     style="@style/AlertStyle"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorPrimary"
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground"
@@ -23,24 +23,24 @@
             android:id="@+id/ivIcon"
             android:layout_width="@dimen/alerter_alert_icn_size"
             android:layout_height="@dimen/alerter_alert_icn_size"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:maxHeight="@dimen/alerter_alert_icn_size"
             android:maxWidth="@dimen/alerter_alert_icn_size"
-            app:srcCompat="@drawable/alerter_ic_notifications"
-            android:tint="@android:color/white"/>
+            android:maxHeight="@dimen/alerter_alert_icn_size"
+            android:tint="@android:color/white"
+            app:srcCompat="@drawable/alerter_ic_notifications" />
 
         <LinearLayout
             android:id="@+id/llAlertTextContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/alerter_activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/alerter_activity_horizontal_margin"
-            android:layout_marginRight="@dimen/alerter_activity_horizontal_margin"
             android:layout_marginStart="@dimen/alerter_activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/alerter_activity_horizontal_margin"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/alerter_activity_horizontal_margin"
+            android:layout_marginRight="@dimen/alerter_activity_horizontal_margin"
             android:layout_toEndOf="@id/ivIcon"
             android:layout_toRightOf="@id/ivIcon"
             android:background="@null"
@@ -54,46 +54,46 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/AlertTextAppearance.Title"
                 android:textColor="@android:color/white"
-                android:visibility="gone"
-                tools:text="Title"
                 android:textStyle="bold"
-                tools:visibility="visible"
-                app:setCustomFont="@string/font_poppins_regular"/>
+                android:visibility="gone"
+                app:setCustomFont="@string/font_poppins_regular"
+                tools:text="Title"
+                tools:visibility="visible" />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tvText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/alerter_padding_small"
                 android:paddingTop="@dimen/alerter_padding_small"
+                android:paddingBottom="@dimen/alerter_padding_small"
                 android:textAppearance="@style/AlertTextAppearance.Text"
                 android:textColor="@android:color/white"
                 android:visibility="gone"
+                app:setCustomFont="@string/font_poppins_regular"
                 tools:text="Text"
-                tools:visibility="visible"
-                app:setCustomFont="@string/font_poppins_regular"/>
+                tools:visibility="visible" />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_25sdp"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
                 android:layout_above="@+id/headerText"
+                android:layout_alignEnd="@+id/headerText"
                 android:layout_alignRight="@+id/headerText"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/background_button_simple"
                 android:clickable="true"
                 android:gravity="center"
-                android:paddingBottom="@dimen/_4sdp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:paddingLeft="@dimen/_30sdp"
-                android:paddingRight="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:paddingTop="@dimen/_4sdp"
+                android:paddingRight="@dimen/_30sdp"
+                android:paddingBottom="@dimen/_4sdp"
                 android:text="Ok"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/_16sp"
-                android:layout_alignEnd="@+id/headerText"
-                app:setCustomFont="@string/font_poppins_regular"/>
+                app:setCustomFont="@string/font_poppins_regular" />
 
         </LinearLayout>
 

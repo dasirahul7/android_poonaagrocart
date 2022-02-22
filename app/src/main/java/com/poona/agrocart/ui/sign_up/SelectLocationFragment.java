@@ -60,6 +60,9 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
     private String selectedCity, selectedArea;
 
     private View view;
+    private int check = 0;
+    private CityResponse cityResponse = null;
+    private AreaResponse areaResponse = null;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -98,17 +101,14 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         }
     }
 
-    private int check = 0;
-    private CityResponse cityResponse = null;
-    private AreaResponse areaResponse = null;
     private void setupCitySpinner() {
         BasicDetails basicDetails2 = new BasicDetails();
         basicDetails2.setId("0");
         basicDetails2.setName("Select");
         cityList.add(basicDetails2);
 
-        if(cityResponse != null && cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
-            for(int i = 0; i < cityResponse.getCities().size(); i++) {
+        if (cityResponse != null && cityResponse.getCities() != null && cityResponse.getCities().size() > 0) {
+            for (int i = 0; i < cityResponse.getCities().size(); i++) {
                 BasicDetails basicDetails = new BasicDetails();
                 basicDetails.setId(cityResponse.getCities().get(i).getId());
                 basicDetails.setName(cityResponse.getCities().get(i).getCityName());
@@ -129,7 +129,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                     selectedCityId = cityList.get(i).getId();
                     selectedCity = cityList.get(i).getName();
 
-                    if(++check > 1)
+                    if (++check > 1)
                         callAreaApi(showCircleProgressDialog(context, ""));
                 }
             }
@@ -145,7 +145,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
     }
 
     private void setupAreaSpinner() {
-        if(areaList != null && areaList.size() > 0) {
+        if (areaList != null && areaList.size() > 0) {
             areaList.clear();
         }
 
@@ -154,8 +154,8 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
         basicDetails3.setName("Select");
         areaList.add(basicDetails3);
 
-        if(areaResponse != null && areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
-            for(int i = 0; i < areaResponse.getAreas().size(); i++) {
+        if (areaResponse != null && areaResponse.getAreas() != null && areaResponse.getAreas().size() > 0) {
+            for (int i = 0; i < areaResponse.getAreas().size(); i++) {
                 BasicDetails basicDetails = new BasicDetails();
                 basicDetails.setId(areaResponse.getAreas().get(i).getId());
                 basicDetails.setName(areaResponse.getAreas().get(i).getAreaName());
@@ -287,7 +287,6 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (updateLocationResponse.getStatus() == 200) {
                             successToast(context, "" + updateLocationResponse.getMessage());
-                            preferences.setUserAddress(selectedArea + ", " + selectedCity);
                             redirectToLoginFragment(view);
                         }
                         break;
