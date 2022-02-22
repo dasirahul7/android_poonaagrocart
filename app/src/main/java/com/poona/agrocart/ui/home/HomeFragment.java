@@ -53,6 +53,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
@@ -67,6 +69,7 @@ import com.poona.agrocart.data.network.responses.HomeResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
+import com.poona.agrocart.data.network.responses.StateResponse;
 import com.poona.agrocart.data.network.responses.StoreBannerResponse;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
 import com.poona.agrocart.databinding.HomeProductItemBinding;
@@ -79,16 +82,21 @@ import com.poona.agrocart.ui.home.adapter.ExclusiveOfferListAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.SeasonalBannerAdapter;
 import com.poona.agrocart.ui.home.model.ProductOld;
+import com.poona.agrocart.ui.nav_profile.EditProfileFragment;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import retrofit2.HttpException;
 
-    private static final int AUTO_SCROLL_THRESHOLD_IN_MILLI = 3000;
+public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     private static final String TAG = HomeFragment.class.getSimpleName();
     private static final int CATEGORY = 0;
     private static final int BASKET = 1;
@@ -96,13 +104,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private static final int SEASONAL = 3;
     private static final int EXCLUSIVE = 4;
     private static final int PRODUCT = 5;
+
+    private static final int AUTO_SCROLL_THRESHOLD_IN_MILLI = 3000;
+
     private final long DELAY_MS = 500;
     private final long PERIOD_MS = 3000;
-    private final ArrayList<ProductOld> mCartList = new ArrayList<ProductOld>();
+
     private final int limit = 10;
-    Timer timer = new Timer();
-    boolean isTyping = false;
-    ActivityResultLauncher<Intent> recognizerIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+    private Timer timer = new Timer();
+    private boolean isTyping = false;
+
+    private ActivityResultLauncher<Intent> recognizerIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == Activity.RESULT_OK) {
@@ -119,7 +131,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     });
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding fragmentHomeBinding;
-    //Adapters here
+
     private BannerAdapter bannerAdapter;
     private CategoryAdapter categoryAdapter;
     private ProductListAdapter productListAdapter;
@@ -127,16 +139,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private ExclusiveOfferListAdapter offerListAdapter;
     private BasketAdapter basketAdapter;
     private SeasonalBannerAdapter seasonalBannerAdapter;
-    //ArrayLists here
-    private final ArrayList<ProductListResponse.Product> bestSellings = new ArrayList<>();
-    private final ArrayList<ProductListResponse.Product> offerProducts = new ArrayList<>();
-    private final ArrayList<ProductListResponse.Product> productList = new ArrayList<>();
+
+    private ArrayList<ProductListResponse.Product> bestSellings = new ArrayList<>();
+    private ArrayList<ProductListResponse.Product> offerProducts = new ArrayList<>();
+    private ArrayList<ProductListResponse.Product> productList = new ArrayList<>();
     private ArrayList<BannerResponse.Banner> banners = new ArrayList<>();
-    private final ArrayList<CategoryResponse.Category> categories = new ArrayList<>();
-    private final ArrayList<BasketResponse.Basket> baskets = new ArrayList<>();
+    private ArrayList<CategoryResponse.Category> categories = new ArrayList<>();
+    private ArrayList<BasketResponse.Basket> baskets = new ArrayList<>();
     private ArrayList<SeasonalProductResponse.SeasonalProduct> seasonalProductList = new ArrayList<>();
     private ArrayList<StoreBannerResponse.StoreBanner> storeBannerList = new ArrayList<>();
-    private final ArrayList<String> BasketIds = new ArrayList<>();
+    private ArrayList<String> BasketIds = new ArrayList<>();
     private int categoryOffset = 0, basketOffset = 0, bestSellingOffset = 0,
             seasonalOffset = 0, exclusiveOffset = 0, productOffset = 0;
     private View root;
@@ -157,9 +169,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         root = fragmentHomeBinding.getRoot();
         clearLists();
         setCategoryRv();
-//        setUserProfile(showCircleProgressDialog(context,""));
+
         if (isConnectingToInternet(context)) {
-            callHomeApi(showCircleProgressDialog(context, ""), offset);
+            getHomepageResponses(showCircleProgressDialog(context, ""));
+            //callHomeApi(showCircleProgressDialog(context, ""), offset);
             callBannerApi(showCircleProgressDialog(context, ""));
             callCategoryApi(showCircleProgressDialog(context, ""), "load");
             callBasketApi(showCircleProgressDialog(context, ""), "load");
@@ -173,31 +186,120 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
         getBasketItems();
-//        setStoreBanner(root);
+
         initClick();
         checkEmpties();
-//        setPaginationForLists();
 
         return root;
-
     }
 
-    private void setUserProfile(ProgressDialog progressDialog) {
-        Observer<ProfileResponse> profileResponseObserver = profileResponse -> {
-            if (profileResponse != null) {
-                preferences.setUserProfile(profileResponse.getProfile().getImage());
-                preferences.setUserName(profileResponse.getProfile().getName());
-                NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
-                View headerView = navigationView.getHeaderView(0);
-                System.out.println("name " + profileResponse.getProfile().getName());
+    private HomeResponse homeResponse = null;
+    private BannerResponse bannerResponse = null;
+    private StoreBannerResponse storeBannerResponse = null;
+    private CategoryResponse categoryResponse = null;
+    private BasketResponse basketResponse = null;
+    private ExclusiveResponse exclusiveResponse = null;
+    private BestSellingResponse bestSellingResponse = null;
+    private SeasonalProductResponse seasonalProductResponse = null;
+    private ProductListResponse productListResponse = null;
+    private void getHomepageResponses(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        homeViewModel.getHomepageResponses(context, listingParams(offset, ""), null, null, null, null, null, null, null)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new io.reactivex.rxjava3.core.Observer<List<String>>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<String> strings) {
+                        Type homeType = new TypeToken<HomeResponse>() {}.getType();
+                        homeResponse = new GsonBuilder().create().fromJson(strings.get(0), homeType);
+
+                        Type bannerType = new TypeToken<BannerResponse>() {}.getType();
+                        bannerResponse = new GsonBuilder().create().fromJson(strings.get(1), bannerType);
+
+                        Type storeBannerType = new TypeToken<StoreBannerResponse>() {}.getType();
+                        storeBannerResponse = new GsonBuilder().create().fromJson(strings.get(2), storeBannerType);
+
+                        Type categoryType = new TypeToken<CategoryResponse>() {}.getType();
+                        categoryResponse = new GsonBuilder().create().fromJson(strings.get(3), categoryType);
+
+                        Type basketType = new TypeToken<BasketResponse>() {}.getType();
+                        basketResponse = new GsonBuilder().create().fromJson(strings.get(4), basketType);
+
+                        Type exclusiveType = new TypeToken<ExclusiveResponse>() {}.getType();
+                        exclusiveResponse = new GsonBuilder().create().fromJson(strings.get(5), exclusiveType);
+
+                        Type bestSellingType = new TypeToken<BestSellingResponse>() {}.getType();
+                        bestSellingResponse = new GsonBuilder().create().fromJson(strings.get(6), bestSellingType);
+
+                        Type seasonalProductType = new TypeToken<SeasonalProductResponse>() {}.getType();
+                        seasonalProductResponse = new GsonBuilder().create().fromJson(strings.get(7), seasonalProductType);
+
+                        Type productListType = new TypeToken<ProductListResponse>() {}.getType();
+                        productListResponse = new GsonBuilder().create().fromJson(strings.get(8), productListType);
+
+                        setHomeResponse();
+
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Gson gson = new GsonBuilder().create();
+                        if (e instanceof HttpException) {
+                            try {
+                                homeResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), HomeResponse.class);
+                                bannerResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), BannerResponse.class);
+                                storeBannerResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), StoreBannerResponse.class);
+                                categoryResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CategoryResponse.class);
+                                basketResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), BasketResponse.class);
+                                exclusiveResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), ExclusiveResponse.class);
+                                bestSellingResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), BestSellingResponse.class);
+                                seasonalProductResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), SeasonalProductResponse.class);
+                                productListResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), ProductListResponse.class);
+
+                                setHomeResponse();
+
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                                showServerErrorDialog(getString(R.string.for_better_user_experience), HomeFragment.this, () -> {
+                                    if (isConnectingToInternet(context)) {
+                                        getHomepageResponses(showCircleProgressDialog(context, ""));
+                                    } else {
+                                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                                    }
+                                }, context);
+                            }
+                        } else {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        progressDialog.dismiss();
+                    }
+                });
+    }
+
+    private void setHomeResponse() {
+        if(homeResponse != null) {
+            preferences.setUserProfile(homeResponse.getResponse().getUserData().get(0).getImage());
+            preferences.setUserName(homeResponse.getResponse().getUserData().get(0).getUserName());
+
+            if (homeResponse.getResponse().getUserData().get(0).getImage() != null
+                    && !TextUtils.isEmpty(homeResponse.getResponse().getUserData().get(0).getImage())) {
+                ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getResponse().getUserData().get(0).getUserName());
+                loadingImage(context, homeResponse.getResponse().getUserData().get(0).getImage(), ((HomeActivity) context).civProfilePhoto);
             }
-        };
-        homeViewModel.getViewProfileResponse(progressDialog, profileParam(preferences.getUid()),
-                HomeFragment.this)
-                .observe(getViewLifecycleOwner(), profileResponseObserver);
+        }
     }
 
-    private void callHomeApi(ProgressDialog progressDialog, int offset) {
+    /*private void callHomeApi(ProgressDialog progressDialog, int offset) {
         Observer<HomeResponse> homeResponseObserver = homeResponse -> {
             if (homeResponse != null) {
                 progressDialog.dismiss();
@@ -235,7 +337,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         homeViewModel.homeResponseLiveData(progressDialog, listingParams(offset, ""),
                 HomeFragment.this).observe(getViewLifecycleOwner(),
                 homeResponseObserver);
-    }
+    }*/
 
     private void setStoreBanner(HomeResponse homeResponse) {
         if (homeResponse.getResponse().getStoreBanner().size() > 0) {
@@ -253,7 +355,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             makeInVisible(fragmentHomeBinding.cvStoreImg, null);
             makeInVisible(fragmentHomeBinding.rlO3Banner, null);
         }
-
     }
 
     private void rvProductLis(HomeResponse homeResponse) {
@@ -389,7 +490,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
         // Set up tab indicators
         fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
-        bannerAutoSLider();
+        bannerAutoSlider();
     }
 
     private void setCategoryRv() {
@@ -664,14 +765,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             getActivity().runOnUiThread(new Runnable() {
                                 public void run() {
                                     try {
-                                        if (fragmentHomeBinding.etSearch.getText() != null) {
-                                            if (!fragmentHomeBinding.etSearch.getText().toString().trim().equals("")) {
-                                                Bundle bundle = new Bundle();
-                                                bundle.putString(SEARCH_TYPE, SEARCH_PRODUCT);
-                                                bundle.putString(SEARCH_KEY, fragmentHomeBinding.etSearch.getText().toString());
-                                                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_searchFragment, bundle);
-                                            } else return;
-                                        }
+                                        if (fragmentHomeBinding.etSearch.getText() != null && !fragmentHomeBinding.etSearch.getText().toString().trim().equals("")) {
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString(SEARCH_TYPE, SEARCH_PRODUCT);
+                                            bundle.putString(SEARCH_KEY, fragmentHomeBinding.etSearch.getText().toString());
+                                            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_searchFragment, bundle);
+                                        } else return;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -684,7 +783,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 }, 1000);
             }
         });
-
     }
 
     //Store Banner data here
@@ -936,12 +1034,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             }
         };
         if (product.getInCart() == 0) {
-            homeViewModel.addToCartProductLiveData(addtoCartParam(product), HomeFragment.this)
+            homeViewModel.addToCartProductLiveData(addToCartParam(product), HomeFragment.this)
                     .observe(getViewLifecycleOwner(), baseResponseObserver);
         } else infoToast(context, "remove product from cart");
     }
 
-    //Product Offer Data listing
+    /*Product Offer Data listing*/
     private void callExclusiveOfferApi(ProgressDialog progressDialog, String loadType) {
         if (loadType.equalsIgnoreCase("onScrolled")) {
             exclusiveOffset = exclusiveOffset + 1;
@@ -996,7 +1094,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 .observe(getViewLifecycleOwner(), exclusiveResponseObserver);
     }
 
-    //Basket APi ResponseData gere
+    /*Basket APi ResponseData gere*/
     private void callBasketApi(ProgressDialog progressDialog, String loadType) {
         if (loadType.equalsIgnoreCase("onScrolled")) {
             basketOffset = basketOffset + 1;
@@ -1081,10 +1179,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         };
         homeViewModel.categoryResponseLiveData(progressDialog, listingParams("", CATEGORY), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), categoryResponseObserver);
-
     }
 
-    //Banner API here
+    /*Banner API here*/
     private void callBannerApi(ProgressDialog progressDialog) {
         Observer<BannerResponse> bannerResponseObserver = bannerResponse -> {
             if (bannerResponse != null) {
@@ -1168,8 +1265,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     /*Create a Dummy banner if no banner is available*/
-    //Banner Auto Scroll
-    private void bannerAutoSLider() {
+    private void bannerAutoSlider() {
         Log.e("SetSliderAutoTimer", "SetSliderAutoTimer");
         /*After setting the adapter use the timer */
         final Handler handler = new Handler();
@@ -1277,7 +1373,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding = null;
     }
 
-    private HashMap<String, String> addtoCartParam(ProductListResponse.Product product) {
+    private HashMap<String, String> addToCartParam(ProductListResponse.Product product) {
         HashMap<String, String> map = new HashMap<>();
         map.put(PRODUCT_ID, product.getProductId());
         map.put(PU_ID, product.getUnit().getpId());
@@ -1343,6 +1439,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
+    private void setUserProfile(ProgressDialog progressDialog) {
+        Observer<ProfileResponse> profileResponseObserver = profileResponse -> {
+            if (profileResponse != null) {
+                preferences.setUserProfile(profileResponse.getProfile().getImage());
+                preferences.setUserName(profileResponse.getProfile().getName());
+                NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+                View headerView = navigationView.getHeaderView(0);
+                System.out.println("name " + profileResponse.getProfile().getName());
+            }
+        };
+        homeViewModel.getViewProfileResponse(progressDialog, profileParam(preferences.getUid()),
+                HomeFragment.this)
+                .observe(getViewLifecycleOwner(), profileResponseObserver);
+    }
+
     @Override
     public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), HomeFragment.this, () -> {
@@ -1387,6 +1498,5 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         }, context);
-
     }
 }

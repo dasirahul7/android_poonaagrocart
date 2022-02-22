@@ -133,7 +133,6 @@ public class HomeActivity extends BaseActivity {
 
     private void initToolbar() {
         setSupportActionBar(binding.appBarHome.toolbar);
-//        binding.appBarHome.backImg.setVisibility(View.GONE);
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);

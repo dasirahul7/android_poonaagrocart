@@ -3,6 +3,7 @@ package com.poona.agrocart.ui.home;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -27,13 +28,16 @@ import com.poona.agrocart.data.network.responses.HomeResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
+import com.poona.agrocart.data.network.responses.StateResponse;
 import com.poona.agrocart.data.network.responses.StoreBannerResponse;
 import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
@@ -44,10 +48,8 @@ public class HomeViewModel extends AndroidViewModel {
 
     private final MutableLiveData<ProfileResponse.Profile> profileMutableLiveData;
     private final MutableLiveData<ArrayList<ProductOld>> liveDataCartProduct;
-    //    private MutableLiveData<ArrayList<Category>> liveDataCategory;
 
     private final MutableLiveData<ArrayList<ProductOld>> savesProductInBasket;
-
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -58,7 +60,6 @@ public class HomeViewModel extends AndroidViewModel {
         profileMutableLiveData.setValue(null);
         initCartItems();
     }
-
 
     private void initCartItems() {
         String PID = AppConstants.pId + "OP";
@@ -78,7 +79,6 @@ public class HomeViewModel extends AndroidViewModel {
         }
         liveDataCartProduct.setValue(cartItemList);
     }
-
 
     //Banner ResponseData here
     @SuppressLint("CheckResult")
@@ -562,4 +562,79 @@ public class HomeViewModel extends AndroidViewModel {
         return responseMutableLiveData;
     }
 
+    public Observable<List<String>> getHomepageResponses(Context context,
+                                                         HashMap<String, String> homeHashMap,
+                                                         HashMap<String, String> bannerHashMap,
+                                                         HashMap<String, String> categoryHashMap,
+                                                         HashMap<String, String> basketHashMap,
+                                                         HashMap<String, String> exclusiveHashMap,
+                                                         HashMap<String, String> bestSellingHashMap,
+                                                         HashMap<String, String> seasonalHashMap,
+                                                         HashMap<String, String> productsHashMap) {
+        Observable<HomeResponse> homeAllDataObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).getHomeAllDataObservable(homeHashMap);
+
+        Observable<BannerResponse> homeBannerObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).homeBannerResponse(bannerHashMap);
+
+        Observable<StoreBannerResponse> homeStoreBannerObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).homeStoreBannerObservable();
+
+        Observable<CategoryResponse> homeCategoryObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).homeCategoryObservable(categoryHashMap);
+
+        Observable<BasketResponse> homeBasketObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).homeBasketObservable(basketHashMap);
+
+        Observable<ExclusiveResponse> homeExclusiveObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).homeExclusiveObservable(exclusiveHashMap);
+
+        Observable<BestSellingResponse> homeBestSellingObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).homeBestSellingObservable(bestSellingHashMap);
+
+        Observable<SeasonalProductResponse> homeSeasonalObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).homeSeasonalObservable(seasonalHashMap);
+
+        Observable<ProductListResponse> homeProductListObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).homeProductListObservable(productsHashMap);
+
+        @SuppressLint("LongLogTag") Observable<List<String>> observableResult =
+                Observable.zip(
+                        homeAllDataObservable.subscribeOn(Schedulers.io()),
+                        homeBannerObservable.subscribeOn(Schedulers.io()),
+                        homeStoreBannerObservable.subscribeOn(Schedulers.io()),
+                        homeCategoryObservable.subscribeOn(Schedulers.io()),
+                        homeBasketObservable.subscribeOn(Schedulers.io()),
+                        homeExclusiveObservable.subscribeOn(Schedulers.io()),
+                        homeBestSellingObservable.subscribeOn(Schedulers.io()),
+                        homeSeasonalObservable.subscribeOn(Schedulers.io()),
+                        homeProductListObservable.subscribeOn(Schedulers.io()),
+                        (homeResponse, bannerResponse, storeBannerResponse,
+                         categoryResponse, basketResponse, exclusiveResponse,
+                         bestSellingResponse, seasonalProductResponse, productListResponse) -> {
+                            Log.e("Home Api Response", new Gson().toJson(homeResponse));
+                            Log.e("Banner Api Response", new Gson().toJson(bannerResponse));
+                            Log.e("StoreBanner Api Response", new Gson().toJson(storeBannerResponse));
+                            Log.e("Category Api Response", new Gson().toJson(categoryResponse));
+                            Log.e("Basket Api Response", new Gson().toJson(basketResponse));
+                            Log.e("Exclusive Api Response", new Gson().toJson(exclusiveResponse));
+                            Log.e("Best Selling Api Response", new Gson().toJson(bestSellingResponse));
+                            Log.e("Seasonal Product Api Response", new Gson().toJson(seasonalProductResponse));
+                            Log.e("ProductList Api Response", new Gson().toJson(productListResponse));
+
+                            List<String> list = new ArrayList();
+                            list.add(new Gson().toJson(homeResponse));
+                            list.add(new Gson().toJson(bannerResponse));
+                            list.add(new Gson().toJson(storeBannerResponse));
+                            list.add(new Gson().toJson(categoryResponse));
+                            list.add(new Gson().toJson(basketResponse));
+                            list.add(new Gson().toJson(exclusiveResponse));
+                            list.add(new Gson().toJson(bestSellingResponse));
+                            list.add(new Gson().toJson(seasonalProductResponse));
+                            list.add(new Gson().toJson(productListResponse));
+                            return list;
+                        });
+
+        return observableResult;
+    }
 }

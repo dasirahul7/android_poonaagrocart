@@ -198,43 +198,83 @@ public interface ApiInterface {
     @POST(SET_DEFAULT_ADDRESS_API)
     Single<BaseResponse> setDefaultAddressResponse(@FieldMap HashMap<String, String> data);
 
+    /*Home API*/
+    @FormUrlEncoded
+    @POST(HOME_API)
+    Single<HomeResponse> getHomeAllData(@FieldMap HashMap<String, String> hashMap);
+
+    @FormUrlEncoded
+    @POST(HOME_API)
+    Observable<HomeResponse> getHomeAllDataObservable(@FieldMap HashMap<String, String> data);
+
     //Home Banner API
     @GET(HOME_BANNER_API)
     Single<BannerResponse> homeBannerResponse();
+
+    @FormUrlEncoded
+    @POST(HOME_BANNER_API)
+    Observable<BannerResponse> homeBannerResponse(@FieldMap HashMap<String, String> data);
+
+    // Home Store Banner API
+    @GET(HOME_STORE_BANNER_API)
+    Single<StoreBannerResponse> homeStoreBannerResponse();
+
+    @GET(HOME_STORE_BANNER_API)
+    Observable<StoreBannerResponse> homeStoreBannerObservable();
 
     //Home Category API
     @FormUrlEncoded
     @POST(HOME_CATEGORY_API)
     Single<CategoryResponse> homeCategoryResponse(@FieldMap HashMap<String, String> categoryParams);
 
+    @FormUrlEncoded
+    @POST(HOME_CATEGORY_API)
+    Observable<CategoryResponse> homeCategoryObservable(@FieldMap HashMap<String, String> data);
+
     //Home Basket list API
     @FormUrlEncoded
     @POST(HOME_BASKET_API)
     Single<BasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
+
+    @FormUrlEncoded
+    @POST(HOME_BASKET_API)
+    Observable<BasketResponse> homeBasketObservable(@FieldMap HashMap<String, String> data);
 
     //Home Product Offer API
     @FormUrlEncoded
     @POST(HOME_EXCLUSIVE_API)
     Single<ExclusiveResponse> homeExclusiveResponseSingle(@FieldMap HashMap<String, String> hashMap);
 
+    @FormUrlEncoded
+    @POST(HOME_EXCLUSIVE_API)
+    Observable<ExclusiveResponse> homeExclusiveObservable(@FieldMap HashMap<String, String> data);
+
     //Home Best selling API
     @FormUrlEncoded
     @POST(HOME_BEST_SELLING_API)
     Single<BestSellingResponse> homeBestSellingResponseSingle(@FieldMap HashMap<String, String> hashMap);
+
+    @FormUrlEncoded
+    @POST(HOME_BEST_SELLING_API)
+    Observable<BestSellingResponse> homeBestSellingObservable(@FieldMap HashMap<String, String> data);
 
     //Home Seasonal ProductOld API
     @FormUrlEncoded
     @POST(HOME_SEASONAL_LIST_API)
     Single<SeasonalProductResponse> homeSeasonalListResponse(@FieldMap HashMap<String, String> hashMap);
 
+    @FormUrlEncoded
+    @POST(HOME_SEASONAL_LIST_API)
+    Observable<SeasonalProductResponse> homeSeasonalObservable(@FieldMap HashMap<String, String> data);
+
     //Home ProductOld list API
     @FormUrlEncoded
     @POST(HOME_PRODUCT_LIST_API)
     Single<ProductListResponse> homeProductListResponse(@FieldMap HashMap<String, String> hashMap);
 
-    // Home Store Banner API
-    @GET(HOME_STORE_BANNER_API)
-    Single<StoreBannerResponse> homeStoreBannerResponse();
+    @FormUrlEncoded
+    @POST(HOME_PRODUCT_LIST_API)
+    Observable<ProductListResponse> homeProductListObservable(@FieldMap HashMap<String, String> data);
 
     /*Coupon API*/
     @FormUrlEncoded
@@ -323,11 +363,6 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(REMOVE_FAVOURITE_ITEM_API)
     Single<RemoveFavouriteListResponse> getRemoveFavouriteList(@FieldMap HashMap<String, String> removeFavourite);
-
-    /*Home API*/
-    @FormUrlEncoded
-    @POST(HOME_API)
-    Single<HomeResponse> getHomeAllData(@FieldMap HashMap<String, String> hashMap);
 
     /*Help Center Here*/
     @GET(TICKET_TYPE)
