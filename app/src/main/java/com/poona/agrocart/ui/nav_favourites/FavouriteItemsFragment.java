@@ -316,9 +316,7 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://success
                         successToast(context, baseResponse.getMessage());
-//                        favouriteItemsList.get(pos).setInCart(1);
-//                        favouriteItemAdapter.notifyItemChanged(pos);
-//                        setAdaptor();
+                        setAdaptor();
                         break;
                     case STATUS_CODE_400://Validation Errors
                         warningToast(context, baseResponse.getMessage());
