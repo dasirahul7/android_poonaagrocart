@@ -136,6 +136,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             this.deleteItemPosition = position;
             this.cartItemView = binding.getRoot();
             if (isConnectingToInternet(context)) {
+                removeCartItem();
                 deleteCartItemApi(binding);
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
@@ -229,7 +230,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
     private void deleteCartItemApi(RowProductItemBinding binding) {
         //binding.rlMain.setVisibility(View.GONE);
-        binding.rlLoader.setVisibility(View.VISIBLE);
+        //binding.rlLoader.setVisibility(View.VISIBLE);
         /*print user input parameters*/
         for (Map.Entry<String, String> entry : getCartItemIdParameter().entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
@@ -238,12 +239,11 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         androidx.lifecycle.Observer<BaseResponse> responseObserver = baseResponse -> {
             if (baseResponse != null) {
                 //binding.rlMain.setVisibility(View.VISIBLE);
-                binding.rlLoader.setVisibility(View.GONE);
-                Log.e("Delete Address Api ResponseData", new Gson().toJson(baseResponse));
+                //binding.rlLoader.setVisibility(View.GONE);
+                Log.e("Delete Address Api Response", new Gson().toJson(baseResponse));
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, baseResponse.getMessage());
-                        removeCartItem();
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors
@@ -261,7 +261,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 }
             } else {
                 //binding.rlMain.setVisibility(View.VISIBLE);
-                binding.rlLoader.setVisibility(View.GONE);
+                //binding.rlLoader.setVisibility(View.GONE);
             }
         };
 

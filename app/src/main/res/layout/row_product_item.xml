@@ -15,7 +15,7 @@
         android:id="@+id/cardview_product"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_110sdp"
-        android:elevation="@dimen/_8sdp"
+        app:cardElevation="@dimen/_1sdp"
         android:padding="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_8sdp"
         app:cardUseCompatPadding="true"

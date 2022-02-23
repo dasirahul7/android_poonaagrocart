@@ -13,7 +13,7 @@
         android:layout_width="@dimen/_180sdp"
         android:layout_height="@dimen/_80sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:elevation="@dimen/_8sdp"
+        app:cardElevation="@dimen/_1sdp"
         app:cardCornerRadius="@dimen/_12sdp"
         app:strokeColor="@color/clr_custom_edit_text_otp"
         app:strokeWidth="0.5dp">

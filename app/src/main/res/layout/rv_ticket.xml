@@ -17,7 +17,7 @@
             android:id="@+id/card_view_ticket"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/_8sdp"
+            app:cardElevation="@dimen/_1sdp"
             app:cardCornerRadius="@dimen/_12sdp"
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/_10sdp"
