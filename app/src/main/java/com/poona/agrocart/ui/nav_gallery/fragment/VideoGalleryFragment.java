@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SoundEffectConstants;
@@ -33,10 +34,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 
@@ -202,7 +205,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     }
 
 
-    //String strVideoView = galleryVideoList.get(position).getVideoUrl();
+
     /*Video Player Dialogue*/
     public void VideoPlayerDialog(int position) {
         Dialog dialog = new Dialog(getActivity());
@@ -214,17 +217,25 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         playerView = dialog.findViewById(R.id.pv_video_player);
         ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
         ImageView crossImage = dialog.findViewById(R.id.iv_close_dialog);
-        /* Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType("**");  // change *//*
-        i.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"video/mp4", "video/quicktime"});
-        startActivityForResult(i, requestCode);*/
 
-        String strVideoView = "https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/sample-mp4-file.mp4";
+
+        String strVideoView = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+       // String strVideoView = galleryVideoList.get(position).getVideoUrl();
+
+        /*String test = strVideoView.substring(strVideoView.lastIndexOf("."));
+        if(test.equalsIgnoreCase(".mp4") || test.equalsIgnoreCase(".avi")
+                || test.equalsIgnoreCase(".mkv") || test.equalsIgnoreCase(".mov")){
+            simpleExoPlayer.prepare();
+        }else {
+
+            progressDialog.setVisibility(View.GONE);
+            infoToast(context, "please check the extension .mp4, .avi, .mkv, .mov");
+        }*/
+
 
         simpleExoPlayer = new SimpleExoPlayer.Builder(context).build();
         playerView.setPlayer(simpleExoPlayer);
-        MediaItem mediaItem = MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+        MediaItem mediaItem = MediaItem.fromUri(strVideoView);
         simpleExoPlayer.addMediaItem(mediaItem);
         simpleExoPlayer.prepare();
         simpleExoPlayer.play();
@@ -280,8 +291,37 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
             simpleExoPlayer.stop();
             dialog.dismiss();
         });
-
         dialog.show();
+
+
+        // Get screen width and height in pixels
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);        // The absolute width of the available display size in pixels.
+        int displayWidth = displayMetrics.widthPixels;
+        // The absolute height of the available display size in pixels.
+        int displayHeight = displayMetrics.heightPixels;
+
+        //int displayWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        //int displayHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        // Initialize a new window manager layout parameters
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        // Copy the alert dialog window attributes to new layout parameter instance
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+
+        // Set alert dialog width equal to screen width 100%
+        int dialogWindowWidth = (int) (displayWidth * 1.0f);
+        // Set alert dialog height equal to screen height 100%
+        int dialogWindowHeight = (int) (displayHeight * 1.0f);
+
+        // Set the width and height for the layout parameters
+        // This will bet the width and height of alert dialog
+        layoutParams.width = dialogWindowWidth;
+        layoutParams.height = dialogWindowHeight;
+
+        // Apply the newly created layout parameters to the alert dialog window
+        dialog.getWindow().setAttributes(layoutParams);
     }
 
 

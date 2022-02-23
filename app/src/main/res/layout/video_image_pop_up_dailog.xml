@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/_10sdp"
-            android:src="@drawable/ic_cross" />
+            android:src="@drawable/ic_cross_cancel" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,13 +26,14 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:background="@drawable/background_shadow_with_white_bg">
 
 
                 <com.google.android.exoplayer2.ui.PlayerView
                     android:id="@+id/pv_video_player"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_240sdp"
+                    android:layout_height="@dimen/_200sdp"
                     android:layout_margin="@dimen/_4sdp"
                     android:background="@android:color/transparent"
                     app:controller_layout_id="@layout/custom_media_controller"
@@ -55,5 +56,6 @@
         </LinearLayout>
 
     </RelativeLayout>
+
 
 </layout>

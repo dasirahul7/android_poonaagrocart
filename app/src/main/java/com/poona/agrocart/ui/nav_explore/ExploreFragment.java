@@ -3,6 +3,9 @@ package com.poona.agrocart.ui.nav_explore;
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
 import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
 import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
+import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
+import static com.poona.agrocart.app.AppConstants.SEARCH_PRODUCT;
+import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -10,15 +13,24 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -39,6 +51,7 @@ import com.poona.agrocart.ui.nav_explore.model.ExploreItems;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -54,6 +67,22 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
     private final int offset = 0;
     private final ArrayList<ExploreItems> exploreItems = new ArrayList<>();
     private View root;
+    private ActivityResultLauncher<Intent> recognizerIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                ArrayList<String> resultArrayList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if (resultArrayList.get(0) != null && !TextUtils.isEmpty(resultArrayList.get(0))) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(SEARCH_TYPE, SEARCH_PRODUCT);
+                    bundle.putString(SEARCH_KEY, resultArrayList.get(0));
+
+                    exploreFragmentBinding.etExploreSearch.setText(resultArrayList.get(0));
+                }
+            }
+        }
+    });
 
     public static ExploreFragment newInstance() {
         return new ExploreFragment();
@@ -67,6 +96,7 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
         root = exploreFragmentBinding.getRoot();
         mViewModel = new ViewModelProvider(this).get(ExploreViewModel.class);
         exploreItems.clear();
+        setOnClick();
         if (isConnectingToInternet(context)) {
             callExploreApi(root, showCircleProgressDialog(context, ""), limit, offset);
         } else
@@ -77,8 +107,9 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
         return root;
     }
 
+
     private void searchCategory(View root) {
-        exploreFragmentBinding.etSearch.addTextChangedListener(new TextWatcher() {
+        exploreFragmentBinding.etExploreSearch.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
             }
 
@@ -180,7 +211,7 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
         HashMap<String, String> map = new HashMap<>();
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
-        map.put(AppConstants.SEARCH, exploreFragmentBinding.etSearch.getText().toString());
+        map.put(AppConstants.SEARCH, exploreFragmentBinding.etExploreSearch.getText().toString());
         return map;
     }
 
@@ -206,6 +237,25 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
             }
         }, context);
 
+    }
+
+    private void setOnClick() {
+
+        exploreFragmentBinding.imgExploreMice.setOnClickListener(view -> {
+            startVoiceInput();
+        });
+    }
+
+    private void startVoiceInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Search Store...");
+        try {
+            recognizerIntentLauncher.launch(intent);
+        } catch (ActivityNotFoundException a) {
+
+        }
     }
 
 //    private void setExploreList(View root) {

@@ -25,6 +25,8 @@
             android:id="@+id/nv_main_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true"
             android:layout_marginBottom="@dimen/_70sdp"
             app:layout_constraintBottom_toTopOf="@+id/layout_chatbox"
             app:layout_constraintEnd_toEndOf="parent"
@@ -175,43 +177,41 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.6"
-                    android:orientation="vertical"
-                    android:stateListAnimator="@null">
-
-                    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/btn_asset_photo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_gravity="end|bottom"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:src="@drawable/ic_live_chat" />-->
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_ticket_comments"
+                    <RelativeLayout
+                        android:id="@+id/rl_recycler_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="@dimen/_5sdp" />
-                </LinearLayout>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/_10sdp"
-                    android:layout_gravity="bottom|right"
-                    android:src="@drawable/ic_live_chat"/>
+                        android:layout_height="wrap_content">
+                        <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
+                             android:id="@+id/btn"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_alignParentEnd="true"
+                             android:layout_alignParentBottom="true"
+                             android:layout_gravity="end|bottom"
+                             android:layout_marginStart="16dp"
+                             android:layout_marginTop="16dp"
+                             android:layout_marginEnd="16dp"
+                             android:layout_marginBottom="16dp"
+                             android:src="@drawable/ic_live_chat" />-->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_ticket_comments"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="@dimen/_5sdp"
+                            tools:listitem="@layout/rv_ticket_comment"/>
+
+                    </RelativeLayout>
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_10sdp"
+            android:src="@drawable/ic_live_chat"
+            app:layout_constraintBottom_toTopOf="@+id/layout_chatbox"
+            app:layout_constraintEnd_toEndOf="@+id/nv_main_scroll" />
 
         <RelativeLayout
             android:id="@+id/layout_chatbox"
@@ -265,6 +265,5 @@
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </layout>

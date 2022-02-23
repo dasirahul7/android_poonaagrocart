@@ -18,8 +18,8 @@
                 android:background="@color/white"
                 tools:context=".ui.nav_explore.ExploreFragment">
 
-                <!--Search View Layout-->
-                <com.poona.agrocart.widgets.CustomEditText
+
+              <!--  <com.poona.agrocart.widgets.CustomEditText
                     android:id="@+id/et_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -39,8 +39,50 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:setCustomFont="@string/font_poppins_regular"
-                    tools:ignore="RtlSymmetry" />
+                    tools:ignore="RtlSymmetry" />-->
 
+                <!--Search View Layout-->
+                <RelativeLayout
+                    android:id="@+id/rl_et_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:setCustomFont="@string/font_poppins_regular"
+                    tools:ignore="RtlSymmetry">
+
+                    <com.poona.agrocart.widgets.CustomEditText
+                        android:id="@+id/et_explore_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_toStartOf="@+id/img_explore_mice"
+                        android:background="@drawable/bg_et_search"
+                        android:drawableStart="@drawable/ic_search"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:drawableTint="@color/black"
+                        android:hint="@string/search_vegetables"
+                        android:imeOptions="actionDone"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/color_grey_txt"
+                        android:textSize="@dimen/_16sp"
+                        app:setCustomFont="@string/font_poppins_regular"
+                        tools:ignore="RtlSymmetry" />
+
+                    <ImageView
+                        android:id="@+id/img_explore_mice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/ic_grey_square"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_mice" />
+                </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_explore"
@@ -51,7 +93,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/et_search" />
+                    app:layout_constraintTop_toBottomOf="@+id/rl_et_search" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_no_data"
