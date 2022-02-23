@@ -81,12 +81,10 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         if (cartItem.getItemType().equalsIgnoreCase("basket")) {
             rowProductItemBinding.tvName.setText(cartItem.getBasketName());
             rowProductItemBinding.tvOfferPrice.setText("Rs." + cartItem.getBasketRate());
-            rowProductItemBinding.tvLocation.setText(cartItem.getLocation());
             rowProductItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
         } else {
             rowProductItemBinding.tvName.setText(cartItem.getProductName());
             rowProductItemBinding.tvOfferPrice.setText("Rs." + cartItem.getPricePerQuantity());
-            rowProductItemBinding.tvWeight.setText(cartItem.getWeight() + " " + cartItem.getUnitName());
         }
     }
 
