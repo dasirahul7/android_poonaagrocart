@@ -142,14 +142,20 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             }
         });
 
-        ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isConnectingToInternet(context)) {
-                    //deleteCartListApi(showCircleProgressDialog(context, ""));
-                } else {
-                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-                }
+        ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setOnClickListener(view -> {
+            if (isConnectingToInternet(context)) {
+                showConfirmPopup(requireActivity(), getString(R.string.confirm_delete), new CustomDialogInterface() {
+                    @Override
+                    public void onYesClick() {
+                        deleteAllItems();
+                    }
+
+                    @Override
+                    public void onNoClick() {
+                    }
+                });
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         });
 
@@ -300,16 +306,16 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         }, anim.getDuration());
     }
 
-    /*private void deleteCartListApi(ProgressDialog progressDialog) {
-        *//*print user input parameters*//*
-        for (Map.Entry<String, String> entry : getAddressIdParameter().entrySet()) {
+    private void deleteCartListApi(ProgressDialog progressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : getCartItemIdParameter().entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }
 
         androidx.lifecycle.Observer<BaseResponse> responseObserver = baseResponse -> {
             if (baseResponse != null) {
                 progressDialog.dismiss();
-                Log.e("Delete Address Api ResponseData", new Gson().toJson(baseResponse));
+                Log.e("Delete List Api ResponseData", new Gson().toJson(baseResponse));
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, baseResponse.getMessage());
@@ -334,10 +340,10 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             }
         };
 
-        addressesViewModel
-                .deleteAddressResponse(progressDialog, MyCartFragment.this, getAddressIdParameter())
+        myCartViewModel
+                .deleteCartListResponse(progressDialog, getCartItemIdParameter(), MyCartFragment.this)
                 .observe(getViewLifecycleOwner(), responseObserver);
-    }*/
+    }
 
     private void checkEmptyCart() {
         if (cartItemsList.size() > 0)
@@ -353,18 +359,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.btn_place_order:
                 redirectToOrderSummary(v);
-                break;
-            case R.id.img_delete:
-                showConfirmPopup(requireActivity(), getString(R.string.confirm_delete), new CustomDialogInterface() {
-                    @Override
-                    public void onYesClick() {
-                        deleteAllItems();
-                    }
-
-                    @Override
-                    public void onNoClick() {
-                    }
-                });
                 break;
             case R.id.continue_btn:
                 redirectToExplore(v);
@@ -391,7 +385,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         fragmentMyCartBinding.continueBtn.setVisibility(View.VISIBLE);
         cartItemsList.clear();
         cartItemAdapter.notifyDataSetChanged();
-        setRvAdapter();
+        //deleteCartListApi(showCircleProgressDialog(context, ""));
     }
 
     private void redirectToOrderSummary(View v) {
