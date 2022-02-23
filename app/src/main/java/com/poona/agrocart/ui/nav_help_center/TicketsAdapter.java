@@ -92,7 +92,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketVi
 
             itemView.setOnClickListener(v -> {
                 if (onTicketClickListener != null) {
-                    int postion = getAdapterPosition();
+                    int postion = getBindingAdapterPosition();
 
                     onTicketClickListener.itemViewClick(ticket);
                 }

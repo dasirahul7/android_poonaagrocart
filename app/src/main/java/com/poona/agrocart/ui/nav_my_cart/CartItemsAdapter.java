@@ -76,17 +76,17 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
     @Override
     public void onBindViewHolder(@NonNull CartItemsViewHolder holder, int position) {
         final CartData cartItem = cartItemArrayList.get(position);
-        holder.rowProductItemBinding.setProductOldModule(cartItem);
+        holder.rowProductItemBinding.setCartData(cartItem);
         holder.bind(cartItem, position);
         if (cartItem.getItemType().equalsIgnoreCase("basket")) {
             rowProductItemBinding.tvName.setText(cartItem.getBasketName());
-            rowProductItemBinding.tvOfferPrice.setText("RS." + cartItem.getBasketRate());
+            rowProductItemBinding.tvOfferPrice.setText("Rs." + cartItem.getBasketRate());
             rowProductItemBinding.tvLocation.setText(cartItem.getLocation());
             rowProductItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
         } else {
             rowProductItemBinding.tvName.setText(cartItem.getProductName());
-            rowProductItemBinding.tvOfferPrice.setText("RS." + cartItem.getPricePerQuantity());
-            rowProductItemBinding.tvWeight.setText(cartItem.getWeight() + "" + cartItem.getUnitName());
+            rowProductItemBinding.tvOfferPrice.setText("Rs." + cartItem.getPricePerQuantity());
+            rowProductItemBinding.tvWeight.setText(cartItem.getWeight() + " " + cartItem.getUnitName());
         }
     }
 
@@ -114,7 +114,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             this.rowProductItemBinding.closeLayout.setVisibility(View.VISIBLE);
 
             /*rowProductItemBinding.getRoot().setOnClickListener(view -> {
-                selectedCartItem = getAdapterPosition();
+                selectedCartItem = getBindingAdapterPosition();
                 notifyDataSetChanged();
                 if (onCartItemClickListener != null) {
                     if (selectedCartItem != RecyclerView.NO_POSITION) {
@@ -124,8 +124,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             });*/
 
             rowProductItemBinding.ivPlus.setOnClickListener(view -> {
-                selectedAddCartItem = getAdapterPosition();
-                notifyDataSetChanged();
+                increaseQuantity();
+                selectedAddCartItem = getBindingAdapterPosition();
                 if (onCartAddCountClickListener != null) {
                     if (selectedAddCartItem != RecyclerView.NO_POSITION) {
                         onCartAddCountClickListener.onCartAddCountClick(selectedAddCartItem, rowProductItemBinding);
@@ -134,8 +134,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             });
 
             rowProductItemBinding.ivMinus.setOnClickListener(view -> {
-                selectedMinusCartItem = getAdapterPosition();
-                notifyDataSetChanged();
+                decreaseQuantity();
+                selectedMinusCartItem = getBindingAdapterPosition();
                 if (onCartMinusCountClickListener != null) {
                     if (selectedMinusCartItem != RecyclerView.NO_POSITION) {
                         onCartMinusCountClickListener.onCartMinusCountClick(selectedMinusCartItem, rowProductItemBinding);
@@ -144,18 +144,13 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             });
 
             rowProductItemBinding.ivCross.setOnClickListener(view -> {
-                selectedDeleteItem = getAdapterPosition();
-                notifyDataSetChanged();
+                selectedDeleteItem = getBindingAdapterPosition();
                 if (onCartItemDeleteClickListener != null) {
                     if (selectedDeleteItem != RecyclerView.NO_POSITION) {
                         onCartItemDeleteClickListener.onCartItemDeleteClick(selectedDeleteItem, rowProductItemBinding);
                     }
                 }
             });
-
-            /*rowProductItemBinding.ivPlus.setOnClickListener(v -> {
-                increaseQuantity();
-            });*/
         }
 
 
@@ -184,7 +179,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         }
 
         public void bind(CartData cartItem, int position) {
-            //rowProductItemBinding.setVariable(BR.cartItem, cartItem);
+            rowProductItemBinding.setVariable(BR.cartData, cartItem);
             rowProductItemBinding.executePendingBindings();
         }
     }

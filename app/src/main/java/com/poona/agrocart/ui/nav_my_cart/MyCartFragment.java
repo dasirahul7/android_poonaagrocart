@@ -147,7 +147,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 showConfirmPopup(requireActivity(), getString(R.string.confirm_delete), new CustomDialogInterface() {
                     @Override
                     public void onYesClick() {
-                        deleteAllItems();
+                        removeAllCartItems();
                     }
 
                     @Override
@@ -345,13 +345,15 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 .observe(getViewLifecycleOwner(), responseObserver);
     }
 
-    private void checkEmptyCart() {
-        if (cartItemsList.size() > 0)
-            return;
-        else {
-            fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
-            fragmentMyCartBinding.continueBtn.setVisibility(View.VISIBLE);
-        }
+    private void removeAllCartItems() {
+        //deleteCartListApi(showCircleProgressDialog(context, ""));
+        cartItemsList.clear();
+        cartItemAdapter.notifyDataSetChanged();
+        requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
+        setBottomMarginInDps(50);
+        fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
+        fragmentMyCartBinding.llMain.setVisibility(View.GONE);
+        ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
     }
 
     @Override
@@ -378,14 +380,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             showNotifyAlert(requireActivity(), context.getString(R.string.retry), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
 
-    }
-
-    private void deleteAllItems() {
-        fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
-        fragmentMyCartBinding.continueBtn.setVisibility(View.VISIBLE);
-        cartItemsList.clear();
-        cartItemAdapter.notifyDataSetChanged();
-        //deleteCartListApi(showCircleProgressDialog(context, ""));
     }
 
     private void redirectToOrderSummary(View v) {

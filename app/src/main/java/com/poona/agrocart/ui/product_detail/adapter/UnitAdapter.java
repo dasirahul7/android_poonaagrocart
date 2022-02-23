@@ -87,8 +87,8 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.WeightHolder> 
             radioButton = itemView.findViewById(R.id.radio);
             itemView.setOnClickListener(v -> {
                 if (isInCart == 0) {
-                    mSelectedItem = getAdapterPosition();
-                    onUnitClickListener.OnUnitClick(weight.get(getAdapterPosition()));
+                    mSelectedItem = getBindingAdapterPosition();
+                    onUnitClickListener.OnUnitClick(weight.get(getBindingAdapterPosition()));
                     notifyDataSetChanged();
                 }
             });

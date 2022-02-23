@@ -117,7 +117,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
 
             productBinding.ivPlus.setOnClickListener(view -> {
                 if (onPlusClick != null) {
-                    int postion = getAdapterPosition();
+                    int postion = getBindingAdapterPosition();
                     if (postion != RecyclerView.NO_POSITION) {
                         onPlusClick.addToCartClickItem(postion);
                     }
@@ -125,7 +125,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
             });
             productBinding.ivFavourite.setOnClickListener(view -> {
                 if (onFavouriteClick != null) {
-                    int postion = getAdapterPosition();
+                    int postion = getBindingAdapterPosition();
                     if (postion != RecyclerView.NO_POSITION) {
                         onFavouriteClick.removeFavouriteClickItem(postion);
                     }
@@ -133,7 +133,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
             });
             productBinding.cvFev.setOnClickListener(view -> {
                 if (onProductClick != null) {
-                    int postion = getAdapterPosition();
+                    int postion = getBindingAdapterPosition();
                     if (postion != RecyclerView.NO_POSITION) {
                         onProductClick.toProductDetailClickItem(postion);
                     }
