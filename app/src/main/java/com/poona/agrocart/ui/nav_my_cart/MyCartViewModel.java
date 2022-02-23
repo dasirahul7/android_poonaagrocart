@@ -120,8 +120,7 @@ public class MyCartViewModel extends AndroidViewModel {
 
     }
 
-    public LiveData<BaseResponse> deleteCartListResponse(ProgressDialog progressDialog,
-                                                             HashMap<String, String> hashMap,
+    public LiveData<BaseResponse> deleteCartListResponse(HashMap<String, String> hashMap,
                                                              MyCartFragment myCartFragment) {
         MutableLiveData<BaseResponse> myCartResponseMutableLiveData = new MutableLiveData<>();
         ApiClientAuth.getClient(myCartFragment.getContext())
@@ -133,14 +132,12 @@ public class MyCartViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         if (baseResponse != null) {
-                            progressDialog.dismiss();
                             myCartResponseMutableLiveData.setValue(baseResponse);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         BaseResponse response = new BaseResponse();
                         try {

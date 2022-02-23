@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.nav_my_cart;
 
 import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
 import static com.poona.agrocart.app.AppConstants.CART_ID;
+import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -43,6 +44,7 @@ import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.nav_addresses.AddressesAdapter;
 import com.poona.agrocart.ui.nav_addresses.AddressesFragment;
 import com.poona.agrocart.ui.nav_addresses.AddressesViewModel;
+import com.poona.agrocart.widgets.custom_otp_edit_text.CustomOtpEditText;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -306,19 +308,18 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         }, anim.getDuration());
     }
 
-    private void deleteCartListApi(ProgressDialog progressDialog) {
+    private void deleteCartListApi() {
         /*print user input parameters*/
-        for (Map.Entry<String, String> entry : getCartItemIdParameter().entrySet()) {
+        for (Map.Entry<String, String> entry : getCustomerIdParameter().entrySet()) {
             Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
         }
 
         androidx.lifecycle.Observer<BaseResponse> responseObserver = baseResponse -> {
             if (baseResponse != null) {
-                progressDialog.dismiss();
                 Log.e("Delete List Api ResponseData", new Gson().toJson(baseResponse));
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(context, baseResponse.getMessage());
+                        //successToast(context, baseResponse.getMessage());
                         //deleteItem();
                         break;
                     case STATUS_CODE_400://Validation Errors
@@ -336,17 +337,23 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                         break;
                 }
             } else {
-                progressDialog.dismiss();
+
             }
         };
 
         myCartViewModel
-                .deleteCartListResponse(progressDialog, getCartItemIdParameter(), MyCartFragment.this)
+                .deleteCartListResponse(getCustomerIdParameter(), MyCartFragment.this)
                 .observe(getViewLifecycleOwner(), responseObserver);
     }
 
+    private HashMap<String, String> getCustomerIdParameter() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(CUSTOMER_ID, preferences.getUid());
+        return map;
+    }
+
     private void removeAllCartItems() {
-        //deleteCartListApi(showCircleProgressDialog(context, ""));
+        deleteCartListApi();
         cartItemsList.clear();
         cartItemAdapter.notifyDataSetChanged();
         requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
