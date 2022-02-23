@@ -30,15 +30,15 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
     }
 
     public interface OnCartAddCountClickListener {
-        void onCartAddCountClick(int position);
+        void onCartAddCountClick(int position, RowProductItemBinding binding);
     }
 
     public interface OnCartMinusCountClickListener {
-        void onCartMinusCountClick(int position);
+        void onCartMinusCountClick(int position, RowProductItemBinding binding);
     }
 
     public interface OnCartItemDeleteClickListener {
-        void onCartItemDeleteClick(int position);
+        void onCartItemDeleteClick(int position, RowProductItemBinding binding);
     }
 
     public void setOnCartItemClick(OnCartItemClickListener listener) {
@@ -53,8 +53,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         onCartMinusCountClickListener = listener;
     }
 
-    public void setOnDeleteCartItemClick(OnCartMinusCountClickListener listener) {
-        onCartMinusCountClickListener = listener;
+    public void setOnDeleteCartItemClick(OnCartItemDeleteClickListener listener) {
+        onCartItemDeleteClickListener = listener;
     }
 
     public CartItemsAdapter(ArrayList<CartData> cartItemArrayList) {
@@ -76,17 +76,15 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
     @Override
     public void onBindViewHolder(@NonNull CartItemsViewHolder holder, int position) {
         final CartData cartItem = cartItemArrayList.get(position);
-        holder.rowProductItemBinding.setProductOldModule(cartItem);
+        holder.rowProductItemBinding.setCartData(cartItem);
         holder.bind(cartItem, position);
         if (cartItem.getItemType().equalsIgnoreCase("basket")) {
             rowProductItemBinding.tvName.setText(cartItem.getBasketName());
-            rowProductItemBinding.tvOfferPrice.setText("RS." + cartItem.getBasketRate());
-            rowProductItemBinding.tvLocation.setText(cartItem.getLocation());
+            rowProductItemBinding.tvOfferPrice.setText("Rs." + cartItem.getBasketRate());
             rowProductItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
         } else {
             rowProductItemBinding.tvName.setText(cartItem.getProductName());
-            rowProductItemBinding.tvOfferPrice.setText("RS." + cartItem.getPricePerQuantity());
-            rowProductItemBinding.tvWeight.setText(cartItem.getWeight() + "" + cartItem.getUnitName());
+            rowProductItemBinding.tvOfferPrice.setText("Rs." + cartItem.getPricePerQuantity());
         }
     }
 
@@ -113,49 +111,44 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
             this.rowProductItemBinding.icAddToCart.setVisibility(View.GONE);
             this.rowProductItemBinding.closeLayout.setVisibility(View.VISIBLE);
 
-            rowProductItemBinding.getRoot().setOnClickListener(view -> {
-                selectedCartItem = getAdapterPosition();
+            /*rowProductItemBinding.getRoot().setOnClickListener(view -> {
+                selectedCartItem = getBindingAdapterPosition();
                 notifyDataSetChanged();
                 if (onCartItemClickListener != null) {
                     if (selectedCartItem != RecyclerView.NO_POSITION) {
                         onCartItemClickListener.onCartItemClick(selectedCartItem);
                     }
                 }
-            });
+            });*/
 
             rowProductItemBinding.ivPlus.setOnClickListener(view -> {
-                selectedAddCartItem = getAdapterPosition();
-                notifyDataSetChanged();
+                increaseQuantity();
+                selectedAddCartItem = getBindingAdapterPosition();
                 if (onCartAddCountClickListener != null) {
                     if (selectedAddCartItem != RecyclerView.NO_POSITION) {
-                        onCartAddCountClickListener.onCartAddCountClick(selectedAddCartItem);
+                        onCartAddCountClickListener.onCartAddCountClick(selectedAddCartItem, rowProductItemBinding);
                     }
                 }
             });
 
             rowProductItemBinding.ivMinus.setOnClickListener(view -> {
-                selectedMinusCartItem = getAdapterPosition();
-                notifyDataSetChanged();
+                decreaseQuantity();
+                selectedMinusCartItem = getBindingAdapterPosition();
                 if (onCartMinusCountClickListener != null) {
                     if (selectedMinusCartItem != RecyclerView.NO_POSITION) {
-                        onCartMinusCountClickListener.onCartMinusCountClick(selectedMinusCartItem);
+                        onCartMinusCountClickListener.onCartMinusCountClick(selectedMinusCartItem, rowProductItemBinding);
                     }
                 }
             });
 
             rowProductItemBinding.ivCross.setOnClickListener(view -> {
-                selectedDeleteItem = getAdapterPosition();
-                notifyDataSetChanged();
+                selectedDeleteItem = getBindingAdapterPosition();
                 if (onCartItemDeleteClickListener != null) {
                     if (selectedDeleteItem != RecyclerView.NO_POSITION) {
-                        onCartItemDeleteClickListener.onCartItemDeleteClick(selectedDeleteItem);
+                        onCartItemDeleteClickListener.onCartItemDeleteClick(selectedDeleteItem, rowProductItemBinding);
                     }
                 }
             });
-
-            /*rowProductItemBinding.ivPlus.setOnClickListener(v -> {
-                increaseQuantity();
-            });*/
         }
 
 
@@ -184,7 +177,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         }
 
         public void bind(CartData cartItem, int position) {
-            //rowProductItemBinding.setVariable(BR.cartItem, cartItem);
+            rowProductItemBinding.setVariable(BR.cartData, cartItem);
             rowProductItemBinding.executePendingBindings();
         }
     }

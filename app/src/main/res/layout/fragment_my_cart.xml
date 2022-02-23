@@ -11,7 +11,7 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.nav_my_cart.MyCartFragment">
@@ -20,7 +20,8 @@
             android:id="@+id/ll_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_my_cart"
@@ -36,10 +37,12 @@
 
             <!--Bottom amount detail layout-->
             <LinearLayout
+                android:id="@+id/ll_place_order"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="15"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_below="@+id/rv_my_cart">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -148,70 +151,67 @@
 
             </LinearLayout>
 
-            <!--Empty Cart View-->
-            <LinearLayout
-                android:id="@+id/empty_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/_30sdp"
+        </LinearLayout>
+
+        <!--Empty Cart View-->
+        <LinearLayout
+            android:id="@+id/empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/_50sdp">
+
+            <ImageView
+                android:layout_width="@dimen/_140sdp"
+                android:layout_height="@dimen/_140sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/empty_cart_img" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_oops"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:text="@string/oops_no_products"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_22sp"
+                app:setCustomFont="@string/font_poppins_regular" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/empty_cart_img" />
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_please"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/_8sdp"
+                android:text="@string/please_add_product"
+                android:textSize="@dimen/_18sp" />
 
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/tv_oops"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_30sdp"
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="@string/oops_no_products"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_24sp"
-                    app:setCustomFont="@string/font_poppins_regular" />
-
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/tv_please"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/please_add_product"
-                    android:textSize="@dimen/_18sp" />
-
-
-            </LinearLayout>
+            <com.poona.agrocart.widgets.CustomButton
+                android:id="@+id/continue_btn"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginHorizontal="@dimen/_22sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/background_light_green"
+                android:gravity="center|center_vertical"
+                android:includeFontPadding="false"
+                android:padding="@dimen/alerter_padding_small"
+                android:text="@string/continue_shopping"
+                android:textAllCaps="false"
+                android:textColor="@color/background_color_white_green"
+                android:textSize="@dimen/_16sp"
+                app:setCustomFont="@string/font_poppins_semi_bold" />
 
         </LinearLayout>
 
-        <com.poona.agrocart.widgets.CustomButton
-            android:id="@+id/continue_btn"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|center_vertical"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_80sdp"
-            android:background="@drawable/background_light_green"
-            android:gravity="center|center_vertical"
-            android:includeFontPadding="false"
-            android:padding="@dimen/alerter_padding_small"
-            android:text="@string/continue_shopping"
-            android:textAllCaps="false"
-            android:textColor="@color/background_color_white_green"
-            android:textSize="@dimen/_18sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:setCustomFont="@string/font_poppins_semi_bold" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
 </layout>

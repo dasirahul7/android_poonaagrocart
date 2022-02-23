@@ -92,7 +92,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
             this.rvAddressBinding = rvAddressBinding;
 
             rvAddressBinding.ivEditAddress.setOnClickListener(view -> {
-                selectedEditItem = getAdapterPosition();
+                selectedEditItem = getBindingAdapterPosition();
                 notifyDataSetChanged();
                 if (onEditButtonClickListener != null) {
                     if (selectedEditItem != RecyclerView.NO_POSITION) {
@@ -102,7 +102,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
             });
 
             rvAddressBinding.ivDeleteAddress.setOnClickListener(view -> {
-                selectedDeleteItem = getAdapterPosition();
+                selectedDeleteItem = getBindingAdapterPosition();
                 notifyDataSetChanged();
                 if (onDeleteButtonClickListener != null) {
                     if (selectedDeleteItem != RecyclerView.NO_POSITION) {
@@ -112,7 +112,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
             });
 
             rvAddressBinding.cbDefault.setOnClickListener(view -> {
-                selectedDefaultAddressItem = getAdapterPosition();
+                selectedDefaultAddressItem = getBindingAdapterPosition();
                 notifyDataSetChanged();
                 if (onDefaultAddressClickListener != null) {
                     if (selectedDefaultAddressItem != RecyclerView.NO_POSITION) {

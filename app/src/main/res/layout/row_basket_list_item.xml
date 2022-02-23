@@ -14,7 +14,7 @@
         android:id="@+id/cardview_product"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_210sdp"
-        android:elevation="@dimen/_8sdp"
+        app:cardElevation="@dimen/_1sdp"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardUseCompatPadding="true"
         app:strokeColor="@color/clr_custom_edit_text_otp"

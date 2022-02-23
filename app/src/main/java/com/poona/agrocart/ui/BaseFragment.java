@@ -198,10 +198,9 @@ public abstract class BaseFragment extends Fragment {
         Dialog dialog = new Dialog(activity);
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.dialog_logout);
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//        lp.copyFrom(dialog.getWindow().getAttributes());
-//        dialog.getWindow().setAttributes(lp);
+
         CustomTextView tvTitle = dialog.findViewById(R.id.tv_heading);
         CustomButton btnYes = dialog.findViewById(R.id.btn_yes);
         CustomButton btnNo = dialog.findViewById(R.id.btn_no);
