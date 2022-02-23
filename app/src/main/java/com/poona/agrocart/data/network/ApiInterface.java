@@ -95,6 +95,7 @@ import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResp
 
 import java.util.HashMap;
 
+import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
@@ -211,9 +212,8 @@ public interface ApiInterface {
     @GET(HOME_BANNER_API)
     Single<BannerResponse> homeBannerResponse();
 
-    @FormUrlEncoded
-    @POST(HOME_BANNER_API)
-    Observable<BannerResponse> homeBannerResponse(@FieldMap HashMap<String, String> data);
+    @GET(HOME_BANNER_API)
+    Observable<BannerResponse> homeScreenBannerResponse();
 
     // Home Store Banner API
     @GET(HOME_STORE_BANNER_API)
@@ -395,4 +395,14 @@ public interface ApiInterface {
 
     @GET(VIEW_CONFIGURATION)
     Single<ViewConfigurationResponse> getUpdatedNotification();
+
+    @FormUrlEncoded
+    @POST(ADD_TO_BASKET)
+    Single<BaseResponse> getAddToCartFavouriteBasket(@FieldMap HashMap<String, String> addToCartInputParameter);
+
+    @FormUrlEncoded
+    @POST(ADD_TO_PRODUCT)
+    Single<BaseResponse> getAddToCartFavouriteProduct(@FieldMap HashMap<String, String> addToCartInputParameter);
+
+
 }

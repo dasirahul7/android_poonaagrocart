@@ -150,9 +150,11 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                                 && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
                             // Exclusive data listing
                             for (ProductListResponse.Product product : exclusiveResponse.getExclusiveData().getExclusivesList()) {
-                                product.setUnit(product.getProductUnits().get(0));
-                                product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
-                                productArrayList.add(product);
+                                if (!product.getProductUnits().isEmpty()){
+                                    product.setUnit(product.getProductUnits().get(0));
+                                    product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
+                                    productArrayList.add(product);
+                                }
                             }
 
 //                            productArrayList = exclusiveResponse.getExclusiveData().getExclusivesList();
@@ -195,8 +197,10 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null) {
                             if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
                                 for (ProductListResponse.Product product : bestSellingResponse.getBestSellingData().getBestSellingProductList()) {
-                                    product.setUnit(product.getProductUnits().get(0));
-                                    product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
+                                    if (product.getProductUnits().isEmpty()){
+                                        product.setUnit(product.getProductUnits().get(0));
+                                        product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
+                                    }
                                     productArrayList.add(product);
                                 }
 //                                productArrayList = bestSellingResponse.getBestSellingData().getBestSellingProductList();
@@ -289,8 +293,10 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                             if (productListByResponse.getProductListResponseDt().getProductList() != null) {
                                 if (productListByResponse.getProductListResponseDt().getProductList().size() > 0) {
                                     for (ProductListResponse.Product product : productListByResponse.getProductListResponseDt().getProductList()) {
-                                        product.setUnit(product.getProductUnits().get(0));
-                                        product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
+                                        if (!product.getProductUnits().isEmpty()){
+                                            product.setUnit(product.getProductUnits().get(0));
+                                            product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
+                                        }
                                         productArrayList.add(product);
                                     }
 //                                    productArrayList = productListByResponse.getProductListResponseDt().getProductList();

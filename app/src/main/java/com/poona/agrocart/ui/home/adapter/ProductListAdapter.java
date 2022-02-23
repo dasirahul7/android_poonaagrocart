@@ -56,7 +56,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         productBinding.setHomeProductModel(product);
         holder.bindProduct(product, position);
         productBinding.imgPlus.setOnClickListener(view -> {
-            onPlusClickListener.OnPlusClick(productBinding, product, position);
+            if (product.getInCart()==0){
+                productBinding.rlAddToCartLoader.setVisibility(View.VISIBLE);
+                onPlusClickListener.OnPlusClick(productBinding, product, position);
+            }
         });
 
     }

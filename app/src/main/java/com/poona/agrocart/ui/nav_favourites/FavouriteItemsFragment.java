@@ -1,8 +1,11 @@
 package com.poona.agrocart.ui.nav_favourites;
 
 import static com.poona.agrocart.app.AppConstants.BASKET_ID;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.ITEM_TYPE;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
+import static com.poona.agrocart.app.AppConstants.PU_ID;
+import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -20,16 +23,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
 import com.poona.agrocart.data.network.responses.favoutiteResponse.RemoveFavouriteListResponse;
 import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
@@ -84,7 +90,7 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
     @Override
     public void onResume() {
         super.onResume();
-
+        //setAdaptor();
     }
 
     private void setAdaptor() {
@@ -127,6 +133,8 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                 }
                 switch (favouriteLisResponse.getStatus()) {
                     case STATUS_CODE_200://success
+
+                        favouriteItemsList.clear();
                         if (favouriteLisResponse.getFavouriteList() != null
                                 && favouriteLisResponse.getFavouriteList().size() > 0) {
 
@@ -167,12 +175,33 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
 
     @Override
     public void addToCartClickItem(int position) {
-
+        String basketId = favouriteItemsList.get(position).getBasketId();
+        String itemType = favouriteItemsList.get(position).getItemType();
+        String productId = favouriteItemsList.get(position).getProductId();
+        String puId = favouriteItemsList.get(position).getPuId();
+        if (itemType.equalsIgnoreCase("basket")){
+            callAddToCartBasketApi(showCircleProgressDialog(context, ""),basketId);
+        }else {
+            callAddToCartProductApi(showCircleProgressDialog(context, ""),productId,puId);
+        }
     }
 
     @Override
     public void toProductDetailClickItem(int position) {
-
+        String basketId = favouriteItemsList.get(position).getBasketId();
+        String productId = favouriteItemsList.get(position).getProductId();
+        String itemType = favouriteItemsList.get(position).getItemType();
+        if (itemType.equalsIgnoreCase("basket")){
+            Bundle bundle = new Bundle();
+            bundle.putString(BASKET_ID, basketId);
+            NavHostFragment.findNavController(FavouriteItemsFragment.this).
+                    navigate(R.id.action_nav_favourite_to_basketDetailFragment,bundle);
+        }else {
+            Bundle bundle = new Bundle();
+            bundle.putString(PRODUCT_ID, productId);
+            NavHostFragment.findNavController(FavouriteItemsFragment.this).
+                    navigate(R.id.action_nav_favourite_to_nav_product_details,bundle);
+        }
     }
 
     @Override
@@ -272,6 +301,103 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
         });
 
         dialog.show();
+    }
+
+    private void callAddToCartBasketApi(ProgressDialog progressDialog, String basketId) {
+
+        @SuppressLint("NotifyDataSetChanged")
+        Observer<BaseResponse> baseResponseObserver = baseResponse -> {
+
+            if (baseResponse != null) {
+                Log.e("Response", new Gson().toJson(baseResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        successToast(context, baseResponse.getMessage());
+                        setAdaptor();
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_404://Record not Found
+                        /* show empty screen message */
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        warningToast(context, baseResponse.getMessage());
+                        goToAskSignInSignUpScreen();
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+        };
+
+        favouriteViewModel.callAddToCartFromBasketFavouriteList(progressDialog, AddToCartFromBasketInputParameter(basketId), FavouriteItemsFragment.this)
+                .observe(getViewLifecycleOwner(), baseResponseObserver);
+    }
+
+    private HashMap<String, String> AddToCartFromBasketInputParameter(String basketId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(BASKET_ID, basketId);
+        map.put(QUANTITY, "1");
+        return map;
+    }
+
+    private void callAddToCartProductApi(ProgressDialog progressDialog, String productId, String puId) {
+
+        @SuppressLint("NotifyDataSetChanged")
+        Observer<BaseResponse> baseResponseObserver = baseResponse -> {
+
+            if (baseResponse != null) {
+                Log.e("Response", new Gson().toJson(baseResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        successToast(context, baseResponse.getMessage());
+                        setAdaptor();
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_404://Record not Found
+                        /* show empty screen message */
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        warningToast(context, baseResponse.getMessage());
+                        goToAskSignInSignUpScreen();
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+        };
+
+        favouriteViewModel.callAddToCartFromProductFavouriteList(progressDialog, AddToCartFromProductInputParameter(productId,puId), FavouriteItemsFragment.this)
+                .observe(getViewLifecycleOwner(), baseResponseObserver);
+    }
+
+    private HashMap<String, String> AddToCartFromProductInputParameter(String productId, String puId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(PRODUCT_ID, productId.toString());
+        map.put(PU_ID,puId.toString());
+        map.put(QUANTITY, "1");
+        return map;
     }
 
 }

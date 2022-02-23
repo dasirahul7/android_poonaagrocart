@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.product_detail;
 
+import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.PU_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.lifecycle.Observer;
@@ -41,6 +43,7 @@ import com.poona.agrocart.ui.home.model.ProductOld;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.OfferProductListAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
+import com.poona.agrocart.ui.product_detail.adapter.ProductImagesAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.UnitAdapter;
 import com.poona.agrocart.ui.product_detail.model.BasketContent;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
@@ -86,10 +89,18 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private int mYear, mMonth, mDay;
     private ImageView txtOrganic;
     private CustomTextView txtBrand;
-    private String itemId = "";
+    private String itemId ="";
     private Bundle bundle;
     private String unitId;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            itemId = getArguments().getString(PRODUCT_ID);
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentProductDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false);
@@ -123,7 +134,13 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.VISIBLE);
         txtOrganic = ((HomeActivity) requireActivity()).binding.appBarHome.txtOrganic;
         txtBrand = ((HomeActivity) requireActivity()).binding.appBarHome.tvBrand;
-        try {
+
+        if (isConnectingToInternet(context)) {
+            callProductDetailsApi(showCircleProgressDialog(context, ""));
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+       /* try {
             if (getArguments() != null) {
                 bundle = getArguments();
                 if (bundle.getString(AppConstants.PRODUCT_ID) != null) {
@@ -134,7 +151,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         fragmentProductDetailBinding.llProductDetails.setOnClickListener(this);
         fragmentProductDetailBinding.llNutritions.setOnClickListener(this);
         fragmentProductDetailBinding.llAboutThisProduct.setOnClickListener(this);
@@ -337,7 +354,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             images.add(details.getProductImgs().get(i).getProductImg());
         count = details.getProductImgs().size();
         if (count >= 0) {
-
             productImagesAdapter = new ProductImagesAdapter(ProductDetailFragment.this,
                     getChildFragmentManager(), images);
             vpImages.setAdapter(productImagesAdapter);

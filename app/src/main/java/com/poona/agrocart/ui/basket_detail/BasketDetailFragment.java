@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.basket_detail;
 
+import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.ITEM_TYPE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
@@ -68,7 +69,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private ArrayList<ProductComment> commentArrayList;
     private ProductCommentsAdapter productCommentsAdapter;
     private Bundle bundle;
-    private String itemId;
+    private String itemId="";
     private boolean isProductDetailsVisible = true, isNutritionDetailsVisible = true, isAboutThisProductVisible = true,
             isBasketContentsVisible = true, isBenefitsVisible = true, isStorageVisible = true, isOtherProductInfo = true,
             isVariableWtPolicyVisible = true, isFavourite = false;
@@ -77,6 +78,15 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     public static BasketDetailFragment newInstance() {
         return new BasketDetailFragment();
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            itemId = getArguments().getString(BASKET_ID);
+        }
     }
 
     @Override
@@ -97,11 +107,16 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     private void initView() {
         basketDetailsBinding.itemLayout.setVisibility(View.GONE);
-        try {
+        if (isConnectingToInternet(context)) {
+            callBasketDetailsApi(showCircleProgressDialog(context, ""));
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+       /* try {
             if (getArguments() != null) {
                 bundle = getArguments();
-                if (bundle.getString(AppConstants.BASKET_ID) != null) {
-                    itemId = bundle.getString(AppConstants.BASKET_ID);
+                if (bundle.getString(BASKET_ID) != null) {
+                    itemId = bundle.getString(BASKET_ID);
                     if (isConnectingToInternet(context)) {
                         callBasketDetailsApi(showCircleProgressDialog(context, ""));
                     } else {
@@ -111,7 +126,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         basketDetailsBinding.llProductDetails.setOnClickListener(this);
         basketDetailsBinding.llNutritions.setOnClickListener(this);
         basketDetailsBinding.llAboutThisProduct.setOnClickListener(this);
@@ -343,7 +358,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             map.put(AppConstants.QUANTITY, String.valueOf(details.getQuantity()));
         if (favTo)
             map.put(ITEM_TYPE, "basket");
-        map.put(AppConstants.BASKET_ID, itemId);
+        map.put(BASKET_ID, itemId);
         return map;
     }
 
