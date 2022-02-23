@@ -80,11 +80,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         holder.bind(cartItem, position);
         if (cartItem.getItemType().equalsIgnoreCase("basket")) {
             rowProductItemBinding.tvName.setText(cartItem.getBasketName());
-            rowProductItemBinding.tvOfferPrice.setText("Rs." + cartItem.getBasketRate());
-            rowProductItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
         } else {
             rowProductItemBinding.tvName.setText(cartItem.getProductName());
-            rowProductItemBinding.tvOfferPrice.setText("Rs." + cartItem.getPricePerQuantity());
         }
     }
 
@@ -179,6 +176,10 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         public void bind(CartData cartItem, int position) {
             rowProductItemBinding.setVariable(BR.cartData, cartItem);
             rowProductItemBinding.executePendingBindings();
+            if (cartItem.getLocation()==null || cartItem.getLocation().isEmpty())
+                rowProductItemBinding.tvLocation.setVisibility(View.GONE);
+            if (cartItem.getWeight()==null || cartItem.getWeight().isEmpty())
+                rowProductItemBinding.tvWeight.setVisibility(View.GONE);
         }
     }
 }
