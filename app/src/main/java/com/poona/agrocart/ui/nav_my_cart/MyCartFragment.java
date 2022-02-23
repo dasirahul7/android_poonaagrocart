@@ -136,8 +136,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             this.deleteItemPosition = position;
             this.cartItemView = binding.getRoot();
             if (isConnectingToInternet(context)) {
-                removeCartItem();
-                deleteCartItemApi(binding);
+                removeCartItem(binding);
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
@@ -243,7 +242,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 Log.e("Delete Address Api Response", new Gson().toJson(baseResponse));
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(context, baseResponse.getMessage());
+                        //removeCartItem();
+                        //successToast(context, baseResponse.getMessage());
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors
@@ -276,13 +276,14 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         return map;
     }
 
-    private void removeCartItem() {
+    private void removeCartItem(RowProductItemBinding binding) {
         Animation anim = AnimationUtils.loadAnimation(requireContext(),
                 android.R.anim.slide_out_right);
         anim.setDuration(300);
         cartItemView.startAnimation(anim);
 
         new Handler().postDelayed(() -> {
+            deleteCartItemApi(binding);
             cartItemsList.remove(deleteItemPosition);
             cartItemAdapter.notifyDataSetChanged();
             if (cartItemsList != null && cartItemsList.size() > 0) {
