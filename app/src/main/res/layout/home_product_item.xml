@@ -64,7 +64,7 @@
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:text="@{homeProductModel.productName}"
+                    android:text='@{homeProductModel.productName ?? ""}'
                     android:textColor="@color/blue_txt_color"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_bold" />
@@ -78,7 +78,7 @@
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
                     android:singleLine="true"
-                    android:text="@{homeProductModel.location}"
+                    android:text='@{homeProductModel.location ?? ""}'
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:drawableStartCompat="@drawable/ic_location_small"
@@ -92,7 +92,7 @@
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:text="@{homeProductModel.accurateWeight}"
+                    android:text='@{homeProductModel.accurateWeight ?? ""}'
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -112,7 +112,7 @@
                         android:background="@drawable/bg_strikethrough"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:text="@{`Rs.`+homeProductModel.unit.sellingPrice}"
+                        android:text='@{`Rs.`+homeProductModel.unit.sellingPrice != null ? homeProductModel.unit.sellingPrice : ""}'
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -126,7 +126,7 @@
                         android:layout_weight="1"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:text="@{`Rs.`+homeProductModel.unit.offerPrice}"
+                        android:text='@{`Rs.`+homeProductModel.unit.offerPrice !=null ? homeProductModel.unit.offerPrice: ""}'
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_18sp"
                         app:setCustomFont="@string/font_montserrat_regular" />
@@ -156,7 +156,7 @@
                 android:background="@drawable/bg_offer_yellow"
                 android:gravity="center"
                 android:includeFontPadding="false"
-                android:text="@{homeProductModel.specialOffer}"
+                android:text='@{homeProductModel.specialOffer ?? ""}'
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp"

@@ -18,7 +18,7 @@ public class ProductListResponse extends BaseResponse {
         this.productResponseDt = productResponseDt;
     }
 
-    public class ProductResponseDt {
+    public  class ProductResponseDt {
         @SerializedName("product_list")
         @Expose
         private ArrayList<ProductListResponse.Product> productList = null;

@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
 import com.poona.agrocart.data.network.responses.favoutiteResponse.RemoveFavouriteListResponse;
 
@@ -106,5 +107,83 @@ public class FavouriteViewModel extends AndroidViewModel {
                     }
                 });
         return removeFavouriteListResponseMutableLiveData;
+    }
+
+    public LiveData<BaseResponse> callAddToCartFromBasketFavouriteList(ProgressDialog progressDialog,
+                                                                 HashMap<String, String> addToCartFromInputParameter,
+                                                                 FavouriteItemsFragment favouriteItemsFragment) {
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(favouriteItemsFragment.getContext())
+                .create(ApiInterface.class)
+                .getAddToCartFavouriteBasket(addToCartFromInputParameter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            baseResponseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+//                            ((NetworkExceptionListener) homeFragment).onNetworkException(1,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return baseResponseMutableLiveData;
+    }
+
+    public LiveData<BaseResponse> callAddToCartFromProductFavouriteList(ProgressDialog progressDialog,
+                                                                        HashMap<String, String> addToCartFromProductInputParameter,
+                                                                        FavouriteItemsFragment favouriteItemsFragment) {
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(favouriteItemsFragment.getContext())
+                .create(ApiInterface.class)
+                .getAddToCartFavouriteProduct(addToCartFromProductInputParameter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            baseResponseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+//                            ((NetworkExceptionListener) homeFragment).onNetworkException(1,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return baseResponseMutableLiveData;
     }
 }
