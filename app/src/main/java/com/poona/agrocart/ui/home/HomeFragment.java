@@ -94,7 +94,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import retrofit2.HttpException;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener{
     private static final String TAG = HomeFragment.class.getSimpleName();
     private static final int CATEGORY = 0;
     private static final int BASKET = 1;
@@ -166,31 +166,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         root = fragmentHomeBinding.getRoot();
         clearLists();
-        setRvBanners();
-        setRvCategory();
-        setRvBasket();
-        setRvSeasonal();
-        setRvBestSelling();
-        setRvExclusive();
-        setRvProduct();
+
 
         if (isConnectingToInternet(context)) {
             getHomepageResponses(showCircleProgressDialog(context, ""));
-            //callHomeApi(showCircleProgressDialog(context, ""), offset);
-//            callBannerApi(showCircleProgressDialog(context, ""));
-//            callCategoryApi(showCircleProgressDialog(context, ""), "load");
-//            callBasketApi(showCircleProgressDialog(context, ""), "load");
-//            callExclusiveOfferApi(showCircleProgressDialog(context, ""), "load");
-//            callBestSellingApi(showCircleProgressDialog(context, ""), "load");
-//            callSeasonalProductApi(showCircleProgressDialog(context, ""), "load");
-//            callProductListApi(showCircleProgressDialog(context, ""), "load");
-//            callStoreBannerApi(showCircleProgressDialog(context, ""));
             searchProducts();
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
-        getBasketItems();
-
         initClick();
         checkEmpties();
 
@@ -255,6 +238,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         setExclusiveResponse();
                         setStoreBannerResponse();
                         setProductListResponse();
+
                         fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
                         progressDialog.dismiss();
                     }
@@ -325,7 +309,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             }
                             productList.add(product);
                         }
-                        productListAdapter.notifyDataSetChanged();
+                        setRvProduct();
+//                        productListAdapter.notifyDataSetChanged();
 //                            productList = productListResponse.getProductResponseDt().getProductList();
                     }
                     break;
@@ -396,7 +381,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                 seasonalProductResponse.getSeasonalProducts().get(i).setType("Yellow");
                         }
                         seasonalProductList.addAll(seasonalProductResponse.getSeasonalProducts());
-                        seasonalBannerAdapter.notifyDataSetChanged();
+                        setRvSeasonal();
+//                        seasonalBannerAdapter.notifyDataSetChanged();
                     }
                     break;
                 case STATUS_CODE_403://Validation Errors
@@ -431,7 +417,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             }
                             bestSellings.add(product);
                         }
-                        bestsellingAdapter.notifyDataSetChanged();
+                        setRvBestSelling();
+//                        bestsellingAdapter.notifyDataSetChanged();
                     }
                     break;
                 case STATUS_CODE_403://Validation Errors
@@ -466,7 +453,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             offerProducts.add(product);
                         }
                         makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
-                        offerListAdapter.notifyDataSetChanged();
+                        setRvExclusive();
+//                        offerListAdapter.notifyDataSetChanged();
                     }
                     break;
                 case STATUS_CODE_403://Validation Errors
@@ -495,7 +483,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             && basketResponse.getData().getBaskets().size() > 0) {
                         makeVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
                         baskets.addAll(basketResponse.getData().getBaskets());
-                        basketAdapter.notifyDataSetChanged();
+                        setRvBasket();
+//                        basketAdapter.notifyDataSetChanged();
                     }
                     break;
                 case STATUS_CODE_403://Validation Errors
@@ -525,6 +514,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                 && categoryResponse.getCategoryData().getCategoryList().size() > 0) {
                             makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
                             categories.addAll(categoryResponse.getCategoryData().getCategoryList());
+                            setRvCategory();
                             categoryAdapter.notifyDataSetChanged();
                         }
                     }
@@ -587,64 +577,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             }
         }
     }
-
-    /*private void callHomeApi(ProgressDialog progressDialog, int offset) {
-        Observer<HomeResponse> homeResponseObserver = homeResponse -> {
-            if (homeResponse != null) {
-                progressDialog.dismiss();
-                Log.e(TAG, "callHomeApi: ");
-                switch (homeResponse.getStatus()) {
-                    case STATUS_CODE_200://Record Create/Update Successfully
-                        if (homeResponse.getResponse().getUserData() != null) {
-                            preferences.setUserProfile(homeResponse.getResponse().getUserData().get(0).getImage());
-                            preferences.setUserName(homeResponse.getResponse().getUserData().get(0).getUserName());
-
-                            if (homeResponse.getResponse().getUserData().get(0).getImage() != null
-                                    && !TextUtils.isEmpty(homeResponse.getResponse().getUserData().get(0).getImage())) {
-                                ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getResponse().getUserData().get(0).getUserName());
-                                loadingImage(context, homeResponse.getResponse().getUserData().get(0).getImage(), ((HomeActivity) context).civProfilePhoto);
-                            }
-
-                            System.out.println("name " + homeResponse.getResponse().getUserData().get(0).getUserName());
-                        }
-                        break;
-                    case STATUS_CODE_403://Validation Errors
-                    case STATUS_CODE_400://Validation Errors
-                    case STATUS_CODE_404://Validation Errors
-                        warningToast(context, homeResponse.getMessage());
-                        break;
-                    case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen(homeResponse.getMessage(), context);
-                        break;
-                    case STATUS_CODE_405://Method Not Allowed
-                        infoToast(context, homeResponse.getMessage());
-                        break;
-                }
-
-            }
-        };
-        homeViewModel.homeResponseLiveData(progressDialog, listingParams(offset, ""),
-                HomeFragment.this).observe(getViewLifecycleOwner(),
-                homeResponseObserver);
-    }*/
-
-    private void setStoreBanner(HomeResponse homeResponse) {
-        if (homeResponse.getResponse().getStoreBanner().size() > 0) {
-            makeVisible(fragmentHomeBinding.cardviewOurShops, null);
-            makeVisible(null, fragmentHomeBinding.rlO3Banner);
-            storeBannerList = (ArrayList<StoreBannerResponse.StoreBanner>) homeResponse.getResponse().getStoreBanner();
-            StoreBannerResponse.StoreBanner storeBanner = homeResponse.getResponse().getStoreBanner().get(0);
-            fragmentHomeBinding.setStoreBanner(storeBanner);
-            fragmentHomeBinding.setVariable(BR.storeBanner, storeBanner);
-            fragmentHomeBinding.executePendingBindings();
-            fragmentHomeBinding.cardviewOurShops.setOnClickListener(v -> {
-                redirectToOurShops(root);
-            });
-        } else {
-            makeInVisible(fragmentHomeBinding.cvStoreImg, null);
-            makeInVisible(fragmentHomeBinding.rlO3Banner, null);
-        }
-    }
     private void setRvBanners() {
         makeVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
         this.NumberOfBanners = banners.size();
@@ -665,10 +597,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             bundle.putString(LIST_TITLE, category.getCategoryName());
             bundle.putString(LIST_TYPE, category.getCategoryType());
             NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+            System.out.println("category size"+categories.size());
         });
-        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recCategory.setLayoutManager(categoryManager);
         fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
+        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
+        fragmentHomeBinding.recCategory.getRecycledViewPool().setMaxRecycledViews(0, 0);
 
     }
 
@@ -677,7 +611,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         basketAdapter = new BasketAdapter(baskets, getActivity(), this::toBasketDetail);
         fragmentHomeBinding.recBasket.setLayoutManager(basketManager);
         fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
-    }
+        fragmentHomeBinding.recBasket.getRecycledViewPool().setMaxRecycledViews(0, 0);    }
 
     private void setRvBestSelling() {
         bestSellingManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
@@ -731,188 +665,188 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         });
         fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
     }
-    private void setPaginationForLists() {
-        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(true);
-        fragmentHomeBinding.recBasket.setNestedScrollingEnabled(true);
-        fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(true);
-        fragmentHomeBinding.recProduct.setNestedScrollingEnabled(true);
-        //Category OnScroll
-        fragmentHomeBinding.recCategory.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    scrolling = true;
-                    System.out.println("scrolling" + scrolling);
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleCategoryCount = categoryManager.getChildCount();
-                int totalCategoryCount = categoryManager.getItemCount();
-                System.out.println("visibleCategoryCount: " + visibleCategoryCount + " totalCategoryCount " +
-                        totalCategoryCount);
-                if (scrolling && (categories.size() == totalCategoryCount)) {
-                    scrolling = false;
-                    try {
-                        callCategoryApi(null, "onScrolled");
-                        fragmentHomeBinding.recCategory.smoothScrollBy(dx, dy);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                System.out.println("scrolling" + scrolling);
-            }
-        });
-
-        // Basket OnScroll
-        fragmentHomeBinding.recBasket.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    scrolling = true;
-                    System.out.println("scrolling" + scrolling);
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleBasketCount = 0, totalBasketCount = 0, scrolledBaskets = 0;
-                visibleBasketCount = basketManager.getChildCount();
-                totalBasketCount = basketManager.getItemCount();
-                scrolledBaskets = basketManager.findLastCompletelyVisibleItemPosition();
-                System.out.println("visibleBasketCount: " + visibleBasketCount + " totalBasketCount " +
-                        totalBasketCount + " scrolledBaskets " + scrolledBaskets);
-                if (scrolling && (baskets.size() == totalBasketCount)) {
-                    scrolling = false;
-                    try {
-                        callBasketApi(showCircleProgressDialog(context, ""), "onScrolled");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                System.out.println("scrolling" + scrolling);
-            }
-        });
-
-        //Best Selling OnScroll
-        fragmentHomeBinding.recBestSelling.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    scrolling = true;
-                    System.out.println("scrolling" + scrolling);
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleSellingCount = bestSellingManager.getChildCount();
-                int totalSellingCount = bestSellingManager.getItemCount();
-                System.out.println("visibleSellingCount: " + visibleSellingCount + " totalSellingCount " +
-                        totalSellingCount);
-                if (scrolling && (bestSellings.size() == totalSellingCount)) {
-                    scrolling = false;
-                    try {
-                        callBestSellingApi(null, "onScrolled");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                System.out.println("scrolling" + scrolling);
-            }
-        });
-
-        //Seasonal OnScroll
-        fragmentHomeBinding.recSeasonal.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    scrolling = true;
-                    System.out.println("scrolling" + scrolling);
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleSeasonalCount = seasonalManager.getChildCount();
-                int totalSeasonalCount = seasonalManager.getItemCount();
-                System.out.println("visibleSeasonalCount: " + visibleSeasonalCount + " totalSeasonalCount " +
-                        totalSeasonalCount);
-                if (scrolling && (seasonalProductList.size() == totalSeasonalCount)) {
-                    scrolling = false;
-                    try {
-                        callSeasonalProductApi(null, "onScrolled");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                System.out.println("scrolling" + scrolling);
-            }
-        });
-
-        //Exclusive OnScrolled
-        fragmentHomeBinding.recExOffers.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    scrolling = true;
-                    System.out.println("scrolling" + scrolling);
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleCount = exclusiveOfferManager.getChildCount();
-                int totalCount = exclusiveOfferManager.getItemCount();
-                System.out.println("visibleExclusive: " + visibleCount + " totalExclusive " +
-                        totalCount);
-                if (scrolling && (offerProducts.size() == totalCount)) {
-                    scrolling = false;
-                    try {
-                        callExclusiveOfferApi(null, "onScrolled");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                System.out.println("scrolling" + scrolling);
-            }
-        });
-
-        //Product OnScrolled
-        fragmentHomeBinding.recProduct.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                int visibleCount = productManager.getChildCount();
-                int totalCount = productManager.getItemCount();
-                System.out.println("visibleExclusive: " + visibleCount + " totalExclusive " +
-                        totalCount);
-                if (productList.size() == totalCount) {
-                    try {
-                        callProductListApi(null, "onScrolled");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        });
-    }
+//    private void setPaginationForLists() {
+////        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(true);
+//        fragmentHomeBinding.recBasket.setNestedScrollingEnabled(true);
+//        fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(true);
+//        fragmentHomeBinding.recProduct.setNestedScrollingEnabled(true);
+//        //Category OnScroll
+//        fragmentHomeBinding.recCategory.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+//                    scrolling = true;
+//                    System.out.println("scrolling" + scrolling);
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                int visibleCategoryCount = categoryManager.getChildCount();
+//                int totalCategoryCount = categoryManager.getItemCount();
+//                System.out.println("visibleCategoryCount: " + visibleCategoryCount + " totalCategoryCount " +
+//                        totalCategoryCount);
+//                if (scrolling && (categories.size() == totalCategoryCount)) {
+//                    scrolling = false;
+//                    try {
+//                        callCategoryApi(null, "onScrolled");
+//                        fragmentHomeBinding.recCategory.smoothScrollBy(dx, dy);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//                System.out.println("scrolling" + scrolling);
+//            }
+//        });
+//
+//        // Basket OnScroll
+//        fragmentHomeBinding.recBasket.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+//                    scrolling = true;
+//                    System.out.println("scrolling" + scrolling);
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                int visibleBasketCount = 0, totalBasketCount = 0, scrolledBaskets = 0;
+//                visibleBasketCount = basketManager.getChildCount();
+//                totalBasketCount = basketManager.getItemCount();
+//                scrolledBaskets = basketManager.findLastCompletelyVisibleItemPosition();
+//                System.out.println("visibleBasketCount: " + visibleBasketCount + " totalBasketCount " +
+//                        totalBasketCount + " scrolledBaskets " + scrolledBaskets);
+//                if (scrolling && (baskets.size() == totalBasketCount)) {
+//                    scrolling = false;
+//                    try {
+//                        callBasketApi(showCircleProgressDialog(context, ""), "onScrolled");
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//                System.out.println("scrolling" + scrolling);
+//            }
+//        });
+//
+//        //Best Selling OnScroll
+//        fragmentHomeBinding.recBestSelling.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+//                    scrolling = true;
+//                    System.out.println("scrolling" + scrolling);
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                int visibleSellingCount = bestSellingManager.getChildCount();
+//                int totalSellingCount = bestSellingManager.getItemCount();
+//                System.out.println("visibleSellingCount: " + visibleSellingCount + " totalSellingCount " +
+//                        totalSellingCount);
+//                if (scrolling && (bestSellings.size() == totalSellingCount)) {
+//                    scrolling = false;
+//                    try {
+//                        callBestSellingApi(null, "onScrolled");
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//                System.out.println("scrolling" + scrolling);
+//            }
+//        });
+//
+//        //Seasonal OnScroll
+//        fragmentHomeBinding.recSeasonal.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+//                    scrolling = true;
+//                    System.out.println("scrolling" + scrolling);
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                int visibleSeasonalCount = seasonalManager.getChildCount();
+//                int totalSeasonalCount = seasonalManager.getItemCount();
+//                System.out.println("visibleSeasonalCount: " + visibleSeasonalCount + " totalSeasonalCount " +
+//                        totalSeasonalCount);
+//                if (scrolling && (seasonalProductList.size() == totalSeasonalCount)) {
+//                    scrolling = false;
+//                    try {
+//                        callSeasonalProductApi(null, "onScrolled");
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//                System.out.println("scrolling" + scrolling);
+//            }
+//        });
+//
+//        //Exclusive OnScrolled
+//        fragmentHomeBinding.recExOffers.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+//                    scrolling = true;
+//                    System.out.println("scrolling" + scrolling);
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                int visibleCount = exclusiveOfferManager.getChildCount();
+//                int totalCount = exclusiveOfferManager.getItemCount();
+//                System.out.println("visibleExclusive: " + visibleCount + " totalExclusive " +
+//                        totalCount);
+//                if (scrolling && (offerProducts.size() == totalCount)) {
+//                    scrolling = false;
+//                    try {
+//                        callExclusiveOfferApi(null, "onScrolled");
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//                System.out.println("scrolling" + scrolling);
+//            }
+//        });
+//
+//        //Product OnScrolled
+//        fragmentHomeBinding.recProduct.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+//            @Override
+//            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+//                int visibleCount = productManager.getChildCount();
+//                int totalCount = productManager.getItemCount();
+//                System.out.println("visibleExclusive: " + visibleCount + " totalExclusive " +
+//                        totalCount);
+//                if (productList.size() == totalCount) {
+//                    try {
+//                        callProductListApi(null, "onScrolled");
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }
+//        });
+//    }
 
     private void checkEmpties() {
         //check if banner is empty
@@ -1367,7 +1301,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                     && categoryResponse.getCategoryData().getCategoryList().size() > 0) {
                                 makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
                                 categories.addAll(categoryResponse.getCategoryData().getCategoryList());
-                                categoryAdapter.notifyDataSetChanged();
+//                                categoryAdapter.notifyDataSetChanged();
                                 System.out.println("categories " + categories.size());
                                 fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
                             }
@@ -1665,49 +1599,4 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 .observe(getViewLifecycleOwner(), profileResponseObserver);
     }
 
-    @Override
-    public void onNetworkException(int from, String type) {
-        showServerErrorDialog(getString(R.string.for_better_user_experience), HomeFragment.this, () -> {
-            if (isConnectingToInternet(context)) {
-                hideKeyBoard(requireActivity());
-                switch (from) {
-                    case 0:
-                        // Call Banner API after network error
-                        callBannerApi(showCircleProgressDialog(context, ""));
-                        break;
-                    case 1:
-                        //Call Category API after network error
-                        callCategoryApi(showCircleProgressDialog(context, ""), type);
-                        break;
-                    case 2:
-                        //Call Basket API after network error
-                        callBasketApi(showCircleProgressDialog(context, ""), type);
-                        break;
-                    case 3:
-                        //Call Product API after network error
-                        callExclusiveOfferApi(showCircleProgressDialog(context, ""), type);
-                        break;
-                    case 4:
-                        //Call Bestselling API after network error
-                        callBestSellingApi(showCircleProgressDialog(context, ""), type);
-                        break;
-                    case 5:
-                        //Call Seasonal ProductOld API after network error
-                        callSeasonalProductApi(showCircleProgressDialog(context, ""), type);
-                        break;
-                    case 6:
-                        //Call ProductOld List API after network error
-                        callProductListApi(showCircleProgressDialog(context, ""), type);
-                        break;
-                    case 7:
-                        //Call ProductOld List API after network error
-                        callStoreBannerApi(showCircleProgressDialog(context, ""));
-                        break;
-
-                }
-            } else {
-                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-            }
-        }, context);
-    }
 }
