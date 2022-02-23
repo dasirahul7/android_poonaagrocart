@@ -1,6 +1,5 @@
 package com.poona.agrocart.ui.product_detail;
 
-import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.PU_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
@@ -173,7 +172,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         dotsIndicator = fragmentProductDetailBinding.dotsIndicator;
         rvProductComment = fragmentProductDetailBinding.rvProductComment;
 
-        setValues();
+        setHideOrShowValues();
 
     }
 
@@ -188,20 +187,17 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                             details = productDetailsResponse.getProductDetails();
                             if (details.getIsCart() == 1) {
                                 for (ProductListResponse.ProductUnit unit : details.getProductUnits()) {
-                                    if (unit.getInCart() == 1)
                                         details.setUnit(unit);
                                 }
                             } else
                                 details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
                             setDetailsValue();
-                            changePriceAndUnit(details.getUnit(), false);
+                            changePriceAndUnit(details.getUnit());
                             fragmentProductDetailBinding.setProductDetailModule(details);
                             fragmentProductDetailBinding.setVariable(BR.productDetailModule, details);
                             System.out.println("product name" + details.getProductName());
                             UnitAdapter unitAdapter = new UnitAdapter(details.getProductUnits(), details.getIsCart(), requireActivity(), unit -> {
-                                if (details.getIsCart() == 0)
-                                    changePriceAndUnit(unit, false);
-                                else infoToast(context, "Item already added");
+                                    changePriceAndUnit(unit);
                             });
                             fragmentProductDetailBinding.rvWeights.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false));
                             fragmentProductDetailBinding.rvWeights.setAdapter(unitAdapter);
@@ -244,13 +240,25 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             isFavourite = false;
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
         }
+        changePriceAndUnit(details.getUnit());
         if (details.getIsCart() == 1) {
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
             if (details.getQuantity() > 0) {
+                fragmentProductDetailBinding.ivPlus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
+                if (details.getQuantity()>1){
+                    fragmentProductDetailBinding.ivMinus.setEnabled(true);
+                    fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
+                }
+                else {
+                    fragmentProductDetailBinding.ivMinus.setEnabled(false);
+                    fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
+                }
                 fragmentProductDetailBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
-                changePriceAndUnit(details.getUnit(), false);
+            }else {
+                fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
             }
+
         } else {
             fragmentProductDetailBinding.ivPlus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.ivMinus.setVisibility(View.GONE);
@@ -258,22 +266,12 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         }
     }
 
-    private void changePriceAndUnit(ProductListResponse.ProductUnit unit, boolean added) {
+    private void changePriceAndUnit(ProductListResponse.ProductUnit unit) {
         unitId = unit.getpId();
         int sellingPrice = Integer.parseInt(unit.getSellingPrice());
         int offerPrice = Integer.parseInt(unit.getSellingPrice());
-        int quantity = details.getQuantity();
-        int finalSellingPrice = sellingPrice * quantity;
-        int finalOfferPrice = offerPrice * quantity;
-        System.out.println(finalOfferPrice);
-        System.out.println(finalSellingPrice);
-        if (quantity > 0) {
-            fragmentProductDetailBinding.tvPrice.setText("Rs." + finalSellingPrice);
-            fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + finalOfferPrice);
-        } else {
             fragmentProductDetailBinding.tvPrice.setText("Rs." + sellingPrice);
             fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + offerPrice);
-        }
     }
 
     private HashMap<String, String> detailsParams(int detail) {
@@ -303,7 +301,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         }
     }
 
-    private void setValues() {
+    private void setHideOrShowValues() {
         hideOrShowAboutThisProduct();
         hideOrShowBenefits();
         hideOrShowStorageAndUses();
@@ -391,8 +389,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 hideOrShowNutritionDetails();
                 break;
             case R.id.iv_minus:
-                decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
-                        fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivPlus);
+                if (Integer.parseInt(fragmentProductDetailBinding.etQuantity.getText().toString())>1){
+                    decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
+                            fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
+                }else fragmentProductDetailBinding.ivMinus.setEnabled(false);
                 break;
             case R.id.iv_plus:
                 addOrRemoveFromCart();
@@ -476,7 +476,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         } else {
             increaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
                     fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivPlus);
-            updateQuantityApi(showCircleProgressDialog(context, ""), details);
         }
     }
 
@@ -530,7 +529,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
                         setDetailsValue();
-                        changePriceAndUnit(details.getUnit(), true);
+//                        changePriceAndUnit(details.getUnit(), true);
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -625,6 +624,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         etQuantity.setText(String.valueOf(quantity));
         AppUtils.setMinusButton(quantity, view);
         details.setQuantity(quantity);
+        updateQuantityApi(showCircleProgressDialog(context,""),details);
     }
 
     private void decreaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
@@ -634,6 +634,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         } else {
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
+            details.setQuantity(quantity);
             updateQuantityApi(showCircleProgressDialog(context, ""), details);
         }
         details.setQuantity(quantity);
@@ -697,7 +698,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
                         break;
                     case 2:
-                        addOrRemoveFromCart();
+                        updateQuantityApi(showCircleProgressDialog(context, ""), details);
                         break;
                 }
             }
