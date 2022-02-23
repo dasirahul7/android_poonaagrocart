@@ -26,7 +26,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
     private OnCartItemDeleteClickListener onCartItemDeleteClickListener;
 
     public interface OnCartItemClickListener {
-        void onCartItemClick(int position);
+        void onCartItemClick(CartData cartData);
     }
 
     public interface OnCartAddCountClickListener {
@@ -146,6 +146,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
                     }
                 }
             });
+
         }
 
 
@@ -180,6 +181,11 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
                 rowProductItemBinding.tvLocation.setVisibility(View.GONE);
             if (cartItem.getWeight()==null || cartItem.getWeight().isEmpty())
                 rowProductItemBinding.tvWeight.setVisibility(View.GONE);
+            itemView.setOnClickListener(view -> {
+                selectedMinusCartItem = getBindingAdapterPosition();
+                onCartItemClickListener.onCartItemClick(cartItem);
+            });
+
         }
     }
 }

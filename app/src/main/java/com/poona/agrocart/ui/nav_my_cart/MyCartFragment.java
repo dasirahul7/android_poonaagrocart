@@ -1,8 +1,10 @@
 package com.poona.agrocart.ui.nav_my_cart;
 
 import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
+import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.CART_ID;
 import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
+import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -27,6 +29,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +37,7 @@ import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.cartResponse.CartData;
 import com.poona.agrocart.data.network.responses.cartResponse.MyCartResponse;
 import com.poona.agrocart.databinding.FragmentMyCartBinding;
@@ -41,6 +45,7 @@ import com.poona.agrocart.databinding.RowProductItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.CustomDialogInterface;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.home.HomeFragment;
 import com.poona.agrocart.ui.nav_addresses.AddressesAdapter;
 import com.poona.agrocart.ui.nav_addresses.AddressesFragment;
 import com.poona.agrocart.ui.nav_addresses.AddressesViewModel;
@@ -66,6 +71,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     private float scale;
 
     private int deleteItemPosition = 0;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -122,8 +128,12 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         cartItemAdapter = new CartItemsAdapter(cartItemsList);
         rvMyCart.setAdapter(cartItemAdapter);
 
-        cartItemAdapter.setOnCartItemClick(position -> {
-
+        cartItemAdapter.setOnCartItemClick(cartData -> {
+            if (cartData.getItemType().equalsIgnoreCase("product")){
+                toProductDetail(cartData.getProductId());
+            }else {
+                toBasketDetail(cartData.getBasketIdFk());
+            }
         });
 
         cartItemAdapter.setOnCartAddMinusCountClick((position, binding) -> {
@@ -416,5 +426,16 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         super.onResume();
         requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.GONE);
         setBottomMarginInDps(0);
+    }
+
+    private void toProductDetail(String productId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(PRODUCT_ID, productId);
+        Navigation.findNavController(view).navigate(R.id.action_nav_cart_to_productDetails, bundle);
+    }
+    private void toBasketDetail(String basketId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(BASKET_ID, basketId);
+        Navigation.findNavController(view).navigate(R.id.action_nav_cart_to_basketDetails, bundle);
     }
 }
