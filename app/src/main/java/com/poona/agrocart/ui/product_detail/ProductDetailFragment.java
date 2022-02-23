@@ -241,12 +241,21 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
         }
         changePriceAndUnit(details.getUnit());
-        if (details.getIsCart() == 1) {
+    }
+
+    private void changePriceAndUnit(ProductListResponse.ProductUnit unit) {
+        unitId = unit.getpId();
+        int sellingPrice = Integer.parseInt(unit.getSellingPrice());
+        int offerPrice = Integer.parseInt(unit.getOfferPrice());
+            fragmentProductDetailBinding.tvPrice.setText("Rs." + sellingPrice);
+            fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + offerPrice);
+        if (unit.getInCart() == 1) {
+            details.setIsCart(1);
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
-            if (details.getQuantity() > 0) {
+            if (unit.getQty() > 0) {
                 fragmentProductDetailBinding.ivPlus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
-                if (details.getQuantity()>1){
+                if (unit.getQty()>1){
                     fragmentProductDetailBinding.ivMinus.setEnabled(true);
                     fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
                 }
@@ -254,24 +263,17 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                     fragmentProductDetailBinding.ivMinus.setEnabled(false);
                     fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
                 }
-                fragmentProductDetailBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
+                fragmentProductDetailBinding.etQuantity.setText(String.valueOf(unit.getQty()));
             }else {
                 fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
             }
 
         } else {
+            details.setIsCart(0);
             fragmentProductDetailBinding.ivPlus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.ivMinus.setVisibility(View.GONE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.GONE);
         }
-    }
-
-    private void changePriceAndUnit(ProductListResponse.ProductUnit unit) {
-        unitId = unit.getpId();
-        int sellingPrice = Integer.parseInt(unit.getSellingPrice());
-        int offerPrice = Integer.parseInt(unit.getSellingPrice());
-            fragmentProductDetailBinding.tvPrice.setText("Rs." + sellingPrice);
-            fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + offerPrice);
     }
 
     private HashMap<String, String> detailsParams(int detail) {
@@ -492,8 +494,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
-                        details.setQuantity(1);
-                        details.setIsCart(1);
+                        details.getUnit().setQty(1);
+                        details.getUnit().setInCart(1);
                         setDetailsValue();
                         break;
                     case STATUS_CODE_403://Validation Errors
