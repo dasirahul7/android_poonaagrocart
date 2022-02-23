@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.poona.agrocart.R;
@@ -91,6 +92,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private String itemId ="";
     private Bundle bundle;
     private String unitId;
+    private SwipeRefreshLayout rlRefreshPage;
+
 
 
     @Override
@@ -109,6 +112,18 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         initTitleWithBackBtn("");
         initView();
         setSimilarItems();
+        rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                rlRefreshPage.setRefreshing(true);
+                if (isConnectingToInternet(context)) {
+                    callProductDetailsApi(showCircleProgressDialog(context,""));
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
+
 
         return root;
     }
@@ -133,7 +148,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.VISIBLE);
         txtOrganic = ((HomeActivity) requireActivity()).binding.appBarHome.txtOrganic;
         txtBrand = ((HomeActivity) requireActivity()).binding.appBarHome.tvBrand;
-
+        rlRefreshPage = fragmentProductDetailBinding.rlRefreshPage;
         if (isConnectingToInternet(context)) {
             callProductDetailsApi(showCircleProgressDialog(context, ""));
         } else {
@@ -185,20 +200,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         if (productDetailsResponse.getProductDetails() != null) {
                             fragmentProductDetailBinding.itemLayout.setVisibility(View.VISIBLE);
                             details = productDetailsResponse.getProductDetails();
-                            if (details.getIsCart() == 1) {
-                                for (ProductListResponse.ProductUnit unit : details.getProductUnits()) {
-                                        details.setUnit(unit);
-                                }
-                            } else
-                                details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
+                            rlRefreshPage.setRefreshing(false);
+                            details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
                             setDetailsValue();
                             changePriceAndUnit(details.getUnit());
                             fragmentProductDetailBinding.setProductDetailModule(details);
                             fragmentProductDetailBinding.setVariable(BR.productDetailModule, details);
                             System.out.println("product name" + details.getProductName());
-                            UnitAdapter unitAdapter = new UnitAdapter(details.getProductUnits(), details.getIsCart(), requireActivity(), unit -> {
-                                    changePriceAndUnit(unit);
-                            });
+                            UnitAdapter unitAdapter = new UnitAdapter(details.getProductUnits(), details.getIsCart(), requireActivity(), this::changePriceAndUnit);
                             fragmentProductDetailBinding.rvWeights.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false));
                             fragmentProductDetailBinding.rvWeights.setAdapter(unitAdapter);
                             // Redirect to ProductOld details
@@ -473,7 +482,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void addOrRemoveFromCart() {
-        if (details.getIsCart() == 0) {
+        if (details.getUnit().getInCart() == 0) {
             callAddToCartApi(showCircleProgressDialog(context, ""), details);
         } else {
             increaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
@@ -625,7 +634,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         quantity++;
         etQuantity.setText(String.valueOf(quantity));
         AppUtils.setMinusButton(quantity, view);
-        details.setQuantity(quantity);
+        details.getUnit().setQty(quantity);
         updateQuantityApi(showCircleProgressDialog(context,""),details);
     }
 
