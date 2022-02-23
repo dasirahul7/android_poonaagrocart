@@ -13,10 +13,13 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
@@ -105,6 +108,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         navHostMargins.bottomMargin = dpAsPixels;
     }
 
+    private View cartItemView;
     @SuppressLint("NotifyDataSetChanged")
     private void setRvAdapter() {
         cartItemsList = new ArrayList<>();
@@ -130,6 +134,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
         cartItemAdapter.setOnDeleteCartItemClick((position, binding) -> {
             this.deleteItemPosition = position;
+            this.cartItemView = binding.getRoot();
             if (isConnectingToInternet(context)) {
                 deleteCartItemApi(binding);
             } else {
@@ -223,7 +228,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void deleteCartItemApi(RowProductItemBinding binding) {
-        binding.rlMain.setVisibility(View.GONE);
+        //binding.rlMain.setVisibility(View.GONE);
         binding.rlLoader.setVisibility(View.VISIBLE);
         /*print user input parameters*/
         for (Map.Entry<String, String> entry : getCartItemIdParameter().entrySet()) {
@@ -232,13 +237,13 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
         androidx.lifecycle.Observer<BaseResponse> responseObserver = baseResponse -> {
             if (baseResponse != null) {
-                binding.rlMain.setVisibility(View.VISIBLE);
+                //binding.rlMain.setVisibility(View.VISIBLE);
                 binding.rlLoader.setVisibility(View.GONE);
                 Log.e("Delete Address Api ResponseData", new Gson().toJson(baseResponse));
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, baseResponse.getMessage());
-                        //deleteItem();
+                        removeCartItem();
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors
@@ -255,7 +260,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                         break;
                 }
             } else {
-                binding.rlMain.setVisibility(View.VISIBLE);
+                //binding.rlMain.setVisibility(View.VISIBLE);
                 binding.rlLoader.setVisibility(View.GONE);
             }
         };
@@ -269,6 +274,29 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         HashMap<String, String> map = new HashMap<>();
         map.put(CART_ID, cartItemsList.get(deleteItemPosition).getCartId());
         return map;
+    }
+
+    private void removeCartItem() {
+        Animation anim = AnimationUtils.loadAnimation(requireContext(),
+                android.R.anim.slide_out_right);
+        anim.setDuration(300);
+        cartItemView.startAnimation(anim);
+
+        new Handler().postDelayed(() -> {
+            cartItemsList.remove(deleteItemPosition);
+            cartItemAdapter.notifyDataSetChanged();
+            if (cartItemsList != null && cartItemsList.size() > 0) {
+                fragmentMyCartBinding.emptyLayout.setVisibility(View.GONE);
+                fragmentMyCartBinding.llMain.setVisibility(View.VISIBLE);
+                ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.VISIBLE);
+            } else {
+                requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
+                setBottomMarginInDps(50);
+                fragmentMyCartBinding.emptyLayout.setVisibility(View.VISIBLE);
+                fragmentMyCartBinding.llMain.setVisibility(View.GONE);
+                ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
+            }
+        }, anim.getDuration());
     }
 
     /*private void deleteCartListApi(ProgressDialog progressDialog) {
