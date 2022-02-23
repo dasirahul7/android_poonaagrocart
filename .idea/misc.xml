@@ -254,6 +254,7 @@
         <entry key="app/src/main/res/layout/fragment_product_image.xml" value="0.14402173913043478" />
         <entry key="app/src/main/res/layout/fragment_product_list.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.13269927536231885" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.17025641025641025" />
         <entry key="app/src/main/res/layout/fragment_select_location.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.22" />
@@ -271,6 +272,7 @@
         <entry key="app/src/main/res/layout/menu_item.xml" value="0.16259057971014493" />
         <entry key="app/src/main/res/layout/nav_header_home.xml" value="0.14" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.17074275362318841" />
+        <entry key="app/src/main/res/layout/photo_image_pop_up_dailog.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/privacy_fragment.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/row_banner.xml" value="0.14356884057971014" />
         <entry key="app/src/main/res/layout/row_basket_item.xml" value="0.15489130434782608" />

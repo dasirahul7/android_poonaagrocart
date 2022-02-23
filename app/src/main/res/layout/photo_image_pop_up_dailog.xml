@@ -2,33 +2,50 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="@color/colorGreyTransparent">
+
+        <ImageView
+            android:id="@+id/iv_cancel_icon"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:src="@drawable/ic_cross_cancel" />
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_240sdp">
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_pop_up_image"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize20Percent" />
+                android:layout_height="@dimen/_240sdp">
 
-            <!-- <ImageView
-                 android:id="@+id/iv_pop_up_image"
-                 android:layout_height="match_parent"
-                 android:layout_width="match_parent"
-                 android:background="@drawable/gallery_image_backgorund"
-                 android:scaleType="centerCrop"/>-->
-        </RelativeLayout>
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_pop_up_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize20Percent" />
 
-    </LinearLayout>
+                <!-- <ImageView
+                     android:id="@+id/iv_pop_up_image"
+                     android:layout_height="match_parent"
+                     android:layout_width="match_parent"
+                     android:background="@drawable/gallery_image_backgorund"
+                     android:scaleType="centerCrop"/>-->
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </layout>

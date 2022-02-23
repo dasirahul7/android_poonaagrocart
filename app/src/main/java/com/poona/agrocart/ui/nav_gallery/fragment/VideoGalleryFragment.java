@@ -208,6 +208,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
 
     /*Video Player Dialogue*/
     public void VideoPlayerDialog(int position) {
+
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -218,20 +219,11 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
         ImageView crossImage = dialog.findViewById(R.id.iv_close_dialog);
 
+        String strVideoView = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";  //testing url
 
-        String strVideoView = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-       // String strVideoView = galleryVideoList.get(position).getVideoUrl();
+       //String strVideoView = galleryVideoList.get(position).getVideoUrl();
 
-        /*String test = strVideoView.substring(strVideoView.lastIndexOf("."));
-        if(test.equalsIgnoreCase(".mp4") || test.equalsIgnoreCase(".avi")
-                || test.equalsIgnoreCase(".mkv") || test.equalsIgnoreCase(".mov")){
-            simpleExoPlayer.prepare();
-        }else {
-
-            progressDialog.setVisibility(View.GONE);
-            infoToast(context, "please check the extension .mp4, .avi, .mkv, .mov");
-        }*/
-
+        /*Exoplayer video mange and handling*/
 
         simpleExoPlayer = new SimpleExoPlayer.Builder(context).build();
         playerView.setPlayer(simpleExoPlayer);
@@ -291,8 +283,8 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
             simpleExoPlayer.stop();
             dialog.dismiss();
         });
-        dialog.show();
 
+        dialog.show();
 
         // Get screen width and height in pixels
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -329,6 +321,19 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     @Override
     public void itemViewClick(int position) {
         VideoPlayerDialog(position);
+
+        /*Added the validation on extension */
+
+       /* String strVideoView = galleryVideoList.get(position).getVideoUrl();
+        String test = strVideoView.substring(strVideoView.lastIndexOf("."));
+        if(test.equalsIgnoreCase(".mp4") || test.equalsIgnoreCase(".avi")
+                || test.equalsIgnoreCase(".mkv") || test.equalsIgnoreCase(".mov")){
+            VideoPlayerDialog(position);
+
+        }else {
+
+            infoToast(context, "please check the extension .mp4, .avi, .mkv, .mov");
+        }*/
     }
 
     @Override
