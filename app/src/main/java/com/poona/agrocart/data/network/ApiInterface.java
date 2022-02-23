@@ -212,9 +212,8 @@ public interface ApiInterface {
     @GET(HOME_BANNER_API)
     Single<BannerResponse> homeBannerResponse();
 
-    @FormUrlEncoded
-    @POST(HOME_BANNER_API)
-    Observable<BannerResponse> homeBannerResponse(@FieldMap HashMap<String, String> data);
+    @GET(HOME_BANNER_API)
+    Observable<BannerResponse> homeScreenBannerResponse();
 
     // Home Store Banner API
     @GET(HOME_STORE_BANNER_API)

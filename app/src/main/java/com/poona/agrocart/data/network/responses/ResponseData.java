@@ -11,7 +11,7 @@ public class ResponseData implements Serializable {
 
     @SerializedName("user_data")
     @Expose
-    private List<SignInResponse.User> userData = null;
+    private SignInResponse.User userData = null;
     @SerializedName("banner_details")
     @Expose
     private ArrayList<BannerResponse.Banner> bannerDetails = null;
@@ -40,11 +40,11 @@ public class ResponseData implements Serializable {
     @Expose
     private List<ProductListResponse.Product> productList = null;
 
-    public List<SignInResponse.User> getUserData() {
+    public SignInResponse.User getUserData() {
         return userData;
     }
 
-    public void setUserData(List<SignInResponse.User> userData) {
+    public void setUserData(SignInResponse.User userData) {
         this.userData = userData;
     }
 

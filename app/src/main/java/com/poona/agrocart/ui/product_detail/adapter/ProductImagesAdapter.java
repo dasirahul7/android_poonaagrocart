@@ -1,4 +1,4 @@
-package com.poona.agrocart.ui.product_detail;
+package com.poona.agrocart.ui.product_detail.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
+import com.poona.agrocart.ui.product_detail.ProductImageFragment;
 import com.poona.agrocart.ui.seasonal.SeasonalRegFragment;
 
 import java.util.ArrayList;
@@ -26,9 +28,9 @@ public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPa
         this.imgsList = imgsList;
     }
 
-    public ProductImagesAdapter(@NonNull FragmentManager fm, SeasonalRegFragment context, FragmentManager fragmentManager,
+    public ProductImagesAdapter(SeasonalRegFragment context, FragmentManager fragmentManager,
                                 ArrayList<String> imgsList, int imageType) {
-        super(fm);
+        super(fragmentManager);
         this.fragment = context;
         this.fragmentManager = fragmentManager;
         this.imgsList = imgsList;
@@ -38,16 +40,17 @@ public class ProductImagesAdapter extends FragmentPagerAdapter implements ViewPa
 
     @Override
     public Fragment getItem(int position) {
-        if (imageType == 0)
-            return ProductImageFragment.newInstance(context, position, imgsList);
-        else return ProductImageFragment.newInstance(fragment, position, imgsList);
+        System.out.println("imageType: "+imageType);
+        if (imageType == 1)
+            return ProductImageFragment.newInstance(fragment, position, imgsList);
+        else return ProductImageFragment.newInstance(context, position, imgsList);
     }
 
     @Override
     public int getCount() {
-        if (imageType == 0)
-            return context.count;
-        else return fragment.count;
+        if (imageType == 1)
+            return fragment.count;
+        else return context.count;
     }
 
     @Override

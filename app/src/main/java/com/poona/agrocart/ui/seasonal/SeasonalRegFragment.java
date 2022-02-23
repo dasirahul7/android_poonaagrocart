@@ -12,7 +12,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
 import com.poona.agrocart.databinding.FragmentSeasonalRegBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.product_detail.ProductImagesAdapter;
+import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
+import com.poona.agrocart.ui.product_detail.adapter.ProductImagesAdapter;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
  */
 public class SeasonalRegFragment extends BaseFragment {
 
+    private static final String IMAGE = "image";
     public int count = 0;
     public ViewPager vpImages;
     private FragmentSeasonalRegBinding fragmentSeasonalRegBinding;
@@ -32,6 +34,8 @@ public class SeasonalRegFragment extends BaseFragment {
     private SeasonalProductResponse.SeasonalProduct seasonalProduct;
     private ProductImagesAdapter productImagesAdapter;
     private DotsIndicator dotsIndicator;
+    private String image;
+    private ArrayList<String> images;
 
     public static SeasonalRegFragment newInstance(String param1, String param2) {
         SeasonalRegFragment fragment = new SeasonalRegFragment();
@@ -41,10 +45,9 @@ public class SeasonalRegFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
+        if (getArguments() != null) {
+            image = getArguments().getString(IMAGE);
+        }
     }
 
     @Override
@@ -64,11 +67,10 @@ public class SeasonalRegFragment extends BaseFragment {
         vpImages = fragmentSeasonalRegBinding.vpProductImages;
         dotsIndicator = fragmentSeasonalRegBinding.dotsIndicator;
         initTitleWithBackBtn("Seasonal Product Registration");
-        ArrayList<String> images = new ArrayList<>();
+       images = new ArrayList<>();
         seasonalProduct = new SeasonalProductResponse.SeasonalProduct();
         for (int i = 0; i < 3; i++)
-            images.add(getArguments() != null ? getArguments().getString("image") : null);
-        System.out.println(getArguments().getString("image"));
+            images.add(getArguments() != null ? image: null);
         seasonalProduct.setSeasProductImages(images);
         setViewPagerAdapterItems();
     }
@@ -76,13 +78,15 @@ public class SeasonalRegFragment extends BaseFragment {
     /*Set images here*/
     private void setViewPagerAdapterItems() {
 
-        count = seasonalProduct.getSeasProductImages().size();
-        productImagesAdapter = new ProductImagesAdapter(getChildFragmentManager(), SeasonalRegFragment.this,
-                getChildFragmentManager(), seasonalProduct.getSeasProductImages(), 1);
-        vpImages.setAdapter(productImagesAdapter);
-        productImagesAdapter.notifyDataSetChanged();
-        vpImages.addOnPageChangeListener(productImagesAdapter);
-        dotsIndicator.setViewPager(vpImages);
+        count = images.size();
+        if (count>0){
+            productImagesAdapter = new ProductImagesAdapter(SeasonalRegFragment.this,
+                    getChildFragmentManager(), images,1);
+            vpImages.setAdapter(productImagesAdapter);
+            productImagesAdapter.notifyDataSetChanged();
+            vpImages.addOnPageChangeListener(productImagesAdapter);
+            dotsIndicator.setViewPager(vpImages);
+        }
     }
 
 }

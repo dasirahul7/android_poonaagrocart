@@ -47,6 +47,28 @@ public class SignInResponse extends BaseResponse {
         @SerializedName("image")
         @Expose
         private String image;
+        @SerializedName("city_name")
+        @Expose
+        private String cityName;
+        @SerializedName("area_name")
+        @Expose
+        private String areaName;
+
+        public String getCityName() {
+            return cityName;
+        }
+
+        public void setCityName(String cityName) {
+            this.cityName = cityName;
+        }
+
+        public String getAreaName() {
+            return areaName;
+        }
+
+        public void setAreaName(String areaName) {
+            this.areaName = areaName;
+        }
 
         public String getImage() {
             return image;

@@ -28,7 +28,6 @@ import com.poona.agrocart.data.network.responses.HomeResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
-import com.poona.agrocart.data.network.responses.StateResponse;
 import com.poona.agrocart.data.network.responses.StoreBannerResponse;
 import com.poona.agrocart.ui.home.model.ProductOld;
 
@@ -563,40 +562,34 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public Observable<List<String>> getHomepageResponses(Context context,
-                                                         HashMap<String, String> homeHashMap,
-                                                         HashMap<String, String> bannerHashMap,
-                                                         HashMap<String, String> categoryHashMap,
-                                                         HashMap<String, String> basketHashMap,
-                                                         HashMap<String, String> exclusiveHashMap,
-                                                         HashMap<String, String> bestSellingHashMap,
-                                                         HashMap<String, String> seasonalHashMap,
-                                                         HashMap<String, String> productsHashMap) {
+                                                         HashMap<String, String> homeHashMap
+                                                         ) {
         Observable<HomeResponse> homeAllDataObservable = ApiClientAuth
                 .getClient(context).create(ApiInterface.class).getHomeAllDataObservable(homeHashMap);
 
         Observable<BannerResponse> homeBannerObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).homeBannerResponse(bannerHashMap);
+                .getClient(context).create(ApiInterface.class).homeScreenBannerResponse();
 
         Observable<StoreBannerResponse> homeStoreBannerObservable = ApiClientAuth
                 .getClient(context).create(ApiInterface.class).homeStoreBannerObservable();
 
         Observable<CategoryResponse> homeCategoryObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).homeCategoryObservable(categoryHashMap);
+                .getClient(context).create(ApiInterface.class).homeCategoryObservable(homeHashMap);
 
         Observable<BasketResponse> homeBasketObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).homeBasketObservable(basketHashMap);
+                .getClient(context).create(ApiInterface.class).homeBasketObservable(homeHashMap);
 
         Observable<ExclusiveResponse> homeExclusiveObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).homeExclusiveObservable(exclusiveHashMap);
+                .getClient(context).create(ApiInterface.class).homeExclusiveObservable(homeHashMap);
 
         Observable<BestSellingResponse> homeBestSellingObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).homeBestSellingObservable(bestSellingHashMap);
+                .getClient(context).create(ApiInterface.class).homeBestSellingObservable(homeHashMap);
 
         Observable<SeasonalProductResponse> homeSeasonalObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).homeSeasonalObservable(seasonalHashMap);
+                .getClient(context).create(ApiInterface.class).homeSeasonalObservable(homeHashMap);
 
         Observable<ProductListResponse> homeProductListObservable = ApiClientAuth
-                .getClient(context).create(ApiInterface.class).homeProductListObservable(productsHashMap);
+                .getClient(context).create(ApiInterface.class).homeProductListObservable(homeHashMap);
 
         @SuppressLint("LongLogTag") Observable<List<String>> observableResult =
                 Observable.zip(
