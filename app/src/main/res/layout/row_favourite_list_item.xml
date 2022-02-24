@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="favouriteModelList"
             type="com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse.Favourite" />
-
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -24,6 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:baselineAligned="false"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -47,6 +47,7 @@
                     android:id="@+id/iv_profile_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
+                    android:scaleType="centerCrop"
                     android:layout_gravity="center"
                     app:setImage="@{favouriteModelList.featureImg}"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize20Percent" />
@@ -54,6 +55,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_8sdp"
@@ -133,8 +135,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_filled_heart" />
+                    android:src="@drawable/ic_filled_heart"
+                    tools:ignore="NestedWeights" />
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -149,7 +151,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:backgroundTint="@color/colorPrimary"
                     android:scaleType="center"
                     android:layout_weight="0.9" />
 

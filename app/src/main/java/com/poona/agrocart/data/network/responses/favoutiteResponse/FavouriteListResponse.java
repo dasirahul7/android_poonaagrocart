@@ -18,14 +18,6 @@ public class FavouriteListResponse extends BaseResponse {
     @Expose
     private List<Favourite> favouriteList = null;
 
-    @BindingAdapter("setImage")
-    public static void loadImage(ShapeableImageView view, String imageUrl) {
-        Glide.with(view.getContext())
-                .load(AppConstants.IMAGE_DOC_BASE_URL + imageUrl)
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder).into(view);
-    }
-
     public List<Favourite> getFavouriteList() {
         return favouriteList;
     }
@@ -235,4 +227,13 @@ public class FavouriteListResponse extends BaseResponse {
             this.inCart = inCart;
         }
     }
+
+    @BindingAdapter("setImage")
+    public static void loadImage(ShapeableImageView view, String imageUrl) {
+        Glide.with(view.getContext())
+                .load(AppConstants.IMAGE_DOC_BASE_URL + imageUrl)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder).into(view);
+    }
+
 }
