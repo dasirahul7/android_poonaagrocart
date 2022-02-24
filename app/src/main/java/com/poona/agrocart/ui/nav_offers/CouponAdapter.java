@@ -78,7 +78,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponHold
 
             itemView.llTermsAndCond.setOnClickListener(view -> {
                 if (termsAndConditionClickItem != null) {
-                    int position = getAdapterPosition();
+                    int position = getBindingAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         termsAndConditionClickItem.itemViewClick(position);
                     }

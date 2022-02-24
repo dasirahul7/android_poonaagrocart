@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_alignTop="@+id/cv_notification"
             android:layout_alignBottom="@+id/cv_notification"
-            android:elevation="@dimen/_8sdp"
+            app:cardElevation="@dimen/_1sdp"
             app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="@dimen/_8sdp"
             app:cardUseCompatPadding="true"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/_6sdp"
-            android:elevation="@dimen/_8sdp"
+            app:cardElevation="@dimen/_1sdp"
             app:cardCornerRadius="@dimen/_8sdp"
             app:cardUseCompatPadding="true">
 

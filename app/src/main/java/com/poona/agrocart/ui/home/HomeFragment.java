@@ -232,6 +232,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                         setHomeResponse();
                         setHomeBannerResponse();
                         setCategoryResponse();
+                        progressDialog.dismiss();
                         setBasketResponse();
                         setBestSellingResponse();
                         setSeasonalResponse();
@@ -240,7 +241,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                         setProductListResponse();
 
                         fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
-                        progressDialog.dismiss();
                     }
 
                     @Override
@@ -261,14 +261,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                                 setHomeResponse();
                                 setHomeBannerResponse();
                                 setCategoryResponse();
+                                progressDialog.dismiss();
                                 setBasketResponse();
                                 setBestSellingResponse();
                                 setSeasonalResponse();
                                 setExclusiveResponse();
                                 setStoreBannerResponse();
                                 setProductListResponse();
-                                progressDialog.dismiss();
-
                             } catch (Exception exception) {
                                 exception.printStackTrace();
                                 showServerErrorDialog(getString(R.string.for_better_user_experience), HomeFragment.this, () -> {

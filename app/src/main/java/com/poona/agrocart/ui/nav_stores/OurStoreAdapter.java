@@ -71,7 +71,7 @@ public class OurStoreAdapter extends RecyclerView.Adapter<OurStoreAdapter.OurSto
 
             itemView.setOnClickListener(v -> {
                 if (onStoreClickListener != null) {
-                    int postion = getAdapterPosition();
+                    int postion = getBindingAdapterPosition();
                     if (postion != RecyclerView.NO_POSITION) {
                         onStoreClickListener.itemViewClick(postion);
                     }

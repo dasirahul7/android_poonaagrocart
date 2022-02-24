@@ -205,7 +205,7 @@ public class HomeActivity extends BaseActivity {
                 .placeholder(R.drawable.ic_profile_white)
                 .into(civProfilePhoto);
         tvUserName.setSelected(true);
-        tvUserName.setText("Hello!" + preferences.getUserName());
+        tvUserName.setText("Hello! " + preferences.getUserName());
         editImg.setOnClickListener(v -> {
             drawer.closeDrawer(GravityCompat.START);
             initTitleBar(getString(R.string.menu_my_profile));

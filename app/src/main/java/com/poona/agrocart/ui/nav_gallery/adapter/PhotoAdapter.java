@@ -74,7 +74,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder>
 
             itemView.setOnClickListener(v -> {
                 if (onPhotoClickListener != null) {
-                    int postion = getAdapterPosition();
+                    int postion = getBindingAdapterPosition();
                     if (postion != RecyclerView.NO_POSITION) {
 
                         itemView.setClickable(false);

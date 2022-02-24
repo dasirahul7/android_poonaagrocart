@@ -287,6 +287,7 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (updateLocationResponse.getStatus() == 200) {
                             successToast(context, "" + updateLocationResponse.getMessage());
+                            preferences.setUserAddress(selectedArea + ", " + selectedCity);
                             redirectToLoginFragment(view);
                         }
                         break;

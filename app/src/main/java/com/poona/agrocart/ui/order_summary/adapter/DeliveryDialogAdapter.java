@@ -69,7 +69,7 @@ public class DeliveryDialogAdapter extends RecyclerView.Adapter<DeliveryDialogAd
             optionsBinding.setVariable(BR.modelDeliverySlot, slot);
             optionsBinding.executePendingBindings();
             itemView.setOnClickListener(v -> {
-                mSelectedItem = getAdapterPosition();
+                mSelectedItem = getBindingAdapterPosition();
             });
         }
     }

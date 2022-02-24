@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.basket_detail;
 
 import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.ITEM_TYPE;
+import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -163,8 +164,10 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         if (basketDetailsResponse.getBasketDetail() != null) {
                             basketDetailsBinding.itemLayout.setVisibility(View.VISIBLE);
                             BasketResponse.Basket basket = basketDetailsResponse.getBasketDetail();
-                            basket.setBasketUnit(basket.getBasketUnits().get(0));
-                            basket.setAccurateWeight(basket.getBasketUnit().getWeightAndUnit());
+                            if (!basket.getBasketUnits().isEmpty()){
+                                basket.setBasketUnit(basket.getBasketUnits().get(0));
+                                basket.setAccurateWeight(basket.getBasketUnit().getWeightAndUnit());
+                            }
                             details = basket;
                             hideOrShowProductDetails();
                             setBasketImages();
@@ -209,14 +212,21 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         if (details.getInCart() == 1) {
             basketDetailsBinding.ivMinus.setVisibility(View.VISIBLE);
             basketDetailsBinding.etQuantity.setVisibility(View.VISIBLE);
-            if (details.getQuantity() > 0)
+            if (details.getQuantity() > 0) {
+                basketDetailsBinding.ivPlus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
+                if (details.getQuantity() > 1) {
+                    basketDetailsBinding.ivMinus.setEnabled(true);
+                    basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
+                } else {
+                    basketDetailsBinding.ivMinus.setEnabled(false);
+                    basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
+                }
                 basketDetailsBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
-            else basketDetailsBinding.etQuantity.setText("1");
-        } else {
-            basketDetailsBinding.ivPlus.setVisibility(View.VISIBLE);
-            basketDetailsBinding.ivMinus.setVisibility(View.GONE);
-            basketDetailsBinding.etQuantity.setVisibility(View.GONE);
+            } else {
+                basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
+            }
         }
+
     }
 
     //Add to Cart Basket API
@@ -262,9 +272,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, baseResponse.getMessage());
-                        basketDetailsBinding.ivPlus.setImageResource(R.drawable.ic_added);
                         setBasketValue();
-                        changePriceValue(details);
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -287,15 +295,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 .observe(getViewLifecycleOwner(), addToCartBasketObserver);
     }
 
-    private void changePriceValue(BasketResponse.Basket details) {
-        int price, finalPrice, quantity;
-        price = Integer.parseInt(details.getBasketRate());
-        quantity = details.getQuantity();
-        finalPrice = price * quantity;
-        if (quantity > 0)
-            details.setBasketRate(String.valueOf(finalPrice));
-        basketDetailsBinding.tvPrice.setText("Rs." + details.getBasketRate());
-    }
 
     /*Add To favourite API*/
     private void callAddOrRemoveFavouriteApi(ProgressDialog progressDialog, boolean addToFav) {
@@ -354,8 +353,14 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     private HashMap<String, String> basketParams(boolean addTo, boolean favTo) {
         HashMap<String, String> map = new HashMap<>();
-        if (addTo)
-            map.put(AppConstants.QUANTITY, String.valueOf(details.getQuantity()));
+        if (addTo){
+            if (basketDetailsBinding.etQuantity.getText().toString().isEmpty()) {
+                map.put(QUANTITY, "1");
+            }
+            else {
+                map.put(QUANTITY, basketDetailsBinding.etQuantity.getText().toString());
+            }
+        }
         if (favTo)
             map.put(ITEM_TYPE, "basket");
         map.put(BASKET_ID, itemId);
@@ -457,6 +462,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         etQuantity.setText(String.valueOf(quantity));
         AppUtils.setMinusButton(quantity, view);
         details.setQuantity(quantity);
+        increaseQuantityApi(showCircleProgressDialog(context, ""));
     }
 
     private void decreaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
@@ -466,6 +472,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         } else {
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
+            details.setQuantity(quantity);
+            increaseQuantityApi(showCircleProgressDialog(context, ""));
         }
         AppUtils.setMinusButton(quantity, view);
     }
@@ -571,16 +579,19 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 hideOrShowNutritionDetails();
                 break;
             case R.id.iv_minus:
-                decreaseQuantity(basketDetailsBinding.etQuantity.getText().toString(),
-                        basketDetailsBinding.etQuantity, basketDetailsBinding.ivMinus);
+                if (details.getQuantity()>1){
+                    decreaseQuantity(basketDetailsBinding.etQuantity.getText().toString(),
+                            basketDetailsBinding.etQuantity, basketDetailsBinding.ivMinus);
+                }
+
                 break;
             case R.id.iv_plus:
                 if (details.getInCart() == 0)
                     callAddToCartBasketApi(showCircleProgressDialog(context, ""));
                 else {
                     increaseQuantity(basketDetailsBinding.etQuantity.getText().toString(),
-                            basketDetailsBinding.etQuantity, basketDetailsBinding.ivPlus);
-                    increaseQuantityApi(showCircleProgressDialog(context, ""));
+                            basketDetailsBinding.etQuantity, basketDetailsBinding.ivMinus);
+
                 }
                 break;
             case R.id.img_minus:

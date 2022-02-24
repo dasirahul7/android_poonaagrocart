@@ -125,5 +125,12 @@ public class AppUtils {
             view.setBackgroundResource(R.drawable.bg_grey_square);
         }
     }
+    public static void setPlusButton(int quantity, View view) {
+        if (quantity >=1) {
+            view.setBackgroundResource(R.drawable.bg_green_square);
+        } else {
+            view.setBackgroundResource(R.drawable.bg_grey_square);
+        }
+    }
 
 }

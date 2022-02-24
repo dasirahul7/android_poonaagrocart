@@ -1,6 +1,5 @@
 package com.poona.agrocart.ui.product_detail;
 
-import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.PU_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
@@ -27,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.poona.agrocart.R;
@@ -92,6 +92,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private String itemId ="";
     private Bundle bundle;
     private String unitId;
+    private SwipeRefreshLayout rlRefreshPage;
+
 
 
     @Override
@@ -110,6 +112,18 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         initTitleWithBackBtn("");
         initView();
         setSimilarItems();
+        rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                rlRefreshPage.setRefreshing(true);
+                if (isConnectingToInternet(context)) {
+                    callProductDetailsApi(showCircleProgressDialog(context,""));
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
+
 
         return root;
     }
@@ -134,7 +148,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.VISIBLE);
         txtOrganic = ((HomeActivity) requireActivity()).binding.appBarHome.txtOrganic;
         txtBrand = ((HomeActivity) requireActivity()).binding.appBarHome.tvBrand;
-
+        rlRefreshPage = fragmentProductDetailBinding.rlRefreshPage;
         if (isConnectingToInternet(context)) {
             callProductDetailsApi(showCircleProgressDialog(context, ""));
         } else {
@@ -173,7 +187,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         dotsIndicator = fragmentProductDetailBinding.dotsIndicator;
         rvProductComment = fragmentProductDetailBinding.rvProductComment;
 
-        setValues();
+        setHideOrShowValues();
 
     }
 
@@ -186,23 +200,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         if (productDetailsResponse.getProductDetails() != null) {
                             fragmentProductDetailBinding.itemLayout.setVisibility(View.VISIBLE);
                             details = productDetailsResponse.getProductDetails();
-                            if (details.getIsCart() == 1) {
-                                for (ProductListResponse.ProductUnit unit : details.getProductUnits()) {
-                                    if (unit.getInCart() == 1)
-                                        details.setUnit(unit);
-                                }
-                            } else
-                                details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
+                            rlRefreshPage.setRefreshing(false);
+                            details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
                             setDetailsValue();
-                            changePriceAndUnit(details.getUnit(), false);
+//                            changePriceAndUnit(details.getUnit());
                             fragmentProductDetailBinding.setProductDetailModule(details);
                             fragmentProductDetailBinding.setVariable(BR.productDetailModule, details);
                             System.out.println("product name" + details.getProductName());
-                            UnitAdapter unitAdapter = new UnitAdapter(details.getProductUnits(), details.getIsCart(), requireActivity(), unit -> {
-                                if (details.getIsCart() == 0)
-                                    changePriceAndUnit(unit, false);
-                                else infoToast(context, "Item already added");
-                            });
+                            UnitAdapter unitAdapter = new UnitAdapter(details.getProductUnits(), details.getIsCart(), requireActivity(), this::changePriceAndUnit);
                             fragmentProductDetailBinding.rvWeights.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false));
                             fragmentProductDetailBinding.rvWeights.setAdapter(unitAdapter);
                             // Redirect to ProductOld details
@@ -244,35 +249,38 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             isFavourite = false;
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
         }
-        if (details.getIsCart() == 1) {
+        changePriceAndUnit(details.getUnit());
+    }
+
+    private void changePriceAndUnit(ProductListResponse.ProductUnit unit) {
+        unitId = unit.getpId();
+            fragmentProductDetailBinding.tvPrice.setText("Rs." + unit.getSellingPrice());
+            fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + unit.getOfferPrice());
+        if (unit.getInCart() == 1) {
+            details.setIsCart(1);
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
-            if (details.getQuantity() > 0) {
-                fragmentProductDetailBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
-                changePriceAndUnit(details.getUnit(), false);
+            if (unit.getQty() > 0) {
+                fragmentProductDetailBinding.etQuantity.setText("");
+                fragmentProductDetailBinding.ivPlus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
+                if (unit.getQty()>1){
+                    fragmentProductDetailBinding.ivMinus.setEnabled(true);
+                    fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
+                }
+                else {
+                    fragmentProductDetailBinding.ivMinus.setEnabled(false);
+                    fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
+                }
+                fragmentProductDetailBinding.etQuantity.setText(String.valueOf(unit.getQty()));
+            }else {
+                fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
             }
+
         } else {
+            details.setIsCart(0);
             fragmentProductDetailBinding.ivPlus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.ivMinus.setVisibility(View.GONE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.GONE);
-        }
-    }
-
-    private void changePriceAndUnit(ProductListResponse.ProductUnit unit, boolean added) {
-        unitId = unit.getpId();
-        int sellingPrice = Integer.parseInt(unit.getSellingPrice());
-        int offerPrice = Integer.parseInt(unit.getSellingPrice());
-        int quantity = details.getQuantity();
-        int finalSellingPrice = sellingPrice * quantity;
-        int finalOfferPrice = offerPrice * quantity;
-        System.out.println(finalOfferPrice);
-        System.out.println(finalSellingPrice);
-        if (quantity > 0) {
-            fragmentProductDetailBinding.tvPrice.setText("Rs." + finalSellingPrice);
-            fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + finalOfferPrice);
-        } else {
-            fragmentProductDetailBinding.tvPrice.setText("Rs." + sellingPrice);
-            fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + offerPrice);
         }
     }
 
@@ -303,7 +311,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         }
     }
 
-    private void setValues() {
+    private void setHideOrShowValues() {
         hideOrShowAboutThisProduct();
         hideOrShowBenefits();
         hideOrShowStorageAndUses();
@@ -391,8 +399,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 hideOrShowNutritionDetails();
                 break;
             case R.id.iv_minus:
-                decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
-                        fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivPlus);
+                if (Integer.parseInt(fragmentProductDetailBinding.etQuantity.getText().toString())>1){
+                    decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
+                            fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
+                }else fragmentProductDetailBinding.ivMinus.setEnabled(false);
                 break;
             case R.id.iv_plus:
                 addOrRemoveFromCart();
@@ -471,12 +481,12 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void addOrRemoveFromCart() {
-        if (details.getIsCart() == 0) {
+        if (details.getUnit().getInCart() == 0) {
+            fragmentProductDetailBinding.etQuantity.setText("");
             callAddToCartApi(showCircleProgressDialog(context, ""), details);
         } else {
             increaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
                     fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivPlus);
-            updateQuantityApi(showCircleProgressDialog(context, ""), details);
         }
     }
 
@@ -493,8 +503,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
-                        details.setQuantity(1);
-                        details.setIsCart(1);
+                        details.getUnit().setQty(1);
+                        details.getUnit().setInCart(1);
                         setDetailsValue();
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -519,18 +529,18 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void updateQuantityApi(ProgressDialog showCircleProgressDialog,
-                                   ProductDetailsResponse.ProductDetails details) {
+                                   ProductDetailsResponse.ProductDetails details,String qty) {
         Observer<BaseResponse> addToCartResponseObserver = addToCartResponse -> {
             if (addToCartResponse != null) {
                 showCircleProgressDialog.dismiss();
-                Log.e(TAG, "callAddToCartApi: " + addToCartResponse.getMessage());
+                Log.e(TAG, "callUpdateQty: " + addToCartResponse.getMessage());
                 switch (addToCartResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(requireActivity(), addToCartResponse.getMessage());
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
                         setDetailsValue();
-                        changePriceAndUnit(details.getUnit(), true);
+//                        changePriceAndUnit(details.getUnit(), true);
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -549,7 +559,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             }
         };
         productDetailViewModel.addToCartProductLiveData(showCircleProgressDialog,
-                addToCartParam(details), ProductDetailFragment.this)
+                updateCartParam(details,qty), ProductDetailFragment.this)
                 .observe(getViewLifecycleOwner(), addToCartResponseObserver);
     }
 
@@ -612,10 +622,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         HashMap<String, String> map = new HashMap<>();
         map.put(PRODUCT_ID, product.getId());
         map.put(PU_ID, unitId);
-        if (fragmentProductDetailBinding.etQuantity.getText().toString().isEmpty())
-            map.put(QUANTITY, "1");
-        else
-            map.put(QUANTITY, fragmentProductDetailBinding.etQuantity.getText().toString());
+        map.put(QUANTITY, "1");
+        return map;
+    }
+    private HashMap<String, String> updateCartParam(ProductDetailsResponse.ProductDetails product,String qty) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(PRODUCT_ID, product.getId());
+        map.put(PU_ID, unitId);
+        map.put(QUANTITY, qty);
         return map;
     }
 
@@ -624,7 +638,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         quantity++;
         etQuantity.setText(String.valueOf(quantity));
         AppUtils.setMinusButton(quantity, view);
-        details.setQuantity(quantity);
+        details.getUnit().setQty(quantity);
+        updateQuantityApi(showCircleProgressDialog(context,""),details,String.valueOf(quantity));
     }
 
     private void decreaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
@@ -634,7 +649,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         } else {
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
-            updateQuantityApi(showCircleProgressDialog(context, ""), details);
+            details.setQuantity(quantity);
+            updateQuantityApi(showCircleProgressDialog(context, ""), details,String.valueOf(quantity));
         }
         details.setQuantity(quantity);
         AppUtils.setMinusButton(quantity, view);
@@ -697,7 +713,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
                         break;
                     case 2:
-                        addOrRemoveFromCart();
+                        updateQuantityApi(showCircleProgressDialog(context, ""), details,String.valueOf(details.getUnit().getQty()));
                         break;
                 }
             }

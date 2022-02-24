@@ -81,7 +81,7 @@ public class PromoCodeDialogAdapter extends RecyclerView.Adapter<PromoCodeDialog
             codeRadioBinding.setVariable(BR.productOldModule, coupons);
             codeRadioBinding.executePendingBindings();
             itemView.setOnClickListener(v -> {
-                mSelectedItem = getAdapterPosition();
+                mSelectedItem = getBindingAdapterPosition();
                 codeRadioBinding.prRadio.setChecked(true);
                 onPromoCodeListener.OnPromoCodeClick(coupons);
             });
