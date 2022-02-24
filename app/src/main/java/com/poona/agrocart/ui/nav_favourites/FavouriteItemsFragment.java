@@ -227,7 +227,7 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                 switch (removeFavouriteListResponse.getStatus()) {
                     case STATUS_CODE_200://success
                         successToast(context, removeFavouriteListResponse.getMessage());
-                        callFavouriteAPi(showCircleProgressDialog(context, ""));
+                        setAdaptor();
                         break;
                     case STATUS_CODE_400://Validation Errors
                         warningToast(context, removeFavouriteListResponse.getMessage());
