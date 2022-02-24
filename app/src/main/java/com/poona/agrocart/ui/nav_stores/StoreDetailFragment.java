@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_stores;
 
+import static com.poona.agrocart.app.AppConstants.CONTACT_US;
 import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -8,6 +9,11 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import static com.poona.agrocart.app.AppConstants.STORE_ID;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -16,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,9 +43,11 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
 import com.poona.agrocart.ui.nav_stores.model.store_details.StoreDetail;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallback {
 
@@ -54,6 +63,8 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
     private boolean locationPermissionGranted;
     private String strAboutStore, strStoreId = "";
     private ImageView imageView;
+    String lng,lat ;
+    private double longitude, latitude;
 
 
     public static StoreDetailFragment newInstance(StoreDetail store) {
@@ -79,48 +90,43 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         View view = fragmentStoreDetailBinding.getRoot();
         initTitleWithBackBtn(getString(R.string.store_location));
         initViews();
-        Bundle mapViewBundle = null;
-        if (savedInstanceState != null) {
-            mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
-        }
 
-
-//        getLocationPermission();
-        mapView = fragmentStoreDetailBinding.mapView;
-        mapView.onCreate(mapViewBundle);
-        mapView.getMapAsync(this);
         if (isConnectingToInternet(context)) {
             /*Call Our Store Detail API here*/
             callStoreDetailsApi(showCircleProgressDialog(context, ""));
         } else
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
+
+        Bundle mapViewBundle = null;
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
+        }
+
+//        getLocationPermission();
+        mapView = fragmentStoreDetailBinding.mapView;
+        mapView.onCreate(mapViewBundle);
+        mapView.getMapAsync(this);
+
+        setOnClick();
+
         return view;
     }
+
+    private void setOnClick() {
+        fragmentStoreDetailBinding.fabFindMyLocation.setOnClickListener(view -> {
+            warningToast(context, "hello");
+        });
+    }
+
+
+
 
     private void initViews() {
         imageView = fragmentStoreDetailBinding.imgStore;
         fragmentStoreDetailBinding.setStoreDetailViewModel(storeDetailViewModel);
     }
 
-
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        gmap = googleMap;
-//        googleMap.getUiSettings().setZoomControlsEnabled(true);
-//        gmap.setMinZoomPreference(12);
-        LatLng ny = new LatLng(18.5695136, 73.879276);
-        gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
-        gmap.addMarker(new MarkerOptions().position(ny).title("Location"));
-//        float zoomLevel = 16.0f; //This goes up to 21
-//        gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
-        gmap.animateCamera(CameraUpdateFactory.zoomTo(16), 5000, null);
-
-//        gmap.animateCamera(CameraUpdateFactory.zoomTo(100));
-//        gmap.resetMinMaxZoomPreference();
-//        gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(ny, zoomLevel));
-
-    }
 
     private void callStoreDetailsApi(ProgressDialog progressDialog) {
         Observer<OurStoreViewDataResponse> ourStoreViewDataResponseObserver = ourStoreViewDataResponse -> {
@@ -175,6 +181,10 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         storeDetailViewModel.aboutStore.setValue(storeDetails.get(0).getAboutStore());
         storeDetailViewModel.contactPersonalNumber.setValue(storeDetails.get(0).getMobileNo());
         storeDetailViewModel.personalAddress.setValue(storeDetails.get(0).getAddress());
+        lng = storeDetails.get(0).getLongitude();
+        lat = storeDetails.get(0).getLatitude();
+         longitude = Double.parseDouble(lng);
+         latitude = Double.parseDouble(lat);
 
         if (storeDetails.get(0).getStoreImage() != null) {
             Glide.with(context)
@@ -190,6 +200,25 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         HashMap<String, String> map = new HashMap<>();
         map.put(STORE_ID, strStoreId);
         return map;
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        gmap = googleMap;
+//        googleMap.getUiSettings().setZoomControlsEnabled(true);
+//        gmap.setMinZoomPreference(12);
+        LatLng ny = new LatLng(latitude, longitude);
+        //https://www.google.com/maps/search/?api=1&query=<lat>,<lng>
+        gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
+        gmap.addMarker(new MarkerOptions().position(ny).title("address"));
+//        float zoomLevel = 16.0f; //This goes up to 21
+//        gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
+        //gmap.animateCamera(CameraUpdateFactory.zoomTo(10), 5000, null);
+        gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(ny, 18), 5000, null);
+       // gmap.animateCamera(CameraUpdateFactory.zoomTo(100));
+//        gmap.resetMinMaxZoomPreference();
+//        gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(ny, zoomLevel));
+
     }
 
 }
