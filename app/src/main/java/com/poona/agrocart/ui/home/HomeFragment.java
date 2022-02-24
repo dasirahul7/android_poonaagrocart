@@ -703,7 +703,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void setRvSeasonal(){
-
         seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProduct -> {
             try {
                 System.out.println("seasonal image"+seasonalProduct.getProduct_image());
@@ -731,6 +730,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         });
         fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
     }
+
     private void setPaginationForLists() {
         fragmentHomeBinding.recCategory.setNestedScrollingEnabled(true);
         fragmentHomeBinding.recBasket.setNestedScrollingEnabled(true);
