@@ -203,7 +203,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                             rlRefreshPage.setRefreshing(false);
                             details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
                             setDetailsValue();
-                            changePriceAndUnit(details.getUnit());
+//                            changePriceAndUnit(details.getUnit());
                             fragmentProductDetailBinding.setProductDetailModule(details);
                             fragmentProductDetailBinding.setVariable(BR.productDetailModule, details);
                             System.out.println("product name" + details.getProductName());
@@ -254,15 +254,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void changePriceAndUnit(ProductListResponse.ProductUnit unit) {
         unitId = unit.getpId();
-        int sellingPrice = Integer.parseInt(unit.getSellingPrice());
-        int offerPrice = Integer.parseInt(unit.getOfferPrice());
-            fragmentProductDetailBinding.tvPrice.setText("Rs." + sellingPrice);
-            fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + offerPrice);
+            fragmentProductDetailBinding.tvPrice.setText("Rs." + unit.getSellingPrice());
+            fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + unit.getOfferPrice());
         if (unit.getInCart() == 1) {
             details.setIsCart(1);
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
             if (unit.getQty() > 0) {
+                fragmentProductDetailBinding.etQuantity.setText("");
                 fragmentProductDetailBinding.ivPlus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
                 if (unit.getQty()>1){
                     fragmentProductDetailBinding.ivMinus.setEnabled(true);
@@ -483,6 +482,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void addOrRemoveFromCart() {
         if (details.getUnit().getInCart() == 0) {
+            fragmentProductDetailBinding.etQuantity.setText("");
             callAddToCartApi(showCircleProgressDialog(context, ""), details);
         } else {
             increaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
@@ -529,11 +529,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void updateQuantityApi(ProgressDialog showCircleProgressDialog,
-                                   ProductDetailsResponse.ProductDetails details) {
+                                   ProductDetailsResponse.ProductDetails details,String qty) {
         Observer<BaseResponse> addToCartResponseObserver = addToCartResponse -> {
             if (addToCartResponse != null) {
                 showCircleProgressDialog.dismiss();
-                Log.e(TAG, "callAddToCartApi: " + addToCartResponse.getMessage());
+                Log.e(TAG, "callUpdateQty: " + addToCartResponse.getMessage());
                 switch (addToCartResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(requireActivity(), addToCartResponse.getMessage());
@@ -559,7 +559,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             }
         };
         productDetailViewModel.addToCartProductLiveData(showCircleProgressDialog,
-                addToCartParam(details), ProductDetailFragment.this)
+                updateCartParam(details,qty), ProductDetailFragment.this)
                 .observe(getViewLifecycleOwner(), addToCartResponseObserver);
     }
 
@@ -622,10 +622,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         HashMap<String, String> map = new HashMap<>();
         map.put(PRODUCT_ID, product.getId());
         map.put(PU_ID, unitId);
-        if (fragmentProductDetailBinding.etQuantity.getText().toString().isEmpty())
-            map.put(QUANTITY, "1");
-        else
-            map.put(QUANTITY, fragmentProductDetailBinding.etQuantity.getText().toString());
+        map.put(QUANTITY, "1");
+        return map;
+    }
+    private HashMap<String, String> updateCartParam(ProductDetailsResponse.ProductDetails product,String qty) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(PRODUCT_ID, product.getId());
+        map.put(PU_ID, unitId);
+        map.put(QUANTITY, qty);
         return map;
     }
 
@@ -635,7 +639,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         etQuantity.setText(String.valueOf(quantity));
         AppUtils.setMinusButton(quantity, view);
         details.getUnit().setQty(quantity);
-        updateQuantityApi(showCircleProgressDialog(context,""),details);
+        updateQuantityApi(showCircleProgressDialog(context,""),details,String.valueOf(quantity));
     }
 
     private void decreaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
@@ -646,7 +650,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
             details.setQuantity(quantity);
-            updateQuantityApi(showCircleProgressDialog(context, ""), details);
+            updateQuantityApi(showCircleProgressDialog(context, ""), details,String.valueOf(quantity));
         }
         details.setQuantity(quantity);
         AppUtils.setMinusButton(quantity, view);
@@ -709,7 +713,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
                         break;
                     case 2:
-                        updateQuantityApi(showCircleProgressDialog(context, ""), details);
+                        updateQuantityApi(showCircleProgressDialog(context, ""), details,String.valueOf(details.getUnit().getQty()));
                         break;
                 }
             }
