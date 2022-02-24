@@ -198,10 +198,9 @@ public abstract class BaseFragment extends Fragment {
         Dialog dialog = new Dialog(activity);
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.dialog_logout);
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//        lp.copyFrom(dialog.getWindow().getAttributes());
-//        dialog.getWindow().setAttributes(lp);
+
         CustomTextView tvTitle = dialog.findViewById(R.id.tv_heading);
         CustomButton btnYes = dialog.findViewById(R.id.btn_yes);
         CustomButton btnNo = dialog.findViewById(R.id.btn_no);
@@ -651,21 +650,6 @@ public abstract class BaseFragment extends Fragment {
         a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density + 300));
         v.startAnimation(a);
     }
-
-    public void toDetails(ProductOld productOld, View root) {
-        Bundle bundle = new Bundle();
-        bundle.putString("name", productOld.getName());
-        bundle.putString("image", productOld.getImg());
-        bundle.putString("price", productOld.getPrice());
-        bundle.putString("brand", productOld.getBrand());
-        bundle.putString("weight", productOld.getWeight());
-        bundle.putString("quantity", productOld.getQuantity());
-        bundle.putBoolean("organic", productOld.isOrganic());
-        bundle.putBoolean("isInBasket", productOld.isInBasket());
-        bundle.putString("ProductOld", "ProductOld");
-        Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
-    }
-
     public interface OnDialogRetryClickListener {
         void onDialogRetryClick();
     }

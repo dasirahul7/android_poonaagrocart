@@ -84,7 +84,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
 
             videoHolderBinding.photoCard.setOnClickListener(view -> {
                 if (onVideoClickListener != null) {
-                    int position = getAdapterPosition();
+                    int position = getBindingAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
 
                         videoHolderBinding.photoCard.setClickable(false);
@@ -100,7 +100,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
 
            /* itemView.setOnClickListener(v ->{
                 if (onVideoClickListener != null) {
-                    int postion = getAdapterPosition();
+                    int postion = getBindingAdapterPosition();
                     if (postion != RecyclerView.NO_POSITION) {
 
                             itemView.setClickable(false);

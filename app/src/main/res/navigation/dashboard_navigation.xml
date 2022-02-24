@@ -104,6 +104,22 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <!--Cart to product Details-->
+        <action
+            android:id="@+id/action_nav_cart_to_productDetails"
+            app:destination="@id/nav_product_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <!--Cart to Basket Details-->
+        <action
+            android:id="@+id/action_nav_cart_to_basketDetails"
+            app:destination="@id/basketDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
 

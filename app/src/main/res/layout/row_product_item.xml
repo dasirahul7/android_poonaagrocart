@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="productOldModule"
+            name="cartData"
             type="com.poona.agrocart.data.network.responses.cartResponse.CartData" />
 
     </data>
@@ -15,14 +15,16 @@
         android:id="@+id/cardview_product"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_110sdp"
-        android:elevation="@dimen/_8sdp"
+        app:cardElevation="@dimen/_1sdp"
         android:padding="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_8sdp"
         app:cardUseCompatPadding="true"
         app:strokeColor="@color/clr_custom_edit_text_otp"
-        app:strokeWidth="0.5dp">
+        app:strokeWidth="0.5dp"
+        android:clickable="false">
 
         <RelativeLayout
+            android:id="@+id/rl_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_10sdp"
@@ -39,11 +41,10 @@
 
                 <ImageView
                     android:id="@+id/itemImg"
-                    setImage="@{productOldModule.featureImg}"
+                    setImage="@{cartData.featureImg}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/img_bell_pepper_red" />
+                    android:layout_gravity="center_vertical" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -76,7 +77,7 @@
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:drawablePadding="-5dp"
                     android:gravity="center_vertical"
-                    android:text="@{productOldModule.location}"
+                    android:text='@{cartData.location !=null ? cartData.location:""}'
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:drawableStartCompat="@drawable/ic_location_small"
@@ -88,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
-                    android:text="@{productOldModule.weight}"
+                    android:text='@{` `+cartData.weight + cartData.unitName}'
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -117,6 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_weight="1"
+                        android:text='@{`Rs.`+cartData.pricePerQuantity ?? ""}'
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_18sp"
                         app:setCustomFont="@string/font_montserrat_regular" />
@@ -136,7 +138,6 @@
                 android:background="@drawable/green_rectangle"
                 android:src="@drawable/ic_organic"
                 android:visibility="gone" />
-
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/txt_item_offer"
@@ -161,28 +162,28 @@
                 android:src="@drawable/ic_filled_heart"
                 android:visibility="gone" />
 
-
             <ImageView
                 android:id="@+id/ic_add_to_cart"
                 style="@style/PlusButtonStyle"
                 android:layout_width="@dimen/_28sdp"
                 android:layout_height="@dimen/_28sdp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true" />
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/close_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/iv_cross"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:src="@drawable/ic_cross"
-                    android:padding="@dimen/_3sdp"
+                    android:padding="@dimen/_5sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -196,14 +197,13 @@
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/et_quantity"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/_30sdp"
                     android:layout_height="wrap_content"
                     android:enabled="false"
                     android:gravity="center|center_vertical"
-                    android:text="@string/_1"
+                    android:text="@{cartData.quantity}"
                     android:singleLine="true"
                     android:lines="1"
-                    android:paddingHorizontal="@dimen/_10sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16sp"
                     android:includeFontPadding="false"
@@ -225,5 +225,20 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/rl_loader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/colorGreenTransparent">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
     </com.google.android.material.card.MaterialCardView>
+
 </layout>

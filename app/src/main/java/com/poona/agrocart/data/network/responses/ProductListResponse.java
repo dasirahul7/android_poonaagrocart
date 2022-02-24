@@ -250,6 +250,16 @@ public class ProductListResponse extends BaseResponse {
         private String unitName;
         @SerializedName("in_cart")
         private int inCart;
+        @SerializedName("qty")
+        private int qty;
+
+        public int getQty() {
+            return qty;
+        }
+
+        public void setQty(int qty) {
+            this.qty = qty;
+        }
 
         public int getInCart() {
             return inCart;

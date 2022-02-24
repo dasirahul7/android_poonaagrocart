@@ -215,7 +215,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                                 Intent intent = new Intent(context, HomeActivity.class);
                                 preferences.setUid(verifyOtpResponse.getUser().getUserId());
                                 preferences.setUserMobile(verifyOtpResponse.getUser().getUserMobile());
-                                preferences.setUserAddress(verifyOtpResponse.getUser().getCityName() + "," + verifyOtpResponse.getUser().getStateName());
+                                preferences.setUserAddress(verifyOtpResponse.getUser().getCityName() + ", " + verifyOtpResponse.getUser().getStateName());
                                 preferences.setUserCountry(bundle.getString(COUNTRY_CODE));
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:elevation="@dimen/_8sdp"
+        app:cardElevation="@dimen/_1sdp"
         android:padding="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardUseCompatPadding="true"

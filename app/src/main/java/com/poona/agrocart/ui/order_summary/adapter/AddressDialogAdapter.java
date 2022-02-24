@@ -77,7 +77,7 @@ public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdap
             super(rowAddressItemBinding.getRoot());
             this.addressBinding = rowAddressItemBinding;
             itemView.setOnClickListener(v -> {
-                mSelectedItem = getAdapterPosition();
+                mSelectedItem = getBindingAdapterPosition();
             });
         }
 
