@@ -20,7 +20,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.library.baseAdapters.BR;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -29,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
@@ -72,7 +72,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private boolean isVariableWtPolicyVisible = true;
     private boolean isFavourite = false;
     private final boolean isInCart = false;
-    private final int quantity = 1;
+    private int quantity = 1;
     private DotsIndicator dotsIndicator;
     private RecyclerView rvProductComment;
     private LinearLayoutManager linearLayoutManager;
@@ -82,6 +82,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private ArrayList<ProductOld> similarProductOlds;
     private BasketProductAdapter basketProductAdapter;
     private ProductDetailsResponse.ProductDetails details;
+    private ProductListResponse.ProductUnit unit;
     private OfferProductListAdapter productListAdapter;
     private View root;
     private final boolean BasketType = false;
@@ -89,11 +90,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private int mYear, mMonth, mDay;
     private ImageView txtOrganic;
     private CustomTextView txtBrand;
-    private String itemId ="";
+    private String itemId = "";
     private Bundle bundle;
     private String unitId;
     private SwipeRefreshLayout rlRefreshPage;
-
 
 
     @Override
@@ -103,6 +103,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             itemId = getArguments().getString(PRODUCT_ID);
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentProductDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false);
@@ -117,7 +118,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             public void onRefresh() {
                 rlRefreshPage.setRefreshing(true);
                 if (isConnectingToInternet(context)) {
-                    callProductDetailsApi(showCircleProgressDialog(context,""));
+                    callProductDetailsApi(showCircleProgressDialog(context, ""));
                 } else {
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 }
@@ -176,11 +177,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         fragmentProductDetailBinding.ivPlus.setOnClickListener(this);
         fragmentProductDetailBinding.ivMinus.setOnClickListener(this);
         fragmentProductDetailBinding.ivFavourite.setOnClickListener(this);
-        // BasketDetail ProductOld views
-//        fragmentProductDetailBinding.layoutAdded.llProductList.setOnClickListener(this);
-//        fragmentProductDetailBinding.layoutAdded.imgPlus.setOnClickListener(this);
-//        fragmentProductDetailBinding.layoutAdded.imgMinus.setOnClickListener(this);
-//        fragmentProductDetailBinding.layoutAdded.tvStartDate.setOnClickListener(this);
 
 
         vpImages = fragmentProductDetailBinding.vpProductImages;
@@ -201,15 +197,15 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                             fragmentProductDetailBinding.itemLayout.setVisibility(View.VISIBLE);
                             details = productDetailsResponse.getProductDetails();
                             rlRefreshPage.setRefreshing(false);
-                            details.setUnit(productDetailsResponse.getProductDetails().getProductUnits().get(0));
-                            setDetailsValue();
-//                            changePriceAndUnit(details.getUnit());
-                            fragmentProductDetailBinding.setProductDetailModule(details);
-                            fragmentProductDetailBinding.setVariable(BR.productDetailModule, details);
-                            System.out.println("product name" + details.getProductName());
+                            for (ProductListResponse.ProductUnit unit : details.getProductUnits()) {
+                               details.setUnit(details.getProductUnits().get(0));
+                            }
                             UnitAdapter unitAdapter = new UnitAdapter(details.getProductUnits(), details.getIsCart(), requireActivity(), this::changePriceAndUnit);
-                            fragmentProductDetailBinding.rvWeights.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false));
                             fragmentProductDetailBinding.rvWeights.setAdapter(unitAdapter);
+                            setDetailsValue();
+                            fragmentProductDetailBinding.setProductDetailModule(productDetailViewModel);
+                            fragmentProductDetailBinding.setVariable(BR.productDetailModule, productDetailViewModel);
+                            fragmentProductDetailBinding.rvWeights.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false));
                             // Redirect to ProductOld details
                             setViewPagerAdapterItems();
                         }
@@ -235,53 +231,66 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void setDetailsValue() {
+        unit = details.getUnit();
+        productDetailViewModel.productName.setValue(details.getProductName());
+        productDetailViewModel.productLocation.setValue(details.getLocation());
+        productDetailViewModel.unitMutableLiveData.setValue(details.getUnit());
+        productDetailViewModel.sellingPrice.setValue("Rs." + details.getUnit().getSellingPrice());
+        productDetailViewModel.offerPrice.setValue("Rs" + details.getUnit().getOfferPrice());
+        productDetailViewModel.offer.setValue(details.getSpecialOffer());
+        if (productDetailViewModel.unitMutableLiveData.getValue().getInCart() == 1){
+            productDetailViewModel.isInCart.setValue(true);
+        }
+        else
+        productDetailViewModel.isInCart.setValue(false);
+        if (details.getIsFavourite() == 1)
+            productDetailViewModel.isInFav.setValue(true);
+        else
+            productDetailViewModel.isInFav.setValue(false);
+        productDetailViewModel.productQuantity.setValue(String.valueOf(productDetailViewModel.unitMutableLiveData.getValue().getQty()));
+        productDetailViewModel.productDetail.setValue(details.getProductDetails());
+        productDetailViewModel.productAbout.setValue(details.getAboutProduct());
+        productDetailViewModel.productBenefit.setValue(details.getBenifit());
+        productDetailViewModel.productStorageUses.setValue(details.getStoragesUses());
+        productDetailViewModel.productOtherInfo.setValue(details.getOtherProuctInfo());
+        productDetailViewModel.productWeightPolicy.setValue(details.getWeightPolicy());
+        productDetailViewModel.productNutrition.setValue(details.getNutrition());
+        productDetailViewModel.productBrand.setValue(details.getBrandName());
+        if (details.getIsO3().equalsIgnoreCase("yes"))
+        productDetailViewModel.isOrganic.setValue(true);
+        else
+        productDetailViewModel.isOrganic.setValue(false);
+
         if (details.getBrandName() != null && !details.getBrandName().isEmpty()) {
-            txtBrand.setText(details.getBrandName());
+            txtBrand.setText(productDetailViewModel.productBrand.getValue());
             txtBrand.setVisibility(View.VISIBLE);
         } else txtBrand.setVisibility(View.GONE);
-        if (details.getIsO3().equalsIgnoreCase("yes")) {
+        if (productDetailViewModel.isOrganic.getValue()) {
             txtOrganic.setVisibility(View.VISIBLE);
         } else txtOrganic.setVisibility(View.GONE);
-        if (details.getIsFavourite() == 1) {
+        if (productDetailViewModel.isInFav.getValue()) {
             isFavourite = true;
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
         } else {
             isFavourite = false;
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
         }
-        changePriceAndUnit(details.getUnit());
-    }
-
-    private void changePriceAndUnit(ProductListResponse.ProductUnit unit) {
-        unitId = unit.getpId();
-            fragmentProductDetailBinding.tvPrice.setText("Rs." + unit.getSellingPrice());
-            fragmentProductDetailBinding.tvOfferPrice.setText("Rs." + unit.getOfferPrice());
-        if (unit.getInCart() == 1) {
-            details.setIsCart(1);
+        unitId = productDetailViewModel.unitMutableLiveData.getValue().getpId();
+        if (productDetailViewModel.isInCart.getValue()){
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
-            if (unit.getQty() > 0) {
-                fragmentProductDetailBinding.etQuantity.setText("");
-                fragmentProductDetailBinding.ivPlus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
-                if (unit.getQty()>1){
-                    fragmentProductDetailBinding.ivMinus.setEnabled(true);
-                    fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
-                }
-                else {
-                    fragmentProductDetailBinding.ivMinus.setEnabled(false);
-                    fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
-                }
-                fragmentProductDetailBinding.etQuantity.setText(String.valueOf(unit.getQty()));
-            }else {
-                fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
-            }
-
-        } else {
-            details.setIsCart(0);
-            fragmentProductDetailBinding.ivPlus.setVisibility(View.VISIBLE);
+            if (Integer.parseInt(productDetailViewModel.productQuantity.getValue())>1){
+                fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
+            }else fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
+        }else {
             fragmentProductDetailBinding.ivMinus.setVisibility(View.GONE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.GONE);
         }
+    }
+
+    private void changePriceAndUnit(ProductListResponse.ProductUnit unit) {
+        details.setUnit(unit);
+        setDetailsValue();
     }
 
     private HashMap<String, String> detailsParams(int detail) {
@@ -293,13 +302,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private void setProductList() {
         basketContentArrayList = new ArrayList<>();
         prepareListingData();
-
         linearLayoutManager = new LinearLayoutManager(requireContext());
-//        fragmentProductDetailBinding.layoutAdded.rvBasketContents.setHasFixedSize(true);
-//        fragmentProductDetailBinding.layoutAdded.rvBasketContents.setLayoutManager(linearLayoutManager);
-//
-//        basketProductAdapter = new BasketProductAdapter(basketContentArrayList);
-//        fragmentProductDetailBinding.layoutAdded.rvBasketContents.setAdapter(basketProductAdapter);
     }
 
     private void prepareListingData() {
@@ -329,33 +332,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         fragmentProductDetailBinding.cardOfferMsg.setVisibility(View.GONE);
 
     }
-
-//    private void setSubscription() {
-//        Subscription subscription = details.getSubscription();
-//        fragmentProductDetailBinding.layoutAdded.tvSubPrice.setText(subscription.getSubPrice());
-//        fragmentProductDetailBinding.layoutAdded.tvSubUnit.setText(subscription.getSubUnit());
-//        fragmentProductDetailBinding.layoutAdded.tvSubQty.setText(subscription.getSubQty());
-//        fragmentProductDetailBinding.layoutAdded.tvSubUnitPrice.setText(subscription.getSubUnitPrice());
-//        fragmentProductDetailBinding.layoutAdded.tvSubAmount.setText(subscription.getSubTotalAmount());
-//        fragmentProductDetailBinding.layoutAdded.tvSubMsg.setText(subscription.getSubMsg());
-//        RecyclerView rvType = fragmentProductDetailBinding.layoutAdded.rvSubType;
-//        UnitAdapter subTypeAdapter = new UnitAdapter(details.getSubscription().getSubTypes(), getActivity());
-//        rvType.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-//        rvType.setHasFixedSize(true);
-//        rvType.setAdapter(subTypeAdapter);
-//    }
-
-//    private void setCommentsAdapter() {
-//        commentArrayList = new ArrayList<>();
-//        commentArrayList = details.getCommentList();
-//        linearLayoutManager = new LinearLayoutManager(requireContext());
-//        rvProductComment.setHasFixedSize(true);
-//        rvProductComment.setLayoutManager(linearLayoutManager);
-//        rvProductComment.setNestedScrollingEnabled(false);
-//        productCommentsAdapter = new ProductCommentsAdapter(commentArrayList, false);
-//        rvProductComment.setAdapter(productCommentsAdapter);
-//    }
-
     private void setViewPagerAdapterItems() {
         ArrayList<String> images = new ArrayList<>();
         for (int i = 0; i < details.getProductImgs().size(); i++)
@@ -374,9 +350,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_product_list:
-                hideOrShowBasketContentsList();
-                break;
             case R.id.ll_product_details:
                 hideOrShowProductDetails();
                 break;
@@ -399,22 +372,16 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 hideOrShowNutritionDetails();
                 break;
             case R.id.iv_minus:
-                if (Integer.parseInt(fragmentProductDetailBinding.etQuantity.getText().toString())>1){
+                if (Integer.parseInt(fragmentProductDetailBinding.etQuantity.getText().toString()) > 1) {
                     decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
                             fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
-                }else fragmentProductDetailBinding.ivMinus.setEnabled(false);
+                } else fragmentProductDetailBinding.ivMinus.setEnabled(false);
                 break;
             case R.id.iv_plus:
                 addOrRemoveFromCart();
                 break;
-            case R.id.img_minus:
-                //remove subscription
-                break;
             case R.id.iv_favourite:
                 addOrRemoveFromFavourite();
-                break;
-            case R.id.tv_start_date:
-//                showCalendar(fragmentProductDetailBinding.layoutAdded.tvStartDate);
                 break;
         }
 
@@ -481,7 +448,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void addOrRemoveFromCart() {
-        if (details.getUnit().getInCart() == 0) {
+        if (details.getUnit().getInCart() == 0 || fragmentProductDetailBinding.etQuantity.getText().toString().isEmpty()) {
             fragmentProductDetailBinding.etQuantity.setText("");
             callAddToCartApi(showCircleProgressDialog(context, ""), details);
         } else {
@@ -529,7 +496,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void updateQuantityApi(ProgressDialog showCircleProgressDialog,
-                                   ProductDetailsResponse.ProductDetails details,String qty) {
+                                   ProductDetailsResponse.ProductDetails details, String qty) {
         Observer<BaseResponse> addToCartResponseObserver = addToCartResponse -> {
             if (addToCartResponse != null) {
                 showCircleProgressDialog.dismiss();
@@ -540,7 +507,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
                         setDetailsValue();
-//                        changePriceAndUnit(details.getUnit(), true);
+//                        changePriceAndUnit(details.getUnit());
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -559,7 +526,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             }
         };
         productDetailViewModel.addToCartProductLiveData(showCircleProgressDialog,
-                updateCartParam(details,qty), ProductDetailFragment.this)
+                updateCartParam(details, qty), ProductDetailFragment.this)
                 .observe(getViewLifecycleOwner(), addToCartResponseObserver);
     }
 
@@ -625,7 +592,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         map.put(QUANTITY, "1");
         return map;
     }
-    private HashMap<String, String> updateCartParam(ProductDetailsResponse.ProductDetails product,String qty) {
+
+    private HashMap<String, String> updateCartParam(ProductDetailsResponse.ProductDetails product, String qty) {
         HashMap<String, String> map = new HashMap<>();
         map.put(PRODUCT_ID, product.getId());
         map.put(PU_ID, unitId);
@@ -639,7 +607,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         etQuantity.setText(String.valueOf(quantity));
         AppUtils.setMinusButton(quantity, view);
         details.getUnit().setQty(quantity);
-        updateQuantityApi(showCircleProgressDialog(context,""),details,String.valueOf(quantity));
+        updateQuantityApi(showCircleProgressDialog(context, ""), details, String.valueOf(quantity));
     }
 
     private void decreaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
@@ -649,10 +617,9 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         } else {
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
-            details.setQuantity(quantity);
-            updateQuantityApi(showCircleProgressDialog(context, ""), details,String.valueOf(quantity));
+            updateQuantityApi(showCircleProgressDialog(context, ""), details, String.valueOf(quantity));
         }
-        details.setQuantity(quantity);
+        details.getUnit().setQty(quantity);
         AppUtils.setMinusButton(quantity, view);
     }
 
@@ -678,16 +645,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         isProductDetailsVisible = !isProductDetailsVisible;
     }
 
-    private void hideOrShowBasketContentsList() {
-//        if (isBasketContentsVisible) {
-//            fragmentProductDetailBinding.layoutAdded.ivProductLists.setState(ExpandIconView.MORE, true);
-//            collapse(fragmentProductDetailBinding.layoutAdded.rvBasketContents);
-//        } else {
-//            fragmentProductDetailBinding.layoutAdded.ivProductLists.setState(ExpandIconView.LESS, true);
-//            expand(fragmentProductDetailBinding.layoutAdded.rvBasketContents);
-//        }
-        isBasketContentsVisible = !isBasketContentsVisible;
-    }
 
     private void toProductDetail(ProductOld productOld, View root) {
         Bundle bundle = new Bundle();
@@ -713,7 +670,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
                         break;
                     case 2:
-                        updateQuantityApi(showCircleProgressDialog(context, ""), details,String.valueOf(details.getUnit().getQty()));
+                        updateQuantityApi(showCircleProgressDialog(context, ""), details, String.valueOf(details.getUnit().getQty()));
                         break;
                 }
             }
