@@ -18,7 +18,7 @@ import com.poona.agrocart.databinding.RowFavouriteListItemBinding;
 import java.util.ArrayList;
 
 public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdapter.FavouriteHolder> {
-    private Context bdContext;
+    private final Context bdContext;
     private ArrayList<FavouriteListResponse.Favourite> favouriteArrayList = new ArrayList<>();
     private RowFavouriteListItemBinding favouriteListItemBinding;
     private final OnPlusClick onPlusClick;
@@ -55,7 +55,6 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
     @Override
     public void onBindViewHolder(@NonNull FavouriteHolder holder, int position) {
         FavouriteListResponse.Favourite favourite = favouriteArrayList.get(position);
-
         favouriteListItemBinding.setFavouriteModelList(favourite);
         holder.bindProduct(favourite);
 
@@ -109,7 +108,8 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
 
         //Only ProductOld Item bind
         public void bindProduct(FavouriteListResponse.Favourite favourite) {
-            favouriteListItemBinding.setVariable(BR.productOldModule, favourite);
+
+            favouriteListItemBinding.setVariable(BR.favouriteModelList, favourite);
             favouriteListItemBinding.executePendingBindings();
 
             productBinding.ivPlus.setOnClickListener(view -> {
@@ -128,7 +128,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
                     }
                 }
             });
-            productBinding.cvFev.setOnClickListener(view -> {
+            productBinding.ll2.setOnClickListener(view -> {
                 if (onProductClick != null) {
                     int postion = getLayoutPosition();
                     if (postion != RecyclerView.NO_POSITION) {

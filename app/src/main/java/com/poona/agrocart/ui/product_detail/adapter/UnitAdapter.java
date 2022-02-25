@@ -24,7 +24,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.WeightHolder> 
 
     private final Context context;
     private List<ProductListResponse.ProductUnit> weight = new ArrayList<>();
-    private int mSelectedItem = 0;
+    public int mSelectedItem = 0;
     private final OnUnitClickListener onUnitClickListener;
     private final int isInCart;
 
@@ -80,8 +80,6 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.WeightHolder> 
             weightTxt = itemView.findViewById(R.id.tv_weight);
             radioButton = itemView.findViewById(R.id.radio);
             itemView.setOnClickListener(v -> {
-//                if (isInCart == 0) {
-//                }
                 mSelectedItem = getBindingAdapterPosition();
                 onUnitClickListener.OnUnitClick(weight.get(getBindingAdapterPosition()));
                 notifyDataSetChanged();

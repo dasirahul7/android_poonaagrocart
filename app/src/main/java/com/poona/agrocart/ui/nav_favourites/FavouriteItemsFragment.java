@@ -94,12 +94,14 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
     }
 
     private void setAdaptor() {
+
+        //Initializing our superheroes list
+        favouriteItemsList = new ArrayList<>();
+
         linearLayoutManager = new LinearLayoutManager(getActivity());
         rvFavouriteItems.setHasFixedSize(true);
         rvFavouriteItems.setLayoutManager(linearLayoutManager);
 
-        //Initializing our superheroes list
-        favouriteItemsList = new ArrayList<>();
 
         rlRefreshPage.setRefreshing(false);
         //initializing our adapter
@@ -225,7 +227,7 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                 switch (removeFavouriteListResponse.getStatus()) {
                     case STATUS_CODE_200://success
                         successToast(context, removeFavouriteListResponse.getMessage());
-                        callFavouriteAPi(showCircleProgressDialog(context, ""));
+                        setAdaptor();
                         break;
                     case STATUS_CODE_400://Validation Errors
                         warningToast(context, removeFavouriteListResponse.getMessage());
@@ -315,8 +317,8 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                 }
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        successToast(context, baseResponse.getMessage());
                         setAdaptor();
+                        successToast(context, baseResponse.getMessage());
                         break;
                     case STATUS_CODE_400://Validation Errors
                         warningToast(context, baseResponse.getMessage());
@@ -363,8 +365,8 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                 }
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://success
+                        setAdaptor();
                         successToast(context, baseResponse.getMessage());
-//                        setAdaptor();
                         break;
                     case STATUS_CODE_400://Validation Errors
                         warningToast(context, baseResponse.getMessage());

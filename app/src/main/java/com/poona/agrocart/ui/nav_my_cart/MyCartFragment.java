@@ -137,11 +137,19 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         });
 
         cartItemAdapter.setOnCartAddMinusCountClick((position, binding) -> {
+            if (cartItemsList.get(position).getItemType().equalsIgnoreCase("product")){
 
+            }else {
+
+            }
         });
 
         cartItemAdapter.setOnCartMinusCountClick((position, binding) -> {
+            if (cartItemsList.get(position).getItemType().equalsIgnoreCase("product")){
 
+            }else {
+
+            }
         });
 
         cartItemAdapter.setOnDeleteCartItemClick((position, binding) -> {

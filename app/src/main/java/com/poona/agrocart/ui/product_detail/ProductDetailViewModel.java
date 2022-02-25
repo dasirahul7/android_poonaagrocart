@@ -16,6 +16,7 @@ import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
+import com.poona.agrocart.data.network.responses.ProductListResponse;
 
 import java.util.HashMap;
 
@@ -26,9 +27,62 @@ import retrofit2.HttpException;
 
 public class ProductDetailViewModel extends AndroidViewModel {
     public static final String TAG = ProductDetailViewModel.class.getSimpleName();
+    public MutableLiveData<String> productName;
+    public MutableLiveData<String> productBrand;
+    public MutableLiveData<Boolean> isOrganic;
+    public MutableLiveData<String> productLocation;
+    public LiveData<ProductListResponse.ProductUnit> productUnitLiveData;
+    public MutableLiveData<ProductListResponse.ProductUnit> unitMutableLiveData;
+    public MutableLiveData<String> sellingPrice;
+    public MutableLiveData<String> offerPrice;
+    public MutableLiveData<String> offer;
+    public MutableLiveData<Boolean> isInCart;
+    public MutableLiveData<Boolean> isInFav;
+    public MutableLiveData<String> productQuantity;
+    public MutableLiveData<String> offerMessage;
+    public MutableLiveData<String> productDetail;
+    public MutableLiveData<String> productAbout;
+    public MutableLiveData<String> productBenefit;
+    public MutableLiveData<String> productStorageUses;
+    public MutableLiveData<String> productOtherInfo;
+    public MutableLiveData<String> productWeightPolicy;
+    public MutableLiveData<String> productNutrition;
 
     public ProductDetailViewModel(@NonNull Application application) {
         super(application);
+        productName = new MutableLiveData<>();
+        productBrand = new MutableLiveData<>();
+        isOrganic = new MutableLiveData<>();
+        productLocation = new MutableLiveData<>();
+        unitMutableLiveData = new MutableLiveData<>();
+        productUnitLiveData = new MutableLiveData<>();
+        sellingPrice = new MutableLiveData<>();
+        offerPrice = new MutableLiveData<>();
+        offer = new MutableLiveData<>();
+        isInCart = new MutableLiveData<>();
+        isInFav = new MutableLiveData<>();
+        productQuantity = new MutableLiveData<>();
+        offerMessage = new MutableLiveData<>();
+        productDetail = new MutableLiveData<>();
+        productAbout = new MutableLiveData<>();
+        productBenefit = new MutableLiveData<>();productBenefit.setValue(null);
+        productStorageUses = new MutableLiveData<>();productStorageUses.setValue(null);
+        productOtherInfo = new MutableLiveData<>();productOtherInfo.setValue(null);
+        productWeightPolicy = new MutableLiveData<>();productWeightPolicy.setValue(null);
+        productNutrition = new MutableLiveData<>();productNutrition.setValue(null);
+        productName.setValue(null);
+        productLocation.setValue(null);
+        productAbout.setValue(null);
+        productDetail.setValue(null);
+        offerMessage.setValue(null);
+        productQuantity.setValue(null);
+        offer.setValue(null);
+        offerPrice.setValue(null);
+        isInCart.setValue(null);
+        isInFav.setValue(null);
+        unitMutableLiveData.setValue(null);
+        sellingPrice.setValue(null);
+
     }
 
     //Product Details API
@@ -198,6 +252,5 @@ public class ProductDetailViewModel extends AndroidViewModel {
                 });
         return baseResponseMutableLiveData;
     }
-
 
 }
