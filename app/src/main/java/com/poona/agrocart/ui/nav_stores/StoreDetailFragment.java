@@ -181,10 +181,16 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         storeDetailViewModel.aboutStore.setValue(storeDetails.get(0).getAboutStore());
         storeDetailViewModel.contactPersonalNumber.setValue(storeDetails.get(0).getMobileNo());
         storeDetailViewModel.personalAddress.setValue(storeDetails.get(0).getAddress());
-        lng = storeDetails.get(0).getLongitude();
-        lat = storeDetails.get(0).getLatitude();
-         longitude = Double.parseDouble(lng);
-         latitude = Double.parseDouble(lat);
+
+
+         if(lng != null && lat != null){
+             lng = storeDetails.get(0).getLongitude();
+             lat = storeDetails.get(0).getLatitude();
+             longitude = Double.parseDouble(lng);
+             latitude = Double.parseDouble(lat);
+         }else{
+             warningToast(context, "please save the local");
+         }
 
         if (storeDetails.get(0).getStoreImage() != null) {
             Glide.with(context)
@@ -207,7 +213,9 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         gmap = googleMap;
 //        googleMap.getUiSettings().setZoomControlsEnabled(true);
 //        gmap.setMinZoomPreference(12);
-        LatLng ny = new LatLng(latitude, longitude);
+
+            LatLng ny = new LatLng(latitude, longitude);
+
         //https://www.google.com/maps/search/?api=1&query=<lat>,<lng>
         gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
         gmap.addMarker(new MarkerOptions().position(ny).title("address"));
