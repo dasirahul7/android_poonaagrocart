@@ -6,7 +6,7 @@
 
         <variable
             name="productDetailModule"
-            type="com.poona.agrocart.data.network.responses.ProductDetailsResponse.ProductDetails" />
+            type="com.poona.agrocart.ui.product_detail.ProductDetailViewModel" />
     </data>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/rl_refresh_page"
@@ -110,7 +110,7 @@
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:drawableStart="@drawable/ic_location"
                 android:gravity="center_vertical"
-                android:text="@{productDetailModule.location}"
+                android:text="@{productDetailModule.productLocation}"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -210,6 +210,7 @@
                         android:background="@drawable/bg_strikethrough"
                         android:textColor="@color/colorGrey"
                         android:textSize="@dimen/_12sp"
+                        android:text='@{productDetailModule.sellingPrice ?? ""}'
                         app:setCustomFont="@string/font_poppins_regular" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -217,6 +218,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:textSize="@dimen/_24sp"
+                        android:text='@{productDetailModule.offerPrice ?? ""}'
                         app:setCustomFont="@string/font_poppins_regular" />
 
 
@@ -231,7 +233,7 @@
                     android:background="@drawable/bg_offer_yellow"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:text="@{productDetailModule.specialOffer}"
+                    android:text="@{productDetailModule.offer}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"
@@ -261,6 +263,7 @@
                         android:textAlignment="center"
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_18sp"
+                        android:text='@{productDetailModule.productQuantity}'
                         android:visibility="gone"
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -303,8 +306,10 @@
                         android:layout_height="match_parent"
                         android:background="@color/orange_fill_color"
                         android:padding="@dimen/_8sdp"
-                        android:text="@{`Buy `+productDetailModule.unit.weight+productDetailModule.unit.unitName+`for Rs.`+productDetailModule.unit.offerPrice}"
+                        android:text="@{`Buy `+productDetailModule.unitMutableLiveData.weight+productDetailModule.unitMutableLiveData.unitName+`for Rs.`+productDetailModule.unitMutableLiveData.offerPrice}"
                         android:textColor="@color/color_order_date_and_time" />
+
+                   <!-- android:text="@{`Buy `+productDetailModule.unit.weight+productDetailModule.unit.unitName+`for Rs.`+productDetailModule.unit.offerPrice}"-->
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -421,7 +426,7 @@
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:includeFontPadding="false"
-                android:text="@{productDetailModule.aboutProduct}"
+                android:text="@{productDetailModule.productAbout}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -480,7 +485,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailModule.benifit}"
+                android:text="@{productDetailModule.productBenefit}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -539,7 +544,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailModule.storagesUses}"
+                android:text="@{productDetailModule.productStorageUses}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -598,7 +603,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailModule.otherProuctInfo}"
+                android:text="@{productDetailModule.productOtherInfo}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -657,7 +662,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailModule.weightPolicy}"
+                android:text="@{productDetailModule.productWeightPolicy}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -716,7 +721,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{productDetailModule.nutrition}"
+                android:text="@{productDetailModule.productNutrition}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
