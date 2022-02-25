@@ -12,7 +12,6 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.cartResponse.CartData;
 import com.poona.agrocart.databinding.RowProductItemBinding;
-import com.poona.agrocart.ui.nav_addresses.AddressesAdapter;
 
 import java.util.ArrayList;
 
@@ -45,7 +44,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         onCartItemClickListener = listener;
     }
 
-    public void setOnCartAddMinusCountClick(OnCartAddCountClickListener listener) {
+    public void setOnCartAddCountClick(OnCartAddCountClickListener listener) {
         onCartAddCountClickListener = listener;
     }
 
@@ -150,20 +149,25 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
         }
 
 
-        private void decreaseQuantity() {
+        private int decreaseQuantity() {
             int quantity = Integer.parseInt(rowProductItemBinding.etQuantity.getText().toString());
             if (quantity > 1) {
                 quantity--;
                 rowProductItemBinding.etQuantity.setText(String.valueOf(quantity));
                 setMinus(quantity);
+
+                return quantity;
             }
+            return quantity;
         }
 
-        private void increaseQuantity() {
+        private int increaseQuantity() {
             int quantity = Integer.parseInt(rowProductItemBinding.etQuantity.getText().toString());
             quantity++;
             rowProductItemBinding.etQuantity.setText(String.valueOf(quantity));
             setMinus(quantity);
+
+            return quantity;
         }
 
         private void setMinus(int quantity) {

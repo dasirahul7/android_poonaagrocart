@@ -174,8 +174,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
+
         initClick();
         checkEmpties();
+
 
         return root;
     }

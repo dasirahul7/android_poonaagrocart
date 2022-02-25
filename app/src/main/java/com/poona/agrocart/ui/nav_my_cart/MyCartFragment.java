@@ -1,10 +1,11 @@
 package com.poona.agrocart.ui.nav_my_cart;
 
-import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
 import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.CART_ID;
 import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
+import static com.poona.agrocart.app.AppConstants.PU_ID;
+import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -23,13 +24,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +36,6 @@ import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.responses.BaseResponse;
-import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.cartResponse.CartData;
 import com.poona.agrocart.data.network.responses.cartResponse.MyCartResponse;
 import com.poona.agrocart.databinding.FragmentMyCartBinding;
@@ -45,11 +43,6 @@ import com.poona.agrocart.databinding.RowProductItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.CustomDialogInterface;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.home.HomeFragment;
-import com.poona.agrocart.ui.nav_addresses.AddressesAdapter;
-import com.poona.agrocart.ui.nav_addresses.AddressesFragment;
-import com.poona.agrocart.ui.nav_addresses.AddressesViewModel;
-import com.poona.agrocart.widgets.custom_otp_edit_text.CustomOtpEditText;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -136,20 +129,35 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             }
         });
 
-        cartItemAdapter.setOnCartAddMinusCountClick((position, binding) -> {
-            if (cartItemsList.get(position).getItemType().equalsIgnoreCase("product")){
+        cartItemAdapter.setOnCartAddCountClick((position, binding) -> {
 
+            String quantity = binding.etQuantity.getText().toString();
+
+            String basketId = cartItemsList.get(position).getBasketIdFk();
+            String itemType = cartItemsList.get(position).getItemType();
+            String productId = cartItemsList.get(position).getProductId();
+            String puId = cartItemsList.get(position).getPuId();
+            if (itemType.equalsIgnoreCase("basket")){
+                callAddToCartBasketApi(showCircleProgressDialog(context, ""),basketId ,quantity);
             }else {
-
+                callAddToCartProductApi(showCircleProgressDialog(context, ""),productId,puId,quantity);
             }
+
         });
 
         cartItemAdapter.setOnCartMinusCountClick((position, binding) -> {
-            if (cartItemsList.get(position).getItemType().equalsIgnoreCase("product")){
 
+            String quantity = binding.etQuantity.getText().toString();
+            String basketId = cartItemsList.get(position).getBasketIdFk();
+            String itemType = cartItemsList.get(position).getItemType();
+            String productId = cartItemsList.get(position).getProductId();
+            String puId = cartItemsList.get(position).getPuId();
+            if (itemType.equalsIgnoreCase("basket")){
+                callAddToCartBasketApi(showCircleProgressDialog(context, ""),basketId ,quantity);
             }else {
-
+                callAddToCartProductApi(showCircleProgressDialog(context, ""),productId,puId,quantity);
             }
+
         });
 
         cartItemAdapter.setOnDeleteCartItemClick((position, binding) -> {
@@ -381,6 +389,104 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
     }
 
+
+
+    private void callAddToCartBasketApi(ProgressDialog progressDialog, String basketId, String quantity) {
+
+        @SuppressLint("NotifyDataSetChanged")
+        Observer<BaseResponse> baseResponseObserver = baseResponse -> {
+
+            if (baseResponse != null) {
+                Log.e("Response", new Gson().toJson(baseResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        // successToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_404://Record not Found
+                        /* show empty screen message */
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        warningToast(context, baseResponse.getMessage());
+                        goToAskSignInSignUpScreen();
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+        };
+
+        myCartViewModel.callUpdateToCartFromBasketFavouriteList(progressDialog, AddToCartFromBasketInputParameter(basketId,quantity), MyCartFragment.this)
+                .observe(getViewLifecycleOwner(), baseResponseObserver);
+    }
+
+    private HashMap<String, String> AddToCartFromBasketInputParameter(String basketId,String quantity) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(BASKET_ID, basketId);
+        map.put(QUANTITY, quantity);
+        return map;
+    }
+
+    private void callAddToCartProductApi(ProgressDialog progressDialog, String productId, String puId, String quantity) {
+
+        @SuppressLint("NotifyDataSetChanged")
+        Observer<BaseResponse> baseResponseObserver = baseResponse -> {
+
+            if (baseResponse != null) {
+                Log.e("Response", new Gson().toJson(baseResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        // setAdaptor();
+                        // successToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_404://Record not Found
+                        /* show empty screen message */
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        warningToast(context, baseResponse.getMessage());
+                        goToAskSignInSignUpScreen();
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+        };
+
+        myCartViewModel.callUpdateToCartFromProductFavouriteList(progressDialog, AddToCartFromProductInputParameter(productId,puId,quantity), MyCartFragment.this)
+                .observe(getViewLifecycleOwner(), baseResponseObserver);
+    }
+
+    private HashMap<String, String> AddToCartFromProductInputParameter(String productId, String puId, String quantity) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(PRODUCT_ID, productId.toString());
+        map.put(PU_ID,puId.toString());
+        map.put(QUANTITY, quantity);
+        return map;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -404,7 +510,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.retry), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
-
     }
 
     private void redirectToOrderSummary(View v) {
