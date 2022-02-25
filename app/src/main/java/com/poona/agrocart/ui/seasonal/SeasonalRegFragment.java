@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.SeasonalProduct;
 import com.poona.agrocart.databinding.FragmentSeasonalRegBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
@@ -31,7 +32,7 @@ public class SeasonalRegFragment extends BaseFragment {
     private FragmentSeasonalRegBinding fragmentSeasonalRegBinding;
     private SeasonalViewModel seasonalViewModel;
     private View seasonRoot;
-    private SeasonalProductResponse.SeasonalProduct seasonalProduct;
+    private SeasonalProduct seasonalProduct;
     private ProductImagesAdapter productImagesAdapter;
     private DotsIndicator dotsIndicator;
     private String image;
@@ -68,11 +69,11 @@ public class SeasonalRegFragment extends BaseFragment {
         dotsIndicator = fragmentSeasonalRegBinding.dotsIndicator;
         initTitleWithBackBtn("Seasonal Product Registration");
        images = new ArrayList<>();
-        seasonalProduct = new SeasonalProductResponse.SeasonalProduct();
-        for (int i = 0; i < 3; i++)
-            images.add(getArguments() != null ? image: null);
-        seasonalProduct.setSeasProductImages(images);
-        setViewPagerAdapterItems();
+        seasonalProduct = new SeasonalProduct();
+//        for (int i = 0; i < 3; i++)
+//            images.add(getArguments() != null ? image: null);
+//        seasonalProduct.setSeasProductImages(images);
+//        setViewPagerAdapterItems();
     }
 
     /*Set images here*/

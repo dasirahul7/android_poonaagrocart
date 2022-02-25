@@ -6,7 +6,7 @@
 
         <variable
             name="categoryModule"
-            type="com.poona.agrocart.data.network.responses.CategoryResponse.Category" />
+            type="com.poona.agrocart.data.network.responses.homeResponse.Category" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

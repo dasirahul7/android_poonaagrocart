@@ -2,7 +2,6 @@ package com.poona.agrocart.ui.home.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.responses.CategoryResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Category;
+import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
 import com.poona.agrocart.databinding.RowCategoryItemBinding;
 
 import java.util.ArrayList;
@@ -19,11 +19,11 @@ import java.util.ArrayList;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder> {
 
     private final Context context;
-    private ArrayList<CategoryResponse.Category> categories = new ArrayList<>();
+    private ArrayList<Category> categories = new ArrayList<>();
     private RowCategoryItemBinding categoryBinding;
     private final OnCategoryClickListener onCategoryClickListener;
 
-    public CategoryAdapter(ArrayList<CategoryResponse.Category> categories,
+    public CategoryAdapter(ArrayList<Category> categories,
                            Context context, OnCategoryClickListener onCategoryClickListener) {
         this.categories = categories;
         this.context = context;
@@ -39,7 +39,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
-        CategoryResponse.Category category = categories.get(position);
+        Category category = categories.get(position);
         categoryBinding.setCategoryModule(category);
         holder.bind(category);
     }
@@ -50,7 +50,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     public interface OnCategoryClickListener {
-        void categoryClick(CategoryResponse.Category category);
+        void categoryClick(Category category);
     }
 
     public class CategoryHolder extends RecyclerView.ViewHolder {
@@ -58,7 +58,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             super(binding.getRoot());
         }
 
-        public void bind(CategoryResponse.Category category) {
+        public void bind(Category category) {
             categoryBinding.setVariable(BR.categoryModule, category);
             categoryBinding.executePendingBindings();
 

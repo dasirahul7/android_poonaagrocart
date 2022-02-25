@@ -7,7 +7,7 @@
 
         <variable
             name="homeProductModel"
-            type="com.poona.agrocart.data.network.responses.ProductListResponse.Product" />
+            type="com.poona.agrocart.data.network.responses.homeResponse.Product" />
 
     </data>
 
@@ -92,7 +92,7 @@
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:text='@{homeProductModel.accurateWeight ?? ""}'
+                    android:text="@{homeProductModel.weight+homeProductModel.unitName}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -112,7 +112,7 @@
                         android:background="@drawable/bg_strikethrough"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:text='@{`Rs.`+homeProductModel.unit.sellingPrice != null ? homeProductModel.unit.sellingPrice : ""}'
+                        android:text='@{`Rs.`+homeProductModel.sellingPrice != null ? homeProductModel.sellingPrice : ""}'
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -120,13 +120,13 @@
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_offerPrice"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_weight="1"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:text='@{`Rs.`+homeProductModel.unit.offerPrice !=null ? homeProductModel.unit.offerPrice: ""}'
+                        android:text='@{`Rs.`+homeProductModel.offerPrice !=null ? homeProductModel.offerPrice: ""}'
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_18sp"
                         app:setCustomFont="@string/font_montserrat_regular" />

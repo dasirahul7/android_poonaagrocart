@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.RowBestSellingItemBinding;
 import com.poona.agrocart.databinding.RowExclusiveItemBinding;
 
@@ -20,13 +21,13 @@ import java.util.ArrayList;
 
 public class BestSellingListAdapter extends RecyclerView.Adapter<BestSellingListAdapter.BestSellingViewHolder> {
     private final Context bdContext;
-    private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
+    private ArrayList<Product> products = new ArrayList<>();
     private RowBestSellingItemBinding sellingItemBinding;
     private final OnProductClickListener onProductClickListener;
     private final OnPlusClickListener onPlusClickListener;
 
 
-    public BestSellingListAdapter(ArrayList<ProductListResponse.Product> products,
+    public BestSellingListAdapter(ArrayList<Product> products,
                                   Context bdContext, OnProductClickListener onProductClickListener,
                                   OnPlusClickListener onPlusClickListener) {
         this.products = products;
@@ -44,7 +45,7 @@ public class BestSellingListAdapter extends RecyclerView.Adapter<BestSellingList
 
     @Override
     public void onBindViewHolder(@NonNull BestSellingViewHolder holder, int position) {
-        ProductListResponse.Product product = products.get(position);
+        Product product = products.get(position);
         sellingItemBinding.setBestsellingModule(product);
         holder.bindData(product, position);
         sellingItemBinding.imgPlus.setOnClickListener(view1 -> {
@@ -58,11 +59,11 @@ public class BestSellingListAdapter extends RecyclerView.Adapter<BestSellingList
     }
 
     public interface OnProductClickListener {
-        void onProductClick(ProductListResponse.Product product);
+        void onProductClick(Product product);
     }
 
     public interface OnPlusClickListener {
-        void OnPlusClick(RowBestSellingItemBinding rowBestSellingItemBinding, ProductListResponse.Product product, int position);
+        void OnPlusClick(RowBestSellingItemBinding rowBestSellingItemBinding, Product product, int position);
     }
 
     public class BestSellingViewHolder extends RecyclerView.ViewHolder {
@@ -70,7 +71,7 @@ public class BestSellingListAdapter extends RecyclerView.Adapter<BestSellingList
             super(rowBestSellingItemBinding.getRoot());
         }
 
-        public void bindData(ProductListResponse.Product product, int position) {
+        public void bindData(Product product, int position) {
             sellingItemBinding.setVariable(BR.exclusiveOfferModule, product);
             sellingItemBinding.executePendingBindings();
 //            rowExclusiveItemBinding.txtItemPrice.setText(product.getProductUnits().get(0).getOfferPrice());

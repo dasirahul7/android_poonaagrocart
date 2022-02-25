@@ -13,28 +13,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.HomeProductItemBinding;
-import com.poona.agrocart.databinding.RowExclusiveItemBinding;
 
 import java.util.ArrayList;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductHolder> {
     private final Context bdContext;
-    private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
+    private ArrayList<Product> products = new ArrayList<>();
     private HomeProductItemBinding productBinding;
     private final OnProductClickListener onProductClickListener;
     private final OnPlusClickListener onPlusClickListener;
 
     public interface OnProductClickListener {
-        void onProductClick(ProductListResponse.Product product);
+        void onProductClick(Product product);
     }
 
     public interface OnPlusClickListener {
-        void OnPlusClick(HomeProductItemBinding homeProductItemBinding, ProductListResponse.Product product, int position);
+        void OnPlusClick(HomeProductItemBinding homeProductItemBinding,
+                         Product product, int position);
     }
 
-    public ProductListAdapter(ArrayList<ProductListResponse.Product> products,
+    public ProductListAdapter(ArrayList<Product> products,
                               FragmentActivity context,
                               OnProductClickListener onProductClickListener,
                               OnPlusClickListener onPlusClickListener) {
@@ -52,15 +53,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
-        ProductListResponse.Product product = products.get(position);
+        Product product = products.get(position);
         productBinding.setHomeProductModel(product);
         holder.bindProduct(product, position);
-        productBinding.imgPlus.setOnClickListener(view -> {
-            if (product.getInCart()==0){
-                productBinding.rlAddToCartLoader.setVisibility(View.VISIBLE);
-                onPlusClickListener.OnPlusClick(productBinding, product, position);
-            }
-        });
 
     }
 
@@ -77,12 +72,12 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }
 
         //Only ProductOld Item bind
-        public void bindProduct(ProductListResponse.Product product, int position) {
+        public void bindProduct(Product product, int position) {
             productBinding.setVariable(BR.productModule, product);
             productBinding.executePendingBindings();
             if (product.getFeatureImg().endsWith(".jpeg") || product.getFeatureImg().endsWith("jpg"))
                 productBinding.itemImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            if (product.getSpecialOffer().isEmpty())
+            if (product.getSpecialOffer()==null||product.getSpecialOffer().isEmpty())
                 productBinding.txtItemOffer.setVisibility(View.INVISIBLE);
             if (product.getIsO3().equalsIgnoreCase("yes"))
                 productBinding.txtOrganic.setVisibility(View.VISIBLE);
@@ -96,6 +91,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             });
             if (product.getInCart() == 1)
                 productBinding.ivPlus.setEnabled(false);
+            productBinding.imgPlus.setOnClickListener(view -> {
+                if (product.getInCart()==0){
+                productBinding.rlAddToCartLoader.setVisibility(View.VISIBLE);
+                    onPlusClickListener.OnPlusClick(productBinding, product, position);
+                }
+            });
+
         }
 
     }

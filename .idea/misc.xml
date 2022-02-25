@@ -266,6 +266,7 @@
         <entry key="app/src/main/res/layout/privacy_fragment.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/row_banner.xml" value="0.14356884057971014" />
         <entry key="app/src/main/res/layout/row_basket_item.xml" value="0.15489130434782608" />
+        <entry key="app/src/main/res/layout/row_basket_list_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_best_selling_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/row_bestselling_item.xml" value="0.12454710144927536" />
         <entry key="app/src/main/res/layout/row_category_item.xml" value="0.15489130434782608" />
@@ -277,6 +278,7 @@
         <entry key="app/src/main/res/layout/row_notification.xml" value="0.2324455205811138" />
         <entry key="app/src/main/res/layout/row_product_item.xml" value="0.16" />
         <entry key="app/src/main/res/layout/row_product_list_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/row_seasonal_banner.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_weight.xml" value="0.5" />
         <entry key="app/src/main/res/layout/rv_address.xml" value="0.15534420289855072" />
         <entry key="app/src/main/res/layout/rv_basket_contents_list.xml" value="0.15172101449275363" />

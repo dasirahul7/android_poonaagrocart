@@ -2,6 +2,7 @@ package com.poona.agrocart.data.network.responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.poona.agrocart.data.network.responses.homeResponse.Product;
 
 import java.util.ArrayList;
 
@@ -21,13 +22,13 @@ public class BestSellingResponse extends BaseResponse {
     public class BestSellingData {
         @SerializedName("best_selling_product_list")
         @Expose
-        private ArrayList<ProductListResponse.Product> bestSellingProductList = null;
+        private ArrayList<Product> bestSellingProductList = null;
 
-        public ArrayList<ProductListResponse.Product> getBestSellingProductList() {
+        public ArrayList<Product> getBestSellingProductList() {
             return bestSellingProductList;
         }
 
-        public void setBestSellingProductList(ArrayList<ProductListResponse.Product> bestSellingProductList) {
+        public void setBestSellingProductList(ArrayList<Product> bestSellingProductList) {
             this.bestSellingProductList = bestSellingProductList;
         }
     }

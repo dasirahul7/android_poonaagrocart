@@ -32,6 +32,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.CategoryResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Category;
 import com.poona.agrocart.databinding.FragmentExploreBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_explore.adapter.ExploreItemAdapter;
@@ -132,7 +133,7 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
                         if (categoryResponse.getCategoryData() != null) {
                             if (categoryResponse.getCategoryData().getCategoryList().size() > 0) {
                                 exploreFragmentBinding.tvNoData.setVisibility(View.GONE);
-                                for (CategoryResponse.Category category : categoryResponse.getCategoryData().getCategoryList()) {
+                                for (Category category : categoryResponse.getCategoryData().getCategoryList()) {
                                     ExploreItems expItem = new ExploreItems(category.getId(), category.getCategoryName(),
                                             category.getCategoryImage(), category.getCategoryType());
                                     expItem.setBackground(R.color.exp_card_color1);

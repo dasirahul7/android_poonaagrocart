@@ -12,20 +12,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.RowExclusiveItemBinding;
 
 import java.util.ArrayList;
 
 public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOfferListAdapter.ExclusiveItemHolder> {
     private final Context bdContext;
-    private ArrayList<ProductListResponse.Product> products = new ArrayList<>();
+    private ArrayList<Product> products = new ArrayList<>();
     private RowExclusiveItemBinding rowExclusiveItemBinding;
     private final OnProductClickListener onProductClickListener;
     private final OnPlusClickListener onPlusClickListener;
 
 
-    public ExclusiveOfferListAdapter(ArrayList<ProductListResponse.Product> products,
+    public ExclusiveOfferListAdapter(ArrayList<Product> products,
                                      Context bdContext, OnProductClickListener onProductClickListener,
                                      OnPlusClickListener onPlusClickListener) {
         this.products = products;
@@ -43,7 +44,7 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
 
     @Override
     public void onBindViewHolder(@NonNull ExclusiveItemHolder holder, int position) {
-        ProductListResponse.Product product = products.get(position);
+        Product product = products.get(position);
         rowExclusiveItemBinding.setExclusiveOfferModule(product);
         holder.bindData(product, position);
         rowExclusiveItemBinding.imgPlus.setOnClickListener(view1 -> {
@@ -57,11 +58,11 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
     }
 
     public interface OnProductClickListener {
-        void onProductClick(ProductListResponse.Product product);
+        void onProductClick(Product product);
     }
 
     public interface OnPlusClickListener {
-        void OnPlusClick(RowExclusiveItemBinding rowExclusiveItemBinding, ProductListResponse.Product product, int position);
+        void OnPlusClick(RowExclusiveItemBinding rowExclusiveItemBinding, Product product, int position);
     }
 
     public class ExclusiveItemHolder extends RecyclerView.ViewHolder {
@@ -69,7 +70,7 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
             super(rowExclusiveItemBinding.getRoot());
         }
 
-        public void bindData(ProductListResponse.Product product, int position) {
+        public void bindData(Product product, int position) {
             rowExclusiveItemBinding.setVariable(BR.exclusiveOfferModule, product);
             rowExclusiveItemBinding.executePendingBindings();
 //            rowExclusiveItemBinding.txtItemPrice.setText(product.getProductUnits().get(0).getOfferPrice());

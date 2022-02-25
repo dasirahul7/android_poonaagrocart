@@ -47,6 +47,8 @@ import com.poona.agrocart.data.network.responses.BestSellingResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.ProductListByResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Basket;
+import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.FragmentProductListBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.bottom_sheet.BottomSheetFilterFragment;
@@ -68,7 +70,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private FragmentProductListBinding fragmentProductListBinding;
     private ProductListViewModel productListViewModel;
     private RecyclerView rvVegetables;
-    private ArrayList<ProductListResponse.Product> productArrayList;
+    private ArrayList<Product> productArrayList;
     private ArrayList<BasketResponse.Basket> basketArrayList;
     private ProductGridAdapter productGridAdapter;
     private BasketGridAdapter basketGridAdapter;
@@ -149,15 +151,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         if (exclusiveResponse.getExclusiveData().getExclusivesList() != null
                                 && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
                             // Exclusive data listing
-                            for (ProductListResponse.Product product : exclusiveResponse.getExclusiveData().getExclusivesList()) {
-                                if (!product.getProductUnits().isEmpty()){
-                                    product.setUnit(product.getProductUnits().get(0));
-                                    product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
-                                    productArrayList.add(product);
-                                }
-                            }
-
-//                            productArrayList = exclusiveResponse.getExclusiveData().getExclusivesList();
+                            productArrayList.addAll(exclusiveResponse.getExclusiveData().getExclusivesList());
                             makeProductListing();
                         }
                         break;
@@ -195,15 +189,9 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     case STATUS_CODE_200://Record Create/Update Successfully
                         //Best selling listing
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null) {
+                            //Todo need to change that
                             if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
-                                for (ProductListResponse.Product product : bestSellingResponse.getBestSellingData().getBestSellingProductList()) {
-                                    if (product.getProductUnits().isEmpty()){
-                                        product.setUnit(product.getProductUnits().get(0));
-                                        product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
-                                    }
-                                    productArrayList.add(product);
-                                }
-//                                productArrayList = bestSellingResponse.getBestSellingData().getBestSellingProductList();
+                                productArrayList.addAll(bestSellingResponse.getBestSellingData().getBestSellingProductList());
                                 makeProductListing();
                             }
                         }
@@ -243,8 +231,8 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         //Basket listing
                         if (basketResponse.getData().getBaskets() != null) {
                             if (basketResponse.getData().getBaskets().size() > 0) {
-                                basketArrayList = basketResponse.getData().getBaskets();
-                                makeBasketListing();
+                                basketArrayList.addAll(basketResponse.getData().getBaskets());
+//                                makeBasketListing();
                             }
                         }
                         break;
@@ -292,14 +280,8 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         } else {
                             if (productListByResponse.getProductListResponseDt().getProductList() != null) {
                                 if (productListByResponse.getProductListResponseDt().getProductList().size() > 0) {
-                                    for (ProductListResponse.Product product : productListByResponse.getProductListResponseDt().getProductList()) {
-                                        if (!product.getProductUnits().isEmpty()){
-                                            product.setUnit(product.getProductUnits().get(0));
-                                            product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
-                                        }
-                                        productArrayList.add(product);
-                                    }
-//                                    productArrayList = productListByResponse.getProductListResponseDt().getProductList();
+                                    productArrayList.addAll(productListByResponse.getProductListResponseDt().getProductList());
+
                                     makeProductListing();
                                 }
                             }
@@ -459,7 +441,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     }
 
     /* Redirect to product detail screen*/
-    private void redirectToProductsDetail(ProductListResponse.Product product) {
+    private void redirectToProductsDetail(Product product) {
         Bundle bundle = new Bundle();
         bundle.putString(PRODUCT_ID, product.getProductId());
         NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
@@ -496,7 +478,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     }
 
     @Override
-    public void onProductClick(ProductListResponse.Product product) {
+    public void onProductClick(Product product) {
         redirectToProductsDetail(product);
     }
 
