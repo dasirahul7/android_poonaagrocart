@@ -41,7 +41,6 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.model.ProductOld;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
-import com.poona.agrocart.ui.product_detail.adapter.OfferProductListAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductImagesAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.UnitAdapter;
@@ -83,7 +82,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private BasketProductAdapter basketProductAdapter;
     private ProductDetailsResponse.ProductDetails details;
     private ProductListResponse.ProductUnit unit;
-    private OfferProductListAdapter productListAdapter;
     private View root;
     private final boolean BasketType = false;
     private Calendar calendar;

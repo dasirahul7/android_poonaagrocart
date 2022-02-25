@@ -50,6 +50,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -76,11 +77,13 @@ import com.poona.agrocart.databinding.RowExclusiveItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
 import com.poona.agrocart.ui.home.adapter.BasketAdapter;
+import com.poona.agrocart.ui.home.adapter.BestSellingListAdapter;
 import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
 import com.poona.agrocart.ui.home.adapter.ExclusiveOfferListAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.SeasonalBannerAdapter;
 import com.poona.agrocart.ui.home.model.ProductOld;
+import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -94,7 +97,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import retrofit2.HttpException;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener{
+public class HomeFragment extends BaseFragment implements View.OnClickListener,NetworkExceptionListener{
     private static final String TAG = HomeFragment.class.getSimpleName();
     private static final int CATEGORY = 0;
     private static final int BASKET = 1;
@@ -159,25 +162,53 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
             seasonalManager, bestSellingManager, exclusiveOfferManager;
     private boolean scrolling = false;
     private final int offset = 0;
+    private SwipeRefreshLayout rlRefreshPage;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         root = fragmentHomeBinding.getRoot();
+        rlRefreshPage = fragmentHomeBinding.rlRefreshPage;
         clearLists();
 
 
         if (isConnectingToInternet(context)) {
-            getHomepageResponses(showCircleProgressDialog(context, ""));
+//            getHomepageResponses(showCircleProgressDialog(context, ""));
+            callCategoryApi(showCircleProgressDialog(context,""),"load");
+            callBannerApi(showCircleProgressDialog(context,""));
+            callBasketApi(showCircleProgressDialog(context,""),"load");
+            callExclusiveOfferApi(showCircleProgressDialog(context,""),"load");
+            callBestSellingApi(showCircleProgressDialog(context,""),"load");
+            callStoreBannerApi(showCircleProgressDialog(context,""));
+            callSeasonalProductApi(showCircleProgressDialog(context,""),"load");
+            callProductListApi(showCircleProgressDialog(context,""),"load");
             searchProducts();
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
-
         initClick();
         checkEmpties();
 
+        rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                rlRefreshPage.setRefreshing(true);
+                if (isConnectingToInternet(context)) {
+                    callCategoryApi(showCircleProgressDialog(context,""),"load");
+                    callBasketApi(showCircleProgressDialog(context,""),"load");
+                    callBannerApi(showCircleProgressDialog(context,""));
+                    callExclusiveOfferApi(showCircleProgressDialog(context,""),"load");
+                    callBestSellingApi(showCircleProgressDialog(context,""),"load");
+                    callStoreBannerApi(showCircleProgressDialog(context,""));
+                    callSeasonalProductApi(showCircleProgressDialog(context,""),"load");
+                    callProductListApi(showCircleProgressDialog(context,""),"load");
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
 
         return root;
     }
@@ -477,7 +508,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
 
     private void setBasketResponse(){
         if (basketResponse != null) {
-            Log.e("Category Api ResponseData", new Gson().toJson(basketResponse));
+            Log.e("Basket Api ResponseData", new Gson().toJson(basketResponse));
             switch (basketResponse.getStatus()) {
                 case STATUS_CODE_200://Record Create/Update Successfully
                     if (basketResponse.getData().getBaskets() != null
@@ -516,7 +547,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                             makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
                             categories.addAll(categoryResponse.getCategoryData().getCategoryList());
                             setRvCategory();
-                            categoryAdapter.notifyDataSetChanged();
+//                            categoryAdapter.notifyDataSetChanged();
                         }
                     }
                     break;
@@ -887,7 +918,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
     }
 
     private void clearLists() {
-        fragmentHomeBinding.homeLayout.setVisibility(View.GONE);
+//        fragmentHomeBinding.homeLayout.setVisibility(View.GONE);
         banners.clear();
         categories.clear();
         baskets.clear();
@@ -953,6 +984,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                 switch (storeBannerResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (storeBannerResponse.getStoreBanners().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
                             makeVisible(fragmentHomeBinding.cardviewOurShops, null);
                             makeVisible(null, fragmentHomeBinding.rlO3Banner);
                             storeBannerList = storeBannerResponse.getStoreBanners();
@@ -998,6 +1030,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (productListResponse.getProductResponseDt().getProductList() != null
                                 && productListResponse.getProductResponseDt().getProductList().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
                             makeVisible(fragmentHomeBinding.recProduct, null);
                             //Should remove this latter
                             productList.clear();
@@ -1008,7 +1041,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                                 }
                                 productList.add(product);
                             }
-                            productListAdapter.notifyDataSetChanged();
+                            setRvProduct();
+//                            productListAdapter.notifyDataSetChanged();
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -1045,6 +1079,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (seasonalProductResponse.getSeasonalProducts() != null
                                 && seasonalProductResponse.getSeasonalProducts().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
                             for (int i = 0; i < seasonalProductResponse.getSeasonalProducts().size(); i++) {
                                 if (i / 2 == 0) {
                                     seasonalProductResponse.getSeasonalProducts().get(i).setType("Green");
@@ -1106,6 +1141,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null
                                 && bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
                             makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
                             for (ProductListResponse.Product product : bestSellingResponse.getBestSellingData().getBestSellingProductList()) {
                                 if (!product.getProductUnits().isEmpty()){
@@ -1114,7 +1150,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                                 }
                                 bestSellings.add(product);
                             }
-                            bestsellingAdapter.notifyDataSetChanged();
+                            setRvBestSelling();
                             // Redirect to ProductOld details
 //
                         }
@@ -1202,12 +1238,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
         Observer<ExclusiveResponse> exclusiveResponseObserver = exclusiveResponse -> {
             if (exclusiveResponse != null) {
                 if (progressDialog != null) progressDialog.dismiss();
-                Log.e("Category Api ResponseData", new Gson().toJson(exclusiveResponse));
+                Log.e("Exclusive Api ResponseData", new Gson().toJson(exclusiveResponse));
                 switch (exclusiveResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (exclusiveResponse.getExclusiveData().getExclusivesList() != null
                                 && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
-                            //Should remove this latter
+                            rlRefreshPage.setRefreshing(false);
                             offerProducts.clear();
                             for (ProductListResponse.Product product : exclusiveResponse.getExclusiveData().getExclusivesList()) {
                                 if (!product.getProductUnits().isEmpty()){
@@ -1216,7 +1252,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                                 }
                                 offerProducts.add(product);
                             }
-                            offerListAdapter.notifyDataSetChanged();
+                            setRvExclusive();
 //
                         }
                         break;
@@ -1249,11 +1285,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
         Observer<BasketResponse> bannerResponseObserver = basketResponse -> {
             if (basketResponse != null) {
                 if (progressDialog != null) progressDialog.dismiss();
-                Log.e("Category Api ResponseData", new Gson().toJson(basketResponse));
+                Log.e("Basket Api ResponseData", new Gson().toJson(basketResponse));
                 switch (basketResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (basketResponse.getData().getBaskets() != null
                                 && basketResponse.getData().getBaskets().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
                             makeVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
                             baskets.addAll(basketResponse.getData().getBaskets());
                             System.out.println("basket list :" + baskets.size());
@@ -1298,11 +1335,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (categoryResponse.getCategoryData() != null) {
                             //Should remove this latter
+                            rlRefreshPage.setRefreshing(false);
                             if (categoryResponse.getCategoryData().getCategoryList() != null
                                     && categoryResponse.getCategoryData().getCategoryList().size() > 0) {
                                 makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
                                 categories.addAll(categoryResponse.getCategoryData().getCategoryList());
-//                                categoryAdapter.notifyDataSetChanged();
+                                setRvCategory();
                                 System.out.println("categories " + categories.size());
                                 fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
                             }
@@ -1336,6 +1374,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                 switch (bannerResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (bannerResponse.getData().getBanners().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
                             makeVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
                             banners = bannerResponse.getData().getBanners();
                             setRvBanners();
@@ -1600,4 +1639,39 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                 .observe(getViewLifecycleOwner(), profileResponseObserver);
     }
 
+    @Override
+    public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), HomeFragment.this, () -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                switch (from) {
+                    case 0:
+                        callBannerApi(showCircleProgressDialog(context, ""));
+                        break;
+                    case 1:
+                        callCategoryApi(showCircleProgressDialog(context, ""),"load");
+                        break;
+                    case 2:
+                        callBasketApi(showCircleProgressDialog(context, ""), "load");
+                        break;
+                    case 3:
+                        callExclusiveOfferApi(showCircleProgressDialog(context,""),"load");
+                        break;
+                    case 4:
+                        callBestSellingApi(showCircleProgressDialog(context,""),"load");
+                        break;
+                    case 5:
+                        callSeasonalProductApi(showCircleProgressDialog(context,""),"load");
+                        break;
+                    case 6:
+                        callProductListApi(showCircleProgressDialog(context,""),"load");
+                        break;
+                    case 7:
+                        callStoreBannerApi(showCircleProgressDialog(context,""));
+                        break;
+                }
+            }
+        }, context);
+
+    }
 }
