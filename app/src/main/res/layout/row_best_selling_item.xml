@@ -7,7 +7,7 @@
 
         <variable
             name="bestsellingModule"
-            type="com.poona.agrocart.data.network.responses.ProductListResponse.Product" />
+            type="com.poona.agrocart.data.network.responses.homeResponse.Product" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -117,7 +117,7 @@
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:text="@{bestsellingModule.accurateWeight}"
+                    android:text="@{bestsellingModule.weight+bestsellingModule.unitName}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp" />
 
@@ -151,7 +151,7 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:text="@{`Rs.`+bestsellingModule.unit.sellingPrice}"
+                        android:text="@{`Rs.`+bestsellingModule.sellingPrice}"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular"
@@ -165,7 +165,7 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:text="@{`Rs.`+bestsellingModule.unit.offerPrice}"
+                        android:text="@{`Rs.`+bestsellingModule.offerPrice}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_montserrat_regular"

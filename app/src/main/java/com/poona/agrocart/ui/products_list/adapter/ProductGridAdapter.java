@@ -13,15 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.RowProductListItemBinding;
 
 import java.util.ArrayList;
 
 public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.ProductsViewHolder> {
-    private final ArrayList<ProductListResponse.Product> vegetableArrayList;
+    private final ArrayList<Product> vegetableArrayList;
     private final OnProductClickListener onProductClickListener;
 
-    public ProductGridAdapter(ArrayList<ProductListResponse.Product> vegetableArrayList, OnProductClickListener onProductClickListener) {
+    public ProductGridAdapter(ArrayList<Product> vegetableArrayList, OnProductClickListener onProductClickListener) {
         this.vegetableArrayList = vegetableArrayList;
         this.onProductClickListener = onProductClickListener;
     }
@@ -37,13 +38,13 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position) {
-        final ProductListResponse.Product product = vegetableArrayList.get(position);
+        final Product product = vegetableArrayList.get(position);
         holder.productListItemBinding.setProductModule(product);
         holder.bind(product);
         //Add to CART API
         holder.productListItemBinding.imgPlus.setOnClickListener(view -> {
             if (product.getInCart() == 0)
-                onProductClickListener.onAddClick(product.getProductId(), product.getUnit().getpId(), position);
+                onProductClickListener.onAddClick(product.getProductId(), product.getPuId(), position);
         });
     }
 
@@ -53,7 +54,7 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
     }
 
     public interface OnProductClickListener {
-        void onProductClick(ProductListResponse.Product product);
+        void onProductClick(Product product);
 
         void onAddClick(String productId, String unitID, int position);
     }
@@ -72,7 +73,7 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
         }
 
 
-        public void bind(ProductListResponse.Product product) {
+        public void bind(Product product) {
             productListItemBinding.setVariable(BR.productModule, product);
             productListItemBinding.executePendingBindings();
             if (product.getInCart() == 1)

@@ -38,8 +38,8 @@ import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.FragmentSearchBinding;
-import com.poona.agrocart.databinding.HomeProductItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
@@ -63,7 +63,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     private final int totalCount = 0;
     private String searchKey = "", searchType = "";
     private ProductListAdapter searchAdapter;
-    private final ArrayList<ProductListResponse.Product> productList = new ArrayList<>();
+    private final ArrayList<Product> productList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
 
     @Nullable
@@ -155,14 +155,9 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                 switch (productListResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (productListResponse.getProductResponseDt().getProductList().size() > 0) {
-                            for (ProductListResponse.Product product : productListResponse.getProductResponseDt().getProductList()) {
-                                product.setUnit(product.getProductUnits().get(0));
-                                product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
-                                productList.add(product);
-                            }
-
-//                            productList = productListResponse.getProductResponseDt().getProductList();
-                            setSearchProductList();
+                                productList.addAll(productListResponse.getProductResponseDt().getProductList());
+//                                //Todo need to complete this
+//                                setSearchProductList();
                         } else fragmentSearchBinding.tvNoData.setVisibility(View.VISIBLE);
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -215,11 +210,11 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         fragmentSearchBinding.recProduct.setNestedScrollingEnabled(false);
         fragmentSearchBinding.recProduct.setHasFixedSize(true);
         fragmentSearchBinding.recProduct.setLayoutManager(linearLayoutManager);
-        searchAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> addToCartProduct(product, position));
-        fragmentSearchBinding.recProduct.setAdapter(searchAdapter);
+//        searchAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> addToCartProduct(product, position));
+//        fragmentSearchBinding.recProduct.setAdapter(searchAdapter);
     }
 
-    private void addToCartProduct(ProductListResponse.Product product, int position) {
+    private void addToCartProduct(Product product, int position) {
         @SuppressLint("NotifyDataSetChanged") Observer<BaseResponse> baseResponseObserver = response -> {
             if (response != null) {
                 Log.e(TAG, "addToCartProduct: " + new Gson().toJson(response));
@@ -249,7 +244,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                 .observe(getViewLifecycleOwner(), baseResponseObserver);
     }
 
-    public void toProductDetail(ProductListResponse.Product product) {
+    public void toProductDetail(Product product) {
         Bundle bundle = new Bundle();
         bundle.putString(PRODUCT_ID, product.getProductId());
         NavHostFragment.findNavController(SearchFragment.this).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
@@ -264,10 +259,10 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         return map;
     }
 
-    private HashMap<String, String> paramAddToCart(ProductListResponse.Product product) {
+    private HashMap<String, String> paramAddToCart(Product product) {
         HashMap<String, String> map = new HashMap<>();
         map.put(PRODUCT_ID, product.getProductId());
-        map.put(PU_ID, product.getUnit().getpId());
+        map.put(PU_ID, product.getPuId());
         map.put(QUANTITY, "1");
         return map;
     }

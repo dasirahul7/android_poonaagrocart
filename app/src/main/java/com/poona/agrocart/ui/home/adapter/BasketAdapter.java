@@ -10,18 +10,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.responses.BasketResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Basket;
+import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
 import com.poona.agrocart.databinding.RowBasketItemBinding;
 
 import java.util.ArrayList;
 
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHolder> {
     private final Context bContext;
-    private ArrayList<BasketResponse.Basket> baskets = new ArrayList<>();
+    private ArrayList<Basket> baskets = new ArrayList<>();
     private RowBasketItemBinding basketItemBinding;
     private final OnBasketClickListener onBasketClickListener;
 
-    public BasketAdapter(ArrayList<BasketResponse.Basket> baskets, Context context, OnBasketClickListener onBasketClickListener) {
+    public BasketAdapter(ArrayList<Basket> baskets, Context context, OnBasketClickListener onBasketClickListener) {
         this.baskets = baskets;
         this.bContext = context;
         this.onBasketClickListener = onBasketClickListener;
@@ -35,7 +36,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
 
     @Override
     public void onBindViewHolder(@NonNull BasketHolder holder, int position) {
-        BasketResponse.Basket basket = baskets.get(position);
+        Basket basket = baskets.get(position);
         basketItemBinding.setBasketModule(basket);
         int mPosition = position;
         if (mPosition % 2 == 1)
@@ -51,7 +52,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
     }
 
     public interface OnBasketClickListener {
-        void OnBasketClick(BasketResponse.Basket basket);
+        void OnBasketClick(Basket basket);
     }
 
     public class BasketHolder extends RecyclerView.ViewHolder {
@@ -60,7 +61,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.BasketHold
         }
 
 
-        public void bind(BasketResponse.Basket basket) {
+        public void bind(Basket basket) {
             basketItemBinding.setVariable(BR.basketModule, basket);
             basketItemBinding.executePendingBindings();
             basketItemBinding.cardviewBasketItem.setOnClickListener(v -> {

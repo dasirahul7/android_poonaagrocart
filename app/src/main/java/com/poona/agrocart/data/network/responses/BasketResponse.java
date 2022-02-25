@@ -24,13 +24,13 @@ public class BasketResponse extends BaseResponse {
     public class BasketData {
         @SerializedName("basket_list")
         @Expose
-        private ArrayList<Basket> baskets;
+        private ArrayList<BasketResponse.Basket> baskets;
 
-        public ArrayList<Basket> getBaskets() {
+        public ArrayList<BasketResponse.Basket> getBaskets() {
             return baskets;
         }
 
-        public void setBaskets(ArrayList<Basket> baskets) {
+        public void setBaskets(ArrayList<BasketResponse.Basket> baskets) {
             this.baskets = baskets;
         }
     }

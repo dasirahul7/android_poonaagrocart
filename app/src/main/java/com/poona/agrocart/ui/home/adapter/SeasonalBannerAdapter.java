@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.SeasonalProduct;
 import com.poona.agrocart.databinding.RowSeasonalBannerBinding;
 
 import java.util.ArrayList;
@@ -18,11 +19,11 @@ import java.util.ArrayList;
 public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAdapter.SeasonBannerHolder> {
     private RowSeasonalBannerBinding seasonalBannerBinding;
     private final Context sbContext;
-    private final ArrayList<SeasonalProductResponse.SeasonalProduct> seasonalProducts;
+    private final ArrayList<SeasonalProduct> seasonalProducts;
     private View rootView;
     private final OnSeasonalClickListener onSeasonalClickListener;
 
-    public SeasonalBannerAdapter(Context sbContext, ArrayList<SeasonalProductResponse.SeasonalProduct> seasonalProducts,
+    public SeasonalBannerAdapter(Context sbContext, ArrayList<SeasonalProduct> seasonalProducts,
                                  OnSeasonalClickListener onSeasonalClickListener) {
         this.sbContext = sbContext;
         this.seasonalProducts = seasonalProducts;
@@ -38,7 +39,7 @@ public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAd
 
     @Override
     public void onBindViewHolder(@NonNull SeasonBannerHolder holder, int position) {
-        SeasonalProductResponse.SeasonalProduct product = seasonalProducts.get(position);
+        SeasonalProduct product = seasonalProducts.get(position);
         seasonalBannerBinding.setModuleSeasonBanner(product);
         holder.bindSeasonItem(product);
 
@@ -50,7 +51,7 @@ public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAd
     }
 
     public interface OnSeasonalClickListener {
-        void onSeasonRegister(SeasonalProductResponse.SeasonalProduct seasonalProduct);
+        void onSeasonRegister(SeasonalProduct seasonalProduct);
     }
 
     public class SeasonBannerHolder extends RecyclerView.ViewHolder {
@@ -59,7 +60,7 @@ public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAd
             super(binding.getRoot());
         }
 
-        private void bindSeasonItem(SeasonalProductResponse.SeasonalProduct seasonalProduct) {
+        private void bindSeasonItem(SeasonalProduct seasonalProduct) {
             if (seasonalProduct.getType().equals("Green"))
                 seasonalBannerBinding.rlSeasonalView.setBackgroundResource(R.drawable.seasonal_banner_bg_green);
             else

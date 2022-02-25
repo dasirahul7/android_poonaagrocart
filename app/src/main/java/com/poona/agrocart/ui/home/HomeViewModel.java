@@ -24,7 +24,7 @@ import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.data.network.responses.BestSellingResponse;
 import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
-import com.poona.agrocart.data.network.responses.HomeResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
@@ -496,7 +496,7 @@ public class HomeViewModel extends AndroidViewModel {
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull HomeResponse homeResponse) {
                         if (homeResponse != null) {
                             progressDialog.dismiss();
-                            Log.e(TAG, "add to cart onSuccess: " + new Gson().toJson(homeResponse));
+                            Log.e(TAG, "Home API onSuccess: " + new Gson().toJson(homeResponse));
                             homeResponseMutableLiveData.setValue(homeResponse);
                         }
                     }

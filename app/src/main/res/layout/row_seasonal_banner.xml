@@ -6,7 +6,7 @@
 
         <variable
             name="moduleSeasonBanner"
-            type="com.poona.agrocart.data.network.responses.SeasonalProductResponse.SeasonalProduct" />
+            type="com.poona.agrocart.data.network.responses.homeResponse.SeasonalProduct" />
     </data>
 
     <RelativeLayout
@@ -64,7 +64,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:includeFontPadding="false"
-                        android:text="@{moduleSeasonBanner.sProductPlace}"
                         android:textColor="@color/dark_green_color"
                         android:textSize="@dimen/_20sp"
                         app:setCustomFont="@string/font_poppins_semi_bold" />

@@ -18,9 +18,12 @@ import java.util.ArrayList;
 public class BasketGridAdapter extends RecyclerView.Adapter<BasketGridAdapter.BasketGridHolder> {
     private final ArrayList<BasketResponse.Basket> basketArrayList;
     private RowBasketListItemBinding rowBasketBinding;
-    private final BasketAdapter.OnBasketClickListener onBasketClickListener;
+    private final OnBasketClickListener onBasketClickListener;
 
-    public BasketGridAdapter(ArrayList<BasketResponse.Basket> basketArrayList, BasketAdapter.OnBasketClickListener onBasketClickListener) {
+    public interface OnBasketClickListener {
+        void OnBasketClick(BasketResponse.Basket basket);
+    }
+    public BasketGridAdapter(ArrayList<BasketResponse.Basket> basketArrayList, OnBasketClickListener onBasketClickListener) {
         this.basketArrayList = basketArrayList;
         this.onBasketClickListener = onBasketClickListener;
     }
