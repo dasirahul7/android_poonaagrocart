@@ -310,7 +310,7 @@ public class ProductListResponse extends BaseResponse {
         }
 
         public String getOfferPrice() {
-            return offerPrice.replace("0.","");
+            return offerPrice;
         }
 
         public void setOfferPrice(String offerPrice) {
