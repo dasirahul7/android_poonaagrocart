@@ -30,6 +30,7 @@ import static com.poona.agrocart.app.AppConstants.HOME_STORE_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.ISSUE_TICKET;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
+import static com.poona.agrocart.app.AppConstants.MY_NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
@@ -87,6 +88,7 @@ import com.poona.agrocart.data.network.responses.help_center_response.SendMessag
 import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
+import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.ViewConfigurationResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
@@ -404,5 +406,7 @@ public interface ApiInterface {
     @POST(ADD_TO_PRODUCT)
     Single<BaseResponse> getAddToCartFavouriteProduct(@FieldMap HashMap<String, String> addToCartInputParameter);
 
-
+    @FormUrlEncoded
+    @POST(MY_NOTIFICATION)
+    Single<NotificationListResponse> getNotification(@FieldMap HashMap<String, String> notificationInputParameter);
 }

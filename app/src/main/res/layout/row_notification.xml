@@ -6,7 +6,7 @@
 
         <variable
             name="moduleNotification"
-            type="com.poona.agrocart.ui.nav_notification.Notification" />
+            type="com.poona.agrocart.data.network.responses.notification.NotificationListResponse.NotificationList" />
     </data>
 
     <RelativeLayout
@@ -74,7 +74,7 @@
                         android:lineSpacingExtra="@dimen/_1sdp"
                         android:paddingTop="@dimen/_5sdp"
                         android:paddingEnd="0dp"
-                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi semper egestas at cursus maecenas duis enim sit ipsum. Ri amet tristique comm."
+                        android:text="@{moduleNotification.notification}"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />

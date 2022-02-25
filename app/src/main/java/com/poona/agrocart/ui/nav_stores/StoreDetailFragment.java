@@ -65,6 +65,8 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
     private ImageView imageView;
     String lng,lat ;
     private double longitude, latitude;
+    private String location, mapLocation;
+    private LatLng ny;
 
 
     public static StoreDetailFragment newInstance(StoreDetail store) {
@@ -115,7 +117,20 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
 
     private void setOnClick() {
         fragmentStoreDetailBinding.fabFindMyLocation.setOnClickListener(view -> {
-            warningToast(context, "hello");
+
+            if(lng != null && lat != null){
+                String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%f,%f", longitude,latitude);  //unnamed location
+               /* String uri = String.format(Locale.ENGLISH, "https://www.google.com/maps/place/Tirupati+Group/" +
+                        longitude +
+                        latitude +
+                        ",13.75z/data=!4m5!3m4!1s0x3bc2c6dca6e19471:0x4e1b08fc5eb9c54c!8m2!3d18.578434!4d73.8851988");*/
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                /*intent.setPackage("com.google.android.apps.maps");*/
+                startActivity(intent);
+            }else{
+                warningToast(context,"Location does not found");
+            }
+
         });
     }
 
@@ -181,15 +196,14 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         storeDetailViewModel.aboutStore.setValue(storeDetails.get(0).getAboutStore());
         storeDetailViewModel.contactPersonalNumber.setValue(storeDetails.get(0).getMobileNo());
         storeDetailViewModel.personalAddress.setValue(storeDetails.get(0).getAddress());
+        location = storeDetails.get(0).getAddress();
 
+        lng = storeDetails.get(0).getLongitude();
+        lat = storeDetails.get(0).getLatitude();
 
          if(lng != null && lat != null){
-             lng = storeDetails.get(0).getLongitude();
-             lat = storeDetails.get(0).getLatitude();
              longitude = Double.parseDouble(lng);
              latitude = Double.parseDouble(lat);
-         }else{
-             warningToast(context, "please save the local");
          }
 
         if (storeDetails.get(0).getStoreImage() != null) {
@@ -214,11 +228,11 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
 //        googleMap.getUiSettings().setZoomControlsEnabled(true);
 //        gmap.setMinZoomPreference(12);
 
-            LatLng ny = new LatLng(latitude, longitude);
+            ny = new LatLng(latitude, longitude);
 
         //https://www.google.com/maps/search/?api=1&query=<lat>,<lng>
         gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
-        gmap.addMarker(new MarkerOptions().position(ny).title("address"));
+        gmap.addMarker(new MarkerOptions().position(ny).title(location));
 //        float zoomLevel = 16.0f; //This goes up to 21
 //        gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
         //gmap.animateCamera(CameraUpdateFactory.zoomTo(10), 5000, null);

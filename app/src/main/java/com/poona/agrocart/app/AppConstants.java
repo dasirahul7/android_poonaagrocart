@@ -200,6 +200,10 @@ public class AppConstants {
     public static final String PU_ID = "pu_id";
     public static final String QUANTITY = "quantity";
 
+    /*Notification*/
+    public static final String MY_NOTIFICATION = "my-notifications";
+    //public static final String QUANTITY = "quantity";
+
     /*Category types*/
     public static final String BASKET = "0";
     public static final String PRODUCT = "1";
