@@ -16,6 +16,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.Review;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
@@ -53,6 +55,7 @@ import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductRatingReviewAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductImagesAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.UnitAdapter;
+import com.poona.agrocart.ui.product_detail.model.AllReview;
 import com.poona.agrocart.ui.product_detail.model.BasketContent;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomEditText;
@@ -90,27 +93,22 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private LinearLayoutManager linearLayoutManager;
     private ProductRatingReviewAdapter productRatingReviewAdapter;
     private ArrayList<BasketContent> basketContentArrayList;
-    private ArrayList<ProductOld> similarProductOlds;
-    private BasketProductAdapter basketProductAdapter;
     private ProductDetailsResponse.ProductDetails details;
     private ProductListResponse.ProductUnit unit;
     private View root;
     private final boolean BasketType = false;
-    private Calendar calendar;
-    private int mYear, mMonth, mDay;
     private ImageView txtOrganic;
     private CustomTextView txtBrand;
     private String strProductId = "";
-    private Bundle bundle;
     private String unitId;
     private SwipeRefreshLayout rlRefreshPage;
-
 
     private RatingBar ratingBarInput;
     private CustomEditText etFeedback;
     private CustomButton btnRateSubmit;
     private List<ProductDetailsResponse.Rating> ratingList = new ArrayList<>();
-    private List<ProductDetailsResponse.Review> reviewsList = new ArrayList<>();
+    private ArrayList<Review> reviewsList = new ArrayList<>();
+    private ArrayList<Review> allReview = new ArrayList<>();
 
 
     @Override
@@ -145,21 +143,20 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
         btnRateSubmit.setOnClickListener(view -> {
             if (isConnectingToInternet(context)) {
-                if (!Objects.requireNonNull(etFeedback.getText()).toString().isEmpty() && !(ratingBarInput.getRating() == 0.0)){
+                if (!Objects.requireNonNull(etFeedback.getText()).toString().isEmpty() && !(ratingBarInput.getRating() == 0.0)) {
                     callRatingAndReviewAPi(showCircleProgressDialog(context, ""));
-                }else {
-                    errorToast(context,"Please fill the field");
+                } else {
+                    errorToast(context, "Please fill the field");
                 }
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         });
-
         fragmentProductDetailBinding.tvSeeMoreReview.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(REVIEW_LIST, (Serializable) reviewsList);
+            bundle.putParcelableArrayList(REVIEW_LIST, allReview);
             NavHostFragment.findNavController(ProductDetailFragment.this).
-                    navigate(R.id.action_nav_favourite_to_nav_product_details,bundle);
+                    navigate(R.id.action_nav_product_details_to_nav_product_review, bundle);
         });
 
         return root;
@@ -237,7 +234,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                             details = productDetailsResponse.getProductDetails();
                             rlRefreshPage.setRefreshing(false);
                             for (ProductListResponse.ProductUnit unit : details.getProductUnits()) {
-                               details.setUnit(details.getProductUnits().get(0));
+                                details.setUnit(details.getProductUnits().get(0));
                             }
                             UnitAdapter unitAdapter = new UnitAdapter(details.getProductUnits(), details.getIsCart(), requireActivity(), this::changePriceAndUnit);
                             fragmentProductDetailBinding.rvWeights.setAdapter(unitAdapter);
@@ -249,16 +246,20 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                             setViewPagerAdapterItems();
 
                             /*Rating and Reviews*/
-                            if (productDetailsResponse.getProductDetails().getRating() != null){
+                            if (productDetailsResponse.getProductDetails().getRating() != null) {
                                 ratingList.clear();
                                 ratingList.add(productDetailsResponse.getProductDetails().getRating());
                                 setRatingViewHideShow(ratingList);
                             }
-                            if (productDetailsResponse.getProductDetails().getReviews() != null || productDetailsResponse.getProductDetails().getReviews().size() > 0){
+                            if (productDetailsResponse.getProductDetails().getReviews() != null ||
+                                    productDetailsResponse.getProductDetails().getReviews().size() > 0) {
                                 reviewsList.clear();
+                                allReview.clear();
                                 reviewsList.addAll(productDetailsResponse.getProductDetails().getReviews());
+                                allReview.addAll(reviewsList);
                                 setAdaptor(reviewsList);
                                 productRatingReviewAdapter.notifyDataSetChanged();
+
                             }
                         }
                         break;
@@ -285,9 +286,9 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private void setRatingViewHideShow(List<ProductDetailsResponse.Rating> ratingList) {
         if (!ratingList.get(0).getRating().isEmpty() && !ratingList.get(0).getReview().isEmpty() ||
                 !ratingList.get(0).getRating().equalsIgnoreCase("") &&
-                        !ratingList.get(0).getReview().equalsIgnoreCase("")){
+                        !ratingList.get(0).getReview().equalsIgnoreCase("")) {
             fragmentProductDetailBinding.llRateView.setVisibility(View.GONE);
-        }else {
+        } else {
             fragmentProductDetailBinding.llRateView.setVisibility(View.VISIBLE);
         }
     }
@@ -300,10 +301,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         productDetailViewModel.sellingPrice.setValue("Rs." + details.getUnit().getSellingPrice());
         productDetailViewModel.offerPrice.setValue("Rs" + details.getUnit().getOfferPrice());
         productDetailViewModel.offer.setValue(details.getSpecialOffer());
-        if (productDetailViewModel.unitMutableLiveData.getValue().getInCart() == 1){
+        if (productDetailViewModel.unitMutableLiveData.getValue().getInCart() == 1) {
             productDetailViewModel.isInCart.setValue(true);
         } else
-        productDetailViewModel.isInCart.setValue(false);
+            productDetailViewModel.isInCart.setValue(false);
         if (details.getIsFavourite() == 1)
             productDetailViewModel.isInFav.setValue(true);
         else
@@ -318,9 +319,9 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         productDetailViewModel.productNutrition.setValue(details.getNutrition());
         productDetailViewModel.productBrand.setValue(details.getBrandName());
         if (details.getIsO3().equalsIgnoreCase("yes"))
-        productDetailViewModel.isOrganic.setValue(true);
+            productDetailViewModel.isOrganic.setValue(true);
         else
-        productDetailViewModel.isOrganic.setValue(false);
+            productDetailViewModel.isOrganic.setValue(false);
 
         if (details.getBrandName() != null && !details.getBrandName().isEmpty()) {
             txtBrand.setText(productDetailViewModel.productBrand.getValue());
@@ -337,13 +338,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
         }
         unitId = productDetailViewModel.unitMutableLiveData.getValue().getpId();
-        if (productDetailViewModel.isInCart.getValue()){
+        if (productDetailViewModel.isInCart.getValue()) {
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
-            if (Integer.parseInt(productDetailViewModel.productQuantity.getValue())>1){
+            if (Integer.parseInt(productDetailViewModel.productQuantity.getValue()) > 1) {
                 fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
-            }else fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
-        }else {
+            } else
+                fragmentProductDetailBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
+        } else {
             fragmentProductDetailBinding.ivMinus.setVisibility(View.GONE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.GONE);
         }
@@ -739,7 +741,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
 
-   /* Rating and Review API */
+    /* Rating and Review API */
 
     private void callRatingAndReviewAPi(ProgressDialog progressDialog) {
         @SuppressLint("NotifyDataSetChanged")
@@ -752,7 +754,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 }
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        successToast(context,baseResponse.getMessage());
+                        successToast(context, baseResponse.getMessage());
                         callProductDetailsApi(showCircleProgressDialog(context, ""));
                         break;
                     case STATUS_CODE_400://Validation Errors
@@ -776,20 +778,20 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             }
         };
 
-        productDetailViewModel.callSubmitRatingResponseApi(progressDialog,submitRatingInputParameter(), ProductDetailFragment.this)
+        productDetailViewModel.callSubmitRatingResponseApi(progressDialog, submitRatingInputParameter(), ProductDetailFragment.this)
                 .observe(getViewLifecycleOwner(), ratingResponseObserver);
     }
 
-    private HashMap<String,String> submitRatingInputParameter() {
-        HashMap<String,String> map = new HashMap<>();
-        map.put(PRODUCT_ID,strProductId);
+    private HashMap<String, String> submitRatingInputParameter() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(PRODUCT_ID, strProductId);
         map.put(RATING, String.valueOf(ratingBarInput.getRating()));
-        map.put(REVIEW,etFeedback.getText().toString().trim());
+        map.put(REVIEW, etFeedback.getText().toString().trim());
         return map;
     }
 
 
-    private void setAdaptor(List<ProductDetailsResponse.Review> reviewsList) {
+    private void setAdaptor(List<Review> reviewsList) {
 
         //Initializing our superheroes list
         this.reviewsList = new ArrayList<>();
@@ -798,7 +800,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         rvProductReview.setHasFixedSize(true);
         rvProductReview.setLayoutManager(linearLayoutManager);
         //initializing our adapter
-        productRatingReviewAdapter = new ProductRatingReviewAdapter(context,reviewsList, this);
+        productRatingReviewAdapter = new ProductRatingReviewAdapter(context, reviewsList,0);
         //Adding adapter to recyclerview
         rvProductReview.setAdapter(productRatingReviewAdapter);
     }

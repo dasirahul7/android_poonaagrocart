@@ -6,7 +6,7 @@
 
         <variable
             name="productViewModel"
-            type="com.poona.agrocart.data.network.responses.ProductDetailsResponse.Review" />
+            type="com.poona.agrocart.data.network.responses.Review" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -33,7 +33,7 @@
                 android:weightSum="100">
 
                 <com.poona.agrocart.widgets.imageview.CircularImageView
-                    setImage="@{productViewModel.image}"
+                    setImage='@{productViewModel.image ?? ""}'
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     app:civ_border_color="#979797"

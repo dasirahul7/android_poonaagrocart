@@ -11,19 +11,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
+import com.poona.agrocart.data.network.responses.Review;
 import com.poona.agrocart.databinding.RvProductCommentBinding;
 import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductRatingReviewAdapter extends RecyclerView.Adapter<ProductRatingReviewAdapter.CommentViewHolder> {
-    private List<ProductDetailsResponse.Review> reviewsList;
+    private List<Review> reviewsList;
     private Context context;
+    private int from=0;
+    private static int DETAIL =0;
+    private static int REVIEW =1;
 
-    public ProductRatingReviewAdapter(Context context, List<ProductDetailsResponse.Review> reviewsList,
-                                      ProductDetailFragment productDetailFragment) {
+    public ProductRatingReviewAdapter(Context context, List<Review> reviewsList, int from) {
         this.context=context;
         this.reviewsList=reviewsList;
+        this.from=from;
     }
 
     @NonNull
@@ -36,7 +41,7 @@ public class ProductRatingReviewAdapter extends RecyclerView.Adapter<ProductRati
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-        ProductDetailsResponse.Review review = reviewsList.get(position);
+        Review review = reviewsList.get(position);
         holder.rvProductCommentBinding.setProductViewModel(review);
         holder.bind(review);
     }
@@ -44,8 +49,12 @@ public class ProductRatingReviewAdapter extends RecyclerView.Adapter<ProductRati
     @Override
     public int getItemCount() {
 
-        if(reviewsList.size() > 2){
-            return 3;
+        if(from==DETAIL){
+            if(reviewsList.size() > 2){
+                return 3;
+            }else {
+                return reviewsList.size();
+            }
         }else {
             return reviewsList.size();
         }
@@ -59,7 +68,7 @@ public class ProductRatingReviewAdapter extends RecyclerView.Adapter<ProductRati
             this.rvProductCommentBinding = rvProductCommentBinding;
         }
 
-        public void bind(ProductDetailsResponse.Review review) {
+        public void bind(Review review) {
             rvProductCommentBinding.ratingBar.setRating(Float.parseFloat(review.getRating()));
             rvProductCommentBinding.setVariable(BR.productViewModel, review);
             rvProductCommentBinding.executePendingBindings();
