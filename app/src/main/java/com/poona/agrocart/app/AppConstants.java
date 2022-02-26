@@ -120,6 +120,8 @@ public class AppConstants {
 
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
+    public static final String ADD_TO_PRODUCT = "add-to-cart-product";
+    public static final String RATE_TO_PRODUCT = "rate-product";
 
     /*Basket detail API*/
     public static final String BASKET_DETAIL_API = "basket-details";
@@ -196,9 +198,14 @@ public class AppConstants {
 
     /*Product API Keys*/
     public static final String PRODUCT_ID = "product_id";
-    public static final String ADD_TO_PRODUCT = "add-to-cart-product";
+
     public static final String PU_ID = "pu_id";
     public static final String QUANTITY = "quantity";
+
+   /* Rating and Review */
+   public static final String RATING = "rating";
+   public static final String REVIEW = "review";
+   public static final String REVIEW_LIST = "review_list";
 
     /*Category types*/
     public static final String BASKET = "0";
