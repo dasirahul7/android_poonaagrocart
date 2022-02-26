@@ -92,7 +92,7 @@
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:text="@{homeProductModel.weight+homeProductModel.unitName}"
+                    android:text='@{homeProductModel.weight +homeProductModel.unitName}'
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -112,7 +112,7 @@
                         android:background="@drawable/bg_strikethrough"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:text='@{`Rs.`+homeProductModel.sellingPrice != null ? homeProductModel.sellingPrice : ""}'
+                        android:text='@{`Rs.`+homeProductModel.sellingPrice ?? ""}'
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -126,7 +126,7 @@
                         android:layout_weight="1"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:text='@{`Rs.`+homeProductModel.offerPrice !=null ? homeProductModel.offerPrice: ""}'
+                        android:text='@{`Rs.`+homeProductModel.offerPrice ?? ""}'
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_18sp"
                         app:setCustomFont="@string/font_montserrat_regular" />
