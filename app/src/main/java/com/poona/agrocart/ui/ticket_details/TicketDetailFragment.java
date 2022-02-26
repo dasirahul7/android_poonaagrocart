@@ -167,7 +167,7 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
         rvTicketOrders.setHasFixedSize(true);
 
         rvTicketOrders.setLayoutManager(linearLayoutManager);
-        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setStackFromEnd(false);
         //initializing our adapter
         ticketCommentsAdapter = new TicketCommentsAdapter(allChatList, this, context);
 

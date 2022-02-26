@@ -229,7 +229,8 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         playerView.setPlayer(simpleExoPlayer);
         MediaItem mediaItem = MediaItem.fromUri(strVideoView);
         simpleExoPlayer.addMediaItem(mediaItem);
-        simpleExoPlayer.prepare();
+
+         simpleExoPlayer.prepare();
         simpleExoPlayer.play();
 
         ImageView pause = playerView.findViewById(R.id.video_pause);
