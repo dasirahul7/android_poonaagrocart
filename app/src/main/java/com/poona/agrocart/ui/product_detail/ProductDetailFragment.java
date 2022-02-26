@@ -259,7 +259,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                                 allReview.addAll(reviewsList);
                                 setAdaptor(reviewsList);
                                 productRatingReviewAdapter.notifyDataSetChanged();
-
                             }
                         }
                         break;
