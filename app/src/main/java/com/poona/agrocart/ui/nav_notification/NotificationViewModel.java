@@ -1,10 +1,12 @@
 package com.poona.agrocart.ui.nav_notification;
 
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -25,10 +27,16 @@ import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
 
-public class NotificationViewModel extends ViewModel {
+public class NotificationViewModel extends AndroidViewModel {
 
     private static final String TAG = NotificationViewModel.class.getSimpleName();
-    MutableLiveData<ArrayList<NotificationListResponse.NotificationList>> arrayListMutableLiveData = new MutableLiveData<>();
+
+
+    public NotificationViewModel(@NonNull Application application) {
+        super(application);
+
+
+    }
 
     public LiveData<NotificationListResponse> getNotification(ProgressDialog progressDialog, Context context, HashMap<String, String> notificationInputParameter
             , NotificationFragment notificationFragment) {

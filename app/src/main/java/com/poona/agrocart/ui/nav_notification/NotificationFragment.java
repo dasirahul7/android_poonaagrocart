@@ -90,14 +90,18 @@ public class NotificationFragment extends BaseFragment {
     }
 
     private void setNotificationItems() {
-        mViewModel.arrayListMutableLiveData.observe(requireActivity(), notifications -> {
-            notificationAdapter = new NotificationAdapter(notifications, getActivity());
-            callNotificationApi(showCircleProgressDialog(context,""),"RecyclerView");
+
+            notificationAdapter = new NotificationAdapter(notificationLists,context);
+
              layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
             notificationBinding.rvNotification.setLayoutManager(layoutManager);
             notificationBinding.rvNotification.setHasFixedSize(true);
+            callNotificationApi(showCircleProgressDialog(context,""),"RecyclerView");
             notificationBinding.rvNotification.setAdapter(notificationAdapter);
-        });
+
+            //Pagination in scroll view
+            setScrollListener();
+
     }
 
     @Override
@@ -166,7 +170,7 @@ public class NotificationFragment extends BaseFragment {
                 }
                 switch (notificationListResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        if (offset == 0)
+                        //if (offset == 0)
                             notificationLists.clear();
 
                         //totalCount = Integer.parseInt(notificationListResponse.getData());
