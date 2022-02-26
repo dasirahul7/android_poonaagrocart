@@ -207,7 +207,24 @@
     <fragment
         android:id="@+id/nav_product_details"
         android:name="com.poona.agrocart.ui.product_detail.ProductDetailFragment"
-        tools:layout="@layout/fragment_product_detail" />
+        tools:layout="@layout/fragment_product_detail" >
+
+    </fragment>
+
+
+  <!--  Product All Review Fragment-->
+    <fragment
+        android:id="@+id/nav_product_review"
+        android:name="com.poona.agrocart.ui.product_detail.product_all_review.ProductAllReviewFragment"
+        tools:layout="@layout/fragment_product_all_review" />
+
+    <action
+        android:id="@+id/action_nav_product_details_to_nav_product_review"
+        app:destination="@id/nav_product_review"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
 
     <!--Our stores fragment-->
     <fragment
@@ -290,13 +307,13 @@
         android:id="@+id/nav_notification"
         android:name="com.poona.agrocart.ui.nav_notification.NotificationFragment"
         android:label="@string/menu_notification"
-        tools:layout="@layout/fragment_notification"></fragment>
+        tools:layout="@layout/fragment_notification" />
 
     <!--Nav Policies-->
     <fragment
         android:id="@+id/nav_privacy"
         android:name="com.poona.agrocart.ui.nav_our_privacy.OurPolicyFragment"
-        tools:layout="@layout/fragment_policy"></fragment>
+        tools:layout="@layout/fragment_policy" />
 
     <!--Privacy To Privacy Policy Cms Fragment-->
     <action

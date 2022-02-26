@@ -2,25 +2,22 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="productViewModel"
-            type="com.poona.agrocart.data.network.responses.Review" />
-    </data>
-
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardview_ticket_comment"
+        android:id="@+id/cardview_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/colorLightGrey"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginVertical="@dimen/_8sdp"
+        android:elevation="@dimen/_2sdp"
+        app:cardCornerRadius="@dimen/_12sdp"
         app:cardUseCompatPadding="true"
-        app:cardCornerRadius="@dimen/_8sdp"
-        app:cardElevation="@dimen/_3sdp"
-        app:cardMaxElevation="@dimen/_5sdp"
         app:contentPadding="@dimen/_10sdp"
-        android:clipToPadding="true">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_submit"
+        app:strokeColor="@color/colorLightGrey"
+        app:strokeWidth="0.5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,9 +30,9 @@
                 android:weightSum="100">
 
                 <com.poona.agrocart.widgets.imageview.CircularImageView
-                    setImage='@{productViewModel.image ?? ""}'
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
+                    android:src="@drawable/ic_profile"
                     app:civ_border_color="#979797"
                     app:civ_border_width="@dimen/_1sdp" />
 
@@ -48,15 +45,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_weight="100">
 
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
-                            android:layout_weight="1"
+                            android:layout_weight="70"
                             android:gravity="start"
-                            android:text="@{productViewModel.name}"
+                            android:text="@string/johnson_doe"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_16sp"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
@@ -66,9 +63,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:layout_marginEnd="@dimen/_4sdp"
-                            android:layout_weight="1"
+                            android:layout_weight="70"
                             android:gravity="end"
-                            android:text="@{productViewModel.date}"
+                            android:singleLine="true"
+                            android:text="@string/sample_date"
                             android:textColor="@color/color_grey_txt"
                             android:textSize="@dimen/_16sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -80,12 +78,8 @@
                         style="@style/Widget.AppCompat.RatingBar.Indicator"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_margin="-5dp"
-                        android:layout_marginStart="-20dp"
                         android:numStars="5"
-                        android:scaleX="0.7"
-                        android:scaleY="0.7"
-                        android:stepSize="1.5"
+                        android:stepSize="0.5"
                         android:theme="@style/theme_rating_bar" />
 
                 </LinearLayout>
@@ -94,8 +88,9 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/colorLightGrey" />
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/color_grey_txt" />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:layout_width="wrap_content"
@@ -103,7 +98,7 @@
                 android:layout_marginStart="@dimen/_3sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:gravity="start"
-                android:text="@{productViewModel.review}"
+                android:text="@string/lorem_ipsum_dolor_sit_amet_consectetur_adipiscing"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_16sp"
                 app:setCustomFont="@string/font_poppins_regular" />

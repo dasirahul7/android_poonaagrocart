@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
+import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 import com.poona.agrocart.databinding.RowNotificationBinding;
 
 import java.util.ArrayList;
@@ -15,10 +16,10 @@ import java.util.ArrayList;
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationHolder> {
 
     private final Context context;
-    private ArrayList<Notification> notifications = new ArrayList<>();
+    private ArrayList<NotificationListResponse.NotificationList> notifications = new ArrayList<>();
     private RowNotificationBinding notificationBinding;
 
-    public NotificationAdapter(ArrayList<Notification> notifications, Context context) {
+    public NotificationAdapter(ArrayList<NotificationListResponse.NotificationList> notifications, Context context) {
         this.notifications = notifications;
         this.context = context;
     }
@@ -32,7 +33,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull NotificationHolder holder, int position) {
-        Notification notification = notifications.get(position);
+        NotificationListResponse.NotificationList notification = notifications.get(position);
         holder.bindContent(notification);
     }
 
@@ -46,7 +47,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             super(binding.getRoot());
         }
 
-        public void bindContent(Notification notification) {
+        public void bindContent(NotificationListResponse.NotificationList notification) {
             notificationBinding.setVariable(BR.moduleNotification, notification);
         }
     }

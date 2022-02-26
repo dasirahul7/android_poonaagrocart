@@ -12,6 +12,9 @@ import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.PU_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
+import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
+import static com.poona.agrocart.app.AppConstants.SEARCH_PRODUCT;
+import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -20,15 +23,25 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -53,11 +66,13 @@ import com.poona.agrocart.databinding.FragmentProductListBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.bottom_sheet.BottomSheetFilterFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.home.HomeFragment;
 import com.poona.agrocart.ui.products_list.adapter.BasketGridAdapter;
 import com.poona.agrocart.ui.products_list.adapter.ProductGridAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -80,6 +95,22 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private final int totalCount = 0;
     private int offset = 0;
     private GridLayoutManager gridLayoutManager;
+    private ActivityResultLauncher<Intent> recognizerIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                ArrayList<String> resultArrayList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if (resultArrayList.get(0) != null && !TextUtils.isEmpty(resultArrayList.get(0))) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(SEARCH_TYPE, SEARCH_PRODUCT);
+                    bundle.putString(SEARCH_KEY, resultArrayList.get(0));
+
+                    fragmentProductListBinding.etProductSearch.setText(resultArrayList.get(0));
+                }
+            }
+        }
+    });
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,6 +118,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         fragmentProductListBinding.setLifecycleOwner(this);
         final View view = fragmentProductListBinding.getRoot();
         initView();
+        setOnClick();
         setTitleBar();
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setOnClickListener(v -> {
@@ -99,6 +131,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         searchProducts(view);
         return view;
     }
+
 
 
     private void setTitleBar() {
@@ -311,7 +344,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
 
     /*Search API here*/
     private void searchProducts(View root) {
-        fragmentProductListBinding.etSearch.addTextChangedListener(new TextWatcher() {
+        fragmentProductListBinding.etProductSearch.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
             }
 
@@ -336,8 +369,8 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                             getActivity().runOnUiThread(new Runnable() {
                                 public void run() {
                                     try {
-                                        if (fragmentProductListBinding.etSearch.getText() != null) {
-                                            if (!fragmentProductListBinding.etSearch.getText().toString().trim().equals("")) {
+                                        if (fragmentProductListBinding.etProductSearch.getText() != null) {
+                                            if (!fragmentProductListBinding.etProductSearch.getText().toString().trim().equals("")) {
                                                 productArrayList.clear();
                                                 basketArrayList.clear();
                                                 if (isConnectingToInternet(context)) {
@@ -369,7 +402,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         HashMap<String, String> map = new HashMap<>();
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
-        map.put(AppConstants.SEARCH, fragmentProductListBinding.etSearch.getText().toString().trim());
+        map.put(AppConstants.SEARCH, fragmentProductListBinding.etProductSearch.getText().toString().trim());
         map.put(CATEGORY_ID, CategoryId);
         return map;
     }
@@ -378,7 +411,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         HashMap<String, String> map = new HashMap<>();
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
-        map.put(AppConstants.SEARCH, fragmentProductListBinding.etSearch.getText().toString().trim());
+        map.put(AppConstants.SEARCH, fragmentProductListBinding.etProductSearch.getText().toString().trim());
         return map;
     }
 
@@ -527,5 +560,24 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
 //        }
         map.put(QUANTITY, "1");
         return map;
+    }
+    private void setOnClick() {
+
+        fragmentProductListBinding.imgProductMice.setOnClickListener(view -> {
+            startVoiceInput();
+        });
+
+    }
+
+    private void startVoiceInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Search Store...");
+        try {
+            recognizerIntentLauncher.launch(intent);
+        } catch (ActivityNotFoundException a) {
+
+        }
     }
 }
