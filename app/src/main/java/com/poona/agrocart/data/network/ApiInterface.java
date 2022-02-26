@@ -69,6 +69,7 @@ import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.data.network.responses.CmsResponse;
 import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
+import com.poona.agrocart.data.network.responses.HomeBasketResponse;
 import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
 import com.poona.agrocart.data.network.responses.IntroScreenResponse;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
@@ -236,7 +237,10 @@ public interface ApiInterface {
     //Home Basket list API
     @FormUrlEncoded
     @POST(HOME_BASKET_API)
-    Single<BasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
+    Single<HomeBasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
+    @FormUrlEncoded
+    @POST(HOME_BASKET_API)
+    Single<BasketResponse> basketResponse(@FieldMap HashMap<String, String> categoryParams);
 
     @FormUrlEncoded
     @POST(HOME_BASKET_API)

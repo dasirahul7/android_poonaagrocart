@@ -170,7 +170,7 @@
         tools:layout="@layout/fragment_product_list" />
 
 
-    <!--ProductOld list actions cart-->
+    <!--Product list actions cart-->
     <action
         android:id="@+id/action_nav_products_list_to_nav_cart"
         app:destination="@id/nav_cart"
@@ -178,6 +178,30 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
+    <!--Action product list to product detail-->
+    <action
+        android:id="@+id/action_nav_products_list_to_product_details"
+        app:destination="@id/nav_product_details"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:launchSingleTop="true"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:popUpTo="@+id/nav_products_list"
+        app:popUpToInclusive="false"
+        app:popUpToSaveState="true" />
+    <!--Action product list to basket detail-->
+    <action
+        android:id="@+id/action_nav_products_list_to_basket_details"
+        app:destination="@id/basketDetailFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:launchSingleTop="true"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:popUpTo="@+id/nav_products_list"
+        app:popUpToInclusive="false"
+        app:popUpToSaveState="true"/>
 
     <!--ProductOld Detail Fragment-->
     <fragment

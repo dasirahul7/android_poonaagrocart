@@ -265,7 +265,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         if (basketResponse.getData().getBaskets() != null) {
                             if (basketResponse.getData().getBaskets().size() > 0) {
                                 basketArrayList.addAll(basketResponse.getData().getBaskets());
-//                                makeBasketListing();
+                                makeBasketListing();
                             }
                         }
                         break;
@@ -477,14 +477,14 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private void redirectToProductsDetail(Product product) {
         Bundle bundle = new Bundle();
         bundle.putString(PRODUCT_ID, product.getProductId());
-        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_products_list_to_product_details, bundle);
     }
 
     /*Redirect to Basket Detail screen*/
     private void redirectToBasketDetails(BasketResponse.Basket basket) {
         Bundle bundle = new Bundle();
         bundle.putString(BASKET_ID, basket.getId());
-        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_home_to_basketDetailFragment, bundle);
+        NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_products_list_to_basket_details, bundle);
     }
 
     @Override
