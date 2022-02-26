@@ -599,6 +599,7 @@
                     android:textColor="@color/color_cancel_order"
                     android:singleLine="true"
                     android:textSize="@dimen/_12sp"
+                    android:layout_marginTop="@dimen/_2sdp"
                     android:text="Your order has been cancelled.Money will be refunded into your wallet"/>
             </LinearLayout>
 

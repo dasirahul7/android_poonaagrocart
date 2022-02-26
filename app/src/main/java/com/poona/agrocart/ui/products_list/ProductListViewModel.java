@@ -91,7 +91,7 @@ public class ProductListViewModel extends AndroidViewModel {
 
         ApiClientAuth.getClient(productListFragment.getContext())
                 .create(ApiInterface.class)
-                .homeBasketResponse(hashMap)
+                .basketResponse(hashMap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<BasketResponse>() {

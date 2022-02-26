@@ -37,6 +37,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -63,6 +64,7 @@ import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.data.network.responses.BestSellingResponse;
 import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
+import com.poona.agrocart.data.network.responses.HomeBasketResponse;
 import com.poona.agrocart.data.network.responses.homeResponse.Banner;
 import com.poona.agrocart.data.network.responses.homeResponse.Basket;
 import com.poona.agrocart.data.network.responses.homeResponse.Category;
@@ -168,11 +170,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         root = fragmentHomeBinding.getRoot();
         rlRefreshPage = fragmentHomeBinding.rlRefreshPage;
-//        clearLists();
-
 
         if (isConnectingToInternet(context)) {
-//            getHomepageResponses(showCircleProgressDialog(context, ""));
             clearLists();
             callHomeScreenApi(showCircleProgressDialog(context, ""));
 //            callCategoryApi(showCircleProgressDialog(context, ""), "load");
@@ -188,7 +187,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
         initClick();
-//        checkEmpties();
 
         rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -196,7 +194,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 rlRefreshPage.setRefreshing(true);
                 if (isConnectingToInternet(context)) {
                     clearLists();
-                    callHomeScreenApi(showCircleProgressDialog(context,""));
+                    callHomeScreenApi(showCircleProgressDialog(context, ""));
 //                    callCategoryApi(showCircleProgressDialog(context, ""), "load");
 //                    callBasketApi(showCircleProgressDialog(context, ""), "load");
 //                    callBannerApi(showCircleProgressDialog(context, ""));
@@ -210,416 +208,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 }
             }
         });
+//        setPaginationForLists();
 
         return root;
     }
 
-
-    private HomeResponse homeResponse = null;
-    private BannerResponse bannerResponse = null;
-    private StoreBannerResponse storeBannerResponse = null;
-    private CategoryResponse categoryResponse = null;
-    private BasketResponse basketResponse = null;
-    private ExclusiveResponse exclusiveResponse = null;
-    private BestSellingResponse bestSellingResponse = null;
-    private SeasonalProductResponse seasonalProductResponse = null;
-    private ProductListResponse productListResponse = null;
-
-//    private void getHomepageResponses(ProgressDialog progressDialog) {
-//        /*print user input parameters*/
-//        homeViewModel.getHomepageResponses(context, listingParams(offset, ""))
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeWith(new io.reactivex.rxjava3.core.Observer<List<String>>() {
-//                    @Override
-//                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<String> strings) {
-//                        Type homeType = new TypeToken<HomeResponse>() {
-//                        }.getType();
-//                        homeResponse = new GsonBuilder().create().fromJson(strings.get(0), homeType);
-//
-//                        Type bannerType = new TypeToken<BannerResponse>() {
-//                        }.getType();
-//                        bannerResponse = new GsonBuilder().create().fromJson(strings.get(1), bannerType);
-//
-//                        Type storeBannerType = new TypeToken<StoreBannerResponse>() {
-//                        }.getType();
-//                        storeBannerResponse = new GsonBuilder().create().fromJson(strings.get(2), storeBannerType);
-//
-//                        Type categoryType = new TypeToken<CategoryResponse>() {
-//                        }.getType();
-//                        categoryResponse = new GsonBuilder().create().fromJson(strings.get(3), categoryType);
-//
-//                        Type basketType = new TypeToken<BasketResponse>() {
-//                        }.getType();
-//                        basketResponse = new GsonBuilder().create().fromJson(strings.get(4), basketType);
-//
-//                        Type exclusiveType = new TypeToken<ExclusiveResponse>() {
-//                        }.getType();
-//                        exclusiveResponse = new GsonBuilder().create().fromJson(strings.get(5), exclusiveType);
-//
-//                        Type bestSellingType = new TypeToken<BestSellingResponse>() {
-//                        }.getType();
-//                        bestSellingResponse = new GsonBuilder().create().fromJson(strings.get(6), bestSellingType);
-//
-//                        Type seasonalProductType = new TypeToken<SeasonalProductResponse>() {
-//                        }.getType();
-//                        seasonalProductResponse = new GsonBuilder().create().fromJson(strings.get(7), seasonalProductType);
-//
-//                        Type productListType = new TypeToken<ProductListResponse>() {
-//                        }.getType();
-//                        productListResponse = new GsonBuilder().create().fromJson(strings.get(8), productListType);
-//
-//                        setHomeResponse();
-//                        setHomeBannerResponse();
-//                        setCategoryResponse();
-//                        progressDialog.dismiss();
-//                        setBasketResponse();
-//                        setBestSellingResponse();
-//                        setSeasonalResponse();
-//                        setExclusiveResponse();
-//                        setStoreBannerResponse();
-//                        setProductListResponse();
-//
-//                        fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
-//                    }
-//
-//                    @Override
-//                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-//                        Gson gson = new GsonBuilder().create();
-//                        if (e instanceof HttpException) {
-//                            try {
-//                                homeResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), HomeResponse.class);
-//                                bannerResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), BannerResponse.class);
-//                                storeBannerResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), StoreBannerResponse.class);
-//                                categoryResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CategoryResponse.class);
-//                                basketResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), BasketResponse.class);
-//                                exclusiveResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), ExclusiveResponse.class);
-//                                bestSellingResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), BestSellingResponse.class);
-//                                seasonalProductResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), SeasonalProductResponse.class);
-//                                productListResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), ProductListResponse.class);
-//
-//                                setHomeResponse();
-//                                setHomeBannerResponse();
-//                                setCategoryResponse();
-//                                progressDialog.dismiss();
-//                                setBasketResponse();
-//                                setBestSellingResponse();
-//                                setSeasonalResponse();
-//                                setExclusiveResponse();
-//                                setStoreBannerResponse();
-//                                setProductListResponse();
-//                            } catch (Exception exception) {
-//                                exception.printStackTrace();
-//                                showServerErrorDialog(getString(R.string.for_better_user_experience), HomeFragment.this, () -> {
-//                                    if (isConnectingToInternet(context)) {
-//                                        getHomepageResponses(showCircleProgressDialog(context, ""));
-//                                    } else {
-//                                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-//                                    }
-//                                }, context);
-//                            }
-//                        } else {
-//                            e.printStackTrace();
-//                        }
-//                        progressDialog.dismiss();
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        progressDialog.dismiss();
-//                    }
-//                });
-//    }
-
-//    private void setProductListResponse() {
-//        if (productListResponse != null) {
-//            Log.e(TAG, "callProductListApi: " + productListResponse.getMessage());
-//            switch (productListResponse.getStatus()) {
-//                case STATUS_CODE_200://Record Create/Update Successfully
-//                    if (productListResponse.getProductResponseDt().getProductList() != null
-//                            && productListResponse.getProductResponseDt().getProductList().size() > 0) {
-//                        makeVisible(fragmentHomeBinding.recProduct, null);
-//                        //Should remove this latter
-//                        productList.clear();
-//                        for (ProductListResponse.Product product : productListResponse.getProductResponseDt().getProductList()) {
-//                            if (!product.getProductUnits().isEmpty()) {
-//                                product.setUnit(product.getProductUnits().get(0));
-//                                product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
-//                            }
-//                            productList.add(product);
-//                        }
-//                        setRvProduct();
-////                        productListAdapter.notifyDataSetChanged();
-////                            productList = productListResponse.getProductResponseDt().getProductList();
-//                    }
-//                    break;
-//                case STATUS_CODE_403://Validation Errors
-//                case STATUS_CODE_400://Validation Errors
-//                case STATUS_CODE_404://Validation Errors
-//                    warningToast(context, productListResponse.getMessage());
-//                    break;
-//                case STATUS_CODE_401://Unauthorized user
-//                    goToAskSignInSignUpScreen(productListResponse.getMessage(), context);
-//                    break;
-//                case STATUS_CODE_405://Method Not Allowed
-//                    infoToast(context, productListResponse.getMessage());
-//                    break;
-//            }
-//
-//        }
-//
-//    }
-//
-//    private void setStoreBannerResponse() {
-//        if (storeBannerResponse != null) {
-//            Log.e(TAG, "callStoreBannerApi: " + storeBannerResponse.getStoreBanners().size());
-//            switch (storeBannerResponse.getStatus()) {
-//                case STATUS_CODE_200://Record Create/Update Successfully
-//                    if (storeBannerResponse.getStoreBanners().size() > 0) {
-//                        makeVisible(fragmentHomeBinding.cardviewOurShops, null);
-//                        makeVisible(null, fragmentHomeBinding.rlO3Banner);
-//                        storeBannerList = storeBannerResponse.getStoreBanners();
-//                        StoreBannerResponse.StoreBanner storeBanner = storeBannerResponse.getStoreBanners().get(0);
-//                        fragmentHomeBinding.setStoreBanner(storeBanner);
-//                        fragmentHomeBinding.setVariable(BR.storeBanner, storeBanner);
-//                        fragmentHomeBinding.executePendingBindings();
-//                        fragmentHomeBinding.cardviewOurShops.setOnClickListener(v -> {
-//                            redirectToOurShops(root);
-//                        });
-//                    }
-//                    break;
-//                case STATUS_CODE_403://Validation Errors
-//                case STATUS_CODE_400://Validation Errors
-//                case STATUS_CODE_404://Validation Errors
-//                    warningToast(context, storeBannerResponse.getMessage());
-//                    break;
-//                case STATUS_CODE_401://Unauthorized user
-//                    goToAskSignInSignUpScreen(storeBannerResponse.getMessage(), context);
-//                    break;
-//                case STATUS_CODE_405://Method Not Allowed
-//                    infoToast(context, storeBannerResponse.getMessage());
-//                    break;
-//            }
-//
-//        }
-//
-//    }
-//
-//    private void setSeasonalResponse() {
-//        if (seasonalProductResponse != null) {
-//            Log.e("SeasonalProduct Api ResponseData", new Gson().toJson(seasonalProductResponse));
-//            switch (seasonalProductResponse.getStatus()) {
-//                case STATUS_CODE_200://Record Create/Update Successfully
-//                    if (seasonalProductResponse.getSeasonalProducts() != null
-//                            && seasonalProductResponse.getSeasonalProducts().size() > 0) {
-//                        makeVisible(fragmentHomeBinding.recSeasonal, null);
-//                        for (int i = 0; i < seasonalProductResponse.getSeasonalProducts().size(); i++) {
-//                            if (i / 2 == 0) {
-//                                seasonalProductResponse.getSeasonalProducts().get(i).setType("Green");
-//                            } else
-//                                seasonalProductResponse.getSeasonalProducts().get(i).setType("Yellow");
-//                        }
-//                        seasonalProductList.addAll(seasonalProductResponse.getSeasonalProducts());
-//                        setRvSeasonal();
-////                        seasonalBannerAdapter.notifyDataSetChanged();
-//                    }
-//                    break;
-//                case STATUS_CODE_403://Validation Errors
-//                case STATUS_CODE_400://Validation Errors
-//                case STATUS_CODE_404://Validation Errors
-//                    warningToast(context, seasonalProductResponse.getMessage());
-//                    break;
-//                case STATUS_CODE_401://Unauthorized user
-//                    goToAskSignInSignUpScreen(seasonalProductResponse.getMessage(), context);
-//                    break;
-//                case STATUS_CODE_405://Method Not Allowed
-//                    infoToast(context, seasonalProductResponse.getMessage());
-//                    break;
-//            }
-//
-//        }
-//
-//    }
-//
-//    private void setBestSellingResponse() {
-//        if (bestSellingResponse != null) {
-//            Log.e("Best selling Api ResponseData", new Gson().toJson(bestSellingResponse));
-//            switch (bestSellingResponse.getStatus()) {
-//                case STATUS_CODE_200://Record Create/Update Successfully
-//                    if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null
-//                            && bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
-//                        makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
-//                        for (ProductListResponse.Product product : bestSellingResponse.getBestSellingData().getBestSellingProductList()) {
-//                            if (!product.getProductUnits().isEmpty()) {
-//                                product.setUnit(product.getProductUnits().get(0));
-//                                product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
-//                            }
-//                            bestSellings.add(product);
-//                        }
-//                        setRvBestSelling();
-////                        bestsellingAdapter.notifyDataSetChanged();
-//                    }
-//                    break;
-//                case STATUS_CODE_403://Validation Errors
-//                case STATUS_CODE_400://Validation Errors
-//                case STATUS_CODE_404://Validation Errors
-//                    warningToast(context, bestSellingResponse.getMessage());
-//                    break;
-//                case STATUS_CODE_401://Unauthorized user
-//                    goToAskSignInSignUpScreen(bestSellingResponse.getMessage(), context);
-//                    break;
-//                case STATUS_CODE_405://Method Not Allowed
-//                    infoToast(context, bestSellingResponse.getMessage());
-//                    break;
-//            }
-//        }
-//
-//    }
-//
-//    private void setExclusiveResponse() {
-//        if (exclusiveResponse != null) {
-//            Log.e("Best Selling Api ResponseData", new Gson().toJson(exclusiveResponse));
-//            switch (exclusiveResponse.getStatus()) {
-//                case STATUS_CODE_200://Record Create/Update Successfully
-//                    if (exclusiveResponse.getExclusiveData().getExclusivesList() != null
-//                            && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
-//                        //Should remove this latter
-////                        setRvExclusive();
-//                        for (ProductListResponse.Product product : exclusiveResponse.getExclusiveData().getExclusivesList()) {
-//                            if (!product.getProductUnits().isEmpty()) {
-//                                product.setUnit(product.getProductUnits().get(0));
-//                                product.setAccurateWeight(product.getUnit().getWeight() + product.getUnit().getUnitName());
-//                            }
-//                            offerProducts.add(product);
-//                            offerListAdapter.notifyDataSetChanged();
-//                        }
-//                        makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
-//                    }
-//                    break;
-//                case STATUS_CODE_403://Validation Errors
-//                case STATUS_CODE_400://Validation Errors
-//                case STATUS_CODE_404://Validation Errors
-//                    warningToast(context, exclusiveResponse.getMessage());
-//                    break;
-//                case STATUS_CODE_401://Unauthorized user
-//                    goToAskSignInSignUpScreen(exclusiveResponse.getMessage(), context);
-//                    break;
-//                case STATUS_CODE_405://Method Not Allowed
-//                    infoToast(context, exclusiveResponse.getMessage());
-//                    break;
-//            }
-//        }
-//
-//    }
-//
-//
-//    private void setBasketResponse() {
-//        if (basketResponse != null) {
-//            Log.e("Basket Api ResponseData", new Gson().toJson(basketResponse));
-//            switch (basketResponse.getStatus()) {
-//                case STATUS_CODE_200://Record Create/Update Successfully
-//                    setRvBasket();
-//                    if (basketResponse.getData().getBaskets() != null
-//                            && basketResponse.getData().getBaskets().size() > 0) {
-//                        makeVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
-//                        baskets.addAll(basketResponse.getData().getBaskets());
-//                        basketAdapter.notifyDataSetChanged();
-//                    }
-//                    break;
-//                case STATUS_CODE_403://Validation Errors
-//                case STATUS_CODE_400://Validation Errors
-//                case STATUS_CODE_404://Validation Errors
-//                    warningToast(context, basketResponse.getMessage());
-//                    break;
-//                case STATUS_CODE_401://Unauthorized user
-//                    goToAskSignInSignUpScreen(basketResponse.getMessage(), context);
-//                    break;
-//                case STATUS_CODE_405://Method Not Allowed
-//                    infoToast(context, basketResponse.getMessage());
-//                    break;
-//            }
-//        }
-//
-//    }
-//
-//    private void setCategoryResponse() {
-//        if (categoryResponse != null) {
-//            Log.e("Category Api ResponseData", new Gson().toJson(categoryResponse));
-//            switch (categoryResponse.getStatus()) {
-//                case STATUS_CODE_200://Record Create/Update Successfully
-//                    if (categoryResponse.getCategoryData() != null) {
-//                        //Should remove this latter
-//                        setRvCategory();
-//                        if (categoryResponse.getCategoryData().getCategoryList() != null
-//                                && categoryResponse.getCategoryData().getCategoryList().size() > 0) {
-//                            makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
-//                            categories.addAll(homeResponse.getHomeResponseData().getCategoryData());
-//                            categoryAdapter.notifyDataSetChanged();
-//                        }
-//                    }
-//                    break;
-//                case STATUS_CODE_403://Validation Errors
-//                case STATUS_CODE_400://Validation Errors
-//                case STATUS_CODE_404://Validation Errors
-//                    Log.e(TAG, "callCategoryApi: " + categoryResponse.getMessage());
-//                    warningToast(context, categoryResponse.getMessage());
-//                    break;
-//                case STATUS_CODE_401://Unauthorized user
-//                    goToAskSignInSignUpScreen(categoryResponse.getMessage(), context);
-//                    break;
-//                case STATUS_CODE_405://Method Not Allowed
-//                    infoToast(context, categoryResponse.getMessage());
-//                    break;
-//            }
-//        }
-//
-//    }
-//
-//    private void setHomeBannerResponse() {
-//        if (bannerResponse != null) {
-//            Log.e("Banner Api ResponseData", new Gson().toJson(bannerResponse));
-//            switch (bannerResponse.getStatus()) {
-//                case STATUS_CODE_200://Record Create/Update Successfully
-//                    if (bannerResponse.getData().getBanners().size() > 0) {
-//                        makeVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
-//                        banners = bannerResponse.getData().getBanners();
-//                        setRvBanners();
-//                    }
-//                    break;
-//                case STATUS_CODE_403://Validation Errors
-//                case STATUS_CODE_400://Validation Errors
-//                case STATUS_CODE_404://Validation Errors
-//                    // set a dummy banner if no banner is available
-//                    warningToast(context, bannerResponse.getMessage());
-//                    break;
-//                case STATUS_CODE_401://Unauthorized user
-//                    goToAskSignInSignUpScreen(bannerResponse.getMessage(), context);
-//                    break;
-//                case STATUS_CODE_405://Method Not Allowed
-//                    infoToast(context, bannerResponse.getMessage());
-//                    break;
-//            }
-//        }
-//
-//    }
-//
-//    private void setHomeResponse() {
-//        if (homeResponse != null) {
-//            preferences.setUserProfile(homeResponse.getResponse().getUserData().getImage());
-//            preferences.setUserName(homeResponse.getResponse().getUserData().getUserName());
-//            preferences.setUserAddress(homeResponse.getResponse().getUserData().getCityName()
-//                    + ", " + homeResponse.getResponse().getUserData().getAreaName());
-//            if (homeResponse.getResponse().getUserData().getImage() != null
-//                    && !TextUtils.isEmpty(homeResponse.getResponse().getUserData().getImage())) {
-//                ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getResponse().getUserData().getUserName());
-//                loadingImage(context, homeResponse.getResponse().getUserData().getImage(), ((HomeActivity) context).civProfilePhoto);
-//            }
-//        }
-//    }
 
     private void setRvBanners() {
         makeVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
@@ -662,13 +255,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         bestSellingManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
         bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), this::toProductDetail, (binding, product, position) -> {
             if (product.getInCart() == 0) {
-                addToCartProduct(product, BEST_SELLING, position, binding, null);
+                addToCartProduct(product, BEST_SELLING);
             }
         });
         fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recBestSelling.setLayoutManager(bestSellingManager);
         fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
-        fragmentHomeBinding.recBestSelling.getRecycledViewPool().setMaxRecycledViews(0, 0);
+//        fragmentHomeBinding.recBestSelling.getRecycledViewPool().setMaxRecycledViews(0, 0);
 
     }
 
@@ -677,12 +270,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
         exclusiveOfferManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
         offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), this::toProductDetail, (binding, product, position) -> {
-            addToCartProduct(product, EXCLUSIVE, position, binding, null);
+            addToCartProduct(product, EXCLUSIVE);
         });
         fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recExOffers.setLayoutManager(exclusiveOfferManager);
         fragmentHomeBinding.recExOffers.setAdapter(offerListAdapter);
-        fragmentHomeBinding.recExOffers.getRecycledViewPool().setMaxRecycledViews(0, 0);
+//        fragmentHomeBinding.recExOffers.getRecycledViewPool().setMaxRecycledViews(0, 0);
 
     }
 
@@ -692,7 +285,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding.recProduct.setHasFixedSize(true);
         fragmentHomeBinding.recProduct.setLayoutManager(productManager);
         productListAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> {
-            addToCartProduct(product, PRODUCT, position, null, binding);
+            addToCartProduct(product, PRODUCT);
         });
         fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
         fragmentHomeBinding.recProduct.getRecycledViewPool().setMaxRecycledViews(0, 0);
@@ -719,188 +312,190 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding.recSeasonal.getRecycledViewPool().setMaxRecycledViews(0, 0);
     }
 
-//    private void setPaginationForLists() {
-////        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(true);
-//        fragmentHomeBinding.recBasket.setNestedScrollingEnabled(true);
-//        fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(true);
-//        fragmentHomeBinding.recProduct.setNestedScrollingEnabled(true);
-//        //Category OnScroll
-//        fragmentHomeBinding.recCategory.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-//                    scrolling = true;
-//                    System.out.println("scrolling" + scrolling);
-//                }
-//            }
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                int visibleCategoryCount = categoryManager.getChildCount();
-//                int totalCategoryCount = categoryManager.getItemCount();
-//                System.out.println("visibleCategoryCount: " + visibleCategoryCount + " totalCategoryCount " +
-//                        totalCategoryCount);
-//                if (scrolling && (categories.size() == totalCategoryCount)) {
-//                    scrolling = false;
-//                    try {
-//                        callCategoryApi(null, "onScrolled");
-//                        fragmentHomeBinding.recCategory.smoothScrollBy(dx, dy);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//                System.out.println("scrolling" + scrolling);
-//            }
-//        });
-//
-//        // Basket OnScroll
-//        fragmentHomeBinding.recBasket.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-//                    scrolling = true;
-//                    System.out.println("scrolling" + scrolling);
-//                }
-//            }
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                int visibleBasketCount = 0, totalBasketCount = 0, scrolledBaskets = 0;
-//                visibleBasketCount = basketManager.getChildCount();
-//                totalBasketCount = basketManager.getItemCount();
-//                scrolledBaskets = basketManager.findLastCompletelyVisibleItemPosition();
-//                System.out.println("visibleBasketCount: " + visibleBasketCount + " totalBasketCount " +
-//                        totalBasketCount + " scrolledBaskets " + scrolledBaskets);
-//                if (scrolling && (baskets.size() == totalBasketCount)) {
-//                    scrolling = false;
-//                    try {
-//                        callBasketApi(showCircleProgressDialog(context, ""), "onScrolled");
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//                System.out.println("scrolling" + scrolling);
-//            }
-//        });
-//
-//        //Best Selling OnScroll
-//        fragmentHomeBinding.recBestSelling.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-//                    scrolling = true;
-//                    System.out.println("scrolling" + scrolling);
-//                }
-//            }
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                int visibleSellingCount = bestSellingManager.getChildCount();
-//                int totalSellingCount = bestSellingManager.getItemCount();
-//                System.out.println("visibleSellingCount: " + visibleSellingCount + " totalSellingCount " +
-//                        totalSellingCount);
-//                if (scrolling && (bestSellings.size() == totalSellingCount)) {
-//                    scrolling = false;
-//                    try {
-//                        callBestSellingApi(null, "onScrolled");
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//                System.out.println("scrolling" + scrolling);
-//            }
-//        });
-//
-//        //Seasonal OnScroll
-//        fragmentHomeBinding.recSeasonal.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-//                    scrolling = true;
-//                    System.out.println("scrolling" + scrolling);
-//                }
-//            }
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                int visibleSeasonalCount = seasonalManager.getChildCount();
-//                int totalSeasonalCount = seasonalManager.getItemCount();
-//                System.out.println("visibleSeasonalCount: " + visibleSeasonalCount + " totalSeasonalCount " +
-//                        totalSeasonalCount);
-//                if (scrolling && (seasonalProductList.size() == totalSeasonalCount)) {
-//                    scrolling = false;
-//                    try {
+    private void setPaginationForLists() {
+        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(true);
+        fragmentHomeBinding.recBasket.setNestedScrollingEnabled(true);
+        fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(true);
+        fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(true);
+        fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(true);
+        fragmentHomeBinding.recProduct.setNestedScrollingEnabled(true);
+        //Category OnScroll
+        fragmentHomeBinding.recCategory.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    scrolling = true;
+                    System.out.println("scrolling" + scrolling);
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleCategoryCount = categoryManager.getChildCount();
+                int totalCategoryCount = categoryManager.getItemCount();
+                System.out.println("visibleCategoryCount: " + visibleCategoryCount + " totalCategoryCount " +
+                        totalCategoryCount);
+                if (scrolling && (categories.size() == totalCategoryCount)) {
+                    scrolling = false;
+                    try {
+                        callCategoryApi(null, "onScrolled");
+                        fragmentHomeBinding.recCategory.smoothScrollBy(dx, dy);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                System.out.println("scrolling" + scrolling);
+            }
+        });
+
+        // Basket OnScroll
+        fragmentHomeBinding.recBasket.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    scrolling = true;
+                    System.out.println("scrolling" + scrolling);
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleBasketCount = 0, totalBasketCount = 0, scrolledBaskets = 0;
+                visibleBasketCount = basketManager.getChildCount();
+                totalBasketCount = basketManager.getItemCount();
+                scrolledBaskets = basketManager.findLastCompletelyVisibleItemPosition();
+                System.out.println("visibleBasketCount: " + visibleBasketCount + " totalBasketCount " +
+                        totalBasketCount + " scrolledBaskets " + scrolledBaskets);
+                if (scrolling && (baskets.size() == totalBasketCount)) {
+                    scrolling = false;
+                    try {
+                        callBasketApi(showCircleProgressDialog(context, ""), "onScrolled");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                System.out.println("scrolling" + scrolling);
+            }
+        });
+
+        //Best Selling OnScroll
+        fragmentHomeBinding.recBestSelling.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    scrolling = true;
+                    System.out.println("scrolling" + scrolling);
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleSellingCount = bestSellingManager.getChildCount();
+                int totalSellingCount = bestSellingManager.getItemCount();
+                System.out.println("visibleSellingCount: " + visibleSellingCount + " totalSellingCount " +
+                        totalSellingCount);
+                if (scrolling && (bestSellings.size() == totalSellingCount)) {
+                    scrolling = false;
+                    try {
+                        callBestSellingApi(null, "onScrolled");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                System.out.println("scrolling" + scrolling);
+            }
+        });
+
+        //Seasonal OnScroll
+        fragmentHomeBinding.recSeasonal.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    scrolling = true;
+                    System.out.println("scrolling" + scrolling);
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleSeasonalCount = seasonalManager.getChildCount();
+                int totalSeasonalCount = seasonalManager.getItemCount();
+                System.out.println("visibleSeasonalCount: " + visibleSeasonalCount + " totalSeasonalCount " +
+                        totalSeasonalCount);
+                if (scrolling && (seasonalProductList.size() == totalSeasonalCount)) {
+                    scrolling = false;
+                    try {
 //                        callSeasonalProductApi(null, "onScrolled");
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//                System.out.println("scrolling" + scrolling);
-//            }
-//        });
-//
-//        //Exclusive OnScrolled
-//        fragmentHomeBinding.recExOffers.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-//                    scrolling = true;
-//                    System.out.println("scrolling" + scrolling);
-//                }
-//            }
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                int visibleCount = exclusiveOfferManager.getChildCount();
-//                int totalCount = exclusiveOfferManager.getItemCount();
-//                System.out.println("visibleExclusive: " + visibleCount + " totalExclusive " +
-//                        totalCount);
-//                if (scrolling && (offerProducts.size() == totalCount)) {
-//                    scrolling = false;
-//                    try {
-//                        callExclusiveOfferApi(null, "onScrolled");
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//                System.out.println("scrolling" + scrolling);
-//            }
-//        });
-//
-//        //Product OnScrolled
-//        fragmentHomeBinding.recProduct.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-//            @Override
-//            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-//                int visibleCount = productManager.getChildCount();
-//                int totalCount = productManager.getItemCount();
-//                System.out.println("visibleExclusive: " + visibleCount + " totalExclusive " +
-//                        totalCount);
-//                if (productList.size() == totalCount) {
-//                    try {
-//                        callProductListApi(null, "onScrolled");
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//            }
-//        });
-//    }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                System.out.println("scrolling" + scrolling);
+            }
+        });
+
+        //Exclusive OnScrolled
+        fragmentHomeBinding.recExOffers.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    scrolling = true;
+                    System.out.println("scrolling" + scrolling);
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleCount = exclusiveOfferManager.getChildCount();
+                int totalCount = exclusiveOfferManager.getItemCount();
+                System.out.println("visibleExclusive: " + visibleCount + " totalExclusive " +
+                        totalCount);
+                if (scrolling && (offerProducts.size() == totalCount)) {
+                    scrolling = false;
+                    try {
+                        callExclusiveOfferApi(null, "onScrolled");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                System.out.println("scrolling" + scrolling);
+            }
+        });
+
+        //Product OnScrolled
+        fragmentHomeBinding.recProduct.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                int visibleCount = productManager.getChildCount();
+                int totalCount = productManager.getItemCount();
+                System.out.println("visibleExclusive: " + visibleCount + " totalExclusive " +
+                        totalCount);
+                if (productList.size() == totalCount) {
+                    try {
+                        callProductListApi(null, "onScrolled");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+    }
 
     private void checkEmpties() {
         //check if banner is empty
@@ -940,7 +535,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void clearLists() {
-//        fragmentHomeBinding.homeLayout.setVisibility(View.GONE);
+        fragmentHomeBinding.homeLayout.setVisibility(View.GONE);
         banners.clear();
         categories.clear();
         baskets.clear();
@@ -957,7 +552,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             }
 
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-//                BeforeSerach = fragmentHomeBinding.etSearch.getText().toString().trim();
             }
 
             public void afterTextChanged(Editable arg0) {
@@ -997,8 +591,97 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         });
     }
 
+    /*Call Category API*/
+    private void callCategoryApi(ProgressDialog progressDialog, String loadType) {
+        if (loadType.equalsIgnoreCase("onScrolled")) {
+            categoryOffset = categoryOffset + 1;
+        }
+        categoryOffset = 0;
+        Observer<CategoryResponse> categoryResponseObserver = categoryResponse -> {
+            if (categoryResponse != null) {
+                if (progressDialog != null) progressDialog.dismiss();
+                Log.e("Category Api ResponseData", new Gson().toJson(categoryResponse));
+                switch (categoryResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (categoryResponse.getCategoryData() != null) {
+                            //Should remove this latter
+                            rlRefreshPage.setRefreshing(false);
+                            setRvCategory();
+                            if (categoryResponse.getCategoryData().getCategoryList() != null
+                                    && categoryResponse.getCategoryData().getCategoryList().size() > 0) {
+                                makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
+                                categories.addAll(categoryResponse.getCategoryData().getCategoryList());
+                                System.out.println("categories " + categories.size());
+                                fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        Log.e(TAG, "callCategoryApi: " + categoryResponse.getMessage());
+                        warningToast(context, categoryResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(categoryResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, categoryResponse.getMessage());
+                        break;
+                }
+            }
+        };
+        homeViewModel.categoryResponseLiveData(progressDialog, listingParams("", CATEGORY), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), categoryResponseObserver);
+    }
 
-//    //Home screen API
+    /*Call Basket API here*/
+    private void callBasketApi(ProgressDialog progressDialog, String loadType) {
+        if (loadType.equalsIgnoreCase("onScrolled")) {
+            basketOffset = basketOffset + 1;
+        }
+        basketOffset = 0;
+        Observer<HomeBasketResponse> bannerResponseObserver = basketResponse -> {
+            if (basketResponse != null) {
+                if (progressDialog != null) progressDialog.dismiss();
+                Log.e("Basket Api ResponseData", new Gson().toJson(basketResponse));
+                switch (basketResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (basketResponse.getData().getBaskets() != null
+                                && basketResponse.getData().getBaskets().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
+                            makeVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
+                            baskets.addAll(basketResponse.getData().getBaskets());
+                            System.out.println("basket list :" + baskets.size());
+                            basketAdapter = new BasketAdapter(baskets, getActivity(), this::toBasketDetail);
+                            basketManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
+                            fragmentHomeBinding.recBasket.setLayoutManager(basketManager);
+                            fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        if (loadType.equalsIgnoreCase("load"))
+                            warningToast(context, basketResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(basketResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, basketResponse.getMessage());
+                        break;
+                }
+            }
+
+        };
+        homeViewModel.basketResponseLiveData(progressDialog, listingParams("", BASKET), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), bannerResponseObserver);
+
+    }
+
+
+    //    //Home screen API
     private void callHomeScreenApi(ProgressDialog progressDialog) {
         Observer<HomeResponse> homeResponseObserver = homeResponse -> {
             if (homeResponse != null) {
@@ -1007,8 +690,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //                Log.e(TAG, "callHomeAPiResponse: " + productListResponse.getMessage());
                 switch (homeResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
+
+                        //setHeader
+                        if (homeResponse != null) {
+                            preferences.setUserProfile(homeResponse.getHomeResponseData().getUserData().get(0).getImage());
+                            preferences.setUserName(homeResponse.getHomeResponseData().getUserData().get(0).getName());
+                            preferences.setUserAddress(homeResponse.getHomeResponseData().getUserData().get(0).getCityName()
+                                    + ", " + homeResponse.getHomeResponseData().getUserData().get(0).getAreaName());
+                            if (homeResponse.getHomeResponseData().getUserData().get(0).getImage() != null
+                                    && !TextUtils.isEmpty(homeResponse.getHomeResponseData().getUserData().get(0).getImage())) {
+                                ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getHomeResponseData().getUserData().get(0).getName());
+                                loadingImage(context, homeResponse.getHomeResponseData().getUserData().get(0).getImage(), ((HomeActivity) context).civProfilePhoto);
+                            }
+                        }
                         //Add All Banner
-                        Log.e(TAG, "callHomeScreenApi: " +homeResponse.getHomeResponseData().getCategoryData().size());
+                        Log.e(TAG, "callHomeScreenApi: " + homeResponse.getHomeResponseData().getCategoryData().size());
                         if (homeResponse.getHomeResponseData().getBannerDetails().size() > 0) {
                             rlRefreshPage.setRefreshing(false);
                             makeVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
@@ -1079,9 +775,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             makeVisible(fragmentHomeBinding.recProduct, null);
                             //Should remove this latter
                             setRvProduct();
-                                productList.addAll(homeResponse.getHomeResponseData().getProductList());
-                                productListAdapter.notifyDataSetChanged();
-                            }
+                            productList.addAll(homeResponse.getHomeResponseData().getProductList());
+                            productListAdapter.notifyDataSetChanged();
+                        }
                         //Add Store Response
                         if (homeResponse.getHomeResponseData().getStoreBanner().size() > 0) {
                             rlRefreshPage.setRefreshing(false);
@@ -1101,13 +797,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
-                        warningToast(context, productListResponse.getMessage());
+                        warningToast(context, homeResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen(productListResponse.getMessage(), context);
+                        goToAskSignInSignUpScreen(homeResponse.getMessage(), context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
-                        infoToast(context, productListResponse.getMessage());
+                        infoToast(context, homeResponse.getMessage());
                         break;
                 }
 
@@ -1117,7 +813,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 listingParams(offset, ""), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), homeResponseObserver);
     }
-//    // ProductOld listing here
+
+    //    // ProductOld listing here
     private void callProductListApi(ProgressDialog progressDialog, String loadType) {
         if (loadType.equalsIgnoreCase("onScrolled")) {
             productOffset = productOffset + 1;
@@ -1161,69 +858,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 listingParams("", PRODUCT), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), productListResponseObserver);
     }
-//
-//    //Seasonal ProductOld listing here
-    private void callSeasonalProductApi(ProgressDialog progressDialog, String loadType) {
-        if (loadType.equalsIgnoreCase("onScrolled")) {
-            seasonalOffset = seasonalOffset + 1;
-        } else seasonalOffset = 0;
-        Observer<SeasonalProductResponse> seasonalProductObserver = seasonalProductResponse -> {
-            if (seasonalProductResponse != null) {
-                if (progressDialog != null) progressDialog.dismiss();
-                Log.e("SeasonalProduct Api ResponseData", new Gson().toJson(seasonalProductResponse));
-                switch (seasonalProductResponse.getStatus()) {
-                    case STATUS_CODE_200://Record Create/Update Successfully
-                        if (seasonalProductResponse.getSeasonalProducts() != null
-                                && seasonalProductResponse.getSeasonalProducts().size() > 0) {
-                            rlRefreshPage.setRefreshing(false);
-                            for (int i = 0; i < seasonalProductResponse.getSeasonalProducts().size(); i++) {
-                                if (i / 2 == 0) {
-                                    seasonalProductResponse.getSeasonalProducts().get(i).setType("Green");
-                                } else
-                                    seasonalProductResponse.getSeasonalProducts().get(i).setType("Yellow");
-                            }
-                            makeVisible(fragmentHomeBinding.recSeasonal, null);
-                            seasonalProductList = seasonalProductResponse.getSeasonalProducts();
-                            seasonalManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
-                            fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
-                            fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
-                            fragmentHomeBinding.recSeasonal.setLayoutManager(seasonalManager);
-                            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProduct -> {
-                                //TODO crash here
-                                try {
-                                    System.out.println("seasonal image" + seasonalProduct.getProductImage());
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("image", seasonalProduct.getProductAdsAmage());
-                                    NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                            fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
-                        }
-                        break;
-                    case STATUS_CODE_403://Validation Errors
-                    case STATUS_CODE_400://Validation Errors
-                    case STATUS_CODE_404://Validation Errors
-                        if (loadType.equalsIgnoreCase("load"))
-                            warningToast(context, seasonalProductResponse.getMessage());
-                        break;
-                    case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen(seasonalProductResponse.getMessage(), context);
-                        break;
-                    case STATUS_CODE_405://Method Not Allowed
-                        infoToast(context, seasonalProductResponse.getMessage());
-                        break;
-                }
 
-            }
-        };
-        homeViewModel.seasonalResponseLiveData(progressDialog, listingParams("", SEASONAL), HomeFragment.this)
-                .observe(getViewLifecycleOwner(), seasonalProductObserver);
-
-    }
-//
-//    //Best selling Data listing here
+    //    //Best selling Data listing here
     private void callBestSellingApi(ProgressDialog showCircleProgressDialog, String loadType) {
         if (loadType.equalsIgnoreCase("onScrolled")) {
             bestSellingOffset = bestSellingOffset + 1;
@@ -1266,7 +902,67 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 listingParams("", BEST_SELLING), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), bestSellingResponseObserver);
     }
-//
+
+    //Seasonal ProductOld listing here
+    private void callSeasonalProductApi(ProgressDialog progressDialog, String loadType) {
+        if (loadType.equalsIgnoreCase("onScrolled")) {
+            seasonalOffset = seasonalOffset + 1;
+        } else seasonalOffset = 0;
+        Observer<SeasonalProductResponse> seasonalProductObserver = seasonalProductResponse -> {
+            if (seasonalProductResponse != null) {
+                if (progressDialog != null) progressDialog.dismiss();
+                Log.e("SeasonalProduct Api ResponseData", new Gson().toJson(seasonalProductResponse));
+                switch (seasonalProductResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (seasonalProductResponse.getSeasonalProducts() != null
+                                && seasonalProductResponse.getSeasonalProducts().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
+                            for (int i = 0; i < seasonalProductResponse.getSeasonalProducts().size(); i++) {
+                                if (i / 2 == 0) {
+                                    seasonalProductResponse.getSeasonalProducts().get(i).setType("Green");
+                                } else
+                                    seasonalProductResponse.getSeasonalProducts().get(i).setType("Yellow");
+                            }
+                            makeVisible(fragmentHomeBinding.recSeasonal, null);
+                            seasonalProductList = seasonalProductResponse.getSeasonalProducts();
+                            seasonalManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
+                            fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
+                            fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
+                            fragmentHomeBinding.recSeasonal.setLayoutManager(seasonalManager);
+                            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProduct -> {
+                                //TODO crash here
+                                try {
+                                    System.out.println("seasonal image"+seasonalProduct.getProductImage());
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("image", seasonalProduct.getProductAdsAmage());
+                                    NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_seasonalRegFragment,bundle);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                            fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        if (loadType.equalsIgnoreCase("load"))
+                            warningToast(context, seasonalProductResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(seasonalProductResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, seasonalProductResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        homeViewModel.seasonalResponseLiveData(progressDialog, listingParams("", SEASONAL), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), seasonalProductObserver);
+
+    }
 //    /*Product Offer Data listing*/
     private void callExclusiveOfferApi(ProgressDialog progressDialog, String loadType) {
         if (loadType.equalsIgnoreCase("onScrolled")) {
@@ -1306,136 +1002,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         homeViewModel.exclusiveResponseLiveData(progressDialog, listingParams("", EXCLUSIVE), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), exclusiveResponseObserver);
     }
-//
-//    /*Basket APi ResponseData gere*/
-//    private void callBasketApi(ProgressDialog progressDialog, String loadType) {
-//        if (loadType.equalsIgnoreCase("onScrolled")) {
-//            basketOffset = basketOffset + 1;
-//        }
-//        basketOffset = 0;
-//        Observer<BasketResponse> bannerResponseObserver = basketResponse -> {
-//            if (basketResponse != null) {
-//                if (progressDialog != null) progressDialog.dismiss();
-//                Log.e("Basket Api ResponseData", new Gson().toJson(basketResponse));
-//                switch (basketResponse.getStatus()) {
-//                    case STATUS_CODE_200://Record Create/Update Successfully
-//                        if (basketResponse.getData().getBaskets() != null
-//                                && basketResponse.getData().getBaskets().size() > 0) {
-//                            rlRefreshPage.setRefreshing(false);
-//                            makeVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
-//                            baskets.addAll(basketResponse.getData().getBaskets());
-//                            System.out.println("basket list :" + baskets.size());
-//                            basketAdapter = new BasketAdapter(baskets, getActivity(), this::toBasketDetail);
-//                            basketManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
-//                            fragmentHomeBinding.recBasket.setLayoutManager(basketManager);
-//                            fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
-//                        }
-//                        break;
-//                    case STATUS_CODE_403://Validation Errors
-//                    case STATUS_CODE_400://Validation Errors
-//                    case STATUS_CODE_404://Validation Errors
-//                        if (loadType.equalsIgnoreCase("load"))
-//                            warningToast(context, basketResponse.getMessage());
-//                        break;
-//                    case STATUS_CODE_401://Unauthorized user
-//                        goToAskSignInSignUpScreen(basketResponse.getMessage(), context);
-//                        break;
-//                    case STATUS_CODE_405://Method Not Allowed
-//                        infoToast(context, basketResponse.getMessage());
-//                        break;
-//                }
-//            }
-//
-//        };
-//        homeViewModel.basketResponseLiveData(progressDialog, listingParams("", BASKET), HomeFragment.this)
-//                .observe(getViewLifecycleOwner(), bannerResponseObserver);
-//
-//    }
-//
-//    /*Category API*/
-    private void callCategoryApi(ProgressDialog progressDialog, String loadType) {
-        if (loadType.equalsIgnoreCase("onScrolled")) {
-            categoryOffset = categoryOffset + 1;
-        }
-        categoryOffset = 0;
-        Observer<CategoryResponse> categoryResponseObserver = categoryResponse -> {
-            if (categoryResponse != null) {
-                if (progressDialog != null) progressDialog.dismiss();
-                Log.e("Category Api ResponseData", new Gson().toJson(categoryResponse));
-                switch (categoryResponse.getStatus()) {
-                    case STATUS_CODE_200://Record Create/Update Successfully
-                        if (categoryResponse.getCategoryData() != null) {
-                            //Should remove this latter
-                            rlRefreshPage.setRefreshing(false);
-                            setRvCategory();
-                            if (categoryResponse.getCategoryData().getCategoryList() != null
-                                    && categoryResponse.getCategoryData().getCategoryList().size() > 0) {
-                                makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
-                                categories.addAll(categoryResponse.getCategoryData().getCategoryList());
-                                System.out.println("categories " + categories.size());
-                                fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
-                            }
-                        }
-                        break;
-                    case STATUS_CODE_403://Validation Errors
-                    case STATUS_CODE_400://Validation Errors
-                    case STATUS_CODE_404://Validation Errors
-                        Log.e(TAG, "callCategoryApi: " + categoryResponse.getMessage());
-                        warningToast(context, categoryResponse.getMessage());
-                        break;
-                    case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen(categoryResponse.getMessage(), context);
-                        break;
-                    case STATUS_CODE_405://Method Not Allowed
-                        infoToast(context, categoryResponse.getMessage());
-                        break;
-                }
-            }
-        };
-        homeViewModel.categoryResponseLiveData(progressDialog, listingParams("", CATEGORY), HomeFragment.this)
-                .observe(getViewLifecycleOwner(), categoryResponseObserver);
-    }
-//
-//    /*Banner API here*/
-//    private void callBannerApi(ProgressDialog progressDialog) {
-//        Observer<BannerResponse> bannerResponseObserver = bannerResponse -> {
-//            if (bannerResponse != null) {
-//                if (progressDialog != null) progressDialog.dismiss();
-//                Log.e("Banner Api ResponseData", new Gson().toJson(bannerResponse));
-//                switch (bannerResponse.getStatus()) {
-//                    case STATUS_CODE_200://Record Create/Update Successfully
-//                        if (bannerResponse.getData().getBanners().size() > 0) {
-//                            rlRefreshPage.setRefreshing(false);
-//                            makeVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
-//                            banners.addAll(bannerResponse.getData().getBanners());
-//                            setRvBanners();
-//                        }
-//                        break;
-//                    case STATUS_CODE_403://Validation Errors
-//                    case STATUS_CODE_400://Validation Errors
-//                    case STATUS_CODE_404://Validation Errors
-//                        // set a dummy banner if no banner is available
-//                        warningToast(context, bannerResponse.getMessage());
-//                        break;
-//                    case STATUS_CODE_401://Unauthorized user
-//                        goToAskSignInSignUpScreen(bannerResponse.getMessage(), context);
-//                        break;
-//                    case STATUS_CODE_405://Method Not Allowed
-//                        infoToast(context, bannerResponse.getMessage());
-//                        break;
-//                }
-//            }
-//
-//        };
-//        homeViewModel.bannerResponseLiveData(progressDialog, HomeFragment.this)
-//                .observe(getViewLifecycleOwner(), bannerResponseObserver);
-//
-//    }
-    //Add to CART
+
     private void addToCartProduct(Product product,
-                                  int addType, int position,
-                                  RowExclusiveItemBinding binding1,
-                                  HomeProductItemBinding binding2) {
+                                  int addType) {
         Observer<BaseResponse> baseResponseObserver = response -> {
             if (response != null) {
                 Log.e(TAG, "addToCartProduct: " + new Gson().toJson(response));
@@ -1517,15 +1086,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding.tvAllExclusive.setOnClickListener(this);
         fragmentHomeBinding.tvAllSelling.setOnClickListener(this);
         fragmentHomeBinding.imgMice.setOnClickListener(this);
-    }
-
-    private void getBasketItems() {
-        homeViewModel.getSavesProductInBasket().observe(getViewLifecycleOwner(), products -> {
-            if (products != null) {
-                for (ProductOld saved : products)
-                    BasketIds.add(saved.getId());
-            }
-        });
     }
 
     private void redirectToOurShops(View v) {
@@ -1707,30 +1267,27 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-    private void setUserProfile(ProgressDialog progressDialog) {
-        Observer<ProfileResponse> profileResponseObserver = profileResponse -> {
-            if (profileResponse != null) {
-                preferences.setUserProfile(profileResponse.getProfile().getImage());
-                preferences.setUserName(profileResponse.getProfile().getName());
-                NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
-                View headerView = navigationView.getHeaderView(0);
-                System.out.println("name " + profileResponse.getProfile().getName());
-            }
-        };
-        homeViewModel.getViewProfileResponse(progressDialog, profileParam(preferences.getUid()),
-                HomeFragment.this)
-                .observe(getViewLifecycleOwner(), profileResponseObserver);
-    }
-
     @Override
     public void onNetworkException(int from, String type) {
         showServerErrorDialog(getString(R.string.for_better_user_experience), HomeFragment.this, () -> {
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
                 switch (from) {
+                    case 1:
+                        callCategoryApi(showCircleProgressDialog(context, type), type);
+                        break;
+                    case 3:
+                        callExclusiveOfferApi(showCircleProgressDialog(context,""),type);
+                        break;
+                    case 4:
+                        callBestSellingApi(showCircleProgressDialog(context,""),type);
+                        break;
                     case 8:
                         clearLists();
                         callHomeScreenApi(showCircleProgressDialog(context, ""));
+                        break;
+                    case 5:
+                        callSeasonalProductApi(showCircleProgressDialog(context,""),type);
                         break;
 
                 }

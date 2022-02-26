@@ -56,6 +56,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         Product product = products.get(position);
         productBinding.setHomeProductModel(product);
         holder.bindProduct(product, position);
+        productBinding.imgPlus.setOnClickListener(view -> {
+            onPlusClickListener.OnPlusClick(productBinding, product, position);
+        });
 
     }
 
@@ -91,12 +94,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             });
             if (product.getInCart() == 1)
                 productBinding.ivPlus.setEnabled(false);
-            productBinding.imgPlus.setOnClickListener(view -> {
-                if (product.getInCart()==0){
-                productBinding.rlAddToCartLoader.setVisibility(View.VISIBLE);
-                    onPlusClickListener.OnPlusClick(productBinding, product, position);
-                }
-            });
+
 
         }
 

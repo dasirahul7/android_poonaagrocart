@@ -24,6 +24,7 @@ import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.data.network.responses.BestSellingResponse;
 import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
+import com.poona.agrocart.data.network.responses.HomeBasketResponse;
 import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.ProfileResponse;
@@ -45,38 +46,8 @@ import retrofit2.HttpException;
 public class HomeViewModel extends AndroidViewModel {
     private final String TAG = HomeViewModel.class.getSimpleName();
 
-    private final MutableLiveData<ProfileResponse.Profile> profileMutableLiveData;
-    private final MutableLiveData<ArrayList<ProductOld>> liveDataCartProduct;
-
-    private final MutableLiveData<ArrayList<ProductOld>> savesProductInBasket;
-
     public HomeViewModel(@NonNull Application application) {
         super(application);
-        //init all mutable liveData
-        liveDataCartProduct = new MutableLiveData<>();
-        savesProductInBasket = new MutableLiveData<>();
-        profileMutableLiveData = new MutableLiveData<>();
-        profileMutableLiveData.setValue(null);
-        initCartItems();
-    }
-
-    private void initCartItems() {
-        String PID = AppConstants.pId + "OP";
-        ArrayList cartItemList = new ArrayList();
-        for (int i = 0; i < 4; i++) {
-            ProductOld cartProductOld = new ProductOld(PID + i, "Vegetable", "1kg",
-                    "10", "65", getApplication().getString(R.string.img_potato),
-                    "Pune", "Green");
-            if (i == 1)
-                cartProductOld.setImg(getApplication().getString(R.string.img_beat));
-            if (i == 2)
-                cartProductOld.setImg(getApplication().getString(R.string.img_beat));
-            cartItemList.add(cartProductOld);
-            if (i == 3) {
-                cartProductOld.setOrganic(true);
-            }
-        }
-        liveDataCartProduct.setValue(cartItemList);
     }
 
     //Banner ResponseData here
@@ -171,19 +142,19 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     // BasketList ResponseData here
-    public LiveData<BasketResponse> basketResponseLiveData(ProgressDialog progressDialog,
-                                                           HashMap<String, String> hashMap,
-                                                           HomeFragment homeFragment) {
-        MutableLiveData<BasketResponse> basketResponseMutableLiveData = new MutableLiveData<>();
+    public LiveData<HomeBasketResponse> basketResponseLiveData(ProgressDialog progressDialog,
+                                                               HashMap<String, String> hashMap,
+                                                               HomeFragment homeFragment) {
+        MutableLiveData<HomeBasketResponse> basketResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(homeFragment.getContext())
                 .create(ApiInterface.class)
                 .homeBasketResponse(hashMap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<BasketResponse>() {
+                .subscribeWith(new DisposableSingleObserver<HomeBasketResponse>() {
                     @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BasketResponse basketResponse) {
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull HomeBasketResponse basketResponse) {
                         if (basketResponse != null) {
                             if (progressDialog != null)
                                 progressDialog.dismiss();
@@ -197,10 +168,10 @@ public class HomeViewModel extends AndroidViewModel {
                             progressDialog.dismiss();
 
                         Gson gson = new GsonBuilder().create();
-                        BasketResponse response = new BasketResponse();
+                        HomeBasketResponse response = new HomeBasketResponse();
                         try {
                             response = gson.fromJson(((HttpException) e).response().errorBody().string(),
-                                    BasketResponse.class);
+                                    HomeBasketResponse.class);
 
                             basketResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
@@ -473,14 +444,6 @@ public class HomeViewModel extends AndroidViewModel {
         return baseResponseMutableLiveData;
     }
 
-    public MutableLiveData<ArrayList<ProductOld>> getLiveDataCartProduct() {
-        return liveDataCartProduct;
-    }
-
-    public MutableLiveData<ArrayList<ProductOld>> getSavesProductInBasket() {
-        return savesProductInBasket;
-    }
-
     public LiveData<HomeResponse> homeResponseLiveData(ProgressDialog progressDialog,
                                                        HashMap<String, String> hashMap,
                                                        HomeFragment homeFragment) {
@@ -518,47 +481,6 @@ public class HomeViewModel extends AndroidViewModel {
                     }
                 });
         return homeResponseMutableLiveData;
-    }
-
-    //View Profile
-    public LiveData<ProfileResponse> getViewProfileResponse(ProgressDialog progressDialog,
-                                                            HashMap<String, String> hashMap,
-                                                            HomeFragment homeFragment) {
-        MutableLiveData<ProfileResponse> responseMutableLiveData = new MutableLiveData<>();
-        ApiClientAuth.getClient(homeFragment.getContext())
-                .create(ApiInterface.class)
-                .getViewProfileResponse(hashMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<ProfileResponse>() {
-                    @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProfileResponse profileResponse) {
-                        if (profileResponse != null) {
-                            if (progressDialog != null)
-                                progressDialog.dismiss();
-                            Log.e(TAG, "onSuccess: " + new Gson().toJson(profileResponse));
-                            responseMutableLiveData.setValue(profileResponse);
-                            profileMutableLiveData.setValue(profileResponse.getProfile());
-                        }
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        progressDialog.dismiss();
-                        Gson gson = new GsonBuilder().create();
-                        ProfileResponse response = new ProfileResponse();
-                        try {
-                            response = gson.fromJson(((HttpException) e).response().errorBody().toString(),
-                                    ProfileResponse.class);
-                            responseMutableLiveData.setValue(response);
-                        } catch (Exception exception) {
-                            Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(9, "");
-                        }
-                    }
-                });
-
-        return responseMutableLiveData;
     }
 
     public Observable<List<String>> getHomepageResponses(Context context,
