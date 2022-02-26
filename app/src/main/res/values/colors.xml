@@ -168,6 +168,7 @@
 
     <!--upload photo dialog colors-->
     <color name="colorGreenTransparent">#A686C11F</color>
+    <color name="colorGreyTransparent">#22FFFFFF</color>
 
     <!--ucrop parameters-->
     <color name="ucrop_color_toolbar">@color/colorPrimary</color>

@@ -11,11 +11,13 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
@@ -36,6 +38,7 @@ import com.poona.agrocart.databinding.FragmentPhotoBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_gallery.adapter.PhotoAdapter;
 import com.poona.agrocart.ui.nav_gallery.viewModel.GalleryViewModel;
+import com.poona.agrocart.widgets.custom_alert.Alert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,16 +172,54 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoAdapter.O
     public void PhotoUpDialog(int position) {
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.photo_image_pop_up_dailog);
         ImageView popUpImage = dialog.findViewById(R.id.iv_pop_up_image);
+        ImageView crossImage = dialog.findViewById(R.id.iv_cancel_icon);
+
         Glide.with(context)
                 .load(IMAGE_DOC_BASE_URL + galleryImages.get(position).getGalleryImage())
                 .into(popUpImage);
 
 
+        crossImage.setOnClickListener(view -> {
+
+            dialog.dismiss();
+        });
+
         dialog.show();
+
+        // Get screen width and height in pixels
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // The absolute width of the available display size in pixels.
+        int displayWidth = displayMetrics.widthPixels;
+        // The absolute height of the available display size in pixels.
+        int displayHeight = displayMetrics.heightPixels;
+
+        //int displayWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        //int displayHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        // Initialize a new window manager layout parameters
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        // Copy the alert dialog window attributes to new layout parameter instance
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+
+        // Set alert dialog width equal to screen width 100%
+        int dialogWindowWidth = (int) (displayWidth * 1.0f);
+        // Set alert dialog height equal to screen height 100%
+        int dialogWindowHeight = (int) (displayHeight * 1.0f);
+
+        // Set the width and height for the layout parameters
+        // This will bet the width and height of alert dialog
+        layoutParams.width = dialogWindowWidth;
+        layoutParams.height = dialogWindowHeight;
+
+        // Apply the newly created layout parameters to the alert dialog window
+        dialog.getWindow().setAttributes(layoutParams);
     }
 
     @Override
