@@ -11,6 +11,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import static com.poona.agrocart.app.AppConstants.TICKET_ID;
 import static com.poona.agrocart.app.AppConstants.TICKET_REMARK;
 import static com.poona.agrocart.app.AppConstants.TICKET_SUBJECT;
+import static com.poona.agrocart.app.AppConstants.USER_ID;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -314,6 +315,7 @@ public class HelpCenterFragment extends BaseFragment implements NetworkException
 
     private HashMap<String, String> CreateTicketInputParameter() {
         HashMap<String, String> map = new HashMap<>();
+        map.put(USER_ID,preferences.getUid());
         map.put(ISSUE_ID, ticketId);
         map.put(TICKET_SUBJECT, etSubject.getText().toString());
         map.put(TICKET_REMARK, etDescription.getText().toString());
