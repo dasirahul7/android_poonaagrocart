@@ -34,6 +34,7 @@ import static com.poona.agrocart.app.AppConstants.MY_NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
+import static com.poona.agrocart.app.AppConstants.RATE_TO_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.REMOVE_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.REMOVE_FAVOURITE_ITEM_API;
@@ -313,6 +314,12 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(PRODUCT_DETAIL_API)
     Single<ProductDetailsResponse> getProductDetailsResponse(@FieldMap HashMap<String, String> hashMap);
+
+    @FormUrlEncoded
+    @POST(RATE_TO_PRODUCT)
+    Single<BaseResponse>  getSubmitRatingResponseProduct(@FieldMap HashMap<String, String> submitRatingInputParameter);
+
+
 
     /*Basket detail API*/
     @FormUrlEncoded

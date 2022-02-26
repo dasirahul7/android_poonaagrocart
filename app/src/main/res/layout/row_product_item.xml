@@ -76,10 +76,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:drawablePadding="-5dp"
+                    android:singleLine="true"
                     android:gravity="center_vertical"
                     android:text='@{cartData.location !=null ? cartData.location:""}'
                     android:textColor="@color/color_grey_txt"
-                    android:textSize="@dimen/_14sp"
+                    android:textSize="@dimen/_13sp"
                     app:drawableStartCompat="@drawable/ic_location_small"
                     app:setCustomFont="@string/font_poppins_regular" />
 

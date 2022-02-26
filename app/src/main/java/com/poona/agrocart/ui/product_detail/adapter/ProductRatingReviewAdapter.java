@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.product_detail.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,18 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
 import com.poona.agrocart.databinding.RvProductCommentBinding;
-import com.poona.agrocart.ui.product_detail.model.ProductComment;
+import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductCommentsAdapter.CommentViewHolder> {
-    private final ArrayList<ProductComment> commentArrayList;
-    private final boolean full;
+public class ProductRatingReviewAdapter extends RecyclerView.Adapter<ProductRatingReviewAdapter.CommentViewHolder> {
+    private List<ProductDetailsResponse.Review> reviewsList;
+    private Context context;
 
-    public ProductCommentsAdapter(ArrayList<ProductComment> commentArrayList, boolean full) {
-        this.commentArrayList = commentArrayList;
-        this.full = full;
+    public ProductRatingReviewAdapter(Context context, List<ProductDetailsResponse.Review> reviewsList,
+                                      ProductDetailFragment productDetailFragment) {
+        this.context=context;
+        this.reviewsList=reviewsList;
     }
 
     @NonNull
@@ -28,21 +31,24 @@ public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductComments
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RvProductCommentBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_product_comment, parent, false);
-        return new ProductCommentsAdapter.CommentViewHolder(binding);
+        return new ProductRatingReviewAdapter.CommentViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-        final ProductComment comment = commentArrayList.get(position);
-        holder.rvProductCommentBinding.setProductComment(comment);
-        holder.bind(comment);
+        ProductDetailsResponse.Review review = reviewsList.get(position);
+        holder.rvProductCommentBinding.setProductViewModel(review);
+        holder.bind(review);
     }
 
     @Override
     public int getItemCount() {
-        if (full)
-            return commentArrayList.size();
-        else return 3;
+
+        if(reviewsList.size() > 2){
+            return 3;
+        }else {
+            return reviewsList.size();
+        }
     }
 
     public static class CommentViewHolder extends RecyclerView.ViewHolder {
@@ -53,9 +59,9 @@ public class ProductCommentsAdapter extends RecyclerView.Adapter<ProductComments
             this.rvProductCommentBinding = rvProductCommentBinding;
         }
 
-        public void bind(ProductComment comment) {
-            rvProductCommentBinding.ratingBar.setRating(comment.getRating());
-            rvProductCommentBinding.setVariable(BR.productComment, comment);
+        public void bind(ProductDetailsResponse.Review review) {
+            rvProductCommentBinding.ratingBar.setRating(Float.parseFloat(review.getRating()));
+            rvProductCommentBinding.setVariable(BR.productViewModel, review);
             rvProductCommentBinding.executePendingBindings();
         }
     }

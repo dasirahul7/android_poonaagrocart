@@ -30,7 +30,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
@@ -40,7 +39,7 @@ import com.poona.agrocart.databinding.FragmentBasketDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.basket_detail.adapter.BasketImagesAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
-import com.poona.agrocart.ui.product_detail.adapter.ProductCommentsAdapter;
+import com.poona.agrocart.ui.product_detail.adapter.ProductRatingReviewAdapter;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
 import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.ExpandIconView;
@@ -68,7 +67,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private LinearLayoutManager linearLayoutManager;
     private BasketImagesAdapter basketImagesAdapter;
     private ArrayList<ProductComment> commentArrayList;
-    private ProductCommentsAdapter productCommentsAdapter;
+    private ProductRatingReviewAdapter productRatingReviewAdapter;
     private Bundle bundle;
     private String itemId="";
     private boolean isProductDetailsVisible = true, isNutritionDetailsVisible = true, isAboutThisProductVisible = true,
