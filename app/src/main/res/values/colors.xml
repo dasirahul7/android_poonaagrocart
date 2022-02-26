@@ -33,6 +33,7 @@
     <color name="warningColor">#FFA900</color>
     <color name="normalColor">#353A3E</color>
     <color name="colorOrange">#F16531</color>
+    <color name="colorOrangeLight">#9CF1A431</color>
     <color name="lightGreen">#8C9C78</color>
 
     <color name="colorGreenButton">#4CAF50</color>
@@ -69,6 +70,8 @@
     <color name="color_discount_text">#4C4C4C</color>
     <color name="color_invoice_btn">#18A0FB</color>
     <color name="color_track_order">#626A55</color>
+    <color name="color_cancel_order">#D43A18</color>
+    <color name="color_cancel_bg">#FFDCD4</color>
 
     <!--ProductOld detail-->
     <color name="color_star_rating_unselected">#8D8D8D</color>
