@@ -241,6 +241,7 @@
         <entry key="app/src/main/res/layout/fragment_policy.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/fragment_policy_item.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/fragment_privacy_policy.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_product_all_review.xml" value="0.13632246376811594" />
         <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_product_image.xml" value="0.14402173913043478" />
         <entry key="app/src/main/res/layout/fragment_product_list.xml" value="0.11684782608695653" />
@@ -287,7 +288,7 @@
         <entry key="app/src/main/res/layout/rv_order.xml" value="0.25" />
         <entry key="app/src/main/res/layout/rv_orders_basket.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/rv_product_and_price_details.xml" value="0.16530797101449277" />
-        <entry key="app/src/main/res/layout/rv_product_comment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/rv_product_comment.xml" value="0.12" />
         <entry key="app/src/main/res/layout/rv_store.xml" value="0.22" />
         <entry key="app/src/main/res/layout/rv_ticket.xml" value="0.18" />
         <entry key="app/src/main/res/layout/rv_ticket_comment.xml" value="0.33" />

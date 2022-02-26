@@ -1,10 +1,17 @@
 package com.poona.agrocart.data.network.responses;
 
 import android.text.Html;
+import android.widget.ImageView;
 
+import androidx.databinding.BindingAdapter;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.poona.agrocart.R;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class ProductDetailsResponse extends BaseResponse {
@@ -126,6 +133,14 @@ public class ProductDetailsResponse extends BaseResponse {
         @SerializedName("product_units")
         @Expose
         private List<ProductListResponse.ProductUnit> productUnits = null;
+
+        @SerializedName("rating")
+        @Expose
+        private Rating rating;
+        @SerializedName("reviews")
+        @Expose
+        private List<Review> reviews = null;
+
         private ProductListResponse.ProductUnit unit;
 
         public int getIsFavourite() {
@@ -416,6 +431,22 @@ public class ProductDetailsResponse extends BaseResponse {
             this.productUnits = productUnits;
         }
 
+
+        public Rating getRating() {
+            return rating;
+        }
+
+        public void setRating(Rating rating) {
+            this.rating = rating;
+        }
+
+        public List<Review> getReviews() {
+            return reviews;
+        }
+
+        public void setReviews(List<Review> reviews) {
+            this.reviews = reviews;
+        }
     }
 
     public class ProductImg {
@@ -430,5 +461,125 @@ public class ProductDetailsResponse extends BaseResponse {
         public void setProductImg(String productImg) {
             this.productImg = productImg;
         }
+    }
+
+    public class Review implements Serializable {
+
+        @SerializedName("name")
+        @Expose
+        private String name;
+        @SerializedName("image")
+        @Expose
+        private String image;
+        @SerializedName("rating")
+        @Expose
+        private String rating;
+        @SerializedName("review")
+        @Expose
+        private String review;
+        @SerializedName("date")
+        @Expose
+        private String date;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
+
+        public String getRating() {
+            return rating;
+        }
+
+        public void setRating(String rating) {
+            this.rating = rating;
+        }
+
+        public String getReview() {
+            return review;
+        }
+
+        public void setReview(String review) {
+            this.review = review;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+
+
+    }
+
+    @BindingAdapter("setImage")
+    public static void setImage(ImageView view, String imageUrl) {
+
+        Glide.with(view.getContext())
+                .load(imageUrl).apply(new RequestOptions().circleCrop())
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder).into(view);
+    }
+
+    public class Rating {
+
+        @SerializedName("rating_id")
+        @Expose
+        private String ratingId;
+        @SerializedName("rating")
+        @Expose
+        private String rating;
+        @SerializedName("review")
+        @Expose
+        private String review;
+        @SerializedName("average_rating")
+        @Expose
+        private Double averageRating;
+
+        public String getRatingId() {
+            return ratingId;
+        }
+
+        public void setRatingId(String ratingId) {
+            this.ratingId = ratingId;
+        }
+
+        public String getRating() {
+            return rating;
+        }
+
+        public void setRating(String rating) {
+            this.rating = rating;
+        }
+
+        public String getReview() {
+            return review;
+        }
+
+        public void setReview(String review) {
+            this.review = review;
+        }
+
+        public Double getAverageRating() {
+            return averageRating;
+        }
+
+        public void setAverageRating(Double averageRating) {
+            this.averageRating = averageRating;
+        }
+
     }
 }

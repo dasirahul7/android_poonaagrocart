@@ -5,22 +5,22 @@
     <data>
 
         <variable
-            name="productComment"
-            type="com.poona.agrocart.ui.product_detail.model.ProductComment" />
+            name="productViewModel"
+            type="com.poona.agrocart.data.network.responses.ProductDetailsResponse.Review" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardview_ticket_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_8sdp"
-        app:cardElevation="@dimen/_1sdp"
-        app:cardCornerRadius="@dimen/_12sdp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/colorLightGrey"
         app:cardUseCompatPadding="true"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="@dimen/_3sdp"
+        app:cardMaxElevation="@dimen/_5sdp"
         app:contentPadding="@dimen/_10sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:clipToPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:weightSum="100">
 
                 <com.poona.agrocart.widgets.imageview.CircularImageView
-                    setImage="@{productComment.userImg}"
+                    setImage="@{productViewModel.image}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     app:civ_border_color="#979797"
@@ -56,7 +56,7 @@
                             android:layout_marginStart="@dimen/_3sdp"
                             android:layout_weight="1"
                             android:gravity="start"
-                            android:text="@{productComment.userName}"
+                            android:text="@{productViewModel.name}"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_16sp"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
@@ -68,7 +68,7 @@
                             android:layout_marginEnd="@dimen/_4sdp"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:text="@{productComment.date}"
+                            android:text="@{productViewModel.date}"
                             android:textColor="@color/color_grey_txt"
                             android:textSize="@dimen/_16sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -103,7 +103,7 @@
                 android:layout_marginStart="@dimen/_3sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:gravity="start"
-                android:text="@{productComment.comment}"
+                android:text="@{productViewModel.review}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_16sp"
                 app:setCustomFont="@string/font_poppins_regular" />

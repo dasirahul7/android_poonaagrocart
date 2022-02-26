@@ -17,6 +17,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.ui.nav_favourites.FavouriteItemsFragment;
 
 import java.util.HashMap;
 
@@ -253,4 +254,43 @@ public class ProductDetailViewModel extends AndroidViewModel {
         return baseResponseMutableLiveData;
     }
 
+    public LiveData<BaseResponse> callSubmitRatingResponseApi(ProgressDialog progressDialog, HashMap<String, String> submitRatingInputParameter,
+                                                              ProductDetailFragment productDetailFragment) {
+
+
+            MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+            ApiClientAuth.getClient(productDetailFragment.getContext())
+                    .create(ApiInterface.class)
+                    .getSubmitRatingResponseProduct(submitRatingInputParameter)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                        @Override
+                        public void onSuccess(BaseResponse baseResponse) {
+                            if (baseResponse != null) {
+                                progressDialog.dismiss();
+                                baseResponseMutableLiveData.setValue(baseResponse);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            progressDialog.dismiss();
+                            Gson gson = new GsonBuilder().create();
+                            BaseResponse response = new BaseResponse();
+                            try {
+                                response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                        BaseResponse.class);
+
+                                baseResponseMutableLiveData.setValue(response);
+                            } catch (Exception exception) {
+                                Log.e(TAG, exception.getMessage());
+//                            ((NetworkExceptionListener) homeFragment).onNetworkException(1,"");
+                            }
+
+                            Log.e(TAG, e.getMessage());
+                        }
+                    });
+            return baseResponseMutableLiveData;
+        }
 }
