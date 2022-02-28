@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class HomeResponseData {
         @SerializedName("user_data")
         @Expose
-        private ArrayList<UserDetails> userData = null;
+        private UserDetails userData = null;
         @SerializedName("banner_details")
         @Expose
         private ArrayList<Banner> bannerDetails = null;
@@ -37,11 +37,11 @@ public class HomeResponseData {
         @Expose
         private ArrayList<Product> productList = null;
 
-        public ArrayList<UserDetails> getUserData() {
+        public UserDetails getUserData() {
             return userData;
         }
 
-        public void setUserData(ArrayList<UserDetails> userData) {
+        public void setUserData(UserDetails userData) {
             this.userData = userData;
         }
 
