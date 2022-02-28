@@ -60,7 +60,7 @@ public class FaqListAdaptor extends RecyclerView.Adapter<FaqListAdaptor.FaqViewH
                 if (viewHolder.itemView.getTag().equals("more")) {
                     viewHolder.binding.expandQuestion.setState(MORE, true);
                     faQFragment.collapse(viewHolder.binding.llAnswer);
-                    viewHolder.binding.tvQuestion.setTextColor(ContextCompat.getColor(context, R.color.black));
+                    viewHolder.binding.tvQuestion.setTextColor(ContextCompat.getColor(context, R.color.bold_txt_color));
                     viewHolder.binding.rlMain.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_et_border));
                     viewHolder.binding.llMain.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_et_border));
                     viewHolder.binding.rlMain.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
@@ -71,7 +71,7 @@ public class FaqListAdaptor extends RecyclerView.Adapter<FaqListAdaptor.FaqViewH
                     viewHolder.binding.tvQuestion.setTextColor(ContextCompat.getColor(context, R.color.white));
                     viewHolder.binding.rlMain.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_et_border));
                     viewHolder.binding.llMain.setBackground(ContextCompat.getDrawable(context, R.drawable.background_faq_list));
-                    viewHolder.binding.tvAnswer.setTextColor(ContextCompat.getColor(context, R.color.black));
+                    viewHolder.binding.tvAnswer.setTextColor(ContextCompat.getColor(context, R.color.bold_txt_color));
                     viewHolder.binding.rlMain.setBackground(ContextCompat.getDrawable(context, R.drawable.background_faq_list_answer));
                     // viewHolder.binding.rlMain.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
                     viewHolder.itemView.setTag("more");

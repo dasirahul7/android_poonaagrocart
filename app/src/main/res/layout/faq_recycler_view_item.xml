@@ -10,91 +10,94 @@
     </data>
 
 
-    <RelativeLayout
-        android:id="@+id/rl_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_14sdp"
-        android:layout_marginVertical="@dimen/_10sdp"
-        android:background="@drawable/background_faq_list_answer"
-        android:gravity="center">
 
-        <LinearLayout
-            android:id="@+id/ll_main"
+    <RelativeLayout
+            android:id="@+id/rl_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_et_border"
-            android:baselineAligned="false"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingVertical="@dimen/_4sdp"
-            android:weightSum="2">
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            android:layout_marginVertical="@dimen/_8sdp">
 
             <LinearLayout
+                android:id="@+id/ll_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:paddingVertical="@dimen/_6sdp">
+                android:background="@drawable/bg_et_border"
+                android:baselineAligned="false"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/_4sdp"
+                android:weightSum="2">
 
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/tv_question"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:justificationMode="inter_word"
-                    android:text="@{@string/q + faqListData.question}"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_16sp"
-                    app:setCustomFont="@string/font_poppins_semi_bold" />
+                    android:layout_weight="0.2"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_6sdp">
 
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:justificationMode="inter_word"
+                        android:text="@{@string/q + faqListData.question}"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/bold_txt_color"
+                        android:textSize="@dimen/_16sp"
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.8"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.poona.agrocart.widgets.expand_icon_view.ExpandIconView
+                        android:id="@+id/expand_question"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        app:eiv_animationDuration="300"
+                        app:eiv_colorLess="#FBF8F8"
+                        app:eiv_colorMore="#898989"
+                        app:eiv_roundedCorners="true"
+                        app:eiv_switchColor="true" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1.8"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <com.poona.agrocart.widgets.expand_icon_view.ExpandIconView
-                    android:id="@+id/expand_question"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    app:eiv_animationDuration="300"
-                    app:eiv_colorLess="#FBF8F8"
-                    app:eiv_colorMore="#130000"
-                    app:eiv_roundedCorners="true"
-                    app:eiv_switchColor="true" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_answer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ll_main"
-            android:orientation="vertical"
-            android:paddingVertical="@dimen/_4sdp"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_32sdp"
-            android:visibility="gone">
-
-            <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/tv_answer"
+                android:id="@+id/ll_answer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:justificationMode="inter_word"
-                android:text="@={faqListData.answer}"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14sp"
-                app:setCustomFont="@string/font_poppins_regular" />
-        </LinearLayout>
+                android:layout_below="@+id/ll_main"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_4sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_32sdp"
+                android:visibility="gone">
 
-    </RelativeLayout>
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/tv_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:justificationMode="inter_word"
+                    android:text="@={faqListData.answer}"
+                    android:textColor="@color/bold_txt_color"
+                    android:textSize="@dimen/_14sp"
+                    app:setCustomFont="@string/font_poppins_regular" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+
 </layout>

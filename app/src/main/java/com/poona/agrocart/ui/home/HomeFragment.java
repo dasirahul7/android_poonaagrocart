@@ -723,17 +723,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //                Log.e(TAG, "callHomeAPiResponse: " + productListResponse.getMessage());
                 switch (homeResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-
+                        try {
+                            ((HomeActivity)context).setCountBudge(homeResponse.getCartItems());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         //setHeader
                         if (homeResponse != null) {
-                            preferences.setUserProfile(homeResponse.getHomeResponseData().getUserData().get(0).getImage());
-                            preferences.setUserName(homeResponse.getHomeResponseData().getUserData().get(0).getName());
-                            preferences.setUserAddress(homeResponse.getHomeResponseData().getUserData().get(0).getCityName()
-                                    + ", " + homeResponse.getHomeResponseData().getUserData().get(0).getAreaName());
-                            if (homeResponse.getHomeResponseData().getUserData().get(0).getImage() != null
-                                    && !TextUtils.isEmpty(homeResponse.getHomeResponseData().getUserData().get(0).getImage())) {
-                                ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getHomeResponseData().getUserData().get(0).getName());
-                                loadingImage(context, homeResponse.getHomeResponseData().getUserData().get(0).getImage(), ((HomeActivity) context).civProfilePhoto);
+                            preferences.setUserProfile(homeResponse.getHomeResponseData().getUserData().getImage());
+                            preferences.setUserName(homeResponse.getHomeResponseData().getUserData().getName());
+                            preferences.setUserAddress(homeResponse.getHomeResponseData().getUserData().getCityName()
+                                    + ", " + homeResponse.getHomeResponseData().getUserData().getAreaName());
+                            if (homeResponse.getHomeResponseData().getUserData().getImage() != null
+                                    && !TextUtils.isEmpty(homeResponse.getHomeResponseData().getUserData().getImage())) {
+                                ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getHomeResponseData().getUserData().getName());
+                                loadingImage(context, homeResponse.getHomeResponseData().getUserData().getImage(), ((HomeActivity) context).civProfilePhoto);
                             }
                         }
                         //Add All Banner
