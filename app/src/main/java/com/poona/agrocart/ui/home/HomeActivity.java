@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -37,6 +38,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -77,6 +80,10 @@ public class HomeActivity extends BaseActivity {
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
     private AppSharedPreferences preferences;
+    private TextView textCartItemCount;
+    private int mCartItemCount;
+    private Menu menu;
+    private View menuCartView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +143,6 @@ public class HomeActivity extends BaseActivity {
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-
     }
 
 
@@ -180,6 +186,21 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
+
+        BottomNavigationMenuView mbottomNavigationMenuView =
+                (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
+
+        View view = mbottomNavigationMenuView.getChildAt(2);
+
+        BottomNavigationItemView itemView = (BottomNavigationItemView) view;
+
+        View cart_badge = LayoutInflater.from(this)
+                .inflate(R.layout.action_layout_my_cart,
+                        mbottomNavigationMenuView, false);
+
+        textCartItemCount = (TextView) cart_badge.findViewById(R.id.cart_badge);
+        itemView.addView(cart_badge);
+
         Menu m = navigationView.getMenu();
         MenuItem menuItemAboutUs = m.findItem(R.id.nav_cms);
         MenuItem signOut = m.findItem(R.id.nav_signout);
@@ -194,6 +215,8 @@ public class HomeActivity extends BaseActivity {
             showLogoutConfirmationDialog();
             return true;
         });
+//        Menu mBottom = navigationView.getMenu();
+
 
         View headerView = navigationView.getHeaderView(0);
         RelativeLayout rlEditProfile = headerView.findViewById(R.id.rl_edit_profile);
@@ -252,7 +275,12 @@ public class HomeActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.home, menu);
+//        getMenuInflater().inflate(R.menu.bottom_menu, menu);
+//        MenuItem cartMenu = menu.findItem(R.id.nav_cart);
+//        View cartView = cartMenu.getActionView();
+//        textCartItemCount = (TextView) cartView.findViewById(R.id.cart_badge);
+//        MenuItem cartMenu = bottomNavigationView.getMenu().getItem(R.id.nav_cart);
+//        textCartItemCount = cartMenu.getActionView().findViewById(R.id.cart_badge);
         return true;
     }
 
@@ -382,5 +410,30 @@ public class HomeActivity extends BaseActivity {
 
         // Apply the newly created layout parameters to the alert dialog window
         dialog.getWindow().setAttributes(layoutParams);
+    }
+
+    void setCountBudge(int count) {
+        mCartItemCount = count;
+        try {
+            if (textCartItemCount != null) {
+                if (mCartItemCount == 0) {
+                    if (textCartItemCount.getVisibility() != View.GONE) {
+                        textCartItemCount.setVisibility(View.GONE);
+                    }
+                } else {
+                    if (mCartItemCount > 99){
+                        textCartItemCount.setText("99+");
+                    }else {
+                        textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
+                    }
+                    if (textCartItemCount.getVisibility() != View.VISIBLE) {
+                        textCartItemCount.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
     }
 }
