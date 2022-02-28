@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
+import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.IntroScreenResponse;
 import com.poona.agrocart.databinding.FragmentIntroScreenItemBinding;
@@ -59,7 +60,16 @@ public class IntroItemFragment extends BaseFragment {
         introTitle.setText(introList.get(position).getTitle());
         introDesc.setText(introList.get(position).getDescription());
 //        introImg.setImageResource(introList.get(position).getImgFile());
-        loadingImage(context, introList.get(position).getImgFile(), fragmentIntroItemBinding.itemImg);
+        try {
+            Glide.with(context)
+                    .load(introList.get(position).getImgFile())
+                    .placeholder(R.drawable.placeholder_intro)
+                    .error(R.drawable.placeholder_intro)
+                    .into(fragmentIntroItemBinding.itemImg);
+        } catch (Exception e) {
+            fragmentIntroItemBinding.itemImg.setImageResource(R.drawable.placeholder_intro);
+        }
+//        loadingImage(context, introList.get(position).getImgFile(), fragmentIntroItemBinding.itemImg);
         return view;
     }
 }
