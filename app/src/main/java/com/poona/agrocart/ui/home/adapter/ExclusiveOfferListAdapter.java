@@ -24,6 +24,7 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
     private RowExclusiveItemBinding rowExclusiveItemBinding;
     private final OnProductClickListener onProductClickListener;
     private final OnPlusClickListener onPlusClickListener;
+    public boolean added = false;
 
 
     public ExclusiveOfferListAdapter(ArrayList<Product> products,
@@ -50,6 +51,8 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
         rowExclusiveItemBinding.imgPlus.setOnClickListener(view1 -> {
             onPlusClickListener.OnPlusClick(rowExclusiveItemBinding, product, position);
         });
+        if (added)
+            rowExclusiveItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
     }
 
     @Override
@@ -90,5 +93,13 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
                 }
             });
         }
+    }
+
+    public boolean isAdded() {
+        return added;
+    }
+
+    public void setAdded(boolean added) {
+        this.added = added;
     }
 }

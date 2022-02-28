@@ -6,7 +6,7 @@
 
         <variable
             name="basketContent"
-            type="com.poona.agrocart.data.network.responses.BasketResponse.BasketProduct" />
+            type="com.poona.agrocart.data.network.responses.BasketDetailsResponse.BasketProduct" />
     </data>
 
     <LinearLayout

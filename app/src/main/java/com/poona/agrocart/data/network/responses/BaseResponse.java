@@ -10,6 +10,29 @@ public class BaseResponse {
     @SerializedName("message")
     @Expose
     private String message;
+    /* for cart items*/
+    @Expose
+    @SerializedName("cart_items")
+    private int cartItems;
+    @Expose
+    @SerializedName("total_amount")
+    private float totalAmount;
+
+    public float getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(float totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public int getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(int cartItems) {
+        this.cartItems = cartItems;
+    }
 
     public int getStatus() {
         return status;

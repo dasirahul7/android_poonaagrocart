@@ -6,10 +6,14 @@
     <data>
 
         <variable
-            name="moduleBasket"
-            type="com.poona.agrocart.data.network.responses.BasketResponse.Basket" />
+            name="basketViewModel"
+            type="com.poona.agrocart.ui.basket_detail.BasketDetailViewModel" />
     </data>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/rl_refresh_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -96,7 +100,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="95"
-                    android:text="@{moduleBasket.basketName}"
+                    android:text="@{basketViewModel.basketName}"
                     android:textColor="@color/clr_enter_otp"
                     android:textSize="@dimen/_24sp"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -134,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:includeFontPadding="false"
-                        android:text="@{`Rs.`+moduleBasket.basketRate}"
+                        android:text="@{`Rs.`+basketViewModel.basketRate}"
                         android:textColor="@color/clr_enter_otp"
                         android:textSize="@dimen/_24sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -304,7 +308,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{moduleBasket.productDetails}"
+                android:text="@{basketViewModel.basketDetail}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -363,7 +367,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{moduleBasket.aboutProduct}"
+                android:text="@{basketViewModel.basketAbout}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -422,7 +426,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{moduleBasket.benifit}"
+                android:text="@{basketViewModel.basketBenefit}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -481,7 +485,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{moduleBasket.storagesUses}"
+                android:text="@{basketViewModel.basketStorageUses}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -540,7 +544,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{moduleBasket.otherProuctInfo}"
+                android:text="@{basketViewModel.basketOtherInfo}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -599,7 +603,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:paddingTop="@dimen/_8sdp"
-                android:text="@{moduleBasket.weightPolicy}"
+                android:text="@{basketViewModel.basketWeightPolicy}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -657,7 +661,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
-                android:text="@{moduleBasket.nutrition}"
+                android:text="@{basketViewModel.basketNutrition}"
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -842,5 +846,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </layout>

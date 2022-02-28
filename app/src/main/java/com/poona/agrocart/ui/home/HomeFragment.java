@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -255,12 +256,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         bestSellingManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
         bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), this::toProductDetail, (binding, product, position) -> {
             if (product.getInCart() == 0) {
-                addToCartProduct(product, BEST_SELLING);
+                addToCartProduct(product, BEST_SELLING,position);
             }
         });
         fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recBestSelling.setLayoutManager(bestSellingManager);
         fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
+        Parcelable recyclerViewState;
+        recyclerViewState = fragmentHomeBinding.recBestSelling.getLayoutManager().onSaveInstanceState();
+
+// Restore state
+        fragmentHomeBinding.recBestSelling.getLayoutManager().onRestoreInstanceState(recyclerViewState);
 //        fragmentHomeBinding.recBestSelling.getRecycledViewPool().setMaxRecycledViews(0, 0);
 
     }
@@ -270,7 +276,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
         exclusiveOfferManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
         offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), this::toProductDetail, (binding, product, position) -> {
-            addToCartProduct(product, EXCLUSIVE);
+            addToCartProduct(product, EXCLUSIVE,position);
         });
         fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recExOffers.setLayoutManager(exclusiveOfferManager);
@@ -285,7 +291,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding.recProduct.setHasFixedSize(true);
         fragmentHomeBinding.recProduct.setLayoutManager(productManager);
         productListAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> {
-            addToCartProduct(product, PRODUCT);
+            addToCartProduct(product, PRODUCT,position);
         });
         fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
         fragmentHomeBinding.recProduct.getRecycledViewPool().setMaxRecycledViews(0, 0);
@@ -1008,7 +1014,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void addToCartProduct(Product product,
-                                  int addType) {
+                                  int addType,int position) {
         Observer<BaseResponse> baseResponseObserver = response -> {
             if (response != null) {
                 Log.e(TAG, "addToCartProduct: " + new Gson().toJson(response));

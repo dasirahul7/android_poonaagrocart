@@ -186,6 +186,7 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
+        /*add counter budge start here*/
 
         BottomNavigationMenuView mbottomNavigationMenuView =
                 (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
@@ -200,6 +201,7 @@ public class HomeActivity extends BaseActivity {
 
         textCartItemCount = (TextView) cart_badge.findViewById(R.id.cart_badge);
         itemView.addView(cart_badge);
+        /*add counter budge finish here*/
 
         Menu m = navigationView.getMenu();
         MenuItem menuItemAboutUs = m.findItem(R.id.nav_cms);
@@ -412,7 +414,7 @@ public class HomeActivity extends BaseActivity {
         dialog.getWindow().setAttributes(layoutParams);
     }
 
-    void setCountBudge(int count) {
+    public void setCountBudge(int count) {
         mCartItemCount = count;
         try {
             if (textCartItemCount != null) {

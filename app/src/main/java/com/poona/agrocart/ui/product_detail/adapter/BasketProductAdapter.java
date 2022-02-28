@@ -9,15 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.databinding.RvBasketContentsListBinding;
 
 import java.util.ArrayList;
 
 public class BasketProductAdapter extends RecyclerView.Adapter<BasketProductAdapter.BasketContentsViewHolder> {
-    private final ArrayList<BasketResponse.BasketProduct> basketContentArrayList;
+    private final ArrayList<BasketDetailsResponse.BasketProduct> basketContentArrayList;
 
-    public BasketProductAdapter(ArrayList<BasketResponse.BasketProduct> basketContentArrayList) {
+    public BasketProductAdapter(ArrayList<BasketDetailsResponse.BasketProduct> basketContentArrayList) {
         this.basketContentArrayList = basketContentArrayList;
     }
 
@@ -31,7 +32,7 @@ public class BasketProductAdapter extends RecyclerView.Adapter<BasketProductAdap
 
     @Override
     public void onBindViewHolder(@NonNull BasketContentsViewHolder holder, int position) {
-        final BasketResponse.BasketProduct basketProduct = basketContentArrayList.get(position);
+        final BasketDetailsResponse.BasketProduct basketProduct = basketContentArrayList.get(position);
         holder.rvBasketContentsListBinding.setBasketContent(basketProduct);
         holder.bind(basketProduct);
     }
@@ -49,7 +50,7 @@ public class BasketProductAdapter extends RecyclerView.Adapter<BasketProductAdap
             this.rvBasketContentsListBinding = rvBasketContentsListBinding;
         }
 
-        public void bind(BasketResponse.BasketProduct basketContent) {
+        public void bind(BasketDetailsResponse.BasketProduct basketContent) {
             rvBasketContentsListBinding.setVariable(BR.basketContent, basketContent);
             rvBasketContentsListBinding.executePendingBindings();
         }

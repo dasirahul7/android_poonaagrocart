@@ -345,8 +345,11 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 Log.e("Delete List Api ResponseData", new Gson().toJson(baseResponse));
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        //successToast(context, baseResponse.getMessage());
-                        //deleteItem();
+                        try {
+                            ((HomeActivity)context).setCountBudge(baseResponse.getCartItems());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors
@@ -403,7 +406,11 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 }
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        // successToast(context, baseResponse.getMessage());
+                        try {
+                            ((HomeActivity)context).setCountBudge(baseResponse.getCartItems());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case STATUS_CODE_400://Validation Errors
                         warningToast(context, baseResponse.getMessage());
@@ -450,12 +457,13 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 }
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        // setAdaptor();
-                        // successToast(context, baseResponse.getMessage());
+                        try {
+                            ((HomeActivity)context).setCountBudge(baseResponse.getCartItems());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case STATUS_CODE_400://Validation Errors
-                        warningToast(context, baseResponse.getMessage());
-                        break;
                     case STATUS_CODE_404://Record not Found
                         /* show empty screen message */
                         warningToast(context, baseResponse.getMessage());

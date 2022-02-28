@@ -108,19 +108,14 @@ public class BasketResponse extends BaseResponse {
         @SerializedName("hsn_code")
         @Expose
         private String hsnCode;
-        @SerializedName("basket_product")
-        @Expose
-        private ArrayList<BasketProduct> basketUnits;
-        @SerializedName("basket_imgs")
-        @Expose
-        private List<BasketImges> basketImges;
+
         @SerializedName("is_favourite")
         private int isFavourite;
         @SerializedName("in_cart")
         private int inCart;
         @SerializedName("quantity")
         private int quantity;
-        private BasketProduct basketUnit;
+
         private String accurateWeight;
 
         public int getIsFavourite() {
@@ -147,29 +142,6 @@ public class BasketResponse extends BaseResponse {
             this.quantity = quantity;
         }
 
-        public List<BasketImges> getBasketImges() {
-            return basketImges;
-        }
-
-        public void setBasketImges(List<BasketImges> basketImges) {
-            this.basketImges = basketImges;
-        }
-
-        public ArrayList<BasketProduct> getBasketUnits() {
-            return basketUnits;
-        }
-
-        public void setBasketUnits(ArrayList<BasketProduct> basketUnits) {
-            this.basketUnits = basketUnits;
-        }
-
-        public BasketProduct getBasketUnit() {
-            return basketUnit;
-        }
-
-        public void setBasketUnit(BasketProduct basketUnit) {
-            this.basketUnit = basketUnit;
-        }
 
         public String getAccurateWeight() {
             return accurateWeight;
@@ -371,78 +343,5 @@ public class BasketResponse extends BaseResponse {
             this.hsnCode = hsnCode;
         }
 
-    }
-
-    public class BasketProduct {
-        @SerializedName("bp_id")
-        @Expose
-        private String bpId;
-        @SerializedName("product_name")
-        @Expose
-        private String productName;
-        @SerializedName("basket_id_fk")
-        @Expose
-        private String basketIdFk;
-        @SerializedName("weight_and_unit")
-        @Expose
-        private String weightAndUnit;
-        @SerializedName("status")
-        @Expose
-        private String status;
-
-        public String getBpId() {
-            return bpId;
-        }
-
-        public void setBpId(String bpId) {
-            this.bpId = bpId;
-        }
-
-        public String getProductName() {
-            return productName;
-        }
-
-        public void setProductName(String productName) {
-            this.productName = productName;
-        }
-
-        public String getBasketIdFk() {
-            return basketIdFk;
-        }
-
-        public void setBasketIdFk(String basketIdFk) {
-            this.basketIdFk = basketIdFk;
-        }
-
-        public String getWeightAndUnit() {
-            return weightAndUnit;
-        }
-
-        public void setWeightAndUnit(String weightAndUnit) {
-            this.weightAndUnit = weightAndUnit;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-    }
-
-    public class BasketImges {
-
-        @SerializedName("basket_img")
-        @Expose
-        private String basketImg;
-
-        public String getBasketImg() {
-            return basketImg;
-        }
-
-        public void setBasketImg(String basketImg) {
-            this.basketImg = basketImg;
-        }
     }
 }
