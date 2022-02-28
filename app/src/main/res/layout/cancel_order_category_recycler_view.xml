@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="cancelOrderCategoryList"
+            type="com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:background="@drawable/bg_dashboard_et_layout"
+            android:elevation="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.poona.agrocart.widgets.CustomCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.3"
+                android:gravity="center"
+                android:checked="true"
+                android:button="@drawable/custom_check_box_order_cancel"
+               />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text="@{cancelOrderCategoryList.categoryName}"
+                android:textColor="@color/color_spinner"
+                android:textSize="@dimen/_14sp"
+                app:setCustomFont="@string/font_poppins_regular" />
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.1"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:text="@{cancelOrderCategoryList.cancelDate}"
+                android:textColor="@color/color_spinner"
+                android:textSize="@dimen/_10sp"
+                app:setCustomFont="@string/font_poppins_regular"
+                android:drawableStart="@drawable/ic_calender"
+                android:drawablePadding="@dimen/_5sdp"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

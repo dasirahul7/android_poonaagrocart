@@ -68,6 +68,8 @@
         <entry key="app/src/main/res/drawable/coupon_blue.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/coupon_green.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/coupon_pink.xml" value="0.20462962962962963" />
+        <entry key="app/src/main/res/drawable/custom_check_box_order_cancel.xml" value="0.1055" />
+        <entry key="app/src/main/res/drawable/custom_radio_button_order_cancel.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/drawable_bottom_menu_item_color.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/drawable_item_color.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/drawer_item_color.xml" value="0.9" />
@@ -90,6 +92,7 @@
         <entry key="app/src/main/res/drawable/ic_camera.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_camera_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_check_mark.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_checked_radio_cancel_order.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_coupons_offers.xml" value="0.19907407407407407" />
         <entry key="app/src/main/res/drawable/ic_cross.xml" value="0.134" />
         <entry key="app/src/main/res/drawable/ic_cross_cancel.xml" value="0.1" />
@@ -152,6 +155,7 @@
         <entry key="app/src/main/res/drawable/ic_terms__condition.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_tick_green_bg.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/ic_toast_check_white.xml" value="0.19444444444444445" />
+        <entry key="app/src/main/res/drawable/ic_unchecked_radio_botton_order_cancel.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_unselected_dot.xml" value="0.15648148148148147" />
         <entry key="app/src/main/res/drawable/ic_video_forward.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_video_pause.xml" value="0.18" />
@@ -196,6 +200,8 @@
         <entry key="app/src/main/res/layout/app_bar_home.xml" value="0.22" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/best_selling_row_item.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/cancel_order_category_recycler_view.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/cancel_order_reason_recycler_view.xml" value="0.33" />
         <entry key="app/src/main/res/layout/cat_row_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/circular_progresbar.xml" value="0.1" />
         <entry key="app/src/main/res/layout/content_dash_board.xml" value="0.1" />
@@ -224,7 +230,7 @@
         <entry key="app/src/main/res/layout/fragment_coupon.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_dash_board.xml" value="0.21" />
         <entry key="app/src/main/res/layout/fragment_dash_board2.xml" value="0.1431159420289855" />
-        <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.12129629629629629" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_faq.xml" value="0.15092592592592594" />
         <entry key="app/src/main/res/layout/fragment_favourite_items.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_help_center.xml" value="0.15092592592592594" />
@@ -270,6 +276,7 @@
         <entry key="app/src/main/res/layout/menu_item.xml" value="0.16259057971014493" />
         <entry key="app/src/main/res/layout/nav_header_home.xml" value="0.14" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.17074275362318841" />
+        <entry key="app/src/main/res/layout/order_cancel_dialog_box.xml" value="0.27347611202635913" />
         <entry key="app/src/main/res/layout/order_review_comment_recycler_view_item.xml" value="0.17025641025641025" />
         <entry key="app/src/main/res/layout/privacy_fragment.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/row_banner.xml" value="0.14356884057971014" />

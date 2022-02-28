@@ -523,9 +523,11 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <string name="search_place">Search a place</string>
     <string name="failed_select_location">failed to select location please try again</string>
 
+    <!--Cancel order Dialog Box-->
+    <string name="select_to_cancel">Select to cancel</string>
+    <string name="reason_to_cancel">Reason to cancel?</string>
 
     <!--Warning Toasts -->
-
     <string name="empty_field_toast">Please fill the details</string>
     <string name="my_basket">My Basket</string>
 </resources>
