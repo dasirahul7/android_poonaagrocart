@@ -7,6 +7,9 @@ import com.poona.agrocart.data.network.responses.BaseResponse;
 import java.io.Serializable;
 
 public class HomeResponse extends BaseResponse implements Serializable {
+    @SerializedName("cart_items")
+    @Expose
+    private int cartItems;
     @SerializedName("response")
     @Expose
     private HomeResponseData homeResponseData;
@@ -17,6 +20,14 @@ public class HomeResponse extends BaseResponse implements Serializable {
 
     public void setHomeResponseData(HomeResponseData homeResponseData) {
         this.homeResponseData = homeResponseData;
+    }
+
+    public int getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(int cartItems) {
+        this.cartItems = cartItems;
     }
 
     /*Home response Data class*/

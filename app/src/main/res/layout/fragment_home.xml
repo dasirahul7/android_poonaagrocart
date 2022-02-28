@@ -229,14 +229,29 @@
 
                 </RelativeLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rec_best_selling"
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/nav_best_selling"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:clipToPadding="false"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    tools:ignore="RtlSymmetry" />
+                    android:scrollbars="horizontal"
+                    android:fitsSystemWindows="true"
+                    android:fillViewport="true">
+
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content">
+
+                       <androidx.recyclerview.widget.RecyclerView
+                           android:id="@+id/rec_best_selling"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:layout_marginTop="@dimen/_2sdp"
+                           android:paddingHorizontal="@dimen/_10sdp" />
+
+                   </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
 
                 <!-- Seasonal Banners-->
                 <androidx.recyclerview.widget.RecyclerView
