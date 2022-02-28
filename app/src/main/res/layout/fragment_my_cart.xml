@@ -100,7 +100,7 @@
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/_1sdp"
                             android:layout_weight="50"
-                            android:text="@={myCartViewModel.totalTotal}"
+                            android:text="@{`RS.`+myCartViewModel.totalTotal}"
                             android:textAlignment="textStart"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_18sp"

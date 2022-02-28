@@ -16,25 +16,39 @@ import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.RowBestSellingItemBinding;
 import com.poona.agrocart.databinding.RowExclusiveItemBinding;
+import com.poona.agrocart.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 
 public class BestSellingListAdapter extends RecyclerView.Adapter<BestSellingListAdapter.BestSellingViewHolder> {
     private final Context bdContext;
-    private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<Product> productArrayList = new ArrayList<>();
     private RowBestSellingItemBinding sellingItemBinding;
-    private final OnProductClickListener onProductClickListener;
-    private final OnPlusClickListener onPlusClickListener;
+    private  OnProductClickListener onProductClickListener;
+    private  OnPlusClickListener onPlusClickListener;
+
+    public BestSellingListAdapter(Context context, ArrayList<Product> productList, HomeFragment homeFragment) {
+        this.bdContext=context;
+        this.productArrayList=productList;
+    }
+
+    public interface OnProductClickListener {
+        void onProductClick(Product product);
+    }
+
+    public interface OnPlusClickListener {
+        void OnPlusClick(RowBestSellingItemBinding rowBestSellingItemBinding, Product product, int position);
+    }
 
 
-    public BestSellingListAdapter(ArrayList<Product> products,
+ /*   public BestSellingListAdapter(ArrayList<Product> products,
                                   Context bdContext, OnProductClickListener onProductClickListener,
                                   OnPlusClickListener onPlusClickListener) {
         this.products = products;
         this.bdContext = bdContext;
         this.onProductClickListener = onProductClickListener;
         this.onPlusClickListener = onPlusClickListener;
-    }
+    }*/
 
     @NonNull
     @Override
@@ -45,25 +59,31 @@ public class BestSellingListAdapter extends RecyclerView.Adapter<BestSellingList
 
     @Override
     public void onBindViewHolder(@NonNull BestSellingViewHolder holder, int position) {
-        Product product = products.get(position);
+        Product product = productArrayList.get(position);
         sellingItemBinding.setBestsellingModule(product);
         holder.bindData(product, position);
-        sellingItemBinding.imgPlus.setOnClickListener(view1 -> {
-            onPlusClickListener.OnPlusClick(sellingItemBinding, product, position);
-        });
+
+        if (product.getSpecialOffer().isEmpty())
+            sellingItemBinding.txtItemName.setVisibility(View.INVISIBLE);
+        if (product.getSpecialOffer().isEmpty())
+            sellingItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
+        if (product.getIsO3().equalsIgnoreCase("yes"))
+            sellingItemBinding.txtOrganic.setVisibility(View.VISIBLE);
+
+
+        if (product.getInCart() == 1){
+            sellingItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
+        } else if (product.getInCart() == 0){
+            sellingItemBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
+        }
+
+
+
     }
 
     @Override
     public int getItemCount() {
-        return products.size();
-    }
-
-    public interface OnProductClickListener {
-        void onProductClick(Product product);
-    }
-
-    public interface OnPlusClickListener {
-        void OnPlusClick(RowBestSellingItemBinding rowBestSellingItemBinding, Product product, int position);
+        return productArrayList.size();
     }
 
     public class BestSellingViewHolder extends RecyclerView.ViewHolder {
@@ -75,20 +95,17 @@ public class BestSellingListAdapter extends RecyclerView.Adapter<BestSellingList
             sellingItemBinding.setVariable(BR.exclusiveOfferModule, product);
             sellingItemBinding.executePendingBindings();
 //            rowExclusiveItemBinding.txtItemPrice.setText(product.getProductUnits().get(0).getOfferPrice());
-            if (product.getSpecialOffer().isEmpty())
-                sellingItemBinding.txtItemName.setVisibility(View.INVISIBLE);
-            if (product.getSpecialOffer().isEmpty())
-                sellingItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
-            if (product.getIsO3().equalsIgnoreCase("yes"))
-                sellingItemBinding.txtOrganic.setVisibility(View.VISIBLE);
-            if (product.getInCart() == 1)
-                sellingItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
-            else sellingItemBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onProductClickListener.onProductClick(product);
                 }
+            });
+
+
+            sellingItemBinding.imgPlus.setOnClickListener(view1 -> {
+                onPlusClickListener.OnPlusClick(sellingItemBinding, product, position);
             });
         }
     }

@@ -210,6 +210,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 }
                 switch (myCartResponse.getStatus()) {
                     case STATUS_CODE_200://success
+                        cartItemsList.clear();
                         if (myCartResponse.getData() != null
                                 && myCartResponse.getData().size() > 0) {
                             fragmentMyCartBinding.emptyLayout.setVisibility(View.GONE);
@@ -217,6 +218,9 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                             ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.VISIBLE);
                             cartItemsList.addAll(myCartResponse.getData());
                             cartItemAdapter.notifyDataSetChanged();
+
+                              myCartViewModel.totalTotal.setValue(String.valueOf(myCartResponse.getTotalAmount()));
+                              myCartViewModel.totalItems.setValue(String.valueOf(myCartResponse.getCartItems()));
                         } else {
                             requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
                             setBottomMarginInDps(50);
@@ -278,6 +282,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_200://Record Create/Update Successfully
                         //removeCartItem();
                         //successToast(context, baseResponse.getMessage());
+                        callMyCarListApi(showCircleProgressDialog(context, ""));
                         break;
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_402://Validation Errors
