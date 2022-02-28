@@ -79,8 +79,6 @@ import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.data.network.responses.homeResponse.SeasonalProduct;
 import com.poona.agrocart.data.network.responses.homeResponse.StoreBanner;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
-import com.poona.agrocart.databinding.HomeProductItemBinding;
-import com.poona.agrocart.databinding.RowExclusiveItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
 import com.poona.agrocart.ui.home.adapter.BasketAdapter;
@@ -96,7 +94,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener{
     private static final String TAG = HomeFragment.class.getSimpleName();
     private static final int CATEGORY = 0;
     private static final int BASKET = 1;
@@ -267,11 +265,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         });
         fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
 
+        /* call addOnScrollListener to recyclerview */
         setScrollListener();
+
+
     }
 
     private int visibleItemCount = 0;
-    private int totalCount = 5;
+    private final int totalCount = 6;
 
     private void setScrollListener() {
         fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
@@ -284,16 +285,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount != totalCount) {
                     callBestSellingApi(null, "onScrolled");
-                }
-                else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+                } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount == totalCount) {
                     infoToast(requireContext(), getString(R.string.no_more_records));
                 }
             }
         });
     }
-
-
 
 
     private void setRvExclusive() {
@@ -915,12 +913,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null
                                 && bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
 
-                          //  makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
-                          //  setRvBestSelling();
+                            //  makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
+                            //  setRvBestSelling();
                             bestSellings.addAll(bestSellingResponse.getBestSellingData().getBestSellingProductList());
                             bestsellingAdapter.notifyDataSetChanged();
-                            // Redirect to ProductOld details
-//
+                            setRvBestSelling();
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -1337,4 +1334,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         }, context);
 
     }
+
+
 }
