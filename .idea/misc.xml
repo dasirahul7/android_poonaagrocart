@@ -97,6 +97,7 @@
         <entry key="app/src/main/res/drawable/ic_default_profile_img.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/ic_delete_gray.xml" value="0.20615384615384616" />
+        <entry key="app/src/main/res/drawable/ic_empty_notification.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_explore.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_gallery.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_green_bell.xml" value="0.20615384615384616" />
@@ -206,6 +207,7 @@
         <entry key="app/src/main/res/layout/custom_spinner_list_item_checked.xml" value="0.17" />
         <entry key="app/src/main/res/layout/dialog_basket_filter_list.xml" value="0.18" />
         <entry key="app/src/main/res/layout/dialog_delete_notification.xml" value="0.15818725951261223" />
+        <entry key="app/src/main/res/layout/dialog_new_ticket.xml" value="0.15092592592592594" />
         <entry key="app/src/main/res/layout/dialog_select_photo.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_server_error.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_text_with_button.xml" value="0.11" />
