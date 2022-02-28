@@ -12,7 +12,7 @@ public class MyCartResponse extends BaseResponse {
     private ArrayList<CartData> data = null;
     @SerializedName("total_amount")
     @Expose
-    private Double totalAmount;
+    private float totalAmount;
     @SerializedName("cart_items")
     @Expose
     private Integer cartItems;
@@ -25,15 +25,15 @@ public class MyCartResponse extends BaseResponse {
         this.data = data;
     }
 
-    public Double getTotalAmount() {
+    public float getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Double totalAmount) {
+    public void setTotalAmount(Float totalAmount) {
         this.totalAmount = totalAmount;
     }
 
-    public Integer getCartItems() {
+    public int getCartItems() {
         return cartItems;
     }
 
