@@ -55,6 +55,12 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         initView();
         setRVAdapter();
 
+        fragmentOrderViewBinding.cvCancel.setOnClickListener(view1 -> {
+
+            CancelOrderDialogBox();
+
+        });
+
         initTitleWithBackBtn(getString(R.string.order_view));
 
         return view;

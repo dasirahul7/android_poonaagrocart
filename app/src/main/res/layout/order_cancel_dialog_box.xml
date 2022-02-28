@@ -6,15 +6,14 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/dialog_card"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_340sdp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="-20dp"
         app:cardCornerRadius="@dimen/_20sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/_26sdp">
+            android:paddingBottom="@dimen/_10sdp">
 
             <RelativeLayout
                 android:id="@+id/ll_top"
@@ -59,92 +58,130 @@
                 android:background="@color/filter_line_color"
                 app:layout_constraintTop_toBottomOf="@+id/ll_top" />
 
-            <androidx.core.widget.NestedScrollView
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fillViewport="true"
-                android:fitsSystemWindows="true"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_line">
 
-                <LinearLayout
-                    android:id="@+id/linearLayout"
+
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginVertical="@dimen/_10sdp"
-                    android:orientation="vertical">
-
+                    android:layout_height="match_parent">
                     <LinearLayout
+                        android:id="@+id/ll_main"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <!--  <LinearLayout
-                              android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:orientation="horizontal">
-
-                              <CheckBox
-                                  android:layout_width="wrap_content"
-                                  android:layout_height="wrap_content"
-                                  android:checked="true"/>
-
-                              <com.poona.agrocart.widgets.CustomTextView
-                                  android:layout_width="wrap_content"
-                                  android:layout_height="wrap_content"
-                                  />
-
-                          </LinearLayout>-->
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_cancel_category"
+                        <LinearLayout
+                            android:id="@+id/ll_1"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content">
 
-                    </LinearLayout>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_cancel_category"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
 
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="@dimen/_5sdp"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/reason_to_cancel"
-                        android:textColor="@color/clr_enter_otp"
-                        android:textSize="@dimen/_18sp"
-                        android:textStyle="bold"
-                        app:setCustomFont="@string/font_poppins_bold" />
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:orientation="vertical">
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/reason_to_cancel"
+                            android:textColor="@color/clr_enter_otp"
+                            android:textSize="@dimen/_18sp"
+                            android:textStyle="bold"
+                            app:setCustomFont="@string/font_poppins_bold" />
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_cancel_reason"
+
+                        <LinearLayout
+                            android:id="@+id/ll_2"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            tools:ignore="MissingConstraints">
 
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_cancel_reason"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+                        <com.poona.agrocart.widgets.CustomButton
+                            android:id="@+id/btn_submit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:background="@drawable/background_light_green"
+                            android:text="@string/submit"
+                            android:textAllCaps="false"
+                            android:textColor="@color/background_color_white_green"
+                            android:textSize="@dimen/_18sp"
+                            app:setCustomFont="@string/font_poppins_semi_bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
                     </LinearLayout>
+                    <!--
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_marginBottom="@dimen/_5sdp"
+                                                android:orientation="vertical">
 
-                    <com.poona.agrocart.widgets.CustomButton
-                        android:id="@+id/btn_submit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:background="@drawable/background_light_green"
-                        android:text="@string/submit"
-                        android:textAllCaps="false"
-                        android:textColor="@color/background_color_white_green"
-                        android:textSize="@dimen/_18sp"
-                        app:setCustomFont="@string/font_poppins_semi_bold" />
-                </LinearLayout>
 
-            </androidx.core.widget.NestedScrollView>
 
+                                                <androidx.recyclerview.widget.RecyclerView
+                                                    android:id="@+id/rv_cancel_category"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent" />
+
+                                                <com.poona.agrocart.widgets.CustomTextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginVertical="@dimen/_5sdp"
+                                                    android:gravity="center_vertical"
+                                                    android:padding="@dimen/_5sdp"
+                                                    android:text="@string/reason_to_cancel"
+                                                    android:textColor="@color/clr_enter_otp"
+                                                    android:textSize="@dimen/_18sp"
+                                                    android:textStyle="bold"
+                                                    app:setCustomFont="@string/font_poppins_bold" />
+
+                                                <androidx.recyclerview.widget.RecyclerView
+                                                    android:id="@+id/rv_cancel_reason"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"/>
+
+
+                                                <com.poona.agrocart.widgets.CustomButton
+                                                    android:id="@+id/btn_submit"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginVertical="@dimen/_10sdp"
+                                                    android:layout_marginHorizontal="@dimen/_5sdp"
+                                                    android:background="@drawable/background_light_green"
+                                                    android:text="@string/submit"
+                                                    android:textAllCaps="false"
+                                                    android:textColor="@color/background_color_white_green"
+                                                    android:textSize="@dimen/_18sp"
+                                                    app:setCustomFont="@string/font_poppins_semi_bold" />
+
+                                            </LinearLayout>
+                    -->
+                </androidx.core.widget.NestedScrollView>
+
+            </LinearLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

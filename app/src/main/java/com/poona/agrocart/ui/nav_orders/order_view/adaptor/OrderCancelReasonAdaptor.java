@@ -1,10 +1,17 @@
 package com.poona.agrocart.ui.nav_orders.order_view.adaptor;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +28,8 @@ public class OrderCancelReasonAdaptor extends RecyclerView.Adapter<OrderCancelRe
 
     private List<CancelOrderReasonList> cancelOrderReasonLists = new ArrayList<>();
     private Context context;
+    private RadioButton lastCheckedRB = null ;
+    private int mSelectedItem = -1;
 
     public OrderCancelReasonAdaptor(Context context, List<CancelOrderReasonList> cancelOrderReasonLists) {
         this.context=context;
@@ -41,6 +50,20 @@ public class OrderCancelReasonAdaptor extends RecyclerView.Adapter<OrderCancelRe
         CancelOrderReasonList cancelOrderReasonList = cancelOrderReasonLists.get(position);
         viewHolder.binding.setCancelOrderReasonList(cancelOrderReasonList);
         viewHolder.bind(cancelOrderReasonList);
+
+        /* radio Selected Item */
+        viewHolder.binding.radioPlan.setChecked(mSelectedItem == position);
+
+        viewHolder.binding.radioPlan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean radioBoolean ) {
+                if (lastCheckedRB != null) {
+                    lastCheckedRB.setChecked(false);
+                }
+                //store the clicked radiobutton
+                lastCheckedRB =  viewHolder.binding.radioPlan;
+            }
+        });
     }
 
     @Override
@@ -52,9 +75,18 @@ public class OrderCancelReasonAdaptor extends RecyclerView.Adapter<OrderCancelRe
 
         public CancelOrderReasonRecyclerViewBinding binding;
 
+        @SuppressLint("NotifyDataSetChanged")
         public OrderCancelReasonViewHolder(CancelOrderReasonRecyclerViewBinding binding) {
             super(binding.getRoot());
             this.binding= binding;
+
+            binding.llMain.setOnClickListener(view -> {
+                mSelectedItem = getAdapterPosition();
+               // strItrType = "check";
+                //onTypeClickListener.itemViewTypeClick(strItrType,itrTypeList.get(getLayoutPosition()).getItrFillingChargesId());
+                notifyDataSetChanged();
+            });
+
         }
 
         public void bind(CancelOrderReasonList cancelOrderReasonList) {

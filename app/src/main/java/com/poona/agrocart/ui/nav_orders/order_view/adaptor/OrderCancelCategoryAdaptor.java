@@ -54,6 +54,13 @@ public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancel
         public OrderCancelCategoryViewHolder(CancelOrderCategoryRecyclerViewBinding binding) {
             super(binding.getRoot());
             this.binding= binding;
+
+         /*   binding.llMain.setOnClickListener(view -> {
+                mSelectedItem = getAdapterPosition();
+                // strItrType = "check";
+                //onTypeClickListener.itemViewTypeClick(strItrType,itrTypeList.get(getLayoutPosition()).getItrFillingChargesId());
+                notifyDataSetChanged();
+            });*/
         }
 
         public void bind(CancelOrderCategoryList cancelOrderCategoryList) {
