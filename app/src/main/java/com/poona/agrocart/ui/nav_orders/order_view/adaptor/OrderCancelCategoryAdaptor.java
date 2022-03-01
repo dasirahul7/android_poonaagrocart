@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -18,8 +19,10 @@ import com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList;
 import java.util.List;
 
 public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancelCategoryAdaptor.OrderCancelCategoryViewHolder> {
+    private int mSelectedItem = -1;
     private List<CancelOrderCategoryList> cancelOrderCategoryLists;
     private Context context;
+    private CheckBox checkCategory;
 
     public OrderCancelCategoryAdaptor(Context context, List<CancelOrderCategoryList> cancelOrderCategoryLists) {
         this.context=context;
@@ -41,6 +44,12 @@ public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancel
         viewHolder.binding.setCancelOrderCategoryList(cancelOrderCategoryList);
         viewHolder.bind(cancelOrderCategoryList);
 
+        checkCategory = viewHolder.binding.cbCategory;
+        viewHolder.binding.llMain.setOnClickListener(view -> {
+            mSelectedItem = getItemCount();
+            checkCategory.setChecked(true);
+        });
+
     }
 
     @Override
@@ -55,7 +64,7 @@ public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancel
             super(binding.getRoot());
             this.binding= binding;
 
-         /*   binding.llMain.setOnClickListener(view -> {
+           /* binding.llMain.setOnClickListener(view -> {
                 mSelectedItem = getAdapterPosition();
                 // strItrType = "check";
                 //onTypeClickListener.itemViewTypeClick(strItrType,itrTypeList.get(getLayoutPosition()).getItrFillingChargesId());

@@ -36,6 +36,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
@@ -58,6 +59,7 @@ public class HelpCenterFragment extends BaseFragment implements NetworkException
     private FragmentHelpCenterBinding fragmentHelpCenterBinding;
     private HelpCenterViewModel helpCenterViewModel;
     private RecyclerView rvTickets;
+    private SwipeRefreshLayout refreshLayout;
     private LinearLayoutManager linearLayoutManager;
     private TicketsAdapter ticketsAdapter;
     private List<TicketListResponse.TicketList.UserTicket> ticketArrayList = new ArrayList<>();
@@ -87,6 +89,19 @@ public class HelpCenterFragment extends BaseFragment implements NetworkException
         initView();
         initTitleBar(getString(R.string.menu_help_center));
 
+        refreshLayout = fragmentHelpCenterBinding.rlHelpCenter;
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                if (isConnectingToInternet(context)){
+                    setRvAdapter();
+                }else{
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
+
         return view;
     }
 
@@ -115,7 +130,7 @@ public class HelpCenterFragment extends BaseFragment implements NetworkException
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvTickets.setHasFixedSize(true);
         rvTickets.setLayoutManager(linearLayoutManager);
-
+        refreshLayout.setRefreshing(false);
         callTicketListApi(showCircleProgressDialog(context, ""), "RecyclerView");
         ticketsAdapter = new TicketsAdapter(ticketArrayList, HelpCenterFragment.this, this);
         rvTickets.setAdapter(ticketsAdapter);
@@ -167,14 +182,21 @@ public class HelpCenterFragment extends BaseFragment implements NetworkException
                         if (ticketListResponse.getData() != null) {
                             ticketArrayList.addAll(ticketListResponse.getData().getUserTickets());
                             ticketsAdapter.notifyDataSetChanged();
+
+                            fragmentHelpCenterBinding.llMain.setVisibility(View.VISIBLE);
+                            fragmentHelpCenterBinding.llEmptyScreen.setVisibility(View.GONE);
+                        }else{
+                            fragmentHelpCenterBinding.llEmptyScreen.setVisibility(View.VISIBLE);
+                            fragmentHelpCenterBinding.llMain.setVisibility(View.GONE);
                         }
                         break;
                     case STATUS_CODE_400://Validation Errors
                         warningToast(context, ticketListResponse.getMessage());
                         break;
                     case STATUS_CODE_404://Record not Found
-                        //llEmptyLayout.setVisibility(View.VISIBLE);
-                        //llMainLayout.setVisibility(View.INVISIBLE);
+                        fragmentHelpCenterBinding.llEmptyScreen.setVisibility(View.VISIBLE);
+                        fragmentHelpCenterBinding.llMain.setVisibility(View.GONE);
+
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         goToAskSignInSignUpScreen();
@@ -405,11 +427,10 @@ public class HelpCenterFragment extends BaseFragment implements NetworkException
     @Override
     public void itemViewClick(TicketListResponse.TicketList.UserTicket ticket) {
 
-//        String strTicketId = ticket.getTicketId();
         Bundle bundle = new Bundle();
         bundle.putString(TICKET_ID, ticket.getTicketId());
         NavHostFragment.findNavController(HelpCenterFragment.this).navigate(R.id.action_nav_help_center_to_nav_ticket_detail, bundle);
-        // NavHostFragment.findNavController(HelpCenterFragment.this).navigate(R.id.action_nav_help_center_to_nav_ticket_detail,bundle);
+
 
     }
 }

@@ -34,6 +34,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize20Percent" />
 
                 <!-- <ImageView

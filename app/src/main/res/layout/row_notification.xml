@@ -12,6 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_4sdp"
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
@@ -77,12 +78,11 @@
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_content"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="0.3"
+                        android:justificationMode="inter_word"
                         android:lineSpacingExtra="@dimen/_1sdp"
                         android:paddingTop="@dimen/_5sdp"
-                        android:paddingEnd="0dp"
                         android:text="@{moduleNotification.notification}"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"

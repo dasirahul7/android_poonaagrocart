@@ -204,7 +204,7 @@ public class AppConstants {
 
     /*Notification*/
     public static final String MY_NOTIFICATION = "my-notifications";
-    //public static final String QUANTITY = "quantity";
+    public static final String DELETE_NOTIFICATION = "delete-notifications";
 
    /* Rating and Review */
    public static final String RATING = "rating";

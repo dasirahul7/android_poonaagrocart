@@ -27,26 +27,30 @@ import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 import com.poona.agrocart.databinding.FragmentNotificationBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.nav_help_center.HelpCenterFragment;
 import com.poona.agrocart.widgets.CustomButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class NotificationFragment extends BaseFragment {
+public class NotificationFragment extends BaseFragment implements NetworkExceptionListener {
 
     private NotificationViewModel mViewModel;
-    private FragmentNotificationBinding notificationBinding;
+    private FragmentNotificationBinding fragmentNotificationBinding;
     private NotificationAdapter notificationAdapter;
     private ArrayList<NotificationListResponse.NotificationList> notificationLists = new ArrayList<>();
     private AlertDialog dialog;
+    private SwipeRefreshLayout refreshLayout;
 
     /*View.OnClickListener,*/
     private float scale;
@@ -66,12 +70,29 @@ public class NotificationFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        notificationBinding = FragmentNotificationBinding.inflate(getLayoutInflater());
+        fragmentNotificationBinding = FragmentNotificationBinding.inflate(getLayoutInflater());
         mViewModel = new ViewModelProvider(this).get(NotificationViewModel.class);
-        View view = notificationBinding.getRoot();
+        View view = fragmentNotificationBinding.getRoot();
         initTitleBar(getString(R.string.menu_notification));
         ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.VISIBLE);
-        setNotificationItems();
+        refreshLayout = fragmentNotificationBinding.rlMain;
+        if (isConnectingToInternet(context)){
+            setNotificationItems();
+        }else{
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                if (isConnectingToInternet(context)){
+                    setNotificationItems();
+                }else{
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
 
         OnsetClickListener();
         return view;
@@ -91,16 +112,20 @@ public class NotificationFragment extends BaseFragment {
 
     private void setNotificationItems() {
 
-            notificationAdapter = new NotificationAdapter(notificationLists,context);
 
-             layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-            notificationBinding.rvNotification.setLayoutManager(layoutManager);
-            notificationBinding.rvNotification.setHasFixedSize(true);
+
+            layoutManager = new LinearLayoutManager(getContext());
+            fragmentNotificationBinding.rvNotification.setLayoutManager(layoutManager);
+            refreshLayout.setRefreshing(false);
             callNotificationApi(showCircleProgressDialog(context,""),"RecyclerView");
-            notificationBinding.rvNotification.setAdapter(notificationAdapter);
+            notificationAdapter = new NotificationAdapter(notificationLists,context);
+            fragmentNotificationBinding.rvNotification.setHasFixedSize(true);
+            fragmentNotificationBinding.rvNotification.setAdapter(notificationAdapter);
 
             //Pagination in scroll view
             setScrollListener();
+
+
 
     }
 
@@ -110,8 +135,8 @@ public class NotificationFragment extends BaseFragment {
     }
 
     private void setScrollListener() {
-        notificationBinding.rvNotification.setNestedScrollingEnabled(true);
-        NestedScrollView nestedScrollView = notificationBinding.nvMain;
+        fragmentNotificationBinding.rvNotification.setNestedScrollingEnabled(true);
+        NestedScrollView nestedScrollView = fragmentNotificationBinding.nvMain;
 
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (v.getChildAt(v.getChildCount() - 1) != null) {
@@ -145,6 +170,18 @@ public class NotificationFragment extends BaseFragment {
         });
 
         buttonYes.setOnClickListener(view -> {
+            try {
+                if (isConnectingToInternet(context)){
+
+                    callDeleteNotificationApi(showCircleProgressDialog(context,""));
+                    notificationLists.clear();
+
+                }else{
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             dialog.dismiss();
         });
 
@@ -152,6 +189,7 @@ public class NotificationFragment extends BaseFragment {
             dialog.dismiss();
         });
 
+        dialog.dismiss();
         dialog.show();
     }
 
@@ -170,21 +208,28 @@ public class NotificationFragment extends BaseFragment {
                 }
                 switch (notificationListResponse.getStatus()) {
                     case STATUS_CODE_200://success
-                        //if (offset == 0)
+                        if (offset == 0)
                             notificationLists.clear();
 
-                        //totalCount = Integer.parseInt(notificationListResponse.getData());
+                       totalCount = notificationListResponse.getNotificationCount();
                         if (notificationListResponse.getData() != null) {
                             notificationLists.addAll(notificationListResponse.getData());
                             notificationAdapter.notifyDataSetChanged();
+
+                            fragmentNotificationBinding.llMain.setVisibility(View.VISIBLE);
+                            fragmentNotificationBinding.llEmptyScreen.setVisibility(View.GONE);
+                        }else{
+                            fragmentNotificationBinding.llEmptyScreen.setVisibility(View.VISIBLE);
+                            fragmentNotificationBinding.llMain.setVisibility(View.GONE);
                         }
                         break;
                     case STATUS_CODE_400://Validation Errors
                         warningToast(context, notificationListResponse.getMessage());
                         break;
                     case STATUS_CODE_404://Record not Found
-                        //llEmptyLayout.setVisibility(View.VISIBLE);
-                        //llMainLayout.setVisibility(View.INVISIBLE);
+
+                        fragmentNotificationBinding.llEmptyScreen.setVisibility(View.VISIBLE);
+                        fragmentNotificationBinding.llMain.setVisibility(View.GONE);
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         goToAskSignInSignUpScreen();
@@ -213,4 +258,61 @@ public class NotificationFragment extends BaseFragment {
         return map;
     }
 
+    private void callDeleteNotificationApi(ProgressDialog progressDialog){
+
+        Observer<DeleteNotificationResponse> deleteNotificationResponseObserver = deleteNotificationResponse -> {
+            if (deleteNotificationResponse != null) {
+                Log.e("Notification list Api Response", new Gson().toJson(deleteNotificationResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (deleteNotificationResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        successToast(context, deleteNotificationResponse.getMessage());
+                        setNotificationItems();
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                        warningToast(context, deleteNotificationResponse.getMessage());
+                        break;
+                    case STATUS_CODE_404://Record not Found
+                        //llEmptyLayout.setVisibility(View.VISIBLE);
+                        //llMainLayout.setVisibility(View.INVISIBLE);
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen();
+                        errorToast(context, deleteNotificationResponse.getMessage());
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, deleteNotificationResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+
+
+        };
+        mViewModel.getDeleteNotification(progressDialog, context, NotificationFragment.this)
+                .observe(getViewLifecycleOwner(), deleteNotificationResponseObserver);
+
+    }
+
+    @Override
+    public void onNetworkException(int from, String type) {
+
+        showServerErrorDialog(getString(R.string.for_better_user_experience), NotificationFragment.this, () -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if (from == 0) {
+                    callNotificationApi(showCircleProgressDialog(context,""),"RecyclerView");
+                } else if (from == 1) {
+                    callDeleteNotificationApi(showCircleProgressDialog(context,""));
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+    }
 }

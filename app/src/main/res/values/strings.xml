@@ -495,6 +495,9 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <!--Common Text-->
     <string name="delete_notifications">Do you really want to delete all notifications?</string>
 
+    <!--Record not found-->
+    <string name="sample_record_not_found">Record Not Found</string>
+
     <!--cms pages error messages-->
     <string name="error_message_about_us">There is no About Us content found!</string>
     <string name="error_message_terms_and_conditions">There is no Terms &amp; Condition content found!</string>
@@ -526,6 +529,7 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
     <!--Cancel order Dialog Box-->
     <string name="select_to_cancel">Select to cancel</string>
     <string name="reason_to_cancel">Reason to cancel ?</string>
+
 
     <!--Warning Toasts -->
     <string name="empty_field_toast">Please fill the details</string>

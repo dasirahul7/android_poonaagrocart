@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -54,6 +55,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoAdapter.O
     private View photoView;
     private final List<GalleryImage> galleryImages = new ArrayList<>();
     private RecyclerView rvPhoto;
+    private SwipeRefreshLayout refreshLayout;
     private PhotoAdapter photoAdapter;
     private LinearLayoutManager linearLayoutManager;
 
@@ -77,8 +79,23 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoAdapter.O
         initViews();
         callGalleryAPI();
         Log.e("TAG", "onCreateView: photo ");
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                if (isConnectingToInternet(context)){
+                    callGalleryAPI();
+                }else{
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
+
+
         return photoView;
     }
+
 
     private void callGalleryAPI() {
         if (isConnectingToInternet(context)) {
@@ -100,6 +117,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoAdapter.O
         photoView = fragmentPhotoBinding.getRoot();
         rvPhoto = fragmentPhotoBinding.rvPhoto;
         photoViewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
+        refreshLayout = fragmentPhotoBinding.rlPhoto;
     }
 
     private void setGallery(List<GalleryImage> galleryImages) {
@@ -112,7 +130,7 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoAdapter.O
         linearLayoutManager = new LinearLayoutManager(context);
         rvPhoto.setHasFixedSize(true);
         rvPhoto.setLayoutManager(linearLayoutManager);
-
+        refreshLayout.setRefreshing(false);
         //initializing our adapter
         photoAdapter = new PhotoAdapter(context, galleryImages, this);
         GridLayoutManager eLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
@@ -139,15 +157,18 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoAdapter.O
                             galleryImages.addAll(galleryResponse.getData().getGalleryImage());
                             setGallery(galleryImages);
 
-                            /*if(ourStoreListResponse.getData() != null){
-                                llEmptyLayout.setVisibility(View.INVISIBLE);
-                                llMainLayout.setVisibility(View.VISIBLE);
-                            }*/
+
+                                fragmentPhotoBinding.llMain.setVisibility(View.VISIBLE);
+                                fragmentPhotoBinding.llEmptyScreen.setVisibility(View.GONE);
+
+                        }else {
+                            fragmentPhotoBinding.llEmptyScreen.setVisibility(View.VISIBLE);
+                            fragmentPhotoBinding.llMain.setVisibility(View.GONE);
                         }
                         break;
                     case STATUS_CODE_404://Validation Errors
-
-                        warningToast(context, galleryResponse.getMessage());
+                        fragmentPhotoBinding.llEmptyScreen.setVisibility(View.VISIBLE);
+                        fragmentPhotoBinding.llMain.setVisibility(View.GONE);
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         goToAskSignInSignUpScreen(galleryResponse.getMessage(), context);

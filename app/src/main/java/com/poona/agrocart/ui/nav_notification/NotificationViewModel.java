@@ -17,6 +17,7 @@ import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
+import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 
 import java.util.ArrayList;
@@ -75,6 +76,45 @@ public class NotificationViewModel extends AndroidViewModel {
 
         return notificationListResponseMutableLiveData;
     }
+
+    public LiveData<DeleteNotificationResponse> getDeleteNotification(ProgressDialog progressDialog
+            , Context context, NotificationFragment notificationFragment) {
+
+        MutableLiveData<DeleteNotificationResponse> deleteNotificationResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(context)
+                .create(ApiInterface.class)
+                .getDeleteNotification()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<DeleteNotificationResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull DeleteNotificationResponse baseResponse) {
+                        progressDialog.dismiss();
+                        deleteNotificationResponseMutableLiveData.setValue(baseResponse);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        DeleteNotificationResponse baseResponse = new DeleteNotificationResponse();
+                        try {
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), DeleteNotificationResponse.class);
+
+                            deleteNotificationResponseMutableLiveData.setValue(baseResponse);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) notificationFragment).onNetworkException(1, "");
+                        }
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return deleteNotificationResponseMutableLiveData;
+    }
+
 
     /*public NotificationViewModel() {
         ArrayList<Notification> notificationList = new ArrayList<>();

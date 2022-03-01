@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import android.util.DisplayMetrics;
@@ -90,6 +91,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     private GalleryViewModel videoViewModel;
     private View videoView;
     private RecyclerView rvVideo;
+    private SwipeRefreshLayout refreshLayout;
     private VideoAdapter videoAdapter;
     private  ProgressBar progressDialog;
     private MediaController mediaController;
@@ -121,6 +123,18 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         // Inflate the layout for this fragment
         initViews();
         Log.d("TAG", "onCreateView: video");
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                if (isConnectingToInternet(context)){
+                    callGalleryVideoApi(showCircleProgressDialog(context, ""));
+                }else{
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
         return videoView;
     }
 
@@ -142,6 +156,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         videoViewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
         //Initialize recyclerView
         rvVideo = videoFragmentBinding.rvVideo;
+        refreshLayout = videoFragmentBinding.rlVideo;
     }
 
     private void callGalleryVideoApi(ProgressDialog progressDialog){
@@ -199,6 +214,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
         videoAdapter = new VideoAdapter(context, galleryVideoList,this);
         GridLayoutManager eLayoutManager = new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
         rvVideo.setLayoutManager(eLayoutManager);
+        refreshLayout.setRefreshing(false);
         rvVideo.setItemAnimator(new DefaultItemAnimator());
         //Adding adapter to recyclerview
         rvVideo.setAdapter(videoAdapter);
