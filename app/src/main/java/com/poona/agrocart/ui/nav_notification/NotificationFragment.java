@@ -8,6 +8,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
@@ -200,7 +201,7 @@ public class NotificationFragment extends BaseFragment implements NetworkExcepti
             offset = 0;
         }
 
-        Observer<NotificationListResponse> notificationListResponseObserver = notificationListResponse -> {
+        @SuppressLint("NotifyDataSetChanged") Observer<NotificationListResponse> notificationListResponseObserver = notificationListResponse -> {
             if (notificationListResponse != null) {
                 Log.e("Notification list Api Response", new Gson().toJson(notificationListResponse));
                 if (progressDialog != null) {
@@ -212,7 +213,7 @@ public class NotificationFragment extends BaseFragment implements NetworkExcepti
                             notificationLists.clear();
 
                        totalCount = notificationListResponse.getNotificationCount();
-                        if (notificationListResponse.getData() != null) {
+                        if (notificationListResponse.getData() != null && notificationListResponse.getData().size() > 0) {
                             notificationLists.addAll(notificationListResponse.getData());
                             notificationAdapter.notifyDataSetChanged();
 

@@ -100,6 +100,7 @@
         <entry key="app/src/main/res/drawable/ic_default_profile_img.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/ic_delete_gray.xml" value="0.20615384615384616" />
+        <entry key="app/src/main/res/drawable/ic_empty_help_center.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_empty_notification.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_explore.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_gallery.xml" value="0.209375" />

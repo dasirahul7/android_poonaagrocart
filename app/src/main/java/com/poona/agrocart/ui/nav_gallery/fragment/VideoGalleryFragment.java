@@ -176,14 +176,14 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
                             galleryVideoList.addAll(galleryResponse.getData().getGalleryVideo());
                            setGallery(galleryVideoList);
 
-                            /*if(ourStoreListResponse.getData() != null){
-                                llEmptyLayout.setVisibility(View.INVISIBLE);
-                                llMainLayout.setVisibility(View.VISIBLE);
-                            }*/
+                           videoFragmentBinding.rlMain.setVisibility(View.VISIBLE);
+                           videoFragmentBinding.llEmptyScreen.setVisibility(View.GONE);
+                        }else{
+                            videoFragmentBinding.llEmptyScreen.setVisibility(View.VISIBLE);
+                            videoFragmentBinding.rlMain.setVisibility(View.GONE);
                         }
                         break;
                     case STATUS_CODE_404://Validation Errors
-
                         warningToast(context, galleryResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user

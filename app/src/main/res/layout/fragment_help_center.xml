@@ -18,96 +18,112 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nv_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true">
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:focusableInTouchMode="true">
 
-                <com.poona.agrocart.widgets.CustomButton
-                    android:id="@+id/btn_create_new_ticket"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|center_vertical"
-                    android:layout_marginHorizontal="@dimen/_14sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/button_green"
-                    android:gravity="center|center_vertical"
-                    android:includeFontPadding="false"
-                    android:padding="@dimen/alerter_padding_small"
-                    android:text="@string/create_new_ticket"
-                    android:textAllCaps="false"
-                    android:textColor="@color/background_color_white_green"
-                    android:textSize="@dimen/_16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:setCustomFont="@string/font_poppins_semi_bold" />
-
-                <RelativeLayout
-                    android:id="@+id/rl_main"
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="13dp"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_create_new_ticket">
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <LinearLayout
-                        android:id="@+id/ll_main"
+                    <com.poona.agrocart.widgets.CustomButton
+                        android:id="@+id/btn_create_new_ticket"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_tickets"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_10sdp"
-                            android:layout_marginVertical="@dimen/_8sdp" />
-                    </LinearLayout>
+                        android:layout_gravity="center|center_vertical"
+                        android:layout_marginHorizontal="@dimen/_14sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/button_green"
+                        android:gravity="center|center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="@dimen/alerter_padding_small"
+                        android:text="@string/create_new_ticket"
+                        android:textAllCaps="false"
+                        android:textColor="@color/background_color_white_green"
+                        android:textSize="@dimen/_16sp"
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
 
-                    <LinearLayout
-                        android:id="@+id/llEmptyScreen"
+                    <RelativeLayout
+                        android:id="@+id/rl_main"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/iv_error_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/ic_empty_help_center"/>
-
-                        <com.poona.agrocart.widgets.CustomTextView
-                            android:id="@+id/tv_error_message"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_marginBottom="@dimen/_13sdp">
+                        <androidx.core.widget.NestedScrollView
+                            android:id="@+id/nv_main"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_14sdp"
-                            android:layout_marginRight="@dimen/_14sdp"
-                            android:gravity="center"
-                            android:padding="@dimen/_14sdp"
-                            android:text="@string/sample_record_not_found"
-                            android:textColor="@color/store_txt_color"
-                            android:textSize="@dimen/_16sdp"
-                            app:setCustomFont="@string/font_poppins_bold" />
+                            android:layout_height="match_parent"
+                            android:fitsSystemWindows="true"
+                            android:fillViewport="true">
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <LinearLayout
+                                    android:id="@+id/ll_main"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:visibility="visible"
+                                    android:orientation="vertical">
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/rv_tickets"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginHorizontal="@dimen/_10sdp"
+                                        android:layout_marginVertical="@dimen/_8sdp" />
+                                </LinearLayout>
 
-                    </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/llEmptyScreen"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:visibility="gone">
 
-                </RelativeLayout>
+                                    <ImageView
+                                        android:id="@+id/iv_error_icon"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:background="@drawable/ic_empty_help_center"/>
+
+                                    <com.poona.agrocart.widgets.CustomTextView
+                                        android:id="@+id/tv_error_message"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_14sdp"
+                                        android:layout_marginRight="@dimen/_14sdp"
+                                        android:gravity="center"
+                                        android:padding="@dimen/_14sdp"
+                                        android:text="@string/sample_record_not_found"
+                                        android:textColor="@color/store_txt_color"
+                                        android:textSize="@dimen/_16sdp"
+                                        app:setCustomFont="@string/font_poppins_bold" />
+
+                                </LinearLayout>
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+                        </androidx.core.widget.NestedScrollView>
+
+
+
+
+                    </RelativeLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.core.widget.NestedScrollView>
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 

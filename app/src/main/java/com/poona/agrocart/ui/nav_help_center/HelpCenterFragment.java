@@ -28,6 +28,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
@@ -179,13 +180,15 @@ public class HelpCenterFragment extends BaseFragment implements NetworkException
                             ticketArrayList.clear();
 
                         totalCount = Integer.parseInt(ticketListResponse.getData().getCountTickets());
-                        if (ticketListResponse.getData() != null) {
+                        if (ticketListResponse.getData().getUserTickets() != null && ticketListResponse.getData().getUserTickets().size() > 0) {
+                            Toast.makeText(context, "good", Toast.LENGTH_SHORT).show();
                             ticketArrayList.addAll(ticketListResponse.getData().getUserTickets());
                             ticketsAdapter.notifyDataSetChanged();
 
                             fragmentHelpCenterBinding.llMain.setVisibility(View.VISIBLE);
                             fragmentHelpCenterBinding.llEmptyScreen.setVisibility(View.GONE);
                         }else{
+
                             fragmentHelpCenterBinding.llEmptyScreen.setVisibility(View.VISIBLE);
                             fragmentHelpCenterBinding.llMain.setVisibility(View.GONE);
                         }
@@ -194,6 +197,7 @@ public class HelpCenterFragment extends BaseFragment implements NetworkException
                         warningToast(context, ticketListResponse.getMessage());
                         break;
                     case STATUS_CODE_404://Record not Found
+
                         fragmentHelpCenterBinding.llEmptyScreen.setVisibility(View.VISIBLE);
                         fragmentHelpCenterBinding.llMain.setVisibility(View.GONE);
 
