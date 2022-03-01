@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
@@ -48,6 +49,7 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
     private FragmentTicketDetailBinding fragmentTicketDetailBinding;
     private TicketDetailsViewModel ticketDetailsViewModel;
     private RecyclerView rvTicketOrders;
+    private SwipeRefreshLayout refreshLayout;
     private LinearLayoutManager linearLayoutManager;
     private TicketCommentsAdapter ticketCommentsAdapter;
     private ArrayList<AllChat> allChatList = new ArrayList<>();
@@ -86,8 +88,26 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
         }
         initTitleWithBackBtn(getString(R.string.menu_help_center));
         initView();
-        setRvAdapter();
+        if (isConnectingToInternet(context)) {
+            setRvAdapter();
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
         onClick();
+
+        refreshLayout = fragmentTicketDetailBinding.rlTicketDetails;
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                if (isConnectingToInternet(context)){
+                    setRvAdapter();
+                }else{
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
+
 
         scale = getResources().getDisplayMetrics().density;
 
@@ -167,6 +187,7 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
         rvTicketOrders.setHasFixedSize(true);
 
         rvTicketOrders.setLayoutManager(linearLayoutManager);
+        fragmentTicketDetailBinding.rlTicketDetails.setRefreshing(false);
         linearLayoutManager.setStackFromEnd(false);
         //initializing our adapter
         ticketCommentsAdapter = new TicketCommentsAdapter(allChatList, this, context);

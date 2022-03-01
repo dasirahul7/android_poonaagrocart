@@ -205,7 +205,10 @@ public class AppConstants {
 
     /*Notification*/
     public static final String MY_NOTIFICATION = "my-notifications";
-    //public static final String QUANTITY = "quantity";
+    public static final String DELETE_NOTIFICATION = "delete-notifications";
+
+    /*Order Api*/
+    public static final String RATE_ORDER = "rate-order";
 
    /* Rating and Review */
    public static final String RATING = "rating";
@@ -292,4 +295,12 @@ public class AppConstants {
 
     public static String EMAIL_NOTIFICATION_STATUS = "email_notification_status";
     public static String APP_NOTIFICATION_STATUS = "app_notification_status";
+
+    /*Order Module Parameter*/
+
+    public static String ORDER_ID = "order_id";
+
+
+
 }
+

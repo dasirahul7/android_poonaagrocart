@@ -28,7 +28,6 @@
             setImage="@{galleryImage.galleryImage}"
             android:layout_width="@dimen/_150sdp"
             android:layout_height="@dimen/_180sdp"
-            android:layout_marginHorizontal="@dimen/_10sdp"
             android:scaleType="fitXY" />
 
 

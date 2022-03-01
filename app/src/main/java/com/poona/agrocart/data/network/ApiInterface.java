@@ -16,6 +16,7 @@ import static com.poona.agrocart.app.AppConstants.COUPON_API;
 import static com.poona.agrocart.app.AppConstants.DELETE_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.DELETE_CART_ITEM_API;
 import static com.poona.agrocart.app.AppConstants.DELETE_CART_LIST_API;
+import static com.poona.agrocart.app.AppConstants.DELETE_NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.FAQ;
 import static com.poona.agrocart.app.AppConstants.FAVOURITE_LIST_API;
 import static com.poona.agrocart.app.AppConstants.HOME_API;
@@ -35,6 +36,7 @@ import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.RATE_TO_BASKET;
+import static com.poona.agrocart.app.AppConstants.RATE_ORDER;
 import static com.poona.agrocart.app.AppConstants.RATE_TO_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.REMOVE_FAVOURITE;
@@ -91,6 +93,7 @@ import com.poona.agrocart.data.network.responses.help_center_response.SendMessag
 import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
+import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.ViewConfigurationResponse;
@@ -100,6 +103,7 @@ import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResp
 
 import java.util.HashMap;
 
+import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
@@ -424,4 +428,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(MY_NOTIFICATION)
     Single<NotificationListResponse> getNotification(@FieldMap HashMap<String, String> notificationInputParameter);
+
+    @POST(DELETE_NOTIFICATION)
+    Single<DeleteNotificationResponse> getDeleteNotification();
+
+    @FormUrlEncoded
+    @POST(RATE_ORDER)
+    Single<BaseResponse> getSubmitRatingResponseOrder(@FieldMap HashMap<String, String> ratingAndFeedBackInputParameter);
 }

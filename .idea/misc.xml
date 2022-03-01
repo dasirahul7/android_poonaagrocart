@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.20104166666666667" />
         <entry key="../../../../layout/custom_preview.xml" value="0.20833333333333334" />
         <entry key="../../../.gradle/caches/transforms-3/77a1cb7360ff899d361eb44fd82aba10/transformed/jetified-MaterialSearchBar-0.8.2/res/drawable/round_corners.xml" value="0.18" />
         <entry key="../../.gradle/caches/transforms-3/74c8d3b93df5ec37a852dbd0ebdf6ff9/transformed/jetified-tooltipindicator-0.0.1/res/drawable/tooltip_indicator_rounded_line_selected.xml" value="0.1527777777777778" />
@@ -20,6 +21,8 @@
         <entry key="app/src/main/res/drawable/background_button_simple.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/background_edit_profile.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_edit_profile_mobile.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/background_faq_list.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/background_faq_list_answer.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/background_life_line_dialog.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/drawable/background_top_curved.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/background_verify_otp_btn.xml" value="0.209375" />
@@ -34,8 +37,8 @@
         <entry key="app/src/main/res/drawable/bg_checkbox.xml" value="0.19444444444444445" />
         <entry key="app/src/main/res/drawable/bg_coupon_code.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/bg_coupon_row.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/drawable/bg_et_border.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/bg_et_search.xml" value="0.18981481481481483" />
-        <entry key="app/src/main/res/drawable/bg_feedback.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/bg_green_coupon.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/bg_green_rectangle.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/bg_green_rounded.xml" value="0.1935185185185185" />
@@ -47,7 +50,6 @@
         <entry key="app/src/main/res/drawable/bg_my_profile_spinner.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_notificationcard.xml" value="0.5" />
         <entry key="app/src/main/res/drawable/bg_offer_red.xml" value="0.1935185185185185" />
-        <entry key="app/src/main/res/drawable/bg_orange_border.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/bg_plus_btn.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/bg_radio_button.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/bg_radio_sing_up.xml" value="0.13094462540716612" />
@@ -62,17 +64,17 @@
         <entry key="app/src/main/res/drawable/bottom_menu_shadow.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/bottom_shadow.xml" value="0.15462962962962962" />
         <entry key="app/src/main/res/drawable/button_green.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/cart_budge.xml" value="0.136" />
         <entry key="app/src/main/res/drawable/check_box_selector.xml" value="0.19444444444444445" />
         <entry key="app/src/main/res/drawable/coupon_blue.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/coupon_green.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/coupon_pink.xml" value="0.20462962962962963" />
+        <entry key="app/src/main/res/drawable/custom_check_box_order_cancel.xml" value="0.1055" />
+        <entry key="app/src/main/res/drawable/custom_radio_button_order_cancel.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/drawable_bottom_menu_item_color.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/drawable_item_color.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/drawer_item_color.xml" value="0.9" />
         <entry key="app/src/main/res/drawable/drwable_item_color.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/drwable_item_colors.xml" value="0.17592592592592593" />
-        <entry key="app/src/main/res/drawable/empty_notification.xml" value="0.1125" />
         <entry key="app/src/main/res/drawable/gray_curv_background.xml" value="0.20092592592592592" />
         <entry key="app/src/main/res/drawable/green_bg.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/green_btn.xml" value="0.15462962962962962" />
@@ -81,7 +83,6 @@
         <entry key="app/src/main/res/drawable/ic_about_us.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/ic_address.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/ic_banner_placeholder.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.19814814814814816" />
         <entry key="app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.2" />
@@ -91,6 +92,7 @@
         <entry key="app/src/main/res/drawable/ic_camera.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_camera_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_check_mark.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_checked_radio_cancel_order.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_coupons_offers.xml" value="0.19907407407407407" />
         <entry key="app/src/main/res/drawable/ic_cross.xml" value="0.134" />
         <entry key="app/src/main/res/drawable/ic_cross_cancel.xml" value="0.1" />
@@ -98,6 +100,8 @@
         <entry key="app/src/main/res/drawable/ic_default_profile_img.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/ic_delete_gray.xml" value="0.20615384615384616" />
+        <entry key="app/src/main/res/drawable/ic_empty_help_center.xml" value="0.1055" />
+        <entry key="app/src/main/res/drawable/ic_empty_notification.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_explore.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_gallery.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_green_bell.xml" value="0.20615384615384616" />
@@ -111,21 +115,17 @@
         <entry key="app/src/main/res/drawable/ic_location_small.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_location_store.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_mobile.xml" value="0.14351851851851852" />
-        <entry key="app/src/main/res/drawable/ic_mobile_no.xml" value="0.16" />
-        <entry key="app/src/main/res/drawable/ic_my_order.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/ic_my_orders.xml" value="0.19907407407407407" />
         <entry key="app/src/main/res/drawable/ic_next_arrow.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/drawable/ic_not_selected_img.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_notification.xml" value="0.18703703703703703" />
         <entry key="app/src/main/res/drawable/ic_notificationcard.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/ic_notificationcard_another.xml" value="0.67" />
-        <entry key="app/src/main/res/drawable/ic_notifications.xml" value="0.1125" />
         <entry key="app/src/main/res/drawable/ic_offers.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_orders.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_our_store.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_phone.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_pin_red.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/ic_placeholder.xml" value="0.1125" />
         <entry key="app/src/main/res/drawable/ic_play.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_plus.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/ic_poona_agrocart.xml" value="0.209375" />
@@ -156,8 +156,8 @@
         <entry key="app/src/main/res/drawable/ic_terms__condition.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_tick_green_bg.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/ic_toast_check_white.xml" value="0.19444444444444445" />
+        <entry key="app/src/main/res/drawable/ic_unchecked_radio_botton_order_cancel.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_unselected_dot.xml" value="0.15648148148148147" />
-        <entry key="app/src/main/res/drawable/ic_user.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/ic_video_forward.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_video_pause.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_wallet.xml" value="0.19907407407407407" />
@@ -169,7 +169,7 @@
         <entry key="app/src/main/res/drawable/menu_home.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/menu_icon_toggle.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/o_three_banner.xml" value="0.1962962962962963" />
-        <entry key="app/src/main/res/drawable/placeholder.xml" value="0.2" />
+        <entry key="app/src/main/res/drawable/placeholder.xml" value="0.1185" />
         <entry key="app/src/main/res/drawable/places_ic_search.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/profile_menu.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/pv_invisible_image.xml" value="0.1" />
@@ -190,7 +190,6 @@
         <entry key="app/src/main/res/font/poppins_medium.xml" value="0.14365152919369786" />
         <entry key="app/src/main/res/layout-v28/app_bar_home.xml" value="0.14673913043478262" />
         <entry key="app/src/main/res/layout/about_us_fragment.xml" value="0.11684782608695653" />
-        <entry key="app/src/main/res/layout/action_layout_my_cart.xml" value="0.67" />
         <entry key="app/src/main/res/layout/activity_current_address_map.xml" value="0.10092592592592593" />
         <entry key="app/src/main/res/layout/activity_current_address_map_content_main.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_dash_board.xml" value="0.1431159420289855" />
@@ -202,6 +201,8 @@
         <entry key="app/src/main/res/layout/app_bar_home.xml" value="0.22" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/best_selling_row_item.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/cancel_order_category_recycler_view.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/cancel_order_reason_recycler_view.xml" value="0.33" />
         <entry key="app/src/main/res/layout/cat_row_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/circular_progresbar.xml" value="0.1" />
         <entry key="app/src/main/res/layout/content_dash_board.xml" value="0.1" />
@@ -213,11 +214,12 @@
         <entry key="app/src/main/res/layout/custom_spinner_list_item_checked.xml" value="0.17" />
         <entry key="app/src/main/res/layout/dialog_basket_filter_list.xml" value="0.18" />
         <entry key="app/src/main/res/layout/dialog_delete_notification.xml" value="0.15818725951261223" />
+        <entry key="app/src/main/res/layout/dialog_new_ticket.xml" value="0.15092592592592594" />
         <entry key="app/src/main/res/layout/dialog_select_photo.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_server_error.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_text_with_button.xml" value="0.11" />
         <entry key="app/src/main/res/layout/explore_fragment.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/faq_recycler_view_item.xml" value="0.15092592592592594" />
+        <entry key="app/src/main/res/layout/faq_recycler_view_item.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_about_us.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_addresses.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_addresses_form.xml" value="0.15" />
@@ -229,7 +231,7 @@
         <entry key="app/src/main/res/layout/fragment_coupon.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_dash_board.xml" value="0.21" />
         <entry key="app/src/main/res/layout/fragment_dash_board2.xml" value="0.1431159420289855" />
-        <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.12129629629629629" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_faq.xml" value="0.15092592592592594" />
         <entry key="app/src/main/res/layout/fragment_favourite_items.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_help_center.xml" value="0.15092592592592594" />
@@ -244,17 +246,16 @@
         <entry key="app/src/main/res/layout/fragment_my_cart.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_my_orders.xml" value="0.14855072463768115" />
         <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.19" />
-        <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.11684782608695653" />
-        <entry key="app/src/main/res/layout/fragment_order_details.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_order_details.xml" value="0.17025641025641025" />
         <entry key="app/src/main/res/layout/fragment_order_summary.xml" value="0.15534420289855072" />
         <entry key="app/src/main/res/layout/fragment_order_track.xml" value="0.15534420289855072" />
-        <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.4298440979955457" />
+        <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.12907608695652173" />
         <entry key="app/src/main/res/layout/fragment_our_stores.xml" value="0.1272644927536232" />
-        <entry key="app/src/main/res/layout/fragment_photo.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_photo.xml" value="0.15092592592592594" />
         <entry key="app/src/main/res/layout/fragment_policy.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/fragment_policy_item.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/fragment_privacy_policy.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/fragment_product_all_review.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/fragment_product_detail.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_product_image.xml" value="0.14402173913043478" />
         <entry key="app/src/main/res/layout/fragment_product_list.xml" value="0.11684782608695653" />
@@ -269,14 +270,18 @@
         <entry key="app/src/main/res/layout/fragment_terms_condition.xml" value="0.285" />
         <entry key="app/src/main/res/layout/fragment_ticket_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_verify_otp.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_video.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/fragment_wallet_transaction.xml" value="0.14673913043478262" />
         <entry key="app/src/main/res/layout/home_basket_item.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/home_best_selling_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/home_cat_item.xml" value="0.15489130434782608" />
-        <entry key="app/src/main/res/layout/home_product_item.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/home_product_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/menu_item.xml" value="0.16259057971014493" />
         <entry key="app/src/main/res/layout/nav_header_home.xml" value="0.14" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.17074275362318841" />
+        <entry key="app/src/main/res/layout/order_cancel_dialog_box.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/order_review_comment_recycler_view_item.xml" value="0.17025641025641025" />
+        <entry key="app/src/main/res/layout/photo_image_pop_up_dailog.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/privacy_fragment.xml" value="0.11684782608695653" />
         <entry key="app/src/main/res/layout/row_banner.xml" value="0.14356884057971014" />
         <entry key="app/src/main/res/layout/row_basket_item.xml" value="0.15489130434782608" />
@@ -290,7 +295,7 @@
         <entry key="app/src/main/res/layout/row_explore_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/row_favourite_list_item.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/row_notification.xml" value="0.2324455205811138" />
-        <entry key="app/src/main/res/layout/row_photo_item.xml" value="0.345703125" />
+        <entry key="app/src/main/res/layout/row_photo_item.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/row_product_item.xml" value="0.16" />
         <entry key="app/src/main/res/layout/row_product_list_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_seasonal_banner.xml" value="0.1" />
