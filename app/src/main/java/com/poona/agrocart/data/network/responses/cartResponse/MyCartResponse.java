@@ -10,12 +10,17 @@ public class MyCartResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private ArrayList<CartData> data = null;
-    @SerializedName("total_amount")
+    @SerializedName("saved_amount")
     @Expose
-    private float totalAmount;
-    @SerializedName("cart_items")
-    @Expose
-    private Integer cartItems;
+    private float savedAmount;
+
+    public float getSavedAmount() {
+        return savedAmount;
+    }
+
+    public void setSavedAmount(float savedAmount) {
+        this.savedAmount = savedAmount;
+    }
 
     public ArrayList<CartData> getData() {
         return data;
@@ -25,19 +30,4 @@ public class MyCartResponse extends BaseResponse {
         this.data = data;
     }
 
-    public float getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Float totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public int getCartItems() {
-        return cartItems;
-    }
-
-    public void setCartItems(Integer cartItems) {
-        this.cartItems = cartItems;
-    }
 }

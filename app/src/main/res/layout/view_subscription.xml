@@ -5,7 +5,7 @@
 
         <variable
             name="subscriptionModule"
-            type="com.poona.agrocart.ui.basket_detail.BasketDetailViewModel" />
+            type="com.poona.agrocart.data.network.responses.BasketDetailsResponse.BasketDetails" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="bottom"
                         android:includeFontPadding="false"
-                        android:text="@{`Rs.`+subscriptionModule.basketSubRate}"
+                        android:text="@{`Rs.`+subscriptionModule.basketRate}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_24sp"
                         app:setCustomFont="@string/font_poppins_regular" />

@@ -16,6 +16,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.responses.Review;
+import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +46,18 @@ public class BasketDetailViewModel extends AndroidViewModel {
     public MutableLiveData<String> basketWeightPolicy;
     public MutableLiveData<String> basketNutrition;
     public MutableLiveData<String> basketAvgRating;
+    public MutableLiveData<String> basketNoOfRatings;
+    public MutableLiveData<Float> yourRating;
     public MutableLiveData<ArrayList<Review>> reviewLiveData;
+    public MutableLiveData<BasketDetailsResponse.Rating> basketRating;
+
+    public MutableLiveData<BasketDetailsResponse.Rating> getBasketRating() {
+        return basketRating;
+    }
+
+    public void setBasketRating(MutableLiveData<BasketDetailsResponse.Rating> basketRating) {
+        this.basketRating = basketRating;
+    }
 
     public BasketDetailViewModel(Application application) {
         super(application);
@@ -67,6 +79,9 @@ public class BasketDetailViewModel extends AndroidViewModel {
         basketAvgRating = new MutableLiveData<>();
         basketProducts = new MutableLiveData<ArrayList<BasketDetailsResponse.BasketProduct>>();
         reviewLiveData = new MutableLiveData<>();
+        basketRating = new MutableLiveData<>();
+        basketNoOfRatings = new MutableLiveData<>();
+        yourRating = new MutableLiveData<>();
         basketName.setValue(null);
         basketRate.setValue(null);
         basketSubRate.setValue(null);
@@ -85,6 +100,9 @@ public class BasketDetailViewModel extends AndroidViewModel {
         basketAvgRating.setValue(null);
         basketProducts.setValue(null);
         reviewLiveData.setValue(null);
+        basketRating.setValue(null);
+        basketNoOfRatings.setValue(null);
+        yourRating.setValue(null);
     }
 
     /*Get BasketDetails API here*/
@@ -259,5 +277,46 @@ public class BasketDetailViewModel extends AndroidViewModel {
         return removeFromFavouriteResponseObserver;
 
     }
+
+    public LiveData<BaseResponse> callSubmitRatingResponseApi(ProgressDialog progressDialog, HashMap<String, String> submitRatingInputParameter,
+                                                              BasketDetailFragment basketDetailFragment) {
+
+
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(basketDetailFragment.getContext())
+                .create(ApiInterface.class)
+                .getSubmitRatingResponseBasket(submitRatingInputParameter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            baseResponseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) basketDetailFragment).onNetworkException(4,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return baseResponseMutableLiveData;
+    }
+
 
 }

@@ -469,7 +469,7 @@ public class ProductDetailsResponse extends BaseResponse {
     @BindingAdapter("setImage")
     public static void setImage(ImageView view, String imageUrl) {
         Glide.with(view.getContext())
-                .load(imageUrl).apply(new RequestOptions().circleCrop())
+                .load(imageUrl)
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder).into(view);
     }

@@ -5,7 +5,6 @@ import android.text.Html;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.poona.agrocart.ui.basket_detail.model.BasketDetail;
 
 import java.util.ArrayList;
 
@@ -116,7 +115,7 @@ public class BasketDetailsResponse extends BaseResponse {
         private String quantity;
         @SerializedName("rating")
         @Expose
-        private Rating rating;
+        private Rating basketRating;
         @SerializedName("reviews")
         @Expose
         private ArrayList<Review> reviews = null;
@@ -187,8 +186,8 @@ public class BasketDetailsResponse extends BaseResponse {
 
         public String getProductDetails() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                return String.valueOf(Html.fromHtml(productDetails, Html.FROM_HTML_MODE_COMPACT));
-            else return String.valueOf(Html.fromHtml(productDetails));
+                return String.valueOf(Html.fromHtml(productDetails, Html.FROM_HTML_MODE_COMPACT)).trim();
+            else return String.valueOf(Html.fromHtml(productDetails)).trim();
         }
 
         public void setProductDetails(String productDetails) {
@@ -204,7 +203,9 @@ public class BasketDetailsResponse extends BaseResponse {
         }
 
         public String getAboutProduct() {
-            return aboutProduct;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                return String.valueOf(Html.fromHtml(aboutProduct, Html.FROM_HTML_MODE_COMPACT)).trim();
+            else return String.valueOf(Html.fromHtml(aboutProduct)).trim();
         }
 
         public void setAboutProduct(String aboutProduct) {
@@ -220,7 +221,9 @@ public class BasketDetailsResponse extends BaseResponse {
         }
 
         public String getBenifit() {
-            return benifit;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                return String.valueOf(Html.fromHtml(benifit, Html.FROM_HTML_MODE_COMPACT)).trim();
+            else return String.valueOf(Html.fromHtml(benifit)).trim();
         }
 
         public void setBenifit(String benifit) {
@@ -236,7 +239,9 @@ public class BasketDetailsResponse extends BaseResponse {
         }
 
         public String getStoragesUses() {
-            return storagesUses;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                return String.valueOf(Html.fromHtml(storagesUses, Html.FROM_HTML_MODE_COMPACT)).trim();
+            else return String.valueOf(Html.fromHtml(storagesUses)).trim();
         }
 
         public void setStoragesUses(String storagesUses) {
@@ -268,7 +273,9 @@ public class BasketDetailsResponse extends BaseResponse {
         }
 
         public String getOtherProuctInfo() {
-            return otherProuctInfo;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                return String.valueOf(Html.fromHtml(otherProuctInfo,Html.FROM_HTML_MODE_COMPACT)).trim();
+            }else return String.valueOf(Html.fromHtml(otherProuctInfo)).trim();
         }
 
         public void setOtherProuctInfo(String otherProuctInfo) {
@@ -284,7 +291,7 @@ public class BasketDetailsResponse extends BaseResponse {
         }
 
         public String getWeightPolicy() {
-            return weightPolicy;
+            return String.valueOf(Html.fromHtml(weightPolicy)).trim();
         }
 
         public void setWeightPolicy(String weightPolicy) {
@@ -300,7 +307,7 @@ public class BasketDetailsResponse extends BaseResponse {
         }
 
         public String getNutrition() {
-            return nutrition;
+            return Html.fromHtml(nutrition).toString().trim();
         }
 
         public void setNutrition(String nutrition) {
@@ -371,12 +378,12 @@ public class BasketDetailsResponse extends BaseResponse {
             this.quantity = quantity;
         }
 
-        public Rating getRating() {
-            return rating;
+        public Rating getBasketRating() {
+            return basketRating;
         }
 
-        public void setRating(Rating rating) {
-            this.rating = rating;
+        public void setBasketRating(Rating basketRating) {
+            this.basketRating = basketRating;
         }
 
         public ArrayList<Review> getReviews() {

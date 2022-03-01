@@ -242,7 +242,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                             fragmentProductDetailBinding.setProductDetailModule(productDetailViewModel);
                             fragmentProductDetailBinding.setVariable(BR.productDetailModule, productDetailViewModel);
                             fragmentProductDetailBinding.rvWeights.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false));
-                            // Redirect to ProductOld details
                             setViewPagerAdapterItems();
 
                             /*Rating and Reviews*/
@@ -757,8 +756,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         callProductDetailsApi(showCircleProgressDialog(context, ""));
                         break;
                     case STATUS_CODE_400://Validation Errors
-                        warningToast(context, baseResponse.getMessage());
-                        break;
                     case STATUS_CODE_404://Record not Found
                         warningToast(context, baseResponse.getMessage());
                         break;

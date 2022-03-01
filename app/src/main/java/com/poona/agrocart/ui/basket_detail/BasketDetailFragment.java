@@ -3,6 +3,9 @@ package com.poona.agrocart.ui.basket_detail;
 import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.ITEM_TYPE;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
+import static com.poona.agrocart.app.AppConstants.RATING;
+import static com.poona.agrocart.app.AppConstants.REVIEW;
+import static com.poona.agrocart.app.AppConstants.REVIEW_LIST;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -10,6 +13,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -19,30 +23,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.gson.Gson;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
+import com.poona.agrocart.data.network.responses.Review;
 import com.poona.agrocart.databinding.FragmentBasketDetailBinding;
-import com.poona.agrocart.databinding.ViewSubscriptionBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.basket_detail.adapter.BasketImagesAdapter;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductRatingReviewAdapter;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
+import com.poona.agrocart.widgets.CustomEditText;
 import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.ExpandIconView;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
@@ -51,6 +60,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class BasketDetailFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
 
@@ -68,17 +78,24 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private RecyclerView rvBasketProducts;
     private LinearLayoutManager linearLayoutManager;
     private BasketImagesAdapter basketImagesAdapter;
-    private ArrayList<ProductComment> commentArrayList;
-    private ProductRatingReviewAdapter productRatingReviewAdapter;
+    /*Basket comment adapters*/
+    private ArrayList<Review> reviewsArrayList;
+    private ProductRatingReviewAdapter reviewsAdapter;
     private Bundle bundle;
-    private String itemId="";
+    private String basketId = "";
     private SwipeRefreshLayout rlRefreshPage;
+
 
     private boolean isProductDetailsVisible = true, isNutritionDetailsVisible = true, isAboutThisProductVisible = true,
             isBasketContentsVisible = true, isBenefitsVisible = true, isStorageVisible = true, isOtherProductInfo = true,
             isVariableWtPolicyVisible = true, isFavourite = false;
     private Calendar calendar;
     private int mYear, mMonth, mDay;
+    private CustomEditText etFeedback;
+    private RecyclerView rvProductReview;
+    private RatingBar ratingBarInput;
+    private BasketDetailsResponse.Rating ratingList;
+
 
     public static BasketDetailFragment newInstance() {
         return new BasketDetailFragment();
@@ -89,7 +106,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            itemId = getArguments().getString(BASKET_ID);
+            basketId = getArguments().getString(BASKET_ID);
         }
     }
 
@@ -101,7 +118,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         rootView = basketDetailsBinding.getRoot();
         initTitleWithBackBtn("");
         initView();
-        setCommentsAdapter();
         rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -117,9 +133,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         return rootView;
     }
 
-    private void setCommentsAdapter() {
-        commentArrayList = new ArrayList<>();
-    }
 
     private void initView() {
         rlRefreshPage = basketDetailsBinding.rlRefreshPage;
@@ -139,6 +152,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         basketDetailsBinding.ivPlus.setOnClickListener(this);
         basketDetailsBinding.ivMinus.setOnClickListener(this);
         basketDetailsBinding.ivFavourite.setOnClickListener(this);
+        basketDetailsBinding.btnSubmit.setOnClickListener(this);
+        basketDetailsBinding.tvSeeMoreReview.setOnClickListener(this);
         // BasketDetail ProductOld views
         basketDetailsBinding.llProductList.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.imgPlus.setOnClickListener(this);
@@ -150,8 +165,138 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         dotsIndicator = basketDetailsBinding.dotsIndicator;
         rvProductComment = basketDetailsBinding.rvProductComment;
 
-        setValues();
+        //rating and feedback views
+        rvProductReview = basketDetailsBinding.rvProductComment;
+        ratingBarInput = basketDetailsBinding.ratingBarInput;
+        etFeedback = basketDetailsBinding.etFeedback;
 
+        setHodeOrShowValue();
+
+
+    }
+
+    private void setReviewsHide(BasketDetailsResponse.Rating basketReviews) {
+        if (!basketReviews.getRating().isEmpty() && !basketReviews.getReview().isEmpty() ||
+                !basketReviews.getRating().equalsIgnoreCase("") &&
+                        !basketReviews.getReview().equalsIgnoreCase("")){
+            basketDetailsBinding.llRateView.setVisibility(View.GONE);
+        }else {
+//            basketDetailsBinding.ratingBarInput.setEnabled(false);
+            basketDetailsBinding.llRateView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setBasketValue() {
+        basketDetailViewModel.basketName.setValue(details.getBasketName());
+        basketDetailViewModel.basketRate.setValue(details.getBasketRate());
+        basketDetailViewModel.basketSubRate.setValue(details.getSubscriptionBasketRate());
+        if (details.getIsO3().equalsIgnoreCase("yes"))
+            basketDetailViewModel.isOrganic.setValue(true);
+        else basketDetailViewModel.isOrganic.setValue(false);
+        basketDetailViewModel.basketProducts.setValue(details.getBasketProduct());
+        if (details.getInCart() == 1)
+            basketDetailViewModel.isInCart.setValue(true);
+        else basketDetailViewModel.isInCart.setValue(false);
+        if (details.getIsFavourite() == 1)
+            basketDetailViewModel.isInFav.setValue(true);
+        else basketDetailViewModel.isInFav.setValue(false);
+        /*Basket About and Benefit*/
+        basketDetailViewModel.basketQuantity.setValue(Integer.parseInt(details.getQuantity()));
+        basketDetailViewModel.basketDetail.setValue(details.getProductDetails());
+        basketDetailViewModel.basketAbout.setValue(details.getAboutProduct());
+        basketDetailViewModel.basketBenefit.setValue(details.getBenifit());
+        basketDetailViewModel.basketStorageUses.setValue(details.getStoragesUses());
+        basketDetailViewModel.basketOtherInfo.setValue(details.getOtherProuctInfo());
+        basketDetailViewModel.basketWeightPolicy.setValue(details.getWeightPolicy());
+        basketDetailViewModel.basketNutrition.setValue(details.getNutrition());
+        basketDetailViewModel.basketAvgRating.setValue(details.getAverageRating());
+        basketDetailViewModel.reviewLiveData.setValue(details.getReviews());
+        /*Is in Favourite*/
+        if (basketDetailViewModel.isInFav.getValue()) {
+            isFavourite = true;
+            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
+        } else {
+            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
+            isFavourite = false;
+        }
+        /*Rating and reviews*/
+        basketDetailViewModel.basketRating.setValue(details.getBasketRating());
+        basketDetailViewModel.basketAvgRating.setValue(details.getAverageRating());
+        if (details.getAverageRating()==null){
+            basketDetailsBinding.llAvgRating.setVisibility(View.GONE);
+            basketDetailsBinding.ratingBelowLine.setVisibility(View.GONE);
+        }
+        basketDetailViewModel.basketNoOfRatings.setValue(details.getNoOrUsersRated()+" Ratings");
+        /*is in Cart*/
+        if (basketDetailViewModel.isInCart.getValue()) {
+            basketDetailsBinding.ivMinus.setVisibility(View.VISIBLE);
+            basketDetailsBinding.etQuantity.setVisibility(View.VISIBLE);
+            if (basketDetailViewModel.basketQuantity.getValue() > 0) {
+                basketDetailsBinding.ivPlus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
+                if (basketDetailViewModel.basketQuantity.getValue() > 1) {
+                    basketDetailsBinding.ivMinus.setEnabled(true);
+                    basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
+                } else {
+                    basketDetailsBinding.ivMinus.setEnabled(false);
+                    basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
+                }
+                basketDetailsBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
+            } else {
+                basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
+            }
+        }
+        /*Average rating and reviews*/
+        if (details.getNoOrUsersRated()==null){
+            basketDetailsBinding.llAvgRating.setVisibility(View.GONE);
+            basketDetailsBinding.ratingBelowLine.setVisibility(View.GONE);
+        }else {
+            basketDetailsBinding.ratingBelowLine.setVisibility(View.VISIBLE);
+            basketDetailsBinding.llAvgRating.setVisibility(View.VISIBLE);
+        }
+        if (details.getBasketRating().getRating()!=null && !details.getBasketRating().getRating().isEmpty()){
+            basketDetailViewModel.yourRating.setValue(Float.parseFloat(details.getBasketRating().getRating()));
+            basketDetailsBinding.ratingBarInput.setRating(basketDetailViewModel.yourRating.getValue());
+        }
+
+    }
+
+    /*Submit rating and reviews*/
+    private void callRatingAndReviewAPi(ProgressDialog progressDialog) {
+        @SuppressLint("NotifyDataSetChanged")
+        Observer<BaseResponse> ratingResponseObserver = baseResponse -> {
+
+            if (baseResponse != null) {
+                Log.e("Rating Response", new Gson().toJson(baseResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        successToast(context, baseResponse.getMessage());
+                        callBasketDetailsApi(showCircleProgressDialog(context, ""));
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Record not Found
+                        warningToast(context, baseResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        warningToast(context, baseResponse.getMessage());
+                        goToAskSignInSignUpScreen();
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+        };
+
+        basketDetailViewModel.callSubmitRatingResponseApi(progressDialog, submitRatingInputParameter(),
+                BasketDetailFragment.this)
+                .observe(getViewLifecycleOwner(), ratingResponseObserver);
 
     }
 
@@ -172,10 +317,21 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                             setBasketValue();
                             basketDetailsBinding.setBasketViewModel(basketDetailViewModel);
                             basketDetailsBinding.setVariable(BR.basketViewModel, basketDetailViewModel);
-                            ViewSubscriptionBinding viewSubscriptionBinding = ViewSubscriptionBinding.inflate(LayoutInflater.from(context));
-                            viewSubscriptionBinding.setSubscriptionModule(basketDetailViewModel);
-                            viewSubscriptionBinding.setVariable(BR.subscriptionModule, basketDetailViewModel);
+                            basketDetailsBinding.layoutAdded.setSubscriptionModule(details);
+                            basketDetailsBinding.layoutAdded.setVariable(BR.subscriptionModule, details);
                             setBasketContents();
+
+                            /*Rating and Reviews*/
+                            if (basketDetailsResponse.getBasketDetail().getBasketRating() != null) {
+                                setReviewsHide(basketDetailsResponse.getBasketDetail().getBasketRating());
+                            }
+                            /*Raviews and rating*/
+                            if (basketDetailsResponse.getBasketDetail().getReviews()!=null
+                            &&!basketDetailsResponse.getBasketDetail().getReviews().isEmpty()){
+                                reviewsArrayList = new ArrayList<>();
+                                basketDetailViewModel.reviewLiveData.setValue(basketDetailsResponse.getBasketDetail().getReviews());
+                                setBasketReviewsView();
+                            }
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -199,55 +355,19 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 .observe(getViewLifecycleOwner(), basketDetailsResponseObserver);
     }
 
-    private void setBasketValue() {
-        basketDetailViewModel.basketName.setValue(details.getBasketName());
-        basketDetailViewModel.basketRate.setValue(details.getBasketRate());
-        basketDetailViewModel.basketSubRate.setValue(details.getSubscriptionBasketRate());
-        if (details.getIsO3().equalsIgnoreCase("yes"))
-        basketDetailViewModel.isOrganic.setValue(true);
-        else basketDetailViewModel.isOrganic.setValue(false);
-        basketDetailViewModel.basketProducts.setValue(details.getBasketProduct());
-        if (details.getInCart()==1)
-            basketDetailViewModel.isInCart.setValue(true);
-        else basketDetailViewModel.isInCart.setValue(false);
-        if (details.getIsFavourite()==1)
-            basketDetailViewModel.isInFav.setValue(true);
-        else basketDetailViewModel.isInFav.setValue(false);
-        basketDetailViewModel.basketQuantity.setValue(Integer.parseInt(details.getQuantity()));
-        basketDetailViewModel.basketDetail.setValue(details.getProductDetails());
-        basketDetailViewModel.basketAbout.setValue(details.getAboutProduct());
-        basketDetailViewModel.basketBenefit.setValue(details.getBenifit());
-        basketDetailViewModel.basketStorageUses.setValue(details.getStoragesUses());
-        basketDetailViewModel.basketOtherInfo.setValue(details.getOtherProuctInfo());
-        basketDetailViewModel.basketWeightPolicy.setValue(details.getWeightPolicy());
-        basketDetailViewModel.basketNutrition.setValue(details.getNutrition());
-        basketDetailViewModel.basketAvgRating.setValue(details.getAverageRating());
-        basketDetailViewModel.reviewLiveData.setValue(details.getReviews());
-        if (basketDetailViewModel.isInFav.getValue()) {
-            isFavourite = true;
-            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_filled_heart);
-        } else {
-            basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
-            isFavourite = false;
-        }
-        if (basketDetailViewModel.isInCart.getValue()) {
-            basketDetailsBinding.ivMinus.setVisibility(View.VISIBLE);
-            basketDetailsBinding.etQuantity.setVisibility(View.VISIBLE);
-            if (basketDetailViewModel.basketQuantity.getValue() > 0) {
-                basketDetailsBinding.ivPlus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
-                if (basketDetailViewModel.basketQuantity.getValue() > 1) {
-                    basketDetailsBinding.ivMinus.setEnabled(true);
-                    basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
-                } else {
-                    basketDetailsBinding.ivMinus.setEnabled(false);
-                    basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
-                }
-                basketDetailsBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
-            } else {
-                basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
-            }
-        }
 
+    /*Reviews and comments list*/
+    private void setBasketReviewsView() {
+        basketDetailViewModel.reviewLiveData.observe(getViewLifecycleOwner(),reviews -> {
+            if (reviews!=null && reviews.size()>0){
+                reviewsArrayList.addAll(reviews);
+                rvProductComment.setLayoutManager(new LinearLayoutManager(context));
+                rvProductComment.setHasFixedSize(true);
+                reviewsAdapter = new ProductRatingReviewAdapter(context,reviewsArrayList,0);
+                rvProductComment.setAdapter(reviewsAdapter);
+                basketDetailsBinding.tvSeeMoreReview.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     //Add to Cart Basket API
@@ -259,12 +379,12 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         try {
-                            ((HomeActivity)context).setCountBudge(baseResponse.getCartItems());
+                            ((HomeActivity) context).setCountBudge(baseResponse.getCartItems());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                         successToast(context, baseResponse.getMessage());
-                        callBasketDetailsApi(showCircleProgressDialog(context,""));
+                        callBasketDetailsApi(showCircleProgressDialog(context, ""));
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -296,7 +416,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         try {
-                            ((HomeActivity)context).setCountBudge(baseResponse.getCartItems());
+                            ((HomeActivity) context).setCountBudge(baseResponse.getCartItems());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -382,21 +502,20 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     private HashMap<String, String> basketParams(boolean addTo, boolean favTo) {
         HashMap<String, String> map = new HashMap<>();
-        if (addTo){
+        if (addTo) {
             if (basketDetailsBinding.etQuantity.getText().toString().isEmpty()) {
                 map.put(QUANTITY, "1");
-            }
-            else {
+            } else {
                 map.put(QUANTITY, basketDetailsBinding.etQuantity.getText().toString());
             }
         }
         if (favTo)
             map.put(ITEM_TYPE, "basket");
-        map.put(BASKET_ID, itemId);
+        map.put(BASKET_ID, basketId);
         return map;
     }
 
-    private void setValues() {
+    private void setHodeOrShowValue() {
         //hide all expanded views initially
 
         hideOrShowAboutThisProduct();
@@ -608,7 +727,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 hideOrShowNutritionDetails();
                 break;
             case R.id.iv_minus:
-                if (basketDetailViewModel.basketQuantity.getValue()>1){
+                if (basketDetailViewModel.basketQuantity.getValue() > 1) {
                     decreaseQuantity(basketDetailsBinding.etQuantity.getText().toString(),
                             basketDetailsBinding.etQuantity, basketDetailsBinding.ivMinus);
                 }
@@ -634,8 +753,33 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 showCalendar(basketDetailsBinding.layoutAdded.tvStartDate);
                 break;
             case R.id.btn_submit:
+                if (isConnectingToInternet(context)) {
+                    if (!Objects.requireNonNull(etFeedback.getText()).toString().isEmpty() && !(ratingBarInput.getRating() == 0.0)) {
+                        callRatingAndReviewAPi(showCircleProgressDialog(context, ""));
+                    } else {
+                        errorToast(context, "Please fill the field");
+                    }
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+                break;
+            case R.id.tv_see_more_review:
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(REVIEW_LIST, reviewsArrayList);
+                    NavHostFragment.findNavController(BasketDetailFragment.this).
+                            navigate(R.id.action_nav_basket_details_to_nav_product_review, bundle);
+                    break;
+
 
         }
+    }
+
+    private HashMap<String, String> submitRatingInputParameter() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(BASKET_ID, basketId);
+        map.put(RATING, String.valueOf(ratingBarInput.getRating()));
+        map.put(REVIEW, etFeedback.getText().toString().trim());
+        return map;
     }
 
     @Override
