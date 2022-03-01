@@ -1,43 +1,69 @@
 package com.poona.agrocart.ui.nav_orders.order_view;
 
 import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
+import static com.poona.agrocart.app.AppConstants.LIMIT;
+import static com.poona.agrocart.app.AppConstants.ORDER_ID;
+import static com.poona.agrocart.app.AppConstants.RATING;
+import static com.poona.agrocart.app.AppConstants.REVIEW;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.databinding.FragmentOrderViewBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.nav_notification.NotificationViewModel;
 import com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList;
 import com.poona.agrocart.ui.nav_orders.model.CancelOrderReasonList;
 import com.poona.agrocart.ui.nav_orders.order_view.adaptor.OrderCancelCategoryAdaptor;
 import com.poona.agrocart.ui.nav_orders.order_view.adaptor.OrderCancelReasonAdaptor;
+import com.poona.agrocart.widgets.CustomButton;
+import com.poona.agrocart.widgets.CustomEditText;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderViewFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentOrderViewBinding fragmentOrderViewBinding;
+    private OrderViewDetailsViewHolder orderViewDetailsViewHolder;
     private RecyclerView rvBasketListItems;
     private LinearLayoutManager linearLayoutManager;
     private BasketItemsAdapter basketItemsAdapter;
     private ArrayList<BasketItem> basketItemList;
     private boolean isBasketVisible = true;
+    private RatingBar ratingBar;
+    private CustomEditText feedbackComment;
+    private CustomButton btnSubmitFeedback;
 
     /*Cancel Order dialog */
     private RecyclerView orderCancelCategory, orderCancelReason;
@@ -45,12 +71,14 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private OrderCancelCategoryAdaptor orderCancelCategoryAdaptor;
     private List<CancelOrderReasonList> cancelOrderReasonList;
     private OrderCancelReasonAdaptor orderCancelReasonAdaptor;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentOrderViewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_view, container, false);
         fragmentOrderViewBinding.setLifecycleOwner(this);
-        final View view = fragmentOrderViewBinding.getRoot();
+        orderViewDetailsViewHolder = new ViewModelProvider(this).get(OrderViewDetailsViewHolder.class);
+       view = fragmentOrderViewBinding.getRoot();
 
         initView();
         setRVAdapter();
@@ -67,8 +95,11 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void initView() {
-        fragmentOrderViewBinding.btnTrackOrder.setOnClickListener(this);
+        ratingBar = fragmentOrderViewBinding.ratingBarInput;
+        feedbackComment = fragmentOrderViewBinding.etFeedback;
+        btnSubmitFeedback = fragmentOrderViewBinding.btnSubmitFeedback;
 
+        fragmentOrderViewBinding.btnTrackOrder.setOnClickListener(this);
         Bundle bundle = this.getArguments();
         isBasketVisible = bundle.getBoolean("isBasketVisible");
         rvBasketListItems = fragmentOrderViewBinding.rvBasketItems;
@@ -77,6 +108,21 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         } else {
             showProductDetails();
         }
+
+        btnSubmitFeedback.setOnClickListener(view1 -> {
+
+            if (isConnectingToInternet(context)) {
+                if (!Objects.requireNonNull(feedbackComment.getText()).toString().isEmpty() && !(ratingBar.getRating() == 0.0)) {
+                    callRatingAndFeedBackApi(showCircleProgressDialog(context, ""));
+                } else {
+                    errorToast(context, "Please fill the field");
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+
+        });
+
     }
 
     private void showProductDetails() {
@@ -234,5 +280,53 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
             cancelOrderReasonList.add(orderCancelReasonList);
         }
+    }
+
+    /*Rating and FeedBack api*/
+
+    private void callRatingAndFeedBackApi(ProgressDialog progressDialog){
+        Observer<BaseResponse> ratingAndFeedBackResponseObserver = ratingAndFeedBackResponse ->  {
+            if (ratingAndFeedBackResponse != null) {
+                Log.e("Rating Response", new Gson().toJson(ratingAndFeedBackResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (ratingAndFeedBackResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        successToast(context, ratingAndFeedBackResponse.getMessage());
+                        //callProductDetailsApi(showCircleProgressDialog(context, ""));
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                        warningToast(context, ratingAndFeedBackResponse.getMessage());
+                        break;
+                    case STATUS_CODE_404://Record not Found
+                        warningToast(context, ratingAndFeedBackResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        warningToast(context, ratingAndFeedBackResponse.getMessage());
+                        goToAskSignInSignUpScreen();
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, ratingAndFeedBackResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+        };
+        orderViewDetailsViewHolder.getRatingAndFeedBack(progressDialog,context,RatingAndFeedBackInputParameter(),OrderViewFragment.this)
+                .observe(getViewLifecycleOwner(), ratingAndFeedBackResponseObserver);
+    }
+
+    private HashMap<String, String> RatingAndFeedBackInputParameter(){
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put(ORDER_ID, "1");
+        map.put(RATING, String.valueOf(ratingBar.getRating()));
+        map.put(REVIEW,feedbackComment.getText().toString().trim());
+
+        return map;
     }
 }

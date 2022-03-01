@@ -35,6 +35,7 @@ import static com.poona.agrocart.app.AppConstants.MY_NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
+import static com.poona.agrocart.app.AppConstants.RATE_ORDER;
 import static com.poona.agrocart.app.AppConstants.RATE_TO_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.REMOVE_FAVOURITE;
@@ -425,4 +426,8 @@ public interface ApiInterface {
 
     @POST(DELETE_NOTIFICATION)
     Single<DeleteNotificationResponse> getDeleteNotification();
+
+    @FormUrlEncoded
+    @POST(RATE_ORDER)
+    Single<BaseResponse> getSubmitRatingResponseOrder(@FieldMap HashMap<String, String> ratingAndFeedBackInputParameter);
 }

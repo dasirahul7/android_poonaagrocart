@@ -620,7 +620,6 @@
                 android:id="@+id/rating_bar_input"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-
                 android:layout_marginTop="@dimen/_10sdp"
                 android:numStars="5"
                 android:stepSize="0.5"
@@ -663,7 +662,7 @@
                 app:setCustomFont="@string/font_poppins_regular" />
 
             <com.poona.agrocart.widgets.CustomButton
-                android:id="@+id/btn_submit"
+                android:id="@+id/btn_submit_feedback"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -692,7 +691,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_submit"
+                app:layout_constraintTop_toBottomOf="@+id/btn_submit_feedback"
                 app:strokeColor="@color/colorLightGrey"
                 app:strokeWidth="0.5dp">
 

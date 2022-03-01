@@ -46,9 +46,15 @@ public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancel
 
         checkCategory = viewHolder.binding.cbCategory;
         viewHolder.binding.llMain.setOnClickListener(view -> {
-            mSelectedItem = getItemCount();
-            checkCategory.setChecked(true);
+            if (viewHolder.binding.cbCategory.isChecked()) {
+                viewHolder.binding.cbCategory.setChecked(false);
+            }else{
+                viewHolder.binding.cbCategory.setChecked(true);
+            }
+
+
         });
+
 
     }
 
