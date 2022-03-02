@@ -24,9 +24,13 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -84,6 +88,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private Bundle bundle;
     private String basketId = "";
     private SwipeRefreshLayout rlRefreshPage;
+//    private ScrollView scrollView;
 
 
     private boolean isProductDetailsVisible = true, isNutritionDetailsVisible = true, isAboutThisProductVisible = true,
@@ -95,6 +100,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private RecyclerView rvProductReview;
     private RatingBar ratingBarInput;
     private BasketDetailsResponse.Rating ratingList;
+    private ScrollView scrollView;
 
 
     public static BasketDetailFragment newInstance() {
@@ -129,6 +135,11 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 }
             }
         });
+        scrollView.setOnScrollChangeListener((view, i, i1, i2, i3) -> {
+            if (i3>0)
+            ((HomeActivity)context).binding.appBarHome.textTitle.setText(details.getBasketName());
+            else ((HomeActivity)context).binding.appBarHome.textTitle.setText("");
+        });
 
         return rootView;
     }
@@ -136,6 +147,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     private void initView() {
         rlRefreshPage = basketDetailsBinding.rlRefreshPage;
+        scrollView = basketDetailsBinding.scrollView;
         basketDetailsBinding.itemLayout.setVisibility(View.GONE);
         if (isConnectingToInternet(context)) {
             callBasketDetailsApi(showCircleProgressDialog(context, ""));
@@ -255,8 +267,9 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         }
         if (details.getBasketRating().getRating()!=null && !details.getBasketRating().getRating().isEmpty()){
             basketDetailViewModel.yourRating.setValue(Float.parseFloat(details.getBasketRating().getRating()));
-            basketDetailsBinding.ratingBarInput.setRating(basketDetailViewModel.yourRating.getValue());
-        }
+            ratingBarInput.setRating(basketDetailViewModel.yourRating.getValue());
+            ratingBarInput.setIsIndicator(true);
+        }else ratingBarInput.setIsIndicator(false);
 
     }
 
@@ -358,6 +371,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     /*Reviews and comments list*/
     private void setBasketReviewsView() {
+        reviewsArrayList.clear();
         basketDetailViewModel.reviewLiveData.observe(getViewLifecycleOwner(),reviews -> {
             if (reviews!=null && reviews.size()>0){
                 reviewsArrayList.addAll(reviews);

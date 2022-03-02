@@ -10,7 +10,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -35,7 +36,7 @@
                         android:layout_height="@dimen/_100sdp"
                         android:layout_marginHorizontal="@dimen/_16sdp"
                         android:src="@drawable/ic_server_error"
-                        android:tint="@color/white" />
+                        app:tint="@color/white" />
 
                 </LinearLayout>
 

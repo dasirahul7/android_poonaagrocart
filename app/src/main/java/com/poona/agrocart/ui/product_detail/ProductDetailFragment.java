@@ -23,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -109,6 +111,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private List<ProductDetailsResponse.Rating> ratingList = new ArrayList<>();
     private ArrayList<Review> reviewsList = new ArrayList<>();
     private ArrayList<Review> allReview = new ArrayList<>();
+    private ScrollView scrollView;
+    private RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
     @Override
@@ -140,6 +144,18 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             }
         });
 
+        scrollView.setOnScrollChangeListener((view, i, i1, i2, i3) -> {
+            if (i3>0){
+                ((HomeActivity)context).binding.appBarHome.textTitle.setText(details.getProductName());
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
+                ((HomeActivity)context).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
+            }
+            else {
+                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                ((HomeActivity)context).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
+                ((HomeActivity)context).binding.appBarHome.textTitle.setText("");
+            }
+        });
 
         btnRateSubmit.setOnClickListener(view -> {
             if (isConnectingToInternet(context)) {
@@ -178,6 +194,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void initView() {
+        scrollView = fragmentProductDetailBinding.scrollView;
         fragmentProductDetailBinding.itemLayout.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.VISIBLE);
         txtOrganic = ((HomeActivity) requireActivity()).binding.appBarHome.txtOrganic;

@@ -29,6 +29,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -71,6 +72,8 @@ public abstract class BaseFragment extends Fragment {
      */
     private OnDialogRetryClickListener onDialogRetryClickListener;
     private LocationManager locationManager;
+    private RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
 
     public static String get_24_to_12_time(String temp_date) {
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -96,6 +99,7 @@ public abstract class BaseFragment extends Fragment {
     //Title and app logo on actionBar
     @SuppressLint("ResourceType")
     protected void initTitleBar(String title) {
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.post(() -> {
             Drawable d = ResourcesCompat.getDrawable(getResources(),
                     R.drawable.menu_icon_toggle, null);
@@ -109,6 +113,7 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);
+        ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
     }
@@ -128,8 +133,10 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.GONE);
-        ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);
+        ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
     }
 

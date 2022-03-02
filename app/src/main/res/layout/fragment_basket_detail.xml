@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:nestedScrollingEnabled="true">
@@ -770,6 +771,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:numStars="5"
                     android:stepSize="0.5"
+                    android:isIndicator="true"
                     android:theme="@style/theme_rating_bar" />
                 <LinearLayout
                     android:id="@+id/ll_rate_view"
@@ -833,6 +835,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:layout_marginVertical="@dimen/_10sdp"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_rating_review" />
