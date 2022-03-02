@@ -10,6 +10,17 @@ public class MyCartResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     private ArrayList<CartData> data = null;
+    @SerializedName("saved_amount")
+    @Expose
+    private float savedAmount;
+
+    public float getSavedAmount() {
+        return savedAmount;
+    }
+
+    public void setSavedAmount(float savedAmount) {
+        this.savedAmount = savedAmount;
+    }
 
     public ArrayList<CartData> getData() {
         return data;

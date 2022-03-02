@@ -126,6 +126,7 @@ public class AppConstants {
     /*Basket detail API*/
     public static final String BASKET_DETAIL_API = "basket-details";
     public static final String PRODUCT_DETAIL_API = "product-details";
+    public static final String RATE_TO_BASKET = "rate-basket";
 
     /*Addresses screen apis*/
     public static final String ADDRESS_LIST_API = "address-view";

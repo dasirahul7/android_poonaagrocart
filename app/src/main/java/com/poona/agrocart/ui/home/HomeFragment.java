@@ -22,6 +22,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -29,6 +30,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -45,6 +47,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -77,8 +80,6 @@ import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.data.network.responses.homeResponse.SeasonalProduct;
 import com.poona.agrocart.data.network.responses.homeResponse.StoreBanner;
 import com.poona.agrocart.databinding.FragmentHomeBinding;
-import com.poona.agrocart.databinding.HomeProductItemBinding;
-import com.poona.agrocart.databinding.RowExclusiveItemBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.adapter.BannerAdapter;
 import com.poona.agrocart.ui.home.adapter.BasketAdapter;
@@ -94,7 +95,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener{
     private static final String TAG = HomeFragment.class.getSimpleName();
     private static final int CATEGORY = 0;
     private static final int BASKET = 1;
@@ -109,6 +110,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private final long PERIOD_MS = 3000;
 
     private final int limit = 10;
+    private final int offset = 0;
     private Timer timer = new Timer();
     private boolean isTyping = false;
 
@@ -160,7 +162,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private LinearLayoutManager categoryManager, basketManager, productManager,
             seasonalManager, bestSellingManager, exclusiveOfferManager;
     private boolean scrolling = false;
-    private final int offset = 0;
     private SwipeRefreshLayout rlRefreshPage;
 
 
@@ -210,6 +211,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         });
 //        setPaginationForLists();
 
+
         return root;
     }
 
@@ -252,25 +254,61 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void setRvBestSelling() {
+
         bestSellingManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+        fragmentHomeBinding.recBestSelling.setHasFixedSize(true);
+        fragmentHomeBinding.recBestSelling.setLayoutManager(bestSellingManager);
+
         bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), this::toProductDetail, (binding, product, position) -> {
             if (product.getInCart() == 0) {
-                addToCartProduct(product, BEST_SELLING);
+                addToCartProduct(product, BEST_SELLING,position);
             }
         });
+        fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
+
+        /* call addOnScrollListener to recyclerview */
+        setScrollListener();
+
+
+    }
+
+    private int visibleItemCount = 0;
+    private final int totalCount = 6;
+
+    private void setScrollListener() {
         fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recBestSelling.setLayoutManager(bestSellingManager);
         fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
-//        fragmentHomeBinding.recBestSelling.getRecycledViewPool().setMaxRecycledViews(0, 0);
+        Parcelable recyclerViewState;
+        recyclerViewState = fragmentHomeBinding.recBestSelling.getLayoutManager().onSaveInstanceState();
 
+// Restore state
+        fragmentHomeBinding.recBestSelling.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+//        fragmentHomeBinding.recBestSelling.getRecycledViewPool().setMaxRecycledViews(0, 0);
+        NestedScrollView mScrollView = fragmentHomeBinding.navBestSelling;
+        mScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if(v.getChildAt(v.getChildCount() - 1) != null) {
+                visibleItemCount = bestSellingManager.getItemCount();
+
+                if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+                        && visibleItemCount != totalCount) {
+                    callBestSellingApi(null, "onScrolled");
+                } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+                        && visibleItemCount == totalCount) {
+                    infoToast(requireContext(), getString(R.string.no_more_records));
+                }
+            }
+        });
     }
+
 
     private void setRvExclusive() {
         // Redirect to ProductOld details
         makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
         exclusiveOfferManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
         offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), this::toProductDetail, (binding, product, position) -> {
-            addToCartProduct(product, EXCLUSIVE);
+            addToCartProduct(product, EXCLUSIVE,position);
         });
         fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recExOffers.setLayoutManager(exclusiveOfferManager);
@@ -285,7 +323,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding.recProduct.setHasFixedSize(true);
         fragmentHomeBinding.recProduct.setLayoutManager(productManager);
         productListAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> {
-            addToCartProduct(product, PRODUCT);
+            addToCartProduct(product, PRODUCT,position);
         });
         fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
         fragmentHomeBinding.recProduct.getRecycledViewPool().setMaxRecycledViews(0, 0);
@@ -385,7 +423,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         });
 
         //Best Selling OnScroll
-        fragmentHomeBinding.recBestSelling.addOnScrollListener(new RecyclerView.OnScrollListener() {
+       /* fragmentHomeBinding.recBestSelling.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -413,7 +451,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 }
                 System.out.println("scrolling" + scrolling);
             }
-        });
+        });*/
 
         //Seasonal OnScroll
         fragmentHomeBinding.recSeasonal.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -639,8 +677,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private void callBasketApi(ProgressDialog progressDialog, String loadType) {
         if (loadType.equalsIgnoreCase("onScrolled")) {
             basketOffset = basketOffset + 1;
+        }else {
+            basketOffset = 0;
         }
-        basketOffset = 0;
+
         Observer<HomeBasketResponse> bannerResponseObserver = basketResponse -> {
             if (basketResponse != null) {
                 if (progressDialog != null) progressDialog.dismiss();
@@ -683,7 +723,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     //    //Home screen API
     private void callHomeScreenApi(ProgressDialog progressDialog) {
-        Observer<HomeResponse> homeResponseObserver = homeResponse -> {
+        @SuppressLint("NotifyDataSetChanged") Observer<HomeResponse> homeResponseObserver = homeResponse -> {
             if (homeResponse != null) {
                 if (progressDialog != null)
                     progressDialog.dismiss();
@@ -738,11 +778,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             basketAdapter.notifyDataSetChanged();
                         }
                         //Add Bestselling
+                        setRvBestSelling();
                         if (homeResponse.getHomeResponseData().getBestSellingProductList() != null
                                 && homeResponse.getHomeResponseData().getBestSellingProductList().size() > 0) {
                             rlRefreshPage.setRefreshing(false);
                             makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
-                            setRvBestSelling();
+
                             bestSellings.addAll(homeResponse.getHomeResponseData().getBestSellingProductList());
                             bestsellingAdapter.notifyDataSetChanged();
                         }
@@ -868,22 +909,24 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         if (loadType.equalsIgnoreCase("onScrolled")) {
             bestSellingOffset = bestSellingOffset + 1;
         } else bestSellingOffset = 0;
-        Observer<BestSellingResponse> bestSellingResponseObserver = bestSellingResponse -> {
+        @SuppressLint("NotifyDataSetChanged") Observer<BestSellingResponse> bestSellingResponseObserver = bestSellingResponse -> {
             if (bestSellingResponse != null) {
                 if (showCircleProgressDialog != null)
                     showCircleProgressDialog.dismiss();
                 Log.e("Best selling Api ResponseData", new Gson().toJson(bestSellingResponse));
                 switch (bestSellingResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
+                        if(bestSellingOffset == 0)
+                            bestSellings.clear();
+
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null
                                 && bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
-                            rlRefreshPage.setRefreshing(false);
-                            makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
-                            setRvBestSelling();
+
+                            //  makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
+                            //  setRvBestSelling();
                             bestSellings.addAll(bestSellingResponse.getBestSellingData().getBestSellingProductList());
                             bestsellingAdapter.notifyDataSetChanged();
-                            // Redirect to ProductOld details
-//
+                            setRvBestSelling();
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -1008,7 +1051,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void addToCartProduct(Product product,
-                                  int addType) {
+                                  int addType,int position) {
         Observer<BaseResponse> baseResponseObserver = response -> {
             if (response != null) {
                 Log.e(TAG, "addToCartProduct: " + new Gson().toJson(response));
@@ -1017,8 +1060,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         successToast(context, response.getMessage());
                         switch (addType) {
                             case BEST_SELLING:
-                                bestSellings.clear();
-                                callBestSellingApi(null, "load");
+                              //  bestSellings.clear();
+                               callBestSellingApi(null, "load");
+
                                 break;
                             case EXCLUSIVE:
                                 offerProducts.clear();
@@ -1299,4 +1343,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         }, context);
 
     }
+
+
 }

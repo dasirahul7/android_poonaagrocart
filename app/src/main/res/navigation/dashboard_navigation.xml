@@ -551,5 +551,12 @@
         android:id="@+id/basketDetailFragment"
         android:name="com.poona.agrocart.ui.basket_detail.BasketDetailFragment"
         android:label="BasketDetailFragment" />
+    <action
+        android:id="@+id/action_nav_basket_details_to_nav_product_review"
+        app:destination="@id/nav_product_review"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
 
 </navigation>

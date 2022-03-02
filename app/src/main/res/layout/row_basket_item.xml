@@ -63,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="-6dp"
+                    android:maxLines="2"
                     android:text="@{basketModule.basketName}"
                     android:textColor="@color/lightBlack"
                     android:textSize="@dimen/_18sp"

@@ -10,9 +10,7 @@ public class HomeResponse extends BaseResponse implements Serializable {
     @SerializedName("response")
     @Expose
     private HomeResponseData homeResponseData;
-    @Expose
-    @SerializedName("cart_items")
-    private int cartItems;
+
     public HomeResponseData getHomeResponseData() {
         return homeResponseData;
     }
@@ -21,13 +19,6 @@ public class HomeResponse extends BaseResponse implements Serializable {
         this.homeResponseData = homeResponseData;
     }
 
-    public int getCartItems() {
-        return cartItems;
-    }
-
-    public void setCartItems(int cartItems) {
-        this.cartItems = cartItems;
-    }
     /*Home response Data class*/
 
     /*The Banner class*/
