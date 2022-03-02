@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -38,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentStoreDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
@@ -49,7 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallback {
+public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallback, NetworkExceptionListener {
 
     private static final String TAG = "StoreDetailFragment";
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
@@ -61,12 +63,13 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
     private MapView mapView;
     private GoogleMap gmap;
     private boolean locationPermissionGranted;
-    private String strAboutStore, strStoreId = "";
+    private String strAboutStore,strLocation, strStoreId = "";
     private ImageView imageView;
     String lng,lat ;
     private double longitude, latitude;
     private String location, mapLocation;
     private LatLng ny;
+
 
 
     public static StoreDetailFragment newInstance(StoreDetail store) {
@@ -91,13 +94,16 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         fragmentStoreDetailBinding.setLifecycleOwner(this);
         View view = fragmentStoreDetailBinding.getRoot();
         initTitleWithBackBtn(getString(R.string.store_location));
+        fragmentStoreDetailBinding.clMainLayout.setVisibility(View.GONE);
         initViews();
 
+
         if (isConnectingToInternet(context)) {
-            /*Call Our Store Detail API here*/
+           /* Call Our Store Detail API here*/
             callStoreDetailsApi(showCircleProgressDialog(context, ""));
         } else
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+
 
 
         Bundle mapViewBundle = null;
@@ -115,15 +121,23 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         return view;
     }
 
+   /* @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isConnectingToInternet(context)) {
+            *//*Call Our Store Detail API here*//*
+            callStoreDetailsApi(showCircleProgressDialog(context, ""));
+        } else
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+    }*/
+
     private void setOnClick() {
         fragmentStoreDetailBinding.fabFindMyLocation.setOnClickListener(view -> {
 
             if(lng != null && lat != null){
-                String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%f,%f", longitude,latitude);  //unnamed location
-               /* String uri = String.format(Locale.ENGLISH, "https://www.google.com/maps/place/Tirupati+Group/" +
-                        longitude +
-                        latitude +
-                        ",13.75z/data=!4m5!3m4!1s0x3bc2c6dca6e19471:0x4e1b08fc5eb9c54c!8m2!3d18.578434!4d73.8851988");*/
+                //String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%f,%f", longitude,latitude);  //unnamed location
+                String uri = String.format(Locale.ENGLISH, ""+strLocation);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 /*intent.setPackage("com.google.android.apps.maps");*/
                 startActivity(intent);
@@ -138,6 +152,7 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
 
 
     private void initViews() {
+        //refreshLayout = fragmentStoreDetailBinding.rlOurStoreDetail;
         imageView = fragmentStoreDetailBinding.imgStore;
         fragmentStoreDetailBinding.setStoreDetailViewModel(storeDetailViewModel);
     }
@@ -145,6 +160,8 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
 
     private void callStoreDetailsApi(ProgressDialog progressDialog) {
         Observer<OurStoreViewDataResponse> ourStoreViewDataResponseObserver = ourStoreViewDataResponse -> {
+            //refreshLayout.setRefreshing(false);
+            fragmentStoreDetailBinding.clMainLayout.setVisibility(View.VISIBLE);
             if (ourStoreViewDataResponse != null) {
                 Log.e("Our Store Details Api ResponseData", new Gson().toJson(ourStoreViewDataResponse));
                 if (progressDialog != null) {
@@ -185,7 +202,7 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
             }
 
         };
-        storeDetailViewModel.getOurStoreDetailsResponse(progressDialog, context, ourStoreDetailsInputParameter())
+        storeDetailViewModel.getOurStoreDetailsResponse(progressDialog, context, ourStoreDetailsInputParameter(), StoreDetailFragment.this)
                 .observe(getViewLifecycleOwner(), ourStoreViewDataResponseObserver);
     }
 
@@ -196,6 +213,10 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         storeDetailViewModel.aboutStore.setValue(storeDetails.get(0).getAboutStore());
         storeDetailViewModel.contactPersonalNumber.setValue(storeDetails.get(0).getMobileNo());
         storeDetailViewModel.personalAddress.setValue(storeDetails.get(0).getAddress());
+        strLocation = storeDetails.get(0).getMapLink();
+
+        /*"https://www.google.com/maps/place/Serene+Hospital/@18.5698376" +
+                ",73.8801823,17z/data=!3m1!4b1!4m5!3m4!1s0x3bc2c0d12583788b:0xdf0059e54abc9e1d!8m2!3d18.5698325!4d73.882371"*/
         location = storeDetails.get(0).getAddress();
 
         lng = storeDetails.get(0).getLongitude();
@@ -228,7 +249,7 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
 //        googleMap.getUiSettings().setZoomControlsEnabled(true);
 //        gmap.setMinZoomPreference(12);
 
-            ny = new LatLng(latitude, longitude);
+            ny = new LatLng(longitude,latitude);
 
         //https://www.google.com/maps/search/?api=1&query=<lat>,<lng>
         gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
@@ -236,11 +257,25 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
 //        float zoomLevel = 16.0f; //This goes up to 21
 //        gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
         //gmap.animateCamera(CameraUpdateFactory.zoomTo(10), 5000, null);
-        gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(ny, 18), 5000, null);
+        gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(ny, 50), 5000, null);
        // gmap.animateCamera(CameraUpdateFactory.zoomTo(100));
 //        gmap.resetMinMaxZoomPreference();
 //        gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(ny, zoomLevel));
 
     }
 
+    @Override
+    public void onNetworkException(int from, String type) {
+
+        showServerErrorDialog(getString(R.string.for_better_user_experience), StoreDetailFragment.this, () -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if (from == 0) {
+                    callStoreDetailsApi(showCircleProgressDialog(context,""));
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+    }
 }

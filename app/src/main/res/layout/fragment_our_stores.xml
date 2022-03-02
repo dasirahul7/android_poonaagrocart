@@ -29,20 +29,24 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nv_our_store"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:fitsSystemWindows="true">
 
-                <!--<androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_our_stores"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/rl_our_store"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:layout_marginVertical="@dimen/_8sdp" />-->
+                    android:layout_height="wrap_content">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_our_stores"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_8sdp" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_our_stores"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_8sdp" />
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
             </androidx.core.widget.NestedScrollView>
 
 
@@ -52,3 +56,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
+
+
+    <!--<androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_our_stores"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        android:layout_marginVertical="@dimen/_8sdp" />-->

@@ -224,7 +224,7 @@
         <entry key="app/src/main/res/layout/fragment_addresses.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_addresses_form.xml" value="0.15" />
         <entry key="app/src/main/res/layout/fragment_app_info.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_basket_detail.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_basket_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_basket_page.xml" value="0.1286231884057971" />
         <entry key="app/src/main/res/layout/fragment_basket_product_detail.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_cms.xml" value="0.13240740740740742" />
@@ -266,7 +266,7 @@
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_splash_screen.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_store_detail.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_store_detail.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_terms_condition.xml" value="0.285" />
         <entry key="app/src/main/res/layout/fragment_ticket_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_verify_otp.xml" value="0.18" />
