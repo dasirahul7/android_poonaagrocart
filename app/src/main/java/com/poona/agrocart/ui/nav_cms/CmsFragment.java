@@ -84,13 +84,13 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
         } else if (fromScreen.equals(fromScreenHome)) {
             fragmentCmsBinding.actionBar.setVisibility(View.GONE);
             if (cmsType == 0) {
-                initTitleBar(getString(R.string.about_us));
+                initTitleWithBackBtn(getString(R.string.about_us));
             } else if (cmsType == 1) {
-                initTitleBar(getString(R.string.terms_and_conditions));
+                initTitleWithBackBtn(getString(R.string.terms_and_conditions));
             } else if (cmsType == 2) {
-                initTitleBar(getString(R.string.privacy_policy));
+                initTitleWithBackBtn(getString(R.string.privacy_policy));
             } else if (cmsType == 3) {
-                initTitleBar(getString(R.string.return_and_refund_policy));
+                initTitleWithBackBtn(getString(R.string.return_and_refund_policy));
             }
         }
 
@@ -133,13 +133,16 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
                             if (cmsContent != null && !TextUtils.isEmpty(cmsContent)) {
                                 fragmentCmsBinding.wvCms.setVisibility(View.VISIBLE);
                                 fragmentCmsBinding.rlMessage.setVisibility(View.GONE);
+                                String htmlText = "<html><body style=\"text-align:justify\"> %s </body></Html>";
                                 wvCms.getSettings().setJavaScriptEnabled(true);
                                 //wvCms.setBackgroundColor(Color.parseColor("#233D69"));
+                                wvCms.getSettings().setMinimumFontSize(40);
                                 wvCms.getSettings().setDomStorageEnabled(true);
                                 wvCms.getSettings().setUseWideViewPort(true);
+                                wvCms.getSettings().setLoadWithOverviewMode(true);
                                 wvCms.setWebChromeClient(new WebChromeClient());
                                 wvCms.setWebViewClient(new WebViewClient());
-                                wvCms.loadData(cmsContent, "text/html", "UTF-8");
+                                wvCms.loadData(String.format(htmlText, cmsContent), "text/html", "UTF-8");
                             } else {
                                 fragmentCmsBinding.wvCms.setVisibility(View.GONE);
                                 fragmentCmsBinding.rlMessage.setVisibility(View.VISIBLE);

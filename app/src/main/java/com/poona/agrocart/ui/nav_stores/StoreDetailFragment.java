@@ -257,7 +257,7 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
 //        float zoomLevel = 16.0f; //This goes up to 21
 //        gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
         //gmap.animateCamera(CameraUpdateFactory.zoomTo(10), 5000, null);
-        gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(ny, 50), 5000, null);
+        gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(ny, 100), 5000, null);
        // gmap.animateCamera(CameraUpdateFactory.zoomTo(100));
 //        gmap.resetMinMaxZoomPreference();
 //        gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(ny, zoomLevel));

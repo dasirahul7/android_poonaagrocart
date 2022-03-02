@@ -126,7 +126,7 @@ public class GalleryFragment extends BaseFragment {
 
     private void setFragmentItem() {
         //Set up the view pager and fragments
-        GalleryFragmentAdapter adapter = new GalleryFragmentAdapter(getActivity().getSupportFragmentManager(), context);
+        GalleryFragmentAdapter adapter = new GalleryFragmentAdapter(getChildFragmentManager(), context);
 
         adapter.addFragment(PhotoGalleryFragment.newInstance(), getString(R.string.photo));
         adapter.addFragment(VideoGalleryFragment.newInstance(), getString(R.string.video));
