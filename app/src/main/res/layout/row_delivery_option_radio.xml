@@ -42,7 +42,7 @@
                     android:button="@drawable/bg_radio_button"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:text="@{modelDeliverySlot.slotName}"
+                    android:text='@{modelDeliverySlot.slotStartTime+` - `+ modelDeliverySlot.slotEndTime}'
                     android:textColor="@color/color_wallet_balance"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />

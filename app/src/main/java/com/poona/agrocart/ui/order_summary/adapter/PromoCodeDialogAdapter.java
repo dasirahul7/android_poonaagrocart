@@ -9,20 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
+import com.poona.agrocart.data.network.responses.Coupon;
 import com.poona.agrocart.databinding.RowPromoCodeRadioBinding;
 import com.poona.agrocart.ui.nav_offers.Coupons;
 
 import java.util.ArrayList;
 
 public class PromoCodeDialogAdapter extends RecyclerView.Adapter<PromoCodeDialogAdapter.PromoCodeHolder> {
-    private ArrayList<Coupons> promoCodeList = new ArrayList<>();
+    private ArrayList<Coupon> promoCodeList = new ArrayList<>();
     private final Context cpContext;
     private RowPromoCodeRadioBinding promoCodeRadioBinding;
     private int mSelectedItem = -1;
     private CompoundButton lastCheckedRB;
     private OnPromoCodeListener onPromoCodeListener;
 
-    public PromoCodeDialogAdapter(ArrayList<Coupons> couponsArrayList, Context context) {
+    public PromoCodeDialogAdapter(ArrayList<Coupon> couponsArrayList, Context context) {
         this.promoCodeList = couponsArrayList;
         this.cpContext = context;
     }
@@ -40,7 +41,7 @@ public class PromoCodeDialogAdapter extends RecyclerView.Adapter<PromoCodeDialog
 
     @Override
     public void onBindViewHolder(@NonNull PromoCodeDialogAdapter.PromoCodeHolder holder, int position) {
-        Coupons coupon = promoCodeList.get(position);
+        Coupon coupon = promoCodeList.get(position);
         promoCodeRadioBinding.setModelPromoCode(coupon);
         holder.codeRadioBinding.prRadio.setChecked(mSelectedItem == position);
         holder.codeRadioBinding.prRadio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -63,7 +64,7 @@ public class PromoCodeDialogAdapter extends RecyclerView.Adapter<PromoCodeDialog
     }
 
     public interface OnPromoCodeListener {
-        void OnPromoCodeClick(Coupons coupons);
+        void OnPromoCodeClick(Coupon coupons);
     }
 
     public class PromoCodeHolder extends RecyclerView.ViewHolder {
@@ -77,7 +78,7 @@ public class PromoCodeDialogAdapter extends RecyclerView.Adapter<PromoCodeDialog
 
         }
 
-        public void promoBind(Coupons coupons) {
+        public void promoBind(Coupon coupons) {
             codeRadioBinding.setVariable(BR.productOldModule, coupons);
             codeRadioBinding.executePendingBindings();
             itemView.setOnClickListener(v -> {

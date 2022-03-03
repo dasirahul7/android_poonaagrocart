@@ -150,6 +150,8 @@
         <entry key="app/src/main/res/drawable/ic_sign_up_mobile_check.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_sign_up_mobile_uncheck.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_spinner_black.xml" value="0.10520833333333333" />
+        <entry key="app/src/main/res/drawable/ic_step_three.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/ic_step_two.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/ic_store.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_strok.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/ic_subtract_1_.xml" value="0.18888888888888888" />
@@ -214,6 +216,7 @@
         <entry key="app/src/main/res/layout/custom_spinner_list_item_checked.xml" value="0.17" />
         <entry key="app/src/main/res/layout/dialog_basket_filter_list.xml" value="0.18" />
         <entry key="app/src/main/res/layout/dialog_delete_notification.xml" value="0.15818725951261223" />
+        <entry key="app/src/main/res/layout/dialog_delivery_options.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_new_ticket.xml" value="0.15092592592592594" />
         <entry key="app/src/main/res/layout/dialog_select_photo.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_server_error.xml" value="0.19270833333333334" />
@@ -248,7 +251,7 @@
         <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.19" />
         <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_order_details.xml" value="0.17025641025641025" />
-        <entry key="app/src/main/res/layout/fragment_order_summary.xml" value="0.15534420289855072" />
+        <entry key="app/src/main/res/layout/fragment_order_summary.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_order_track.xml" value="0.15534420289855072" />
         <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.12907608695652173" />
         <entry key="app/src/main/res/layout/fragment_our_stores.xml" value="0.1272644927536232" />
@@ -283,6 +286,7 @@
         <entry key="app/src/main/res/layout/order_review_comment_recycler_view_item.xml" value="0.17025641025641025" />
         <entry key="app/src/main/res/layout/photo_image_pop_up_dailog.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/privacy_fragment.xml" value="0.11684782608695653" />
+        <entry key="app/src/main/res/layout/row_address_radio.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_banner.xml" value="0.14356884057971014" />
         <entry key="app/src/main/res/layout/row_basket_item.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/row_basket_list_item.xml" value="0.1" />
@@ -291,6 +295,7 @@
         <entry key="app/src/main/res/layout/row_category_item.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/row_check_box_item.xml" value="0.32987551867219916" />
         <entry key="app/src/main/res/layout/row_coupon_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/row_delivery_option_radio.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_exclusive_item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/row_explore_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/row_favourite_list_item.xml" value="0.17291666666666666" />
@@ -298,6 +303,7 @@
         <entry key="app/src/main/res/layout/row_photo_item.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/row_product_item.xml" value="0.16" />
         <entry key="app/src/main/res/layout/row_product_list_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/row_promo_code_radio.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_seasonal_banner.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_weight.xml" value="0.5" />
         <entry key="app/src/main/res/layout/rv_address.xml" value="0.15534420289855072" />

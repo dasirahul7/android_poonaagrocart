@@ -353,7 +353,7 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/line2"
+                android:id="@+id/viewline1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
                 android:layout_marginHorizontal="@dimen/_16sdp"
@@ -373,7 +373,7 @@
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line2"
+                app:layout_constraintTop_toBottomOf="@+id/viewline1"
                 app:setCustomFont="@string/font_poppins_regular" />
 
             <LinearLayout

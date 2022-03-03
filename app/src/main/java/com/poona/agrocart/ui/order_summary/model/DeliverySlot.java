@@ -1,6 +1,30 @@
 package com.poona.agrocart.ui.order_summary.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class DeliverySlot {
+    @SerializedName("delivery_days_id")
+    @Expose
+    public String deliveryDaysId;
+    @SerializedName("delivery_day")
+    @Expose
+    public String deliveryDay;
+    @SerializedName("slot_id")
+    @Expose
+    public String slotId;
+    @SerializedName("slot_start_time")
+    @Expose
+    public String slotStartTime;
+    @SerializedName("slot_end_time")
+    @Expose
+    public String slotEndTime;
+    @SerializedName("available_delivaries")
+    @Expose
+    public String availableDelivaries;
+    @SerializedName("is_delivery_available")
+    @Expose
+    public Integer isDeliveryAvailable;
     String SlotName;
     boolean active;
 

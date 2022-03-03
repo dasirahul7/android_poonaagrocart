@@ -6,7 +6,7 @@
 
         <variable
             name="productAndPrice"
-            type="com.poona.agrocart.ui.order_summary.model.ProductAndPrice" />
+            type="com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail" />
     </data>
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="50"
             android:singleLine="true"
-            android:text="@{productAndPrice.productName}"
+            android:text='@{productAndPrice.productName ?? productAndPrice.basketName}'
             android:textColor="@color/black"
             android:textSize="@dimen/_16sp"
             app:setCustomFont="@string/font_poppins_regular" />
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="25"
             android:singleLine="true"
-            android:text="@{productAndPrice.dividedPrice}"
+            android:text='@{`Rs.`+productAndPrice.pricePerQuantity+` * `+productAndPrice.quantity}'
             android:textColor="@color/black"
             android:textSize="@dimen/_16sp"
             app:setCustomFont="@string/font_poppins_regular" />
@@ -41,7 +41,7 @@
             android:layout_weight="25"
             android:gravity="end"
             android:singleLine="true"
-            android:text="@{productAndPrice.finalPrice}"
+            android:text='@{`Rs.`+productAndPrice.totalPrice}'
             android:textColor="@color/color_discount_text"
             android:textSize="@dimen/_16sp"
             app:setCustomFont="@string/font_poppins_regular" />

@@ -130,7 +130,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         fragmentOrderViewBinding.tvProductDetails.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.llSubTotal.setVisibility(View.GONE);
-        fragmentOrderViewBinding.line2.setVisibility(View.GONE);
+        fragmentOrderViewBinding.viewline1.setVisibility(View.GONE);
     }
 
     private void setBasketContentsVisible() {
@@ -138,7 +138,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         fragmentOrderViewBinding.tvProductDetails.setVisibility(View.GONE);
         fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
         fragmentOrderViewBinding.llSubTotal.setVisibility(View.VISIBLE);
-        fragmentOrderViewBinding.line2.setVisibility(View.VISIBLE);
+        fragmentOrderViewBinding.viewline1.setVisibility(View.VISIBLE);
     }
 
     private void setRVAdapter() {

@@ -6,7 +6,7 @@
 
         <variable
             name="modelPromoCode"
-            type="com.poona.agrocart.ui.nav_offers.Coupons" />
+            type="com.poona.agrocart.data.network.responses.Coupon" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,7 +62,7 @@
                             android:layout_height="wrap_content"
                             android:paddingStart="@dimen/_5sdp"
                             android:paddingEnd="@dimen/_5sdp"
-                            android:text="@{modelPromoCode.title}"
+                            android:text='@{`Get UpTo `+modelPromoCode.discountPercentage +` OFF`}'
                             android:textColor="@color/black"
                             android:textSize="@dimen/_16sp"
                             app:setCustomFont="@string/font_poppins_bold" />
@@ -95,7 +95,7 @@
                     android:gravity="start"
                     android:paddingStart="@dimen/_50sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:text="@{modelPromoCode.validMsg}"
+                    android:text='@{`Offer is valid for minimum purchase of Rs.`+modelPromoCode.minOrderAmount}'
                     android:textColor="@color/color_coupon_code_et"
                     android:textSize="@dimen/_12sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />

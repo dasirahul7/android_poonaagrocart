@@ -2,6 +2,7 @@ package com.poona.agrocart.data.shared_preferences;
 
 import static com.poona.agrocart.app.AppConstants.AUTHORIZATION_TOKEN;
 import static com.poona.agrocart.app.AppConstants.COUNTRY_CODE;
+import static com.poona.agrocart.app.AppConstants.DELIVERY_ADDRESS;
 import static com.poona.agrocart.app.AppConstants.FCM_TOKEN;
 import static com.poona.agrocart.app.AppConstants.FROM_LOG_OUT;
 import static com.poona.agrocart.app.AppConstants.GOOGLE_API_KEY;
@@ -41,6 +42,9 @@ public class AppSharedPreferences {
     int PRIVATE_MODE = 0;
     String googleApiKey;
     private String fireBaseToken, authorizationToken, uid, userMobile, userCountry, userAddress, baseAuthUsername, baseAuthPassword, userName, userProfile;
+
+    /*Order summary*/
+    private String deliveryAddress;
     private int newOrderCount;
     private boolean isLoggedIn, isIntroRead, fromLogOut, isVerified;
     private String userType;
@@ -59,6 +63,16 @@ public class AppSharedPreferences {
     public void setFCMToken(String deviceToken) {
         this.fireBaseToken = deviceToken;
         this.editor.putString(FCM_TOKEN, deviceToken);
+        this.editor.commit();
+    }
+
+    public String getDeliveryAddress() {
+        return this.preferences.getString(DELIVERY_ADDRESS,"");
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+        this.editor.putString(DELIVERY_ADDRESS,deliveryAddress);
         this.editor.commit();
     }
 

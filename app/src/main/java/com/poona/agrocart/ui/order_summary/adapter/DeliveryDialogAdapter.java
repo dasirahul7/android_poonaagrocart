@@ -20,10 +20,24 @@ public class DeliveryDialogAdapter extends RecyclerView.Adapter<DeliveryDialogAd
     private RowDeliveryOptionRadioBinding deliveryOptionsBinding;
     private int mSelectedItem = -1;
     private CompoundButton lastCheckedRB;
+    private OnSlotClickListener onSlotClickListener;
 
-    public DeliveryDialogAdapter(ArrayList<DeliverySlot> deliverySlots, Context dlContext) {
+    public DeliveryDialogAdapter(ArrayList<DeliverySlot> deliverySlots, Context dlContext,OnSlotClickListener onSlotClickListener) {
         this.deliverySlots = deliverySlots;
+        this.onSlotClickListener = onSlotClickListener;
         this.dlContext = dlContext;
+    }
+
+    public interface OnSlotClickListener{
+        void OnSlotClick(DeliverySlot deliverySlot);
+    }
+
+    public OnSlotClickListener getOnSlotClickListener() {
+        return onSlotClickListener;
+    }
+
+    public void setOnSlotClickListener(OnSlotClickListener onSlotClickListener) {
+        this.onSlotClickListener = onSlotClickListener;
     }
 
     @NonNull
@@ -70,6 +84,9 @@ public class DeliveryDialogAdapter extends RecyclerView.Adapter<DeliveryDialogAd
             optionsBinding.executePendingBindings();
             itemView.setOnClickListener(v -> {
                 mSelectedItem = getBindingAdapterPosition();
+            });
+            optionsBinding.rdSlot.setOnCheckedChangeListener((compoundButton, b) -> {
+                onSlotClickListener.OnSlotClick(slot);
             });
         }
     }

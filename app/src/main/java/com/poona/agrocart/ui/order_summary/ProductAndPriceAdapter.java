@@ -9,15 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
 import com.poona.agrocart.databinding.RvProductAndPriceDetailsBinding;
 import com.poona.agrocart.ui.order_summary.model.ProductAndPrice;
 
 import java.util.ArrayList;
 
 public class ProductAndPriceAdapter extends RecyclerView.Adapter<ProductAndPriceAdapter.ProductAndPriceViewHolder> {
-    private final ArrayList<ProductAndPrice> productAndPriceArrayList;
+    private final ArrayList<ItemsDetail> productAndPriceArrayList;
 
-    public ProductAndPriceAdapter(ArrayList<ProductAndPrice> productAndPriceArrayList) {
+    public ProductAndPriceAdapter(ArrayList<ItemsDetail> productAndPriceArrayList) {
         this.productAndPriceArrayList = productAndPriceArrayList;
     }
 
@@ -31,9 +32,9 @@ public class ProductAndPriceAdapter extends RecyclerView.Adapter<ProductAndPrice
 
     @Override
     public void onBindViewHolder(@NonNull ProductAndPriceViewHolder holder, int position) {
-        final ProductAndPrice productAndPrice = productAndPriceArrayList.get(position);
-        holder.rvProductAndPriceDetailsBinding.setProductAndPrice(productAndPrice);
-        holder.bind(productAndPrice);
+        final ItemsDetail itemsDetail = productAndPriceArrayList.get(position);
+        holder.rvProductAndPriceDetailsBinding.setProductAndPrice(itemsDetail);
+        holder.bind(itemsDetail);
     }
 
     @Override
@@ -49,8 +50,8 @@ public class ProductAndPriceAdapter extends RecyclerView.Adapter<ProductAndPrice
             this.rvProductAndPriceDetailsBinding = rvProductAndPriceDetailsBinding;
         }
 
-        public void bind(ProductAndPrice productAndPrice) {
-            rvProductAndPriceDetailsBinding.setVariable(BR.productAndPrice, productAndPrice);
+        public void bind(ItemsDetail itemsDetail) {
+            rvProductAndPriceDetailsBinding.setVariable(BR.productAndPrice, itemsDetail);
             rvProductAndPriceDetailsBinding.executePendingBindings();
         }
     }

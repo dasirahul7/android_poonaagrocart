@@ -6,7 +6,7 @@
 
         <variable
             name="modelAddress"
-            type="com.poona.agrocart.ui.order_summary.model.Address" />
+            type="com.poona.agrocart.data.network.responses.AddressesResponse.Address" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_5sdp"
-            android:text="@{modelAddress.addTitle}"
+            android:text="@{modelAddress.addressType}"
             android:textColor="@color/colorGrey"
             android:textSize="@dimen/_16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +52,7 @@
                     android:button="@drawable/bg_radio_button"
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
-                    android:text="@{modelAddress.addContent}"
+                    android:text="@{modelAddress.fullAddress}"
                     android:textSize="@dimen/_16sp" />
 
             </LinearLayout>

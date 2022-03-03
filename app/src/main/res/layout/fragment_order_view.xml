@@ -438,7 +438,7 @@
                 </LinearLayout>
 
                 <View
-                    android:id="@+id/line2"
+                    android:id="@+id/viewline1"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_4sdp"

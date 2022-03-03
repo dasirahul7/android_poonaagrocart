@@ -274,6 +274,7 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                     address.setIsDefault(isDefaultAddress);
 
                 addressArrayList.set(i, address);
+                preferences.setDeliveryAddress(getCompletedAddress(address));
             }
             if (position != -1) {
                 AddressesResponse.Address address = new AddressesResponse.Address();
@@ -350,6 +351,8 @@ public class AddressesFragment extends BaseFragment implements View.OnClickListe
                 address.setIsDefault(isDefaultAddress);
 
                 addressArrayList.set(position, address);
+
+                preferences.setDeliveryAddress(getCompletedAddress(address));
             }
         }
         addressesAdapter.notifyDataSetChanged();

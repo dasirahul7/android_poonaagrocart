@@ -1,10 +1,25 @@
 package com.poona.agrocart.ui.order_summary;
 
+import static com.poona.agrocart.app.AppConstants.ADD_ADDRESS_DETAILS;
+import static com.poona.agrocart.app.AppConstants.ADD_UPDATE_ADDRESS_DETAILS;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
+import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,20 +30,30 @@ import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.library.baseAdapters.BR;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.AddressesResponse;
+import com.poona.agrocart.data.network.responses.Coupon;
+import com.poona.agrocart.data.network.responses.orderResponse.Delivery;
+import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
+import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.databinding.DialogDeliveryOptionsBinding;
 import com.poona.agrocart.databinding.FragmentOrderSummaryBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_offers.Coupons;
 import com.poona.agrocart.ui.order_summary.adapter.AddressDialogAdapter;
 import com.poona.agrocart.ui.order_summary.adapter.DeliveryDialogAdapter;
 import com.poona.agrocart.ui.order_summary.adapter.PromoCodeDialogAdapter;
-import com.poona.agrocart.ui.order_summary.model.Address;
 import com.poona.agrocart.ui.order_summary.model.DeliverySlot;
 import com.poona.agrocart.ui.order_summary.model.ProductAndPrice;
 import com.poona.agrocart.widgets.CustomTextView;
@@ -37,19 +62,34 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class OrderSummaryFragment extends BaseFragment implements View.OnClickListener {
+public class OrderSummaryFragment extends BaseFragment implements View.OnClickListener, AddressDialogAdapter.OnAddressClickListener, DeliveryDialogAdapter.OnSlotClickListener {
+    private static String TAG = OrderSummaryFragment.class.getSimpleName();
     private FragmentOrderSummaryBinding fragmentOrderSummaryBinding;
     private DialogDeliveryOptionsBinding deliveryOptionsBinding;
+    private OrderSummaryViewModel orderSummaryViewModel;
     private RecyclerView rvProductsAndPrices;
     private LinearLayoutManager linearLayoutManager;
     private ProductAndPriceAdapter productAndPriceAdapter;
-    private ArrayList<ProductAndPrice> productAndPriceArrayList;
+    private ArrayList<ItemsDetail> itemsDetailArrayList;
 
     private View navHostFragment;
     private ViewGroup.MarginLayoutParams navHostMargins;
     private float scale;
     private Calendar calendar;
     private int mYear, mMonth, mDay;
+    private ConstraintLayout mainLayout;
+    private SwipeRefreshLayout rlRefreshPage;
+    private boolean stepAddress, stepOrder,stepPayment;
+    private ArrayList<AddressesResponse.Address> addressArrayList;
+    private ArrayList<Coupon> couponArrayList;
+    private ArrayList<Delivery> deliveryArrayList;
+    private ArrayList<DeliverySlot> deliverySlotArrayList;
+    private AddressDialogAdapter addressDialogAdapter;
+    private PromoCodeDialogAdapter codeDialogAdapter;
+    private DeliveryDialogAdapter deliveryDialogAdapter;
+    private Dialog addressDialog;
+    private Dialog deliveryDialog;
+    private Dialog promoCodeDialog;
 
     @Override
     public void onPause() {
@@ -83,35 +123,45 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentOrderSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_summary, container, false);
         fragmentOrderSummaryBinding.setLifecycleOwner(this);
+        orderSummaryViewModel = new ViewModelProvider(this).get(OrderSummaryViewModel.class);
         final View view = fragmentOrderSummaryBinding.getRoot();
 
         initTitleWithBackBtn(getString(R.string.order_summary));
         initView();
-        setRvAdapter();
 
+        rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                rlRefreshPage.setRefreshing(true);
+                mainLayout.setVisibility(View.GONE);
+                if (isConnectingToInternet(context)) {
+                    callOrderSummaryAPI(showCircleProgressDialog(context, ""));
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
+
+        /*Coupon apply or remove button*/
+        fragmentOrderSummaryBinding.etCouponCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == 0) {
+                    fragmentOrderSummaryBinding.btnRemove.setText("Apply");
+                } else fragmentOrderSummaryBinding.btnRemove.setText("Remove");
+            }
+        });
         return view;
-    }
-
-    private void setRvAdapter() {
-        productAndPriceArrayList = new ArrayList<>();
-        prepareListingData();
-
-        linearLayoutManager = new LinearLayoutManager(requireContext());
-        rvProductsAndPrices.setHasFixedSize(true);
-        rvProductsAndPrices.setLayoutManager(linearLayoutManager);
-
-        productAndPriceAdapter = new ProductAndPriceAdapter(productAndPriceArrayList);
-        rvProductsAndPrices.setAdapter(productAndPriceAdapter);
-    }
-
-    private void prepareListingData() {
-        for (int i = 0; i < 3; i++) {
-            ProductAndPrice productAndPrice = new ProductAndPrice();
-            productAndPrice.setProductName(getString(R.string.bell_pepper_red_1kg));
-            productAndPrice.setDividedPrice(getString(R.string.rs_200_x_4));
-            productAndPrice.setFinalPrice(getString(R.string.rs_740));
-            productAndPriceArrayList.add(productAndPrice);
-        }
     }
 
     private void setBottomMarginInDps(int i) {
@@ -121,6 +171,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
     private void initView() {
         rvProductsAndPrices = fragmentOrderSummaryBinding.rvProductsAndPrices;
+        mainLayout = fragmentOrderSummaryBinding.mainLayout;
+        rlRefreshPage = fragmentOrderSummaryBinding.rlRefreshPage;
+        mainLayout.setVisibility(View.GONE);
         Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_medium));
         fragmentOrderSummaryBinding.rbCod.setTypeface(font);
         fragmentOrderSummaryBinding.rbOnline.setTypeface(font);
@@ -141,7 +194,146 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         navHostMargins = (ViewGroup.MarginLayoutParams) navHostFragment.getLayoutParams();
         navHostMargins.bottomMargin = 0;
         fragmentOrderSummaryBinding.btnMakePayment.setOnClickListener(this::onClick);
+
+        if (isConnectingToInternet(context)) {
+            callOrderSummaryAPI(showCircleProgressDialog(context, ""));
+        } else showNotifyAlert(requireActivity(), context.getString(R.string.info),
+                context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
     }
+
+    /*Call Order Summary API here*/
+    private void callOrderSummaryAPI(ProgressDialog progressDialog) {
+        Observer<OrderSummaryResponse> orderSummaryResponseObserver = orderSummaryResponse -> {
+            if (orderSummaryResponse != null) {
+                rlRefreshPage.setRefreshing(false);
+                if (progressDialog != null)
+                    progressDialog.dismiss();
+                Log.e(TAG, "callOrderSummaryAPI: " + new Gson().toJson(orderSummaryResponse));
+                switch (orderSummaryResponse.status) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        mainLayout.setVisibility(View.VISIBLE);
+                        if (orderSummaryResponse.address.size() == 0) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString(ADD_UPDATE_ADDRESS_DETAILS, ADD_ADDRESS_DETAILS);
+                            bundle.putString(FROM_SCREEN, ORDER_SUMMARY);
+                            NavHostFragment.findNavController(OrderSummaryFragment.this).navigate(R.id.action_nav_order_summary_to_addAddressFragment, bundle);
+                        } else {
+                            checkOrderSummaryStatus();
+                            orderSummaryViewModel.initViewModel(orderSummaryResponse, context);
+                            fragmentOrderSummaryBinding.setOrderSummaryViewModel(orderSummaryViewModel);
+                            fragmentOrderSummaryBinding.setVariable(BR.orderSummaryViewModel, orderSummaryViewModel);
+                            initAddressDialog();
+                            initExpectedDeliveryDialog();
+                            initPromoCodeDialog();
+                            initItemsDetails();
+                            initPaymentTypes();
+
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, orderSummaryResponse.message);
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(orderSummaryResponse.message, context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, orderSummaryResponse.message);
+                        break;
+                }
+
+            }
+        };
+        orderSummaryViewModel.getOrderSummaryResponse(progressDialog, OrderSummaryFragment.this)
+                .observe(getViewLifecycleOwner(), orderSummaryResponseObserver);
+    }
+
+    /*Init payment options here*/
+    private void initPaymentTypes() {
+        orderSummaryViewModel.arrayPaymentListMutableLiveData.observe(getViewLifecycleOwner(),payments -> {
+            if (payments.size()>0){
+                if (payments.get(0).paymentModeStatus.equalsIgnoreCase("1"))
+                    orderSummaryViewModel.paymentCashMutable.setValue(payments.get(0).paymentType);
+                if (payments.get(1).paymentModeStatus.equalsIgnoreCase("1"))
+                    orderSummaryViewModel.paymentOnlineMutable.setValue(payments.get(0).paymentType);
+                if (payments.get(2).paymentModeStatus.equalsIgnoreCase("1"))
+                    orderSummaryViewModel.paymentWalletMutable.setValue(payments.get(0).paymentType);
+            }
+        });
+    }
+
+    //Init Dialog Lists here
+    private void initAddressDialog() {
+        addressArrayList = new ArrayList<>();
+        orderSummaryViewModel.arrayAddressListMutableLiveData.observe(getViewLifecycleOwner(), address -> {
+            addressArrayList.addAll(address);
+            for (int i = 0; i < addressArrayList.size(); i++) {
+                AddressesResponse.Address newAddress = setCompletedAddress(addressArrayList.get(i));
+                addressArrayList.set(i, newAddress);
+                if (addressArrayList.get(i).getIsDefault().equalsIgnoreCase("yes")) {
+                    preferences.setDeliveryAddress(newAddress.getFullAddress());
+                    orderSummaryViewModel.deliveryAddressMutable.setValue(newAddress.getFullAddress());
+                }
+            }
+            addressDialogAdapter = new AddressDialogAdapter(addressArrayList, getActivity(), this);
+        });
+    }
+
+    /*Expected delivery here*/
+    private void initExpectedDeliveryDialog() {
+        deliveryArrayList = new ArrayList<>();
+        deliverySlotArrayList = new ArrayList<>();
+        orderSummaryViewModel.arrayDeliveryListMutableLiveData.observe(getViewLifecycleOwner(), deliveries -> {
+            deliveryArrayList.addAll(deliveries);
+            deliverySlotArrayList.addAll(deliveries.get(0).deliverySlots);
+            deliveryDialogAdapter = new DeliveryDialogAdapter(deliverySlotArrayList, context, this);
+        });
+    }
+
+    /*Promo code here*/
+    private void initPromoCodeDialog() {
+        couponArrayList = new ArrayList<>();
+        orderSummaryViewModel.arrayCouponListMutableLiveData.observe(getViewLifecycleOwner(), coupons -> {
+            couponArrayList.addAll(coupons);
+            codeDialogAdapter = new PromoCodeDialogAdapter(couponArrayList, context);
+        });
+    }
+
+    /*Item details here*/
+    private void initItemsDetails() {
+        itemsDetailArrayList = new ArrayList<>();
+        orderSummaryViewModel.arrayItemListMutableLiveData.observe(getViewLifecycleOwner(),
+                itemsDetails -> {
+                    itemsDetailArrayList.clear();
+                    if (itemsDetails.size() > 0) {
+                        itemsDetailArrayList.addAll(itemsDetails);
+                        linearLayoutManager = new LinearLayoutManager(requireContext());
+                        rvProductsAndPrices.setHasFixedSize(true);
+                        rvProductsAndPrices.setLayoutManager(linearLayoutManager);
+                        productAndPriceAdapter = new ProductAndPriceAdapter(itemsDetailArrayList);
+                        rvProductsAndPrices.setAdapter(productAndPriceAdapter);
+                    }
+                });
+    }
+
+    private void checkOrderSummaryStatus() {
+        if (stepAddress)
+            fragmentOrderSummaryBinding.tvStep1.setBackground(context.getDrawable(R.drawable.ic_step_done));
+        else
+            fragmentOrderSummaryBinding.tvStep1.setBackground(context.getDrawable(R.drawable.ic_step_active));
+        if (stepOrder)
+            fragmentOrderSummaryBinding.tvStep2.setBackground(context.getDrawable(R.drawable.ic_step_done));
+        else
+            fragmentOrderSummaryBinding.tvStep2.setBackground(context.getDrawable(R.drawable.ic_step_active));
+        if (stepPayment)
+            fragmentOrderSummaryBinding.tvStep3.setBackground(context.getDrawable(R.drawable.ic_step_done));
+        else
+            fragmentOrderSummaryBinding.tvStep3.setBackground(context.getDrawable(R.drawable.ic_step_active));
+
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -198,106 +390,88 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     }
 
     public void openAddressOptionsDialog() {
-        Dialog dialog = new Dialog(new ContextThemeWrapper(getActivity(), R.style.DialogAnimationUp));
-        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_order_summary);
+        addressDialog = new Dialog(new ContextThemeWrapper(getActivity(), R.style.DialogAnimationUp));
+        addressDialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
+        addressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        addressDialog.setContentView(R.layout.dialog_order_summary);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.copyFrom(addressDialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        dialog.getWindow().setAttributes(lp);
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-        ImageView closeImg = dialog.findViewById(R.id.close_btn);
-        RecyclerView rvAddress = dialog.findViewById(R.id.rv_address);
-        ArrayList<Address> addresses = new ArrayList<Address>();
-        Address address = new Address("Home", getString(R.string.sample_address1));
-        Address address1 = new Address("Office", getString(R.string.sample_address2));
-        Address address2 = new Address("Others", getString(R.string.sample_address1));
-        addresses.add(address);
-        addresses.add(address1);
-        addresses.add(address2);
-        AddressDialogAdapter addressDialogAdapter = new AddressDialogAdapter(addresses, getActivity());
+        addressDialog.getWindow().setAttributes(lp);
+        addressDialog.getWindow().setGravity(Gravity.BOTTOM);
+        ImageView closeImg = addressDialog.findViewById(R.id.close_btn);
+        RecyclerView rvAddress = addressDialog.findViewById(R.id.rv_address);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         rvAddress.setLayoutManager(layoutManager);
         rvAddress.setAdapter(addressDialogAdapter);
         closeImg.setOnClickListener(v -> {
-            dialog.dismiss();
+            addressDialog.dismiss();
         });
 
-        dialog.show();
+        addressDialog.show();
     }
 
     public void openPromoOptionsDialog() {
-        Dialog dialog = new Dialog(new ContextThemeWrapper(getActivity(), R.style.DialogAnimationUp));
-        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_order_summary);
+        promoCodeDialog = new Dialog(new ContextThemeWrapper(getActivity(), R.style.DialogAnimationUp));
+        promoCodeDialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
+        promoCodeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        promoCodeDialog.setContentView(R.layout.dialog_order_summary);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.copyFrom(promoCodeDialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        dialog.getWindow().setAttributes(lp);
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-        ImageView closeImg = dialog.findViewById(R.id.close_btn);
-        CustomTextView tvtTitle = dialog.findViewById(R.id.tv_title);
+        promoCodeDialog.getWindow().setAttributes(lp);
+        promoCodeDialog.getWindow().setGravity(Gravity.BOTTOM);
+        ImageView closeImg = promoCodeDialog.findViewById(R.id.close_btn);
+        CustomTextView tvtTitle = promoCodeDialog.findViewById(R.id.tv_title);
         tvtTitle.setText(R.string.promo_code);
-        RecyclerView rvPromoCode = dialog.findViewById(R.id.rv_address);
-        ArrayList<Coupons> coupons = new ArrayList<Coupons>();
-        Coupons coupon = new Coupons(1, "Get Upto 20% OFF   ", "PROMO0001AFF",
-                "Offer is valid for minium purchase of Rs 200 .");
-        for (int i = 0; i < 3; i++) {
-            coupons.add(coupon);
-        }
-        PromoCodeDialogAdapter codeDialogAdapter = new PromoCodeDialogAdapter(coupons, getActivity());
+        RecyclerView rvPromoCode = promoCodeDialog.findViewById(R.id.rv_address);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         rvPromoCode.setLayoutManager(layoutManager);
         rvPromoCode.setAdapter(codeDialogAdapter);
         closeImg.setOnClickListener(v -> {
-            dialog.dismiss();
+            promoCodeDialog.dismiss();
         });
         codeDialogAdapter.setOnPromoCodeListener(coupons1 -> {
             fragmentOrderSummaryBinding.etCouponCode.setText(coupons1.getCouponCode());
+            fragmentOrderSummaryBinding.btnRemove.setText("Remove");
+            promoCodeDialog.dismiss();
         });
-        dialog.show();
+        promoCodeDialog.show();
     }
 
     public void openDeliveryOptionsDialog() {
-        Dialog dialog = new Dialog(new ContextThemeWrapper(getActivity(), R.style.DialogAnimationUp));
-        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_delivery_options);
+        deliveryDialog = new Dialog(new ContextThemeWrapper(getActivity(), R.style.DialogAnimationUp));
+        deliveryDialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
+        deliveryDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        deliveryDialog.setContentView(R.layout.dialog_delivery_options);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.copyFrom(deliveryDialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        dialog.getWindow().setAttributes(lp);
+        deliveryDialog.getWindow().setAttributes(lp);
         deliveryOptionsBinding = DialogDeliveryOptionsBinding.inflate(LayoutInflater.from(context));
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-        ImageView closeImg = dialog.findViewById(R.id.close_btn);
-        CustomTextView tvtTitle = dialog.findViewById(R.id.tv_title);
-        CustomTextView tvDate = dialog.findViewById(R.id.tv_date_of_delivery);
+        deliveryDialog.getWindow().setGravity(Gravity.BOTTOM);
+        ImageView closeImg = deliveryDialog.findViewById(R.id.close_btn);
+        CustomTextView tvtTitle = deliveryDialog.findViewById(R.id.tv_title);
+        CustomTextView tvDate = deliveryDialog.findViewById(R.id.tv_date_of_delivery);
         tvtTitle.setText(R.string.exp_date);
-        RecyclerView rvDelivery = dialog.findViewById(R.id.rv_address);
-        ArrayList<DeliverySlot> deliverySlots = new ArrayList<>();
-        deliverySlots.add(new DeliverySlot(" 9 AM  to 12 PM", true));
-        deliverySlots.add(new DeliverySlot("12 PM  to 3 PM", true));
-        deliverySlots.add(new DeliverySlot(" 3 PM  to 6 PM", true));
-        deliverySlots.add(new DeliverySlot(" 6 PM  to 9 PM", true));
-        DeliveryDialogAdapter deliveryDialogAdapter = new DeliveryDialogAdapter(deliverySlots, context);
+        RecyclerView rvDelivery = deliveryDialog.findViewById(R.id.rv_address);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         rvDelivery.setLayoutManager(layoutManager);
         rvDelivery.setAdapter(deliveryDialogAdapter);
         closeImg.setOnClickListener(v -> {
-            dialog.dismiss();
+            deliveryDialog.dismiss();
         });
+        tvDate.setText(orderSummaryViewModel.deliveryDateMutable.getValue());
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCalendar(tvDate);
             }
         });
-        dialog.show();
+        deliveryDialog.show();
     }
 
     private void showCalendar(CustomTextView tvDate) {
@@ -313,7 +487,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 String txtDisplayDate = null;
-                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth + 1;
                 try {
                     txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
                 } catch (ParseException e) {
@@ -336,4 +510,18 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         dpd.show();
     }
 
+    @Override
+    public void OnAddressClick(AddressesResponse.Address address) {
+        addressDialog.dismiss();
+        preferences.setDeliveryAddress(address.getFullAddress());
+        fragmentOrderSummaryBinding.tvDeliveryAddress.setText(address.getFullAddress());
+        orderSummaryViewModel.deliveryAddressMutable.setValue(address.getFullAddress());
+    }
+
+    @Override
+    public void OnSlotClick(DeliverySlot deliverySlot) {
+        orderSummaryViewModel.deliverySlotMutable.setValue(deliverySlot.slotStartTime + " - " + deliverySlot.slotEndTime);
+        fragmentOrderSummaryBinding.tvTime.setText(deliverySlot.slotStartTime + " - " + deliverySlot.slotEndTime);
+        deliveryDialog.dismiss();
+    }
 }

@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.responses.Coupon;
 import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.databinding.DialogCouponTermsBinding;
 import com.poona.agrocart.databinding.FragmentCouponBinding;
@@ -51,7 +52,7 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
     private CouponViewModel couponViewModel;
     private FragmentCouponBinding fragmentCouponBinding;
     private CouponAdapter couponAdapter;
-    private List<CouponResponse.Coupon> couponArrayList = new ArrayList<>();
+    private List<Coupon> couponArrayList = new ArrayList<>();
     private final int limit = 0;
     private final int offset = 0;
 
@@ -209,7 +210,7 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void onCopyClick(CouponResponse.Coupon coupon) {
+    public void onCopyClick(Coupon coupon) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("CouponCode", coupon.getCouponCode());
         clipboard.setPrimaryClip(clip);

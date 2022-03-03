@@ -18,6 +18,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.ParseException;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -42,6 +43,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.model.ProductOld;
@@ -659,5 +661,44 @@ public abstract class BaseFragment extends Fragment {
     }
     public interface OnDialogRetryClickListener {
         void onDialogRetryClick();
+    }
+
+    public static String getCompletedAddress(AddressesResponse.Address address){
+        StringBuilder fullAddressSb = new StringBuilder();
+        if (address.getHouseNo() != null && !TextUtils.isEmpty(address.getHouseNo()))
+            fullAddressSb.append(address.getHouseNo() + ", ");
+        if (address.getAppartmentName() != null && !TextUtils.isEmpty(address.getAppartmentName()))
+            fullAddressSb.append(address.getAppartmentName() + ", ");
+        if (address.getStreet() != null && !TextUtils.isEmpty(address.getStreet()))
+            fullAddressSb.append(address.getStreet() + ", ");
+        if (address.getLandmark() != null && !TextUtils.isEmpty(address.getLandmark()))
+            fullAddressSb.append(address.getLandmark() + ", ");
+        if (address.getAreaName() != null && !TextUtils.isEmpty(address.getAreaName()))
+            fullAddressSb.append(address.getAreaName() + ", ");
+        if (address.getCityName() != null && !TextUtils.isEmpty(address.getCityName()))
+            fullAddressSb.append(address.getCityName() + ", ");
+        if (address.getPincode() != null && !TextUtils.isEmpty(address.getPincode()))
+            fullAddressSb.append(address.getPincode());
+        address.setFullAddress(fullAddressSb.toString());
+        return address.getFullAddress();
+    }
+    public static AddressesResponse.Address setCompletedAddress(AddressesResponse.Address address){
+        StringBuilder fullAddressSb = new StringBuilder();
+        if (address.getHouseNo() != null && !TextUtils.isEmpty(address.getHouseNo()))
+            fullAddressSb.append(address.getHouseNo() + ", ");
+        if (address.getAppartmentName() != null && !TextUtils.isEmpty(address.getAppartmentName()))
+            fullAddressSb.append(address.getAppartmentName() + ", ");
+        if (address.getStreet() != null && !TextUtils.isEmpty(address.getStreet()))
+            fullAddressSb.append(address.getStreet() + ", ");
+        if (address.getLandmark() != null && !TextUtils.isEmpty(address.getLandmark()))
+            fullAddressSb.append(address.getLandmark() + ", ");
+        if (address.getAreaName() != null && !TextUtils.isEmpty(address.getAreaName()))
+            fullAddressSb.append(address.getAreaName() + ", ");
+        if (address.getCityName() != null && !TextUtils.isEmpty(address.getCityName()))
+            fullAddressSb.append(address.getCityName() + ", ");
+        if (address.getPincode() != null && !TextUtils.isEmpty(address.getPincode()))
+            fullAddressSb.append(address.getPincode());
+        address.setFullAddress(fullAddressSb.toString());
+       return address;
     }
 }

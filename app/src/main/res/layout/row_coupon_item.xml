@@ -6,7 +6,7 @@
 
         <variable
             name="moduleCoupon"
-            type="com.poona.agrocart.data.network.responses.CouponResponse.Coupon" />
+            type="com.poona.agrocart.data.network.responses.Coupon" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -109,7 +109,7 @@
                 android:paddingStart="0dp"
                 android:paddingEnd="@dimen/_10sdp"
                 android:singleLine="true"
-                android:text="@{moduleCoupon.discountPercentage+moduleCoupon+`%`}"
+                android:text="@{moduleCoupon.discountPercentage+`%`}"
                 android:textColor="@color/dark_blue_color"
                 android:textSize="@dimen/_24sp"
                 android:textStyle="bold"
@@ -125,7 +125,7 @@
                 android:includeFontPadding="false"
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:singleLine="true"
-                android:text="@{`max`+moduleCoupon.discountMaxAmount+moduleCoupon+` Rs.`}"
+                android:text="@{`max `+moduleCoupon.discountMaxAmount+` Rs.`}"
                 android:textColor="@color/dark_blue_color"
                 android:textSize="@dimen/_12sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_discount"

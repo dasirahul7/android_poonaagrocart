@@ -33,6 +33,7 @@ import static com.poona.agrocart.app.AppConstants.ISSUE_TICKET;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.MY_NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
+import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.RATE_TO_BASKET;
@@ -95,6 +96,7 @@ import com.poona.agrocart.data.network.responses.help_center_response.TicketType
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
 import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
+import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.ViewConfigurationResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
@@ -103,7 +105,6 @@ import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResp
 
 import java.util.HashMap;
 
-import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
@@ -435,4 +436,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(RATE_ORDER)
     Single<BaseResponse> getSubmitRatingResponseOrder(@FieldMap HashMap<String, String> ratingAndFeedBackInputParameter);
+
+    @GET(ORDER_SUMMARY_API)
+    Single<OrderSummaryResponse> getOrderSummaryResponse();
 }

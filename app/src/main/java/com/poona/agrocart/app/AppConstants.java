@@ -7,6 +7,9 @@ public class AppConstants {
     /*m-staging URL*/
     public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing/";
 
+    /*Testing environment URL*/
+//    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing_dev/";
+
     /*m-staging Base URL for Image, Document*/
     public static final String IMAGE_DOC_BASE_URL = "";
 
@@ -208,6 +211,7 @@ public class AppConstants {
     public static final String DELETE_NOTIFICATION = "delete-notifications";
 
     /*Order Api*/
+    public static final String ORDER_SUMMARY_API = "order-summary-customer";
     public static final String RATE_ORDER = "rate-order";
 
    /* Rating and Review */
@@ -300,7 +304,9 @@ public class AppConstants {
 
     public static String ORDER_ID = "order_id";
 
-
+    /*Order Summary KEYS*/
+    public static final String ORDER_SUMMARY ="order-summary";
+    public static final String DELIVERY_ADDRESS ="delivery-address";
 
 }
 
