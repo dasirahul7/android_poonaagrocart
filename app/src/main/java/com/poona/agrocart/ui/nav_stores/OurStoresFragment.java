@@ -159,11 +159,12 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
                             storeArrayList.addAll(ourStoreListResponse.getData());
                             ourStoreAdapter.notifyDataSetChanged();
 
-                            /*if(ourStoreListResponse.getData() != null){
-                                llEmptyLayout.setVisibility(View.INVISIBLE);
-                                llMainLayout.setVisibility(View.VISIBLE);
-                            }*/
-                        }
+                            fragmentOurStoresBinding.llMainLayout.setVisibility(View.VISIBLE);
+                            fragmentOurStoresBinding.llEmptyScreen.setVisibility(View.GONE);
+                        }else {
+                            fragmentOurStoresBinding.llEmptyScreen.setVisibility(View.VISIBLE);
+                            fragmentOurStoresBinding.llMainLayout.setVisibility(View.GONE);
+                    }
 
                         break;
                     case STATUS_CODE_404://Validation Errors

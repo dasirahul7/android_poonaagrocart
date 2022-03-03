@@ -148,6 +148,7 @@ public class GalleryFragment extends BaseFragment {
 
         //makePhotoList();
         //makeVideoList();
+
         mViewModel.photoLiveData.setValue(photos);
         mViewModel.videoLiveData.setValue(videos);
     }

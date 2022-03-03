@@ -69,11 +69,10 @@
 
                 <ImageView
                     android:id="@+id/iv_icon"
-                    android:layout_width="@dimen/_60sdp"
-                    android:layout_height="@dimen/_60sdp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_80sdp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_address"
-                    app:tint="@color/colorAccent" />
+                    android:src="@drawable/ic_empty_delivery_address" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:layout_width="match_parent"

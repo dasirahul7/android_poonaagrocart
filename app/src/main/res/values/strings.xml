@@ -497,6 +497,7 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
 
     <!--Record not found-->
     <string name="sample_record_not_found">Record Not Found</string>
+    <string name="Orders_record_not_found">You have not placed an order yet. So, let\'s begin with shopping</string>
 
     <!--cms pages error messages-->
     <string name="error_message_about_us">There is no About Us content found!</string>
