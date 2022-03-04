@@ -62,9 +62,9 @@
             android:visibility="gone">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/empty_cart_img" />
+                android:layout_width="@dimen/_140sdp"
+                android:layout_height="@dimen/_140sdp"
+                android:src="@drawable/ic_empty_favourite" />
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_oops"

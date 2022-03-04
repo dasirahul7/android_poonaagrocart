@@ -74,6 +74,7 @@
             android:id="@+id/wv_cms"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_below="@id/action_bar"
             android:scrollbars="none" />
 
@@ -86,7 +87,7 @@
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_message"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true"

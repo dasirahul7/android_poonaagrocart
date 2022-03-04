@@ -23,12 +23,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.databinding.FragmentOurStoresBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.nav_notification.NotificationFragment;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListData;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 
@@ -39,6 +41,7 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
     private final int limit = 10;
     private FragmentOurStoresBinding fragmentOurStoresBinding;
     private OurStoreViewModel ourStoreViewModel;
+    private SwipeRefreshLayout refreshLayout;
     private RecyclerView rvOurStores;
     private LinearLayoutManager linearLayoutManager;
     private OurStoreAdapter ourStoreAdapter;
@@ -56,12 +59,29 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
         final View view = fragmentOurStoresBinding.getRoot();
 
         initView();
-        setRvAdapter();
+        if(isConnectingToInternet(context)){
+            setRvAdapter();
+        }else{
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                if(isConnectingToInternet(context)){
+                    setRvAdapter();
+                }else{
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
 
         return view;
     }
 
     private void initView() {
+        refreshLayout = fragmentOurStoresBinding.rlOurStore;
         rvOurStores = fragmentOurStoresBinding.rvOurStores;
         initTitleBar(getString(R.string.our_stores));
 
@@ -80,6 +100,7 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvOurStores.setHasFixedSize(true);
         rvOurStores.setLayoutManager(linearLayoutManager);
+        refreshLayout.setRefreshing(false);
 
         ourStoreAdapter = new OurStoreAdapter(storeArrayList, context, this);
         rvOurStores.setAdapter(ourStoreAdapter);
@@ -138,15 +159,15 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
                             storeArrayList.addAll(ourStoreListResponse.getData());
                             ourStoreAdapter.notifyDataSetChanged();
 
-                            /*if(ourStoreListResponse.getData() != null){
-                                llEmptyLayout.setVisibility(View.INVISIBLE);
-                                llMainLayout.setVisibility(View.VISIBLE);
-                            }*/
-                        }
+                            fragmentOurStoresBinding.llMainLayout.setVisibility(View.VISIBLE);
+                            fragmentOurStoresBinding.llEmptyScreen.setVisibility(View.GONE);
+                        }else {
+                            fragmentOurStoresBinding.llEmptyScreen.setVisibility(View.VISIBLE);
+                            fragmentOurStoresBinding.llMainLayout.setVisibility(View.GONE);
+                    }
 
                         break;
                     case STATUS_CODE_404://Validation Errors
-
                         warningToast(context, ourStoreListResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
@@ -190,6 +211,17 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
 
     @Override
     public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), OurStoresFragment.this, () -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if (from == 0) {
+                    callOurStoreListApi(showCircleProgressDialog(context,""),"RecyclerView");
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+
 
     }
 }

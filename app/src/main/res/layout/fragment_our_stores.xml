@@ -29,20 +29,67 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nv_our_store"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:fitsSystemWindows="true">
 
-                <!--<androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_our_stores"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/rl_our_store"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:layout_marginVertical="@dimen/_8sdp" />-->
+                    android:layout_height="wrap_content">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_our_stores"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_8sdp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:id="@+id/ll_main_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_our_stores"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginHorizontal="@dimen/_8sdp" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/llEmptyScreen"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/iv_error_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/ic_empty_our_shops"/>
+
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_error_message"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_14sdp"
+                                android:layout_marginRight="@dimen/_14sdp"
+                                android:gravity="center"
+                                android:padding="@dimen/_14sdp"
+                                android:text="@string/sample_record_not_found"
+                                android:textColor="@color/store_txt_color"
+                                android:textSize="@dimen/_16sdp"
+                                app:setCustomFont="@string/font_poppins_bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
             </androidx.core.widget.NestedScrollView>
 
 
@@ -52,3 +99,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
+
+
+    <!--<androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_our_stores"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        android:layout_marginVertical="@dimen/_8sdp" />-->

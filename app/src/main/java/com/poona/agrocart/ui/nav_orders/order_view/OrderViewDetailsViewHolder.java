@@ -36,7 +36,7 @@ public class OrderViewDetailsViewHolder extends AndroidViewModel {
             , HashMap<String, String> ratingAndFeedBackInputParameter, OrderViewFragment fragmentOrderViewBinding) {
 
         MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
-        ApiClientAuth.getClient(fragmentOrderViewBinding.getContext())
+        ApiClientAuth.getClient(fragmentOrderViewBinding.context)
                 .create(ApiInterface.class)
                 .getSubmitRatingResponseOrder(ratingAndFeedBackInputParameter)
                 .subscribeOn(Schedulers.io())
@@ -62,7 +62,7 @@ public class OrderViewDetailsViewHolder extends AndroidViewModel {
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-//                            ((NetworkExceptionListener) homeFragment).onNetworkException(1,"");
+                           // ((NetworkExceptionListener) fragmentOrderViewBinding).onNetworkException(1,"");
                         }
 
                         Log.e(TAG, e.getMessage());

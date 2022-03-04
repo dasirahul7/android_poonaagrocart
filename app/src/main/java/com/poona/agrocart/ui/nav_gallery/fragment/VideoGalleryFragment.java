@@ -96,7 +96,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
     private  ProgressBar progressDialog;
     private MediaController mediaController;
     private PlayerView playerView;
-    private SimpleExoPlayer simpleExoPlayer;
+    private ExoPlayer simpleExoPlayer;
 
 
     public static VideoGalleryFragment newInstance() {
@@ -241,7 +241,7 @@ public class VideoGalleryFragment extends BaseFragment implements VideoAdapter.O
 
         /*Exoplayer video mange and handling*/
 
-        simpleExoPlayer = new SimpleExoPlayer.Builder(context).build();
+        simpleExoPlayer = new ExoPlayer.Builder(context).build();
         playerView.setPlayer(simpleExoPlayer);
         MediaItem mediaItem = MediaItem.fromUri(strVideoView);
         simpleExoPlayer.addMediaItem(mediaItem);

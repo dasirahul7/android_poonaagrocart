@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
 
 import java.util.HashMap;
@@ -57,43 +58,45 @@ public class StoreDetailViewModel extends AndroidViewModel {
 
     }
 
-    public LiveData<OurStoreViewDataResponse> getOurStoreDetailsResponse(ProgressDialog progressDialog
-            , Context context, HashMap<String, String> ourStoreDetailsInputParameter) {
-        {
-            MutableLiveData<OurStoreViewDataResponse> ourStoreViewDataResponseMutableLiveData = new MutableLiveData<>();
+    public LiveData<OurStoreViewDataResponse> getOurStoreDetailsResponse(ProgressDialog progressDialog, Context context
+            , HashMap<String, String> ourStoreDetailsInputParameter, StoreDetailFragment storeDetailFragment) {
 
-            ApiClientAuth.getClient(context)
-                    .create(ApiInterface.class)
-                    .getOurStoreDetails(ourStoreDetailsInputParameter)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSingleObserver<OurStoreViewDataResponse>() {
-                        @Override
-                        public void onSuccess(@NonNull OurStoreViewDataResponse baseResponse) {
-                            progressDialog.dismiss();
 
-                            ourStoreViewDataResponseMutableLiveData.setValue(baseResponse);
-                        }
+                MutableLiveData<OurStoreViewDataResponse> ourStoreViewDataResponseMutableLiveData = new MutableLiveData<>();
 
-                        @Override
-                        public void onError(Throwable e) {
-                            progressDialog.dismiss();
-                            Gson gson = new GsonBuilder().create();
-                            OurStoreViewDataResponse baseResponse = new OurStoreViewDataResponse();
-                            try {
-                                baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), OurStoreViewDataResponse.class);
+                ApiClientAuth.getClient(context)
+                        .create(ApiInterface.class)
+                        .getOurStoreDetails(ourStoreDetailsInputParameter)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<OurStoreViewDataResponse>() {
+                            @Override
+                            public void onSuccess(@NonNull OurStoreViewDataResponse baseResponse) {
+                                progressDialog.dismiss();
 
                                 ourStoreViewDataResponseMutableLiveData.setValue(baseResponse);
-                            } catch (Exception exception) {
-                                Log.e(TAG, exception.getMessage());
-                               /* ((NetworkExceptionListener) supportTicketFragment)
-                                        .onNetworkException(0,"");*/
                             }
-                            Log.e(TAG, e.getMessage());
-                        }
-                    });
 
-            return ourStoreViewDataResponseMutableLiveData;
-        }
+                            @Override
+                            public void onError(Throwable e) {
+                                progressDialog.dismiss();
+                                Gson gson = new GsonBuilder().create();
+                                OurStoreViewDataResponse baseResponse = new OurStoreViewDataResponse();
+                                try {
+                                    baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), OurStoreViewDataResponse.class);
+
+                                    ourStoreViewDataResponseMutableLiveData.setValue(baseResponse);
+                                } catch (Exception exception) {
+                                    Log.e(TAG, exception.getMessage());
+                                    ((NetworkExceptionListener) storeDetailFragment)
+                                            .onNetworkException(0,"");
+                                }
+                                Log.e(TAG, e.getMessage());
+                            }
+                        });
+
+                return ourStoreViewDataResponseMutableLiveData;
+
+
     }
 }

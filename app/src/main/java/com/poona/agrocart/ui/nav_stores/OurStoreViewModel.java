@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 
 import java.util.HashMap;
@@ -60,8 +61,8 @@ public class OurStoreViewModel extends AndroidViewModel {
                                 ourStoreListResponseMutableLiveData.setValue(baseResponse);
                             } catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
-                               /* ((NetworkExceptionListener) supportTicketFragment)
-                                        .onNetworkException(0,"");*/
+                                ((NetworkExceptionListener) ourStoresFragment)
+                                        .onNetworkException(0,"");
                             }
                             Log.e(TAG, e.getMessage());
                         }
