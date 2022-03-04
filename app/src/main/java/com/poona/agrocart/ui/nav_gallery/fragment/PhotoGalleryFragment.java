@@ -9,11 +9,16 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.NetworkOnMainThreadException;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -39,8 +44,11 @@ import com.poona.agrocart.databinding.FragmentPhotoBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_gallery.adapter.PhotoAdapter;
 import com.poona.agrocart.ui.nav_gallery.viewModel.GalleryViewModel;
-import com.poona.agrocart.widgets.custom_alert.Alert;
+import com.poona.agrocart.widgets.ZoomableImageView;
 
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +66,10 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoAdapter.O
     private SwipeRefreshLayout refreshLayout;
     private PhotoAdapter photoAdapter;
     private LinearLayoutManager linearLayoutManager;
+    private ImageView popUpImage;
+    private String galleryImage;
+    private Bitmap image;
+
 
     public static PhotoGalleryFragment newInstance() {
         PhotoGalleryFragment fragment = new PhotoGalleryFragment();
@@ -197,18 +209,35 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoAdapter.O
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.photo_image_pop_up_dailog);
-        ImageView popUpImage = dialog.findViewById(R.id.iv_pop_up_image);
+         popUpImage = dialog.findViewById(R.id.iv_pop_up_image);
+
         ImageView crossImage = dialog.findViewById(R.id.iv_cancel_icon);
 
+
+        galleryImage = galleryImages.get(position).getGalleryImage();
+
+
         Glide.with(context)
-                .load(IMAGE_DOC_BASE_URL + galleryImages.get(position).getGalleryImage())
+                .load(IMAGE_DOC_BASE_URL + galleryImage)
                 .into(popUpImage);
 
 
+      /*  try {
+            URL url = new URL(galleryImage);
+            image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            popUpImage.setImageBitmap(image);
+        } catch(IOException e) {
+            System.out.println(e);
+        }
+*/
         crossImage.setOnClickListener(view -> {
 
             dialog.dismiss();
         });
+
+        /*zoomable image */
+
+
 
         dialog.show();
 
@@ -242,6 +271,12 @@ public class PhotoGalleryFragment extends BaseFragment implements PhotoAdapter.O
         // Apply the newly created layout parameters to the alert dialog window
         dialog.getWindow().setAttributes(layoutParams);
     }
+
+
+
+
+
+
 
     @Override
     public void itemViewClick(int position) {
