@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="25"
             android:singleLine="true"
-            android:text='@{`Rs.`+productAndPrice.pricePerQuantity+` * `+productAndPrice.quantity}'
+            android:text='@{`Rs.`+productAndPrice.pricePerQuantity+` X `+productAndPrice.quantity}'
             android:textColor="@color/black"
             android:textSize="@dimen/_16sp"
             app:setCustomFont="@string/font_poppins_regular" />

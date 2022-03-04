@@ -18,6 +18,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.Coupon;
+import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.Delivery;
 import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
@@ -25,7 +26,9 @@ import com.poona.agrocart.data.network.responses.orderResponse.Payments;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.order_summary.model.Address;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -83,8 +86,38 @@ public class OrderSummaryViewModel extends AndroidViewModel {
         arrayPaymentListMutableLiveData.setValue(null);
     }
 
+    public void initViewModel(OrderSummaryResponse orderSummaryResponse, Context context) {
+        AppSharedPreferences preferences = new AppSharedPreferences(context);
+        /*Address and name */
+        customerNameMutable.setValue(preferences.getUserName());
+        customerPhoneMutable.setValue(preferences.getUserMobile());
+        customerPhoneMutable.setValue(preferences.getUserMobile());
+        deliveryAddressMutable.setValue(preferences.getDeliveryAddress());
+        /*Delivery date and time*/
+        deliveryDateMutable.setValue(orderSummaryResponse.delivery.get(0).deliveryDate);
+        deliverySlotMutable.setValue(orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotStartTime+" - "+orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotEndTime);
+        deliverySlotMutable.setValue(orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotStartTime+" - "+orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotEndTime);
+        /*Delivery charge and total amount*/
+        subTotalMutable.setValue(String.valueOf(orderSummaryResponse.subTotal).trim());
+        discountMutable.setValue(String.valueOf(orderSummaryResponse.discount).trim());
+        deliveryChargesMutable.setValue(String.valueOf(orderSummaryResponse.deliveryCharges).trim());
+        finalTotalMutable.setValue(String.valueOf(orderSummaryResponse.totalAmount).trim());
+        youWillSaveMutable.setValue(String.valueOf(orderSummaryResponse.discount).trim());
+
+        /*Arraylist initialization*/
+        arrayAddressListMutableLiveData.setValue(orderSummaryResponse.address);
+        arrayDeliveryListMutableLiveData.setValue(orderSummaryResponse.delivery);
+        arrayCouponListMutableLiveData.setValue(orderSummaryResponse.couponCodeList);
+        arrayItemListMutableLiveData.setValue(orderSummaryResponse.itemsDetails);
+        arrayPaymentListMutableLiveData.setValue(orderSummaryResponse.paymentMode);
+
+    }
+
+
+
+    /*Order Summary API*/
     public LiveData<OrderSummaryResponse> getOrderSummaryResponse(ProgressDialog progressDialog,
-                                                                   OrderSummaryFragment orderSummaryFragment) {
+                                                                  OrderSummaryFragment orderSummaryFragment) {
         MutableLiveData<OrderSummaryResponse> orderSummaryResponseMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(orderSummaryFragment.getContext())
@@ -105,36 +138,58 @@ public class OrderSummaryViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
+                        Gson gson = new GsonBuilder().create();
+                        OrderSummaryResponse errorResponse = new OrderSummaryResponse();
+                        try {
+                            errorResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    OrderSummaryResponse.class);
+                            orderSummaryResponseMutableLiveData.setValue(errorResponse);
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                            Log.e(TAG, "onError: "+ioException.getMessage() );
+                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(0,"");
+                        }
                     }
                 });
         return orderSummaryResponseMutableLiveData;
     }
 
-    public void initViewModel(OrderSummaryResponse orderSummaryResponse, Context context) {
-        AppSharedPreferences preferences = new AppSharedPreferences(context);
-        /*Address and name */
-        customerNameMutable.setValue(preferences.getUserName());
-        customerPhoneMutable.setValue(preferences.getUserMobile());
-        customerPhoneMutable.setValue(preferences.getUserMobile());
-        deliveryAddressMutable.setValue(preferences.getDeliveryAddress());
-        /*Delivery date and time*/
-        deliveryDateMutable.setValue(orderSummaryResponse.delivery.get(0).deliveryDate);
-        deliverySlotMutable.setValue(orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotStartTime+" - "+orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotEndTime);
-        deliverySlotMutable.setValue(orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotStartTime+" - "+orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotEndTime);
-        /*Delivery charge and total amount*/
-        subTotalMutable.setValue(String.valueOf(orderSummaryResponse.totalAmount));
-        discountMutable.setValue(String.valueOf(orderSummaryResponse.discount));
-        deliveryChargesMutable.setValue(String.valueOf(orderSummaryResponse.deliveryCharges));
-        finalTotalMutable.setValue(String.valueOf(orderSummaryResponse.totalAmount));
-        youWillSaveMutable.setValue(String.valueOf(orderSummaryResponse.discount));
+    /*Apply Coupon API*/
+    public LiveData<ApplyCouponResponse> getApplyCouponResponse(ProgressDialog progressDialog,
+                                                                 HashMap<String,String> hashMap,
+                                                                 OrderSummaryFragment orderSummaryFragment){
 
-        /*Arraylist initialization*/
-        arrayAddressListMutableLiveData.setValue(orderSummaryResponse.address);
-        arrayDeliveryListMutableLiveData.setValue(orderSummaryResponse.delivery);
-        arrayCouponListMutableLiveData.setValue(orderSummaryResponse.couponCodeList);
-        arrayItemListMutableLiveData.setValue(orderSummaryResponse.itemsDetails);
-        arrayPaymentListMutableLiveData.setValue(orderSummaryResponse.paymentMode);
+        MutableLiveData<ApplyCouponResponse> applyCouponResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(orderSummaryFragment.getContext())
+                .create(ApiInterface.class)
+                .getApplyCouponResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<ApplyCouponResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ApplyCouponResponse applyCouponResponse) {
+                        if (applyCouponResponse!=null){
+                            if (progressDialog!=null)
+                                progressDialog.dismiss();
+                            applyCouponResponseMutableLiveData.setValue(applyCouponResponse);
+                        }
+                    }
 
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Gson gson = new GsonBuilder().create();
+                        ApplyCouponResponse errorResponse = new ApplyCouponResponse();
+                        try {
+                            errorResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    ApplyCouponResponse.class);
+                            applyCouponResponseMutableLiveData.setValue(errorResponse);
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                            Log.e(TAG, ioException.getMessage());
+                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(1, "");
+                        }
+                    }
+                });
+        return applyCouponResponseMutableLiveData;
     }
 }

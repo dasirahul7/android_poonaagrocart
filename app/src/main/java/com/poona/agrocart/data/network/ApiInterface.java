@@ -5,6 +5,7 @@ import static com.poona.agrocart.app.AppConstants.ADD_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_BASKET;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_PRODUCT;
+import static com.poona.agrocart.app.AppConstants.APPLY_COUPON_API;
 import static com.poona.agrocart.app.AppConstants.AREA_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.BASKET_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.CART_LIST_API;
@@ -33,6 +34,7 @@ import static com.poona.agrocart.app.AppConstants.ISSUE_TICKET;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.MY_NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
+import static com.poona.agrocart.app.AppConstants.ORDER_PLACE_API;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
@@ -96,6 +98,7 @@ import com.poona.agrocart.data.network.responses.help_center_response.TicketType
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
 import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
+import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.ViewConfigurationResponse;
@@ -244,6 +247,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(HOME_BASKET_API)
     Single<HomeBasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
+
     @FormUrlEncoded
     @POST(HOME_BASKET_API)
     Single<BasketResponse> basketResponse(@FieldMap HashMap<String, String> categoryParams);
@@ -332,7 +336,6 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(RATE_TO_BASKET)
     Single<BaseResponse> getSubmitRatingResponseBasket(@FieldMap HashMap<String, String> submitRatingInputParameter);
-
 
 
     /*Basket detail API*/
@@ -439,4 +442,12 @@ public interface ApiInterface {
 
     @GET(ORDER_SUMMARY_API)
     Single<OrderSummaryResponse> getOrderSummaryResponse();
+
+    @FormUrlEncoded
+    @POST(APPLY_COUPON_API)
+    Single<ApplyCouponResponse> getApplyCouponResponse(@FieldMap HashMap<String, String> hashMap);
+
+    @FormUrlEncoded
+    @POST(ORDER_PLACE_API)
+    Single<ApplyCouponResponse> getOrderPlaceResponse(@FieldMap HashMap<String, String> hashMap);
 }

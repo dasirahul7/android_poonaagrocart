@@ -2,6 +2,8 @@ package com.poona.agrocart.ui.order_summary;
 
 import static com.poona.agrocart.app.AppConstants.ADD_ADDRESS_DETAILS;
 import static com.poona.agrocart.app.AppConstants.ADD_UPDATE_ADDRESS_DETAILS;
+import static com.poona.agrocart.app.AppConstants.COUPON_API;
+import static com.poona.agrocart.app.AppConstants.COUPON_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
@@ -29,9 +31,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.lifecycle.Observer;
@@ -44,8 +48,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.data.network.responses.Coupon;
+import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.Delivery;
 import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
@@ -56,14 +62,14 @@ import com.poona.agrocart.ui.order_summary.adapter.AddressDialogAdapter;
 import com.poona.agrocart.ui.order_summary.adapter.DeliveryDialogAdapter;
 import com.poona.agrocart.ui.order_summary.adapter.PromoCodeDialogAdapter;
 import com.poona.agrocart.ui.order_summary.model.DeliverySlot;
-import com.poona.agrocart.ui.order_summary.model.ProductAndPrice;
 import com.poona.agrocart.widgets.CustomTextView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
-public class OrderSummaryFragment extends BaseFragment implements View.OnClickListener, AddressDialogAdapter.OnAddressClickListener, DeliveryDialogAdapter.OnSlotClickListener {
+public class OrderSummaryFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener, AddressDialogAdapter.OnAddressClickListener, DeliveryDialogAdapter.OnSlotClickListener {
     private static String TAG = OrderSummaryFragment.class.getSimpleName();
     private FragmentOrderSummaryBinding fragmentOrderSummaryBinding;
     private DialogDeliveryOptionsBinding deliveryOptionsBinding;
@@ -72,6 +78,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private LinearLayoutManager linearLayoutManager;
     private ProductAndPriceAdapter productAndPriceAdapter;
     private ArrayList<ItemsDetail> itemsDetailArrayList;
+    private ProgressBar itemProgress;
 
     private View navHostFragment;
     private ViewGroup.MarginLayoutParams navHostMargins;
@@ -80,7 +87,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private int mYear, mMonth, mDay;
     private ConstraintLayout mainLayout;
     private SwipeRefreshLayout rlRefreshPage;
-    private String stepAddress, stepOrder,stepPayment;
+    private String stepAddress, stepOrder, stepPayment;
     private ArrayList<AddressesResponse.Address> addressArrayList;
     private ArrayList<Coupon> couponArrayList;
     private ArrayList<Delivery> deliveryArrayList;
@@ -91,7 +98,8 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private Dialog addressDialog;
     private Dialog deliveryDialog;
     private Dialog promoCodeDialog;
-    private ScrollView scrollView;
+    private NestedScrollView scrollView;
+    private String CouponId;
 
     @Override
     public void onPause() {
@@ -132,25 +140,25 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         initView();
 
         /*OnScrollview scrolled*/
-        scrollView.setOnScrollChangeListener((view1, i, i1, i2, i3) -> {
-            System.out.println( "i: "+ i);
-            System.out.println( "i1: "+ i1);
-            System.out.println( "i2: "+ i2);
-            System.out.println( "i3: "+ i3);
+        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+
+            }
         });
 
-//        rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                rlRefreshPage.setRefreshing(true);
-//                mainLayout.setVisibility(View.GONE);
-//                if (isConnectingToInternet(context)) {
-//                    callOrderSummaryAPI(showCircleProgressDialog(context, ""));
-//                } else {
-//                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-//                }
-//            }
-//        });
+        rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                rlRefreshPage.setRefreshing(true);
+                mainLayout.setVisibility(View.GONE);
+                if (isConnectingToInternet(context)) {
+                    callOrderSummaryAPI(showCircleProgressDialog(context, ""));
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
 
         /*Coupon apply or remove button*/
         fragmentOrderSummaryBinding.etCouponCode.addTextChangedListener(new TextWatcher() {
@@ -182,7 +190,8 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private void initView() {
         rvProductsAndPrices = fragmentOrderSummaryBinding.rvProductsAndPrices;
         mainLayout = fragmentOrderSummaryBinding.mainLayout;
-//        rlRefreshPage = fragmentOrderSummaryBinding.rlRefreshPage;
+        itemProgress = fragmentOrderSummaryBinding.itemsProgress;
+        rlRefreshPage = fragmentOrderSummaryBinding.rlRefreshPage;
         scrollView = fragmentOrderSummaryBinding.scrollView;
         mainLayout.setVisibility(View.GONE);
         Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_medium));
@@ -216,7 +225,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private void callOrderSummaryAPI(ProgressDialog progressDialog) {
         Observer<OrderSummaryResponse> orderSummaryResponseObserver = orderSummaryResponse -> {
             if (orderSummaryResponse != null) {
-//                rlRefreshPage.setRefreshing(false);
+                rlRefreshPage.setRefreshing(false);
                 if (progressDialog != null)
                     progressDialog.dismiss();
                 Log.e(TAG, "callOrderSummaryAPI: " + new Gson().toJson(orderSummaryResponse));
@@ -264,10 +273,59 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 .observe(getViewLifecycleOwner(), orderSummaryResponseObserver);
     }
 
+    /*Call Apply Coupon API*/
+    private void callApplyCouponAPI(ProgressDialog progressDialog){
+        Observer<ApplyCouponResponse> applyCouponResponseObserver = applyCouponResponse -> {
+            if (applyCouponResponse!=null){
+                if (progressDialog!=null){
+                    progressDialog.dismiss();
+                    Log.e(TAG, "callApplyCouponAPI: "+new Gson().toJson(applyCouponResponse) );
+                    switch (applyCouponResponse.getStatus()) {
+                        case STATUS_CODE_200://Record Create/Update Successfully
+                            if (applyCouponResponse.getItemsDetails()!=null
+                                    && applyCouponResponse.getItemsDetails().size()>0){
+                                if (itemProgress!=null && itemProgress.isShown())
+                                    itemProgress.setVisibility(View.GONE);
+                                orderSummaryViewModel.arrayItemListMutableLiveData.setValue(applyCouponResponse.getItemsDetails());
+                                orderSummaryViewModel.subTotalMutable.setValue(String.valueOf(applyCouponResponse.subTotal).trim());
+                                orderSummaryViewModel.discountMutable.setValue(String.valueOf(applyCouponResponse.discount).trim());
+                                orderSummaryViewModel.deliveryChargesMutable.setValue(String.valueOf(applyCouponResponse.deliveryCharges).trim());
+                                orderSummaryViewModel.finalTotalMutable.setValue(String.valueOf(applyCouponResponse.totalAmount).trim());
+//                                initItemsDetails();
+                            }
+                            break;
+                        case STATUS_CODE_403://Validation Errors
+                        case STATUS_CODE_400://Validation Errors
+                        case STATUS_CODE_404://Validation Errors
+                            //show no data msg here
+                            warningToast(context, applyCouponResponse.getMessage());
+                            break;
+                        case STATUS_CODE_401://Unauthorized user
+                            goToAskSignInSignUpScreen(applyCouponResponse.getMessage(), context);
+                            break;
+                        case STATUS_CODE_405://Method Not Allowed
+                            infoToast(context, applyCouponResponse.getMessage());
+                            break;
+                    }
+
+                }
+            }
+        };
+        orderSummaryViewModel.getApplyCouponResponse(progressDialog,applyCouponParams(),
+                OrderSummaryFragment.this).observe(getViewLifecycleOwner(),applyCouponResponseObserver);
+        fragmentOrderSummaryBinding.etCouponCode.setText("");
+    }
+
+    private HashMap<String, String> applyCouponParams() {
+        HashMap<String,String> map = new HashMap<>();
+        map.put(COUPON_ID,CouponId);
+        return map;
+    }
+
     /*Init payment options here*/
     private void initPaymentTypes() {
-        orderSummaryViewModel.arrayPaymentListMutableLiveData.observe(getViewLifecycleOwner(),payments -> {
-            if (payments.size()>0){
+        orderSummaryViewModel.arrayPaymentListMutableLiveData.observe(getViewLifecycleOwner(), payments -> {
+            if (payments.size() > 0) {
                 if (payments.get(0).paymentModeStatus.equalsIgnoreCase("1"))
                     orderSummaryViewModel.paymentCashMutable.setValue(payments.get(0).paymentType);
                 if (payments.get(1).paymentModeStatus.equalsIgnoreCase("1"))
@@ -289,7 +347,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 if (addressArrayList.get(i).getIsDefault().equalsIgnoreCase("yes")) {
                     preferences.setDeliveryAddress(newAddress.getFullAddress());
                     orderSummaryViewModel.deliveryAddressMutable.setValue(newAddress.getFullAddress());
-                    stepAddress= "yes";
+                    stepAddress = "yes";
                 }
             }
             addressDialogAdapter = new AddressDialogAdapter(addressArrayList, getActivity(), this);
@@ -339,17 +397,20 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         else if (stepAddress.equalsIgnoreCase("no"))
             fragmentOrderSummaryBinding.tvStep1.setBackground(context.getDrawable(R.drawable.ic_step_active));
 
-        else fragmentOrderSummaryBinding.tvStep1.setBackground(context.getDrawable(R.drawable.ic_step_inactive));
+        else
+            fragmentOrderSummaryBinding.tvStep1.setBackground(context.getDrawable(R.drawable.ic_step_inactive));
         if (stepOrder.equalsIgnoreCase("yes"))
             fragmentOrderSummaryBinding.tvStep2.setBackground(context.getDrawable(R.drawable.ic_step_done));
         else if (stepOrder.equalsIgnoreCase("no"))
             fragmentOrderSummaryBinding.tvStep2.setBackground(context.getDrawable(R.drawable.ic_step_active));
-        else fragmentOrderSummaryBinding.tvStep2.setBackground(context.getDrawable(R.drawable.ic_step_inactive));
+        else
+            fragmentOrderSummaryBinding.tvStep2.setBackground(context.getDrawable(R.drawable.ic_step_inactive));
         if (stepPayment.equalsIgnoreCase("yes"))
             fragmentOrderSummaryBinding.tvStep3.setBackground(context.getDrawable(R.drawable.ic_step_done));
         else if (stepPayment.equalsIgnoreCase("no"))
             fragmentOrderSummaryBinding.tvStep3.setBackground(context.getDrawable(R.drawable.ic_step_active));
-        else fragmentOrderSummaryBinding.tvStep3.setBackground(context.getDrawable(R.drawable.ic_step_inactive));
+        else
+            fragmentOrderSummaryBinding.tvStep3.setBackground(context.getDrawable(R.drawable.ic_step_inactive));
 
     }
 
@@ -377,7 +438,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 openPromoOptionsDialog();
                 break;
             case R.id.btn_remove:
-                fragmentOrderSummaryBinding.etCouponCode.setText("");
+                callApplyCouponAPI(showCircleProgressDialog(context,""));
                 break;
             case R.id.iv_edit_date:
                 openDeliveryOptionsDialog();
@@ -453,6 +514,8 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
             promoCodeDialog.dismiss();
         });
         codeDialogAdapter.setOnPromoCodeListener(coupons1 -> {
+            CouponId = coupons1.getId();
+            infoToast(context,CouponId.trim());
             fragmentOrderSummaryBinding.etCouponCode.setText(coupons1.getCouponCode());
             fragmentOrderSummaryBinding.btnRemove.setText("Remove");
             promoCodeDialog.dismiss();
@@ -545,5 +608,24 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         stepOrder = "yes";
         deliveryDialog.dismiss();
         checkOrderSummaryStatus();
+    }
+
+    @Override
+    public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), OrderSummaryFragment.this, () -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                switch (from) {
+                    case 0:
+                        callOrderSummaryAPI(showCircleProgressDialog(context, ""));
+                        break;
+                    case 1:
+                        //Call Apply coupon
+                        break;
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
     }
 }

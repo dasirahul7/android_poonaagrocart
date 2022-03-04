@@ -252,7 +252,7 @@
         <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.19" />
         <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_order_details.xml" value="0.17025641025641025" />
-        <entry key="app/src/main/res/layout/fragment_order_summary.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_order_summary.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_order_track.xml" value="0.15534420289855072" />
         <entry key="app/src/main/res/layout/fragment_order_view.xml" value="0.12907608695652173" />
         <entry key="app/src/main/res/layout/fragment_our_stores.xml" value="0.1272644927536232" />

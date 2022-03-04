@@ -5,10 +5,11 @@ package com.poona.agrocart.app;
  */
 public class AppConstants {
     /*m-staging URL*/
-    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing/";
+    /*Development URL*/
+    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing_dev/";
 
     /*Testing environment URL*/
-//    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing_dev/";
+//    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing/";
 
     /*m-staging Base URL for Image, Document*/
     public static final String IMAGE_DOC_BASE_URL = "";
@@ -212,7 +213,9 @@ public class AppConstants {
 
     /*Order Api*/
     public static final String ORDER_SUMMARY_API = "order-summary-customer";
+    public static final String ORDER_PLACE_API = "coupon_code_list";
     public static final String RATE_ORDER = "rate-order";
+    public static final String APPLY_COUPON_API = "apply-coupon";
 
    /* Rating and Review */
    public static final String RATING = "rating";
@@ -307,6 +310,7 @@ public class AppConstants {
     /*Order Summary KEYS*/
     public static final String ORDER_SUMMARY ="order-summary";
     public static final String DELIVERY_ADDRESS ="delivery-address";
+    public static final String COUPON_ID ="coupon_id";
 
 }
 
