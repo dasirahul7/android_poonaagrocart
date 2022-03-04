@@ -99,7 +99,7 @@ public class SignInViewModel extends AndroidViewModel {
                         progressDialog.dismiss();
 
                         Gson gson = new GsonBuilder().create();
-                        BaseResponse response = new SignInResponse();
+                        BaseResponse response = new BaseResponse();
                         try {
                             response = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     BaseResponse.class);

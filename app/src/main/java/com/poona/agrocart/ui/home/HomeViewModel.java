@@ -35,6 +35,7 @@ import com.poona.agrocart.ui.home.model.ProductOld;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -394,7 +395,7 @@ public class HomeViewModel extends AndroidViewModel {
                         Gson gson = new GsonBuilder().create();
                         StoreBannerResponse storeBannerResponse = new StoreBannerResponse();
                         try {
-                            storeBannerResponse = gson.fromJson(((HttpException) e).response().errorBody().toString(),
+                            storeBannerResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     StoreBannerResponse.class);
 
                             storeBannerMutableLiveData.setValue(storeBannerResponse);
@@ -431,7 +432,7 @@ public class HomeViewModel extends AndroidViewModel {
                         Gson gson = new GsonBuilder().create();
                         BaseResponse response = new BaseResponse();
                         try {
-                            response = gson.fromJson(((HttpException) e).response().errorBody().toString(),
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     BaseResponse.class);
 
                             baseResponseMutableLiveData.setValue(response);
@@ -465,12 +466,12 @@ public class HomeViewModel extends AndroidViewModel {
                     }
 
                     @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                    public void onError( Throwable e) {
                         progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         HomeResponse response = new HomeResponse();
                         try {
-                            response = gson.fromJson(((HttpException) e).response().errorBody().toString(),
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     HomeResponse.class);
 
                             homeResponseMutableLiveData.setValue(response);

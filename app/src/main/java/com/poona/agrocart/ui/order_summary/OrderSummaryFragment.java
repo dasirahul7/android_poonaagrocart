@@ -29,6 +29,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
@@ -90,6 +91,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private Dialog addressDialog;
     private Dialog deliveryDialog;
     private Dialog promoCodeDialog;
+    private ScrollView scrollView;
 
     @Override
     public void onPause() {
@@ -128,6 +130,14 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
         initTitleWithBackBtn(getString(R.string.order_summary));
         initView();
+
+        /*OnScrollview scrolled*/
+        scrollView.setOnScrollChangeListener((view1, i, i1, i2, i3) -> {
+            System.out.println( "i: "+ i);
+            System.out.println( "i1: "+ i1);
+            System.out.println( "i2: "+ i2);
+            System.out.println( "i3: "+ i3);
+        });
 
 //        rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 //            @Override
@@ -172,7 +182,8 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private void initView() {
         rvProductsAndPrices = fragmentOrderSummaryBinding.rvProductsAndPrices;
         mainLayout = fragmentOrderSummaryBinding.mainLayout;
-        rlRefreshPage = fragmentOrderSummaryBinding.rlRefreshPage;
+//        rlRefreshPage = fragmentOrderSummaryBinding.rlRefreshPage;
+        scrollView = fragmentOrderSummaryBinding.scrollView;
         mainLayout.setVisibility(View.GONE);
         Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_medium));
         fragmentOrderSummaryBinding.rbCod.setTypeface(font);
@@ -205,7 +216,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private void callOrderSummaryAPI(ProgressDialog progressDialog) {
         Observer<OrderSummaryResponse> orderSummaryResponseObserver = orderSummaryResponse -> {
             if (orderSummaryResponse != null) {
-                rlRefreshPage.setRefreshing(false);
+//                rlRefreshPage.setRefreshing(false);
                 if (progressDialog != null)
                     progressDialog.dismiss();
                 Log.e(TAG, "callOrderSummaryAPI: " + new Gson().toJson(orderSummaryResponse));

@@ -239,7 +239,7 @@ public class ProductListViewModel extends AndroidViewModel {
                         Gson gson = new GsonBuilder().create();
                         BaseResponse response = new BaseResponse();
                         try {
-                            response = gson.fromJson(((HttpException) e).response().errorBody().toString(),
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     BaseResponse.class);
 
                             baseResponseMutableLiveData.setValue(response);

@@ -3,6 +3,12 @@ package com.poona.agrocart.ui.home;
 import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
 import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 
 import android.annotation.SuppressLint;
@@ -24,6 +30,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -242,16 +249,32 @@ public class HomeActivity extends BaseActivity {
         SignInViewModel signInViewModel = new ViewModelProvider(this).get(SignInViewModel.class);
         Observer<BaseResponse> baseResponseObserver = baseResponse -> {
             if (baseResponse != null) {
-                if (baseResponse.getStatus() == 200) {
-                    drawer.closeDrawer(GravityCompat.START);
-                    Log.e("signOutApiCall: ", new Gson().toJson(baseResponse));
-                    AppSharedPreferences preferences = new AppSharedPreferences(this);
-                    preferences.clearSharedPreferences(this);
-                    Intent intent = new Intent(this, SplashScreenActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (baseResponse.getStatus() == 200) {
+                            drawer.closeDrawer(GravityCompat.START);
+                            Log.e("signOutApiCall: ", new Gson().toJson(baseResponse));
+                            AppSharedPreferences preferences = new AppSharedPreferences(this);
+                            preferences.clearSharedPreferences(this);
+                            Intent intent = new Intent(this, SplashScreenActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+//                        warningToast(context, productListResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        Toast.makeText(HomeActivity.this, baseResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        Toast.makeText(HomeActivity.this, baseResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        break;
                 }
             }
+
         };
         signInViewModel.signOutApiResponse(progressDialog, parameters(), HomeActivity.this)
                 .observeForever(baseResponseObserver);
