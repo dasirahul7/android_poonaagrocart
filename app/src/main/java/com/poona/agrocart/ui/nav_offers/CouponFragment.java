@@ -32,11 +32,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
+import com.poona.agrocart.data.network.responses.Coupon;
 import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.databinding.DialogCouponTermsBinding;
 import com.poona.agrocart.databinding.FragmentCouponBinding;
@@ -52,11 +52,9 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
     private CouponViewModel couponViewModel;
     private FragmentCouponBinding fragmentCouponBinding;
     private CouponAdapter couponAdapter;
-    private SwipeRefreshLayout refreshLayout;
-    private List<CouponResponse.Coupon> couponArrayList = new ArrayList<>();
+    private List<Coupon> couponArrayList = new ArrayList<>();
     private final int limit = 0;
     private final int offset = 0;
-    private View view;
 
 
     public static CouponFragment newInstance() {
@@ -68,27 +66,12 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
                              @Nullable Bundle savedInstanceState) {
         fragmentCouponBinding = FragmentCouponBinding.inflate(getLayoutInflater());
         couponViewModel = new ViewModelProvider(this).get(CouponViewModel.class);
-        view = fragmentCouponBinding.getRoot();
         initTitleBar(getString(R.string.menu_offer_coupons));
-        refreshLayout = fragmentCouponBinding.rlCouponCode;
         if (isConnectingToInternet(context))
             setAllCoupons(showCircleProgressDialog(context, ""), limit, offset);
         else
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshLayout.setRefreshing(true);
-
-                if (isConnectingToInternet(context))
-                setAllCoupons(showCircleProgressDialog(context, ""), limit, offset);
-                else
-                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-
-            }
-        });
-
+        View view = fragmentCouponBinding.getRoot();
         return view;
     }
 
@@ -105,7 +88,6 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
                             couponAdapter = new CouponAdapter(couponResponse.getCoupons(), requireActivity(), CouponFragment.this, this);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
                             fragmentCouponBinding.rvCoupons.setLayoutManager(layoutManager);
-                            refreshLayout.setRefreshing(false);
                             fragmentCouponBinding.rvCoupons.setAdapter(couponAdapter);
 
                             couponAdapter.notifyDataSetChanged();
@@ -228,7 +210,7 @@ public class CouponFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void onCopyClick(CouponResponse.Coupon coupon) {
+    public void onCopyClick(Coupon coupon) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("CouponCode", coupon.getCouponCode());
         clipboard.setPrimaryClip(clip);

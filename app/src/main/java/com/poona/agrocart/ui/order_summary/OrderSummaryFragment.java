@@ -129,18 +129,18 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         initTitleWithBackBtn(getString(R.string.order_summary));
         initView();
 
-        rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                rlRefreshPage.setRefreshing(true);
-                mainLayout.setVisibility(View.GONE);
-                if (isConnectingToInternet(context)) {
-                    callOrderSummaryAPI(showCircleProgressDialog(context, ""));
-                } else {
-                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-                }
-            }
-        });
+//        rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                rlRefreshPage.setRefreshing(true);
+//                mainLayout.setVisibility(View.GONE);
+//                if (isConnectingToInternet(context)) {
+//                    callOrderSummaryAPI(showCircleProgressDialog(context, ""));
+//                } else {
+//                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+//                }
+//            }
+//        });
 
         /*Coupon apply or remove button*/
         fragmentOrderSummaryBinding.etCouponCode.addTextChangedListener(new TextWatcher() {

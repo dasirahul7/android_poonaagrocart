@@ -12,15 +12,11 @@
         android:id="@+id/rl_refresh_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_layout"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context=".ui.order_summary.OrderSummaryFragment">
+            android:layout_height="match_parent">
+        <!--Order Summary states-->
 
             <!--Order Summary states-->
 
@@ -158,16 +154,28 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".ui.order_summary.OrderSummaryFragment">
+
+
             <!--Delivery address here-->
             <LinearLayout
-                android:layout_marginTop="@dimen/_12sdp"
-                android:orientation="vertical"
                 android:id="@+id/ll_delivery_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_order_summary_states"
+                app:layout_constraintTop_toTopOf="parent"
                 app:setCustomFont="@string/font_poppins_semi_bold">
+
                 <com.poona.agrocart.widgets.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -176,6 +184,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_18sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
+
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardview_shpping_address"
                     android:layout_width="match_parent"
@@ -821,6 +830,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+        </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </layout>
