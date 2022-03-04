@@ -219,6 +219,9 @@
     <string name="rs_20">Rs. 20</string>
     <string name="total_amount">Total Amount</string>
     <string name="rs_740">Rs. 740</string>
+    <string name="total_amount_null">Rs. 00</string>
+    <string name="text_rs">Rs. </string>
+    <string name="total_quantity_null">00</string>
     <string name="you_will_save_rs_80">You will save Rs. 80</string>
     <string name="invoice">Invoice</string>
     <string name="product_details">Product Details</string>

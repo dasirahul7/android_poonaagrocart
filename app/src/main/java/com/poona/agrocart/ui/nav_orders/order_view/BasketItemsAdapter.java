@@ -13,16 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.ItemsDetail;
 import com.poona.agrocart.databinding.RvBasketDetailBinding;
 
 import java.util.ArrayList;
 
 public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.BasketItemViewHolder> {
-    private final ArrayList<BasketItem> basketItems;
+    private final ArrayList<ItemsDetail> basketItems;
     private final boolean isBasketVisible;
     private final Context context;
 
-    public BasketItemsAdapter(ArrayList<BasketItem> basketItems, boolean isBasketVisible, Context context) {
+    public BasketItemsAdapter(ArrayList<ItemsDetail> basketItems, boolean isBasketVisible, Context context) {
         this.basketItems = basketItems;
         this.isBasketVisible = isBasketVisible;
         this.context = context;
@@ -38,7 +39,7 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull BasketItemViewHolder holder, int position) {
-        final BasketItem basketItem = basketItems.get(position);
+        final ItemsDetail basketItem = basketItems.get(position);
         holder.rvBasketDetailBinding.setBasketItemModel(basketItem);
         holder.bind(basketItem, context);
     }
@@ -69,10 +70,10 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
         }
 
         @SuppressLint("ResourceType")
-        public void bind(BasketItem basketItem, Context context) {
+        public void bind(ItemsDetail basketItem, Context context) {
             rvBasketDetailBinding.setVariable(BR.basketItemModel, basketItem);
 
-            if (this.isBasketVisible) {
+           /* if (this.isBasketVisible) {
                 if (basketItem.getDeliveryStatus().equals("Delivered")) {
                     rvBasketDetailBinding.tvOrderStatus.setText(context.getString(R.string.delivered));
                     rvBasketDetailBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_in_process)));
@@ -83,7 +84,7 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
                     rvBasketDetailBinding.tvOrderStatus.setText(context.getString(R.string.confirmed));
                     rvBasketDetailBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_invoice_btn)));
                 }
-            }
+            }*/
 
             rvBasketDetailBinding.executePendingBindings();
         }

@@ -7,7 +7,7 @@
 
         <variable
             name="cancelOrderReasonList"
-            type="com.poona.agrocart.ui.nav_orders.model.CancelOrderReasonList" />
+            type="com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse.OrderCancelReason" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,6 +33,7 @@
                 android:id="@+id/radio_plan"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_25sdp"
+                android:layout_gravity="center"
                 android:layout_weight="1.8"
                 android:layout_marginBottom="@dimen/_2sdp"
                 android:button="@drawable/custom_radio_button_order_cancel"
@@ -44,7 +45,7 @@
                 android:layout_weight="0.2"
                 android:paddingTop="@dimen/_2sdp"
                 android:paddingStart="@dimen/_4sdp"
-                android:text="@{cancelOrderReasonList.cancelReason}"
+                android:text="@{cancelOrderReasonList.cancelledReason}"
                 android:textColor="@color/color_spinner"
                 android:textSize="@dimen/_14sp"
                 app:setCustomFont="@string/font_poppins_regular"/>

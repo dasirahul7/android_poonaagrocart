@@ -15,20 +15,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
 import com.poona.agrocart.databinding.RvOrderBinding;
-import com.poona.agrocart.ui.nav_orders.model.Order;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder> {
-    private final ArrayList<Order> orderArrayList;
+    private final ArrayList<OrderListResponse.OrderList> orderArrayList;
     private final Context context;
     private final View view;
+    MyOrdersFragment myOrdersFragment;
 
-    public OrdersAdapter(ArrayList<Order> orderArrayList, Context context, View view) {
+    public OrdersAdapter(ArrayList<OrderListResponse.OrderList> orderArrayList, Context context, View view, MyOrdersFragment myOrdersFragment) {
         this.orderArrayList = orderArrayList;
         this.context = context;
         this.view = view;
+        this.myOrdersFragment = myOrdersFragment;
     }
 
     @NonNull
@@ -39,11 +42,38 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         return new OrdersAdapter.OrdersViewHolder(binding, view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull OrdersViewHolder holder, int position) {
-        final Order order = orderArrayList.get(position);
+        final OrderListResponse.OrderList order = orderArrayList.get(position);
         holder.rvOrderBinding.setOrder(order);
         holder.bind(order, context);
+
+        String strTotalAmount = orderArrayList.get(0).getPaidAmount();
+        String strTotalQuantity = orderArrayList.get(0).getTotalQuantity();
+
+        if(strTotalAmount == null){
+            holder.rvOrderBinding.tvTotalAmount.setText(context.getString(R.string.total_amount_null));
+        }else {
+            holder.rvOrderBinding.tvTotalAmount.setText(context.getString(R.string.text_rs) + orderArrayList.get(0).getPaidAmount());
+        }
+
+        if(strTotalQuantity == null){
+            holder.rvOrderBinding.tvTotalQuantity.setText(context.getString(R.string.total_quantity_null));
+        }else {
+            holder.rvOrderBinding.tvTotalQuantity.setText(orderArrayList.get(0).getTotalQuantity());
+        }
+
+        String selectedDate = orderArrayList.get(0).getPendingDate();
+
+        String txtDisplayDate = "";
+        try {
+            txtDisplayDate = myOrdersFragment.formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "MMM dd, yyyy hh:mm aa");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        holder.rvOrderBinding.tvOrderDate.setText(txtDisplayDate);
+
     }
 
     @Override
@@ -69,16 +99,29 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         }
 
         @SuppressLint("ResourceType")
-        public void bind(Order order, Context context) {
+        public void bind(OrderListResponse.OrderList order, Context context) {
             rvOrderBinding.setVariable(BR.order, order);
-            if (order.getStatus().equals(context.getString(R.string.in_process))) {
-                rvOrderBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_in_process)));
-            } else if (order.getStatus().equals(context.getString(R.string.delivered))) {
-                rvOrderBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_delivered)));
-            } else if (order.getStatus().equals(context.getString(R.string.confirmed))) {
-                rvOrderBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_confirmed)));
-            } else {
-                rvOrderBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_cancelled)));
+            switch (order.getOrderStatus()) {
+                case "3":
+                    rvOrderBinding.tvOrderStatus.setText(context.getString(R.string.in_process));
+                    rvOrderBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_in_process)));
+                    break;
+                case "4":
+                    rvOrderBinding.tvOrderStatus.setText(context.getString(R.string.delivered));
+                    rvOrderBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_delivered)));
+                    break;
+                case "2":
+                    rvOrderBinding.tvOrderStatus.setText(context.getString(R.string.confirmed));
+                    rvOrderBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_confirmed)));
+                    break;
+                case "5":
+                    rvOrderBinding.tvOrderStatus.setText(context.getString(R.string.cancelled));
+                    rvOrderBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_cancelled)));
+                    break;
+                default:
+                    rvOrderBinding.tvOrderStatus.setText(context.getString(R.string.pending));
+                    rvOrderBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color4)));
+                    break;
             }
             rvOrderBinding.executePendingBindings();
         }

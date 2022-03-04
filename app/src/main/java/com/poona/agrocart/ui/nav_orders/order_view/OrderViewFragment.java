@@ -1,7 +1,6 @@
 package com.poona.agrocart.ui.nav_orders.order_view;
 
-import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
-import static com.poona.agrocart.app.AppConstants.LIMIT;
+import static com.poona.agrocart.app.AppConstants.CANCEL_ID;
 import static com.poona.agrocart.app.AppConstants.ORDER_ID;
 import static com.poona.agrocart.app.AppConstants.RATING;
 import static com.poona.agrocart.app.AppConstants.REVIEW;
@@ -11,6 +10,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
@@ -33,15 +32,14 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.ItemsDetail;
 import com.poona.agrocart.databinding.FragmentOrderViewBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_notification.NotificationViewModel;
 import com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList;
-import com.poona.agrocart.ui.nav_orders.model.CancelOrderReasonList;
 import com.poona.agrocart.ui.nav_orders.order_view.adaptor.OrderCancelCategoryAdaptor;
 import com.poona.agrocart.ui.nav_orders.order_view.adaptor.OrderCancelReasonAdaptor;
 import com.poona.agrocart.widgets.CustomButton;
@@ -52,14 +50,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class OrderViewFragment extends BaseFragment implements View.OnClickListener {
+public class OrderViewFragment extends BaseFragment implements View.OnClickListener, OrderCancelReasonAdaptor.OnTypeClickListener {
 
     private FragmentOrderViewBinding fragmentOrderViewBinding;
     private OrderViewDetailsViewHolder orderViewDetailsViewHolder;
     private RecyclerView rvBasketListItems;
     private LinearLayoutManager linearLayoutManager;
     private BasketItemsAdapter basketItemsAdapter;
-    private ArrayList<BasketItem> basketItemList;
+    private ArrayList<ItemsDetail> basketItemList;
     private boolean isBasketVisible = true;
     private RatingBar ratingBar;
     private CustomEditText feedbackComment;
@@ -69,9 +67,11 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private RecyclerView orderCancelCategory, orderCancelReason;
     private List<CancelOrderCategoryList> cancelOrderCategoryList;
     private OrderCancelCategoryAdaptor orderCancelCategoryAdaptor;
-    private List<CancelOrderReasonList> cancelOrderReasonList;
+
+    private List<OrderCancelReasonResponse.OrderCancelReason> cancelOrderReasonList;
     private OrderCancelReasonAdaptor orderCancelReasonAdaptor;
     private View view;
+    private String strReasonType = "", strCancelId = "" ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,12 +82,6 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
         initView();
         setRVAdapter();
-
-        fragmentOrderViewBinding.cvCancel.setOnClickListener(view1 -> {
-
-            CancelOrderDialogBox();
-
-        });
 
         initTitleWithBackBtn(getString(R.string.order_view));
 
@@ -123,6 +117,13 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
         });
 
+
+        fragmentOrderViewBinding.cvCancel.setOnClickListener(view1 -> {
+
+            CancelOrderDialogBox();
+
+        });
+
     }
 
     private void showProductDetails() {
@@ -139,11 +140,12 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
         fragmentOrderViewBinding.llSubTotal.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.viewline1.setVisibility(View.VISIBLE);
+
     }
 
     private void setRVAdapter() {
         basketItemList = new ArrayList<>();
-        prepareListingData();
+        //prepareListingData();
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvBasketListItems.setHasFixedSize(true);
@@ -153,24 +155,6 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         rvBasketListItems.setAdapter(basketItemsAdapter);
     }
 
-    private void prepareListingData() {
-        for (int i = 0; i < 4; i++) {
-            BasketItem basketItem = new BasketItem();
-            basketItem.setNameOfProduct("ABC");
-            basketItem.setWeight("250gms");
-            basketItem.setQuantity(getString(R.string.sample_unit));
-            basketItem.setDate("22nd Sept 2021");
-            basketItem.setTime("9.00 am to 9.00 pm");
-            if (i == 0)
-                basketItem.setDeliveryStatus("Delivered");
-            else if (i == 2 || i == 3)
-                basketItem.setDeliveryStatus("Confirmed");
-            else
-                basketItem.setDeliveryStatus("In transist");
-            basketItem.setPrice("Rs.200");
-            basketItemList.add(basketItem);
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -188,19 +172,38 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
     }
 
+    /* Cancel Order Manager */
+
     private void CancelOrderDialogBox(){
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
         dialog.setContentView(R.layout.order_cancel_dialog_box);
         ImageView crossImage = dialog.findViewById(R.id.close_btn);
         orderCancelCategory = dialog.findViewById(R.id.rv_cancel_category);
         orderCancelReason = dialog.findViewById(R.id.rv_cancel_reason);
+        CustomButton btnSubmit = dialog.findViewById(R.id.btn_submit);
 
         setCancelCategoryAdapter();
         setCancelReasonAdapter();
+
+        if(isBasketVisible){
+            orderCancelCategory.setVisibility(View.VISIBLE);
+        }else {
+
+            orderCancelCategory.setVisibility(View.GONE);
+        }
+
+        btnSubmit.setOnClickListener(view1 -> {
+            if(!strReasonType.equalsIgnoreCase("")) {
+                callOrderCancelSuccessFullyApi(showCircleProgressDialog(context,""));
+                dialog.dismiss();
+            }else {
+                infoToast(context, "Please select Reason");
+            }
+        });
 
         crossImage.setOnClickListener(view -> {
             dialog.dismiss();
@@ -239,6 +242,31 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         dialog.getWindow().setAttributes(layoutParams);
     }
 
+    private void setCancelReasonAdapter() {
+        cancelOrderReasonList = new ArrayList<>();
+
+        linearLayoutManager = new LinearLayoutManager(requireContext());
+        callOrderCancelReasonApi(showCircleProgressDialog(context, ""));
+        orderCancelReason.setHasFixedSize(true);
+        orderCancelReason.setLayoutManager(linearLayoutManager);
+
+        if(isConnectingToInternet(context)) {
+            orderCancelReasonAdaptor = new OrderCancelReasonAdaptor(context, cancelOrderReasonList, this);
+        }else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+        orderCancelReason.setAdapter(orderCancelReasonAdaptor);
+    }
+
+    @Override
+    public void itemClick(String strReasonType, String cancelId) {
+
+        if (!strReasonType.isEmpty()) {
+            this.strReasonType = strReasonType;
+            this.strCancelId = cancelId;
+        }
+    }
+
     private void setCancelCategoryAdapter() {
         cancelOrderCategoryList = new ArrayList<>();
         prepareListCancelCategory();
@@ -261,25 +289,90 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
-    private void setCancelReasonAdapter() {
-        cancelOrderReasonList = new ArrayList<>();
-        prepareListCancelReason();
+    /*Cancel Order Api */
 
-        linearLayoutManager = new LinearLayoutManager(requireContext());
-        orderCancelReason.setHasFixedSize(true);
-        orderCancelReason.setLayoutManager(linearLayoutManager);
+    private void callOrderCancelReasonApi(ProgressDialog progressDialog) {
 
-        orderCancelReasonAdaptor = new OrderCancelReasonAdaptor(context, cancelOrderReasonList);
-        orderCancelReason.setAdapter(orderCancelReasonAdaptor);
+        @SuppressLint("NotifyDataSetChanged") Observer<OrderCancelReasonResponse> orderCancelReasonResponseObserver = orderCancelReasonResponse -> {
+            if (orderCancelReasonResponse != null) {
+                Log.e("Order Cancel Api ResponseData", new Gson().toJson(orderCancelReasonResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (orderCancelReasonResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        cancelOrderReasonList.clear();
+                        if (orderCancelReasonResponse.getOrderDetials()!= null &&
+                                orderCancelReasonResponse.getOrderDetials().size() > 0) {
+
+                            cancelOrderReasonList.addAll(orderCancelReasonResponse.getOrderDetials());
+                            orderCancelReasonAdaptor.notifyDataSetChanged();
+
+                        }
+                        break;
+                    case STATUS_CODE_404://Validation Errors
+                       warningToast(context, orderCancelReasonResponse.getMessage());
+
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(orderCancelReasonResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, orderCancelReasonResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+        };
+
+        orderViewDetailsViewHolder.getOrderCancelReasonResponse(progressDialog, context,
+                OrderViewFragment.this).observe(getViewLifecycleOwner(), orderCancelReasonResponseObserver);
     }
 
-    private void prepareListCancelReason() {
-        for (int i = 0; i < 4; i++) {
-            CancelOrderReasonList orderCancelReasonList = new CancelOrderReasonList();
-            orderCancelReasonList.setCancelReason("how are you ?");
+    private void callOrderCancelSuccessFullyApi(ProgressDialog progressDialog){
+        Observer<BaseResponse> orderCancelSuccessfullyResponseObserver = orderCancelSuccessfullyResponse -> {
+            if (orderCancelSuccessfullyResponse != null) {
+                Log.e("Order Cancel Api ResponseData", new Gson().toJson(orderCancelSuccessfullyResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (orderCancelSuccessfullyResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, orderCancelSuccessfullyResponse.getMessage());
 
-            cancelOrderReasonList.add(orderCancelReasonList);
-        }
+
+                        break;
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, orderCancelSuccessfullyResponse.getMessage());
+
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(orderCancelSuccessfullyResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, orderCancelSuccessfullyResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+        };
+
+        orderViewDetailsViewHolder.getOrderCancelSuccessfullyResponse(progressDialog, context,OrderCancelSuccessfullyInputParameter(),
+                OrderViewFragment.this).observe(getViewLifecycleOwner(), orderCancelSuccessfullyResponseObserver);
+    }
+
+    private HashMap<String, String> OrderCancelSuccessfullyInputParameter(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put(ORDER_ID, "5");
+        map.put(CANCEL_ID, strCancelId);
+
+        return map;
     }
 
     /*Rating and FeedBack api*/
@@ -329,4 +422,5 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
         return map;
     }
+
 }

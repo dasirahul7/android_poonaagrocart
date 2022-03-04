@@ -6,7 +6,7 @@
 
         <variable
             name="order"
-            type="com.poona.agrocart.ui.nav_orders.model.Order" />
+            type="com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse.OrderList" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,7 +64,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_3sdp"
                                 android:gravity="start"
-                                android:text="@{`Order ID - `+order.orderId}"
+                                android:text="@{`Order ID - `+order.orderCode}"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_16sp"
                                 app:setCustomFont="@string/font_poppins_bold" />
@@ -72,11 +72,12 @@
                         </LinearLayout>
 
                         <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_order_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="start"
-                            android:text="@{order.dateAndTime}"
+                            android:text="@{order.pendingDate}"
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -105,7 +106,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="start"
-                            android:text="@{order.status}"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_bold" />
@@ -143,7 +143,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="start"
-                            android:text="@{order.amount}"
                             android:textColor="@color/color_total_amount"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -172,7 +171,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="end"
-                            android:text="@{order.quantity}"
                             android:textColor="@color/color_total_amount"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />

@@ -32,7 +32,10 @@ import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.ISSUE_TICKET;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.MY_NOTIFICATION;
+import static com.poona.agrocart.app.AppConstants.MY_ORDER_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
+import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL;
+import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL_REASON;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
@@ -94,6 +97,8 @@ import com.poona.agrocart.data.network.responses.help_center_response.SendMessag
 import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
 import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
@@ -105,6 +110,7 @@ import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResp
 
 import java.util.HashMap;
 
+import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
@@ -439,4 +445,17 @@ public interface ApiInterface {
 
     @GET(ORDER_SUMMARY_API)
     Single<OrderSummaryResponse> getOrderSummaryResponse();
+
+    @GET(ORDER_CANCEL_REASON)
+    Single<OrderCancelReasonResponse> getOrderCancelReasonResponse();
+
+    @FormUrlEncoded
+    @POST(ORDER_CANCEL)
+    Single<BaseResponse> getOrderCancelSuccessfullyResponse(@FieldMap HashMap<String, String> orderCancelSuccessfullyInputParameter);;
+
+
+    @GET(MY_ORDER_CUSTOMER)
+    Single<OrderListResponse> getOrderListResponse();
+
+
 }

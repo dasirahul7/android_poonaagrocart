@@ -14,7 +14,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
 import com.poona.agrocart.databinding.FragmentOrderViewBinding;
 
 import java.util.HashMap;
@@ -71,5 +74,89 @@ public class OrderViewDetailsViewHolder extends AndroidViewModel {
         return baseResponseMutableLiveData;
 
 
+    }
+
+    public LiveData<OrderCancelReasonResponse> getOrderCancelReasonResponse(ProgressDialog progressDialog, Context context
+            , OrderViewFragment orderViewFragment) {
+
+        MutableLiveData<OrderCancelReasonResponse> orderCancelReasonResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(context)
+                .create(ApiInterface.class)
+                .getOrderCancelReasonResponse()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<OrderCancelReasonResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull OrderCancelReasonResponse baseResponse) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                        orderCancelReasonResponseMutableLiveData.setValue(baseResponse);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+
+                        Gson gson = new GsonBuilder().create();
+                        OrderCancelReasonResponse baseResponse = new OrderCancelReasonResponse();
+                        try {
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), OrderCancelReasonResponse.class);
+
+                            orderCancelReasonResponseMutableLiveData.setValue(baseResponse);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) orderViewFragment)
+                                    .onNetworkException(0, "");
+                        }
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return orderCancelReasonResponseMutableLiveData;
+    }
+
+
+    public LiveData<BaseResponse> getOrderCancelSuccessfullyResponse(ProgressDialog progressDialog, Context context
+            , HashMap<String, String> orderCancelSuccessfullyInputParameter, OrderViewFragment orderViewFragment) {
+        MutableLiveData<BaseResponse> orderCancelReasonResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(context)
+                .create(ApiInterface.class)
+                .getOrderCancelSuccessfullyResponse(orderCancelSuccessfullyInputParameter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull BaseResponse baseResponse) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                        orderCancelReasonResponseMutableLiveData.setValue(baseResponse);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse baseResponse = new BaseResponse();
+                        try {
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), BaseResponse.class);
+
+                            orderCancelReasonResponseMutableLiveData.setValue(baseResponse);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) orderViewFragment)
+                                    .onNetworkException(0, "");
+                        }
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return orderCancelReasonResponseMutableLiveData;
     }
 }
