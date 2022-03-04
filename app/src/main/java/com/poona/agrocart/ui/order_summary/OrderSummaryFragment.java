@@ -79,7 +79,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private int mYear, mMonth, mDay;
     private ConstraintLayout mainLayout;
     private SwipeRefreshLayout rlRefreshPage;
-    private boolean stepAddress, stepOrder,stepPayment;
+    private String stepAddress, stepOrder,stepPayment;
     private ArrayList<AddressesResponse.Address> addressArrayList;
     private ArrayList<Coupon> couponArrayList;
     private ArrayList<Delivery> deliveryArrayList;
@@ -218,6 +218,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                             bundle.putString(FROM_SCREEN, ORDER_SUMMARY);
                             NavHostFragment.findNavController(OrderSummaryFragment.this).navigate(R.id.action_nav_order_summary_to_addAddressFragment, bundle);
                         } else {
+                            stepAddress = "";
+                            stepOrder = "";
+                            stepPayment = "";
                             checkOrderSummaryStatus();
                             orderSummaryViewModel.initViewModel(orderSummaryResponse, context);
                             fragmentOrderSummaryBinding.setOrderSummaryViewModel(orderSummaryViewModel);
@@ -275,6 +278,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 if (addressArrayList.get(i).getIsDefault().equalsIgnoreCase("yes")) {
                     preferences.setDeliveryAddress(newAddress.getFullAddress());
                     orderSummaryViewModel.deliveryAddressMutable.setValue(newAddress.getFullAddress());
+                    stepAddress= "yes";
                 }
             }
             addressDialogAdapter = new AddressDialogAdapter(addressArrayList, getActivity(), this);
@@ -319,18 +323,22 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void checkOrderSummaryStatus() {
-        if (stepAddress)
+        if (stepAddress.equalsIgnoreCase("yes"))
             fragmentOrderSummaryBinding.tvStep1.setBackground(context.getDrawable(R.drawable.ic_step_done));
-        else
+        else if (stepAddress.equalsIgnoreCase("no"))
             fragmentOrderSummaryBinding.tvStep1.setBackground(context.getDrawable(R.drawable.ic_step_active));
-        if (stepOrder)
+
+        else fragmentOrderSummaryBinding.tvStep1.setBackground(context.getDrawable(R.drawable.ic_step_inactive));
+        if (stepOrder.equalsIgnoreCase("yes"))
             fragmentOrderSummaryBinding.tvStep2.setBackground(context.getDrawable(R.drawable.ic_step_done));
-        else
+        else if (stepOrder.equalsIgnoreCase("no"))
             fragmentOrderSummaryBinding.tvStep2.setBackground(context.getDrawable(R.drawable.ic_step_active));
-        if (stepPayment)
+        else fragmentOrderSummaryBinding.tvStep2.setBackground(context.getDrawable(R.drawable.ic_step_inactive));
+        if (stepPayment.equalsIgnoreCase("yes"))
             fragmentOrderSummaryBinding.tvStep3.setBackground(context.getDrawable(R.drawable.ic_step_done));
-        else
+        else if (stepPayment.equalsIgnoreCase("no"))
             fragmentOrderSummaryBinding.tvStep3.setBackground(context.getDrawable(R.drawable.ic_step_active));
+        else fragmentOrderSummaryBinding.tvStep3.setBackground(context.getDrawable(R.drawable.ic_step_inactive));
 
     }
 
@@ -516,12 +524,15 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         preferences.setDeliveryAddress(address.getFullAddress());
         fragmentOrderSummaryBinding.tvDeliveryAddress.setText(address.getFullAddress());
         orderSummaryViewModel.deliveryAddressMutable.setValue(address.getFullAddress());
+        checkOrderSummaryStatus();
     }
 
     @Override
     public void OnSlotClick(DeliverySlot deliverySlot) {
         orderSummaryViewModel.deliverySlotMutable.setValue(deliverySlot.slotStartTime + " - " + deliverySlot.slotEndTime);
         fragmentOrderSummaryBinding.tvTime.setText(deliverySlot.slotStartTime + " - " + deliverySlot.slotEndTime);
+        stepOrder = "yes";
         deliveryDialog.dismiss();
+        checkOrderSummaryStatus();
     }
 }
