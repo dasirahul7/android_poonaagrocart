@@ -6,7 +6,13 @@ import com.poona.agrocart.data.network.responses.BaseResponse;
 
 import java.util.ArrayList;
 
-public class ApplyCouponResponse extends BaseResponse {
+public class ApplyCouponResponse {
+    @SerializedName("status")
+    @Expose
+    public int status;
+    @SerializedName("message")
+    @Expose
+    public String message;
     @SerializedName("sub_total")
     @Expose
     public Integer subTotal;
@@ -19,6 +25,9 @@ public class ApplyCouponResponse extends BaseResponse {
     @SerializedName("total_amount")
     @Expose
     public float totalAmount;
+    @SerializedName("coupon_id")
+    @Expose
+    public String couponId;
     @SerializedName("items_details")
     @Expose
     private ArrayList<ItemsDetail> itemsDetails = null;

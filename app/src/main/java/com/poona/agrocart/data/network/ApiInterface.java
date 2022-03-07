@@ -449,5 +449,5 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(ORDER_PLACE_API)
-    Single<ApplyCouponResponse> getOrderPlaceResponse(@FieldMap HashMap<String, String> hashMap);
+    Single<BaseResponse> getOrderPlaceResponse(@FieldMap HashMap<String, String> hashMap);
 }

@@ -34,6 +34,9 @@ public class ItemsDetail {
     @SerializedName("feature_img")
     @Expose
     public String featureImg;
+    @SerializedName("category_id")
+    @Expose
+    public String categoryId;
     @SerializedName("weight")
     @Expose
     public String weight;

@@ -50,6 +50,8 @@
         <entry key="app/src/main/res/drawable/bg_my_profile_spinner.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_notificationcard.xml" value="0.5" />
         <entry key="app/src/main/res/drawable/bg_offer_red.xml" value="0.1935185185185185" />
+        <entry key="app/src/main/res/drawable/bg_offer_yellow.xml" value="0.1175" />
+        <entry key="app/src/main/res/drawable/bg_organic_sqaure.xml" value="0.1175" />
         <entry key="app/src/main/res/drawable/bg_plus_btn.xml" value="0.1935185185185185" />
         <entry key="app/src/main/res/drawable/bg_radio_button.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/bg_radio_sing_up.xml" value="0.13094462540716612" />
@@ -201,7 +203,7 @@
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.1802536231884058" />
         <entry key="app/src/main/res/layout/alerter_alert_view.xml" value="0.16530797101449277" />
-        <entry key="app/src/main/res/layout/app_bar_home.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/app_bar_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/best_selling_row_item.xml" value="0.2" />
         <entry key="app/src/main/res/layout/cancel_order_category_recycler_view.xml" value="0.25" />

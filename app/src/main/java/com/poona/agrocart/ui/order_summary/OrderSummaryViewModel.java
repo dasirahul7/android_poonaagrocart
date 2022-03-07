@@ -1,5 +1,7 @@
 package com.poona.agrocart.ui.order_summary;
 
+import static com.poona.agrocart.app.AppConstants.COUPON_ID;
+
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,8 +12,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.exoplayer2.source.dash.manifest.BaseUrl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
@@ -25,6 +29,8 @@ import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryRespo
 import com.poona.agrocart.data.network.responses.orderResponse.Payments;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.order_summary.model.Address;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -95,8 +101,9 @@ public class OrderSummaryViewModel extends AndroidViewModel {
         deliveryAddressMutable.setValue(preferences.getDeliveryAddress());
         /*Delivery date and time*/
         deliveryDateMutable.setValue(orderSummaryResponse.delivery.get(0).deliveryDate);
+        preferences.setDeliveryDate(orderSummaryResponse.delivery.get(0).deliveryDate);
         deliverySlotMutable.setValue(orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotStartTime+" - "+orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotEndTime);
-        deliverySlotMutable.setValue(orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotStartTime+" - "+orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotEndTime);
+        preferences.setDeliverySlot(orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotId);
         /*Delivery charge and total amount*/
         subTotalMutable.setValue(String.valueOf(orderSummaryResponse.subTotal).trim());
         discountMutable.setValue(String.valueOf(orderSummaryResponse.discount).trim());
@@ -138,13 +145,15 @@ public class OrderSummaryViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog!=null)
+                            progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         OrderSummaryResponse errorResponse = new OrderSummaryResponse();
                         try {
                             errorResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     OrderSummaryResponse.class);
                             orderSummaryResponseMutableLiveData.setValue(errorResponse);
-                        } catch (IOException ioException) {
+                        } catch (Exception ioException) {
                             ioException.printStackTrace();
                             Log.e(TAG, "onError: "+ioException.getMessage() );
                             ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(0,"");
@@ -177,6 +186,8 @@ public class OrderSummaryViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog!=null)
+                            progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         ApplyCouponResponse errorResponse = new ApplyCouponResponse();
                         try {
@@ -191,5 +202,45 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                     }
                 });
         return applyCouponResponseMutableLiveData;
+    }
+
+    /*Order place api*/
+    public LiveData<BaseResponse> getOrderPlaceAPIResponse(ProgressDialog  progressDialog,
+                                                    HashMap<String,String> hashMap,
+                                                    OrderSummaryFragment orderSummaryFragment){
+        MutableLiveData<BaseResponse> placeOrderResponseMutableLive = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(orderSummaryFragment.getContext())
+                .create(ApiInterface.class)
+                .getOrderPlaceResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse response) {
+                       if (response!=null){
+                           if (progressDialog!=null){
+                               progressDialog.dismiss();
+                               placeOrderResponseMutableLive.setValue(response);
+                           }
+                       }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog!=null)
+                            progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse baseResponse =new BaseResponse();
+                        try {
+                            baseResponse = gson.fromJson(((HttpException)e).response().errorBody().string(),BaseResponse.class);
+                            placeOrderResponseMutableLive.setValue(baseResponse);
+                        }catch (JsonSyntaxException | IOException exception){
+                            Log.e(TAG, "onError: "+exception.getMessage() );
+                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(2,"");
+                        }
+                    }
+                });
+        return placeOrderResponseMutableLive;
     }
 }

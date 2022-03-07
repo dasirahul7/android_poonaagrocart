@@ -78,7 +78,7 @@
                 <RelativeLayout
                     android:id="@+id/rl_product_tag"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_25sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_15sp"
@@ -87,7 +87,7 @@
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_brand"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_toStartOf="@+id/txt_organic"
                         android:background="@drawable/bg_offer_yellow"
                         android:gravity="center_vertical|center"
@@ -104,7 +104,7 @@
                         android:id="@+id/txt_organic"
                         style="@style/organic_button_style"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:layout_marginHorizontal="@dimen/_5sdp"
                         android:background="@drawable/bg_organic_sqaure"

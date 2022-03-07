@@ -1,11 +1,15 @@
 package com.poona.agrocart.ui.order_summary;
 
+import static com.poona.agrocart.app.AppConstants.ADDRESS_P_ID;
 import static com.poona.agrocart.app.AppConstants.ADD_ADDRESS_DETAILS;
 import static com.poona.agrocart.app.AppConstants.ADD_UPDATE_ADDRESS_DETAILS;
-import static com.poona.agrocart.app.AppConstants.COUPON_API;
+import static com.poona.agrocart.app.AppConstants.COUPON_CODE;
 import static com.poona.agrocart.app.AppConstants.COUPON_ID;
+import static com.poona.agrocart.app.AppConstants.DELIVERY_DATE;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_MODE_ID;
+import static com.poona.agrocart.app.AppConstants.SLOT_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -32,7 +36,6 @@ import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
@@ -50,6 +53,7 @@ import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.AddressesResponse;
+import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.Coupon;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.Delivery;
@@ -100,6 +104,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private Dialog promoCodeDialog;
     private NestedScrollView scrollView;
     private String CouponId;
+    private String PaymentModeId;
 
     @Override
     public void onPause() {
@@ -176,7 +181,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
             public void afterTextChanged(Editable editable) {
                 if (editable.length() == 0) {
                     fragmentOrderSummaryBinding.btnRemove.setText("Apply");
-                } else fragmentOrderSummaryBinding.btnRemove.setText("Remove");
+                }else {
+                    CouponId = "";
+                }
             }
         });
         return view;
@@ -188,6 +195,11 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void initView() {
+        preferences.setDeliveryAddressId("");
+        preferences.setDeliverySlot("");
+        preferences.setCouponId("");
+        preferences.setPaymentMode("");
+        preferences.setDeliveryDate("");
         rvProductsAndPrices = fragmentOrderSummaryBinding.rvProductsAndPrices;
         mainLayout = fragmentOrderSummaryBinding.mainLayout;
         itemProgress = fragmentOrderSummaryBinding.itemsProgress;
@@ -219,6 +231,45 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
             callOrderSummaryAPI(showCircleProgressDialog(context, ""));
         } else showNotifyAlert(requireActivity(), context.getString(R.string.info),
                 context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+    }
+    /*Call Order place api here*/
+    private void callOrderPlaceAPI(ProgressDialog progressDialog) {
+        Observer<BaseResponse> baseResponseObserver = response -> {
+            if (response!=null){
+                progressDialog.dismiss();
+                switch (response.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context,response.getMessage());
+                        redirectToOrderDetails();
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, response.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(response.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, response.getMessage());
+                        break;
+                }
+
+            }
+        };
+        orderSummaryViewModel.getOrderPlaceAPIResponse(progressDialog,placeOrderMaps(),OrderSummaryFragment.this)
+                .observe(getViewLifecycleOwner(),baseResponseObserver);
+    }
+
+    private HashMap<String, String> placeOrderMaps() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(ADDRESS_P_ID, preferences.getDeliveryAddressId());
+        map.put(DELIVERY_DATE,preferences.getDeliveryDate());
+        map.put(SLOT_ID,preferences.getDeliverySlot());
+        map.put(PAYMENT_MODE_ID,preferences.getPaymentMode());
+        map.put(COUPON_ID,preferences.getCouponId());
+        return map;
     }
 
     /*Call Order Summary API here*/
@@ -280,31 +331,35 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 if (progressDialog!=null){
                     progressDialog.dismiss();
                     Log.e(TAG, "callApplyCouponAPI: "+new Gson().toJson(applyCouponResponse) );
-                    switch (applyCouponResponse.getStatus()) {
+                    fragmentOrderSummaryBinding.btnRemove.setText("Remove");
+                    switch (applyCouponResponse.status) {
                         case STATUS_CODE_200://Record Create/Update Successfully
+                            preferences.setCouponId(applyCouponResponse.couponId);
                             if (applyCouponResponse.getItemsDetails()!=null
                                     && applyCouponResponse.getItemsDetails().size()>0){
                                 if (itemProgress!=null && itemProgress.isShown())
                                     itemProgress.setVisibility(View.GONE);
+                                ArrayList<ItemsDetail> itemsDetails = new ArrayList<>();
+                                orderSummaryViewModel.arrayItemListMutableLiveData.setValue(itemsDetails);
                                 orderSummaryViewModel.arrayItemListMutableLiveData.setValue(applyCouponResponse.getItemsDetails());
                                 orderSummaryViewModel.subTotalMutable.setValue(String.valueOf(applyCouponResponse.subTotal).trim());
                                 orderSummaryViewModel.discountMutable.setValue(String.valueOf(applyCouponResponse.discount).trim());
                                 orderSummaryViewModel.deliveryChargesMutable.setValue(String.valueOf(applyCouponResponse.deliveryCharges).trim());
                                 orderSummaryViewModel.finalTotalMutable.setValue(String.valueOf(applyCouponResponse.totalAmount).trim());
-//                                initItemsDetails();
+                                initItemsDetails();
                             }
                             break;
                         case STATUS_CODE_403://Validation Errors
                         case STATUS_CODE_400://Validation Errors
                         case STATUS_CODE_404://Validation Errors
                             //show no data msg here
-                            warningToast(context, applyCouponResponse.getMessage());
+                            warningToast(context, applyCouponResponse.message);
                             break;
                         case STATUS_CODE_401://Unauthorized user
-                            goToAskSignInSignUpScreen(applyCouponResponse.getMessage(), context);
+                            goToAskSignInSignUpScreen(applyCouponResponse.message, context);
                             break;
                         case STATUS_CODE_405://Method Not Allowed
-                            infoToast(context, applyCouponResponse.getMessage());
+                            infoToast(context, applyCouponResponse.message);
                             break;
                     }
 
@@ -318,7 +373,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
     private HashMap<String, String> applyCouponParams() {
         HashMap<String,String> map = new HashMap<>();
-        map.put(COUPON_ID,CouponId);
+        if (fragmentOrderSummaryBinding.etCouponCode.getText().toString().trim()!=null
+                && !fragmentOrderSummaryBinding.etCouponCode.getText().toString().trim().isEmpty())
+        map.put(COUPON_CODE,fragmentOrderSummaryBinding.etCouponCode.getText().toString().trim());
         return map;
     }
 
@@ -347,6 +404,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 if (addressArrayList.get(i).getIsDefault().equalsIgnoreCase("yes")) {
                     preferences.setDeliveryAddress(newAddress.getFullAddress());
                     orderSummaryViewModel.deliveryAddressMutable.setValue(newAddress.getFullAddress());
+                    preferences.setDeliveryAddressId(newAddress.getAddressPrimaryId());
                     stepAddress = "yes";
                 }
             }
@@ -420,15 +478,36 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         switch (v.getId()) {
             case R.id.btn_make_payment:
                 try {
-                    redirectToOrderDetails(v);
+                    System.out.println("Delivery options: "+preferences.getDeliveryDate()+preferences.getDeliverySlot());
+                    if (preferences.getDeliveryAddressId()!=null&& !preferences.getDeliveryAddressId().isEmpty()){
+                        if ((preferences.getDeliveryDate()!=null &&!preferences.getDeliveryDate().isEmpty()) &&
+                                (preferences.getDeliverySlot()!=null && !preferences.getDeliverySlot().isEmpty())){
+                            if (preferences.getPaymentMode()!=null && !preferences.getPaymentMode().isEmpty()){
+                                /*add order place api*/
+                                if (isConnectingToInternet(context))
+                                callOrderPlaceAPI(showCircleProgressDialog(context,""));
+                                else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+//                                redirectToOrderDetails(v);
+                            }else errorToast(context,"Select payment");
+                        }else errorToast(context,"select delivery options");
+                    }else errorToast(context,"Please select address");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
             case R.id.rb_cod:
-            case R.id.rb_online:
+                PaymentModeId = orderSummaryViewModel.arrayPaymentListMutableLiveData.getValue().get(0).paymentModeId;
+                preferences.setPaymentMode(PaymentModeId);
                 summaryRadioAction(true);
+                break;
+            case R.id.rb_online:
+                PaymentModeId = orderSummaryViewModel.arrayPaymentListMutableLiveData.getValue().get(1).paymentModeId;
+                preferences.setPaymentMode(PaymentModeId);
+                summaryRadioAction(true);
+                break;
             case R.id.rb_wallet_balance:
+                PaymentModeId = orderSummaryViewModel.arrayPaymentListMutableLiveData.getValue().get(2).paymentModeId;
+                preferences.setPaymentMode(PaymentModeId);
                 summaryRadioAction(false);
                 break;
             case R.id.iv_address_option:
@@ -461,9 +540,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
     }
 
-    private void redirectToOrderDetails(View v) {
+    private void redirectToOrderDetails() {
         if (isConnectingToInternet(context)) {
-            Navigation.findNavController(v).navigate(R.id.action_nav_order_summary_to_orderDetailsFragment);
+            NavHostFragment.findNavController(OrderSummaryFragment.this).navigate(R.id.action_nav_order_summary_to_orderDetailsFragment);
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
@@ -515,9 +594,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         });
         codeDialogAdapter.setOnPromoCodeListener(coupons1 -> {
             CouponId = coupons1.getId();
-            infoToast(context,CouponId.trim());
             fragmentOrderSummaryBinding.etCouponCode.setText(coupons1.getCouponCode());
-            fragmentOrderSummaryBinding.btnRemove.setText("Remove");
             promoCodeDialog.dismiss();
         });
         promoCodeDialog.show();
@@ -547,6 +624,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
             deliveryDialog.dismiss();
         });
         tvDate.setText(orderSummaryViewModel.deliveryDateMutable.getValue());
+        preferences.setDeliveryDate(orderSummaryViewModel.deliveryDateMutable.getValue().trim());
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -598,11 +676,14 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         preferences.setDeliveryAddress(address.getFullAddress());
         fragmentOrderSummaryBinding.tvDeliveryAddress.setText(address.getFullAddress());
         orderSummaryViewModel.deliveryAddressMutable.setValue(address.getFullAddress());
+        preferences.setDeliveryAddressId(address.getAddressPrimaryId());
         checkOrderSummaryStatus();
     }
 
     @Override
     public void OnSlotClick(DeliverySlot deliverySlot) {
+        if (deliverySlot!=null)
+            preferences.setDeliverySlot(deliverySlot.slotId);
         orderSummaryViewModel.deliverySlotMutable.setValue(deliverySlot.slotStartTime + " - " + deliverySlot.slotEndTime);
         fragmentOrderSummaryBinding.tvTime.setText(deliverySlot.slotStartTime + " - " + deliverySlot.slotEndTime);
         stepOrder = "yes";
@@ -620,7 +701,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                         callOrderSummaryAPI(showCircleProgressDialog(context, ""));
                         break;
                     case 1:
-                        //Call Apply coupon
+                        callApplyCouponAPI(showCircleProgressDialog(context,""));
                         break;
                 }
             } else {

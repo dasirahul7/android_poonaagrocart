@@ -155,9 +155,9 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                 switch (productListResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (productListResponse.getProductResponseDt().getProductList().size() > 0) {
-                                productList.addAll(productListResponse.getProductResponseDt().getProductList());
+                            productList.addAll(productListResponse.getProductResponseDt().getProductList());
 //                                //Todo need to complete this
-//                                setSearchProductList();
+                            setSearchProductList();
                         } else fragmentSearchBinding.tvNoData.setVisibility(View.VISIBLE);
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -210,8 +210,8 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         fragmentSearchBinding.recProduct.setNestedScrollingEnabled(false);
         fragmentSearchBinding.recProduct.setHasFixedSize(true);
         fragmentSearchBinding.recProduct.setLayoutManager(linearLayoutManager);
-//        searchAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> addToCartProduct(product, position));
-//        fragmentSearchBinding.recProduct.setAdapter(searchAdapter);
+        searchAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> addToCartProduct(product, position));
+        fragmentSearchBinding.recProduct.setAdapter(searchAdapter);
     }
 
     private void addToCartProduct(Product product, int position) {
@@ -221,8 +221,8 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                 switch (response.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, response.getMessage());
-                        productList.get(position).setInCart(1);
-                        searchAdapter.notifyDataSetChanged();
+                        productList.clear();
+                        callSearchProductApi(searchView,showCircleProgressDialog(context, ""), "load");
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors

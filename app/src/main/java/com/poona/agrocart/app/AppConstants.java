@@ -213,7 +213,7 @@ public class AppConstants {
 
     /*Order Api*/
     public static final String ORDER_SUMMARY_API = "order-summary-customer";
-    public static final String ORDER_PLACE_API = "coupon_code_list";
+    public static final String ORDER_PLACE_API = "place-order-customer";
     public static final String RATE_ORDER = "rate-order";
     public static final String APPLY_COUPON_API = "apply-coupon";
 
@@ -311,6 +311,11 @@ public class AppConstants {
     public static final String ORDER_SUMMARY ="order-summary";
     public static final String DELIVERY_ADDRESS ="delivery-address";
     public static final String COUPON_ID ="coupon_id";
+    public static final String COUPON_CODE ="coupon_code";
+    public static final String ADDRESS_P_ID = "address_primary_id";
+    public static final String DELIVERY_DATE = "delivery_date";
+    public static final String SLOT_ID = "slot_id";
+    public static final String PAYMENT_MODE_ID = "payment_mode_id";
 
 }
 

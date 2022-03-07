@@ -1,15 +1,21 @@
 package com.poona.agrocart.data.shared_preferences;
 
+import static com.poona.agrocart.app.AppConstants.ADDRESS_ID;
+import static com.poona.agrocart.app.AppConstants.ADDRESS_P_ID;
 import static com.poona.agrocart.app.AppConstants.AUTHORIZATION_TOKEN;
 import static com.poona.agrocart.app.AppConstants.COUNTRY_CODE;
+import static com.poona.agrocart.app.AppConstants.COUPON_ID;
 import static com.poona.agrocart.app.AppConstants.DELIVERY_ADDRESS;
+import static com.poona.agrocart.app.AppConstants.DELIVERY_DATE;
 import static com.poona.agrocart.app.AppConstants.FCM_TOKEN;
 import static com.poona.agrocart.app.AppConstants.FROM_LOG_OUT;
 import static com.poona.agrocart.app.AppConstants.GOOGLE_API_KEY;
 import static com.poona.agrocart.app.AppConstants.IS_LOGGED_IN;
 import static com.poona.agrocart.app.AppConstants.IS_READ_INTRO;
 import static com.poona.agrocart.app.AppConstants.IS_VERIFIED;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_MODE_ID;
 import static com.poona.agrocart.app.AppConstants.PREFERENCES_NAME;
+import static com.poona.agrocart.app.AppConstants.SLOT_ID;
 import static com.poona.agrocart.app.AppConstants.USERNAME;
 import static com.poona.agrocart.app.AppConstants.USERPROFILE;
 import static com.poona.agrocart.app.AppConstants.USER_ADDRESS;
@@ -42,7 +48,6 @@ public class AppSharedPreferences {
     int PRIVATE_MODE = 0;
     String googleApiKey;
     private String fireBaseToken, authorizationToken, uid, userMobile, userCountry, userAddress, baseAuthUsername, baseAuthPassword, userName, userProfile;
-
     /*Order summary*/
     private String deliveryAddress;
     private int newOrderCount;
@@ -75,6 +80,7 @@ public class AppSharedPreferences {
         this.editor.putString(DELIVERY_ADDRESS,deliveryAddress);
         this.editor.commit();
     }
+
 
     public boolean getIsLoggedIn() {
         return this.preferences.getBoolean(IS_LOGGED_IN, false);
@@ -250,5 +256,43 @@ public class AppSharedPreferences {
     public void removeAll() {
         this.editor.clear();
         this.editor.commit();
+    }
+
+    /*Saving order summary details*/
+    public void setDeliveryAddressId(String addressId){
+        this.editor.putString(ADDRESS_P_ID,addressId);
+        this.editor.commit();
+    }
+    public void setDeliveryDate(String date){
+        this.editor.putString(DELIVERY_DATE,date);
+        this.editor.commit();
+    }
+    public void setDeliverySlot(String date){
+        this.editor.putString(SLOT_ID,date);
+        this.editor.commit();
+    }
+
+    public void setPaymentMode(String paymentModeId){
+        this.editor.putString(PAYMENT_MODE_ID,paymentModeId);
+        this.editor.commit();
+    }
+    public void setCouponId(String couponId){
+        this.editor.putString(COUPON_ID,couponId);
+        this.editor.commit();
+    }
+    public String getDeliveryAddressId(){
+        return preferences.getString(ADDRESS_P_ID,"");
+    }
+    public String getDeliveryDate(){
+        return preferences.getString(DELIVERY_DATE,"");
+    }
+    public String getDeliverySlot(){
+        return preferences.getString(SLOT_ID,"");
+    }
+    public String getPaymentMode(){
+        return preferences.getString(PAYMENT_MODE_ID,"");
+    }
+    public String getCouponId(){
+        return preferences.getString(COUPON_ID,"");
     }
 }
