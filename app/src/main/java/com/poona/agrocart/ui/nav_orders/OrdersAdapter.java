@@ -1,5 +1,7 @@
 package com.poona.agrocart.ui.nav_orders;
 
+import static com.poona.agrocart.app.AppConstants.ORDER_ID;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -22,12 +25,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder> {
-    private final ArrayList<OrderListResponse.OrderList> orderArrayList;
+    private final ArrayList<OrderListResponse.Order> orderArrayList;
     private final Context context;
     private final View view;
     MyOrdersFragment myOrdersFragment;
 
-    public OrdersAdapter(ArrayList<OrderListResponse.OrderList> orderArrayList, Context context, View view, MyOrdersFragment myOrdersFragment) {
+
+    public OrdersAdapter(ArrayList<OrderListResponse.Order> orderArrayList, Context context, View view, MyOrdersFragment myOrdersFragment) {
         this.orderArrayList = orderArrayList;
         this.context = context;
         this.view = view;
@@ -39,15 +43,16 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     public OrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RvOrderBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_order, parent, false);
-        return new OrdersAdapter.OrdersViewHolder(binding, view);
+        return new OrdersAdapter.OrdersViewHolder(binding, view, orderArrayList);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull OrdersViewHolder holder, int position) {
-        final OrderListResponse.OrderList order = orderArrayList.get(position);
+        final OrderListResponse.Order order = orderArrayList.get(position);
         holder.rvOrderBinding.setOrder(order);
         holder.bind(order, context);
+
 
         String strTotalAmount = orderArrayList.get(0).getPaidAmount();
         String strTotalQuantity = orderArrayList.get(0).getTotalQuantity();
@@ -64,7 +69,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             holder.rvOrderBinding.tvTotalQuantity.setText(orderArrayList.get(0).getTotalQuantity());
         }
 
-        String selectedDate = orderArrayList.get(0).getPendingDate();
+        String selectedDate = orderArrayList.get(0).getCreatedAt();
 
         String txtDisplayDate = "";
         try {
@@ -83,23 +88,30 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
     public static class OrdersViewHolder extends RecyclerView.ViewHolder {
         RvOrderBinding rvOrderBinding;
+        private ArrayList<OrderListResponse.Order> orderArrayList;
+        private String orderId;
 
-        public OrdersViewHolder(RvOrderBinding rvOrderBinding, View view) {
+        public OrdersViewHolder(RvOrderBinding rvOrderBinding, View view, ArrayList<OrderListResponse.Order> orderArrayList ) {
             super(rvOrderBinding.getRoot());
             this.rvOrderBinding = rvOrderBinding;
+
+            orderId = orderArrayList.get(0).getOrderId();
             rvOrderBinding.cardviewOrder.setOnClickListener(v -> {
                 redirectToBasketOrderView(view);
             });
+
         }
 
         private void redirectToBasketOrderView(View view) {
             Bundle bundle = new Bundle();
+            bundle.putString(ORDER_ID, orderId);
             bundle.putBoolean("isBasketVisible", false);
+            Toast.makeText(itemView.getContext(), ""+orderId, Toast.LENGTH_SHORT).show();
             Navigation.findNavController(view).navigate(R.id.action_nav_orders_to_orderViewFragment2, bundle);
         }
 
         @SuppressLint("ResourceType")
-        public void bind(OrderListResponse.OrderList order, Context context) {
+        public void bind(OrderListResponse.Order order, Context context) {
             rvOrderBinding.setVariable(BR.order, order);
             switch (order.getOrderStatus()) {
                 case "3":

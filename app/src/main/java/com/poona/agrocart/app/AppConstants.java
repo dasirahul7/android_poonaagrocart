@@ -217,6 +217,7 @@ public class AppConstants {
     public static final String ORDER_CANCEL_REASON = "order-cancel-reason";
     public static final String ORDER_CANCEL = "order-cancel";
     public static final String MY_ORDER_CUSTOMER = "my-order-customer";
+    public static final String MY_ORDER_Details_CUSTOMER = "my-order-details-customer";
 
    /* Rating and Review */
    public static final String RATING = "rating";

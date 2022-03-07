@@ -13,6 +13,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -37,6 +38,8 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.ItemsDetail;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetial;
 import com.poona.agrocart.databinding.FragmentOrderViewBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList;
@@ -45,6 +48,7 @@ import com.poona.agrocart.ui.nav_orders.order_view.adaptor.OrderCancelReasonAdap
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomEditText;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +57,8 @@ import java.util.Objects;
 public class OrderViewFragment extends BaseFragment implements View.OnClickListener, OrderCancelReasonAdaptor.OnTypeClickListener {
 
     private FragmentOrderViewBinding fragmentOrderViewBinding;
-    private OrderViewDetailsViewHolder orderViewDetailsViewHolder;
+    private OrderViewDetailsViewModel orderViewDetailsViewModel;
+    private String order_id = "";
     private RecyclerView rvBasketListItems;
     private LinearLayoutManager linearLayoutManager;
     private BasketItemsAdapter basketItemsAdapter;
@@ -62,6 +67,8 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private RatingBar ratingBar;
     private CustomEditText feedbackComment;
     private CustomButton btnSubmitFeedback;
+
+    private List<MyOrderDetial> orderDetials = new ArrayList<>();
 
     /*Cancel Order dialog */
     private RecyclerView orderCancelCategory, orderCancelReason;
@@ -74,16 +81,27 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private String strReasonType = "", strCancelId = "" ;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            order_id = getArguments().getString(ORDER_ID);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentOrderViewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_view, container, false);
         fragmentOrderViewBinding.setLifecycleOwner(this);
-        orderViewDetailsViewHolder = new ViewModelProvider(this).get(OrderViewDetailsViewHolder.class);
-       view = fragmentOrderViewBinding.getRoot();
+        orderViewDetailsViewModel = new ViewModelProvider(this).get(OrderViewDetailsViewModel.class);
+        fragmentOrderViewBinding.setOrderViewDetailsViewModel(orderViewDetailsViewModel);
+        view = fragmentOrderViewBinding.getRoot();
 
         initView();
         setRVAdapter();
 
+
         initTitleWithBackBtn(getString(R.string.order_view));
+
 
         return view;
     }
@@ -100,6 +118,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         if (isBasketVisible) {
             setBasketContentsVisible();
         } else {
+
             showProductDetails();
         }
 
@@ -130,8 +149,10 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         fragmentOrderViewBinding.tvBasketDetails.setVisibility(View.GONE);
         fragmentOrderViewBinding.tvProductDetails.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.VISIBLE);
-        fragmentOrderViewBinding.llSubTotal.setVisibility(View.GONE);
-        fragmentOrderViewBinding.viewline1.setVisibility(View.GONE);
+        fragmentOrderViewBinding.llSubTotal.setVisibility(View.VISIBLE);
+        fragmentOrderViewBinding.viewline1.setVisibility(View.VISIBLE);
+
+        callOrderDetailsApi(showCircleProgressDialog(context, ""));
     }
 
     private void setBasketContentsVisible() {
@@ -145,9 +166,11 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
     private void setRVAdapter() {
         basketItemList = new ArrayList<>();
-        //prepareListingData();
+
+        callOrderDetailsApi(showCircleProgressDialog(context, ""));
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
+
         rvBasketListItems.setHasFixedSize(true);
         rvBasketListItems.setLayoutManager(linearLayoutManager);
 
@@ -170,6 +193,146 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             Navigation.findNavController(view).navigate(R.id.action_orderViewFragment_to_nav_order_track);
         else
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+    }
+
+    /*Order Details Api and managements */
+
+    private void callOrderDetailsApi(ProgressDialog progressDialog) {
+        @SuppressLint("NotifyDataSetChanged") Observer<MyOrderDetailsResponse> myOrderDetailsResponseObserver = myOrderDetailsResponse -> {
+            if (myOrderDetailsResponse != null) {
+                Log.e(" My Order Details Api ResponseData", new Gson().toJson(myOrderDetailsResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (myOrderDetailsResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+
+                        if (myOrderDetailsResponse.getOrderDetials()!= null &&
+                                myOrderDetailsResponse.getOrderDetials().size() > 0) {
+
+                            orderDetials.addAll(myOrderDetailsResponse.getOrderDetials());
+                            setValue(orderDetials);
+
+                            basketItemList.clear();
+                            if(myOrderDetailsResponse.getOrderDetials().get(0).getItemsDetails() != null &&
+                            myOrderDetailsResponse.getOrderDetials().get(0).getItemsDetails().size() > 0){
+                                basketItemList.addAll(myOrderDetailsResponse.getOrderDetials().get(0).getItemsDetails());
+                                basketItemsAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        break;
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, myOrderDetailsResponse.getMessage());
+
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(myOrderDetailsResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, myOrderDetailsResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+
+
+        };
+        orderViewDetailsViewModel.getMyOrderDetails(progressDialog, context, MyOrderDetailsInputParameter(), OrderViewFragment.this)
+                .observe(getViewLifecycleOwner(), myOrderDetailsResponseObserver);
+    }
+
+    private HashMap<String, String> MyOrderDetailsInputParameter(){
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put(ORDER_ID, order_id);
+
+        return map;
+    }
+
+    @SuppressLint("ResourceType")
+    private void setValue(List<MyOrderDetial> orderDetials){
+        orderViewDetailsViewModel.orderId.setValue(orderDetials.get(0).getOrderCode());
+        orderViewDetailsViewModel.orderDate.setValue(orderDetials.get(0).getPendingDate()); //set date format
+        orderViewDetailsViewModel.orderStatus.setValue(orderDetials.get(0).getOrderStatus()); //changes in status format
+        orderViewDetailsViewModel.deliveryCode.setValue(orderDetials.get(0).getDeliveryCode());
+        orderViewDetailsViewModel.customerName.setValue(orderDetials.get(0).getName());
+        orderViewDetailsViewModel.customerNumber.setValue(orderDetials.get(0).getMobile());
+        orderViewDetailsViewModel.customerAddress.setValue(orderDetials.get(0).getOrderAddressText());
+        orderViewDetailsViewModel.customerArea.setValue(orderDetials.get(0).getOrderAreaName());
+        orderViewDetailsViewModel.customerCity.setValue(orderDetials.get(0).getOrderCityName());
+        orderViewDetailsViewModel.paymentType.setValue(orderDetials.get(0).getPaymentType()); //changes in status format
+        orderViewDetailsViewModel.transactionId.setValue(orderDetials.get(0).getTransactionId());
+        orderViewDetailsViewModel.discountAmount.setValue(orderDetials.get(0).getDiscount());
+        orderViewDetailsViewModel.deliveryCharges.setValue(orderDetials.get(0).getDeliveryCharges());
+        orderViewDetailsViewModel.totalAmount.setValue(orderDetials.get(0).getPaidAmount());
+        orderViewDetailsViewModel.subTotalAmount.setValue(orderDetials.get(0).getProductAmount());
+        orderViewDetailsViewModel.savedAmount.setValue(getString(R.string.rs_20)); //Get for backend
+
+
+        switch (orderDetials.get(0).getOrderStatus()) {
+            case "3":
+                fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.in_process));
+                fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_in_process)));
+                break;
+            case "4":
+                fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.delivered));
+                fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_delivered)));
+                break;
+            case "2":
+                fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.confirmed));
+                fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_confirmed)));
+                break;
+            case "5":
+                fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.cancelled));
+                fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_cancelled)));
+                break;
+            default:
+                fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.pending));
+                fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color4)));
+                break;
+        }
+
+        switch (orderDetials.get(0).getPaymentType()){
+            case "1":
+                fragmentOrderViewBinding.tvPaymentType.setText(context.getString(R.string.payment_type_1));
+                break;
+            case "2":
+                fragmentOrderViewBinding.tvPaymentType.setText(context.getString(R.string.payment_type_2));
+                break;
+            case "3":
+                fragmentOrderViewBinding.tvPaymentType.setText(context.getString(R.string.payment_type_3));
+                break;
+            case "4":
+                fragmentOrderViewBinding.tvPaymentType.setText(context.getString(R.string.payment_type_4));
+                break;
+        }
+
+        String selectedDate = orderDetials.get(0).getPendingDate();
+
+        String txtDisplayDate = "";
+        try {
+            txtDisplayDate = formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "MMM dd, yyyy hh:mm aa");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        fragmentOrderViewBinding.tvOrderDate.setText(txtDisplayDate);
+
+        String deliveryDate = orderDetials.get(0).getShouldDeliverOnDate();
+
+        String txDeliveryDate = "";
+        try {
+            txDeliveryDate = formatDate(deliveryDate, "dd/mm/yyyy", "MMM dd, yyyy ");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        fragmentOrderViewBinding.tvDeliveryDateAndTime.setText(txDeliveryDate + " "+orderDetials.get(0).getDelierySlotStartAndEndTime());
+
+
+
+
     }
 
     /* Cancel Order Manager */
@@ -197,12 +360,21 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         }
 
         btnSubmit.setOnClickListener(view1 -> {
-            if(!strReasonType.equalsIgnoreCase("")) {
-                callOrderCancelSuccessFullyApi(showCircleProgressDialog(context,""));
+            if(isBasketVisible){
+
+                infoToast(context, "Coming Soon.....");
                 dialog.dismiss();
             }else {
-                infoToast(context, "Please select Reason");
+
+                if(!strReasonType.equalsIgnoreCase("")) {
+                    callOrderCancelSuccessFullyApi(showCircleProgressDialog(context,""));
+                    dialog.dismiss();
+                }else {
+                    warningToast(context, "Please select Reason");
+                }
             }
+
+
         });
 
         crossImage.setOnClickListener(view -> {
@@ -328,7 +500,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             }
         };
 
-        orderViewDetailsViewHolder.getOrderCancelReasonResponse(progressDialog, context,
+        orderViewDetailsViewModel.getOrderCancelReasonResponse(progressDialog, context,
                 OrderViewFragment.this).observe(getViewLifecycleOwner(), orderCancelReasonResponseObserver);
     }
 
@@ -363,13 +535,13 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             }
         };
 
-        orderViewDetailsViewHolder.getOrderCancelSuccessfullyResponse(progressDialog, context,OrderCancelSuccessfullyInputParameter(),
+        orderViewDetailsViewModel.getOrderCancelSuccessfullyResponse(progressDialog, context,OrderCancelSuccessfullyInputParameter(),
                 OrderViewFragment.this).observe(getViewLifecycleOwner(), orderCancelSuccessfullyResponseObserver);
     }
 
     private HashMap<String, String> OrderCancelSuccessfullyInputParameter(){
         HashMap<String, String> map = new HashMap<>();
-        map.put(ORDER_ID, "5");
+        map.put(ORDER_ID, order_id);
         map.put(CANCEL_ID, strCancelId);
 
         return map;
@@ -409,14 +581,14 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
                 }
             }
         };
-        orderViewDetailsViewHolder.getRatingAndFeedBack(progressDialog,context,RatingAndFeedBackInputParameter(),OrderViewFragment.this)
+        orderViewDetailsViewModel.getRatingAndFeedBack(progressDialog,context,RatingAndFeedBackInputParameter(),OrderViewFragment.this)
                 .observe(getViewLifecycleOwner(), ratingAndFeedBackResponseObserver);
     }
 
     private HashMap<String, String> RatingAndFeedBackInputParameter(){
         HashMap<String, String> map = new HashMap<>();
 
-        map.put(ORDER_ID, "1");
+        map.put(ORDER_ID, order_id);
         map.put(RATING, String.valueOf(ratingBar.getRating()));
         map.put(REVIEW,feedbackComment.getText().toString().trim());
 

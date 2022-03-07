@@ -72,7 +72,7 @@
                         android:visibility="gone"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
 
-                  <!--  <com.poona.agrocart.widgets.CustomTextView
+                    <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_order_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -81,11 +81,10 @@
                         android:layout_marginEnd="@dimen/_2sdp"
                         android:gravity="end"
                         android:singleLine="true"
-                        android:text="@{basketItemModel.deliveryStatus}"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_12sp"
                         android:visibility="gone"
-                        app:setCustomFont="@string/font_poppins_semi_bold" />-->
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 </RelativeLayout>
 

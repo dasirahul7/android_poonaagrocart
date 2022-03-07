@@ -7,9 +7,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class MyOrderDetial {
 
-    @SerializedName("id")
+    @SerializedName("order_id")
     @Expose
-    private String id;
+    private String orderId;
     @SerializedName("order_code")
     @Expose
     private String orderCode;
@@ -18,7 +18,7 @@ public class MyOrderDetial {
     private String orderStatus;
     @SerializedName("total_quantity")
     @Expose
-    private Object totalQuantity;
+    private String totalQuantity;
     @SerializedName("pending_date")
     @Expose
     private String pendingDate;
@@ -40,36 +40,39 @@ public class MyOrderDetial {
     @SerializedName("order_city_name")
     @Expose
     private String orderCityName;
+    @SerializedName("pincode")
+    @Expose
+    private String pincode;
     @SerializedName("payment_type")
     @Expose
     private String paymentType;
     @SerializedName("transaction_id")
     @Expose
-    private Object transactionId;
+    private String transactionId;
     @SerializedName("invoice_file")
     @Expose
-    private Object invoiceFile;
+    private String invoiceFile;
     @SerializedName("product_amount")
     @Expose
-    private Object productAmount;
+    private String productAmount;
     @SerializedName("paid_amount")
     @Expose
-    private Object paidAmount;
+    private String paidAmount;
     @SerializedName("delivery_charges")
     @Expose
-    private Object deliveryCharges;
+    private String deliveryCharges;
     @SerializedName("discount")
     @Expose
-    private Object discount;
+    private String discount;
     @SerializedName("coupon_code")
     @Expose
     private String couponCode;
     @SerializedName("star_rating")
     @Expose
-    private Object starRating;
+    private String starRating;
     @SerializedName("feedback")
     @Expose
-    private Object feedback;
+    private String feedback;
     @SerializedName("should_deliver_on_date")
     @Expose
     private String shouldDeliverOnDate;
@@ -79,13 +82,19 @@ public class MyOrderDetial {
     @SerializedName("items_details")
     @Expose
     private List<ItemsDetail> itemsDetails = null;
+    @SerializedName("rating")
+    @Expose
+    private MyOrderRating rating;
+    @SerializedName("reviews")
+    @Expose
+    private List<MyOrderReview> reviews = null;
 
-    public String getId() {
-        return id;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getOrderCode() {
@@ -104,11 +113,11 @@ public class MyOrderDetial {
         this.orderStatus = orderStatus;
     }
 
-    public Object getTotalQuantity() {
+    public String getTotalQuantity() {
         return totalQuantity;
     }
 
-    public void setTotalQuantity(Object totalQuantity) {
+    public void setTotalQuantity(String totalQuantity) {
         this.totalQuantity = totalQuantity;
     }
 
@@ -168,6 +177,14 @@ public class MyOrderDetial {
         this.orderCityName = orderCityName;
     }
 
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
+
     public String getPaymentType() {
         return paymentType;
     }
@@ -176,51 +193,51 @@ public class MyOrderDetial {
         this.paymentType = paymentType;
     }
 
-    public Object getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(Object transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 
-    public Object getInvoiceFile() {
+    public String getInvoiceFile() {
         return invoiceFile;
     }
 
-    public void setInvoiceFile(Object invoiceFile) {
+    public void setInvoiceFile(String invoiceFile) {
         this.invoiceFile = invoiceFile;
     }
 
-    public Object getProductAmount() {
+    public String getProductAmount() {
         return productAmount;
     }
 
-    public void setProductAmount(Object productAmount) {
+    public void setProductAmount(String productAmount) {
         this.productAmount = productAmount;
     }
 
-    public Object getPaidAmount() {
+    public String getPaidAmount() {
         return paidAmount;
     }
 
-    public void setPaidAmount(Object paidAmount) {
+    public void setPaidAmount(String paidAmount) {
         this.paidAmount = paidAmount;
     }
 
-    public Object getDeliveryCharges() {
+    public String getDeliveryCharges() {
         return deliveryCharges;
     }
 
-    public void setDeliveryCharges(Object deliveryCharges) {
+    public void setDeliveryCharges(String deliveryCharges) {
         this.deliveryCharges = deliveryCharges;
     }
 
-    public Object getDiscount() {
+    public String getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Object discount) {
+    public void setDiscount(String discount) {
         this.discount = discount;
     }
 
@@ -232,19 +249,19 @@ public class MyOrderDetial {
         this.couponCode = couponCode;
     }
 
-    public Object getStarRating() {
+    public String getStarRating() {
         return starRating;
     }
 
-    public void setStarRating(Object starRating) {
+    public void setStarRating(String starRating) {
         this.starRating = starRating;
     }
 
-    public Object getFeedback() {
+    public String getFeedback() {
         return feedback;
     }
 
-    public void setFeedback(Object feedback) {
+    public void setFeedback(String feedback) {
         this.feedback = feedback;
     }
 
@@ -272,4 +289,21 @@ public class MyOrderDetial {
         this.itemsDetails = itemsDetails;
     }
 
+    public MyOrderRating getRating() {
+        return rating;
+    }
+
+    public void setRating(MyOrderRating rating) {
+        this.rating = rating;
+    }
+
+    public List<MyOrderReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<MyOrderReview> reviews) {
+        this.reviews = reviews;
+    }
+
 }
+

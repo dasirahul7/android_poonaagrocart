@@ -6,7 +6,7 @@
 
         <variable
             name="order"
-            type="com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse.OrderList" />
+            type="com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse.Order" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,7 +77,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="start"
-                            android:text="@{order.pendingDate}"
+                            android:text="@{order.createdAt}"
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />

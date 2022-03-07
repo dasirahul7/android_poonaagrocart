@@ -203,7 +203,6 @@
     <string name="ayush_shah">Ayush Shah</string>
     <string name="_91_986_095_3315">+91 986 095 3315</string>
     <string name="nand_nivas_building_floor_3_b_3_lane_no_13_bhatrau_nivas_vishrantwadi_pune_411015">Nand Nivas Building floor 3 B-3, Lane No. 13 Bhatrau Nivas Vishrantwadi Pune -411015.</string>
-    <string name="payment_type">Payment Type - UPI</string>
     <string name="upi">UPI</string>
     <string name="remark">Remark</string>
     <string name="replied">Replied -</string>
@@ -222,12 +221,18 @@
     <string name="total_amount_null">Rs. 00</string>
     <string name="text_rs">Rs. </string>
     <string name="total_quantity_null">00</string>
-    <string name="you_will_save_rs_80">You will save Rs. 80</string>
+    <string name="you_will_save_rs_80">You will save Rs. </string>
     <string name="invoice">Invoice</string>
     <string name="product_details">Product Details</string>
     <string name="track_order">Track Order</string>
     <string name="order_view">Order view</string>
     <string name="sample_unit">Rs. 20 x 3</string>
+
+    <string name="payment_type_1">Payment Type - Cash</string>
+    <string name="payment_type_2">Payment Type - QR code</string>
+    <string name="payment_type_3">Payment Type - Online</string>
+    <string name="payment_type_4">Payment Type - Wallet</string>
+    <string name="my_order_note">Note- All taxes included</string>
 
     <!--productOlds detail fragment-->
     <string name="naturel_red_apple">Naturel Red Apple</string>

@@ -15,6 +15,9 @@ public class MyOrderDetailsResponse {
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("discount_message")
+    @Expose
+    private String discountMessage;
     @SerializedName("order_detials")
     @Expose
     private List<MyOrderDetial> orderDetials = null;
@@ -43,4 +46,11 @@ public class MyOrderDetailsResponse {
         this.orderDetials = orderDetials;
     }
 
+    public String getDiscountMessage() {
+        return discountMessage;
+    }
+
+    public void setDiscountMessage(String discountMessage) {
+        this.discountMessage = discountMessage;
+    }
 }

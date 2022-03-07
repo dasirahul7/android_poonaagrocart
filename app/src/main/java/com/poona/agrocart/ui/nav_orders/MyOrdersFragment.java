@@ -25,8 +25,6 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
 import com.poona.agrocart.databinding.FragmentMyOrdersBinding;
 import com.poona.agrocart.ui.BaseFragment;
-import com.poona.agrocart.ui.nav_orders.model.Order;
-import com.poona.agrocart.ui.nav_orders.order_view.OrderViewDetailsViewHolder;
 
 import java.util.ArrayList;
 
@@ -35,7 +33,7 @@ public class MyOrdersFragment extends BaseFragment {
     private FragmentMyOrdersBinding fragmentMyOrdersBinding;
     private MyOrdersViewModel myOrdersViewModel;
     private RecyclerView rvOrders;
-    private ArrayList<OrderListResponse.OrderList> orderArrayList;
+    private ArrayList<OrderListResponse.Order> orderArrayList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     private OrdersAdapter ordersAdapter;
 
@@ -74,21 +72,22 @@ public class MyOrdersFragment extends BaseFragment {
                 switch (orderListResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         orderArrayList.clear();
-                        if (orderListResponse.getOrderDetials()!= null &&
-                                orderListResponse.getOrderDetials().size() > 0) {
-
-                            orderArrayList.addAll(orderListResponse.getOrderDetials());
+                        if (orderListResponse.getOrderList()!= null &&
+                                orderListResponse.getOrderList().size() > 0) {
+                            orderArrayList.addAll(orderListResponse.getOrderList());
                             ordersAdapter.notifyDataSetChanged();
 
                             fragmentMyOrdersBinding.llMainLayout.setVisibility(View.VISIBLE);
                             fragmentMyOrdersBinding.llEmptyScreen.setVisibility(View.GONE);
 
                         }else {
+                            warningToast(context, orderListResponse.getMessage());
                             fragmentMyOrdersBinding.llEmptyScreen.setVisibility(View.VISIBLE);
                             fragmentMyOrdersBinding.llMainLayout.setVisibility(View.GONE);
                         }
                         break;
                     case STATUS_CODE_404://Validation Errors
+                        warningToast(context, orderListResponse.getMessage());
                         fragmentMyOrdersBinding.llEmptyScreen.setVisibility(View.VISIBLE);
                         fragmentMyOrdersBinding.llMainLayout.setVisibility(View.GONE);
                         break;

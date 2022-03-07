@@ -16,9 +16,8 @@ import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
-import com.poona.agrocart.data.network.responses.galleryResponse.GalleryResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
-import com.poona.agrocart.databinding.FragmentOrderViewBinding;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
 
 import java.util.HashMap;
 
@@ -27,11 +26,71 @@ import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
 
-public class OrderViewDetailsViewHolder extends AndroidViewModel {
+public class OrderViewDetailsViewModel extends AndroidViewModel {
 
-    private static final String TAG = OrderViewDetailsViewHolder.class.getSimpleName();
-    public OrderViewDetailsViewHolder(@NonNull Application application) {
+    private static final String TAG = OrderViewDetailsViewModel.class.getSimpleName();
+
+    public MutableLiveData<String> orderId ;
+    public MutableLiveData<String> orderDate ;
+    public MutableLiveData<String> orderStatus ;
+    public MutableLiveData<String> deliveryCode ;
+    public MutableLiveData<String> customerName ;
+    public MutableLiveData<String> customerNumber ;
+    public MutableLiveData<String> customerAddress ;
+    public MutableLiveData<String> paymentType ;
+    public MutableLiveData<String> transactionId ;
+    public MutableLiveData<String> discountAmount ;
+    public MutableLiveData<String> deliveryCharges ;
+    public MutableLiveData<String> totalAmount ;
+    public MutableLiveData<String> savedAmount ;
+    public MutableLiveData<String> customerCity ;
+    public MutableLiveData<String> customerArea ;
+
+    public MutableLiveData<String> subTotalAmount ;
+
+    public OrderViewDetailsViewModel(@NonNull Application application) {
         super(application);
+
+        orderId = new MutableLiveData<>();
+        orderDate = new MutableLiveData<>();
+        orderStatus = new MutableLiveData<>();
+        deliveryCode = new MutableLiveData<>();
+        customerName = new MutableLiveData<>();
+        customerNumber = new MutableLiveData<>();
+        customerAddress = new MutableLiveData<>();
+        paymentType = new MutableLiveData<>();
+        transactionId = new MutableLiveData<>();
+        discountAmount = new MutableLiveData<>();
+        deliveryCharges = new MutableLiveData<>();
+        totalAmount = new MutableLiveData<>();
+        savedAmount = new MutableLiveData<>();
+        customerCity = new MutableLiveData<>();
+        customerArea = new MutableLiveData<>();
+
+
+        subTotalAmount = new MutableLiveData<>();
+
+        orderId.setValue("");
+        orderDate.setValue("");
+        orderStatus.setValue("");
+        deliveryCode.setValue("");
+        customerName.setValue("");
+        customerNumber.setValue("");
+        customerAddress.setValue("");
+        paymentType.setValue("");
+        transactionId.setValue("");
+        discountAmount.setValue("");
+        deliveryCharges.setValue("");
+        totalAmount.setValue("");
+        savedAmount.setValue("");
+        customerArea.setValue("");
+        customerCity.setValue("");
+
+
+        subTotalAmount.setValue("");
+
+
+
     }
 
 
@@ -158,5 +217,47 @@ public class OrderViewDetailsViewHolder extends AndroidViewModel {
                 });
 
         return orderCancelReasonResponseMutableLiveData;
+    }
+
+    public LiveData<MyOrderDetailsResponse> getMyOrderDetails(ProgressDialog progressDialog, Context context
+            , HashMap<String, String> myOrderDetailsInputParameter, OrderViewFragment orderViewFragment) {
+        MutableLiveData<MyOrderDetailsResponse> myOrderDetailsResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(context)
+                .create(ApiInterface.class)
+                .getMyOrderDetailsResponse(myOrderDetailsInputParameter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<MyOrderDetailsResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull MyOrderDetailsResponse baseResponse) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                        myOrderDetailsResponseMutableLiveData.setValue(baseResponse);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+
+                        Gson gson = new GsonBuilder().create();
+                        MyOrderDetailsResponse baseResponse = new MyOrderDetailsResponse();
+                        try {
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), MyOrderDetailsResponse.class);
+
+                            myOrderDetailsResponseMutableLiveData.setValue(baseResponse);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) orderViewFragment)
+                                    .onNetworkException(0, "");
+                        }
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return myOrderDetailsResponseMutableLiveData;
+
     }
 }

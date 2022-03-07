@@ -13,9 +13,9 @@ public class OrderListResponse {
     @SerializedName("message")
     @Expose
     private String message;
-    @SerializedName("order_detials")
+    @SerializedName("order_list")
     @Expose
-    private List<OrderList> orderDetials = null;
+    private List<Order> orderList = null;
 
     public Integer getStatus() {
         return status;
@@ -33,14 +33,16 @@ public class OrderListResponse {
         this.message = message;
     }
 
-    public List<OrderList> getOrderDetials() {
-        return orderDetials;
+    public List<Order> getOrderList() {
+        return orderList;
     }
 
-    public void setOrderDetials(List<OrderList> orderDetials) {
-        this.orderDetials = orderDetials;
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
-    public class OrderList {
+
+
+    public class Order {
 
         @SerializedName("order_id")
         @Expose
@@ -57,9 +59,9 @@ public class OrderListResponse {
         @SerializedName("total_quantity")
         @Expose
         private String totalQuantity;
-        @SerializedName("pending_date")
+        @SerializedName("created_at")
         @Expose
-        private String pendingDate;
+        private String createdAt;
 
         public String getOrderId() {
             return orderId;
@@ -101,12 +103,12 @@ public class OrderListResponse {
             this.totalQuantity = totalQuantity;
         }
 
-        public String getPendingDate() {
-            return pendingDate;
+        public String getCreatedAt() {
+            return createdAt;
         }
 
-        public void setPendingDate(String pendingDate) {
-            this.pendingDate = pendingDate;
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
         }
 
     }
