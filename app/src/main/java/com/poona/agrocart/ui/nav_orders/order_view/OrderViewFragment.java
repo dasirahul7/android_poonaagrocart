@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.nav_orders.order_view;
 
 import static com.poona.agrocart.app.AppConstants.CANCEL_ID;
+import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
 import static com.poona.agrocart.app.AppConstants.ORDER_ID;
 import static com.poona.agrocart.app.AppConstants.RATING;
 import static com.poona.agrocart.app.AppConstants.REVIEW;
@@ -33,6 +34,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.BaseResponse;
@@ -40,6 +42,7 @@ import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReas
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.ItemsDetail;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetial;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderReview;
 import com.poona.agrocart.databinding.FragmentOrderViewBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList;
@@ -69,6 +72,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private CustomButton btnSubmitFeedback;
 
     private List<MyOrderDetial> orderDetials = new ArrayList<>();
+    private List<MyOrderReview> myOrderReviews = new ArrayList<>();
 
     /*Cancel Order dialog */
     private RecyclerView orderCancelCategory, orderCancelReason;
@@ -79,6 +83,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private OrderCancelReasonAdaptor orderCancelReasonAdaptor;
     private View view;
     private String strReasonType = "", strCancelId = "" ;
+    private ImageView imageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,6 +132,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             if (isConnectingToInternet(context)) {
                 if (!Objects.requireNonNull(feedbackComment.getText()).toString().isEmpty() && !(ratingBar.getRating() == 0.0)) {
                     callRatingAndFeedBackApi(showCircleProgressDialog(context, ""));
+                    fragmentOrderViewBinding.cardviewComment.setVisibility(View.VISIBLE);
                 } else {
                     errorToast(context, "Please fill the field");
                 }
@@ -219,6 +225,13 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
                                 basketItemList.addAll(myOrderDetailsResponse.getOrderDetials().get(0).getItemsDetails());
                                 basketItemsAdapter.notifyDataSetChanged();
                             }
+
+
+                                myOrderReviews.addAll(myOrderDetailsResponse.getOrderDetials().get(0).getReviews());
+                               setReviewValue(myOrderReviews);
+
+
+                            orderViewDetailsViewModel.savedAmount.setValue(myOrderDetailsResponse.getDiscountMessage()); //Get the saved value
                         }
                         break;
                     case STATUS_CODE_404://Validation Errors
@@ -243,6 +256,8 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         orderViewDetailsViewModel.getMyOrderDetails(progressDialog, context, MyOrderDetailsInputParameter(), OrderViewFragment.this)
                 .observe(getViewLifecycleOwner(), myOrderDetailsResponseObserver);
     }
+
+
 
     private HashMap<String, String> MyOrderDetailsInputParameter(){
         HashMap<String, String> map = new HashMap<>();
@@ -269,7 +284,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         orderViewDetailsViewModel.deliveryCharges.setValue(orderDetials.get(0).getDeliveryCharges());
         orderViewDetailsViewModel.totalAmount.setValue(orderDetials.get(0).getPaidAmount());
         orderViewDetailsViewModel.subTotalAmount.setValue(orderDetials.get(0).getProductAmount());
-        orderViewDetailsViewModel.savedAmount.setValue(getString(R.string.rs_20)); //Get for backend
+
 
 
         switch (orderDetials.get(0).getOrderStatus()) {
@@ -330,8 +345,20 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         }
         fragmentOrderViewBinding.tvDeliveryDateAndTime.setText(txDeliveryDate + " "+orderDetials.get(0).getDelierySlotStartAndEndTime());
 
+    }
 
+    private void setReviewValue(List<MyOrderReview>reviewValue) {
 
+        orderViewDetailsViewModel.reviewName.setValue(reviewValue.get(0).getName());
+        orderViewDetailsViewModel.reviewDate.setValue(reviewValue.get(0).getDate());
+        orderViewDetailsViewModel.customerFeedback.setValue(reviewValue.get(0).getReview());
+
+        imageView = fragmentOrderViewBinding.ivUserImage;
+        Glide.with(context)
+                .load(IMAGE_DOC_BASE_URL + reviewValue.get(0).getImage())
+                .placeholder(R.drawable.ic_profile_white)
+                .error(R.drawable.ic_profile_white)
+                .into(imageView);
 
     }
 

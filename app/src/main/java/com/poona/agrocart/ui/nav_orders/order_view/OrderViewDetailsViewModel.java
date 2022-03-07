@@ -45,6 +45,9 @@ public class OrderViewDetailsViewModel extends AndroidViewModel {
     public MutableLiveData<String> savedAmount ;
     public MutableLiveData<String> customerCity ;
     public MutableLiveData<String> customerArea ;
+    public MutableLiveData<String> reviewName ;
+    public MutableLiveData<String> customerFeedback ;
+    public MutableLiveData<String> reviewDate ;
 
     public MutableLiveData<String> subTotalAmount ;
 
@@ -66,6 +69,9 @@ public class OrderViewDetailsViewModel extends AndroidViewModel {
         savedAmount = new MutableLiveData<>();
         customerCity = new MutableLiveData<>();
         customerArea = new MutableLiveData<>();
+        reviewName = new MutableLiveData<>();
+        customerFeedback = new MutableLiveData<>();
+        reviewDate = new MutableLiveData<>();
 
 
         subTotalAmount = new MutableLiveData<>();
@@ -85,6 +91,9 @@ public class OrderViewDetailsViewModel extends AndroidViewModel {
         savedAmount.setValue("");
         customerArea.setValue("");
         customerCity.setValue("");
+        reviewName.setValue("");
+        customerFeedback.setValue("");
+        reviewDate.setValue("");
 
 
         subTotalAmount.setValue("");

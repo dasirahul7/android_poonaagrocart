@@ -14,18 +14,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
 import com.poona.agrocart.databinding.RvOrderBinding;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder> {
-    private final ArrayList<OrderListResponse.Order> orderArrayList;
+    private final  ArrayList<OrderListResponse.Order> orderArrayList;
     private final Context context;
     private final View view;
     MyOrdersFragment myOrdersFragment;
@@ -43,7 +46,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     public OrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RvOrderBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_order, parent, false);
-        return new OrdersAdapter.OrdersViewHolder(binding, view, orderArrayList);
+        return new OrdersAdapter.OrdersViewHolder(binding, view);
     }
 
     @SuppressLint("SetTextI18n")
@@ -86,23 +89,23 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         return orderArrayList.size();
     }
 
-    public static class OrdersViewHolder extends RecyclerView.ViewHolder {
+    public class OrdersViewHolder extends RecyclerView.ViewHolder {
         RvOrderBinding rvOrderBinding;
-        private ArrayList<OrderListResponse.Order> orderArrayList;
-        private String orderId;
 
-        public OrdersViewHolder(RvOrderBinding rvOrderBinding, View view, ArrayList<OrderListResponse.Order> orderArrayList ) {
+
+
+        public OrdersViewHolder(RvOrderBinding rvOrderBinding, View view) {
             super(rvOrderBinding.getRoot());
             this.rvOrderBinding = rvOrderBinding;
 
-            orderId = orderArrayList.get(0).getOrderId();
+
             rvOrderBinding.cardviewOrder.setOnClickListener(v -> {
-                redirectToBasketOrderView(view);
+                redirectToBasketOrderView(view, orderArrayList.get(getLayoutPosition()).getOrderId());
             });
 
         }
 
-        private void redirectToBasketOrderView(View view) {
+        private void redirectToBasketOrderView(View view, String orderId) {
             Bundle bundle = new Bundle();
             bundle.putString(ORDER_ID, orderId);
             bundle.putBoolean("isBasketVisible", false);

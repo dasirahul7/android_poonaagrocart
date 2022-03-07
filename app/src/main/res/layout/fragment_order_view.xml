@@ -442,25 +442,32 @@
                         android:text="@{`Rs.`+orderViewDetailsViewModel.subTotalAmount}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sp"
-                        app:setCustomFont="@string/font_poppins_bold" />
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/viewline1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:background="@color/color_horizontal_line" />
 
-                <com.poona.agrocart.widgets.CustomTextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:gravity="start"
-                    android:text="@string/my_order_note"
-                    android:textColor="@color/colorGrey"
-                    android:textSize="@dimen/_12sp"
-                    app:setCustomFont="@string/font_poppins_bold" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_4sdp">
+                    <View
+                        android:id="@+id/viewline1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_horizontal_line" />
 
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/my_order_note"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="@dimen/_12sp"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/ll_discount"
                     android:layout_width="match_parent"
@@ -540,7 +547,7 @@
                         android:textColor="@color/bold_txt_color"
                         android:textSize="@dimen/_16sp"
                         android:textStyle="bold"
-                        app:setCustomFont="@string/font_poppins_bold" />
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="0dp"
@@ -551,7 +558,7 @@
                         android:textColor="@color/bold_txt_color"
                         android:textSize="@dimen/_16sp"
                         android:textStyle="bold"
-                        app:setCustomFont="@string/font_poppins_bold" />
+                        app:setCustomFont="@string/font_poppins_semi_bold" />
                 </LinearLayout>
 
                 <View
@@ -566,14 +573,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/_10sdp"
-                    android:text="@{@string/you_will_save_rs_80 + ` ` + orderViewDetailsViewModel.savedAmount}"
+                    android:text="@{orderViewDetailsViewModel.savedAmount}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/line4"
-                    app:setCustomFont="@string/font_poppins_bold" />
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
             </LinearLayout>
 
@@ -696,6 +703,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/et_feedback"
                 app:setCustomFont="@string/font_poppins_semi_bold" />
 
+
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardview_comment"
                 android:layout_width="match_parent"
@@ -710,7 +719,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_submit_feedback"
                 app:strokeColor="@color/colorLightGrey"
-                app:strokeWidth="0.5dp">
+                app:strokeWidth="0.5dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -723,6 +733,7 @@
                         android:weightSum="100">
 
                         <com.poona.agrocart.widgets.imageview.CircularImageView
+                            android:id="@+id/iv_user_image"
                             android:layout_width="@dimen/_40sdp"
                             android:layout_height="@dimen/_40sdp"
                             android:src="@drawable/ic_profile"
@@ -746,7 +757,7 @@
                                     android:layout_marginStart="@dimen/_3sdp"
                                     android:layout_weight="70"
                                     android:gravity="start"
-                                    android:text="@string/johnson_doe"
+                                    android:text="@{orderViewDetailsViewModel.reviewName}"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/_16sp"
                                     app:setCustomFont="@string/font_poppins_semi_bold" />
@@ -759,9 +770,9 @@
                                     android:layout_weight="70"
                                     android:gravity="end"
                                     android:singleLine="true"
-                                    android:text="@string/sample_date"
+                                    android:text="@{orderViewDetailsViewModel.reviewDate}"
                                     android:textColor="@color/color_grey_txt"
-                                    android:textSize="@dimen/_16sp"
+                                    android:textSize="@dimen/_14sp"
                                     app:setCustomFont="@string/font_poppins_regular" />
 
                             </LinearLayout>
@@ -791,7 +802,7 @@
                         android:layout_marginStart="@dimen/_3sdp"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:gravity="start"
-                        android:text="@string/lorem_ipsum_dolor_sit_amet_consectetur_adipiscing"
+                        android:text="@{orderViewDetailsViewModel.customerFeedback}"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
