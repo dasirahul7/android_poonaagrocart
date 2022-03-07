@@ -3,37 +3,41 @@ package com.poona.agrocart.ui.nav_orders.order_view.adaptor;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 
+import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
 import com.poona.agrocart.databinding.CancelOrderReasonRecyclerViewBinding;
-import com.poona.agrocart.ui.nav_orders.model.CancelOrderReasonList;
+import com.poona.agrocart.ui.nav_orders.order_view.OrderViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderCancelReasonAdaptor extends RecyclerView.Adapter<OrderCancelReasonAdaptor.OrderCancelReasonViewHolder> {
 
-    private List<CancelOrderReasonList> cancelOrderReasonLists = new ArrayList<>();
+    private  String strReasonType = "";
+    private List<OrderCancelReasonResponse.OrderCancelReason> cancelOrderReasonLists = new ArrayList<>();
     private Context context;
+    public OnTypeClickListener onTypeClickListener;
     private RadioButton lastCheckedRB = null ;
     private int mSelectedItem = -1;
 
-    public OrderCancelReasonAdaptor(Context context, List<CancelOrderReasonList> cancelOrderReasonLists) {
+    public OrderCancelReasonAdaptor(Context context, List<OrderCancelReasonResponse.OrderCancelReason> cancelOrderReasonLists, OrderViewFragment orderViewFragment) {
         this.context=context;
         this.cancelOrderReasonLists=cancelOrderReasonLists;
+        this.onTypeClickListener = orderViewFragment;
+    }
+
+    public interface OnTypeClickListener{
+        void itemClick(String strReasonType, String cancelId);
     }
 
     @NonNull
@@ -47,7 +51,7 @@ public class OrderCancelReasonAdaptor extends RecyclerView.Adapter<OrderCancelRe
 
     @Override
     public void onBindViewHolder(@NonNull OrderCancelReasonAdaptor.OrderCancelReasonViewHolder viewHolder, int position) {
-        CancelOrderReasonList cancelOrderReasonList = cancelOrderReasonLists.get(position);
+        OrderCancelReasonResponse.OrderCancelReason cancelOrderReasonList = cancelOrderReasonLists.get(position);
         viewHolder.binding.setCancelOrderReasonList(cancelOrderReasonList);
         viewHolder.bind(cancelOrderReasonList);
 
@@ -82,14 +86,14 @@ public class OrderCancelReasonAdaptor extends RecyclerView.Adapter<OrderCancelRe
 
             binding.llMain.setOnClickListener(view -> {
                 mSelectedItem = getAdapterPosition();
-               // strItrType = "check";
-                //onTypeClickListener.itemViewTypeClick(strItrType,itrTypeList.get(getLayoutPosition()).getItrFillingChargesId());
+                strReasonType = "check";
+                onTypeClickListener.itemClick(strReasonType,cancelOrderReasonLists.get(getLayoutPosition()).getCancelId());
                 notifyDataSetChanged();
             });
 
         }
 
-        public void bind(CancelOrderReasonList cancelOrderReasonList) {
+        public void bind(OrderCancelReasonResponse.OrderCancelReason cancelOrderReasonList) {
             binding.setVariable(BR.cancelOrderReasonList, cancelOrderReasonList);
             binding.executePendingBindings();
         }

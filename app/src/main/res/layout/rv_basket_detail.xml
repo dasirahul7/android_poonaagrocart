@@ -6,7 +6,7 @@
 
         <variable
             name="basketItemModel"
-            type="com.poona.agrocart.ui.nav_orders.order_view.BasketItem" />
+            type="com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.ItemsDetail" />
     </data>
 
     <LinearLayout
@@ -51,7 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="@{basketItemModel.nameOfProduct}"
+                        android:text="@{basketItemModel.productName}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_bold" />
@@ -81,7 +81,6 @@
                         android:layout_marginEnd="@dimen/_2sdp"
                         android:gravity="end"
                         android:singleLine="true"
-                        android:text="@{basketItemModel.deliveryStatus}"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_12sp"
                         android:visibility="gone"
@@ -95,7 +94,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_2sdp"
-                    android:text="@{basketItemModel.weight}"
+                    android:text="@{basketItemModel.weight+basketItemModel.unit}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp" />
 
@@ -111,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:text="@{basketItemModel.date}"
+                        android:text="22nd Sept 2021"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_12sp" />
 
@@ -119,7 +118,7 @@
                         android:id="@+id/tv_quantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{basketItemModel.quantity}"
+                        android:text="@{basketItemModel.cost+ `x` +basketItemModel.quantity}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sp"
                         android:visibility="gone"
@@ -131,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:gravity="center"
-                        android:text="@{basketItemModel.price}"
+                        android:text="@{`Rs. `+basketItemModel.totalPrice}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_medium" />

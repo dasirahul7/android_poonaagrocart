@@ -216,6 +216,10 @@ public class AppConstants {
     public static final String ORDER_PLACE_API = "place-order-customer";
     public static final String RATE_ORDER = "rate-order";
     public static final String APPLY_COUPON_API = "apply-coupon";
+    public static final String ORDER_CANCEL_REASON = "order-cancel-reason";
+    public static final String ORDER_CANCEL = "order-cancel";
+    public static final String MY_ORDER_CUSTOMER = "my-order-customer";
+    public static final String MY_ORDER_Details_CUSTOMER = "my-order-details-customer";
 
    /* Rating and Review */
    public static final String RATING = "rating";
@@ -304,8 +308,8 @@ public class AppConstants {
     public static String APP_NOTIFICATION_STATUS = "app_notification_status";
 
     /*Order Module Parameter*/
-
     public static String ORDER_ID = "order_id";
+    public static String CANCEL_ID = "cancel_id";
 
     /*Order Summary KEYS*/
     public static final String ORDER_SUMMARY ="order-summary";

@@ -3,6 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="orderViewDetailsViewModel"
+            type="com.poona.agrocart.ui.nav_orders.order_view.OrderViewDetailsViewModel" />
+
+    </data>
+
+
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -46,9 +55,9 @@
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="70"
+                            android:layout_weight="60"
                             android:singleLine="true"
-                            android:text="@string/order_id_paac001"
+                            android:text="@{`Order ID -`+orderViewDetailsViewModel.orderId}"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_16sp"
                             android:textStyle="bold"
@@ -57,8 +66,8 @@
                         <com.poona.agrocart.widgets.CustomTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="30"
-                            android:gravity="end"
+                            android:layout_weight="40"
+                            android:gravity="center"
                             android:singleLine="true"
                             android:text="@string/order_status"
                             android:textColor="@color/black"
@@ -75,22 +84,22 @@
                         android:weightSum="100">
 
                         <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_order_date"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="70"
+                            android:layout_weight="60"
                             android:singleLine="true"
-                            android:text="@string/date_sep_30_2021_20_15_am"
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
 
                         <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_order_status"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="30"
-                            android:gravity="end"
+                            android:layout_weight="40"
+                            android:gravity="center"
                             android:singleLine="true"
-                            android:text="@string/in_transit"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -140,7 +149,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing=".3"
-                        android:text="353100"
+                        android:text="@{orderViewDetailsViewModel.deliveryCode}"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_20sp"
                         android:textStyle="bold"
@@ -185,7 +194,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:drawableStart="@drawable/ic_user"
                         android:drawablePadding="@dimen/_2sdp"
-                        android:text="@string/ayush_shah"
+                        android:text="@{orderViewDetailsViewModel.customerName}"
                         android:textColor="@color/color_order_view_username"
                         android:textSize="@dimen/_16sp"
                         android:textStyle="bold"
@@ -197,7 +206,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:drawableStart="@drawable/ic_mobile_no"
                         android:drawablePadding="@dimen/_2sdp"
-                        android:text="@string/_91_986_095_3315"
+                        android:text="@{orderViewDetailsViewModel.customerNumber}"
                         android:textColor="@color/color_order_view_username"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -218,7 +227,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
-                            android:text="@string/nand_nivas_building_floor_3_b_3_lane_no_13_bhatrau_nivas_vishrantwadi_pune_411015"
+                            android:text="@{orderViewDetailsViewModel.customerAddress +`, `+ orderViewDetailsViewModel.customerArea+`, `+orderViewDetailsViewModel.customerCity}"
                             android:textColor="@color/color_order_view_username"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -246,10 +255,10 @@
                     android:orientation="vertical">
 
                     <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_payment_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:text="@string/payment_type"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -258,7 +267,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:text="@string/trasaction_id_sjgsh4841156"
+                        android:text="@{`Transaction ID : `+orderViewDetailsViewModel.transactionId}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -322,7 +331,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:text="@string/sep_30_2021_9_00_am_12_00pm"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
@@ -431,7 +439,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="30"
                         android:gravity="end"
-                        android:text="@string/rs_800"
+                        android:text="@{`Rs.`+orderViewDetailsViewModel.subTotalAmount}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_bold" />
@@ -443,6 +451,15 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_4sdp"
                     android:background="@color/color_horizontal_line" />
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="start"
+                    android:text="@string/my_order_note"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="@dimen/_12sp"
+                    app:setCustomFont="@string/font_poppins_bold" />
 
                 <LinearLayout
                     android:id="@+id/ll_discount"
@@ -466,7 +483,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="30"
                         android:gravity="end"
-                        android:text="@string/rs_80"
+                        android:text="@{`Rs.`+orderViewDetailsViewModel.discountAmount}"
                         android:textColor="@color/color_discount_text"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -494,7 +511,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="30"
                         android:gravity="end"
-                        android:text="@string/rs_20"
+                        android:text="@{`Rs.`+orderViewDetailsViewModel.deliveryCharges}"
                         android:textColor="@color/color_discount_text"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -530,7 +547,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="30"
                         android:gravity="end"
-                        android:text="@string/rs_740"
+                        android:text="@{`Rs.`+orderViewDetailsViewModel.totalAmount}"
                         android:textColor="@color/bold_txt_color"
                         android:textSize="@dimen/_16sp"
                         android:textStyle="bold"
@@ -549,7 +566,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/_10sdp"
-                    android:text="@string/you_will_save_rs_80"
+                    android:text="@{@string/you_will_save_rs_80 + ` ` + orderViewDetailsViewModel.savedAmount}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_18sp"
                     android:textStyle="bold"

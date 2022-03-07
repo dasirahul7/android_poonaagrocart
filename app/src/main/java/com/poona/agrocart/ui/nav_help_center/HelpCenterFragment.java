@@ -181,7 +181,6 @@ public class HelpCenterFragment extends BaseFragment implements NetworkException
 
                         totalCount = Integer.parseInt(ticketListResponse.getData().getCountTickets());
                         if (ticketListResponse.getData().getUserTickets() != null && ticketListResponse.getData().getUserTickets().size() > 0) {
-                            Toast.makeText(context, "good", Toast.LENGTH_SHORT).show();
                             ticketArrayList.addAll(ticketListResponse.getData().getUserTickets());
                             ticketsAdapter.notifyDataSetChanged();
 
