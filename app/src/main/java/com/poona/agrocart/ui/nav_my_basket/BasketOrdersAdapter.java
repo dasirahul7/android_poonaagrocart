@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_my_basket;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
     private final ArrayList<SubscribeBasketListCustomerResponse.SubscribeBasketListCustomer> basketOrderArrayList;
     private final View view;
     private final boolean isWallet;
+    OnInvoiceClickListener onInvoiceClickListener;
     private MyBasketFragment myBasketFragment;
 
     public BasketOrdersAdapter(ArrayList<SubscribeBasketListCustomerResponse.SubscribeBasketListCustomer> basketOrderArrayList, View view, boolean isWallet, MyBasketFragment myBasketFragment) {
@@ -30,6 +32,7 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
         this.view = view;
         this.myBasketFragment = myBasketFragment;
         this.isWallet = isWallet;
+        this.onInvoiceClickListener = myBasketFragment;
     }
 
     @NonNull
@@ -40,8 +43,12 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
         return new BasketOrdersAdapter.BasketOrdersViewHolder(binding, view, isWallet);
     }
 
+    public interface OnInvoiceClickListener{
+        void ItemClick(int position);
+    }
+
     @Override
-    public void onBindViewHolder(@NonNull BasketOrdersViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BasketOrdersViewHolder holder, @SuppressLint("RecyclerView") int position) {
         final SubscribeBasketListCustomerResponse.SubscribeBasketListCustomer basketOrder = basketOrderArrayList.get(position);
         holder.rvOrdersBasketBinding.setBasketOrder(basketOrder);
         holder.bind(basketOrder);
@@ -77,6 +84,13 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
                 holder.rvOrdersBasketBinding.tvPaymentMode.setText(R.string.basket_payment_type_4);
                 break;
         }
+
+        holder.rvOrdersBasketBinding.btnDownloadInvoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onInvoiceClickListener.ItemClick(position);
+            }
+        });
     }
 
     @Override
@@ -99,6 +113,8 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
                 rvOrdersBasketBinding.tvBasketName.setVisibility(View.INVISIBLE);
             else
                 rvOrdersBasketBinding.tvBasketName.setVisibility(View.VISIBLE);
+
+
 
         }
 

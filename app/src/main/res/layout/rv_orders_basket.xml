@@ -81,6 +81,7 @@
                             android:id="@+id/tv_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/_1sdp"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="end"
                             android:textColor="@color/color_order_date_and_time"
@@ -210,7 +211,7 @@
                         android:gravity="end">
 
                         <com.poona.agrocart.widgets.CustomButton
-                            android:id="@+id/btn_sign_up"
+                            android:id="@+id/btn_download_invoice"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_18sdp"
