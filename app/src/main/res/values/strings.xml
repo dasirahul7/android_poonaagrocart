@@ -234,6 +234,11 @@
     <string name="payment_type_4">Payment Type - Wallet</string>
     <string name="my_order_note">Note - All taxes included</string>
 
+    <string name="basket_payment_type_1">Cash</string>
+    <string name="basket_payment_type_2">QR code</string>
+    <string name="basket_payment_type_3">Online</string>
+    <string name="basket_payment_type_4">Wallet</string>
+
     <!--productOlds detail fragment-->
     <string name="naturel_red_apple">Naturel Red Apple</string>
     <string name="rs_150">Rs. 150</string>

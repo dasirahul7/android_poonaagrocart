@@ -281,6 +281,7 @@
         <entry key="app/src/main/res/layout/home_cat_item.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/home_product_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/menu_item.xml" value="0.16259057971014493" />
+        <entry key="app/src/main/res/layout/my_wallet_amount_recycler_item.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/nav_header_home.xml" value="0.14" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/order_cancel_dialog_box.xml" value="0.22" />
@@ -314,7 +315,7 @@
         <entry key="app/src/main/res/layout/rv_cart_item.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/rv_favourites.xml" value="0.15534420289855072" />
         <entry key="app/src/main/res/layout/rv_order.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/rv_orders_basket.xml" value="0.11684782608695653" />
+        <entry key="app/src/main/res/layout/rv_orders_basket.xml" value="0.25" />
         <entry key="app/src/main/res/layout/rv_product_and_price_details.xml" value="0.16530797101449277" />
         <entry key="app/src/main/res/layout/rv_product_comment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/rv_store.xml" value="0.22" />

@@ -35,6 +35,7 @@ import static com.poona.agrocart.app.AppConstants.MY_NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.MY_ORDER_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.MY_ORDER_Details_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
+import static com.poona.agrocart.app.AppConstants.MY_SUBSCRIBE_BASKET_LIST_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL;
 import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL_REASON;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY_API;
@@ -100,6 +101,7 @@ import com.poona.agrocart.data.network.responses.help_center_response.TicketType
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.SubscribeBasketListCustomerResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
 import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
@@ -461,5 +463,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(MY_ORDER_Details_CUSTOMER)
     Single<MyOrderDetailsResponse> getMyOrderDetailsResponse(@FieldMap HashMap<String, String> myOrderDetailsInputParameter);
+
+    @GET(MY_SUBSCRIBE_BASKET_LIST_CUSTOMER)
+    Single<SubscribeBasketListCustomerResponse> getSubscriptionBasketListResponse();
+
 
 }

@@ -251,14 +251,16 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     /*Order Details Api and managements */
 
     private void callOrderDetailsApi(ProgressDialog progressDialog) {
-        @SuppressLint("NotifyDataSetChanged") Observer<MyOrderDetailsResponse> myOrderDetailsResponseObserver = myOrderDetailsResponse -> {
+        @SuppressLint("NotifyDataSetChanged")
+        Observer<MyOrderDetailsResponse> myOrderDetailsResponseObserver = myOrderDetailsResponse -> {
+            refreshLayout.setRefreshing(true);
             if (myOrderDetailsResponse != null) {
                 Log.e(" My Order Details Api ResponseData", new Gson().toJson(myOrderDetailsResponse));
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 switch (myOrderDetailsResponse.getStatus()) {
-                    case STATUS_CODE_200://Record Create/Update Successfully
+                    case STATUS_CODE_200://Record Create Update Successfully
 
                         if (myOrderDetailsResponse.getOrderDetials()!= null &&
                                 myOrderDetailsResponse.getOrderDetials().size() > 0) {
@@ -298,8 +300,6 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
                     progressDialog.dismiss();
                 }
             }
-
-
         };
         orderViewDetailsViewModel.getMyOrderDetails(progressDialog, context, MyOrderDetailsInputParameter(), OrderViewFragment.this)
                 .observe(getViewLifecycleOwner(), myOrderDetailsResponseObserver);

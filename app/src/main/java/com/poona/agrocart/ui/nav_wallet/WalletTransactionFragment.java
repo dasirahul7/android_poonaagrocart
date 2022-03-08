@@ -99,7 +99,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         rvTransactions.setHasFixedSize(true);
         rvTransactions.setLayoutManager(linearLayoutManager);
 
-        basketOrdersAdapter = new BasketOrdersAdapter(transactionsArrayList, view, isWallet);
+       // basketOrdersAdapter = new BasketOrdersAdapter(transactionsArrayList, view, isWallet);
         rvTransactions.setAdapter(basketOrdersAdapter);
     }
 
