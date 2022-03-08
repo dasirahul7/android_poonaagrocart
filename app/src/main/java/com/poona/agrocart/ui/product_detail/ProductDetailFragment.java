@@ -162,7 +162,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 if (!Objects.requireNonNull(etFeedback.getText()).toString().isEmpty() && !(ratingBarInput.getRating() == 0.0)) {
                     callRatingAndReviewAPi(showCircleProgressDialog(context, ""));
                 } else {
-                    errorToast(context, "Please fill the field");
+                    warningToast(context, "Please fill the field");
                 }
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
@@ -678,6 +678,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         map.put(QUANTITY, qty);
         return map;
     }
+
+    //use for me trupti
 
     private void increaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
         int quantity = Integer.parseInt(qty);

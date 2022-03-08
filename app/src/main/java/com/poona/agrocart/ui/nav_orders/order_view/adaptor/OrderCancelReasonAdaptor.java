@@ -85,7 +85,7 @@ public class OrderCancelReasonAdaptor extends RecyclerView.Adapter<OrderCancelRe
             this.binding= binding;
 
             binding.llMain.setOnClickListener(view -> {
-                mSelectedItem = getAdapterPosition();
+                mSelectedItem = getLayoutPosition();
                 strReasonType = "check";
                 onTypeClickListener.itemClick(strReasonType,cancelOrderReasonLists.get(getLayoutPosition()).getCancelId());
                 notifyDataSetChanged();

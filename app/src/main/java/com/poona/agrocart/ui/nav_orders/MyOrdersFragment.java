@@ -19,20 +19,24 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
 import com.poona.agrocart.databinding.FragmentMyOrdersBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.nav_stores.OurStoresFragment;
 
 import java.util.ArrayList;
 
-public class MyOrdersFragment extends BaseFragment {
+public class MyOrdersFragment extends BaseFragment implements NetworkExceptionListener {
 
     private FragmentMyOrdersBinding fragmentMyOrdersBinding;
     private MyOrdersViewModel myOrdersViewModel;
     private RecyclerView rvOrders;
+    private SwipeRefreshLayout refreshLayout;
     private ArrayList<OrderListResponse.Order> orderArrayList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     private OrdersAdapter ordersAdapter;
@@ -44,7 +48,23 @@ public class MyOrdersFragment extends BaseFragment {
         View root = fragmentMyOrdersBinding.getRoot();
 
         initView();
-        setRvAdapter(root);
+        if(isConnectingToInternet(context)){
+            setRvAdapter(root);
+        }else{
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                if(isConnectingToInternet(context)){
+                    setRvAdapter(root);
+                }else{
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
 
         initTitleBar(getString(R.string.menu_my_orders));
         return root;
@@ -57,7 +77,7 @@ public class MyOrdersFragment extends BaseFragment {
         callOrderListApi(showCircleProgressDialog(context, ""));
         rvOrders.setHasFixedSize(true);
         rvOrders.setLayoutManager(linearLayoutManager);
-
+        refreshLayout.setRefreshing(false);
         ordersAdapter = new OrdersAdapter(orderArrayList, context, view, this);
         rvOrders.setAdapter(ordersAdapter);
     }
@@ -117,5 +137,21 @@ public class MyOrdersFragment extends BaseFragment {
 
     private void initView() {
         rvOrders = fragmentMyOrdersBinding.rvOrders;
+        refreshLayout = fragmentMyOrdersBinding.rlOrder;
+    }
+
+    @Override
+    public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), MyOrdersFragment.this, () -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if (from == 0) {
+                    callOrderListApi(showCircleProgressDialog(context,""));
+                }
+            } else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+
     }
 }

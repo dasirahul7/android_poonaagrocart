@@ -36,6 +36,7 @@ import static com.poona.agrocart.app.AppConstants.MY_NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.MY_ORDER_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.MY_ORDER_Details_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
+import static com.poona.agrocart.app.AppConstants.MY_SUBSCRIBE_BASKET_LIST_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.ORDER_PLACE_API;
 import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL;
 import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL_REASON;
@@ -102,6 +103,7 @@ import com.poona.agrocart.data.network.responses.help_center_response.TicketType
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.SubscribeBasketListCustomerResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
 import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
@@ -255,7 +257,6 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(HOME_BASKET_API)
     Single<HomeBasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
-
     @FormUrlEncoded
     @POST(HOME_BASKET_API)
     Single<BasketResponse> basketResponse(@FieldMap HashMap<String, String> categoryParams);
@@ -344,6 +345,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(RATE_TO_BASKET)
     Single<BaseResponse> getSubmitRatingResponseBasket(@FieldMap HashMap<String, String> submitRatingInputParameter);
+
 
 
     /*Basket detail API*/
@@ -473,4 +475,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(ORDER_PLACE_API)
     Single<BaseResponse> getOrderPlaceResponse(@FieldMap HashMap<String, String> hashMap);
+    @GET(MY_SUBSCRIBE_BASKET_LIST_CUSTOMER)
+    Single<SubscribeBasketListCustomerResponse> getSubscriptionBasketListResponse();
+
+
 }
