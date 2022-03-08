@@ -253,7 +253,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private void callOrderDetailsApi(ProgressDialog progressDialog) {
         @SuppressLint("NotifyDataSetChanged")
         Observer<MyOrderDetailsResponse> myOrderDetailsResponseObserver = myOrderDetailsResponse -> {
-            refreshLayout.setRefreshing(true);
+            refreshLayout.setRefreshing(false);
             if (myOrderDetailsResponse != null) {
                 Log.e(" My Order Details Api ResponseData", new Gson().toJson(myOrderDetailsResponse));
                 if (progressDialog != null) {
