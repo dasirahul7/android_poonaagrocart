@@ -13,6 +13,9 @@ public class OurStoreListResponse {
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("total_count")
+    @Expose
+    private String count;
     @SerializedName("data")
     @Expose
     private List<OurStoreListData> data = null;
@@ -41,4 +44,12 @@ public class OurStoreListResponse {
         this.data = data;
     }
 
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
 }

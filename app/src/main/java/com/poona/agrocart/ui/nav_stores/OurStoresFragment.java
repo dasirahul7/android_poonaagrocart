@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.OnStoreClickListener, NetworkExceptionListener {
-    private final int limit = 10;
+    private final int limit = 5;
     private FragmentOurStoresBinding fragmentOurStoresBinding;
     private OurStoreViewModel ourStoreViewModel;
     private SwipeRefreshLayout refreshLayout;
@@ -48,7 +48,7 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
     private ArrayList<OurStoreListData> storeArrayList;
     private int offset = 0;
     private int visibleItemCount = 0;
-    private final int totalCount = 0;
+    private int totalCount = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,6 +89,13 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
 
     private void setRvAdapter() {
         storeArrayList = new ArrayList<>();
+        linearLayoutManager = new LinearLayoutManager(requireContext());
+        rvOurStores.setHasFixedSize(true);
+        rvOurStores.setLayoutManager(linearLayoutManager);
+        refreshLayout.setRefreshing(false);
+
+        ourStoreAdapter = new OurStoreAdapter(storeArrayList, context, this);
+
         if (isConnectingToInternet(context)) {
             /*Call Our Store List API here*/
             callOurStoreListApi(showCircleProgressDialog(context, ""), "RecyclerView");
@@ -97,12 +104,6 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
 
         // storeListData();
 
-        linearLayoutManager = new LinearLayoutManager(requireContext());
-        rvOurStores.setHasFixedSize(true);
-        rvOurStores.setLayoutManager(linearLayoutManager);
-        refreshLayout.setRefreshing(false);
-
-        ourStoreAdapter = new OurStoreAdapter(storeArrayList, context, this);
         rvOurStores.setAdapter(ourStoreAdapter);
 
         //pagination for list
@@ -113,6 +114,28 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
         rvOurStores.setNestedScrollingEnabled(true);
         NestedScrollView nestedScrollView = fragmentOurStoresBinding.nvOurStore;
 
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(v.getChildCount() - 1) != null) {
+                    visibleItemCount = linearLayoutManager.getItemCount();
+
+                    if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+                            && visibleItemCount != totalCount) {
+                        if (isConnectingToInternet(context)) {
+                            /*Call Our Store List API here*/
+                            callOurStoreListApi(showCircleProgressDialog(context, ""), "onScrolled");
+                        } else
+                            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+
+                    } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+                            && visibleItemCount == totalCount) {
+                        infoToast(requireActivity(), getString(R.string.no_result_found));  //change
+                    }
+                }
+            }
+        });
+/*
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (v.getChildAt(v.getChildCount() - 1) != null) {
                 visibleItemCount = linearLayoutManager.getItemCount();
@@ -120,7 +143,9 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount != totalCount) {
                     if (isConnectingToInternet(context)) {
-                        /*Call Our Store List API here*/
+                        */
+/*Call Our Store List API here*//*
+
                         callOurStoreListApi(showCircleProgressDialog(context, ""), "onScrolled");
                     } else
                         showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
@@ -131,13 +156,14 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
                 }
             }
         });
+*/
 
     }
 
     private void callOurStoreListApi(ProgressDialog progressDialog, String fromFunction) {
 
         if (fromFunction.equals("onScrolled")) {
-            offset = offset + 2;
+            offset = offset + 1;
         } else {
             offset = 0;
         }
@@ -154,6 +180,7 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
                         if (offset == 0)
                             storeArrayList.clear();
 
+                        totalCount = Integer.parseInt(ourStoreListResponse.getCount());
                         if (ourStoreListResponse.getData() != null
                                 && ourStoreListResponse.getData().size() > 0) {
                             storeArrayList.addAll(ourStoreListResponse.getData());
