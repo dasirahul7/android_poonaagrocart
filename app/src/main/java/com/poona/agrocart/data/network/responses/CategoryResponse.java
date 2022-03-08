@@ -7,6 +7,9 @@ import com.poona.agrocart.data.network.responses.homeResponse.Category;
 import java.util.ArrayList;
 
 public class CategoryResponse extends BaseResponse {
+    @Expose
+    @SerializedName("total_count")
+    private int totalCount;
     @SerializedName("data")
     @Expose
     private CategoryData categoryData;
@@ -19,6 +22,13 @@ public class CategoryResponse extends BaseResponse {
         this.categoryData = categoryData;
     }
 
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
     public class CategoryData {
         @SerializedName("category_list")
         @Expose

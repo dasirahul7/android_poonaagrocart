@@ -18,7 +18,9 @@ import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.data.network.responses.BestSellingResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.ProductListByResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Product;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -31,9 +33,12 @@ public class ProductListViewModel extends AndroidViewModel {
 
 
     public static final String TAG = ProductListViewModel.class.getSimpleName();
+    public MutableLiveData<ArrayList<Product>> productListMutableLiveData;
 
     public ProductListViewModel(Application application) {
         super(application);
+        productListMutableLiveData = new MutableLiveData<>();
+        productListMutableLiveData.setValue(null);
 
     }
 

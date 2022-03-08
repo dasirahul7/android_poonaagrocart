@@ -156,7 +156,7 @@
                 android:background="@drawable/bg_offer_yellow"
                 android:gravity="center"
                 android:includeFontPadding="false"
-                android:text='@{homeProductModel.specialOffer ?? ""}'
+                android:text='@{homeProductModel.percDiscount ?? ""}'
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp"

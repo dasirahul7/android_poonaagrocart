@@ -314,7 +314,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                             if (productListByResponse.getProductListResponseDt().getProductList() != null) {
                                 if (productListByResponse.getProductListResponseDt().getProductList().size() > 0) {
                                     productArrayList.addAll(productListByResponse.getProductListResponseDt().getProductList());
-
+                                    productListViewModel.productListMutableLiveData.setValue(productArrayList);
                                     makeProductListing();
                                 }
                             }

@@ -44,7 +44,7 @@
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:singleLine="true"
-                android:text="@{exclusiveOfferModule.specialOffer}"
+                android:text="@{exclusiveOfferModule.percDiscount}"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp"

@@ -37,12 +37,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.DrawerLocker;
 import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.ui.home.HomeActivity;
@@ -65,7 +67,7 @@ import okio.Buffer;
  * Created by Rahul Dasi on 6/10/2020
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements DrawerLocker {
     private static final String TAG = BaseFragment.class.getSimpleName();
     public Context context;
     public AppSharedPreferences preferences;
@@ -118,6 +120,7 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
         ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setBackgroundResource(R.color.white);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
+        setDrawerLocked(false);
     }
 
     @SuppressLint("ResourceType")
@@ -140,6 +143,7 @@ public abstract class BaseFragment extends Fragment {
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setText(title);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
         ((HomeActivity) requireActivity()).binding.appBarHome.textTitle.setTextColor(Color.parseColor(context.getString(R.color.black)));
+        setDrawerLocked(true);
     }
 
     @SuppressLint("ResourceType")
@@ -700,5 +704,14 @@ public abstract class BaseFragment extends Fragment {
             fullAddressSb.append(address.getPincode());
         address.setFullAddress(fullAddressSb.toString());
        return address;
+    }
+
+    public void setDrawerLocked(boolean enabled){
+        if(enabled){
+            ((HomeActivity) requireActivity()).binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }else{
+            ((HomeActivity) requireActivity()).binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+
     }
 }

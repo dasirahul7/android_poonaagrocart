@@ -33,11 +33,14 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
@@ -64,10 +67,14 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
     private ExploreViewModel mViewModel;
     private FragmentExploreBinding exploreFragmentBinding;
     private ExploreItemAdapter exploreItemAdapter;
-    private final int limit = 0;
-    private final int offset = 0;
+    private final int limit = 8;
+    private int offset = 0;
     private final ArrayList<ExploreItems> exploreItems = new ArrayList<>();
     private View root;
+    private int visibleItemCount = 0;
+    private int totalCount = 0;
+
+    private SwipeRefreshLayout pullToRefreshExplore;
     private ActivityResultLauncher<Intent> recognizerIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
@@ -84,6 +91,8 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
             }
         }
     });
+    private RecyclerView rvExplore;
+    private GridLayoutManager gridLayoutManager;
 
     public static ExploreFragment newInstance() {
         return new ExploreFragment();
@@ -97,14 +106,28 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
         root = exploreFragmentBinding.getRoot();
         mViewModel = new ViewModelProvider(this).get(ExploreViewModel.class);
         exploreItems.clear();
-        setOnClick();
+        initViews();
         if (isConnectingToInternet(context)) {
-            callExploreApi(root, showCircleProgressDialog(context, ""), limit, offset);
+            callExploreApi( showCircleProgressDialog(context, ""),"load");
         } else
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
         initTitleBar(getString(R.string.menu_explore));
         searchCategory(root);
+
+        pullToRefreshExplore.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pullToRefreshExplore.setRefreshing(true);
+                if(isConnectingToInternet(context)){
+                    callExploreApi(showCircleProgressDialog(context,""),"load");
+                }else{
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
+
+        setOnScrollListener();
         return root;
     }
 
@@ -136,7 +159,7 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
                                 public void run() {
                                     exploreItems.clear();
                                     if (isConnectingToInternet(context)) {
-                                        callExploreApi(root, showCircleProgressDialog(context, ""), limit, offset);
+                                        callExploreApi(showCircleProgressDialog(context, ""),"load");
                                     } else
                                         showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
@@ -152,17 +175,23 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
 
     }
 
-    private void callExploreApi(View root, ProgressDialog progressDialog, int limit, int offset) {
-        limit = limit + 10;
-
+    private void callExploreApi(ProgressDialog progressDialog,String loadType) {
+        if (loadType.equalsIgnoreCase("onScrolled"))
+        offset = offset + 1;
+        else offset = 0;
         Observer<CategoryResponse> categoryResponseObserver = categoryResponse -> {
             if (categoryResponse != null) {
                 progressDialog.dismiss();
+                pullToRefreshExplore.setRefreshing(false);
                 Log.e("Category Api ResponseData", new Gson().toJson(categoryResponse));
                 switch (categoryResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        if (categoryResponse.getCategoryData() != null) {
+                        if ((categoryResponse.getCategoryData() != null )&&(categoryResponse.getTotalCount()!=0)) {
+                            totalCount = categoryResponse.getTotalCount();
                             if (categoryResponse.getCategoryData().getCategoryList().size() > 0) {
+                                if (loadType.equalsIgnoreCase("load")){
+                                    exploreItems.clear();
+                                }
                                 exploreFragmentBinding.tvNoData.setVisibility(View.GONE);
                                 for (Category category : categoryResponse.getCategoryData().getCategoryList()) {
                                     ExploreItems expItem = new ExploreItems(category.getId(), category.getCategoryName(),
@@ -171,33 +200,23 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
                                     expItem.setBorder(R.color.exp_border1);
                                     exploreItems.add(expItem);
                                 }
-                                exploreItemAdapter = new ExploreItemAdapter(getActivity(), exploreItems, root, items -> {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString(CATEGORY_ID, items.getId());
-                                    bundle.putString(LIST_TITLE, items.getName());
-                                    bundle.putString(LIST_TYPE, items.getType());
-                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_explore_to_nav_products_list, bundle);
-//                                    NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
-
-                                });
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-                                exploreFragmentBinding.rvExplore.setLayoutManager(gridLayoutManager);
-                                exploreFragmentBinding.rvExplore.setHasFixedSize(true);
-                                exploreFragmentBinding.rvExplore.setAdapter(exploreItemAdapter);
-                            } else exploreFragmentBinding.tvNoData.setVisibility(View.VISIBLE);
+                                mViewModel.arrayListMutableLiveData.setValue(exploreItems);
+                                setRvAdapters();
+                            }
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
+                        if (loadType.equalsIgnoreCase("load"))
                         exploreFragmentBinding.tvNoData.setVisibility(View.VISIBLE);
                         warningToast(context, "Data not found");
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        exploreFragmentBinding.tvNoData.setVisibility(View.VISIBLE);
                         goToAskSignInSignUpScreen(categoryResponse.getMessage(), context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
+                        if (loadType.equalsIgnoreCase("load"))
                         exploreFragmentBinding.tvNoData.setVisibility(View.VISIBLE);
                         infoToast(context, categoryResponse.getMessage());
                         break;
@@ -207,6 +226,49 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
         mViewModel.categoryResponseLiveData(progressDialog, listingParams(limit, offset), ExploreFragment.this)
                 .observe(getViewLifecycleOwner(), categoryResponseObserver);
     }
+
+    private void setRvAdapters() {
+        mViewModel.arrayListMutableLiveData.observe(getViewLifecycleOwner(),exploreItemsList -> {
+            exploreItemAdapter = new ExploreItemAdapter(getActivity(), exploreItemsList, root, items -> {
+                Bundle bundle = new Bundle();
+                bundle.putString(CATEGORY_ID, items.getId());
+                bundle.putString(LIST_TITLE, items.getName());
+                bundle.putString(LIST_TYPE, items.getType());
+                NavHostFragment.findNavController(ExploreFragment.this).navigate(R.id.action_nav_explore_to_nav_products_list, bundle);
+            });
+            gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+            rvExplore.setLayoutManager(gridLayoutManager);
+            rvExplore.setHasFixedSize(true);
+            rvExplore.setAdapter(exploreItemAdapter);
+
+        });
+
+    }
+
+    private void setOnScrollListener() {
+        rvExplore.setNestedScrollingEnabled(true);
+        NestedScrollView nestedScrollView = exploreFragmentBinding.nvExplore;
+        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
+                visibleItemCount = gridLayoutManager.getItemCount();
+
+                if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+                        && visibleItemCount != totalCount) {
+                    if (isConnectingToInternet(context)) {
+                        /*Call Our Store List API here*/
+                        callExploreApi(showCircleProgressDialog(context, ""), "onScrolled");
+                    } else
+                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+
+                }
+//                else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+//                        && visibleItemCount == totalCount) {
+//                    infoToast(requireActivity(), getString(R.string.no_result_found));  //change
+//                }
+            }
+        });
+    }
+
 
     private HashMap<String, String> listingParams(int limit, int offset) {
         HashMap<String, String> map = new HashMap<>();
@@ -230,7 +292,7 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
                 switch (from) {
                     case 0:
                         exploreItems.clear();
-                        callExploreApi(root, showCircleProgressDialog(context, ""), limit, offset);
+                        callExploreApi( showCircleProgressDialog(context, ""),"load");
                         break;
                 }
             } else {
@@ -240,8 +302,9 @@ public class ExploreFragment extends BaseFragment implements View.OnClickListene
 
     }
 
-    private void setOnClick() {
-
+    private void initViews() {
+        rvExplore = exploreFragmentBinding.rvExplore;
+        pullToRefreshExplore = exploreFragmentBinding.rlExplore;
         exploreFragmentBinding.imgExploreMice.setOnClickListener(view -> {
             startVoiceInput();
         });

@@ -43,7 +43,7 @@
                 android:background="@drawable/bg_offer_yellow"
                 android:gravity="center"
                 android:includeFontPadding="false"
-                android:text='@{productModule.percDiscount !=null ? productModule.percDiscount :""}'
+                android:text='@{productModule.percDiscount ?? ""}'
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp"
@@ -116,7 +116,7 @@
                     android:paddingStart="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:text='@{productModule.weight ?? "" + productModule.unitName ?? ""}'
+                    android:text='@{productModule.weight + productModule.unitName}'
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_12sp" />
 
@@ -146,7 +146,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_strikethrough"
                         android:gravity="center"
-                        android:text="@{`Rs.`+productModule.sellingPrice}"
+                        android:text='@{`Rs.`+productModule.sellingPrice ?? ""}'
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_12sp"
                         tools:ignore="RtlSymmetry" />
@@ -157,7 +157,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_5sdp"
                         android:gravity="center"
-                        android:text='@{`Rs.`+productModule.offerPrice}'
+                        android:text='@{`Rs.`+productModule.offerPrice ?? ""}'
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_montserrat_regular" />

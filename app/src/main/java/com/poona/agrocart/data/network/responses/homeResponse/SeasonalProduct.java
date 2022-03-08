@@ -1,5 +1,7 @@
 package com.poona.agrocart.data.network.responses.homeResponse;
 
+import android.text.Html;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -76,7 +78,7 @@ public class SeasonalProduct {
     }
 
     public String getProductDetails() {
-        return productDetails;
+        return String.valueOf(Html.fromHtml(productDetails)).trim();
     }
 
     public void setProductDetails(String productDetails) {
