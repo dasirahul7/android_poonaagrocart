@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_orders.order_view;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
 import static com.poona.agrocart.app.AppConstants.CANCEL_ID;
 import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
 import static com.poona.agrocart.app.AppConstants.ORDER_ID;
@@ -13,9 +14,12 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,6 +30,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -73,7 +78,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private boolean isBasketVisible = true;
     private RatingBar ratingBar;
     private CustomEditText feedbackComment;
-    private CustomButton btnSubmitFeedback;
+    private CustomButton btnSubmitFeedback, btnDownloadInvoice;
     private SwipeRefreshLayout refreshLayout;
 
     private List<MyOrderDetial> orderDetials = new ArrayList<>();
@@ -89,6 +94,9 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private View view;
     private String strReasonType = "", strCancelId = "" ;
     private ImageView imageView;
+    long downloadID;
+    private DownloadManager downloadManager;
+    private String strInvioceDownload;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -122,6 +130,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         feedbackComment = fragmentOrderViewBinding.etFeedback;
         btnSubmitFeedback = fragmentOrderViewBinding.btnSubmitFeedback;
         refreshLayout = fragmentOrderViewBinding.rlMyOrderDetails;
+        btnDownloadInvoice =fragmentOrderViewBinding.btnDownloadInvoice;
 
         fragmentOrderViewBinding.btnTrackOrder.setOnClickListener(this);
         Bundle bundle = this.getArguments();
@@ -155,6 +164,18 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
         });
 
+        fragmentOrderViewBinding.btnDownloadInvoice.setOnClickListener(view1 -> {
+            if(isConnectingToInternet(context)){
+                if(strInvioceDownload != null && !strInvioceDownload.equals("")){
+                    beginDownload(strInvioceDownload);
+                }else{
+                    infoToast(context, "Something Went wrong!  please wait for while..");
+                }
+            }else{
+
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        });
     }
 
     private void showProductDetails() {
@@ -309,7 +330,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         orderViewDetailsViewModel.totalAmount.setValue(orderDetials.get(0).getPaidAmount());
         orderViewDetailsViewModel.subTotalAmount.setValue(orderDetials.get(0).getProductAmount());
 
-
+        strInvioceDownload = orderDetials.get(0).getInvoiceFile();
 
         switch (orderDetials.get(0).getOrderStatus()) {
             case "3":
@@ -405,6 +426,65 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             fragmentOrderViewBinding.cardviewComment.setVisibility(View.GONE);
         }
     }
+
+    /*Download the document*/
+    private void beginDownload(String docPdf) {
+        DownloadManager.Request request = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            request = new DownloadManager.Request(Uri.parse(docPdf))
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setRequiresCharging(false)
+                    .setAllowedOverMetered(true)
+                    .setAllowedOverRoaming(true);
+        } else {
+            request = new DownloadManager.Request(Uri.parse(docPdf))
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setAllowedOverRoaming(true);
+        }
+        downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
+        downloadID = downloadManager.enqueue(request);
+
+        // using query method
+        boolean finishDownload = true;
+        int progress;
+        while (!finishDownload) {
+            Cursor cursor = downloadManager.query(new DownloadManager.Query().setFilterById(downloadID));
+            if (cursor.moveToFirst()) {
+                @SuppressLint("Range") int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                switch (status) {
+                    case DownloadManager.STATUS_FAILED: {
+                        finishDownload = true;
+                        break;
+                    }
+                    case DownloadManager.STATUS_PAUSED:
+                        break;
+                    case DownloadManager.STATUS_PENDING:
+                        break;
+                    case DownloadManager.STATUS_RUNNING: {
+                        @SuppressLint("Range") final long total = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                        if (total >= 0) {
+                            @SuppressLint("Range") final long downloaded = ((Cursor) cursor).getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                            progress = (int) ((downloaded * 100L) / total);
+                            // if you use downloadmanger in async task, here you can use like this to display progress.
+                            // Don't forget to do the division in long to get more digits rather than double.
+                            //  publishProgress((int) ((downloaded * 100L) / total));
+                        }
+                        break;
+                    }
+                    case DownloadManager.STATUS_SUCCESSFUL: {
+                        progress = 100;
+                        // if you use aysnc task
+                        // publishProgress(100);
+                        finishDownload = true;
+                        Toast.makeText(context, "Download Completed", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
     /* Cancel Order Manager */
 
     private void CancelOrderDialogBox(){

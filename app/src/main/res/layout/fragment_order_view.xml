@@ -258,9 +258,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/cardview_shpping_address">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="70"
+                        android:layout_weight="25"
                         android:orientation="vertical">
 
                         <com.poona.agrocart.widgets.CustomTextView
@@ -284,14 +284,14 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="30"
+                        android:layout_weight="75"
                         android:gravity="end|center_vertical"
                         android:orientation="horizontal">
 
                         <com.poona.agrocart.widgets.CustomButton
-                            android:id="@+id/btn_sign_up"
+                            android:id="@+id/btn_download_invoice"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="@dimen/_60sdp"
                             android:layout_height="@dimen/_20sdp"
