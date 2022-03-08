@@ -63,7 +63,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         if(strTotalAmount == null){
             holder.rvOrderBinding.tvTotalAmount.setText(context.getString(R.string.total_amount_null));
         }else {
-            holder.rvOrderBinding.tvTotalAmount.setText(context.getString(R.string.text_rs) + orderArrayList.get(0).getPaidAmount());
+            holder.rvOrderBinding.tvTotalAmount.setText(context.getString(R.string.text_rs) +" "+ orderArrayList.get(0).getPaidAmount());
         }
 
         if(strTotalQuantity == null){
@@ -109,7 +109,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             Bundle bundle = new Bundle();
             bundle.putString(ORDER_ID, orderId);
             bundle.putBoolean("isBasketVisible", false);
-            Toast.makeText(itemView.getContext(), ""+orderId, Toast.LENGTH_SHORT).show();
             Navigation.findNavController(view).navigate(R.id.action_nav_orders_to_orderViewFragment2, bundle);
         }
 

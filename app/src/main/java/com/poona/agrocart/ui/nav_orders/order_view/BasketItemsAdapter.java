@@ -42,6 +42,20 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
         final ItemsDetail basketItem = basketItems.get(position);
         holder.rvBasketDetailBinding.setBasketItemModel(basketItem);
         holder.bind(basketItem, context);
+
+        if(basketItem.getProductName() != null && !basketItem.getProductName().equals("")){
+            holder.rvBasketDetailBinding.tvProductName.setText(basketItem.getProductName());
+        }else {
+            holder.rvBasketDetailBinding.tvProductName.setText("N/A");
+        }
+
+        if(basketItem.getWeight() != null && !basketItem.getWeight().equals("")){
+            holder.rvBasketDetailBinding.tvWeight.setText(basketItem.getWeight());
+        }else {
+            holder.rvBasketDetailBinding.tvWeight.setText("N/A");
+        }
+
+
     }
 
     @Override
@@ -53,6 +67,8 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
 
         RvBasketDetailBinding rvBasketDetailBinding;
         boolean isBasketVisible;
+
+
 
         public BasketItemViewHolder(RvBasketDetailBinding rvBasketDetailBinding, boolean isBasketVisible) {
             super(rvBasketDetailBinding.getRoot());
