@@ -302,8 +302,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         if (!ratingList.get(0).getRating().isEmpty() && !ratingList.get(0).getReview().isEmpty() ||
                 !ratingList.get(0).getRating().equalsIgnoreCase("") &&
                         !ratingList.get(0).getReview().equalsIgnoreCase("")) {
+            if (details.getAlreadyPurchased()!=1)
             fragmentProductDetailBinding.llRateView.setVisibility(View.GONE);
         } else {
+            if (details.getAlreadyPurchased()==1)
             fragmentProductDetailBinding.llRateView.setVisibility(View.VISIBLE);
         }
     }
@@ -315,7 +317,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         productDetailViewModel.unitMutableLiveData.setValue(details.getUnit());
         productDetailViewModel.sellingPrice.setValue("Rs." + details.getUnit().getSellingPrice());
         productDetailViewModel.offerPrice.setValue("Rs" + details.getUnit().getOfferPrice());
-        productDetailViewModel.offer.setValue(details.getSpecialOffer());
+        productDetailViewModel.offer.setValue(details.getUnit().getPercDiscount());
+        productDetailViewModel.specialOffer.setValue(details.getSpecialOffer());
+        if (details.getAverageRating()==null){
+            fragmentProductDetailBinding.llReview.setVisibility(View.GONE);
+            fragmentProductDetailBinding.ratingBelowLine.setVisibility(View.GONE);
+        }
+        productDetailViewModel.averageRating.setValue(details.getAverageRating());
+        productDetailViewModel.productNoOfRating.setValue(details.getNoOfUserRated());
         if (productDetailViewModel.unitMutableLiveData.getValue().getInCart() == 1) {
             productDetailViewModel.isInCart.setValue(true);
         } else
@@ -818,6 +827,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         productRatingReviewAdapter = new ProductRatingReviewAdapter(context, reviewsList,0);
         //Adding adapter to recyclerview
         rvProductReview.setAdapter(productRatingReviewAdapter);
+        fragmentProductDetailBinding.tvSeeMoreReview.setVisibility(View.VISIBLE);
     }
 
 }

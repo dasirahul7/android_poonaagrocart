@@ -55,6 +55,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.github.demono.AutoScrollViewPager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.poona.agrocart.BR;
@@ -91,6 +92,7 @@ import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -224,7 +226,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
         // Set up tab indicators
         fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
-        bannerAutoSlider();
+        loadBannerImages(banners);
     }
 
     private void setRvCategory() {
@@ -753,8 +755,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             rlRefreshPage.setRefreshing(false);
                             makeVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
                             banners.addAll(homeResponse.getHomeResponseData().getBannerDetails());
+                            loadBannerImages(banners);
                         }
-                        setRvBanners();
+//                        setRvBanners();
                         //Add Category
                         if (homeResponse.getHomeResponseData().getCategoryData() != null) {
                             //Should remove this latter
@@ -1141,28 +1144,49 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     /*Create a Dummy banner if no banner is available*/
-    private void bannerAutoSlider() {
-        Log.e("SetSliderAutoTimer", "SetSliderAutoTimer");
-        /*After setting the adapter use the timer */
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                if (currentBanner == NumberOfBanners) {
-                    currentBanner = 0;
-                }
-                fragmentHomeBinding.viewPagerBanner.setCurrentItem(currentBanner++, true);
-            }
-        };
+//    private void bannerAutoSlider() {
+//        Log.e("SetSliderAutoTimer", "SetSliderAutoTimer");
+//        /*After setting the adapter use the timer */
+//        final Handler handler = new Handler();
+//        final Runnable Update = new Runnable() {
+//            public void run() {
+//                if (currentBanner == NumberOfBanners) {
+//                    currentBanner = 0;
+//                }
+//                fragmentHomeBinding.viewPagerBanner.setCurrentItem(currentBanner++, true);
+//            }
+//        };
+//
+//        timer = new Timer(); // This will create a new Thread
+//        timer.schedule(new TimerTask() { // task to be scheduled
+//            @Override
+//            public void run() {
+//                handler.post(() -> {
+//
+//                });
+//            }
+//        }, DELAY_MS, PERIOD_MS);
+//    }
 
-        timer = new Timer(); // This will create a new Thread
-        timer.schedule(new TimerTask() { // task to be scheduled
-            @Override
-            public void run() {
-                handler.post(() -> {
+    private void loadBannerImages(List<Banner> bannersList) {
 
-                });
-            }
-        }, DELAY_MS, PERIOD_MS);
+        AutoScrollViewPager autoScrollViewPager = fragmentHomeBinding.viewPagerBanner;
+
+        bannerAdapter = new BannerAdapter( bannersList,requireActivity());
+        autoScrollViewPager.setAdapter(bannerAdapter);
+        fragmentHomeBinding.dotsIndicator.setViewPager(autoScrollViewPager);
+
+        if(bannersList == null || bannersList.size() == 1 || bannersList.size() == 0){
+            fragmentHomeBinding.dotsIndicator.setVisibility(View.VISIBLE);
+        }
+        // start auto scroll
+        autoScrollViewPager.startAutoScroll();
+
+        // set auto scroll time in mili
+        autoScrollViewPager.setSlideInterval(AUTO_SCROLL_THRESHOLD_IN_MILLI);
+
+        // enable recycling using true
+        autoScrollViewPager.setCycle(true);
     }
 
     private HashMap<String, String> listingParams(int offset, String search) {

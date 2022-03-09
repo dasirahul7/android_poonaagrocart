@@ -48,16 +48,9 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
         Product product = products.get(position);
         rowExclusiveItemBinding.setExclusiveOfferModule(product);
         holder.bindData(product, position);
-
-
-
-
-
         rowExclusiveItemBinding.imgPlus.setOnClickListener(view1 -> {
             onPlusClickListener.OnPlusClick(rowExclusiveItemBinding, product, position);
         });
-        if (added)
-            rowExclusiveItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
     }
 
     @Override

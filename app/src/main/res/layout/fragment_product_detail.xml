@@ -307,7 +307,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/orange_fill_color"
                         android:padding="@dimen/_8sdp"
-                        android:text="@{`Buy `+productDetailModule.unitMutableLiveData.weight+productDetailModule.unitMutableLiveData.unitName+`for Rs.`+productDetailModule.unitMutableLiveData.offerPrice}"
+                        android:text='@{productDetailModule.specialOffer ?? ""}'
                         android:textColor="@color/color_order_date_and_time" />
 
                    <!-- android:text="@{`Buy `+productDetailModule.unit.weight+productDetailModule.unit.unitName+`for Rs.`+productDetailModule.unit.offerPrice}"-->
@@ -806,7 +806,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/_2sdp"
-                            android:text="@string/_5_0"
+                            android:text="@{productDetailModule.averageRating}"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -819,7 +819,7 @@
                             android:paddingStart="@dimen/_5sdp"
                             android:paddingTop="@dimen/_2sdp"
                             android:paddingEnd="@dimen/_5sdp"
-                            android:text="15 Ratings"
+                            android:text='@{productDetailModule.productNoOfRating + "Ratings"}'
                             android:textColor="@color/colorGrey"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
@@ -946,7 +946,7 @@
                 android:text="@string/see_more"
                 android:textColor="@color/selectedGreen"
                 android:textSize="@dimen/_16sp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

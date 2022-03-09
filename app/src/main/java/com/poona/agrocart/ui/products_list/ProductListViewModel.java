@@ -148,7 +148,6 @@ public class ProductListViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BestSellingResponse bestSellingResponse) {
                         if (bestSellingResponse != null) {
-                            Log.d(TAG, "BestSelling onSuccess: " + bestSellingResponse.getBestSellingData().getBestSellingProductList().size());
                             progressDialog.dismiss();
                             bestSellingResponseMutableLiveData.setValue(bestSellingResponse);
                         }

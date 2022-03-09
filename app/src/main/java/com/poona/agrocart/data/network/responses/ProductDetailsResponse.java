@@ -126,9 +126,18 @@ public class ProductDetailsResponse extends BaseResponse {
         @SerializedName("quantity")
         @Expose
         private int quantity;
+        @SerializedName("already_purchased")
+        @Expose
+        private int alreadyPurchased;
         @SerializedName("category_image")
         @Expose
         private String categoryImage;
+        @SerializedName("average_rating")
+        @Expose
+        private String averageRating;
+        @SerializedName("no_or_users_rated")
+        @Expose
+        private String noOfUserRated;
         @SerializedName("product_imgs")
         @Expose
         private List<ProductImg> productImgs = null;
@@ -142,6 +151,30 @@ public class ProductDetailsResponse extends BaseResponse {
         @SerializedName("reviews")
         @Expose
         private List<Review> reviews = null;
+
+        public int getAlreadyPurchased() {
+            return alreadyPurchased;
+        }
+
+        public void setAlreadyPurchased(int alreadyPurchased) {
+            this.alreadyPurchased = alreadyPurchased;
+        }
+
+        public String getAverageRating() {
+            return averageRating;
+        }
+
+        public void setAverageRating(String averageRating) {
+            this.averageRating = averageRating;
+        }
+
+        public String getNoOfUserRated() {
+            return noOfUserRated;
+        }
+
+        public void setNoOfUserRated(String noOfUserRated) {
+            this.noOfUserRated = noOfUserRated;
+        }
 
         private ProductListResponse.ProductUnit unit;
 
