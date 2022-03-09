@@ -321,6 +321,5 @@ public class AppConstants {
     public static final String DELIVERY_DATE = "delivery_date";
     public static final String SLOT_ID = "slot_id";
     public static final String PAYMENT_MODE_ID = "payment_mode_id";
-
 }
 

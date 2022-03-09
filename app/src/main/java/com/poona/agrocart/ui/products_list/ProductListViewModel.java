@@ -34,12 +34,14 @@ public class ProductListViewModel extends AndroidViewModel {
 
     public static final String TAG = ProductListViewModel.class.getSimpleName();
     public MutableLiveData<ArrayList<Product>> productListMutableLiveData;
+    public MutableLiveData<ArrayList<BasketResponse.Basket>> basketListMutableLiveData;
 
     public ProductListViewModel(Application application) {
         super(application);
         productListMutableLiveData = new MutableLiveData<>();
+        basketListMutableLiveData = new MutableLiveData<>();
         productListMutableLiveData.setValue(null);
-
+        basketListMutableLiveData.setValue(null);
     }
 
 

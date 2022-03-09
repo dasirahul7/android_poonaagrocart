@@ -36,7 +36,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -49,6 +48,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
@@ -59,26 +59,23 @@ import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.data.network.responses.BestSellingResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.ProductListByResponse;
-import com.poona.agrocart.data.network.responses.ProductListResponse;
-import com.poona.agrocart.data.network.responses.homeResponse.Basket;
 import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.FragmentProductListBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.bottom_sheet.BottomSheetFilterFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.home.HomeFragment;
 import com.poona.agrocart.ui.products_list.adapter.BasketGridAdapter;
 import com.poona.agrocart.ui.products_list.adapter.ProductGridAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class ProductListFragment extends BaseFragment implements NetworkExceptionListener, ProductGridAdapter.OnProductClickListener {
     private static final String TAG = ProductListFragment.class.getSimpleName();
-    private final int limit = 10;
     //search variables
     Timer timer = new Timer();
     boolean isTyping = false;
@@ -92,9 +89,13 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     //argument values
     private String CategoryId, ListTitle, ListType, fromScreen;
     private int visibleItemCount = 0;
-    private final int totalCount = 0;
+    private int totalCount = 0;
     private int offset = 0;
+    private final int limit = 6;
+
     private GridLayoutManager gridLayoutManager;
+
+    private SwipeRefreshLayout pullToRefreshExplore;
     private ActivityResultLauncher<Intent> recognizerIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
@@ -127,7 +128,6 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
             filterFragment.show(getChildFragmentManager(), "FilterFragment");
         });
         setRVAdapter();
-        setScrollListener();
         searchProducts(view);
         return view;
     }
@@ -148,11 +148,29 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         rvVegetables.setLayoutManager(gridLayoutManager);
         if (isConnectingToInternet(context)) {
             //add API call here
+            productArrayList.clear();
+            basketArrayList.clear();
             checkAndLoadData("load");
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
 
+        setItemListing();
+        setOnScrollListener();
+        /*Pull to refresh here*/
+        pullToRefreshExplore.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pullToRefreshExplore.setRefreshing(true);
+                if(isConnectingToInternet(context)){
+                    productArrayList.clear();
+                    basketArrayList.clear();
+                    checkAndLoadData("load");
+                }else{
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
 
     }
 
@@ -168,6 +186,8 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                 seeAllExclusiveApi(showCircleProgressDialog(context, ""), loading);
             }
         } else callProductListApi(showCircleProgressDialog(context, ""), loading);
+
+        setOnScrollListener();
     }
 
     /*All Exclusive API*/
@@ -178,14 +198,16 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         Observer<ExclusiveResponse> exclusiveResponseObserver = exclusiveResponse -> {
             if (exclusiveResponse != null) {
                 progressDialog.dismiss();
+                pullToRefreshExplore.setRefreshing(false);
                 Log.e(TAG, "seeAllExclusiveApi: " + new Gson().toJson(exclusiveResponse));
                 switch (exclusiveResponse.getStatus()) {
                     case STATUS_CODE_200:
+                        totalCount = exclusiveResponse.getTotalCount();
                         if (exclusiveResponse.getExclusiveData().getExclusivesList() != null
                                 && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
                             // Exclusive data listing
                             productArrayList.addAll(exclusiveResponse.getExclusiveData().getExclusivesList());
-                            makeProductListing();
+                            productListViewModel.productListMutableLiveData.setValue(productArrayList);
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -217,15 +239,18 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         Observer<BestSellingResponse> bestSellingResponseObserver = bestSellingResponse -> {
             if (bestSellingResponse != null) {
                 progressDialog.dismiss();
+                pullToRefreshExplore.setRefreshing(false);
                 Log.e(TAG, "seeAllBestSellingApi: " + new Gson().toJson(bestSellingResponse));
                 switch (bestSellingResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         //Best selling listing
+                        totalCount = bestSellingResponse.getTotalCount();
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null) {
                             //Todo need to change that
                             if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
                                 productArrayList.addAll(bestSellingResponse.getBestSellingData().getBestSellingProductList());
-                                makeProductListing();
+                                productListViewModel.productListMutableLiveData.setValue(productArrayList);
+//                                makeProductListing();
                             }
                         }
                         break;
@@ -258,14 +283,17 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         } else offset = 0;
         Observer<BasketResponse> basketResponseObserver = basketResponse -> {
             if (basketResponse != null) {
+                pullToRefreshExplore.setRefreshing(false);
                 Log.e(TAG, "callBasketListApi: " + new Gson().toJson(basketResponse));
                 switch (basketResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         //Basket listing
+                        totalCount = basketResponse.getTotalCount();
                         if (basketResponse.getData().getBaskets() != null) {
                             if (basketResponse.getData().getBaskets().size() > 0) {
                                 basketArrayList.addAll(basketResponse.getData().getBaskets());
-                                makeBasketListing();
+                                productListViewModel.basketListMutableLiveData.setValue(basketArrayList);
+//                                makeBasketListing();
                             }
                         }
                         break;
@@ -300,22 +328,25 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         Observer<ProductListByResponse> productListByResponseObserver = productListByResponse -> {
             if (productListByResponse != null) {
                 showCircleProgressDialog.dismiss();
+                pullToRefreshExplore.setRefreshing(false);
                 switch (productListByResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
+                        totalCount = productListByResponse.getTotalCount();
                         if (ListType.equalsIgnoreCase(BASKET)) {
                             //Basket listing
                             if (productListByResponse.getProductListResponseDt().getBasketList() != null) {
                                 if (productListByResponse.getProductListResponseDt().getBasketList().size() > 0) {
-                                    basketArrayList = productListByResponse.getProductListResponseDt().getBasketList();
-                                    makeBasketListing();
+//                                    basketArrayList = productListByResponse.getProductListResponseDt().getBasketList();
+                                    productListViewModel.basketListMutableLiveData.setValue(productListByResponse.getProductListResponseDt().getBasketList());
+//                                    makeBasketListing();
                                 }
                             }
                         } else {
                             if (productListByResponse.getProductListResponseDt().getProductList() != null) {
                                 if (productListByResponse.getProductListResponseDt().getProductList().size() > 0) {
-                                    productArrayList.addAll(productListByResponse.getProductListResponseDt().getProductList());
-                                    productListViewModel.productListMutableLiveData.setValue(productArrayList);
-                                    makeProductListing();
+//                                    productArrayList.addAll(productListByResponse.getProductListResponseDt().getProductList());
+                                    productListViewModel.productListMutableLiveData.setValue((productListByResponse.getProductListResponseDt().getProductList()));
+//                                    makeProductListing();
                                 }
                             }
                         }
@@ -371,8 +402,6 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                                     try {
                                         if (fragmentProductListBinding.etProductSearch.getText() != null) {
                                             if (!fragmentProductListBinding.etProductSearch.getText().toString().trim().equals("")) {
-                                                productArrayList.clear();
-                                                basketArrayList.clear();
                                                 if (isConnectingToInternet(context)) {
                                                     //add API call here
                                                     checkAndLoadData("load");
@@ -415,31 +444,34 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         return map;
     }
 
-    /*Listing Basket*/
-    private void makeBasketListing() {
-        if (basketArrayList != null && basketArrayList.size() > 0) {
-            fragmentProductListBinding.tvNoData.setVisibility(View.GONE);
-            basketGridAdapter = new BasketGridAdapter(basketArrayList, basket -> {
-                redirectToBasketDetails(basket);
+    private void setItemListing(){
+        if (fromScreen.equalsIgnoreCase(AllBasket)){
+            /*Listing Basket*/
+            productListViewModel.basketListMutableLiveData.observe(getViewLifecycleOwner(),baskets -> {
+                if (baskets != null && baskets.size() > 0) {
+                    fragmentProductListBinding.tvNoData.setVisibility(View.GONE);
+                    basketGridAdapter = new BasketGridAdapter(baskets, this::redirectToBasketDetails);
+                    rvVegetables.setAdapter(basketGridAdapter);
+                }
             });
-            rvVegetables.setAdapter(basketGridAdapter);
-        }
-    }
 
-    /*Listing products*/
-    private void makeProductListing() {
-        if (productArrayList != null && productArrayList.size() > 0) {
-            fragmentProductListBinding.tvNoData.setVisibility(View.GONE);
-            productGridAdapter = new ProductGridAdapter(productArrayList, this);
-            rvVegetables.setAdapter(productGridAdapter);
-        }
+        }else {
+            /*Listing Products*/
+            productListViewModel.productListMutableLiveData.observe(getViewLifecycleOwner(),products -> {
+                if (products != null && products.size() > 0) {
+                    fragmentProductListBinding.tvNoData.setVisibility(View.GONE);
+                    productGridAdapter = new ProductGridAdapter(products, this);
+                    rvVegetables.setAdapter(productGridAdapter);
+                }
+            });
 
+        }
     }
 
     private void initView() {
         rvVegetables = fragmentProductListBinding.rvProducts;
         productListViewModel = new ViewModelProvider(this).get(ProductListViewModel.class);
-
+        pullToRefreshExplore = fragmentProductListBinding.rlProductList;
         Bundle bundle = this.getArguments();
         assert bundle != null;
         CategoryId = bundle.getString(CATEGORY_ID);
@@ -448,29 +480,28 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
 
     }
 
-    private void setScrollListener() {
-        fragmentProductListBinding.rvProducts.setNestedScrollingEnabled(true);
+    private void setOnScrollListener() {
+        rvVegetables.setNestedScrollingEnabled(true);
         NestedScrollView nestedScrollView = fragmentProductListBinding.nvProductList;
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(v.getChildCount() - 1) != null) {
+                    visibleItemCount = gridLayoutManager.getItemCount();
 
-        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (v.getChildAt(v.getChildCount() - 1) != null) {
-                visibleItemCount = gridLayoutManager.getItemCount();
+                    if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+                            && visibleItemCount != totalCount) {
+                        if (isConnectingToInternet(context)) {
+                            /*Call List API here*/
+                            checkAndLoadData("onScrolled");
+                        } else
+                            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
-                if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
-                        && visibleItemCount != totalCount) {
-                    if (isConnectingToInternet(context)) {
-                        //add API call here
-                        checkAndLoadData("onScrolled");
-                    } else {
-                        showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                     }
-                } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
-                        && visibleItemCount == totalCount) {
-                    infoToast(requireActivity(), getString(R.string.no_result_found));  //change
                 }
+
             }
         });
-
     }
 
     /* Redirect to product detail screen*/
@@ -526,7 +557,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(requireActivity(), baseResponse.getMessage());
-                        productArrayList.get(position).setInCart(1);
+                        Objects.requireNonNull(productListViewModel.productListMutableLiveData.getValue()).get(position).setInCart(1);
                         productGridAdapter.notifyDataSetChanged();
                         break;
                     case STATUS_CODE_403://Validation Errors
