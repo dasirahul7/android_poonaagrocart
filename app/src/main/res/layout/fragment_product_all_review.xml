@@ -3,10 +3,78 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+   <!-- <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/rl_refresh_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/ll_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            android:orientation="horizontal">
+
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/review_ratings"
+                android:textColor="@color/clr_enter_otp"
+                android:textSize="@dimen/_16sp"
+                app:setCustomFont="@string/font_poppins_regular" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:src="@drawable/ic_star" />
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:text="@string/_5_0"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sp"
+                    app:setCustomFont="@string/font_poppins_regular" />
+
+                <com.poona.agrocart.widgets.CustomTextView
+                    android:id="@+id/tv_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:text="15 Ratings"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="@dimen/_14sp"
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            android:layout_marginVertical="@dimen/_8sdp"
+            android:background="@color/clr_custom_edit_text_otp"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -26,7 +94,9 @@
             </LinearLayout>
 
         </ScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
 
 </layout>
 

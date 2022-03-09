@@ -71,7 +71,13 @@ public class BasketSubscriptionDetail {
     private String noOfSubscription;
     @SerializedName("items_details")
     @Expose
-    private List<SubscriptionBasketItemsDetail> itemsDetails = null;
+    private List<ItemsDetail> itemsDetails = null;
+    @SerializedName("rating")
+    @Expose
+    private Rating rating;
+    @SerializedName("reviews")
+    @Expose
+    private List<Review> reviews = null;
 
     public String getOrderId() {
         return orderId;
@@ -233,12 +239,28 @@ public class BasketSubscriptionDetail {
         this.noOfSubscription = noOfSubscription;
     }
 
-    public List<SubscriptionBasketItemsDetail> getItemsDetails() {
+    public List<ItemsDetail> getItemsDetails() {
         return itemsDetails;
     }
 
-    public void setItemsDetails(List<SubscriptionBasketItemsDetail> itemsDetails) {
+    public void setItemsDetails(List<ItemsDetail> itemsDetails) {
         this.itemsDetails = itemsDetails;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
 }

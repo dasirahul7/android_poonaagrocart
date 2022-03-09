@@ -14,6 +14,7 @@ import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.CITY_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
 import static com.poona.agrocart.app.AppConstants.COUPON_API;
+import static com.poona.agrocart.app.AppConstants.CUSTOMER_ORDER_LIST;
 import static com.poona.agrocart.app.AppConstants.DELETE_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.DELETE_CART_ITEM_API;
 import static com.poona.agrocart.app.AppConstants.DELETE_CART_LIST_API;
@@ -33,9 +34,9 @@ import static com.poona.agrocart.app.AppConstants.INTRO_SCREEN_API;
 import static com.poona.agrocart.app.AppConstants.ISSUE_TICKET;
 import static com.poona.agrocart.app.AppConstants.LOGIN_API;
 import static com.poona.agrocart.app.AppConstants.MY_NOTIFICATION;
-import static com.poona.agrocart.app.AppConstants.MY_ORDER_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.MY_ORDER_Details_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.MY_PROFILE_API;
+import static com.poona.agrocart.app.AppConstants.MY_SUBSCRIBE_BASKET_DETAILS_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.MY_SUBSCRIBE_BASKET_LIST_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.ORDER_PLACE_API;
 import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL;
@@ -105,6 +106,7 @@ import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReas
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.SubscribeBasketListCustomerResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBasketDetails.SubscribeBasketDetailsResponse;
 import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
@@ -460,13 +462,12 @@ public interface ApiInterface {
     @POST(ORDER_CANCEL)
     Single<BaseResponse> getOrderCancelSuccessfullyResponse(@FieldMap HashMap<String, String> orderCancelSuccessfullyInputParameter);;
 
-    @GET(MY_ORDER_CUSTOMER)
+    @GET(CUSTOMER_ORDER_LIST)
     Single<OrderListResponse> getOrderListResponse();
 
     @FormUrlEncoded
     @POST(MY_ORDER_Details_CUSTOMER)
     Single<MyOrderDetailsResponse> getMyOrderDetailsResponse(@FieldMap HashMap<String, String> myOrderDetailsInputParameter);
-
 
     @FormUrlEncoded
     @POST(APPLY_COUPON_API)
@@ -475,8 +476,12 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(ORDER_PLACE_API)
     Single<BaseResponse> getOrderPlaceResponse(@FieldMap HashMap<String, String> hashMap);
+
     @GET(MY_SUBSCRIBE_BASKET_LIST_CUSTOMER)
     Single<SubscribeBasketListCustomerResponse> getSubscriptionBasketListResponse();
 
+    @FormUrlEncoded
+    @POST(MY_SUBSCRIBE_BASKET_DETAILS_CUSTOMER)
+    Single<SubscribeBasketDetailsResponse> getMySubscriptionDetailsResponse(@FieldMap HashMap<String, String> mySubscriptionBasketDetailsInputParameter);
 
 }

@@ -218,9 +218,10 @@ public class AppConstants {
     public static final String APPLY_COUPON_API = "apply-coupon";
     public static final String ORDER_CANCEL_REASON = "order-cancel-reason";
     public static final String ORDER_CANCEL = "order-cancel";
-    public static final String MY_ORDER_CUSTOMER = "my-order-customer";
+    public static final String CUSTOMER_ORDER_LIST = "customer-order-list";
     public static final String MY_ORDER_Details_CUSTOMER = "my-order-details-customer";
     public static final String MY_SUBSCRIBE_BASKET_LIST_CUSTOMER = "subscribe-basket-list-customer";
+    public static final String MY_SUBSCRIBE_BASKET_DETAILS_CUSTOMER = "my-subscribe-basket-details-customer";
 
    /* Rating and Review */
    public static final String RATING = "rating";
@@ -310,6 +311,7 @@ public class AppConstants {
 
     /*Order Module Parameter*/
     public static String ORDER_ID = "order_id";
+    public static String ORDER_SUBSCRIPTION_ID = "order_subscription_id";
     public static String CANCEL_ID = "cancel_id";
 
     /*Order Summary KEYS*/

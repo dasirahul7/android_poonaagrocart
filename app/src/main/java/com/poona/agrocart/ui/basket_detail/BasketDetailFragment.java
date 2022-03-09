@@ -674,7 +674,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         isBasketContentsVisible = !isBasketContentsVisible;
     }
 
-    //Show calender
+   /* //Show calender
     private void showCalendar(CustomTextView tvDate) {
         //showing date picker dialog
         DatePickerDialog dpd;
@@ -711,7 +711,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         dpd.show();
 
     }
-
+*/
 
     @Override
     public void onClick(View v) {
@@ -764,7 +764,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 addOrRemoveFromFavourite();
                 break;
             case R.id.tv_start_date:
-                showCalendar(basketDetailsBinding.layoutAdded.tvStartDate);
+                //showCalendar(basketDetailsBinding.layoutAdded.tvStartDate);
                 break;
             case R.id.btn_submit:
                 if (isConnectingToInternet(context)) {

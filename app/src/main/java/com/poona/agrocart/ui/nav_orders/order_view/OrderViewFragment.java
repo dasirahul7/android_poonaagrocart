@@ -4,6 +4,7 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 import static com.poona.agrocart.app.AppConstants.CANCEL_ID;
 import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
 import static com.poona.agrocart.app.AppConstants.ORDER_ID;
+import static com.poona.agrocart.app.AppConstants.ORDER_SUBSCRIPTION_ID;
 import static com.poona.agrocart.app.AppConstants.RATING;
 import static com.poona.agrocart.app.AppConstants.REVIEW;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
@@ -51,6 +52,9 @@ import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetial;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderReview;
+import com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBasketDetails.BasketSubscriptionDetail;
+import com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBasketDetails.Review;
+import com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBasketDetails.SubscribeBasketDetailsResponse;
 import com.poona.agrocart.databinding.FragmentOrderViewBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList;
@@ -70,7 +74,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
     private FragmentOrderViewBinding fragmentOrderViewBinding;
     private OrderViewDetailsViewModel orderViewDetailsViewModel;
-    private String order_id = "";
+    private String order_id = "", subscriptionBasketOrderId = "";
     private RecyclerView rvBasketListItems;
     private LinearLayoutManager linearLayoutManager;
     private BasketItemsAdapter basketItemsAdapter;
@@ -81,8 +85,13 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private CustomButton btnSubmitFeedback, btnDownloadInvoice;
     private SwipeRefreshLayout refreshLayout;
 
+    /*My Product Details*/
     private List<MyOrderDetial> orderDetials = new ArrayList<>();
     private List<MyOrderReview> myOrderReviews = new ArrayList<>();
+
+    /*My Subscription Basket Details*/
+    private List<BasketSubscriptionDetail> subscriptBasketDetails = new ArrayList<>();
+    private List<Review> subscriptBasketReviews = new ArrayList<>();
 
     /*Cancel Order dialog */
     private RecyclerView orderCancelCategory, orderCancelReason;
@@ -113,12 +122,12 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         orderViewDetailsViewModel = new ViewModelProvider(this).get(OrderViewDetailsViewModel.class);
         fragmentOrderViewBinding.setOrderViewDetailsViewModel(orderViewDetailsViewModel);
         view = fragmentOrderViewBinding.getRoot();
+        initTitleWithBackBtn(getString(R.string.order_view));
 
         initView();
         setRVAdapter();
 
 
-        initTitleWithBackBtn(getString(R.string.order_view));
 
 
 
@@ -133,13 +142,13 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         btnDownloadInvoice =fragmentOrderViewBinding.btnDownloadInvoice;
 
         fragmentOrderViewBinding.btnTrackOrder.setOnClickListener(this);
+
         Bundle bundle = this.getArguments();
         isBasketVisible = bundle.getBoolean("isBasketVisible");
         rvBasketListItems = fragmentOrderViewBinding.rvBasketItems;
         if (isBasketVisible) {
             setBasketContentsVisible();
         } else {
-
             showProductDetails();
         }
 
@@ -148,6 +157,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             if (isConnectingToInternet(context)) {
                 if (!Objects.requireNonNull(feedbackComment.getText()).toString().isEmpty() && !(ratingBar.getRating() == 0.0)) {
                     callRatingAndFeedBackApi(showCircleProgressDialog(context, ""));
+                    fragmentOrderViewBinding.cardviewComment.setVisibility(View.VISIBLE);
                 } else {
                     errorToast(context, "Please fill the field");
                 }
@@ -191,7 +201,6 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             showNotifyAlert(requireActivity(),context.getString(R.string.info),context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
 
-
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -206,6 +215,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             }
         });
 
+
     }
 
     private void setBasketContentsVisible() {
@@ -215,12 +225,19 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         fragmentOrderViewBinding.llSubTotal.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.viewline1.setVisibility(View.VISIBLE);
 
+        callSubscriptBasketDetailsApi(showCircleProgressDialog(context, ""));
     }
 
     private void setRVAdapter() {
         basketItemList = new ArrayList<>();
 
-        callOrderDetailsApi(showCircleProgressDialog(context, ""));
+        if(isBasketVisible){
+            warningToast(context, "Test......");
+        }else {
+
+            callOrderDetailsApi(showCircleProgressDialog(context, ""));
+        }
+
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
 
@@ -248,6 +265,191 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
     }
 
+    /*My Subscription Basket Details Api and managements */
+
+    private void callSubscriptBasketDetailsApi(ProgressDialog progressDialog) {
+        Observer<SubscribeBasketDetailsResponse> subscribeBasketDetailsResponseObserver = subscribeBasketDetailsResponse -> {
+
+            if (subscribeBasketDetailsResponse != null) {
+                Log.e(" My Subscription Basket Details Api ResponseData", new Gson().toJson(subscribeBasketDetailsResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (subscribeBasketDetailsResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create Update Successfully
+
+                        subscriptBasketDetails.clear();
+                        if (subscribeBasketDetailsResponse.getBasketSubscriptionDetails()!= null &&
+                                subscribeBasketDetailsResponse.getBasketSubscriptionDetails().size() > 0) {
+
+                            subscriptBasketDetails.addAll(subscribeBasketDetailsResponse.getBasketSubscriptionDetails());
+                            setSubscriptBasketValue(subscriptBasketDetails);
+
+                            subscriptBasketReviews.addAll(subscribeBasketDetailsResponse.getBasketSubscriptionDetails().get(0).getReviews());
+                            setSubscriptionBasketReviewValue(subscriptBasketReviews);
+                            setSubscriptionBasketRatingViewHideShow(subscriptBasketReviews);
+                        }
+                        break;
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, subscribeBasketDetailsResponse.getMessage());
+
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(subscribeBasketDetailsResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, subscribeBasketDetailsResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+        };
+        orderViewDetailsViewModel.getMySubscriptionBasketDetails(progressDialog, context, MySubscriptionBasketDetailsInputParameter(), OrderViewFragment.this)
+                .observe(getViewLifecycleOwner(), subscribeBasketDetailsResponseObserver);
+    }
+
+    private HashMap<String, String> MySubscriptionBasketDetailsInputParameter(){
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put(ORDER_SUBSCRIPTION_ID, "1");
+
+        return map;
+    }
+
+    @SuppressLint({"ResourceType", "SetTextI18n"})
+    private void setSubscriptBasketValue(List<BasketSubscriptionDetail> basketSubscriptionDetailList) {
+        orderViewDetailsViewModel.orderId.setValue(basketSubscriptionDetailList.get(0).getOrderCode());
+        orderViewDetailsViewModel.orderDate.setValue(basketSubscriptionDetailList.get(0).getCreatedAt()); //set date format
+        orderViewDetailsViewModel.orderStatus.setValue(basketSubscriptionDetailList.get(0).getOrderStatus()); //changes in status format
+        orderViewDetailsViewModel.deliveryCode.setValue(basketSubscriptionDetailList.get(0).getDeliveryCode());
+        orderViewDetailsViewModel.customerName.setValue(basketSubscriptionDetailList.get(0).getName());
+        orderViewDetailsViewModel.customerNumber.setValue(basketSubscriptionDetailList.get(0).getMobile());
+        orderViewDetailsViewModel.customerAddress.setValue(basketSubscriptionDetailList.get(0).getOrderAddressText());
+        orderViewDetailsViewModel.customerArea.setValue(basketSubscriptionDetailList.get(0).getOrderAreaName());
+        orderViewDetailsViewModel.customerCity.setValue(basketSubscriptionDetailList.get(0).getOrderCityName());
+        orderViewDetailsViewModel.paymentType.setValue(basketSubscriptionDetailList.get(0).getPaymentType()); //changes in status format
+        orderViewDetailsViewModel.discountAmount.setValue(basketSubscriptionDetailList.get(0).getDiscount());
+        orderViewDetailsViewModel.deliveryCharges.setValue(basketSubscriptionDetailList.get(0).getDeliveryCharges());
+        orderViewDetailsViewModel.totalAmount.setValue(basketSubscriptionDetailList.get(0).getPaidAmount());
+        orderViewDetailsViewModel.subTotalAmount.setValue(basketSubscriptionDetailList.get(0).getProductAmount());
+
+        //strInvioceDownload = basketSubscriptionDetailList.get(0).getInvoiceFile();
+
+        switch (basketSubscriptionDetailList.get(0).getOrderStatus()) {
+            case "3":
+                fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.in_process));
+                fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_in_process)));
+                break;
+            case "4":
+                fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.delivered));
+                fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_delivered)));
+
+                fragmentOrderViewBinding.llMainLayoutRatingReview.setVisibility(View.VISIBLE);
+
+                break;
+            case "2":
+                fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.confirmed));
+                fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_confirmed)));
+                break;
+            case "5":
+                fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.cancelled));
+                fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_cancelled)));
+
+                fragmentOrderViewBinding.llMainLayoutRatingReview.setVisibility(View.VISIBLE);
+                fragmentOrderViewBinding.llCancel.setVisibility(View.GONE);
+                fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
+
+                break;
+            default:
+                fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.pending));
+                fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color4)));
+                break;
+        }
+
+        switch (basketSubscriptionDetailList.get(0).getPaymentType()){
+            case "1":
+                fragmentOrderViewBinding.tvPaymentType.setText(context.getString(R.string.payment_type_1));
+                break;
+            case "2":
+                fragmentOrderViewBinding.tvPaymentType.setText(context.getString(R.string.payment_type_2));
+                break;
+            case "3":
+                fragmentOrderViewBinding.tvPaymentType.setText(context.getString(R.string.payment_type_3));
+                break;
+            case "4":
+                fragmentOrderViewBinding.tvPaymentType.setText(context.getString(R.string.payment_type_4));
+                break;
+        }
+
+        String selectedDate = basketSubscriptionDetailList.get(0).getCreatedAt();
+
+        String txtDisplayDate = "";
+        try {
+            txtDisplayDate = formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "MMM dd, yyyy hh:mm aa");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        fragmentOrderViewBinding.tvOrderDate.setText(txtDisplayDate);
+
+       /* String deliveryDate = basketSubscriptionDetailList.get(0).getShouldDeliverOnDate();
+
+        String txDeliveryDate = "";
+        try {
+            txDeliveryDate = formatDate(deliveryDate, "dd/mm/yyyy", "MMM dd, yyyy ");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        fragmentOrderViewBinding.tvDeliveryDateAndTime.setText(txDeliveryDate + " "+basketSubscriptionDetailList.get(0).getDelierySlotStartAndEndTime());
+*/
+        if(orderDetials.get(0).getTransactionId() != null){
+            orderViewDetailsViewModel.transactionId.setValue(orderDetials.get(0).getTransactionId());
+        }else{
+            orderViewDetailsViewModel.transactionId.setValue("Not Available");
+        }
+
+
+    }
+
+
+    private void setSubscriptionBasketReviewValue(List<Review>subscriptBasketReviews) {
+
+        orderViewDetailsViewModel.reviewName.setValue(subscriptBasketReviews.get(0).getName());
+        orderViewDetailsViewModel.reviewDate.setValue(subscriptBasketReviews.get(0).getDate());
+        orderViewDetailsViewModel.customerFeedback.setValue(subscriptBasketReviews.get(0).getReview());
+
+        fragmentOrderViewBinding.ratingBar.setRating(Float.parseFloat(subscriptBasketReviews.get(0).getRating()));
+
+        imageView = fragmentOrderViewBinding.ivUserImage;
+        Glide.with(context)
+                .load(IMAGE_DOC_BASE_URL + subscriptBasketReviews.get(0).getImage())
+                .placeholder(R.drawable.ic_profile_white)
+                .error(R.drawable.ic_profile_white)
+                .into(imageView);
+
+        if(subscriptBasketReviews.get(0).getName() != null){
+            fragmentOrderViewBinding.cardviewComment.setVisibility(View.VISIBLE);
+        }else{
+            fragmentOrderViewBinding.cardviewComment.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void setSubscriptionBasketRatingViewHideShow(List<Review> reviews) {
+        if (!reviews.get(0).getRating().isEmpty() && !reviews.get(0).getReview().isEmpty() ||
+                !reviews.get(0).getRating().equalsIgnoreCase("") &&
+                        !reviews.get(0).getReview().equalsIgnoreCase("")) {
+            fragmentOrderViewBinding.llRatingReview.setVisibility(View.GONE);
+
+        } else {
+            fragmentOrderViewBinding.llRatingReview.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+
     /*Order Details Api and managements */
 
     private void callOrderDetailsApi(ProgressDialog progressDialog) {
@@ -262,6 +464,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
                 switch (myOrderDetailsResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create Update Successfully
 
+                        orderDetials.clear();
                         if (myOrderDetailsResponse.getOrderDetials()!= null &&
                                 myOrderDetailsResponse.getOrderDetials().size() > 0) {
 
@@ -340,6 +543,9 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             case "4":
                 fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.delivered));
                 fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_delivered)));
+
+                fragmentOrderViewBinding.llMainLayoutRatingReview.setVisibility(View.VISIBLE);
+
                 break;
             case "2":
                 fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.confirmed));
@@ -348,6 +554,11 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             case "5":
                 fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.cancelled));
                 fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_cancelled)));
+
+                fragmentOrderViewBinding.llMainLayoutRatingReview.setVisibility(View.VISIBLE);
+                fragmentOrderViewBinding.llCancel.setVisibility(View.GONE);
+                fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
+
                 break;
             default:
                 fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.pending));
@@ -396,6 +607,8 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             orderViewDetailsViewModel.transactionId.setValue("Not Available");
         }
 
+
+
     }
 
     private void setReviewValue(List<MyOrderReview>reviewValue) {
@@ -413,6 +626,12 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
                 .error(R.drawable.ic_profile_white)
                 .into(imageView);
 
+        if(reviewValue.get(0).getName() != null){
+            fragmentOrderViewBinding.cardviewComment.setVisibility(View.VISIBLE);
+        }else{
+            fragmentOrderViewBinding.cardviewComment.setVisibility(View.GONE);
+        }
+
     }
 
     private void setRatingViewHideShow(List<MyOrderReview> ratingList) {
@@ -420,12 +639,13 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
                 !ratingList.get(0).getRating().equalsIgnoreCase("") &&
                         !ratingList.get(0).getReview().equalsIgnoreCase("")) {
             fragmentOrderViewBinding.llRatingReview.setVisibility(View.GONE);
-            fragmentOrderViewBinding.cardviewComment.setVisibility(View.VISIBLE);
+
         } else {
             fragmentOrderViewBinding.llRatingReview.setVisibility(View.VISIBLE);
-            fragmentOrderViewBinding.cardviewComment.setVisibility(View.GONE);
+
         }
     }
+
 
     /*Download the document*/
     private void beginDownload(String docPdf) {
@@ -678,6 +898,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, orderCancelSuccessfullyResponse.getMessage());
 
+                        callOrderDetailsApi(showCircleProgressDialog(context, ""));
 
                         break;
                     case STATUS_CODE_404://Validation Errors

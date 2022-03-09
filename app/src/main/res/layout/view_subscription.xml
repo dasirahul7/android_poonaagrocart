@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,8 +9,7 @@
             type="com.poona.agrocart.data.network.responses.BasketDetailsResponse.BasketDetails" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:id="@+id/view_subscription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                     android:textColor="@color/clr_enter_otp"
                     android:textSize="@dimen/_18sp"
                     android:textStyle="bold"
-                    app:setCustomFont="@string/font_poppins_regular" />
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 <View
                     android:layout_width="match_parent"
@@ -91,6 +91,7 @@
                         android:textColor="@color/light_black_txt"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
+
 
                 </RelativeLayout>
 
@@ -175,23 +176,55 @@
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_regular" />
 
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/tv_start_date"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/bg_dashboard_et_layout"
-                    android:drawableEnd="@drawable/ic_calender"
-                    android:elevation="@dimen/_8sdp"
-                    android:hint="@string/select_date"
-                    android:padding="@dimen/_8sdp"
-                    android:singleLine="true"
-                    android:textColor="@color/color_grey_txt"
-                    android:textSize="@dimen/_14sp"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_line"
-                    app:setCustomFont="@string/font_poppins_regular" />
+                    app:layout_constraintTop_toBottomOf="@+id/view_line">
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_start_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_26sdp"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:background="@drawable/bg_dashboard_et_layout"
+                        android:drawableEnd="@drawable/ic_calender"
+                        android:elevation="@dimen/_4sdp"
+                        android:hint="@string/select_date"
+                        android:padding="@dimen/_6sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/color_grey_txt"
+                        android:textSize="@dimen/_14sp"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="@dimen/_26sdp"
+                      android:layout_weight="1"
+                      android:layout_gravity="center"
+                      android:layout_marginVertical="@dimen/_5sdp"
+                      android:layout_marginHorizontal="@dimen/_4sdp"
+                      android:elevation="@dimen/_4sdp"
+                      android:background="@drawable/bg_dashboard_et_layout"
+                      android:orientation="vertical">
+
+                      <Spinner
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="@dimen/_4sdp"
+                          android:paddingStart="@dimen/_4sdp"
+                          />
+
+                  </LinearLayout>
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
