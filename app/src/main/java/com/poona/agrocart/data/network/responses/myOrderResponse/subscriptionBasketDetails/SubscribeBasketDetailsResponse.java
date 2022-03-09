@@ -2,10 +2,11 @@
 package com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBasketDetails;
 
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SubscribeBasketCustomerDetailsResponse {
+public class SubscribeBasketDetailsResponse {
 
     @SerializedName("status")
     @Expose

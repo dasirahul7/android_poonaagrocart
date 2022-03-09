@@ -18,6 +18,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBasketDetails.SubscribeBasketDetailsResponse;
 
 import java.util.HashMap;
 
@@ -273,5 +274,46 @@ public class OrderViewDetailsViewModel extends AndroidViewModel {
                 });
 
         return orderCancelReasonResponseMutableLiveData;
+    }
+
+    public LiveData<SubscribeBasketDetailsResponse> getMySubscriptionBasketDetails(ProgressDialog progressDialog, Context context
+            , HashMap<String, String> mySubscriptionBasketDetailsInputParameter, OrderViewFragment orderViewFragment) {
+        MutableLiveData<SubscribeBasketDetailsResponse> subscribeBasketDetailsResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(context)
+                .create(ApiInterface.class)
+                .getMySubscriptionDetailsResponse(mySubscriptionBasketDetailsInputParameter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<SubscribeBasketDetailsResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull SubscribeBasketDetailsResponse baseResponse) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                        subscribeBasketDetailsResponseMutableLiveData.setValue(baseResponse);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+
+                        Gson gson = new GsonBuilder().create();
+                        SubscribeBasketDetailsResponse baseResponse = new SubscribeBasketDetailsResponse();
+                        try {
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), SubscribeBasketDetailsResponse.class);
+
+                            subscribeBasketDetailsResponseMutableLiveData.setValue(baseResponse);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) orderViewFragment)
+                                    .onNetworkException(4, "");
+                        }
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return subscribeBasketDetailsResponseMutableLiveData;
     }
 }

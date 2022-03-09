@@ -5,7 +5,7 @@ package com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBa
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SubscriptionBasketItemsDetail {
+public class ItemsDetail {
 
     @SerializedName("order_id")
     @Expose
