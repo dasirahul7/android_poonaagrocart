@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -111,7 +112,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private List<ProductDetailsResponse.Rating> ratingList = new ArrayList<>();
     private ArrayList<Review> reviewsList = new ArrayList<>();
     private ArrayList<Review> allReview = new ArrayList<>();
-    private ScrollView scrollView;
+    private NestedScrollView scrollView;
     private RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
@@ -144,7 +145,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             }
         });
 
-        scrollView.setOnScrollChangeListener((view, i, i1, i2, i3) -> {
+        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (view, i, i1, i2, i3) -> {
             if (i3>0){
                 ((HomeActivity)context).binding.appBarHome.textTitle.setText(details.getProductName());
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
@@ -314,8 +315,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             fragmentProductDetailBinding.tvLocation.setVisibility(View.GONE);
         productDetailViewModel.productLocation.setValue(details.getLocation());
         productDetailViewModel.unitMutableLiveData.setValue(details.getUnit());
-        productDetailViewModel.sellingPrice.setValue("Rs." + details.getUnit().getSellingPrice());
-        productDetailViewModel.offerPrice.setValue("Rs" + details.getUnit().getOfferPrice());
+        productDetailViewModel.sellingPrice.setValue("Rs. " + details.getUnit().getSellingPrice());
+        productDetailViewModel.offerPrice.setValue("Rs. " + details.getUnit().getOfferPrice());
         productDetailViewModel.offer.setValue(details.getUnit().getPercDiscount());
         productDetailViewModel.specialOffer.setValue(details.getSpecialOffer());
         if (details.getAverageRating()==null){

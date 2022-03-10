@@ -14,11 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:nestedScrollingEnabled="true">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/itemLayout"
@@ -94,6 +93,14 @@
                     app:setCustomFont="@string/font_poppins_regular" />
 
                 <ImageView
+                    android:id="@+id/iv_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="5"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_share" />
+                <ImageView
                     android:id="@+id/iv_favourite"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -107,15 +114,26 @@
             <!--            //location-->
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_location"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:drawableStart="@drawable/ic_location"
                 android:gravity="center_vertical"
                 android:text='@{productDetailModule.productLocation ?? ""}'
                 android:textSize="@dimen/_14sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ll_product_name" />
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/tv_export"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Export"
+                android:background="@drawable/bg_tv_border"
+                android:paddingHorizontal="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:textSize="@dimen/_14sp"
+                app:layout_constraintStart_toEndOf="@+id/tv_location"
                 app:layout_constraintTop_toBottomOf="@+id/ll_product_name" />
 
             <!--            Weight list-->
@@ -211,7 +229,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_strikethrough"
                         android:textColor="@color/colorGrey"
-                        android:textSize="@dimen/_12sp"
+                        android:textSize="@dimen/_14sp"
                         android:text='@{productDetailModule.sellingPrice ?? ""}'
                         app:setCustomFont="@string/font_poppins_regular" />
 
@@ -230,6 +248,7 @@
                     android:id="@+id/txt_item_offer"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:background="@drawable/bg_offer_yellow"
@@ -966,7 +985,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </layout>

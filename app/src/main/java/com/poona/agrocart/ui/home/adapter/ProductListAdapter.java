@@ -80,7 +80,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productBinding.executePendingBindings();
             if (product.getFeatureImg().endsWith(".jpeg") || product.getFeatureImg().endsWith("jpg"))
                 productBinding.itemImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            if (product.getSpecialOffer()==null||product.getSpecialOffer().isEmpty())
+            if (product.getPercDiscount()==null||product.getPercDiscount().isEmpty())
                 productBinding.txtItemOffer.setVisibility(View.INVISIBLE);
             if (product.getIsO3().equalsIgnoreCase("yes"))
                 productBinding.txtOrganic.setVisibility(View.VISIBLE);
