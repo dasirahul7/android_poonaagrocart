@@ -1,10 +1,10 @@
 
-package com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBasketDetails;
-
-import java.util.List;
+package com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 
 public class BasketSubscriptionDetail {
@@ -50,10 +50,10 @@ public class BasketSubscriptionDetail {
     private String paymentType;
     @SerializedName("transaction_id")
     @Expose
-    private Object transactionId;
+    private String transactionId;
     @SerializedName("invoice_file")
     @Expose
-    private Object invoiceFile;
+    private String invoiceFile;
     @SerializedName("product_amount")
     @Expose
     private String productAmount;
@@ -183,19 +183,19 @@ public class BasketSubscriptionDetail {
         this.paymentType = paymentType;
     }
 
-    public Object getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(Object transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 
-    public Object getInvoiceFile() {
+    public String getInvoiceFile() {
         return invoiceFile;
     }
 
-    public void setInvoiceFile(Object invoiceFile) {
+    public void setInvoiceFile(String invoiceFile) {
         this.invoiceFile = invoiceFile;
     }
 

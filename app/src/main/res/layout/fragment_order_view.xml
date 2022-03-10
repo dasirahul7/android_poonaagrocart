@@ -18,6 +18,7 @@
         android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nv_main_order_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
@@ -319,6 +320,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/ll_payment_type">
 
                     <LinearLayout
+                        android:id="@+id/ll_expected_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="70"
@@ -390,7 +392,6 @@
                     android:id="@+id/tv_product_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_marginTop="@dimen/_8sdp"
                     android:text="@string/product_details"
                     android:textColor="@color/clr_enter_otp"
@@ -401,14 +402,40 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_basket_details"
                     app:setCustomFont="@string/font_poppins_semi_bold" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_basket_items"
+
+                <LinearLayout
+                    android:id="@+id/ll_basket_items"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_product_details" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_product_details">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_basket_items"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"/>
+
+
+                    <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_see_more"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:gravity="end"
+                        android:layout_marginVertical="@dimen/_4sdp"
+                        android:text="@string/see_more"
+                        android:textColor="@color/colorAccent"
+                        app:setCustomFont="@string/font_poppins_regular"/>
+
+                </LinearLayout>
+
+
+
+
+
 
                 <LinearLayout
                     android:id="@+id/ll_amounts"
@@ -417,7 +444,7 @@
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_basket_items">
+                    app:layout_constraintTop_toBottomOf="@+id/ll_basket_items">
 
                     <View
                         android:id="@+id/line1"
@@ -633,6 +660,7 @@
                         android:singleLine="true"
                         android:textSize="@dimen/_12sp"
                         android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:text="Your order has been cancelled.Money will be refunded into your wallet"/>
                 </LinearLayout>
 

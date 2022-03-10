@@ -63,6 +63,7 @@
                   android:paddingEnd="@dimen/_2sdp"/>
 
               <com.poona.agrocart.widgets.CustomTextView
+                  android:id="@+id/tv_set_date"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:paddingTop="@dimen/_2sdp"

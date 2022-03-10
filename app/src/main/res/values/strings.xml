@@ -226,6 +226,7 @@
     <string name="product_details">Product Details</string>
     <string name="track_order">Track Order</string>
     <string name="order_view">Order view</string>
+    <string name="basket_view">Subscription Basket view</string>
     <string name="sample_unit">Rs. 20 x 3</string>
 
     <string name="payment_type_1">Payment Type - Cash</string>

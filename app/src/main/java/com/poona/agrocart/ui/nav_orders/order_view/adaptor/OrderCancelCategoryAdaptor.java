@@ -13,9 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
 import com.poona.agrocart.databinding.CancelOrderCategoryRecyclerViewBinding;
 import com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList;
+import com.poona.agrocart.ui.nav_orders.order_view.OrderViewFragment;
 
+import java.text.ParseException;
 import java.util.List;
 
 public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancelCategoryAdaptor.OrderCancelCategoryViewHolder> {
@@ -23,6 +26,7 @@ public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancel
     private List<CancelOrderCategoryList> cancelOrderCategoryLists;
     private Context context;
     private CheckBox checkCategory;
+    OrderViewFragment orderViewFragment = new OrderViewFragment();
 
     public OrderCancelCategoryAdaptor(Context context, List<CancelOrderCategoryList> cancelOrderCategoryLists) {
         this.context=context;
@@ -51,11 +55,20 @@ public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancel
             }else{
                 viewHolder.binding.cbCategory.setChecked(true);
             }
-
-
         });
 
 
+        /*Select the date and time*/
+       /* String selectedDate = cancelOrderCategoryList.getShouldDeliverOnDate();
+
+        String txtDisplayDate = "";
+        try {
+            txtDisplayDate = orderViewFragment.formatDate(selectedDate, "dd/mm/yyyy", "dd MMM yyyy");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        viewHolder.binding.tvSetDate.setText(txtDisplayDate);
+*/
     }
 
     @Override
