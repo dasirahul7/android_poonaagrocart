@@ -155,8 +155,11 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
                 quantity--;
                 rowProductItemBinding.etQuantity.setText(String.valueOf(quantity));
                 setMinus(quantity);
-
                 return quantity;
+            }else if (onCartItemDeleteClickListener != null) {
+                if (selectedDeleteItem != RecyclerView.NO_POSITION) {
+                    onCartItemDeleteClickListener.onCartItemDeleteClick(selectedDeleteItem, rowProductItemBinding);
+                }
             }
             return quantity;
         }

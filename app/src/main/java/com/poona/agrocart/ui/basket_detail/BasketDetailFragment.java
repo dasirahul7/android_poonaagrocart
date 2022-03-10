@@ -187,12 +187,12 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     }
 
-    private void setReviewsHide(BasketDetailsResponse.Rating basketReviews) {
-        if (!basketReviews.getRating().isEmpty() && !basketReviews.getReview().isEmpty() ||
-                !basketReviews.getRating().equalsIgnoreCase("") &&
-                        !basketReviews.getReview().equalsIgnoreCase("")){
+    private void setReviewsHide(BasketDetailsResponse.Rating rating) {
+        if (details.getAlreadyPurchased()==0){
             basketDetailsBinding.llRateView.setVisibility(View.GONE);
-        }else {
+        }else if (!rating.getRatingId().isEmpty() || !rating.getReview().isEmpty()){
+            basketDetailsBinding.llRateView.setVisibility(View.GONE);
+        }else if (basketDetailViewModel.alreadyPurchased.getValue()==1){
 //            basketDetailsBinding.ratingBarInput.setEnabled(false);
             basketDetailsBinding.llRateView.setVisibility(View.VISIBLE);
         }
@@ -223,6 +223,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         basketDetailViewModel.basketNutrition.setValue(details.getNutrition());
         basketDetailViewModel.basketAvgRating.setValue(details.getAverageRating());
         basketDetailViewModel.reviewLiveData.setValue(details.getReviews());
+        basketDetailViewModel.alreadyPurchased.setValue(details.getAlreadyPurchased());
         /*Is in Favourite*/
         if (basketDetailViewModel.isInFav.getValue()) {
             isFavourite = true;
@@ -231,6 +232,11 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             basketDetailsBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
             isFavourite = false;
         }
+        /*check if eligible for Rating*/
+        if (basketDetailViewModel.alreadyPurchased.getValue()==1){
+            basketDetailsBinding.llRateView.setVisibility(View.VISIBLE);
+        }else basketDetailsBinding.llRateView.setVisibility(View.GONE);
+
         /*Rating and reviews*/
         basketDetailViewModel.basketRating.setValue(details.getBasketRating());
         basketDetailViewModel.basketAvgRating.setValue(details.getAverageRating());
@@ -238,7 +244,12 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             basketDetailsBinding.llAvgRating.setVisibility(View.GONE);
             basketDetailsBinding.ratingBelowLine.setVisibility(View.GONE);
         }
+        if (details.getNoOrUsersRated()!=null)
         basketDetailViewModel.basketNoOfRatings.setValue(details.getNoOrUsersRated()+" Ratings");
+        else {
+            basketDetailsBinding.llAvgRating.setVisibility(View.GONE);
+            basketDetailsBinding.ratingBelowLine.setVisibility(View.GONE);
+        }
         /*is in Cart*/
         if (basketDetailViewModel.isInCart.getValue()) {
             basketDetailsBinding.ivMinus.setVisibility(View.VISIBLE);

@@ -110,6 +110,9 @@ public class BasketDetailsResponse extends BaseResponse {
         @SerializedName("in_cart")
         @Expose
         private Integer inCart;
+        @SerializedName("already_purchased")
+        @Expose
+        private Integer alreadyPurchased;
         @SerializedName("quantity")
         @Expose
         private String quantity;
@@ -119,6 +122,14 @@ public class BasketDetailsResponse extends BaseResponse {
         @SerializedName("reviews")
         @Expose
         private ArrayList<Review> reviews = null;
+
+        public Integer getAlreadyPurchased() {
+            return alreadyPurchased;
+        }
+
+        public void setAlreadyPurchased(Integer alreadyPurchased) {
+            this.alreadyPurchased = alreadyPurchased;
+        }
 
         public String getBasketId() {
             return basketId;

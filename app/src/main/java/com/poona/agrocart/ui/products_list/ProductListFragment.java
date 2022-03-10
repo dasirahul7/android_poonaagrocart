@@ -554,6 +554,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(requireActivity(), baseResponse.getMessage());
                         productListViewModel.productListMutableLiveData.getValue().get(position).setInCart(1);
+                        ((HomeActivity) context).setCountBudge(baseResponse.getCartItems());
                         productGridAdapter.notifyDataSetChanged();
                         break;
                     case STATUS_CODE_403://Validation Errors

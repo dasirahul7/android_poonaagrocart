@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.internal.SafeIterableMap;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -50,6 +51,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
     public MutableLiveData<String> productNutrition;
     public MutableLiveData<String> productNoOfRating;
     public MutableLiveData<String> averageRating;
+    public MutableLiveData<Integer> alreadyPurchased;
 
     public ProductDetailViewModel(@NonNull Application application) {
         super(application);
@@ -75,6 +77,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
         productNutrition = new MutableLiveData<>();productNutrition.setValue(null);
         productNoOfRating = new MutableLiveData<>();productNoOfRating.setValue(null);
         averageRating = new MutableLiveData<>();averageRating.setValue(null);
+        alreadyPurchased = new MutableLiveData<>();alreadyPurchased.setValue(null);
         productName.setValue(null);
         productLocation.setValue(null);
         productAbout.setValue(null);

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentViewHolder;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
@@ -42,7 +43,7 @@ public class ProductRatingReviewAdapter extends RecyclerView.Adapter<ProductRati
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
         Review review = reviewsList.get(position);
-        holder.rvProductCommentBinding.setProductViewModel(review);
+        holder.rvProductCommentBinding.setRatingModule(review);
         holder.bind(review);
     }
 
@@ -69,8 +70,9 @@ public class ProductRatingReviewAdapter extends RecyclerView.Adapter<ProductRati
         }
 
         public void bind(Review review) {
-            rvProductCommentBinding.ratingBar.setRating(Float.parseFloat(review.getRating()));
-            rvProductCommentBinding.setVariable(BR.productViewModel, review);
+//            rvProductCommentBinding.ratingBar.setRating(Float.parseFloat(review.getRating()));
+            rvProductCommentBinding.setRatingModule(review);
+            rvProductCommentBinding.setVariable(BR.ratingModule, review);
             rvProductCommentBinding.executePendingBindings();
         }
     }

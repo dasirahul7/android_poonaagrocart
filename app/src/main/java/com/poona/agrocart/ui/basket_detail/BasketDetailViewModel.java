@@ -48,6 +48,7 @@ public class BasketDetailViewModel extends AndroidViewModel {
     public MutableLiveData<String> basketAvgRating;
     public MutableLiveData<String> basketNoOfRatings;
     public MutableLiveData<Float> yourRating;
+    public MutableLiveData<Integer> alreadyPurchased;
     public MutableLiveData<ArrayList<Review>> reviewLiveData;
     public MutableLiveData<BasketDetailsResponse.Rating> basketRating;
 
@@ -82,6 +83,7 @@ public class BasketDetailViewModel extends AndroidViewModel {
         basketRating = new MutableLiveData<>();
         basketNoOfRatings = new MutableLiveData<>();
         yourRating = new MutableLiveData<>();
+        alreadyPurchased = new MutableLiveData<>();
         basketName.setValue(null);
         basketRate.setValue(null);
         basketSubRate.setValue(null);
@@ -103,6 +105,7 @@ public class BasketDetailViewModel extends AndroidViewModel {
         basketRating.setValue(null);
         basketNoOfRatings.setValue(null);
         yourRating.setValue(null);
+        alreadyPurchased.setValue(null);
     }
 
     /*Get BasketDetails API here*/

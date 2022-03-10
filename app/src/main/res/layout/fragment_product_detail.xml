@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -111,7 +112,7 @@
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:drawableStart="@drawable/ic_location"
                 android:gravity="center_vertical"
-                android:text="@{productDetailModule.productLocation}"
+                android:text='@{productDetailModule.productLocation ?? ""}'
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -366,7 +367,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@string/sample_about_seasonal"
+                android:text='@{productDetailModule.productDetail ?? ""}'
                 android:textColor="@color/color_grey_txt"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -374,6 +375,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/line1"
                 app:setCustomFont="@string/font_poppins_regular" />
 
+<!--            <WebView-->
+<!--                android:id="@+id/wv_details"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginHorizontal="@dimen/_16sdp"-->
+<!--                android:layout_marginTop="@dimen/_8sdp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/line1"-->
+<!--                android:scrollbars="none"-->
+<!--                tools:ignore="WebViewLayout" />-->
             <LinearLayout
                 android:id="@+id/ll_about_this_product"
                 android:layout_width="match_parent"

@@ -413,6 +413,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_200://success
                         try {
                             ((HomeActivity)context).setCountBudge(baseResponse.getCartItems());
+                            myCartViewModel.totalTotal.setValue(String.valueOf(baseResponse.getTotalAmount()));
+                            myCartViewModel.totalItems.setValue(String.valueOf(baseResponse.getCartItems()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -464,6 +466,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_200://success
                         try {
                             ((HomeActivity)context).setCountBudge(baseResponse.getCartItems());
+                            myCartViewModel.totalTotal.setValue(String.valueOf(baseResponse.getTotalAmount()));
+                            myCartViewModel.totalItems.setValue(String.valueOf(baseResponse.getCartItems()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

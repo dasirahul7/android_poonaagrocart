@@ -74,8 +74,8 @@
             android:id="@+id/wv_cms"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_below="@id/action_bar"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:scrollbars="none" />
 
         <RelativeLayout
