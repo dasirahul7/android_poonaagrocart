@@ -71,9 +71,53 @@ public class VerifyOtpResponse {
         @SerializedName("state_name")
         @Expose
         private String stateName;
+        @SerializedName("state_id")
+        @Expose
+        private String stateId;
         @SerializedName("city_name")
         @Expose
         private String cityName;
+        @SerializedName("city_id")
+        @Expose
+        private String cityId;
+        @SerializedName("area_name")
+        @Expose
+        private String areaName;
+        @SerializedName("area_id")
+        @Expose
+        private String areaId;
+
+        public String getStateId() {
+            return stateId;
+        }
+
+        public void setStateId(String stateId) {
+            this.stateId = stateId;
+        }
+
+        public String getCityId() {
+            return cityId;
+        }
+
+        public void setCityId(String cityId) {
+            this.cityId = cityId;
+        }
+
+        public String getAreaName() {
+            return areaName;
+        }
+
+        public void setAreaName(String areaName) {
+            this.areaName = areaName;
+        }
+
+        public String getAreaId() {
+            return areaId;
+        }
+
+        public void setAreaId(String areaId) {
+            this.areaId = areaId;
+        }
 
         public String getStateName() {
             return stateName;

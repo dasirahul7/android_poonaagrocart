@@ -6,10 +6,10 @@ package com.poona.agrocart.app;
 public class AppConstants {
     /*m-staging URL*/
     /*Development URL*/
-    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing_dev/";
+//    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing_dev/";
 
     /*Testing environment URL*/
-//    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing/";
+    public static final String BASE_URL = "https://cmsweb.m-staging.in/poona_agro_testing/";
 
     /*m-staging Base URL for Image, Document*/
     public static final String IMAGE_DOC_BASE_URL = "";

@@ -8,7 +8,6 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
-import static com.poona.agrocart.app.AppConstants.USER_ID;
 import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
 import static com.poona.agrocart.ui.splash_screen.SplashScreenActivity.ivBack;
 
@@ -22,11 +21,13 @@ import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -105,6 +106,17 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
             return false;
         });
 
+        /*Otp keyboard action*/
+//        fragmentVerifyOtpBinding.etOtp.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+//                if (i==EditorInfo.IME_ACTION_SEND){
+//                    checkValidEnteredOtp();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
         return verifyView;
     }
 
@@ -141,9 +153,9 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
             public void afterTextChanged(Editable s) {
                 if (s.length() == 4) {
                     hideKeyBoard(requireActivity());
-                    if (s.toString().equals(basicDetails.getOtp())) {
+//                    if (s.toString().equals(basicDetails.getOtp())) {
                         checkValidEnteredOtp();
-                    }
+//                    }
                 }
             }
         });
@@ -164,6 +176,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
             case R.id.tv_resend_otp:
 //                fragmentVerifyOtpBinding.tvTimer.setVisibility(View.VISIBLE);
                 if (isConnectingToInternet(context)) {
+                    fragmentVerifyOtpBinding.etOtp.setText("");
                     callResendOtpAPI(showCircleProgressDialog(context, ""));
                 } else {
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
@@ -210,7 +223,21 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                         if (verifyOtpResponse.getMessage() != null) {
                             successToast(context, "" + verifyOtpResponse.getMessage());
                             preferences.seIstVerified(true);
-                            if (verifyOtpResponse.getUser().getVerified() == 1) {
+                            if (verifyOtpResponse.getUser().getVerified() == 1 &&
+                                    (verifyOtpResponse.getUser().getStateName()!=null &&
+                                    !verifyOtpResponse.getUser().getStateName().equalsIgnoreCase("")
+                                    &&verifyOtpResponse.getUser().getStateId()!=null &&
+                                            !verifyOtpResponse.getUser().getStateId().equalsIgnoreCase("")
+                                            && verifyOtpResponse.getUser().getCityName()!=null &&
+                                            !verifyOtpResponse.getUser().getCityName().equalsIgnoreCase("")
+                                            && verifyOtpResponse.getUser().getCityId()!=null &&
+                                            !verifyOtpResponse.getUser().getCityId().equalsIgnoreCase("")
+                                            && verifyOtpResponse.getUser().getAreaId()!=null &&
+                                            !verifyOtpResponse.getUser().getAreaId().equalsIgnoreCase("")
+                                            && verifyOtpResponse.getUser().getAreaName()!=null &&
+                                            !verifyOtpResponse.getUser().getAreaName().equalsIgnoreCase("")
+
+                                    )){
                                 preferences.setIsLoggedIn(true);
                                 Intent intent = new Intent(context, HomeActivity.class);
                                 preferences.setUid(verifyOtpResponse.getUser().getUserId());
@@ -223,7 +250,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                                 startActivity(intent);
                             } else {
                                 Bundle bundle = new Bundle();
-                                bundle.putString(USER_ID, verifyOtpResponse.getUser().getUserId());
+//                                bundle.putString(USER_ID, verifyOtpResponse.getUser().getUserId());
                                 bundle.putString(USER_MOBILE, verifyOtpResponse.getUser().getUserMobile());
                                 bundle.putString(COUNTRY_CODE, bundle.getString(COUNTRY_CODE));
                                 preferences.setUserMobile(verifyOtpResponse.getUser().getUserMobile());
@@ -307,10 +334,11 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         HashMap<String, String> map = new HashMap<>();
         if (paramType == VERIFY) {
             map.put(OTP, Objects.requireNonNull(fragmentVerifyOtpBinding.etOtp.getText()).toString());
-        } else {
-            assert getArguments() != null;
-            map.put(USER_ID, getArguments().getString(USER_ID));
         }
+//        else {
+//            assert getArguments() != null;
+//            map.put(USER_ID, getArguments().getString(USER_ID));
+//        }
         return map;
 
     }

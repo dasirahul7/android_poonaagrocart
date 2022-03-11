@@ -219,8 +219,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                             cartItemsList.addAll(myCartResponse.getData());
                             cartItemAdapter.notifyDataSetChanged();
 
-                              myCartViewModel.totalTotal.setValue(String.valueOf(myCartResponse.getTotalAmount()));
-                              myCartViewModel.totalItems.setValue(String.valueOf(myCartResponse.getCartItems()));
+                            myCartViewModel.totalTotal.setValue(String.valueOf(myCartResponse.getTotalAmount()));
+                            myCartViewModel.totalItems.setValue(String.valueOf(myCartResponse.getCartItems()));
                         } else {
                             requireActivity().findViewById(R.id.bottom_menu_card).setVisibility(View.VISIBLE);
                             setBottomMarginInDps(50);

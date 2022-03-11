@@ -228,7 +228,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                         if (registerResponse.getStatus() == 200) {
                             successToast(context, "" + registerResponse.getMessage());
                             Bundle bundle = getArguments();
-                            if (bundle.getString(USER_ID) != null) {
+                            if (bundle.getString(USER_MOBILE) != null) {
                                 preferences.setUid(bundle.getString(USER_ID));
                                 preferences.setUserMobile(bundle.getString(USER_MOBILE));
                             }
