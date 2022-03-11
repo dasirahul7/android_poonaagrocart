@@ -463,7 +463,7 @@ public class HomeViewModel extends AndroidViewModel {
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull HomeResponse homeResponse) {
                         if (homeResponse != null) {
                             progressDialog.dismiss();
-                            Log.e(TAG, "Home API onSuccess: " + new Gson().toJson(homeResponse));
+//                            Log.e(TAG, "Home API onSuccess: " + new Gson().toJson(homeResponse));
                             homeResponseMutableLiveData.setValue(homeResponse);
                         }
                     }

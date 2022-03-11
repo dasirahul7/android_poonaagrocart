@@ -241,6 +241,10 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
                                 preferences.setIsLoggedIn(true);
                                 Intent intent = new Intent(context, HomeActivity.class);
                                 preferences.setUid(verifyOtpResponse.getUser().getUserId());
+                                if (verifyOtpResponse.getUser().getUserName()!=null)
+                                preferences.setUserName(verifyOtpResponse.getUser().getUserName());
+                                if (verifyOtpResponse.getUser().getImage()!=null)
+                                preferences.setUserProfile(verifyOtpResponse.getUser().getImage());
                                 preferences.setUserMobile(verifyOtpResponse.getUser().getUserMobile());
                                 preferences.setUserAddress(verifyOtpResponse.getUser().getCityName() + ", " + verifyOtpResponse.getUser().getStateName());
                                 preferences.setUserCountry(bundle.getString(COUNTRY_CODE));

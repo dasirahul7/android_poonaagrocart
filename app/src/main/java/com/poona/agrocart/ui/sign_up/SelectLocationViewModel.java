@@ -17,6 +17,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.AreaResponse;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.CityResponse;
+import com.poona.agrocart.data.network.responses.UpdateLocationResponse;
 
 import java.util.HashMap;
 
@@ -113,19 +114,19 @@ public class SelectLocationViewModel extends AndroidViewModel {
         return cityResponseMutableLiveData;
     }
 
-    public LiveData<BaseResponse> updateLocation(ProgressDialog progressDialog,
-                                                 HashMap<String, String> updateLocationMap,
-                                                 SelectLocationFragment selectLocationFragment) {
-        MutableLiveData<BaseResponse> updateLocationMutableLiveData = new MutableLiveData<>();
+    public LiveData<UpdateLocationResponse> updateLocation(ProgressDialog progressDialog,
+                                                           HashMap<String, String> updateLocationMap,
+                                                           SelectLocationFragment selectLocationFragment) {
+        MutableLiveData<UpdateLocationResponse> updateLocationMutableLiveData = new MutableLiveData<>();
 
         ApiClientAuth.getClient(selectLocationFragment.getContext())
                 .create(ApiInterface.class)
                 .updateLocationResponse(updateLocationMap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                .subscribeWith(new DisposableSingleObserver<UpdateLocationResponse>() {
                     @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull UpdateLocationResponse baseResponse) {
                         if (baseResponse != null) {
                             progressDialog.dismiss();
                             updateLocationMutableLiveData.setValue(baseResponse);
@@ -137,10 +138,10 @@ public class SelectLocationViewModel extends AndroidViewModel {
                         progressDialog.dismiss();
 
                         Gson gson = new GsonBuilder().create();
-                        BaseResponse baseResponse = new AreaResponse();
+                        UpdateLocationResponse baseResponse = new UpdateLocationResponse();
                         try {
                             baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
-                                    BaseResponse.class);
+                                    UpdateLocationResponse.class);
                             updateLocationMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());

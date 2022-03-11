@@ -37,83 +37,83 @@ public class HomeResponseData {
         @Expose
         private ArrayList<Product> productList = null;
 
-        public UserDetails getUserData() {
-            return userData;
-        }
+    public UserDetails getUserData() {
+        return userData;
+    }
 
-        public void setUserData(UserDetails userData) {
-            this.userData = userData;
-        }
+    public void setUserData(UserDetails userData) {
+        this.userData = userData;
+    }
 
-        public ArrayList<Banner> getBannerDetails() {
-            return bannerDetails;
-        }
+    public ArrayList<Banner> getBannerDetails() {
+        return bannerDetails;
+    }
 
-        public void setBannerDetails(ArrayList<Banner> bannerDetails) {
-            this.bannerDetails = bannerDetails;
-        }
+    public void setBannerDetails(ArrayList<Banner> bannerDetails) {
+        this.bannerDetails = bannerDetails;
+    }
 
-        public ArrayList<Category> getCategoryData() {
-            return categoryData;
-        }
+    public ArrayList<Category> getCategoryData() {
+        return categoryData;
+    }
 
-        public void setCategoryData(ArrayList<Category> categoryData) {
-            this.categoryData = categoryData;
-        }
+    public void setCategoryData(ArrayList<Category> categoryData) {
+        this.categoryData = categoryData;
+    }
 
-        public ArrayList<Product> getExclusiveList() {
-            return exclusiveList;
-        }
+    public ArrayList<Product> getExclusiveList() {
+        return exclusiveList;
+    }
 
-        public void setExclusiveList(ArrayList<Product> exclusiveList) {
-            this.exclusiveList = exclusiveList;
-        }
+    public void setExclusiveList(ArrayList<Product> exclusiveList) {
+        this.exclusiveList = exclusiveList;
+    }
 
-        public ArrayList<Basket> getBasketList() {
-            return basketList;
-        }
+    public ArrayList<Basket> getBasketList() {
+        return basketList;
+    }
 
-        public void setBasketList(ArrayList<Basket> basketList) {
-            this.basketList = basketList;
-        }
+    public void setBasketList(ArrayList<Basket> basketList) {
+        this.basketList = basketList;
+    }
 
-        public ArrayList<Product> getBestSellingProductList() {
-            return bestSellingProductList;
-        }
+    public ArrayList<Product> getBestSellingProductList() {
+        return bestSellingProductList;
+    }
 
-        public void setBestSellingProductList(ArrayList<Product> bestSellingProductList) {
-            this.bestSellingProductList = bestSellingProductList;
-        }
+    public void setBestSellingProductList(ArrayList<Product> bestSellingProductList) {
+        this.bestSellingProductList = bestSellingProductList;
+    }
 
-        public ArrayList<SeasonalProduct> getSeasonalProduct() {
-            return seasonalProduct;
-        }
+    public ArrayList<SeasonalProduct> getSeasonalProduct() {
+        return seasonalProduct;
+    }
 
-        public void setSeasonalProduct(ArrayList<SeasonalProduct> seasonalProduct) {
-            this.seasonalProduct = seasonalProduct;
-        }
+    public void setSeasonalProduct(ArrayList<SeasonalProduct> seasonalProduct) {
+        this.seasonalProduct = seasonalProduct;
+    }
 
-        public ArrayList<O3> getO3() {
-            return o3;
-        }
+    public ArrayList<O3> getO3() {
+        return o3;
+    }
 
-        public void setO3(ArrayList<O3> o3) {
-            this.o3 = o3;
-        }
+    public void setO3(ArrayList<O3> o3) {
+        this.o3 = o3;
+    }
 
-        public ArrayList<StoreBanner> getStoreBanner() {
-            return storeBanner;
-        }
+    public ArrayList<StoreBanner> getStoreBanner() {
+        return storeBanner;
+    }
 
-        public void setStoreBanner(ArrayList<StoreBanner> storeBanner) {
-            this.storeBanner = storeBanner;
-        }
+    public void setStoreBanner(ArrayList<StoreBanner> storeBanner) {
+        this.storeBanner = storeBanner;
+    }
 
-        public ArrayList<Product> getProductList() {
-            return productList;
-        }
+    public ArrayList<Product> getProductList() {
+        return productList;
+    }
 
-        public void setProductList(ArrayList<Product> productList) {
-            this.productList = productList;
-        }
+    public void setProductList(ArrayList<Product> productList) {
+        this.productList = productList;
+    }
 }

@@ -729,7 +729,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             if (homeResponse != null) {
                 if (progressDialog != null)
                     progressDialog.dismiss();
-//                Log.e(TAG, "callHomeAPiResponse: " + productListResponse.getMessage());
+                Log.e(TAG, "callHomeAPiResponse: " + new Gson().toJson(homeResponse));
                 switch (homeResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         try {
@@ -739,6 +739,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         }
                         //setHeader
                         if (homeResponse != null) {
+                            System.out.println("user name :"+homeResponse.getHomeResponseData().getUserData().getName());
                             preferences.setUserProfile(homeResponse.getHomeResponseData().getUserData().getImage());
                             preferences.setUserName(homeResponse.getHomeResponseData().getUserData().getName());
                             preferences.setUserAddress(homeResponse.getHomeResponseData().getUserData().getCityName()

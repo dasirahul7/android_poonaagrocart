@@ -82,6 +82,7 @@ import com.poona.agrocart.data.network.responses.CmsResponse;
 import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.HomeBasketResponse;
+import com.poona.agrocart.data.network.responses.UpdateLocationResponse;
 import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
 import com.poona.agrocart.data.network.responses.IntroScreenResponse;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
@@ -213,7 +214,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(UPDATE_LOCATION_API)
-    Single<BaseResponse> updateLocationResponse(@FieldMap HashMap<String, String> data);
+    Single<UpdateLocationResponse> updateLocationResponse(@FieldMap HashMap<String, String> data);
 
     @FormUrlEncoded
     @POST(CHECK_VALID_PIN_CODE_API)

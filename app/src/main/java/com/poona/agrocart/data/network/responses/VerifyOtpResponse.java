@@ -56,6 +56,12 @@ public class VerifyOtpResponse {
         @SerializedName("id")
         @Expose
         private String userId;
+        @SerializedName("username")
+        @Expose
+        private String userName;
+        @SerializedName("image")
+        @Expose
+        private String image;
         @SerializedName("verified")
         @Expose
         private Integer verified;
@@ -86,6 +92,22 @@ public class VerifyOtpResponse {
         @SerializedName("area_id")
         @Expose
         private String areaId;
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
 
         public String getStateId() {
             return stateId;
