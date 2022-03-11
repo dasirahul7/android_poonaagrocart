@@ -34,12 +34,14 @@ public class ProductListViewModel extends AndroidViewModel {
 
     public static final String TAG = ProductListViewModel.class.getSimpleName();
     public MutableLiveData<ArrayList<Product>> productListMutableLiveData;
+    public MutableLiveData<ArrayList<BasketResponse.Basket>> basketListMutableLiveData;
 
     public ProductListViewModel(Application application) {
         super(application);
         productListMutableLiveData = new MutableLiveData<>();
+        basketListMutableLiveData = new MutableLiveData<>();
         productListMutableLiveData.setValue(null);
-
+        basketListMutableLiveData.setValue(null);
     }
 
 
@@ -146,7 +148,6 @@ public class ProductListViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BestSellingResponse bestSellingResponse) {
                         if (bestSellingResponse != null) {
-                            Log.d(TAG, "BestSelling onSuccess: " + bestSellingResponse.getBestSellingData().getBestSellingProductList().size());
                             progressDialog.dismiss();
                             bestSellingResponseMutableLiveData.setValue(bestSellingResponse);
                         }

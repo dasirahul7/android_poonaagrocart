@@ -12,18 +12,18 @@
         android:id="@+id/itemCard"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_160sdp"
-        android:background="@color/exp_card_color1"
+        android:background="@color/white"
         app:cardElevation="@dimen/_1sdp"
         app:cardCornerRadius="@dimen/_12sdp"
         app:cardUseCompatPadding="true"
-        app:strokeColor="@color/exp_border1"
+        app:strokeColor="@color/clr_custom_edit_text_otp"
         app:strokeWidth="0.5dp">
 
         <LinearLayout
             android:id="@+id/itemLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/exp_card_color1"
+            android:background="@color/white"
             android:orientation="vertical"
             android:padding="@dimen/_5sdp">
 
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/exp_card_color1">
+                    android:background="@color/white">
 
                     <ImageView
                         android:id="@+id/itemImg"

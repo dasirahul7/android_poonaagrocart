@@ -95,7 +95,7 @@
                     android:gravity="start"
                     android:paddingStart="@dimen/_50sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:text='@{`Offer is valid for minimum purchase of Rs.`+modelPromoCode.minOrderAmount}'
+                    android:text='@{`Offer is valid for minimum purchase of Rs. `+modelPromoCode.minOrderAmount}'
                     android:textColor="@color/color_coupon_code_et"
                     android:textSize="@dimen/_12sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />

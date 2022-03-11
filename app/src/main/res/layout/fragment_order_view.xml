@@ -475,7 +475,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="30"
                             android:gravity="end"
-                            android:text="@{`Rs.`+orderViewDetailsViewModel.subTotalAmount}"
+                            android:text="@{`Rs. `+orderViewDetailsViewModel.subTotalAmount}"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_semi_bold" />
@@ -526,7 +526,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="30"
                             android:gravity="end"
-                            android:text="@{`Rs.`+orderViewDetailsViewModel.discountAmount}"
+                            android:text="@{`Rs. `+orderViewDetailsViewModel.discountAmount}"
                             android:textColor="@color/color_discount_text"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -554,7 +554,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="30"
                             android:gravity="end"
-                            android:text="@{`Rs.`+orderViewDetailsViewModel.deliveryCharges}"
+                            android:text="@{`Rs. `+orderViewDetailsViewModel.deliveryCharges}"
                             android:textColor="@color/color_discount_text"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />
@@ -590,7 +590,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="30"
                             android:gravity="end"
-                            android:text="@{`Rs.`+orderViewDetailsViewModel.totalAmount}"
+                            android:text="@{`Rs. `+orderViewDetailsViewModel.totalAmount}"
                             android:textColor="@color/bold_txt_color"
                             android:textSize="@dimen/_16sp"
                             android:textStyle="bold"

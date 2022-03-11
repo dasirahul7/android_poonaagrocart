@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="@{`Rs.`+basketModule.basketRate}"
+                    android:text="@{`Rs. `+basketModule.basketRate}"
                     android:textColor="@color/lightBlack"
                     android:textSize="@dimen/_16sp"
                     app:setCustomFont="@string/font_poppins_regular" />

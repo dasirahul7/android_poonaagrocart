@@ -17,6 +17,17 @@ public class BaseResponse {
     @Expose
     @SerializedName("total_amount")
     private float totalAmount;
+    @Expose
+    @SerializedName("total_count")
+    private int totalCount;
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
 
     public float getTotalAmount() {
         return totalAmount;

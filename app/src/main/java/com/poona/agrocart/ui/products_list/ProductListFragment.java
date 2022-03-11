@@ -49,6 +49,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
@@ -95,6 +96,8 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private final int totalCount = 0;
     private int offset = 0;
     private GridLayoutManager gridLayoutManager;
+
+    private SwipeRefreshLayout pullToRefreshExplore;
     private ActivityResultLauncher<Intent> recognizerIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
@@ -129,9 +132,23 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         setRVAdapter();
         setScrollListener();
         searchProducts(view);
+
+        /*Pull to refresh here*/
+        pullToRefreshExplore.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pullToRefreshExplore.setRefreshing(true);
+                if (isConnectingToInternet(context)) {
+                    productArrayList.clear();
+                    basketArrayList.clear();
+                    checkAndLoadData("load");
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
         return view;
     }
-
 
 
     private void setTitleBar() {
@@ -178,6 +195,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         Observer<ExclusiveResponse> exclusiveResponseObserver = exclusiveResponse -> {
             if (exclusiveResponse != null) {
                 progressDialog.dismiss();
+                pullToRefreshExplore.setRefreshing(false);
                 Log.e(TAG, "seeAllExclusiveApi: " + new Gson().toJson(exclusiveResponse));
                 switch (exclusiveResponse.getStatus()) {
                     case STATUS_CODE_200:
@@ -185,13 +203,17 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                                 && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
                             // Exclusive data listing
                             productArrayList.addAll(exclusiveResponse.getExclusiveData().getExclusivesList());
+                            productListViewModel.productListMutableLiveData.setValue(exclusiveResponse.getExclusiveData().getExclusivesList());
                             makeProductListing();
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
-                        fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
+                        if (loadType.equalsIgnoreCase("load")){
+                            fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
+                            warningToast(context, exclusiveResponse.getMessage());
+                        }
                         // set a dummy banner if no banner is available
                         warningToast(context, exclusiveResponse.getMessage());
                         break;
@@ -217,6 +239,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         Observer<BestSellingResponse> bestSellingResponseObserver = bestSellingResponse -> {
             if (bestSellingResponse != null) {
                 progressDialog.dismiss();
+                pullToRefreshExplore.setRefreshing(false);
                 Log.e(TAG, "seeAllBestSellingApi: " + new Gson().toJson(bestSellingResponse));
                 switch (bestSellingResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
@@ -225,6 +248,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                             //Todo need to change that
                             if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
                                 productArrayList.addAll(bestSellingResponse.getBestSellingData().getBestSellingProductList());
+                                productListViewModel.productListMutableLiveData.setValue(bestSellingResponse.getBestSellingData().getBestSellingProductList());
                                 makeProductListing();
                             }
                         }
@@ -232,9 +256,10 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
-                        fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
-                        // set a dummy banner if no banner is available
-                        warningToast(context, bestSellingResponse.getMessage());
+                        if (load.equalsIgnoreCase("load")){
+                            fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
+                            warningToast(context, bestSellingResponse.getMessage());
+                        }
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         goToAskSignInSignUpScreen(bestSellingResponse.getMessage(), context);
@@ -262,6 +287,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                 switch (basketResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         //Basket listing
+                        pullToRefreshExplore.setRefreshing(false);
                         if (basketResponse.getData().getBaskets() != null) {
                             if (basketResponse.getData().getBaskets().size() > 0) {
                                 basketArrayList.addAll(basketResponse.getData().getBaskets());
@@ -272,9 +298,10 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
-                        fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
-                        // set a dummy banner if no banner is available
-                        warningToast(context, basketResponse.getMessage());
+                        if (apiFrom.equalsIgnoreCase("load")) {
+                            fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
+                            warningToast(context, basketResponse.getMessage());
+                        }
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         goToAskSignInSignUpScreen(basketResponse.getMessage(), context);
@@ -300,6 +327,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         Observer<ProductListByResponse> productListByResponseObserver = productListByResponse -> {
             if (productListByResponse != null) {
                 showCircleProgressDialog.dismiss();
+                pullToRefreshExplore.setRefreshing(false);
                 switch (productListByResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (ListType.equalsIgnoreCase(BASKET)) {
@@ -323,9 +351,10 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
-                        fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
-                        // set a dummy banner if no banner is available
-                        warningToast(context, productListByResponse.getMessage());
+                        if (apiFrom.equalsIgnoreCase("load")) {
+                            fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
+                            warningToast(context, productListByResponse.getMessage());
+                        }
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         goToAskSignInSignUpScreen(productListByResponse.getMessage(), context);
@@ -371,9 +400,9 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                                     try {
                                         if (fragmentProductListBinding.etProductSearch.getText() != null) {
                                             if (!fragmentProductListBinding.etProductSearch.getText().toString().trim().equals("")) {
-                                                productArrayList.clear();
-                                                basketArrayList.clear();
                                                 if (isConnectingToInternet(context)) {
+                                                    productArrayList.clear();
+                                                    basketArrayList.clear();
                                                     //add API call here
                                                     checkAndLoadData("load");
                                                 } else {
@@ -437,6 +466,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     }
 
     private void initView() {
+        pullToRefreshExplore = fragmentProductListBinding.rlProductList;
         rvVegetables = fragmentProductListBinding.rvProducts;
         productListViewModel = new ViewModelProvider(this).get(ProductListViewModel.class);
 
@@ -464,9 +494,6 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     } else {
                         showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                     }
-                } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
-                        && visibleItemCount == totalCount) {
-                    infoToast(requireActivity(), getString(R.string.no_result_found));  //change
                 }
             }
         });
@@ -526,7 +553,8 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(requireActivity(), baseResponse.getMessage());
-                        productArrayList.get(position).setInCart(1);
+                        productListViewModel.productListMutableLiveData.getValue().get(position).setInCart(1);
+                        ((HomeActivity) context).setCountBudge(baseResponse.getCartItems());
                         productGridAdapter.notifyDataSetChanged();
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -561,6 +589,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         map.put(QUANTITY, "1");
         return map;
     }
+
     private void setOnClick() {
 
         fragmentProductListBinding.imgProductMice.setOnClickListener(view -> {

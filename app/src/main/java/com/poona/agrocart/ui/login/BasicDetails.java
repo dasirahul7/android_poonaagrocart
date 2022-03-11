@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.login;
 
 import android.text.TextUtils;
+import android.util.Patterns;
 
 import java.util.regex.Pattern;
 
@@ -236,7 +237,8 @@ public class BasicDetails {
     public int isValidMobileNumber() {
         if (TextUtils.isEmpty(this.mobileNumber)) {
             return 0;
-        } else if (!TextUtils.isEmpty(this.mobileNumber) && this.mobileNumber.length() < 10) {
+        } else if (!TextUtils.isEmpty(this.mobileNumber) && this.mobileNumber.length() < 10 || (!TextUtils.isEmpty(this.mobileNumber) && this.mobileNumber.length() < 10 ||
+                (!this.mobileNumber.matches("\\b[6-9]{1}\\d{2}[-.]?\\d{3}[-.]?\\d{4}\\b")))) {
             return 1;
         } else {
             return -1;

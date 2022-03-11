@@ -31,6 +31,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.AreaResponse;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.CityResponse;
+import com.poona.agrocart.data.network.responses.UpdateLocationResponse;
 import com.poona.agrocart.databinding.FragmentSelectLocationBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
@@ -281,13 +282,17 @@ public class SelectLocationFragment extends BaseFragment implements View.OnClick
 
     /* Update Location API*/
     private void callUpdateLocationApi(ProgressDialog showCircleProgressDialog) {
-        Observer<BaseResponse> updateLocationObserver = updateLocationResponse -> {
+        Observer<UpdateLocationResponse> updateLocationObserver = updateLocationResponse -> {
             if (updateLocationResponse != null) {
                 switch (updateLocationResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (updateLocationResponse.getStatus() == 200) {
                             successToast(context, "" + updateLocationResponse.getMessage());
                             preferences.setUserAddress(selectedArea + ", " + selectedCity);
+                            preferences.setUid(updateLocationResponse.getUserData().getId());
+                            preferences.setUserName(updateLocationResponse.getUserData().getUsername());
+                            preferences.setUserProfile(updateLocationResponse.getUserData().getImage());
+                            preferences.setUserMobile(updateLocationResponse.getUserData().getMobile());
                             redirectToLoginFragment(view);
                         }
                         break;

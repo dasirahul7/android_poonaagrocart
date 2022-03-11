@@ -25,9 +25,11 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +44,7 @@ import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
+import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.SignInResponse;
 import com.poona.agrocart.databinding.FragmentSignInBinding;
@@ -70,7 +73,16 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
 
         rootView = fragmentSignInBinding.getRoot();
         initView(rootView);
-
+        fragmentSignInBinding.etPhoneNo.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i== EditorInfo.IME_ACTION_SEND){
+                    signInAndRedirectToVerifyOtp(textView);
+                    return true;
+                }
+                return false;
+            }
+        });
         return rootView;
     }
 
@@ -223,7 +235,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                 switch (signInResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (signInResponse.getUser() != null) {
-                            successToast(context, "" + signInResponse.getUser().getOtp());
+                            successToast(context,  "your otp is "+signInResponse.getUser().getOtp());
                             basicDetails.setOtp(signInResponse.getUser().getOtp());
                             preferences.setAuthorizationToken(signInResponse.getToken());
                             basicDetails.setUserId(signInResponse.getUser().getId());

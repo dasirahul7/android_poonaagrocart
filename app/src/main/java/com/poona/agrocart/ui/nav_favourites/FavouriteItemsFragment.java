@@ -40,6 +40,7 @@ import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteList
 import com.poona.agrocart.data.network.responses.favoutiteResponse.RemoveFavouriteListResponse;
 import com.poona.agrocart.databinding.FragmentFavouriteItemsBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
 
@@ -317,6 +318,11 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                 }
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://success
+                        try {
+                            ((HomeActivity) context).setCountBudge(baseResponse.getCartItems());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         setAdaptor();
                         successToast(context, baseResponse.getMessage());
                         break;
@@ -365,6 +371,11 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                 }
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://success
+                        try {
+                            ((HomeActivity) context).setCountBudge(baseResponse.getCartItems());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         setAdaptor();
                         successToast(context, baseResponse.getMessage());
                         break;

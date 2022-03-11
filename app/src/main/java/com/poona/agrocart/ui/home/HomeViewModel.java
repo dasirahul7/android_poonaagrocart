@@ -30,6 +30,7 @@ import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.responses.StoreBannerResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
@@ -46,9 +47,11 @@ import retrofit2.HttpException;
 
 public class HomeViewModel extends AndroidViewModel {
     private final String TAG = HomeViewModel.class.getSimpleName();
-
+    public MutableLiveData<ArrayList<Product>> bestSellingMutableList;
     public HomeViewModel(@NonNull Application application) {
         super(application);
+        bestSellingMutableList = new MutableLiveData<>();
+        bestSellingMutableList.setValue(null);
     }
 
     //Banner ResponseData here
@@ -460,7 +463,7 @@ public class HomeViewModel extends AndroidViewModel {
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull HomeResponse homeResponse) {
                         if (homeResponse != null) {
                             progressDialog.dismiss();
-                            Log.e(TAG, "Home API onSuccess: " + new Gson().toJson(homeResponse));
+//                            Log.e(TAG, "Home API onSuccess: " + new Gson().toJson(homeResponse));
                             homeResponseMutableLiveData.setValue(homeResponse);
                         }
                     }

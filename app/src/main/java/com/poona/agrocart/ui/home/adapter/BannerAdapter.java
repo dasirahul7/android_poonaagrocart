@@ -15,15 +15,16 @@ import com.poona.agrocart.data.network.responses.homeResponse.Banner;
 import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class BannerAdapter extends PagerAdapter {
 
-    private final ArrayList<Banner> banner;
+    private final List<Banner> banner;
     private final Context context;
     private LayoutInflater layoutInflater;
 
-    public BannerAdapter(ArrayList<Banner> banner, Context context) {
+    public BannerAdapter(List<Banner> banner, Context context) {
         this.banner = banner;
         this.context = context;
     }

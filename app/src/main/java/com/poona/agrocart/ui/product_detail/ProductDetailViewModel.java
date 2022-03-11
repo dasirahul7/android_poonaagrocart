@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.internal.SafeIterableMap;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -37,10 +38,10 @@ public class ProductDetailViewModel extends AndroidViewModel {
     public MutableLiveData<String> sellingPrice;
     public MutableLiveData<String> offerPrice;
     public MutableLiveData<String> offer;
+    public MutableLiveData<String> specialOffer;
     public MutableLiveData<Boolean> isInCart;
     public MutableLiveData<Boolean> isInFav;
     public MutableLiveData<String> productQuantity;
-    public MutableLiveData<String> offerMessage;
     public MutableLiveData<String> productDetail;
     public MutableLiveData<String> productAbout;
     public MutableLiveData<String> productBenefit;
@@ -48,6 +49,9 @@ public class ProductDetailViewModel extends AndroidViewModel {
     public MutableLiveData<String> productOtherInfo;
     public MutableLiveData<String> productWeightPolicy;
     public MutableLiveData<String> productNutrition;
+    public MutableLiveData<String> productNoOfRating;
+    public MutableLiveData<String> averageRating;
+    public MutableLiveData<Integer> alreadyPurchased;
 
     public ProductDetailViewModel(@NonNull Application application) {
         super(application);
@@ -60,10 +64,10 @@ public class ProductDetailViewModel extends AndroidViewModel {
         sellingPrice = new MutableLiveData<>();
         offerPrice = new MutableLiveData<>();
         offer = new MutableLiveData<>();
+        specialOffer = new MutableLiveData<>();
         isInCart = new MutableLiveData<>();
         isInFav = new MutableLiveData<>();
         productQuantity = new MutableLiveData<>();
-        offerMessage = new MutableLiveData<>();
         productDetail = new MutableLiveData<>();
         productAbout = new MutableLiveData<>();
         productBenefit = new MutableLiveData<>();productBenefit.setValue(null);
@@ -71,13 +75,16 @@ public class ProductDetailViewModel extends AndroidViewModel {
         productOtherInfo = new MutableLiveData<>();productOtherInfo.setValue(null);
         productWeightPolicy = new MutableLiveData<>();productWeightPolicy.setValue(null);
         productNutrition = new MutableLiveData<>();productNutrition.setValue(null);
+        productNoOfRating = new MutableLiveData<>();productNoOfRating.setValue(null);
+        averageRating = new MutableLiveData<>();averageRating.setValue(null);
+        alreadyPurchased = new MutableLiveData<>();alreadyPurchased.setValue(null);
         productName.setValue(null);
         productLocation.setValue(null);
         productAbout.setValue(null);
         productDetail.setValue(null);
-        offerMessage.setValue(null);
         productQuantity.setValue(null);
         offer.setValue(null);
+        specialOffer.setValue(null);
         offerPrice.setValue(null);
         isInCart.setValue(null);
         isInFav.setValue(null);

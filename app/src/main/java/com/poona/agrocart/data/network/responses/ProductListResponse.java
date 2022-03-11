@@ -297,7 +297,7 @@ public class ProductListResponse extends BaseResponse {
         }
 
         public String getPercDiscount() {
-            return percDiscount + " %off";
+            return percDiscount;
         }
 
         public void setPercDiscount(String percDiscount) {

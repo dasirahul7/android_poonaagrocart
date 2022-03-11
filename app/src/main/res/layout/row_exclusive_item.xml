@@ -23,7 +23,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/_10sdp">
+            android:padding="@dimen/_8sdp">
 
             <ImageView
                 android:id="@+id/txt_organic"
@@ -71,6 +71,21 @@
             </com.google.android.material.card.MaterialCardView>
 
 
+            <com.poona.agrocart.widgets.CustomTextView
+                android:id="@+id/txt_item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ll_details"
+                android:gravity="start"
+                android:includeFontPadding="false"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:singleLine="true"
+                android:text="@{exclusiveOfferModule.productName}"
+                android:textColor="@color/blue_txt_color"
+                android:textSize="@dimen/_16sp"
+                android:textStyle="bold"
+                app:setCustomFont="@string/font_poppins_semi_bold" />
+
             <LinearLayout
                 android:id="@+id/ll_details"
                 android:layout_width="match_parent"
@@ -78,20 +93,6 @@
                 android:layout_alignParentBottom="true"
                 android:layout_toStartOf="@+id/img_plus"
                 android:orientation="vertical">
-
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/txt_item_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:includeFontPadding="false"
-                    android:paddingHorizontal="@dimen/_5sdp"
-                    android:singleLine="true"
-                    android:text="@{exclusiveOfferModule.productName}"
-                    android:textColor="@color/blue_txt_color"
-                    android:textSize="@dimen/_16sp"
-                    android:textStyle="bold"
-                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_location"
@@ -151,7 +152,7 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:text="@{`Rs.`+exclusiveOfferModule.sellingPrice}"
+                        android:text="@{`Rs. `+exclusiveOfferModule.sellingPrice}"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular"

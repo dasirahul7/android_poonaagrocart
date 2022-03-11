@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -111,7 +112,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private List<ProductDetailsResponse.Rating> ratingList = new ArrayList<>();
     private ArrayList<Review> reviewsList = new ArrayList<>();
     private ArrayList<Review> allReview = new ArrayList<>();
-    private ScrollView scrollView;
+    private NestedScrollView scrollView;
     private RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
@@ -144,7 +145,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             }
         });
 
-        scrollView.setOnScrollChangeListener((view, i, i1, i2, i3) -> {
+        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (view, i, i1, i2, i3) -> {
             if (i3>0){
                 ((HomeActivity)context).binding.appBarHome.textTitle.setText(details.getProductName());
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
@@ -263,9 +264,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
                             /*Rating and Reviews*/
                             if (productDetailsResponse.getProductDetails().getRating() != null) {
-                                ratingList.clear();
-                                ratingList.add(productDetailsResponse.getProductDetails().getRating());
-                                setRatingViewHideShow(ratingList);
+                                setRatingViewHideShow(productDetailsResponse.getProductDetails().getRating());
                             }
                             if (productDetailsResponse.getProductDetails().getReviews() != null ||
                                     productDetailsResponse.getProductDetails().getReviews().size() > 0) {
@@ -275,7 +274,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                                 allReview.addAll(reviewsList);
                                 setAdaptor(reviewsList);
                                 productRatingReviewAdapter.notifyDataSetChanged();
-                            }
+                            }else fragmentProductDetailBinding.tvSeeMoreReview.setVisibility(View.GONE);
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -298,12 +297,13 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 .observe(getViewLifecycleOwner(), productDetailsResponseObserver);
     }
 
-    private void setRatingViewHideShow(List<ProductDetailsResponse.Rating> ratingList) {
-        if (!ratingList.get(0).getRating().isEmpty() && !ratingList.get(0).getReview().isEmpty() ||
-                !ratingList.get(0).getRating().equalsIgnoreCase("") &&
-                        !ratingList.get(0).getReview().equalsIgnoreCase("")) {
+    private void setRatingViewHideShow(ProductDetailsResponse.Rating rating) {
+        if (productDetailViewModel.alreadyPurchased.getValue()==0){
             fragmentProductDetailBinding.llRateView.setVisibility(View.GONE);
-        } else {
+        }else if (!rating.getRatingId().isEmpty() || !rating.getReview().isEmpty()){
+            fragmentProductDetailBinding.llRateView.setVisibility(View.GONE);
+        }else if (productDetailViewModel.alreadyPurchased.getValue()==1){
+//            basketDetailsBinding.ratingBarInput.setEnabled(false);
             fragmentProductDetailBinding.llRateView.setVisibility(View.VISIBLE);
         }
     }
@@ -311,11 +311,21 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private void setDetailsValue() {
         unit = details.getUnit();
         productDetailViewModel.productName.setValue(details.getProductName());
+        if (details.getLocation().isEmpty())
+            fragmentProductDetailBinding.tvLocation.setVisibility(View.GONE);
         productDetailViewModel.productLocation.setValue(details.getLocation());
         productDetailViewModel.unitMutableLiveData.setValue(details.getUnit());
-        productDetailViewModel.sellingPrice.setValue("Rs." + details.getUnit().getSellingPrice());
-        productDetailViewModel.offerPrice.setValue("Rs" + details.getUnit().getOfferPrice());
-        productDetailViewModel.offer.setValue(details.getSpecialOffer());
+        productDetailViewModel.sellingPrice.setValue("Rs. " + details.getUnit().getSellingPrice());
+        productDetailViewModel.offerPrice.setValue("Rs. " + details.getUnit().getOfferPrice());
+        productDetailViewModel.offer.setValue(details.getUnit().getPercDiscount());
+        productDetailViewModel.specialOffer.setValue(details.getSpecialOffer());
+        if (details.getAverageRating()==null){
+            fragmentProductDetailBinding.llReview.setVisibility(View.GONE);
+            fragmentProductDetailBinding.ratingBelowLine.setVisibility(View.GONE);
+        }
+        productDetailViewModel.alreadyPurchased.setValue(details.getAlreadyPurchased());
+        productDetailViewModel.averageRating.setValue(details.getAverageRating());
+        productDetailViewModel.productNoOfRating.setValue(details.getNoOfUserRated());
         if (productDetailViewModel.unitMutableLiveData.getValue().getInCart() == 1) {
             productDetailViewModel.isInCart.setValue(true);
         } else
@@ -326,6 +336,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             productDetailViewModel.isInFav.setValue(false);
         productDetailViewModel.productQuantity.setValue(String.valueOf(productDetailViewModel.unitMutableLiveData.getValue().getQty()));
         productDetailViewModel.productDetail.setValue(details.getProductDetails());
+//        fragmentProductDetailBinding.wvDetails.loadData(productDetailViewModel.productDetail.toString(), "text/html", "UTF-8");
         productDetailViewModel.productAbout.setValue(details.getAboutProduct());
         productDetailViewModel.productBenefit.setValue(details.getBenifit());
         productDetailViewModel.productStorageUses.setValue(details.getStoragesUses());
@@ -549,6 +560,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
+                        try {
+                            ((HomeActivity)context).setCountBudge(addToCartResponse.getCartItems());
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
                         details.getUnit().setQty(1);
                         details.getUnit().setInCart(1);
                         setDetailsValue();
@@ -585,6 +601,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         successToast(requireActivity(), addToCartResponse.getMessage());
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
+                        ((HomeActivity)context).setCountBudge(addToCartResponse.getCartItems());
                         setDetailsValue();
 //                        changePriceAndUnit(details.getUnit());
                         break;
@@ -818,6 +835,9 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         productRatingReviewAdapter = new ProductRatingReviewAdapter(context, reviewsList,0);
         //Adding adapter to recyclerview
         rvProductReview.setAdapter(productRatingReviewAdapter);
+        if (reviewsList.isEmpty())
+        fragmentProductDetailBinding.tvSeeMoreReview.setVisibility(View.GONE);
+        else fragmentProductDetailBinding.tvSeeMoreReview.setVisibility(View.VISIBLE);
     }
 
 }
