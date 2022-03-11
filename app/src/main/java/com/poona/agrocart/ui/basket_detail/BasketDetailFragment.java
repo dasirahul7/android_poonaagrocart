@@ -232,17 +232,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         }
     }
 
-    private void setReviewsHide(BasketDetailsResponse.Rating basketReviews) {
-        if (!basketReviews.getRating().isEmpty() && !basketReviews.getReview().isEmpty() ||
-                !basketReviews.getRating().equalsIgnoreCase("") &&
-                        !basketReviews.getReview().equalsIgnoreCase("")){
-            basketDetailsBinding.llRateView.setVisibility(View.GONE);
-        }else {
-//            basketDetailsBinding.ratingBarInput.setEnabled(false);
-            basketDetailsBinding.llRateView.setVisibility(View.VISIBLE);
-        }
-    }
-
     private void setBasketValue() {
         basketDetailViewModel.basketName.setValue(details.getBasketName());
         basketDetailViewModel.basketRate.setValue(details.getBasketRate());
