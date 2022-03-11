@@ -1,5 +1,8 @@
 package com.poona.agrocart.ui.nav_my_basket;
 
+import static com.poona.agrocart.app.AppConstants.ORDER_ID;
+import static com.poona.agrocart.app.AppConstants.ORDER_SUBSCRIPTION_ID;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -98,7 +101,7 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
         return basketOrderArrayList.size();
     }
 
-    public static class BasketOrdersViewHolder extends RecyclerView.ViewHolder {
+    public class BasketOrdersViewHolder extends RecyclerView.ViewHolder {
         RvOrdersBasketBinding rvOrdersBasketBinding;
 
         public BasketOrdersViewHolder(RvOrdersBasketBinding rvOrdersBasketBinding, View view, boolean isWallet) {
@@ -106,7 +109,7 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
             this.rvOrdersBasketBinding = rvOrdersBasketBinding;
             if (!isWallet)
                 rvOrdersBasketBinding.cardviewOrder.setOnClickListener(v -> {
-                    redirectToBasketOrderView(view);
+                    redirectToBasketOrderView(view, basketOrderArrayList.get(getLayoutPosition()).getOrderSubscriptionId() );
                 });
 
             if (isWallet)
@@ -118,9 +121,11 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
 
         }
 
-        private void redirectToBasketOrderView(View v) {
+        private void redirectToBasketOrderView(View v, String orderSubscriptionId) {
             Bundle bundle = new Bundle();
+
             bundle.putBoolean("isBasketVisible", true);
+            bundle.putString(ORDER_SUBSCRIPTION_ID, orderSubscriptionId);
             Navigation.findNavController(v).navigate(R.id.action_nav_basket_to_orderViewFragment2, bundle);
         }
 

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <data>
+        <variable
+            name="subscriptionPlan"
+            type="com.poona.agrocart.ui.basket_detail.model.SubscriptionPlan" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_subscription_plan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:paddingHorizontal="@dimen/_5sdp"
+        android:paddingVertical="@dimen/_4sdp"
+        app:cardCornerRadius="@dimen/_6sdp"
+        app:cardElevation="@dimen/_2sdp"
+        app:strokeWidth="0.5dp">
+
+        <RadioButton
+            android:id="@+id/radio"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_10sdp"
+            android:visibility="invisible"
+            app:useMaterialThemeColors="false" />
+
+        <com.poona.agrocart.widgets.CustomTextView
+            android:id="@+id/tv_subscription_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_4sdp"
+            android:text="@{subscriptionPlan.planType}"
+            android:textAllCaps="false"
+            android:textColor="@color/color_grey_txt"
+            android:textSize="@dimen/_16sp" />
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

@@ -47,6 +47,7 @@ public class BasketItemFragment extends BaseFragment {
     private FragmentBasketItemBinding fragmentBasketItemBinding;
     private BasketItemViewHolder basketItemViewHolder;
     private View view;
+    private String subscriptionBasketId = "";
     private ArrayList<ItemsDetail> basketItemList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     private RecyclerView rvBasketItem;
@@ -62,7 +63,7 @@ public class BasketItemFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-           // mParam1 = getArguments().getString(ARG_PARAM1);
+            subscriptionBasketId = getArguments().getString(ORDER_SUBSCRIPTION_ID);
           //  mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -211,7 +212,7 @@ public class BasketItemFragment extends BaseFragment {
 
         HashMap<String, String> map = new HashMap<>();
 
-        map.put(ORDER_SUBSCRIPTION_ID, "1");
+        map.put(ORDER_SUBSCRIPTION_ID, subscriptionBasketId);
         map.put(OFFSET, String.valueOf(offset));
         map.put(LIMIT, String.valueOf(limit));
 

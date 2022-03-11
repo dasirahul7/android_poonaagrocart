@@ -127,6 +127,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             order_id = getArguments().getString(ORDER_ID);
+            subscriptionBasketOrderId = getArguments().getString(ORDER_SUBSCRIPTION_ID);
         }
     }
 
@@ -371,7 +372,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private HashMap<String, String> MySubscriptionBasketDetailsInputParameter(){
         HashMap<String, String> map = new HashMap<>();
 
-        map.put(ORDER_SUBSCRIPTION_ID, "1");
+        map.put(ORDER_SUBSCRIPTION_ID, subscriptionBasketOrderId);
 
         return map;
     }
@@ -553,7 +554,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
         HashMap<String, String> map = new HashMap<>();
 
-        map.put(ORDER_SUBSCRIPTION_ID, "1");
+        map.put(ORDER_SUBSCRIPTION_ID,subscriptionBasketOrderId);
         map.put(OFFSET, String.valueOf(offset));
         map.put(LIMIT, String.valueOf(limit));
 
@@ -886,95 +887,6 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         dialog.show();
     }
 
-    /*{
-        Dialog dialog = new Dialog(getActivity());
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
-        dialog.setContentView(R.layout.order_cancel_dialog_box);
-        ImageView crossImage = dialog.findViewById(R.id.close_btn);
-        orderCancelCategory = dialog.findViewById(R.id.rv_cancel_category);
-        orderCancelReason = dialog.findViewById(R.id.rv_cancel_reason);
-        CustomButton btnSubmit = dialog.findViewById(R.id.btn_submit);
-
-        setCancelCategoryAdapter();
-
-        if(isConnectingToInternet(context)){
-
-            setCancelReasonAdapter();
-        }else {
-            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-        }
-
-
-        if(isBasketVisible){
-            orderCancelCategory.setVisibility(View.VISIBLE);
-        }else {
-
-            orderCancelCategory.setVisibility(View.GONE);
-        }
-
-        btnSubmit.setOnClickListener(view1 -> {
-            if(isBasketVisible){
-
-                infoToast(context, "Coming Soon.....");
-                dialog.dismiss();
-            }else {
-                if (isConnectingToInternet(context)){
-
-                    if(!strReasonType.equalsIgnoreCase("")) {
-                        callOrderCancelSuccessFullyApi(showCircleProgressDialog(context,""));
-                        dialog.dismiss();
-                    }else {
-                        warningToast(context, "Please select Reason");
-                    }
-
-                }else {
-                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-                }
-
-            }
-
-
-        });
-
-        crossImage.setOnClickListener(view -> {
-            dialog.dismiss();
-        });
-
-        dialog.show();
-
-        // Get screen width and height in pixels
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        // The absolute width of the available display size in pixels.
-        int displayWidth = displayMetrics.widthPixels;
-        // The absolute height of the available display size in pixels.
-        int displayHeight = displayMetrics.heightPixels;
-
-        //int displayWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        //int displayHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-
-        // Initialize a new window manager layout parameters
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-
-        // Copy the alert dialog window attributes to new layout parameter instance
-        layoutParams.copyFrom(dialog.getWindow().getAttributes());
-
-        // Set alert dialog width equal to screen width 100%
-        int dialogWindowWidth = (int) (displayWidth * 1.0f);
-        // Set alert dialog height equal to screen height 100%
-        int dialogWindowHeight = (int) (displayHeight * 1.0f);
-
-        // Set the width and height for the layout parameters
-        // This will bet the width and height of alert dialog
-        layoutParams.width = dialogWindowWidth;
-        layoutParams.height = dialogWindowHeight;
-
-        // Apply the newly created layout parameters to the alert dialog window
-        dialog.getWindow().setAttributes(layoutParams);
-    }*/
 
     private void setCancelReasonAdapter() {
         cancelOrderReasonList = new ArrayList<>();

@@ -50,7 +50,11 @@ import com.poona.agrocart.data.network.responses.Review;
 import com.poona.agrocart.databinding.FragmentBasketDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.basket_detail.adapter.BasketImagesAdapter;
+import com.poona.agrocart.ui.basket_detail.adapter.SubscriptionPlanAdaptor;
+import com.poona.agrocart.ui.basket_detail.model.SubscriptionPlan;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.nav_my_basket.BasketOrdersAdapter;
+import com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList;
 import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductRatingReviewAdapter;
@@ -64,6 +68,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class BasketDetailFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
@@ -79,9 +84,14 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private BasketDetailsResponse.BasketDetails details;
     private ArrayList<BasketDetailsResponse.BasketProduct> basketProducts;
     private BasketProductAdapter basketProductAdapter;
-    private RecyclerView rvBasketProducts;
+    private RecyclerView rvBasketProducts, rvPlanSubscription;
     private LinearLayoutManager linearLayoutManager;
     private BasketImagesAdapter basketImagesAdapter;
+    private CustomTextView tvSubAmount, tvSubQty, tvSubTotalAmount;
+
+    private SubscriptionPlanAdaptor subscriptionPlanAdaptor;
+    private ArrayList<SubscriptionPlan> subscriptionPlans ;
+
     /*Basket comment adapters*/
     private ArrayList<Review> reviewsArrayList;
     private ProductRatingReviewAdapter reviewsAdapter;
@@ -101,12 +111,11 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private RatingBar ratingBarInput;
     private BasketDetailsResponse.Rating ratingList;
     private ScrollView scrollView;
-
+    private String strAmount;
 
     public static BasketDetailFragment newInstance() {
         return new BasketDetailFragment();
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,6 +150,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             else ((HomeActivity)context).binding.appBarHome.textTitle.setText("");
         });
 
+        subscriptionPlanAdaptor();
         return rootView;
     }
 
@@ -148,6 +158,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private void initView() {
         rlRefreshPage = basketDetailsBinding.rlRefreshPage;
         scrollView = basketDetailsBinding.scrollView;
+        rvPlanSubscription = basketDetailsBinding.layoutAdded.rvSubType; //subscription
         basketDetailsBinding.itemLayout.setVisibility(View.GONE);
         if (isConnectingToInternet(context)) {
             callBasketDetailsApi(showCircleProgressDialog(context, ""));
@@ -182,9 +193,33 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         ratingBarInput = basketDetailsBinding.ratingBarInput;
         etFeedback = basketDetailsBinding.etFeedback;
 
+        tvSubAmount = basketDetailsBinding.layoutAdded.tvSubUnitPrice;
+        tvSubQty = basketDetailsBinding.layoutAdded.tvSubQty;
+        tvSubTotalAmount = basketDetailsBinding.layoutAdded.tvSubAmount;
+
         setHodeOrShowValue();
 
 
+    }
+
+    private void subscriptionPlanAdaptor(){
+        subscriptionPlans = new ArrayList<>();
+         basketListingData();
+         //callSubscriptionBasketListApi(showCircleProgressDialog(context, ""));
+        linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        rvPlanSubscription.setHasFixedSize(true);
+        rvPlanSubscription.setLayoutManager(linearLayoutManager);
+
+        subscriptionPlanAdaptor = new SubscriptionPlanAdaptor(context, subscriptionPlans);
+        rvPlanSubscription.setAdapter(subscriptionPlanAdaptor);
+    }
+
+    private void basketListingData() {
+        for (int i = 0; i < 4; i++) {
+            SubscriptionPlan subscriptionPlanList = new SubscriptionPlan();
+            subscriptionPlanList.setPlanType("Special Days");
+            subscriptionPlans.add(subscriptionPlanList);
+        }
     }
 
     private void setReviewsHide(BasketDetailsResponse.Rating basketReviews) {
@@ -223,6 +258,15 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         basketDetailViewModel.basketNutrition.setValue(details.getNutrition());
         basketDetailViewModel.basketAvgRating.setValue(details.getAverageRating());
         basketDetailViewModel.reviewLiveData.setValue(details.getReviews());
+
+        try {
+            int multiplication = Integer.parseInt(details.getBasketRate()) * Integer.parseInt("1");
+            tvSubTotalAmount.setText(String.valueOf(multiplication));
+
+        }catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
         /*Is in Favourite*/
         if (basketDetailViewModel.isInFav.getValue()) {
             isFavourite = true;

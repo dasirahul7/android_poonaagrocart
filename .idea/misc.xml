@@ -332,6 +332,7 @@
         <entry key="app/src/main/res/layout/rv_ticket.xml" value="0.18" />
         <entry key="app/src/main/res/layout/rv_ticket_comment.xml" value="0.33" />
         <entry key="app/src/main/res/layout/store_location_fragment.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/subscription_plan_type_recycler_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/text_spinner_wallet_transactions.xml" value="0.13958333333333334" />
         <entry key="app/src/main/res/layout/toast_layout.xml" value="0.9" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.21" />
