@@ -38,6 +38,7 @@
         <entry key="app/src/main/res/drawable/bg_checkbox.xml" value="0.19444444444444445" />
         <entry key="app/src/main/res/drawable/bg_coupon_code.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/bg_coupon_row.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/drawable/bg_dashboard_et_layout.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/bg_et_border.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/bg_et_search.xml" value="0.18981481481481483" />
         <entry key="app/src/main/res/drawable/bg_green_border.xml" value="0.1015" />
