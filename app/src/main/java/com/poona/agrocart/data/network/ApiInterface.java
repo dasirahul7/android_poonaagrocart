@@ -13,6 +13,7 @@ import static com.poona.agrocart.app.AppConstants.CHECK_VALID_PIN_CODE_API;
 import static com.poona.agrocart.app.AppConstants.CITY_API;
 import static com.poona.agrocart.app.AppConstants.CITY_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.CMS;
+import static com.poona.agrocart.app.AppConstants.COMMON_SEARCH;
 import static com.poona.agrocart.app.AppConstants.COUPON_API;
 import static com.poona.agrocart.app.AppConstants.CUSTOMER_ORDER_LIST;
 import static com.poona.agrocart.app.AppConstants.DELETE_ADDRESS_API;
@@ -79,6 +80,7 @@ import com.poona.agrocart.data.network.responses.BestSellingResponse;
 import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.data.network.responses.CityResponse;
 import com.poona.agrocart.data.network.responses.CmsResponse;
+import com.poona.agrocart.data.network.responses.CommonSearchResponse;
 import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.HomeBasketResponse;
@@ -485,4 +487,7 @@ public interface ApiInterface {
     @POST(MY_SUBSCRIBE_BASKET_DETAILS_CUSTOMER)
     Single<SubscribeBasketDetailsResponse> getMySubscriptionDetailsResponse(@FieldMap HashMap<String, String> mySubscriptionBasketDetailsInputParameter);
 
+    @FormUrlEncoded
+    @POST(COMMON_SEARCH)
+    Single<CommonSearchResponse> getCommonSearchResponse(@FieldMap HashMap<String,String> hashMap);
 }

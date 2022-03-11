@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,10 +15,11 @@ import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
-import com.poona.agrocart.data.network.responses.CategoryResponse;
-import com.poona.agrocart.data.network.responses.ProductListByResponse;
+import com.poona.agrocart.data.network.responses.CommonSearchResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.ui.search.model.CommonSearchItem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -29,9 +29,11 @@ import retrofit2.HttpException;
 
 public class SearchViewModel extends AndroidViewModel {
     public static final String TAG = SearchViewModel.class.getSimpleName();
-
+    public MutableLiveData<ArrayList<CommonSearchItem>> arrayListMutableSearchLiveData;
     public SearchViewModel(@NonNull Application application) {
         super(application);
+        arrayListMutableSearchLiveData = new MutableLiveData<>();
+        arrayListMutableSearchLiveData.setValue(null);
     }
 
     // Search ProductOld here
@@ -114,96 +116,44 @@ public class SearchViewModel extends AndroidViewModel {
     }
 
 
-    //Search Category
-    public LiveData<CategoryResponse> searchCategoryResponse(ProgressDialog progressDialog,
-                                                             HashMap<String, String> hashMap,
-                                                             SearchFragment searchFragment) {
-        MutableLiveData<CategoryResponse> categoryResponseMutableLiveData = new MutableLiveData<>();
-        Observer<CategoryResponse> categoryResponseObserver = categoryResponse -> {
-            ApiClientAuth.getClient(searchFragment.getContext())
-                    .create(ApiInterface.class)
-                    .homeCategoryResponse(hashMap)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSingleObserver<CategoryResponse>() {
-                        @Override
-                        public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull CategoryResponse categoryResponse) {
-                            if (categoryResponse != null) {
-                                Log.d(TAG, "categoryResponse onSuccess: " + categoryResponse.getCategoryData().getCategoryList().size());
-                                progressDialog.dismiss();
-                                categoryResponseMutableLiveData.setValue(categoryResponse);
-                            }
-                        }
+    /*Global Search here*/
+    public LiveData<CommonSearchResponse> getCommonSearchLiveData(ProgressDialog progressDialog,
+                                                                  HashMap<String,String> hashMap,
+                                                                  SearchFragment searchFragment){
 
-                        @Override
-                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+        MutableLiveData<CommonSearchResponse> commonSearchResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(searchFragment.context)
+                .create(ApiInterface.class)
+                .getCommonSearchResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<CommonSearchResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull CommonSearchResponse commonSearchResponse) {
+                      if (commonSearchResponse!=null){
+                          if (progressDialog!=null)
+                              progressDialog.dismiss();
+                          commonSearchResponseMutableLiveData.setValue(commonSearchResponse);
+                      }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog!=null)
                             progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        CommonSearchResponse commonSearchResponse = new CommonSearchResponse();
+                        try {
 
-                            Gson gson = new GsonBuilder().create();
-                            CategoryResponse response = new CategoryResponse();
-                            try {
-                                response = gson.fromJson(((HttpException) e).response().errorBody().string(),
-                                        CategoryResponse.class);
-
-                                categoryResponseMutableLiveData.setValue(response);
-                            } catch (Exception exception) {
-                                Log.e(TAG, exception.getMessage());
-                                ((NetworkExceptionListener) searchFragment).onNetworkException(1, "");
-                            }
-
-                            Log.e(TAG, e.getMessage());
+                            commonSearchResponse = gson.fromJson(((HttpException)e).response().errorBody().string(),
+                                    CommonSearchResponse.class);
+                            commonSearchResponseMutableLiveData.setValue(commonSearchResponse);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
                         }
-                    });
-        };
-        return categoryResponseMutableLiveData;
-
+                    }
+                });
+        return commonSearchResponseMutableLiveData;
     }
-
-    /*Search By category*/
-    public LiveData<ProductListByResponse> searchProductByCategory(ProgressDialog progressDialog,
-                                                                   HashMap<String, String> hashMap,
-                                                                   SearchFragment searchFragment) {
-        MutableLiveData<ProductListByResponse> productListByResponseMutableLiveData = new MutableLiveData<>();
-        Observer<ProductListByResponse> productListByResponseObserver = productListByResponse -> {
-            ApiClientAuth.getClient(searchFragment.getContext())
-                    .create(ApiInterface.class)
-                    .productsByCategoryResponse(hashMap)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSingleObserver<ProductListByResponse>() {
-                        @Override
-                        public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProductListByResponse productListByResponse1) {
-                            if (productListByResponse != null) {
-                                Log.d(TAG, "Search productListByResponse onSuccess: " + productListByResponse.getMessage());
-                                progressDialog.dismiss();
-                                productListByResponseMutableLiveData.setValue(productListByResponse);
-                            }
-                        }
-
-                        @Override
-                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                            progressDialog.dismiss();
-
-                            Gson gson = new GsonBuilder().create();
-                            ProductListByResponse response = new ProductListByResponse();
-                            try {
-                                response = gson.fromJson(((HttpException) e).response().errorBody().string(),
-                                        ProductListByResponse.class);
-
-                                productListByResponseMutableLiveData.setValue(response);
-                            } catch (Exception exception) {
-                                Log.e(TAG, exception.getMessage());
-                                ((NetworkExceptionListener) searchFragment).onNetworkException(1, "");
-                            }
-
-                            Log.e(TAG, e.getMessage());
-                        }
-                    });
-        };
-        return productListByResponseMutableLiveData;
-
-    }
-
-
 }
 
