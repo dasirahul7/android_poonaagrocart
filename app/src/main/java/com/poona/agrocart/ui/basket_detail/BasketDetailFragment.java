@@ -14,23 +14,18 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -53,22 +48,16 @@ import com.poona.agrocart.ui.basket_detail.adapter.BasketImagesAdapter;
 import com.poona.agrocart.ui.basket_detail.adapter.SubscriptionPlanAdaptor;
 import com.poona.agrocart.ui.basket_detail.model.SubscriptionPlan;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.nav_my_basket.BasketOrdersAdapter;
-import com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList;
-import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductRatingReviewAdapter;
-import com.poona.agrocart.ui.product_detail.model.ProductComment;
 import com.poona.agrocart.widgets.CustomEditText;
 import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.ExpandIconView;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 public class BasketDetailFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
@@ -112,6 +101,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private BasketDetailsResponse.Rating ratingList;
     private ScrollView scrollView;
     private String strAmount;
+
 
     public static BasketDetailFragment newInstance() {
         return new BasketDetailFragment();
@@ -197,7 +187,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         tvSubQty = basketDetailsBinding.layoutAdded.tvSubQty;
         tvSubTotalAmount = basketDetailsBinding.layoutAdded.tvSubAmount;
 
-        setHodeOrShowValue();
+        setHideOrShowValue();
 
 
     }
@@ -232,6 +222,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         }
     }
 
+
     private void setBasketValue() {
         basketDetailViewModel.basketName.setValue(details.getBasketName());
         basketDetailViewModel.basketRate.setValue(details.getBasketRate());
@@ -259,13 +250,15 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         basketDetailViewModel.reviewLiveData.setValue(details.getReviews());
         basketDetailViewModel.alreadyPurchased.setValue(details.getAlreadyPurchased());
 
+       /* String strTotal = basketDetailsBinding.layoutAdded.tvSubQty.getText().toString();
+
         try {
-            int multiplication = Integer.parseInt(details.getBasketRate()) * Integer.parseInt("1");
+            int multiplication = Integer.parseInt(details.getBasketRate()) * Integer.parseInt(strTotal);
             tvSubTotalAmount.setText(String.valueOf(multiplication));
 
         }catch (NullPointerException e) {
             e.printStackTrace();
-        }
+        }*/
 
         /*Is in Favourite*/
         if (basketDetailViewModel.isInFav.getValue()) {
@@ -583,7 +576,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         return map;
     }
 
-    private void setHodeOrShowValue() {
+    private void setHideOrShowValue() {
         //hide all expanded views initially
 
         hideOrShowAboutThisProduct();
@@ -810,10 +803,14 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
                 }
                 break;
-            case R.id.img_minus:
+         /*   case R.id.img_minus:
                 decreaseQuantity(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
                         basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
                 break;
+            case R.id.img_plus:
+                increaseQuantity(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
+                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
+                break;*/
             case R.id.iv_favourite:
                 addOrRemoveFromFavourite();
                 break;

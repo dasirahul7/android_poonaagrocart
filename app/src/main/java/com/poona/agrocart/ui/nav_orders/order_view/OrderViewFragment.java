@@ -110,7 +110,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
     /*Cancel Order dialog */
     private RecyclerView orderCancelCategory, orderCancelReason;
-    private List<CancelOrderCategoryList> cancelOrderCategoryList;
+   // private List<ItemsDetail> cancelOrderCategoryList;
     private OrderCancelCategoryAdaptor orderCancelCategoryAdaptor;
 
     private List<OrderCancelReasonResponse.OrderCancelReason> cancelOrderReasonList;
@@ -140,7 +140,15 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         view = fragmentOrderViewBinding.getRoot();
 
         initView();
+
         setRVAdapter();
+        fragmentOrderViewBinding.cvCancel.setOnClickListener(view1 -> {
+
+            CancelOrderDialogBox();
+
+        });
+
+
 
 
 
@@ -182,12 +190,6 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
         });
 
-
-        fragmentOrderViewBinding.cvCancel.setOnClickListener(view1 -> {
-
-            CancelOrderDialogBox();
-
-        });
 
         btnDownloadInvoice.setOnClickListener(view1 -> {
             if(isConnectingToInternet(context)){
@@ -525,6 +527,14 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
                             allBasketItem.addAll(basketItemList);
                             basketItemsAdapter.notifyDataSetChanged();
 
+
+                            if(subscribeBasketItemListResponse.getBasketSubscriptionDetails().getItemsDetails() != null &&
+                             subscribeBasketItemListResponse.getBasketSubscriptionDetails().getItemsDetails().size() > 0){
+
+                                basketItemList.addAll(subscribeBasketItemListResponse.getBasketSubscriptionDetails().getItemsDetails());
+
+                            }
+                           // orderCancelCategoryAdaptor.notifyDataSetChanged();
 
                         }
 
@@ -919,26 +929,17 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void setCancelCategoryAdapter() {
-        cancelOrderCategoryList = new ArrayList<>();
-       prepareListCancelCategory();
+      // prepareListCancelCategory();
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
+        callSubscriptionBasketItemList(showCircleProgressDialog(context, ""));
         orderCancelCategory.setHasFixedSize(true);
         orderCancelCategory.setLayoutManager(linearLayoutManager);
 
-        orderCancelCategoryAdaptor = new OrderCancelCategoryAdaptor(context, cancelOrderCategoryList);
+        orderCancelCategoryAdaptor = new OrderCancelCategoryAdaptor(context, basketItemList);
         orderCancelCategory.setAdapter(orderCancelCategoryAdaptor);
     }
 
-    private void prepareListCancelCategory() {
-        for (int i = 0; i < 4; i++) {
-            CancelOrderCategoryList orderCancelCategoryList = new CancelOrderCategoryList();
-            orderCancelCategoryList.setCategoryName("ABC");
-            orderCancelCategoryList.setCancelDate("22nd Sept 2021");
-
-            cancelOrderCategoryList.add(orderCancelCategoryList);
-        }
-    }
 
 
     /* Cancel Order Api */

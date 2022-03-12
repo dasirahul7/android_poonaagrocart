@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
-import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.ItemsDetail;
 import com.poona.agrocart.databinding.CancelOrderCategoryRecyclerViewBinding;
 import com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList;
 import com.poona.agrocart.ui.nav_orders.order_view.OrderViewFragment;
@@ -23,12 +23,12 @@ import java.util.List;
 
 public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancelCategoryAdaptor.OrderCancelCategoryViewHolder> {
     private int mSelectedItem = -1;
-    private List<CancelOrderCategoryList> cancelOrderCategoryLists;
+    private List<ItemsDetail> cancelOrderCategoryLists;
     private Context context;
     private CheckBox checkCategory;
     OrderViewFragment orderViewFragment = new OrderViewFragment();
 
-    public OrderCancelCategoryAdaptor(Context context, List<CancelOrderCategoryList> cancelOrderCategoryLists) {
+    public OrderCancelCategoryAdaptor(Context context, List<ItemsDetail> cancelOrderCategoryLists) {
         this.context=context;
         this.cancelOrderCategoryLists=cancelOrderCategoryLists;
     }
@@ -44,7 +44,7 @@ public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancel
 
     @Override
     public void onBindViewHolder(@NonNull OrderCancelCategoryAdaptor.OrderCancelCategoryViewHolder viewHolder, int position) {
-        CancelOrderCategoryList cancelOrderCategoryList = cancelOrderCategoryLists.get(position);
+        ItemsDetail cancelOrderCategoryList = cancelOrderCategoryLists.get(position);
         viewHolder.binding.setCancelOrderCategoryList(cancelOrderCategoryList);
         viewHolder.bind(cancelOrderCategoryList);
 
@@ -91,7 +91,7 @@ public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancel
             });*/
         }
 
-        public void bind(CancelOrderCategoryList cancelOrderCategoryList) {
+        public void bind(ItemsDetail cancelOrderCategoryList) {
             binding.setVariable(BR.cancelOrderCategoryList, cancelOrderCategoryList);
             binding.executePendingBindings();
         }

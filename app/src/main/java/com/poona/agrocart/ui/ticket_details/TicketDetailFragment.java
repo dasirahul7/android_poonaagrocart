@@ -101,6 +101,7 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
             public void onRefresh() {
                 refreshLayout.setRefreshing(true);
                 if (isConnectingToInternet(context)){
+                    fragmentTicketDetailBinding.clMainLayout.setVisibility(View.GONE);
                     setRvAdapter();
                 }else{
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

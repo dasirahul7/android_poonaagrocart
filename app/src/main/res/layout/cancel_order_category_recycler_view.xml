@@ -6,7 +6,7 @@
     <data>
         <variable
             name="cancelOrderCategoryList"
-            type="com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList" />
+            type="com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.ItemsDetail" />
 
     </data>
 
@@ -22,6 +22,7 @@
             android:background="@drawable/bg_dashboard_et_layout"
             android:elevation="@dimen/_3sdp"
             android:paddingHorizontal="@dimen/_5sdp"
+            android:paddingVertical="@dimen/_5sdp"
             android:layout_marginVertical="@dimen/_5sdp"
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:orientation="horizontal"
@@ -43,7 +44,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
-                android:text="@{cancelOrderCategoryList.categoryName}"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:text="@{cancelOrderCategoryList.basketName}"
                 android:textColor="@color/color_order_view_username"
                 android:textSize="@dimen/_14sp"
                 app:setCustomFont="@string/font_poppins_regular" />
@@ -69,7 +72,7 @@
                   android:paddingTop="@dimen/_2sdp"
                   android:layout_gravity="center"
                   android:gravity="center"
-                  android:text="@{cancelOrderCategoryList.cancelDate}"
+                  android:text="@{cancelOrderCategoryList.shouldDeliverOnDate}"
                   android:textColor="@color/color_order_view_username"
                   android:textSize="@dimen/_10sp"
                   app:setCustomFont="@string/font_poppins_regular" />
