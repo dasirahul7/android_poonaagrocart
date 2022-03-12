@@ -494,7 +494,7 @@ public abstract class BaseFragment extends Fragment implements DrawerLocker {
         dialog.getWindow().setAttributes(layoutParams);
     }
 
-    protected void goToAskSignInSignUpScreen() {
+    private void goToAskSignInSignUpScreen() {
         preferences.clearSharedPreferences(context);
         preferences.setFromLogOut(true);
 

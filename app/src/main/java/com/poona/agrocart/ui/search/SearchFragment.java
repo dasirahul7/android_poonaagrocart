@@ -37,12 +37,15 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.CommonSearchResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.FragmentSearchBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
+import com.poona.agrocart.ui.search.model.CommonSearchItem;
+import com.poona.agrocart.ui.search.adapter.CommonSearchAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +66,9 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     private final int totalCount = 0;
     private String searchKey = "", searchType = "";
     private ProductListAdapter searchAdapter;
+    private CommonSearchAdapter commonSearchAdapter;
     private final ArrayList<Product> productList = new ArrayList<>();
+    private final ArrayList<CommonSearchItem> commonSearchItemArrayList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
 
     @Nullable
@@ -76,13 +81,58 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         searchItems(searchView);
         productList.clear();
         if (isConnectingToInternet(context)) {
-            callSearchProductApi(searchView, showCircleProgressDialog(context, ""), "load");
+//            callSearchProductApi(searchView, showCircleProgressDialog(context, ""), "load");
+            callCommonSearchProductApi(showCircleProgressDialog(context, ""), "load");
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
         //pagination here
         setScrollListener();
         return searchView;
+    }
+
+    private void callCommonSearchProductApi(ProgressDialog progressDialog, String load) {
+        Observer<CommonSearchResponse> commonSearchResponseObserver = commonSearchResponse -> {
+            if (commonSearchResponse!=null){
+             if (progressDialog!=null){
+                 progressDialog.dismiss();
+                 switch (commonSearchResponse.getStatus()) {
+                     case STATUS_CODE_200://Record Create/Update Successfully
+                         if (commonSearchResponse.getBasketList()!=null||commonSearchResponse.getProductList()!=null){
+                             ArrayList<CommonSearchItem> commonSearchItems = new ArrayList<>();
+                             for (CommonSearchItem commonBasket:commonSearchResponse.getBasketList()){
+                                 commonBasket.setItemType("Basket");
+                                 commonSearchItems.add(commonBasket);
+                             }
+                             for (CommonSearchItem commonProduct: commonSearchResponse.getProductList()){
+                                 commonProduct.setItemType("Product");
+                                 commonSearchItems.add(commonProduct);
+                             }
+                             searchViewModel.arrayListMutableSearchLiveData.setValue(commonSearchItems);
+                             setSearchProductList();
+                         }
+                     case STATUS_CODE_403://Validation Errors
+                     case STATUS_CODE_400://Validation Errors
+                     case STATUS_CODE_404://Validation Errors
+                         //Todo delete in production
+                         if (load.equalsIgnoreCase("load")) {
+                             fragmentSearchBinding.tvNoData.setVisibility(View.VISIBLE);
+                             warningToast(context, commonSearchResponse.getMessage());
+                         }
+                         break;
+                     case STATUS_CODE_401://Unauthorized user
+                         goToAskSignInSignUpScreen(commonSearchResponse.getMessage(), context);
+                         break;
+                     case STATUS_CODE_405://Method Not Allowed
+                         infoToast(context, commonSearchResponse.getMessage());
+                         break;
+                 }
+
+             }
+            }
+        };
+        searchViewModel.getCommonSearchLiveData(progressDialog,listingCommonParams(),SearchFragment.this)
+                .observe(getViewLifecycleOwner(),commonSearchResponseObserver);
     }
 
 
@@ -112,7 +162,8 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                                 public void run() {
                                     if (isConnectingToInternet(context)) {
                                         productList.clear();
-                                        callSearchProductApi(searchView, showCircleProgressDialog(context, ""), "load");
+//                                        callSearchProductApi(searchView, showCircleProgressDialog(context, ""), "load");
+                                        callCommonSearchProductApi(showCircleProgressDialog(context, ""), "load");
                                     } else {
                                         showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                                     }
@@ -193,7 +244,8 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
                         && visibleItemCount != totalCount) {
                     if (isConnectingToInternet(context)) {
-                        callSearchProductApi(searchView, showCircleProgressDialog(context, ""), "onScrolled");
+//                        callSearchProductApi(searchView, showCircleProgressDialog(context, ""), "onScrolled");
+                        callCommonSearchProductApi(showCircleProgressDialog(context, ""), "onScrolled");
                     } else
                         showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
@@ -210,8 +262,13 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         fragmentSearchBinding.recProduct.setNestedScrollingEnabled(false);
         fragmentSearchBinding.recProduct.setHasFixedSize(true);
         fragmentSearchBinding.recProduct.setLayoutManager(linearLayoutManager);
-        searchAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> addToCartProduct(product, position));
-        fragmentSearchBinding.recProduct.setAdapter(searchAdapter);
+        searchViewModel.arrayListMutableSearchLiveData.observe(getViewLifecycleOwner(),commonSearchItems -> {
+            commonSearchItemArrayList.addAll(commonSearchItems);
+            commonSearchAdapter = new CommonSearchAdapter(commonSearchItemArrayList);
+            fragmentSearchBinding.recProduct.setAdapter(commonSearchAdapter);
+        });
+//        searchAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> addToCartProduct(product, position));
+
     }
 
     private void addToCartProduct(Product product, int position) {
@@ -222,7 +279,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, response.getMessage());
                         productList.clear();
-                        callSearchProductApi(searchView,showCircleProgressDialog(context, ""), "load");
+//                        callSearchProductApi(searchView,showCircleProgressDialog(context, ""), "load");
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -256,6 +313,13 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
         map.put(AppConstants.SEARCH, fragmentSearchBinding.etSearch.getText().toString().trim());
+        return map;
+    }
+    private HashMap<String, String> listingCommonParams() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(AppConstants.LIMIT, String.valueOf(limit));
+        map.put(AppConstants.OFFSET, String.valueOf(offset));
+        map.put(AppConstants.SEARCH_VALUE, fragmentSearchBinding.etSearch.getText().toString().trim());
         return map;
     }
 

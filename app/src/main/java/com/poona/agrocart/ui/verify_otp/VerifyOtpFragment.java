@@ -135,7 +135,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
 
         fragmentVerifyOtpBinding.etOtp.requestFocus();
 
-        setUpTextWatcher();
+//        setUpTextWatcher();
 //        startOtpTimer();
     }
 

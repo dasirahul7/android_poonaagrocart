@@ -140,6 +140,12 @@ public class AppConstants {
     public static final String CHECK_VALID_PIN_CODE_API = "check-pincode-availablity";
     public static final String SET_DEFAULT_ADDRESS_API = "make-address-default";
 
+    /*Search API*/
+    public static final String COMMON_SEARCH="common-search";
+
+    /*Search api Keys*/
+    public static final String SEARCH_VALUE = "search_value";
+
     /*Favourite Api Keys*/
     public static final String ITEM_TYPE = "item_type";
 

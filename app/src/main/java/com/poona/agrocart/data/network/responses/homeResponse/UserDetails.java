@@ -4,6 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class UserDetails {
+    @SerializedName("user_id")
+    @Expose
+    private String userId;
     @SerializedName("city_id")
     @Expose
     private String cityId;
@@ -22,9 +25,6 @@ public class UserDetails {
     @SerializedName("mobile")
     @Expose
     private String mobile;
-    @SerializedName("user_id")
-    @Expose
-    private String userId;
     @SerializedName("area_name")
     @Expose
     private String areaName;

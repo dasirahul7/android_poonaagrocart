@@ -489,7 +489,7 @@ public class HomeViewModel extends AndroidViewModel {
 
     public Observable<List<String>> getHomepageResponses(Context context,
                                                          HashMap<String, String> homeHashMap
-                                                         ) {
+    ) {
         Observable<HomeResponse> homeAllDataObservable = ApiClientAuth
                 .getClient(context).create(ApiInterface.class).getHomeAllDataObservable(homeHashMap);
 

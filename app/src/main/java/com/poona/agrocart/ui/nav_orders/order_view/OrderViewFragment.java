@@ -1049,8 +1049,8 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
                         warningToast(context, ratingAndFeedBackResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        warningToast(context, ratingAndFeedBackResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+//                        warningToast(context, ratingAndFeedBackResponse.getMessage());
+                        goToAskSignInSignUpScreen( ratingAndFeedBackResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, ratingAndFeedBackResponse.getMessage());

@@ -166,8 +166,8 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
                         errorToast(context, cmsResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        warningToast(context, cmsResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+//                        warningToast(context, cmsResponse.getMessage());
+                        goToAskSignInSignUpScreen(cmsResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, cmsResponse.getMessage());

@@ -118,7 +118,7 @@ public class FaQFragment extends BaseFragment implements NetworkExceptionListene
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         warningToast(context, addFaqsResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+                        goToAskSignInSignUpScreen(addFaqsResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, addFaqsResponse.getMessage());

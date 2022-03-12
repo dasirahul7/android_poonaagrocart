@@ -796,8 +796,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         warningToast(context, baseResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        warningToast(context, baseResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+//                        warningToast(context, baseResponse.getMessage());
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, baseResponse.getMessage());
