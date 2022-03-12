@@ -2,16 +2,25 @@ package com.poona.agrocart.ui.basket_detail;
 
 import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.ITEM_TYPE;
+import static com.poona.agrocart.app.AppConstants.NO_OF_SUBSCRIPTION;
+import static com.poona.agrocart.app.AppConstants.ORDER_ID;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_MODE_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.RATING;
 import static com.poona.agrocart.app.AppConstants.REVIEW;
 import static com.poona.agrocart.app.AppConstants.REVIEW_LIST;
+import static com.poona.agrocart.app.AppConstants.SLOT_END_TIME;
+import static com.poona.agrocart.app.AppConstants.SLOT_ID;
+import static com.poona.agrocart.app.AppConstants.SLOT_START_TIME;
+import static com.poona.agrocart.app.AppConstants.START_DATE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_BASKET_PRODUCTS;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION_TYPE;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -172,6 +181,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         basketDetailsBinding.layoutAdded.imgPlus.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.imgMinus.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.tvStartDate.setOnClickListener(this);
+        basketDetailsBinding.layoutAdded.btnLogin.setOnClickListener(this);
 
 
         vpImages = basketDetailsBinding.vpProductImages;
@@ -249,6 +259,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         basketDetailViewModel.basketAvgRating.setValue(details.getAverageRating());
         basketDetailViewModel.reviewLiveData.setValue(details.getReviews());
         basketDetailViewModel.alreadyPurchased.setValue(details.getAlreadyPurchased());
+
+
 
        /* String strTotal = basketDetailsBinding.layoutAdded.tvSubQty.getText().toString();
 
@@ -834,6 +846,9 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                     NavHostFragment.findNavController(BasketDetailFragment.this).
                             navigate(R.id.action_nav_basket_details_to_nav_product_review, bundle);
                     break;
+            case R.id.btn_login:
+               callSubscribeBasketApi(showCircleProgressDialog(context,""));
+                break;
 
 
         }
@@ -844,6 +859,59 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         map.put(BASKET_ID, basketId);
         map.put(RATING, String.valueOf(ratingBarInput.getRating()));
         map.put(REVIEW, etFeedback.getText().toString().trim());
+        return map;
+    }
+
+    /*Subscribe Basket parameter and api */
+
+    private void callSubscribeBasketApi(ProgressDialog progressDialog){
+        Observer<BaseResponse> baseResponseObserver = baseResponse -> {
+            if (baseResponse != null) {
+                Log.e("Subscribe Basket  Api ResponseData", new Gson().toJson(baseResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, baseResponse.getMessage());
+
+                      //  callOrderDetailsApi(showCircleProgressDialog(context, ""));
+
+                        break;
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, baseResponse.getMessage());
+
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+
+        };
+        basketDetailViewModel.getSubscrideBasketApi(context, progressDialog, SubscriptionBasketInputParameter(), BasketDetailFragment.this)
+                .observe(getViewLifecycleOwner(), baseResponseObserver);
+    }
+
+    private HashMap<String, String> SubscriptionBasketInputParameter(){
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put(SUBSCRIPTION_TYPE, "1");
+        map.put(NO_OF_SUBSCRIPTION, "1");
+        map.put(START_DATE, "05-Mar-2022");
+        map.put(SLOT_ID, "21");
+        map.put(PAYMENT_MODE_ID, "1");
+        map.put(BASKET_ID, basketId);
+        map.put(SLOT_START_TIME, "12PM");
+        map.put(SLOT_END_TIME, "3PM");
+
         return map;
     }
 

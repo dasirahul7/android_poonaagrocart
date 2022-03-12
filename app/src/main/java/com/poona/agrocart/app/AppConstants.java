@@ -229,6 +229,7 @@ public class AppConstants {
     public static final String MY_SUBSCRIBE_BASKET_LIST_CUSTOMER = "subscribe-basket-list-customer";
     public static final String MY_SUBSCRIBE_BASKET_DETAILS_CUSTOMER = "my-subscribe-basket-details-customer";
     public static final String SUBSCRIBE_BASKET_PRODUCTS = "subscribed-basket-products";
+    public static final String SUBSCRIBE_BASKET_CUSTOMER = "subscribe-basket-customer";
 
    /* Rating and Review */
    public static final String RATING = "rating";
@@ -321,6 +322,15 @@ public class AppConstants {
     public static String ORDER_SUBSCRIPTION_ID = "order_subscription_id";
     public static String CANCEL_ID = "cancel_id";
     public static final String ITEM_LIST = "item_list";
+
+    public static final String SUBSCRIPTION_TYPE = "subscription_type";
+    public static final String NO_OF_SUBSCRIPTION = "no_of_subscription";
+    public static final String START_DATE = "start_date";
+    //public static final String SLOT_ID = "slot_id";
+   // public static final String PAYMENT_MODE_ID = "payment_mode_id";
+   // public static final String BASKET_ID = "basket_id";
+    public static final String SLOT_START_TIME = "slot_start_time";
+    public static final String SLOT_END_TIME = "slot_end_time";
 
     /*Order Summary KEYS*/
     public static final String ORDER_SUMMARY ="order-summary";

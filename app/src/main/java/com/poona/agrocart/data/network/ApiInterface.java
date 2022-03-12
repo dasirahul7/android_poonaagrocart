@@ -58,6 +58,7 @@ import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.STATE_API;
 import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_BASKET_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_BASKET_PRODUCTS;
 import static com.poona.agrocart.app.AppConstants.TICKET_TYPE;
 import static com.poona.agrocart.app.AppConstants.UPDATE_ADDRESS_API;
@@ -124,6 +125,7 @@ import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResp
 
 import java.util.HashMap;
 
+import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
@@ -495,4 +497,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(COMMON_SEARCH)
     Single<CommonSearchResponse> getCommonSearchResponse(@FieldMap HashMap<String,String> hashMap);
+
+    @FormUrlEncoded
+    @POST(SUBSCRIBE_BASKET_CUSTOMER)
+    Single<BaseResponse> getSubscriptionBasketDetailsApi(@FieldMap HashMap<String, String> subscriptionBasketInputParameter);
+
 }

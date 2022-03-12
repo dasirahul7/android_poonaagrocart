@@ -97,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_2sdp"
-                    android:text="@{`Rs. `+basketItemModel.weight+ ` ` +basketItemModel.unit}"
+                    android:text="@{basketItemModel.weight+basketItemModel.unit}"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp" />
 
@@ -113,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:text="@{basketItemModel.shouldDeliverOnDate}"
+                        android:text="@{basketItemModel.shouldDeliverOnDate +` `+ basketItemModel.delierySlotStartAndEndTime}"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_12sp" />
 
@@ -121,7 +121,7 @@
                         android:id="@+id/tv_quantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{basketItemModel.cost+ ` x ` +basketItemModel.quantity}"
+                        android:text="@{`Rs. `+basketItemModel.cost+ ` x ` +basketItemModel.quantity}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sp"
                         android:visibility="gone"

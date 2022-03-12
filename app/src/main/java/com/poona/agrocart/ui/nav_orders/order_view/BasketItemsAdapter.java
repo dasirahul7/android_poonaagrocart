@@ -45,6 +45,7 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
 
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull BasketItemViewHolder holder, int position) {
         final ItemsDetail basketItem = basketItems.get(position);
@@ -58,12 +59,14 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
                 holder.rvBasketDetailBinding.tvProductName.setText("N/A");
             }
 
-            /*Weight parameter*/
+            holder.rvBasketDetailBinding.tvWeight.setVisibility(View.GONE);
+
+            /*Weight parameter*//*
             if(basketItem.getWeight() != null && !basketItem.getWeight().equals("")){
                 holder.rvBasketDetailBinding.tvWeight.setText(basketItem.getWeight());
             }else {
                 holder.rvBasketDetailBinding.tvWeight.setText("N/A");
-            }
+            }*/
 
             /*Select the date and time*/
             String selectedDate = basketItem.getShouldDeliverOnDate();
@@ -74,21 +77,32 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            holder.rvBasketDetailBinding.tvDateAndTime.setText(txtDisplayDate);
+            holder.rvBasketDetailBinding.tvDateAndTime.setText(txtDisplayDate + " "+ basketItem.getDelierySlotStartAndEndTime());
 
 
         }else{
 
-            if(basketItem.getProductName() != null && !basketItem.getProductName().equals("")){
-                holder.rvBasketDetailBinding.tvProductName.setText(basketItem.getProductName());
-            }else {
-                holder.rvBasketDetailBinding.tvProductName.setText("N/A");
-            }
+            if(basketItem.getItemType().equals("basket")){
+                if(basketItem.getBasketName() != null && !basketItem.getBasketName().equals("")){
+                    holder.rvBasketDetailBinding.tvProductName.setText(basketItem.getBasketName());
+                }else {
+                    holder.rvBasketDetailBinding.tvProductName.setText("N/A");
+                }
 
-            if(basketItem.getWeight() != null && !basketItem.getWeight().equals("")){
-                holder.rvBasketDetailBinding.tvWeight.setText(basketItem.getWeight());
+                holder.rvBasketDetailBinding.tvWeight.setVisibility(View.GONE);
             }else {
-                holder.rvBasketDetailBinding.tvWeight.setText("N/A");
+
+                if(basketItem.getProductName() != null && !basketItem.getProductName().equals("")){
+                    holder.rvBasketDetailBinding.tvProductName.setText(basketItem.getProductName());
+                }else {
+                    holder.rvBasketDetailBinding.tvProductName.setText("N/A");
+                }
+
+                if(basketItem.getWeight() != null && !basketItem.getWeight().equals("")){
+                    holder.rvBasketDetailBinding.tvWeight.setText(basketItem.getWeight());
+                }else {
+                    holder.rvBasketDetailBinding.tvWeight.setText("N/A");
+                }
             }
 
         }

@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ItemsDetail implements Parcelable, Serializable {
+public class ItemsDetail  {
 
     @SerializedName("order_id")
     @Expose
@@ -72,17 +72,6 @@ public class ItemsDetail implements Parcelable, Serializable {
         totalPrice = in.readString();
     }
 
-    public static final Creator<ItemsDetail> CREATOR = new Creator<ItemsDetail>() {
-        @Override
-        public ItemsDetail createFromParcel(Parcel in) {
-            return new ItemsDetail(in);
-        }
-
-        @Override
-        public ItemsDetail[] newArray(int size) {
-            return new ItemsDetail[size];
-        }
-    };
 
     public String getOrderId() {
         return orderId;
@@ -196,18 +185,5 @@ public class ItemsDetail implements Parcelable, Serializable {
         this.productName = productName;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(basketName);
-        parcel.writeString(featureImg);
-        parcel.writeString(weight);
-        parcel.writeString(shouldDeliverOnDate);
-        parcel.writeString(cost);
-        parcel.writeString(orderStatus);
-    }
 }

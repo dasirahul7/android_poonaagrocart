@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.basket_detail;
 
 import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
@@ -322,4 +323,44 @@ public class BasketDetailViewModel extends AndroidViewModel {
     }
 
 
+    public LiveData<BaseResponse> getSubscrideBasketApi(Context context, ProgressDialog progressDialog
+            , HashMap<String, String> subscriptionBasketInputParameter, BasketDetailFragment basketDetailFragment) {
+
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(context)
+                .create(ApiInterface.class)
+                .getSubscriptionBasketDetailsApi(subscriptionBasketInputParameter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            baseResponseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) basketDetailFragment).onNetworkException(5,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return baseResponseMutableLiveData;
+
+
+    }
 }

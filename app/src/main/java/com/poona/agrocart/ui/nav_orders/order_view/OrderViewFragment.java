@@ -88,7 +88,6 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private LinearLayoutManager linearLayoutManager;
     private BasketItemsAdapter basketItemsAdapter;
     private ArrayList<ItemsDetail> basketItemList;
-    private ArrayList<ItemsDetail> allBasketItem = new ArrayList<>();
     private boolean isBasketVisible = true;
     private RatingBar ratingBar;
     private CustomEditText feedbackComment;
@@ -138,21 +137,11 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         orderViewDetailsViewModel = new ViewModelProvider(this).get(OrderViewDetailsViewModel.class);
         fragmentOrderViewBinding.setOrderViewDetailsViewModel(orderViewDetailsViewModel);
         view = fragmentOrderViewBinding.getRoot();
+        fragmentOrderViewBinding.clOrderViewMainLayout.setVisibility(View.GONE);
 
         initView();
 
         setRVAdapter();
-        fragmentOrderViewBinding.cvCancel.setOnClickListener(view1 -> {
-
-            CancelOrderDialogBox();
-
-        });
-
-
-
-
-
-
 
         return view;
     }
@@ -190,6 +179,11 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
         });
 
+        fragmentOrderViewBinding.cvCancel.setOnClickListener(view1 -> {
+
+            CancelOrderDialogBox();
+
+        });
 
         btnDownloadInvoice.setOnClickListener(view1 -> {
             if(isConnectingToInternet(context)){
@@ -209,7 +203,6 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         });
 
         fragmentOrderViewBinding.tvSeeMore.setOnClickListener(view -> {
-            bundle.putParcelableArrayList(ITEM_LIST, allBasketItem);
             isBasketVisible = bundle.getBoolean("isBasketVisible");
             NavHostFragment.findNavController(OrderViewFragment.this).
                     navigate(R.id.action_order_view_fragment_to_nav_basket_item_fragment, bundle);
@@ -330,6 +323,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
             if (subscribeBasketDetailsResponse != null) {
                 Log.e(" My Subscription Basket Details Api ResponseData", new Gson().toJson(subscribeBasketDetailsResponse));
+                fragmentOrderViewBinding.clOrderViewMainLayout.setVisibility(View.VISIBLE);
                 refreshLayout.setRefreshing(false);
                 if (progressDialog != null) {
                     progressDialog.dismiss();
@@ -523,8 +517,8 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
                                 && subscribeBasketItemListResponse.getBasketSubscriptionDetails().getItemsDetails().size() > 0) {
                             basketItemList.clear();
                             basketItemList.addAll(subscribeBasketItemListResponse.getBasketSubscriptionDetails().getItemsDetails());
-                            allBasketItem.clear();
-                            allBasketItem.addAll(basketItemList);
+                            /*allBasketItem.clear();
+                            allBasketItem.addAll(basketItemList);*/
                             basketItemsAdapter.notifyDataSetChanged();
 
 
@@ -576,6 +570,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private void callOrderDetailsApi(ProgressDialog progressDialog) {
         @SuppressLint("NotifyDataSetChanged")
         Observer<MyOrderDetailsResponse> myOrderDetailsResponseObserver = myOrderDetailsResponse -> {
+            fragmentOrderViewBinding.clOrderViewMainLayout.setVisibility(View.VISIBLE);
             refreshLayout.setRefreshing(false);
             if (myOrderDetailsResponse != null) {
                 Log.e(" My Order Details Api Response Data", new Gson().toJson(myOrderDetailsResponse));
@@ -932,7 +927,11 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
       // prepareListCancelCategory();
 
         linearLayoutManager = new LinearLayoutManager(requireContext());
-        callSubscriptionBasketItemList(showCircleProgressDialog(context, ""));
+
+        if(isBasketVisible){
+            callSubscriptionBasketItemList(showCircleProgressDialog(context, ""));
+        }
+        //callSubscriptionBasketItemList(showCircleProgressDialog(context, ""));
         orderCancelCategory.setHasFixedSize(true);
         orderCancelCategory.setLayoutManager(linearLayoutManager);
 
