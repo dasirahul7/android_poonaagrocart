@@ -542,6 +542,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             fragmentProductDetailBinding.etQuantity.setText("");
             callAddToCartApi(showCircleProgressDialog(context, ""), details);
         } else {
+            fragmentProductDetailBinding.ivMinus.setEnabled(true);
             increaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
                     fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivPlus);
         }

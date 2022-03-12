@@ -37,7 +37,7 @@ public class BasketDetailViewModel extends AndroidViewModel {
     public MutableLiveData<String> basketTotalGrams;
     public MutableLiveData<Boolean> isInCart;
     public MutableLiveData<Boolean> isInFav;
-    public MutableLiveData<Integer> basketQuantity;
+    public MutableLiveData<String> basketQuantity;
     public MutableLiveData<String> basketDetail;
     public MutableLiveData<String> basketAbout;
     public MutableLiveData<String> basketBenefit;
