@@ -117,7 +117,6 @@ public class MyBasketFragment extends BaseFragment implements NetworkExceptionLi
                         break;
                     case STATUS_CODE_404://Validation Errors
                         warningToast(context, subscribeBasketListCustomerResponse.getMessage());
-
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         goToAskSignInSignUpScreen(subscribeBasketListCustomerResponse.getMessage(), context);
@@ -131,12 +130,10 @@ public class MyBasketFragment extends BaseFragment implements NetworkExceptionLi
                     progressDialog.dismiss();
                 }
             }
-
         };
         myBasketViewModel.getSubScriptionBasketListApi(progressDialog, context, MyBasketFragment.this)
                 .observe(getViewLifecycleOwner(), subscribeBasketListCustomerResponseObserver);
     }
-
 
     /*Download the document*/
     private void beginDownload(String docPdf) {
@@ -195,6 +192,7 @@ public class MyBasketFragment extends BaseFragment implements NetworkExceptionLi
             }
         }
     }
+
     @Override
     public void onNetworkException(int from, String type) {
 

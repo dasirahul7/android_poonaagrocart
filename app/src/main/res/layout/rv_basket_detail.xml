@@ -91,7 +91,6 @@
 
                 </LinearLayout>
 
-
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_weight"
                     android:layout_width="match_parent"
