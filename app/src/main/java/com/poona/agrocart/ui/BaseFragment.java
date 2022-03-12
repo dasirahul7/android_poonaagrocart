@@ -338,6 +338,9 @@ public abstract class BaseFragment extends Fragment implements DrawerLocker {
     protected void goToAskSignInSignUpScreen(String message, Context context) {
         goToAskSignInSignUpScreenDialog(message, context);
     }
+    protected void goToAskSelectLocationScreen(String message, Context context) {
+        goToAskSelectLocationDialog(message, context);
+    }
 
     protected void goToAskAndDismiss(String message, Context context) {
         goToAskAndDismissDialog(message, context);
@@ -369,6 +372,81 @@ public abstract class BaseFragment extends Fragment implements DrawerLocker {
         customButton.setOnClickListener(v -> {
             dialog.dismiss();
             goToAskSignInSignUpScreen();
+        });
+
+        /*dialog.setOnKeyListener((arg0, keyCode, event) -> {
+            // TODO Auto-generated method stub
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                dialog.dismiss();
+                playClickSound();
+            }
+            return true;
+        });*/
+
+        dialog.show();
+
+        // Get screen width and height in pixels
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // The absolute width of the available display size in pixels.
+        int displayWidth = displayMetrics.widthPixels;
+        // The absolute height of the available display size in pixels.
+        int displayHeight = displayMetrics.heightPixels;
+
+        //int displayWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        //int displayHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        // Initialize a new window manager layout parameters
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        // Copy the alert dialog window attributes to new layout parameter instance
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+
+        // Set the alert dialog window width and height
+        // Set alert dialog width equal to screen width 90%
+        // int dialogWindowWidth = (int) (displayWidth * 0.9f);
+        // Set alert dialog height equal to screen height 90%
+        // int dialogWindowHeight = (int) (displayHeight * 0.9f);
+
+        // Set alert dialog width equal to screen width 100%
+        int dialogWindowWidth = (int) (displayWidth * 0.8f);
+        // Set alert dialog height equal to screen height 100%
+        //int dialogWindowHeight = (int) (displayHeight * 0.8f);
+
+        // Set the width and height for the layout parameters
+        // This will bet the width and height of alert dialog
+        layoutParams.width = dialogWindowWidth;
+        //layoutParams.height = dialogWindowHeight;
+
+        // Apply the newly created layout parameters to the alert dialog window
+        dialog.getWindow().setAttributes(layoutParams);
+    }
+    private void goToAskSelectLocationDialog(String message, Context context) {
+        AlertDialog.Builder builder = new AlertDialog
+                .Builder(new ContextThemeWrapper(context,
+                R.style.CustomAlertDialog));
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_text_with_button, null);
+
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+
+        CustomTextView tvHeading = dialogView.findViewById(R.id.tv_heading);
+        tvHeading.setText(message);
+        // tvHeading.setText(message + "\n\n" + preferences.getAuthorizationToken());
+        tvHeading.setTextIsSelectable(true);
+
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
+
+        CustomButton customButton = dialogView.findViewById(R.id.bt_ok);
+
+        customButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            goToAskSelectLocationScreen();
         });
 
         /*dialog.setOnKeyListener((arg0, keyCode, event) -> {
@@ -498,6 +576,12 @@ public abstract class BaseFragment extends Fragment implements DrawerLocker {
         preferences.clearSharedPreferences(context);
         preferences.setFromLogOut(true);
 
+        Intent intent = new Intent(requireActivity(), SplashScreenActivity.class);
+        intent.putExtra(FROM_SCREEN, LOGOUT);
+        startActivity(intent);
+        requireActivity().finish();
+    }
+    private void goToAskSelectLocationScreen() {
         Intent intent = new Intent(requireActivity(), SplashScreenActivity.class);
         intent.putExtra(FROM_SCREEN, LOGOUT);
         startActivity(intent);
@@ -703,7 +787,7 @@ public abstract class BaseFragment extends Fragment implements DrawerLocker {
         if (address.getPincode() != null && !TextUtils.isEmpty(address.getPincode()))
             fullAddressSb.append(address.getPincode());
         address.setFullAddress(fullAddressSb.toString());
-       return address;
+        return address;
     }
 
     public void setDrawerLocked(boolean enabled){

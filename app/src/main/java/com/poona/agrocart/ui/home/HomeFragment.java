@@ -740,14 +740,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         //setHeader
                         if (homeResponse != null) {
                             System.out.println("user name :"+homeResponse.getHomeResponseData().getUserData().getName());
-                            preferences.setUserProfile(homeResponse.getHomeResponseData().getUserData().getImage());
-                            preferences.setUserName(homeResponse.getHomeResponseData().getUserData().getName());
-                            preferences.setUserAddress(homeResponse.getHomeResponseData().getUserData().getCityName()
-                                    + ", " + homeResponse.getHomeResponseData().getUserData().getAreaName());
-                            if (homeResponse.getHomeResponseData().getUserData().getImage() != null
-                                    && !TextUtils.isEmpty(homeResponse.getHomeResponseData().getUserData().getImage())) {
-                                ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getHomeResponseData().getUserData().getName());
-                                loadingImage(context, homeResponse.getHomeResponseData().getUserData().getImage(), ((HomeActivity) context).civProfilePhoto);
+                            if (homeResponse.getHomeResponseData().getUserData().getAreaName()==null
+                                    ||homeResponse.getHomeResponseData().getUserData().getCityName()==null){
+                                preferences.setUserAddress(null);
+                                preferences.setIsLoggedIn(false);
+                                warningToast(context,"Address is invalid");
+                                goToAskSelectLocationScreen("InValid Address",context);
+                            }else {
+                                preferences.setUserProfile(homeResponse.getHomeResponseData().getUserData().getImage());
+                                preferences.setUserName(homeResponse.getHomeResponseData().getUserData().getName());
+                                preferences.setUserAddress(homeResponse.getHomeResponseData().getUserData().getCityName()
+                                        + ", " + homeResponse.getHomeResponseData().getUserData().getAreaName());
+                                if (homeResponse.getHomeResponseData().getUserData().getImage() != null
+                                        && !TextUtils.isEmpty(homeResponse.getHomeResponseData().getUserData().getImage())) {
+                                    ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getHomeResponseData().getUserData().getName());
+                                    loadingImage(context, homeResponse.getHomeResponseData().getUserData().getImage(), ((HomeActivity) context).civProfilePhoto);
+                                }
                             }
                         }
                         //Add All Banner
