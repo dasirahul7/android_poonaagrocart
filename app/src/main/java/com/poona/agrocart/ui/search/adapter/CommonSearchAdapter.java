@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
+import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.RowSearchItemBinding;
 import com.poona.agrocart.ui.search.model.CommonSearchItem;
 
@@ -16,27 +17,43 @@ import java.util.ArrayList;
 public class CommonSearchAdapter extends RecyclerView.Adapter<CommonSearchAdapter.SearchViewHolder> {
     private final ArrayList<CommonSearchItem> commonSearchItems;
     private RowSearchItemBinding rowSearchItemBinding;
+    private OnSearchItemClickListener onSearchItemClickListener;
+    private String itemId,pUid;
+
     @NonNull
     @Override
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         rowSearchItemBinding = RowSearchItemBinding.inflate(LayoutInflater.from(parent.getContext()));
         return new SearchViewHolder(rowSearchItemBinding);
     }
-    public interface onSearchItemClickListener{
+    public interface OnSearchItemClickListener{
         void onSearchItemClick(CommonSearchItem commonSearchItem);
-    }
-    public interface onSearchAddClickListener{
-        void onSearchAddClick(CommonSearchItem commonSearchItem,int position);
+        void onSearchAddClick(String itemId, String pUid, int position);
     }
 
-    public CommonSearchAdapter(ArrayList<CommonSearchItem> commonSearchItems) {
+    public CommonSearchAdapter(ArrayList<CommonSearchItem> commonSearchItems,
+                               OnSearchItemClickListener onSearchItemClickListener) {
         this.commonSearchItems = commonSearchItems;
+        this.onSearchItemClickListener = onSearchItemClickListener;
     }
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         CommonSearchItem commonSearchItem = commonSearchItems.get(position);
         rowSearchItemBinding.setCommonSearchData(commonSearchItem);
+        if (commonSearchItem.getItemType().equalsIgnoreCase("Product")) {
+            itemId = commonSearchItem.getProductId();
+            pUid = commonSearchItem.getPuId();
+        }
+        else itemId = commonSearchItem.getBasketId();
+        if (commonSearchItem.getInCart()==1)
+            rowSearchItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
+        else rowSearchItemBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
+
+        //Add to cart initialize here
+        rowSearchItemBinding.imgPlus.setOnClickListener(view -> {
+           onSearchItemClickListener.onSearchAddClick(itemId,pUid,position);
+        });
         holder.bind(commonSearchItem);
     }
 

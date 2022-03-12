@@ -173,7 +173,7 @@
                 android:visibility="gone" />
 
             <ImageView
-                android:id="@+id/ic_add_to_cart"
+                android:id="@+id/img_plus"
                 style="@style/PlusButtonStyle"
                 android:layout_width="@dimen/_28sdp"
                 android:layout_height="@dimen/_28sdp"

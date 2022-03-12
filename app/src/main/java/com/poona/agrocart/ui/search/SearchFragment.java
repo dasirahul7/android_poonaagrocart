@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.search;
 
+import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.PU_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
@@ -52,7 +53,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SearchFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
+public class SearchFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener, CommonSearchAdapter.OnSearchItemClickListener {
     public static final String TAG = SearchFragment.class.getSimpleName();
     Timer timer = new Timer();
     boolean isTyping = false;
@@ -87,52 +88,54 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
         //pagination here
-        setScrollListener();
+//        setScrollListener();
         return searchView;
     }
 
     private void callCommonSearchProductApi(ProgressDialog progressDialog, String load) {
         Observer<CommonSearchResponse> commonSearchResponseObserver = commonSearchResponse -> {
-            if (commonSearchResponse!=null){
-             if (progressDialog!=null){
-                 progressDialog.dismiss();
-                 switch (commonSearchResponse.getStatus()) {
-                     case STATUS_CODE_200://Record Create/Update Successfully
-                         if (commonSearchResponse.getBasketList()!=null||commonSearchResponse.getProductList()!=null){
-                             ArrayList<CommonSearchItem> commonSearchItems = new ArrayList<>();
-                             for (CommonSearchItem commonBasket:commonSearchResponse.getBasketList()){
-                                 commonBasket.setItemType("Basket");
-                                 commonSearchItems.add(commonBasket);
-                             }
-                             for (CommonSearchItem commonProduct: commonSearchResponse.getProductList()){
-                                 commonProduct.setItemType("Product");
-                                 commonSearchItems.add(commonProduct);
-                             }
-                             searchViewModel.arrayListMutableSearchLiveData.setValue(commonSearchItems);
-                             setSearchProductList();
-                         }
-                     case STATUS_CODE_403://Validation Errors
-                     case STATUS_CODE_400://Validation Errors
-                     case STATUS_CODE_404://Validation Errors
-                         //Todo delete in production
-                         if (load.equalsIgnoreCase("load")) {
-                             fragmentSearchBinding.tvNoData.setVisibility(View.VISIBLE);
-                             warningToast(context, commonSearchResponse.getMessage());
-                         }
-                         break;
-                     case STATUS_CODE_401://Unauthorized user
-                         goToAskSignInSignUpScreen(commonSearchResponse.getMessage(), context);
-                         break;
-                     case STATUS_CODE_405://Method Not Allowed
-                         infoToast(context, commonSearchResponse.getMessage());
-                         break;
-                 }
+            if (commonSearchResponse != null) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                    switch (commonSearchResponse.getStatus()) {
+                        case STATUS_CODE_200://Record Create/Update Successfully
+                            if (commonSearchResponse.getBasketList() != null || commonSearchResponse.getProductList() != null) {
+                                ArrayList<CommonSearchItem> commonSearchItems = new ArrayList<>();
+                                if (commonSearchResponse.getBasketList().size() > 0) {
+                                    for (CommonSearchItem commonBasket : commonSearchResponse.getBasketList()) {
+                                        commonBasket.setItemType("Basket");
+                                        commonSearchItems.add(commonBasket);
+                                    }
+                                }
+                                if (commonSearchResponse.getProductList().size() > 0) {
+                                    for (CommonSearchItem commonProduct : commonSearchResponse.getProductList()) {
+                                        commonProduct.setItemType("Product");
+                                        commonSearchItems.add(commonProduct);
+                                    }
+                                }
+                                searchViewModel.arrayListMutableSearchLiveData.setValue(commonSearchItems);
+                                setSearchProductList();
+                            }
+                            break;
+                        case STATUS_CODE_403://Validation Errors
+                        case STATUS_CODE_400://Validation Errors
+                        case STATUS_CODE_404://Validation Errors
+                            fragmentSearchBinding.tvNoData.setVisibility(View.VISIBLE);
+                            warningToast(context, commonSearchResponse.getMessage());
+                            break;
+                        case STATUS_CODE_401://Unauthorized user
+                            goToAskSignInSignUpScreen(commonSearchResponse.getMessage(), context);
+                            break;
+                        case STATUS_CODE_405://Method Not Allowed
+                            infoToast(context, commonSearchResponse.getMessage());
+                            break;
+                    }
 
-             }
+                }
             }
         };
-        searchViewModel.getCommonSearchLiveData(progressDialog,listingCommonParams(),SearchFragment.this)
-                .observe(getViewLifecycleOwner(),commonSearchResponseObserver);
+        searchViewModel.getCommonSearchLiveData(progressDialog, listingCommonParams(), SearchFragment.this)
+                .observe(getViewLifecycleOwner(), commonSearchResponseObserver);
     }
 
 
@@ -208,8 +211,8 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                         if (productListResponse.getProductResponseDt().getProductList().size() > 0) {
                             productList.addAll(productListResponse.getProductResponseDt().getProductList());
 //                                //Todo need to complete this
-                            setSearchProductList();
-                        } else fragmentSearchBinding.tvNoData.setVisibility(View.VISIBLE);
+//                            setSearchProductList();
+                        }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -262,24 +265,29 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         fragmentSearchBinding.recProduct.setNestedScrollingEnabled(false);
         fragmentSearchBinding.recProduct.setHasFixedSize(true);
         fragmentSearchBinding.recProduct.setLayoutManager(linearLayoutManager);
-        searchViewModel.arrayListMutableSearchLiveData.observe(getViewLifecycleOwner(),commonSearchItems -> {
+        searchViewModel.arrayListMutableSearchLiveData.observe(getViewLifecycleOwner(), commonSearchItems -> {
             commonSearchItemArrayList.addAll(commonSearchItems);
-            commonSearchAdapter = new CommonSearchAdapter(commonSearchItemArrayList);
+            commonSearchAdapter = new CommonSearchAdapter(commonSearchItemArrayList, this);
             fragmentSearchBinding.recProduct.setAdapter(commonSearchAdapter);
         });
 //        searchAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> addToCartProduct(product, position));
-
     }
 
-    private void addToCartProduct(Product product, int position) {
+    private void callAddToCartAPI(String itemId, String PuId, int position) {
         @SuppressLint("NotifyDataSetChanged") Observer<BaseResponse> baseResponseObserver = response -> {
             if (response != null) {
                 Log.e(TAG, "addToCartProduct: " + new Gson().toJson(response));
                 switch (response.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, response.getMessage());
-                        productList.clear();
-//                        callSearchProductApi(searchView,showCircleProgressDialog(context, ""), "load");
+                        commonSearchItemArrayList.clear();
+                        searchViewModel.arrayListMutableSearchLiveData.getValue().get(position).setInCart(1);
+                        setSearchProductList();
+                        try {
+                            ((HomeActivity) context).setCountBudge(response.getCartItems());
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -297,8 +305,12 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
             }
 
         };
-        searchViewModel.addToCartProductLiveData(paramAddToCart(product), SearchFragment.this)
-                .observe(getViewLifecycleOwner(), baseResponseObserver);
+        if (PuId == null) {
+            searchViewModel.addToCartBasketLiveData(paramAddToCartBasket(itemId), SearchFragment.this)
+                    .observe(getViewLifecycleOwner(), baseResponseObserver);
+        } else
+            searchViewModel.addToCartProductLiveData(paramAddToCartProduct(itemId,PuId), SearchFragment.this)
+                    .observe(getViewLifecycleOwner(), baseResponseObserver);
     }
 
     public void toProductDetail(Product product) {
@@ -315,6 +327,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         map.put(AppConstants.SEARCH, fragmentSearchBinding.etSearch.getText().toString().trim());
         return map;
     }
+
     private HashMap<String, String> listingCommonParams() {
         HashMap<String, String> map = new HashMap<>();
         map.put(AppConstants.LIMIT, String.valueOf(limit));
@@ -323,10 +336,16 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         return map;
     }
 
-    private HashMap<String, String> paramAddToCart(Product product) {
+    private HashMap<String, String> paramAddToCartProduct(String itemId, String PuId) {
         HashMap<String, String> map = new HashMap<>();
-        map.put(PRODUCT_ID, product.getProductId());
-        map.put(PU_ID, product.getPuId());
+        map.put(PRODUCT_ID, itemId);
+        map.put(PU_ID, PuId);
+        map.put(QUANTITY, "1");
+        return map;
+    }
+    private HashMap<String, String> paramAddToCartBasket(String itemId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(BASKET_ID, itemId);
         map.put(QUANTITY, "1");
         return map;
     }
@@ -351,7 +370,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                     case 0:
                         // Call ProductOld List API after network error
                         productList.clear();
-                        callSearchProductApi(searchView, showCircleProgressDialog(context, ""), type);
+                        callCommonSearchProductApi(showCircleProgressDialog(context, ""), type);
                         break;
 
                 }
@@ -361,4 +380,15 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         }, context);
 
     }
+
+    @Override
+    public void onSearchItemClick(CommonSearchItem commonSearchItem) {
+
+    }
+
+    @Override
+    public void onSearchAddClick(String itemId, String pUid, int position) {
+        callAddToCartAPI(itemId, pUid, position);
+    }
+
 }

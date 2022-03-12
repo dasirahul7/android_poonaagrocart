@@ -17,6 +17,7 @@ import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.favoutiteResponse.FavouriteListResponse;
 import com.poona.agrocart.data.network.responses.favoutiteResponse.RemoveFavouriteListResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
