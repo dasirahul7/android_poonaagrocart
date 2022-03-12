@@ -43,8 +43,6 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
         return new BasketItemViewHolder(binding, isBasketVisible);
     }
 
-
-
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull BasketItemViewHolder holder, int position) {
@@ -180,11 +178,11 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
 
                         rvBasketDetailBinding.btnTrackOrder.setVisibility(View.GONE);
                         break;
-                  /*  case "5":
+                    case "5":
                         rvBasketDetailBinding.tvOrderStatus.setText(context.getString(R.string.cancelled));
                         rvBasketDetailBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_cancelled)));
 
-                        break;*/
+                        break;
                     default:
                         rvBasketDetailBinding.btnTrackOrder.setVisibility(View.VISIBLE);
                        /* rvBasketDetailBinding.tvOrderStatus.setText(context.getString(R.string.pending));
