@@ -36,49 +36,7 @@ public class SearchViewModel extends AndroidViewModel {
         arrayListMutableSearchLiveData.setValue(null);
     }
 
-    // Search ProductOld here
-    public LiveData<ProductListResponse> searchListResponseLiveData(ProgressDialog progressDialog,
-                                                                    HashMap<String, String> hashMap,
-                                                                    SearchFragment searchFragment) {
-        MutableLiveData<ProductListResponse> productListResponseMutableLiveData = new MutableLiveData();
-
-        ApiClientAuth.getClient(searchFragment.getContext())
-                .create(ApiInterface.class)
-                .homeProductListResponse(hashMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<ProductListResponse>() {
-                    @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProductListResponse productListResponse) {
-                        if (productListResponse != null) {
-                            progressDialog.dismiss();
-                            productListResponseMutableLiveData.setValue(productListResponse);
-                        }
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        progressDialog.dismiss();
-
-                        Gson gson = new GsonBuilder().create();
-                        ProductListResponse response = new ProductListResponse();
-                        try {
-                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
-                                    ProductListResponse.class);
-
-                            productListResponseMutableLiveData.setValue(response);
-                        } catch (Exception exception) {
-                            Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) searchFragment).onNetworkException(0, "");
-                        }
-
-                        Log.e(TAG, e.getMessage());
-                    }
-                });
-        return productListResponseMutableLiveData;
-    }
-
-    //Add to cart
+    //Add to cart Product
     public LiveData<BaseResponse> addToCartProductLiveData(HashMap<String, String> hashMap,
                                                            SearchFragment homeFragment) {
         MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
@@ -108,13 +66,49 @@ public class SearchViewModel extends AndroidViewModel {
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) homeFragment).onNetworkException(1, "");
+                            ((NetworkExceptionListener) homeFragment).onNetworkException(2, "");
                         }
                     }
                 });
         return baseResponseMutableLiveData;
     }
 
+    //Add to cart Basket
+
+    public LiveData<BaseResponse> addToCartBasketLiveData(HashMap<String,String> hashMap,
+                                                          SearchFragment searchFragment){
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(searchFragment.getContext())
+                .create(ApiInterface.class)
+                .addToBasketResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse response) {
+                        if (response != null) {
+                            Log.e(TAG, "add to cart onSuccess: " + new Gson().toJson(response));
+                            baseResponseMutableLiveData.setValue(response);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) searchFragment).onNetworkException(2, "");
+                        }
+                    }
+                })  ;
+        return baseResponseMutableLiveData;
+    }
 
     /*Global Search here*/
     public LiveData<CommonSearchResponse> getCommonSearchLiveData(ProgressDialog progressDialog,
@@ -150,10 +144,53 @@ public class SearchViewModel extends AndroidViewModel {
                             commonSearchResponseMutableLiveData.setValue(commonSearchResponse);
                         } catch (Exception exception) {
                             exception.printStackTrace();
+                            ((NetworkExceptionListener) searchFragment).onNetworkException(0, "");
                         }
                     }
                 });
         return commonSearchResponseMutableLiveData;
+    }
+
+    // Search ProductOld here
+    public LiveData<ProductListResponse> searchListResponseLiveData(ProgressDialog progressDialog,
+                                                                    HashMap<String, String> hashMap,
+                                                                    SearchFragment searchFragment) {
+        MutableLiveData<ProductListResponse> productListResponseMutableLiveData = new MutableLiveData();
+
+        ApiClientAuth.getClient(searchFragment.getContext())
+                .create(ApiInterface.class)
+                .homeProductListResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<ProductListResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProductListResponse productListResponse) {
+                        if (productListResponse != null) {
+                            progressDialog.dismiss();
+                            productListResponseMutableLiveData.setValue(productListResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        ProductListResponse response = new ProductListResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    ProductListResponse.class);
+
+                            productListResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) searchFragment).onNetworkException(1, "");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return productListResponseMutableLiveData;
     }
 }
 
