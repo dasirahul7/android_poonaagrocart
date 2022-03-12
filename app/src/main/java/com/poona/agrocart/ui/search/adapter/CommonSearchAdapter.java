@@ -22,8 +22,11 @@ public class CommonSearchAdapter extends RecyclerView.Adapter<CommonSearchAdapte
         rowSearchItemBinding = RowSearchItemBinding.inflate(LayoutInflater.from(parent.getContext()));
         return new SearchViewHolder(rowSearchItemBinding);
     }
+    public interface onSearchItemClickListener{
+        void onSearchItemClick(CommonSearchItem commonSearchItem);
+    }
     public interface onSearchAddClickListener{
-        void onSearchAddClick();
+        void onSearchAddClick(CommonSearchItem commonSearchItem,int position);
     }
 
     public CommonSearchAdapter(ArrayList<CommonSearchItem> commonSearchItems) {

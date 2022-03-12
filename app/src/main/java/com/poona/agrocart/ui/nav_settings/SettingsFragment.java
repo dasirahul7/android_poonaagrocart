@@ -141,8 +141,8 @@ public class SettingsFragment extends BaseFragment {
                         errorToast(context, viewConfigurationResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        warningToast(context, viewConfigurationResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+//                        warningToast(context, viewConfigurationResponse.getMessage());
+                        goToAskSignInSignUpScreen(viewConfigurationResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, viewConfigurationResponse.getMessage());
@@ -177,8 +177,8 @@ public class SettingsFragment extends BaseFragment {
                         errorToast(context, updateConfigurationResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        warningToast(context, updateConfigurationResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+//                        warningToast(context, updateConfigurationResponse.getMessage());
+                        goToAskSignInSignUpScreen(updateConfigurationResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, updateConfigurationResponse.getMessage());

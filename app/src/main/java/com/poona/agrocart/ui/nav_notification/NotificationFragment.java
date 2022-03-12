@@ -233,8 +233,8 @@ public class NotificationFragment extends BaseFragment implements NetworkExcepti
                         fragmentNotificationBinding.llMain.setVisibility(View.GONE);
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen();
-                        errorToast(context, notificationListResponse.getMessage());
+                        goToAskSignInSignUpScreen(notificationListResponse.getMessage(),context);
+//                        errorToast(context, notificationListResponse.getMessage());
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, notificationListResponse.getMessage());
@@ -280,8 +280,8 @@ public class NotificationFragment extends BaseFragment implements NetworkExcepti
                         //llMainLayout.setVisibility(View.INVISIBLE);
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen();
-                        errorToast(context, deleteNotificationResponse.getMessage());
+                        goToAskSignInSignUpScreen(deleteNotificationResponse.getMessage(),context);
+//                        errorToast(context, deleteNotificationResponse.getMessage());
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, deleteNotificationResponse.getMessage());

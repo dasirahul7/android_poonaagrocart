@@ -264,7 +264,7 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
                         errorToast(context, recieveMessageResponse.getMsg());
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen();
+                        goToAskSignInSignUpScreen(recieveMessageResponse.getMsg(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, recieveMessageResponse.getMsg());
@@ -315,7 +315,7 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
                         errorToast(context, sendMessageResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen();
+                        goToAskSignInSignUpScreen(sendMessageResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, sendMessageResponse.getMessage());

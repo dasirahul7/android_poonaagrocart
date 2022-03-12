@@ -202,8 +202,8 @@ public class HelpCenterFragment extends BaseFragment implements NetworkException
 
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen();
-                        errorToast(context, ticketListResponse.getMessage());
+                        goToAskSignInSignUpScreen(ticketListResponse.getMessage(),context);
+//                        errorToast(context, ticketListResponse.getMessage());
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, ticketListResponse.getMessage());
@@ -390,8 +390,8 @@ public class HelpCenterFragment extends BaseFragment implements NetworkException
                         }
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        warningToast(context, ticketTypeResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+//                        warningToast(context, ticketTypeResponse.getMessage());
+                        goToAskSignInSignUpScreen(ticketTypeResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, ticketTypeResponse.getMessage());

@@ -158,7 +158,7 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         warningToast(context, favouriteLisResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+                        goToAskSignInSignUpScreen(favouriteLisResponse.getMessage(), context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, favouriteLisResponse.getMessage());
@@ -231,15 +231,13 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                         setAdaptor();
                         break;
                     case STATUS_CODE_400://Validation Errors
-                        warningToast(context, removeFavouriteListResponse.getMessage());
-                        break;
                     case STATUS_CODE_404://Record not Found
                         /* show empty screen message */
                         warningToast(context, removeFavouriteListResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         warningToast(context, removeFavouriteListResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+                        goToAskSignInSignUpScreen(removeFavouriteListResponse.getMessage(),getContext());
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, removeFavouriteListResponse.getMessage());
@@ -335,7 +333,7 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         warningToast(context, baseResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, baseResponse.getMessage());
@@ -380,15 +378,13 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
                         successToast(context, baseResponse.getMessage());
                         break;
                     case STATUS_CODE_400://Validation Errors
-                        warningToast(context, baseResponse.getMessage());
-                        break;
                     case STATUS_CODE_404://Record not Found
                         /* show empty screen message */
                         warningToast(context, baseResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         warningToast(context, baseResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(), context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, baseResponse.getMessage());

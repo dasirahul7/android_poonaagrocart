@@ -242,7 +242,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         warningToast(context, myCartResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+                        goToAskSignInSignUpScreen(myCartResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, myCartResponse.getMessage());
@@ -420,15 +420,13 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                         }
                         break;
                     case STATUS_CODE_400://Validation Errors
-                        warningToast(context, baseResponse.getMessage());
-                        break;
                     case STATUS_CODE_404://Record not Found
                         /* show empty screen message */
                         warningToast(context, baseResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         warningToast(context, baseResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, baseResponse.getMessage());
@@ -478,8 +476,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                         warningToast(context, baseResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
-                        warningToast(context, baseResponse.getMessage());
-                        goToAskSignInSignUpScreen();
+//                        warningToast(context, baseResponse.getMessage());
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(),context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, baseResponse.getMessage());
