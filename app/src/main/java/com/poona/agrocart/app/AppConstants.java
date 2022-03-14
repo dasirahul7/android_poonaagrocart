@@ -217,11 +217,24 @@ public class AppConstants {
     public static final String MY_NOTIFICATION = "my-notifications";
     public static final String DELETE_NOTIFICATION = "delete-notifications";
 
-    /*Order Api*/
+    /*Order Summary Api*/
     public static final String ORDER_SUMMARY_API = "order-summary-customer";
     public static final String ORDER_PLACE_API = "place-order-customer";
-    public static final String RATE_ORDER = "rate-order";
     public static final String APPLY_COUPON_API = "apply-coupon";
+    public static final String SLOT_BY_DATE_API = "get-available-slot-by-date";
+
+    /*Order Summary API KEYS*/
+    public static final String ORDER_SUMMARY ="order-summary";
+    public static final String DELIVERY_ADDRESS ="delivery-address";
+    public static final String COUPON_ID ="coupon_id";
+    public static final String COUPON_CODE ="coupon_code";
+    public static final String ADDRESS_P_ID = "address_primary_id";
+    public static final String DELIVERY_DATE = "delivery_date";
+    public static final String SLOT_ID = "slot_id";
+    public static final String PAYMENT_MODE_ID = "payment_mode_id";
+
+    /*Order view API*/
+    public static final String RATE_ORDER = "rate-order";
     public static final String ORDER_CANCEL_REASON = "order-cancel-reason";
     public static final String ORDER_CANCEL = "order-cancel";
     public static final String CUSTOMER_ORDER_LIST = "customer-order-list";
@@ -320,14 +333,5 @@ public class AppConstants {
     public static String ORDER_SUBSCRIPTION_ID = "order_subscription_id";
     public static String CANCEL_ID = "cancel_id";
 
-    /*Order Summary KEYS*/
-    public static final String ORDER_SUMMARY ="order-summary";
-    public static final String DELIVERY_ADDRESS ="delivery-address";
-    public static final String COUPON_ID ="coupon_id";
-    public static final String COUPON_CODE ="coupon_code";
-    public static final String ADDRESS_P_ID = "address_primary_id";
-    public static final String DELIVERY_DATE = "delivery_date";
-    public static final String SLOT_ID = "slot_id";
-    public static final String PAYMENT_MODE_ID = "payment_mode_id";
 }
 

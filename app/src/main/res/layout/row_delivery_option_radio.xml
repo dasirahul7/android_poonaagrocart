@@ -6,7 +6,7 @@
 
         <variable
             name="modelDeliverySlot"
-            type="com.poona.agrocart.ui.order_summary.model.DeliverySlot" />
+            type="com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,8 +18,6 @@
             android:id="@+id/item_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            android:layout_marginVertical="@dimen/_5sdp"
             app:cardElevation="@dimen/_1sdp"
             app:cardCornerRadius="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -42,7 +40,7 @@
                     android:button="@drawable/bg_radio_button"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:text='@{modelDeliverySlot.slotStartTime+` - `+ modelDeliverySlot.slotEndTime}'
+                    android:text='@{modelDeliverySlot.slotTime}'
                     android:textColor="@color/color_wallet_balance"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_semi_bold" />

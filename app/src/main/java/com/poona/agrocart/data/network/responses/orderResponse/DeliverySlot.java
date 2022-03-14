@@ -1,9 +1,10 @@
-package com.poona.agrocart.ui.order_summary.model;
+package com.poona.agrocart.data.network.responses.orderResponse;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class DeliverySlot {
+
     @SerializedName("delivery_days_id")
     @Expose
     public String deliveryDaysId;
@@ -22,30 +23,17 @@ public class DeliverySlot {
     @SerializedName("available_delivaries")
     @Expose
     public String availableDelivaries;
-    @SerializedName("is_delivery_available")
+    @SerializedName("status")
     @Expose
-    public Integer isDeliveryAvailable;
-    String SlotName;
-    boolean active;
+    public String status;
+    @SerializedName("slot_no")
+    @Expose
+    public String slotNo;
+    @SerializedName("slot_time")
+    @Expose
+    public String slotTime;
+    @SerializedName("is_available")
+    @Expose
+    public Integer isAvailable;
 
-    public DeliverySlot(String slotName, boolean active) {
-        SlotName = slotName;
-        this.active = active;
-    }
-
-    public String getSlotName() {
-        return SlotName;
-    }
-
-    public void setSlotName(String slotName) {
-        SlotName = slotName;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 }

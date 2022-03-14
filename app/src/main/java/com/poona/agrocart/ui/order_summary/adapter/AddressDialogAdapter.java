@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.databinding.RowAddressRadioBinding;
-import com.poona.agrocart.ui.order_summary.model.Address;
 
 import java.util.ArrayList;
 

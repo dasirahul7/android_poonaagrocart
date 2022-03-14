@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.databinding.RowDeliveryOptionRadioBinding;
-import com.poona.agrocart.ui.order_summary.model.DeliverySlot;
+import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
 
 import java.util.ArrayList;
 

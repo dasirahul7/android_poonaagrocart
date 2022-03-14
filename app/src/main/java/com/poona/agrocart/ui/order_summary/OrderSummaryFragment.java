@@ -40,23 +40,21 @@ import android.widget.ProgressBar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.library.baseAdapters.BR;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
+import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.Coupon;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
-import com.poona.agrocart.data.network.responses.orderResponse.Delivery;
 import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.databinding.DialogDeliveryOptionsBinding;
@@ -65,7 +63,7 @@ import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.order_summary.adapter.AddressDialogAdapter;
 import com.poona.agrocart.ui.order_summary.adapter.DeliveryDialogAdapter;
 import com.poona.agrocart.ui.order_summary.adapter.PromoCodeDialogAdapter;
-import com.poona.agrocart.ui.order_summary.model.DeliverySlot;
+import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
 import com.poona.agrocart.widgets.CustomTextView;
 
 import java.text.ParseException;
@@ -94,7 +92,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private String stepAddress, stepOrder, stepPayment;
     private ArrayList<AddressesResponse.Address> addressArrayList;
     private ArrayList<Coupon> couponArrayList;
-    private ArrayList<Delivery> deliveryArrayList;
+    //    private Delivery deliveryArrayList;
     private ArrayList<DeliverySlot> deliverySlotArrayList;
     private AddressDialogAdapter addressDialogAdapter;
     private PromoCodeDialogAdapter codeDialogAdapter;
@@ -295,12 +293,13 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                             checkOrderSummaryStatus();
                             orderSummaryViewModel.initViewModel(orderSummaryResponse, context);
                             fragmentOrderSummaryBinding.setOrderSummaryViewModel(orderSummaryViewModel);
-                            fragmentOrderSummaryBinding.setVariable(BR.orderSummaryViewModel, orderSummaryViewModel);
+                            fragmentOrderSummaryBinding.setVariable(BR.orderSummaryViewModel,orderSummaryViewModel);
                             initAddressDialog();
                             initExpectedDeliveryDialog();
                             initPromoCodeDialog();
                             initItemsDetails();
                             initPaymentTypes();
+                            checkValuesAndViews();
 
                         }
                         break;
@@ -324,6 +323,15 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 .observe(getViewLifecycleOwner(), orderSummaryResponseObserver);
     }
 
+    /*check if value null or empty view should be hide*/
+    private void checkValuesAndViews() {
+        /*hide views if value is empty or null*/
+        if (orderSummaryViewModel.discountMutable.getValue()==null ||
+                Float.parseFloat(orderSummaryViewModel.discountMutable.getValue())==0.0)
+            fragmentOrderSummaryBinding.llDiscount.setVisibility(View.GONE);
+        else fragmentOrderSummaryBinding.llDiscount.setVisibility(View.VISIBLE);
+    }
+
     /*Call Apply Coupon API*/
     private void callApplyCouponAPI(ProgressDialog progressDialog){
         Observer<ApplyCouponResponse> applyCouponResponseObserver = applyCouponResponse -> {
@@ -331,9 +339,16 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 if (progressDialog!=null){
                     progressDialog.dismiss();
                     Log.e(TAG, "callApplyCouponAPI: "+new Gson().toJson(applyCouponResponse) );
-                    fragmentOrderSummaryBinding.btnRemove.setText("Remove");
                     switch (applyCouponResponse.status) {
                         case STATUS_CODE_200://Record Create/Update Successfully
+                            orderSummaryViewModel.couponMessageMutable.setValue(applyCouponResponse.message);
+                            if (applyCouponResponse.message.contains("remove")||applyCouponResponse.message.contains("valid")) {
+                                fragmentOrderSummaryBinding.tvCouponApplied.setTextColor(context.getColor(R.color.red_text_color));
+                            }
+                            else {fragmentOrderSummaryBinding.tvCongratulations.setVisibility(View.VISIBLE);
+                                fragmentOrderSummaryBinding.btnRemove.setText("Remove");
+                            }
+//                            successToast(context,applyCouponResponse.message);
                             preferences.setCouponId(applyCouponResponse.couponId);
                             if (applyCouponResponse.getItemsDetails()!=null
                                     && applyCouponResponse.getItemsDetails().size()>0){
@@ -347,6 +362,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                                 orderSummaryViewModel.deliveryChargesMutable.setValue(String.valueOf(applyCouponResponse.deliveryCharges).trim());
                                 orderSummaryViewModel.finalTotalMutable.setValue(String.valueOf(applyCouponResponse.totalAmount).trim());
                                 initItemsDetails();
+                                checkValuesAndViews();
                             }
                             break;
                         case STATUS_CODE_403://Validation Errors
@@ -368,14 +384,19 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         };
         orderSummaryViewModel.getApplyCouponResponse(progressDialog,applyCouponParams(),
                 OrderSummaryFragment.this).observe(getViewLifecycleOwner(),applyCouponResponseObserver);
-        fragmentOrderSummaryBinding.etCouponCode.setText("");
+//        fragmentOrderSummaryBinding.etCouponCode.setText("");
     }
 
     private HashMap<String, String> applyCouponParams() {
         HashMap<String,String> map = new HashMap<>();
         if (fragmentOrderSummaryBinding.etCouponCode.getText().toString().trim()!=null
-                && !fragmentOrderSummaryBinding.etCouponCode.getText().toString().trim().isEmpty())
-        map.put(COUPON_CODE,fragmentOrderSummaryBinding.etCouponCode.getText().toString().trim());
+                && !fragmentOrderSummaryBinding.etCouponCode.getText().toString().trim().isEmpty()
+                && fragmentOrderSummaryBinding.btnRemove.getText().toString().equalsIgnoreCase("Apply"))
+            map.put(COUPON_CODE,fragmentOrderSummaryBinding.etCouponCode.getText().toString().trim());
+        else {
+            map.put(COUPON_CODE,"");
+            fragmentOrderSummaryBinding.etCouponCode.setText("");
+        }
         return map;
     }
 
@@ -414,11 +435,15 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
     /*Expected delivery here*/
     private void initExpectedDeliveryDialog() {
-        deliveryArrayList = new ArrayList<>();
         deliverySlotArrayList = new ArrayList<>();
         orderSummaryViewModel.arrayDeliveryListMutableLiveData.observe(getViewLifecycleOwner(), deliveries -> {
-            deliveryArrayList.addAll(deliveries);
-            deliverySlotArrayList.addAll(deliveries.get(0).deliverySlots);
+//            deliveryArrayList= deliveries;
+            ArrayList<DeliverySlot> tempSlots = new ArrayList<>();
+            for (DeliverySlot deliverySlot : deliveries.deliverySlots){
+                if (deliverySlot.isAvailable>0)
+                    tempSlots.add(deliverySlot);
+            }
+            deliverySlotArrayList.addAll(tempSlots);
             deliveryDialogAdapter = new DeliveryDialogAdapter(deliverySlotArrayList, context, this);
         });
     }
@@ -485,7 +510,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                             if (preferences.getPaymentMode()!=null && !preferences.getPaymentMode().isEmpty()){
                                 /*add order place api*/
                                 if (isConnectingToInternet(context))
-                                callOrderPlaceAPI(showCircleProgressDialog(context,""));
+                                    callOrderPlaceAPI(showCircleProgressDialog(context,""));
                                 else showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 //                                redirectToOrderDetails(v);
                             }else errorToast(context,"Select payment");
@@ -517,7 +542,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 openPromoOptionsDialog();
                 break;
             case R.id.btn_remove:
-                callApplyCouponAPI(showCircleProgressDialog(context,""));
+                if (fragmentOrderSummaryBinding.etCouponCode.getText().toString().isEmpty()){
+                    fragmentOrderSummaryBinding.etCouponCode.setError("please enter code");
+                }else callApplyCouponAPI(showCircleProgressDialog(context,""));
                 break;
             case R.id.iv_edit_date:
                 openDeliveryOptionsDialog();
@@ -596,6 +623,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
             CouponId = coupons1.getId();
             fragmentOrderSummaryBinding.etCouponCode.setText(coupons1.getCouponCode());
             promoCodeDialog.dismiss();
+//            callApplyCouponAPI(showCircleProgressDialog(context,""));
         });
         promoCodeDialog.show();
     }
@@ -637,37 +665,77 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private void showCalendar(CustomTextView tvDate) {
         //showing date picker dialog
         DatePickerDialog dpd;
-        calendar = Calendar.getInstance();
-        Calendar mcurrentDate = Calendar.getInstance();
-        mYear = mcurrentDate.get(Calendar.YEAR);
-        mMonth = mcurrentDate.get(Calendar.MONTH);
-        mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
-        dpd = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        //Set next date
+        c.add(Calendar.DAY_OF_MONTH,1);
+        System.out.println("mYear :"+mYear+", mMonth "+mMonth+", mDay "+mDay);
+        DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String txtDisplayDate = null;
-                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth + 1;
+            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                String txtDisplayDate = "";
                 try {
-                    txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
+                    txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd-MMM-yyyy");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 try {
-
+                    System.out.println("selectedDate :"+selectedDate);
+                    System.out.println("txtDisplayDate :"+txtDisplayDate);
                     if (tvDate != null) {
                         tvDate.setText(txtDisplayDate);
+                        orderSummaryViewModel.deliveryDateMutable.setValue(txtDisplayDate);
+                        preferences.setDeliveryDate(txtDisplayDate);
+                        callDeliverySlotByDateAPI(showCircleProgressDialog(context,""));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                calendar.set(year, month, dayOfMonth);
             }
-        },
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
-        );
-        dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        };
+        dpd = new DatePickerDialog(requireActivity(),mDateListener,mYear,mMonth,mDay);
+        dpd.getDatePicker().setMinDate(c.getTimeInMillis());
         dpd.show();
+    }
+
+    /*Call slots by Date*/
+    private void callDeliverySlotByDateAPI(ProgressDialog progressDialog) {
+        Observer<OrderSummaryResponse> deliverySlotResponseObserver = delverySlotResponse -> {
+            if (delverySlotResponse!=null){
+                if (progressDialog!=null){
+                    progressDialog.dismiss();
+                    switch (delverySlotResponse.status){
+                        case STATUS_CODE_200://Record Create/Update Successfully
+                            orderSummaryViewModel.arrayDeliveryListMutableLiveData.setValue(delverySlotResponse.delivery);
+                            break;
+                        case STATUS_CODE_403://Validation Errors
+                        case STATUS_CODE_400://Validation Errors
+                        case STATUS_CODE_404://Validation Errors
+                            //show no data msg here
+                            warningToast(context, delverySlotResponse.getMessage());
+                            break;
+                        case STATUS_CODE_401://Unauthorized user
+                            goToAskSignInSignUpScreen(delverySlotResponse.getMessage(), context);
+                            break;
+                        case STATUS_CODE_405://Method Not Allowed
+                            infoToast(context, delverySlotResponse.getMessage());
+                            break;
+                    }
+                }
+            }
+        };
+        orderSummaryViewModel.deliverySlotResponseLiveData(progressDialog, deliverySlotParam(),
+                OrderSummaryFragment.this)
+                .observe(getViewLifecycleOwner(),deliverySlotResponseObserver);
+    }
+
+    private HashMap<String, String> deliverySlotParam() {
+        HashMap<String,String> map = new HashMap<>();
+        map.put(DELIVERY_DATE,preferences.getDeliveryDate());
+        return map;
     }
 
     @Override
@@ -684,8 +752,8 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     public void OnSlotClick(DeliverySlot deliverySlot) {
         if (deliverySlot!=null)
             preferences.setDeliverySlot(deliverySlot.slotId);
-        orderSummaryViewModel.deliverySlotMutable.setValue(deliverySlot.slotStartTime + " - " + deliverySlot.slotEndTime);
-        fragmentOrderSummaryBinding.tvTime.setText(deliverySlot.slotStartTime + " - " + deliverySlot.slotEndTime);
+        orderSummaryViewModel.deliverySlotMutable.setValue(deliverySlot.slotTime);
+        fragmentOrderSummaryBinding.tvTime.setText(deliverySlot.slotTime);
         stepOrder = "yes";
         deliveryDialog.dismiss();
         checkOrderSummaryStatus();

@@ -227,6 +227,7 @@
         <entry key="app/src/main/res/layout/dialog_delete_notification.xml" value="0.15818725951261223" />
         <entry key="app/src/main/res/layout/dialog_delivery_options.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_new_ticket.xml" value="0.15092592592592594" />
+        <entry key="app/src/main/res/layout/dialog_order_summary.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_select_photo.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_server_error.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_text_with_button.xml" value="0.11" />

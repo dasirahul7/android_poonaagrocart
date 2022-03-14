@@ -213,6 +213,7 @@
     <string name="sub_total">Sub Total</string>
     <string name="rs_800">Rs. 800</string>
     <string name="discount">Discount</string>
+    <string name="coupon_discount">Coupon Discount</string>
     <string name="rs_80">Rs. 80</string>
     <string name="delivery_charges">Delivery Charges</string>
     <string name="rs_20">Rs. 20</string>

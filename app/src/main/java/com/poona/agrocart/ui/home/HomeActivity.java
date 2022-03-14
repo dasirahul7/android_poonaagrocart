@@ -214,10 +214,10 @@ public class HomeActivity extends BaseActivity {
         MenuItem menuItemAboutUs = m.findItem(R.id.nav_cms);
         MenuItem signOut = m.findItem(R.id.nav_signout);
 
-        menuItemAboutUs.setOnMenuItemClickListener(menuItem -> {
-            redirectToCmsFragment(0);
-            return false;
-        });
+//        menuItemAboutUs.setOnMenuItemClickListener(menuItem -> {
+//            redirectToCmsFragment(0);
+//            return false;
+//        });
 
         signOut.setOnMenuItemClickListener(item -> {
             drawer.closeDrawer(GravityCompat.START);

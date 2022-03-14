@@ -55,6 +55,7 @@ import static com.poona.agrocart.app.AppConstants.REPLY_TO_TICKET;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
 import static com.poona.agrocart.app.AppConstants.SET_DEFAULT_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
+import static com.poona.agrocart.app.AppConstants.SLOT_BY_DATE_API;
 import static com.poona.agrocart.app.AppConstants.STATE_API;
 import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
@@ -113,6 +114,7 @@ import com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBas
 import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
+import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlotResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.ViewConfigurationResponse;
@@ -121,6 +123,8 @@ import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
 
 import java.util.HashMap;
+
+import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Observable;
@@ -455,6 +459,7 @@ public interface ApiInterface {
     @POST(RATE_ORDER)
     Single<BaseResponse> getSubmitRatingResponseOrder(@FieldMap HashMap<String, String> ratingAndFeedBackInputParameter);
 
+    /*Order Summary API*/
     @GET(ORDER_SUMMARY_API)
     Single<OrderSummaryResponse> getOrderSummaryResponse();
 
@@ -472,10 +477,12 @@ public interface ApiInterface {
     @POST(MY_ORDER_Details_CUSTOMER)
     Single<MyOrderDetailsResponse> getMyOrderDetailsResponse(@FieldMap HashMap<String, String> myOrderDetailsInputParameter);
 
+    /*Apply coupon API*/
     @FormUrlEncoded
     @POST(APPLY_COUPON_API)
     Single<ApplyCouponResponse> getApplyCouponResponse(@FieldMap HashMap<String, String> hashMap);
 
+    /*Order place API*/
     @FormUrlEncoded
     @POST(ORDER_PLACE_API)
     Single<BaseResponse> getOrderPlaceResponse(@FieldMap HashMap<String, String> hashMap);
@@ -490,4 +497,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(COMMON_SEARCH)
     Single<CommonSearchResponse> getCommonSearchResponse(@FieldMap HashMap<String,String> hashMap);
+
+    /*GET SLOT BY DATE API
+    Created on : 14-march-2021
+     */
+    @FormUrlEncoded
+    @POST(SLOT_BY_DATE_API)
+    Single<OrderSummaryResponse> getDeliverySlotByDateResponse(@FieldMap HashMap<String,String> hashMap);
 }
