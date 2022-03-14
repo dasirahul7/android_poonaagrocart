@@ -110,6 +110,7 @@
         <entry key="app/src/main/res/drawable/ic_empty_notification.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_explore.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_gallery.xml" value="0.209375" />
+        <entry key="app/src/main/res/drawable/ic_gallery_image_cancel_icon.xml" value="0.1215" />
         <entry key="app/src/main/res/drawable/ic_green_bell.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/ic_green_radio.xml" value="0.13094462540716612" />
         <entry key="app/src/main/res/drawable/ic_h.xml" value="0.1935185185185185" />
@@ -218,10 +219,10 @@
         <entry key="app/src/main/res/layout/cat_row_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/circular_progresbar.xml" value="0.1" />
         <entry key="app/src/main/res/layout/content_dash_board.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/content_home.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/content_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_splash_activity.xml" value="0.1" />
         <entry key="app/src/main/res/layout/custom_list_item_checked.xml" value="0.14" />
-        <entry key="app/src/main/res/layout/custom_media_controller.xml" value="0.350210970464135" />
+        <entry key="app/src/main/res/layout/custom_media_controller.xml" value="0.25" />
         <entry key="app/src/main/res/layout/custom_spinner_list_item.xml" value="0.15885416666666666" />
         <entry key="app/src/main/res/layout/custom_spinner_list_item_checked.xml" value="0.17" />
         <entry key="app/src/main/res/layout/dialog_basket_filter_list.xml" value="0.18" />
@@ -320,6 +321,7 @@
         <entry key="app/src/main/res/layout/row_promo_code_radio.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_search_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/row_seasonal_banner.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/row_video_item.xml" value="0.14194100042753313" />
         <entry key="app/src/main/res/layout/row_weight.xml" value="0.5" />
         <entry key="app/src/main/res/layout/rv_address.xml" value="0.15534420289855072" />
         <entry key="app/src/main/res/layout/rv_basket_contents_list.xml" value="0.15172101449275363" />
@@ -340,7 +342,7 @@
         <entry key="app/src/main/res/layout/toast_layout.xml" value="0.9" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.21" />
         <entry key="app/src/main/res/layout/toolbar_splash_screen_act.xml" value="0.14356884057971014" />
-        <entry key="app/src/main/res/layout/video_image_pop_up_dailog.xml" value="0.17291666666666666" />
+        <entry key="app/src/main/res/layout/video_image_pop_up_dailog.xml" value="0.25" />
         <entry key="app/src/main/res/layout/view_subscription.xml" value="0.25" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.33" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.19322916666666667" />

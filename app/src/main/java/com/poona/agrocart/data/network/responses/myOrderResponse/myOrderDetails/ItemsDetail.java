@@ -55,7 +55,7 @@ public class ItemsDetail  {
     @Expose
     private String totalPrice;
 
-    protected ItemsDetail(Parcel in) {
+   /* protected ItemsDetail(Parcel in) {
         orderId = in.readString();
         itemType = in.readString();
         productName = in.readString();
@@ -70,7 +70,7 @@ public class ItemsDetail  {
         orderStatus = in.readString();
         delierySlotStartAndEndTime = in.readString();
         totalPrice = in.readString();
-    }
+    }*/
 
 
     public String getOrderId() {

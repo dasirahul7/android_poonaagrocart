@@ -496,18 +496,10 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
                         totalCount = Integer.parseInt(subscribeBasketItemListResponse.getTotalCount());
                         if (subscribeBasketItemListResponse.getBasketSubscriptionDetails() != null
                                 && subscribeBasketItemListResponse.getBasketSubscriptionDetails().getItemsDetails().size() > 0) {
-                            basketItemList.clear();
                             basketItemList.addAll(subscribeBasketItemListResponse.getBasketSubscriptionDetails().getItemsDetails());
                             /*allBasketItem.clear();
                             allBasketItem.addAll(basketItemList);*/
                             basketItemsAdapter.notifyDataSetChanged();
-
-                            if(subscribeBasketItemListResponse.getBasketSubscriptionDetails().getItemsDetails() != null &&
-                                    subscribeBasketItemListResponse.getBasketSubscriptionDetails().getItemsDetails().size() > 0){
-
-                                basketItemList.addAll(subscribeBasketItemListResponse.getBasketSubscriptionDetails().getItemsDetails());
-                            }
-                            // orderCancelCategoryAdaptor.notifyDataSetChanged();
                         }
 
                         break;
@@ -790,8 +782,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
     /* Cancel Order Manager */
 
-    private void CancelOrderDialogBox()
-    {
+    private void CancelOrderDialogBox() {
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

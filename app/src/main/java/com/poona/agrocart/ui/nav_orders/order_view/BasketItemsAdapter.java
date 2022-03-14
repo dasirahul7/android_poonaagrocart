@@ -1,16 +1,20 @@
 package com.poona.agrocart.ui.nav_orders.order_view;
 
+import static com.poona.agrocart.app.AppConstants.IMAGE_DOC_BASE_URL;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.ItemsDetail;
@@ -27,6 +31,7 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
     private static int DETAIL =0;
     private static int REVIEW =1;
     OrderViewFragment orderViewFragment = new OrderViewFragment();
+    private ImageView imageView;
 
     public BasketItemsAdapter(ArrayList<ItemsDetail> basketItems, boolean isBasketVisible, Context context, int from) {
         this.basketItems = basketItems;
@@ -106,11 +111,13 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
         }
 
 
-        /* imageView = holder.photoItemBinding.itemImg;
+         imageView = holder.rvBasketDetailBinding.imgProduct;
         // set page image
-        Glide.with(pContext)
-                .load(IMAGE_DOC_BASE_URL+galleryImages.get(position).getGalleryImage())
-                .into(imageView);*/
+        Glide.with(context)
+                .load(IMAGE_DOC_BASE_URL+basketItem.getFeatureImg())
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
+                .into(imageView);
 
     }
 

@@ -32,6 +32,7 @@ import com.poona.agrocart.data.network.responses.CmsResponse;
 import com.poona.agrocart.databinding.FragmentCmsBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.nav_notification.NotificationFragment;
 import com.poona.agrocart.ui.sign_in.SignInFragment;
 import com.poona.agrocart.ui.sign_up.SignUpFragment;
 
@@ -50,6 +51,11 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
     private View view;
     private String fromScreen = "";
     private int cmsType = 0;
+
+    public static CmsFragment newInstance() {
+        return new CmsFragment();
+    }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -74,6 +80,7 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
             /*set title to toolbar*/
             if (cmsType == 0) {
                 fragmentCmsBinding.tvTitle.setText(R.string.about_us);
+
             } else if (cmsType == 1) {
                 fragmentCmsBinding.tvTitle.setText(R.string.terms_and_conditions);
             } else if (cmsType == 2) {
@@ -84,7 +91,8 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
         } else if (fromScreen.equals(fromScreenHome)) {
             fragmentCmsBinding.actionBar.setVisibility(View.GONE);
             if (cmsType == 0) {
-                initTitleWithBackBtn(getString(R.string.about_us));
+                initTitleBar(getString(R.string.about_us));
+
             } else if (cmsType == 1) {
                 initTitleWithBackBtn(getString(R.string.terms_and_conditions));
             } else if (cmsType == 2) {

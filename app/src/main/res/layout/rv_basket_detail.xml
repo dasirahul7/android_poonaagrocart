@@ -26,11 +26,14 @@
             android:orientation="horizontal"
             android:padding="@dimen/_4sdp">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/img_product"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="match_parent"
-                setImage="@{basketItemModel.featureImg}"/>
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_6sdp"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize20Percent"/>
 
             <LinearLayout
                 android:id="@+id/ll_basket_description"
