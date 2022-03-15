@@ -79,7 +79,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class OrderViewFragment extends BaseFragment implements View.OnClickListener, OrderCancelReasonAdaptor.OnTypeClickListener, NetworkExceptionListener {
+public class OrderViewFragment extends BaseFragment implements OrderCancelReasonAdaptor.OnTypeClickListener, NetworkExceptionListener {
 
     private FragmentOrderViewBinding fragmentOrderViewBinding;
     private OrderViewDetailsViewModel orderViewDetailsViewModel;
@@ -91,7 +91,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
     private boolean isBasketVisible = true;
     private RatingBar ratingBar;
     private CustomEditText feedbackComment;
-    private CustomButton btnSubmitFeedback, btnDownloadInvoice;
+    private CustomButton btnSubmitFeedback, btnDownloadInvoice, btnOrderTrack;
     private SwipeRefreshLayout refreshLayout;
     private final int limit = 5;
     private int offset = 0;
@@ -151,8 +151,7 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
         btnSubmitFeedback = fragmentOrderViewBinding.btnSubmitFeedback;
         refreshLayout = fragmentOrderViewBinding.rlMyOrderDetails;
         btnDownloadInvoice =fragmentOrderViewBinding.btnDownloadInvoice;
-
-        fragmentOrderViewBinding.btnTrackOrder.setOnClickListener(this);
+        btnOrderTrack = fragmentOrderViewBinding.btnTrackOrder;
 
         Bundle bundle = this.getArguments();
         isBasketVisible = bundle.getBoolean("isBasketVisible");
@@ -205,6 +204,16 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
             NavHostFragment.findNavController(OrderViewFragment.this).
                     navigate(R.id.action_order_view_fragment_to_nav_basket_item_fragment, bundle);
         });
+
+        btnOrderTrack.setOnClickListener(view1 -> {
+            if (isConnectingToInternet(context)){
+                bundle.putString(ORDER_ID, order_id);
+                Navigation.findNavController(view).navigate(R.id.action_orderViewFragment_to_nav_order_track, bundle);
+            }
+            else
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        });
+
     }
 
     private void showProductDetails() {
@@ -292,21 +301,9 @@ public class OrderViewFragment extends BaseFragment implements View.OnClickListe
 
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_track_order:
-                redirectToTrackOrderFragment(v);
-                break;
-        }
-    }
 
-    private void redirectToTrackOrderFragment(View view) {
-        if (isConnectingToInternet(context))
-            Navigation.findNavController(view).navigate(R.id.action_orderViewFragment_to_nav_order_track);
-        else
-            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-    }
+
+
 
     /* My Subscription Basket Details Api and managements */
 

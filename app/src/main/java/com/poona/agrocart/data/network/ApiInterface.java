@@ -43,6 +43,7 @@ import static com.poona.agrocart.app.AppConstants.ORDER_PLACE_API;
 import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL;
 import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL_REASON;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY_API;
+import static com.poona.agrocart.app.AppConstants.ORDER_TRACK;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.RATE_TO_BASKET;
@@ -114,6 +115,7 @@ import com.poona.agrocart.data.network.responses.myOrderResponse.SubscribeBasket
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.SubscribeBasketDetailsResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.SubscribeBasketItemListResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.orderTrack.ProductOrderTrackResponse;
 import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
@@ -516,4 +518,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(SLOT_BY_DATE_API)
     Single<OrderSummaryResponse> getDeliverySlotByDateResponse(@FieldMap HashMap<String,String> hashMap);
+
+    @FormUrlEncoded
+    @POST(ORDER_TRACK)
+    Single<ProductOrderTrackResponse> getOrderTrackResponse(@FieldMap HashMap<String, String> orderTrackInputParameter);
+
+
 }

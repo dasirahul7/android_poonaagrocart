@@ -243,6 +243,7 @@ public class AppConstants {
     public static final String MY_SUBSCRIBE_BASKET_DETAILS_CUSTOMER = "my-subscribe-basket-details-customer";
     public static final String SUBSCRIBE_BASKET_PRODUCTS = "subscribed-basket-products";
     public static final String SUBSCRIBE_BASKET_CUSTOMER = "subscribe-basket-customer";
+    public static final String ORDER_TRACK = "order-track";
 
    /* Rating and Review */
    public static final String RATING = "rating";
