@@ -5,6 +5,7 @@ import android.text.Html;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
 
 import java.util.ArrayList;
 
@@ -12,13 +13,26 @@ public class BasketDetailsResponse extends BaseResponse {
     @SerializedName("basket_details")
     @Expose
     private BasketDetails basketDetail;
+    @SerializedName("subscription")
+    @Expose
+    private Subscription subscription;
 
     public BasketDetails getBasketDetail() {
         return basketDetail;
     }
+
     public void setBasketDetail(BasketDetails basketDetail) {
         this.basketDetail = basketDetail;
     }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
+    }
+
     public class BasketDetails{
         @SerializedName("basket_id")
         @Expose
@@ -127,8 +141,9 @@ public class BasketDetailsResponse extends BaseResponse {
             return alreadyPurchased;
         }
 
-        public void setAlreadyPurchased(Integer alreadyPurchased) {
-            this.alreadyPurchased = alreadyPurchased;
+
+        public Subscription getSubscription() {
+            return subscription;
         }
 
         public String getBasketId() {
@@ -514,6 +529,79 @@ public class BasketDetailsResponse extends BaseResponse {
 
         public void setStatus(String status) {
             this.status = status;
+        }
+    }
+
+    public static class Subscription {
+        private Float basketRate;
+        @SerializedName("subscription_types")
+        @Expose
+        private ArrayList<SubscriptionType> subscriptionTypes = null;
+        @SerializedName("delivery_date")
+        @Expose
+        private String deliveryDate;
+        @SerializedName("delivery_slots")
+        @Expose
+        private ArrayList<DeliverySlot> deliverySlots = null;
+
+        public Float getBasketRate() {
+            return basketRate;
+        }
+
+        public void setBasketRate(Float basketRate) {
+            this.basketRate = basketRate;
+        }
+
+        public ArrayList<SubscriptionType> getSubscriptionTypes() {
+            return subscriptionTypes;
+        }
+
+        public void setSubscriptionTypes(ArrayList<SubscriptionType> subscriptionTypes) {
+            this.subscriptionTypes = subscriptionTypes;
+        }
+
+        public String getDeliveryDate() {
+            return deliveryDate;
+        }
+
+        public void setDeliveryDate(String deliveryDate) {
+            this.deliveryDate = deliveryDate;
+        }
+
+        public ArrayList<DeliverySlot> getDeliverySlots() {
+            return deliverySlots;
+        }
+
+        public void setDeliverySlots(ArrayList<DeliverySlot> deliverySlots) {
+            this.deliverySlots = deliverySlots;
+        }
+
+        public Subscription() {
+        }
+
+    }
+    public class SubscriptionType {
+        @SerializedName("subscription_type")
+        @Expose
+        private String subscriptionType;
+        @SerializedName("subscription_type_name")
+        @Expose
+        private String subscriptionTypeName;
+
+        public String getSubscriptionType() {
+            return subscriptionType;
+        }
+
+        public void setSubscriptionType(String subscriptionType) {
+            this.subscriptionType = subscriptionType;
+        }
+
+        public String getSubscriptionTypeName() {
+            return subscriptionTypeName;
+        }
+
+        public void setSubscriptionTypeName(String subscriptionTypeName) {
+            this.subscriptionTypeName = subscriptionTypeName;
         }
     }
 

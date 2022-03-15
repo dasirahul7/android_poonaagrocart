@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.basket_detail.model;
 
+import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
 import com.poona.agrocart.ui.product_detail.model.ProductComment;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class BasketDetail {
     private boolean isFavorite;
     private String basketPrice;
     private String basketQty;
-    private Subscription subscription;
+    private BasketDetailsResponse.Subscription subscription;
     private ArrayList<ProductItem> productList;
     private String basketDetails;
     private String aboutBasket;
@@ -33,11 +34,11 @@ public class BasketDetail {
         this.basketName = basketName;
     }
 
-    public Subscription getSubscription() {
+    public BasketDetailsResponse.Subscription getSubscription() {
         return subscription;
     }
 
-    public void setSubscription(Subscription subscription) {
+    public void setSubscription(BasketDetailsResponse.Subscription subscription) {
         this.subscription = subscription;
     }
 
