@@ -2,16 +2,24 @@ package com.poona.agrocart.ui.basket_detail;
 
 import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.ITEM_TYPE;
+import static com.poona.agrocart.app.AppConstants.NO_OF_SUBSCRIPTION;
+import static com.poona.agrocart.app.AppConstants.ORDER_ID;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_MODE_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.RATING;
 import static com.poona.agrocart.app.AppConstants.REVIEW;
 import static com.poona.agrocart.app.AppConstants.REVIEW_LIST;
+import static com.poona.agrocart.app.AppConstants.SLOT_END_TIME;
+import static com.poona.agrocart.app.AppConstants.SLOT_ID;
+import static com.poona.agrocart.app.AppConstants.SLOT_START_TIME;
+import static com.poona.agrocart.app.AppConstants.START_DATE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION_TYPE;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -20,14 +28,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -78,6 +91,11 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private RecyclerView rvBasketProducts;
     private LinearLayoutManager linearLayoutManager;
     private BasketImagesAdapter basketImagesAdapter;
+    private CustomTextView tvSubAmount, tvSubQty, tvSubTotalAmount, tvSubQuatity;
+
+    private SubscriptionPlanAdaptor subscriptionPlanAdaptor;
+    private ArrayList<SubscriptionPlan> subscriptionPlans ;
+
     /*Basket comment adapters*/
     private ArrayList<Review> reviewsArrayList;
     private ProductRatingReviewAdapter reviewsAdapter;
@@ -99,6 +117,10 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private ScrollView scrollView;
     private Spinner spinerSlots;
     private String subscriptionSlotId;
+    private String strAmount;
+    private int quantity;
+    private String strSubscriptionBasket = "";
+
 
 
     public static BasketDetailFragment newInstance() {
@@ -171,7 +193,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         basketDetailsBinding.layoutAdded.imgPlus.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.imgMinus.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.tvStartDate.setOnClickListener(this);
-
+        basketDetailsBinding.layoutAdded.btnLogin.setOnClickListener(this);
 
         vpImages = basketDetailsBinding.vpProductImages;
         dotsIndicator = basketDetailsBinding.dotsIndicator;
@@ -182,11 +204,16 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         ratingBarInput = basketDetailsBinding.ratingBarInput;
         etFeedback = basketDetailsBinding.etFeedback;
 
+        tvSubAmount = basketDetailsBinding.layoutAdded.tvSubUnitPrice;
+        tvSubQty = basketDetailsBinding.layoutAdded.tvSubQty;
+        tvSubTotalAmount = basketDetailsBinding.layoutAdded.tvSubAmount;
+        tvSubQuatity = basketDetailsBinding.layoutAdded.tvSubQuality;
+
+
         setHodeOrShowValue();
 
 
     }
-
     private void setReviewsHide(BasketDetailsResponse.Rating rating) {
         if (details.getAlreadyPurchased() == 0) {
             basketDetailsBinding.llRateView.setVisibility(View.GONE);
@@ -803,8 +830,17 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 addOrRemoveFromCart();
                 break;
             case R.id.img_minus:
-//                decreaseQuantity(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
-//                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
+                decreaseQuantitySubscriptionBasket(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
+                       basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
+
+
+                break;
+
+            case R.id.img_plus:
+                increaseQuantitySubscriptionBasket(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
+                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
+
+
                 break;
             case R.id.iv_favourite:
                 addOrRemoveFromFavourite();
@@ -829,7 +865,14 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 NavHostFragment.findNavController(BasketDetailFragment.this).
                         navigate(R.id.action_nav_basket_details_to_nav_product_review, bundle);
                 break;
+            case R.id.btn_login:
+                strSubscriptionBasket = tvSubQuatity.getText().toString();
+                Toast.makeText(context, ""+strSubscriptionBasket, Toast.LENGTH_SHORT).show();
+                if(!strSubscriptionBasket.isEmpty()){
+                    callSubscribeBasketApi(showCircleProgressDialog(context, ""));
+                }
 
+                break;
 
         }
     }
@@ -851,6 +894,103 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         map.put(RATING, String.valueOf(ratingBarInput.getRating()));
         map.put(REVIEW, etFeedback.getText().toString().trim());
         return map;
+    }
+
+    /*Subscribe Basket parameter and api */
+
+    private void callSubscribeBasketApi(ProgressDialog progressDialog){
+        Observer<BaseResponse> baseResponseObserver = baseResponse -> {
+            if (baseResponse != null) {
+                Log.e("Subscribe Basket  Api ResponseData", new Gson().toJson(baseResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (baseResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, baseResponse.getMessage());
+
+                      //  callOrderDetailsApi(showCircleProgressDialog(context, ""));
+
+                        break;
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, baseResponse.getMessage());
+
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, baseResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+
+        };
+        basketDetailViewModel.getSubscrideBasketApi(context, progressDialog, SubscriptionBasketInputParameter(), BasketDetailFragment.this)
+                .observe(getViewLifecycleOwner(), baseResponseObserver);
+    }
+
+    private HashMap<String, String> SubscriptionBasketInputParameter(){
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put(SUBSCRIPTION_TYPE, "1");
+        map.put(NO_OF_SUBSCRIPTION, String.valueOf(strSubscriptionBasket));
+        map.put(START_DATE, "05-Mar-2022");
+        map.put(SLOT_ID, "21");
+        map.put(PAYMENT_MODE_ID, "1");
+        map.put(BASKET_ID, basketId);
+        map.put(SLOT_START_TIME, "12PM");
+        map.put(SLOT_END_TIME, "3PM");
+
+        return map;
+    }
+
+    private void increaseQuantitySubscriptionBasket(String qty, CustomTextView etQuantity, ImageView view) {
+        int quantity = Integer.parseInt(qty);
+        quantity++;
+        etQuantity.setText(String.valueOf(quantity));
+        AppUtils.setMinusButton(quantity, view);
+        details.setQuantity(String.valueOf(quantity));
+
+
+           try {
+            int multiplication = Integer.parseInt(details.getBasketRate()) * Integer.parseInt(String.valueOf(quantity));
+            tvSubTotalAmount.setText(String.valueOf(multiplication));
+
+        }catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        tvSubQuatity.setText(String.valueOf(quantity));
+
+
+    }
+
+    private void decreaseQuantitySubscriptionBasket(String qty, CustomTextView etQuantity, ImageView view) {
+        int quantity = Integer.parseInt(qty);
+        if (quantity == 1) {
+            warningToast(requireActivity(), getString(R.string.quantity_less_than_one));
+        } else {
+            quantity--;
+            etQuantity.setText(String.valueOf(quantity));
+            details.setQuantity(String.valueOf(quantity));
+
+
+            try {
+                int multiplication = Integer.parseInt(details.getBasketRate()) * Integer.parseInt(String.valueOf(quantity));
+                tvSubTotalAmount.setText(String.valueOf(multiplication));
+
+            }catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            tvSubQuatity.setText(String.valueOf(quantity));
+
+        }
+        AppUtils.setMinusButton(quantity, view);
     }
 
     @Override

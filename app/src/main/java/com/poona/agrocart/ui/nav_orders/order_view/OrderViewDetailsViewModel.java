@@ -18,7 +18,8 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
-import com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBasketDetails.SubscribeBasketDetailsResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.SubscribeBasketDetailsResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.SubscribeBasketItemListResponse;
 
 import java.util.HashMap;
 
@@ -315,5 +316,47 @@ public class OrderViewDetailsViewModel extends AndroidViewModel {
                 });
 
         return subscribeBasketDetailsResponseMutableLiveData;
+    }
+
+    public LiveData<SubscribeBasketItemListResponse> getSubscriptionBasketItemList(Context context, ProgressDialog progressDialog, HashMap<String, String>
+            basketItemInputParameter, OrderViewFragment orderViewFragment) {
+        MutableLiveData<SubscribeBasketItemListResponse> subscribeBasketItemListResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(context)
+                .create(ApiInterface.class)
+                .getMySubscriptionBasketItemListResponse(basketItemInputParameter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<SubscribeBasketItemListResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull SubscribeBasketItemListResponse baseResponse) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                        subscribeBasketItemListResponseMutableLiveData.setValue(baseResponse);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+
+                        Gson gson = new GsonBuilder().create();
+                        SubscribeBasketItemListResponse baseResponse = new SubscribeBasketItemListResponse();
+                        try {
+                            baseResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), SubscribeBasketItemListResponse.class);
+
+                            subscribeBasketItemListResponseMutableLiveData.setValue(baseResponse);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) orderViewFragment)
+                                    .onNetworkException(5, "");
+
+                        }
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return subscribeBasketItemListResponseMutableLiveData;
     }
 }

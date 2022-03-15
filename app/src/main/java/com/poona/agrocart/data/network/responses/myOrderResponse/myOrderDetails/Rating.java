@@ -1,5 +1,5 @@
 
-package com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBasketDetails;
+package com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

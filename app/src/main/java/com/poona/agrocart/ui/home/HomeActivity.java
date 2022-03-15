@@ -214,10 +214,10 @@ public class HomeActivity extends BaseActivity {
         MenuItem menuItemAboutUs = m.findItem(R.id.nav_cms);
         MenuItem signOut = m.findItem(R.id.nav_signout);
 
-//        menuItemAboutUs.setOnMenuItemClickListener(menuItem -> {
-//            redirectToCmsFragment(0);
-//            return false;
-//        });
+        menuItemAboutUs.setOnMenuItemClickListener(menuItem -> {
+           redirectToCmsFragment(0);
+            return false;
+        });
 
         signOut.setOnMenuItemClickListener(item -> {
             drawer.closeDrawer(GravityCompat.START);
@@ -349,7 +349,7 @@ public class HomeActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString(FROM_SCREEN, TAG);
         bundle.putInt(CMS_TYPE, from);
-        navController.navigate(R.id.action_nav_cms, bundle);
+        navController.navigate(R.id.action_nav_cms_to_about_us, bundle);
     }
 
     //Title and app logo on actionBar

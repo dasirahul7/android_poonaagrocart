@@ -14,8 +14,8 @@
             android:icon="@drawable/ic_my_order"
             android:title="@string/menu_my_orders"
             app:popUpTo="@+id/nav_home"
-            app:popUpToInclusive="false"
-            app:popUpToSaveState="true"/>
+            app:popUpToInclusive="true"
+            app:popUpToSaveState="false"/>
         <item
             android:id="@+id/nav_address"
             android:icon="@drawable/ic_address"
@@ -69,10 +69,8 @@
         <item
             android:id="@+id/nav_cms"
             android:icon="@drawable/ic_about_us"
-            android:title="@string/menu_about_us"
-            app:popUpTo="@+id/nav_home"
-            app:popUpToInclusive="false"
-            app:popUpToSaveState="true"/>
+            android:title="@string/menu_about_us" />
+
         <item
             android:id="@+id/nav_faq"
             android:icon="@drawable/ic_faq"

@@ -22,7 +22,7 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/nav_home"
             app:popUpToInclusive="false"
-            app:popUpToSaveState="true" />
+             />
 
     </fragment>
     <!--Home to profile action-->
@@ -36,7 +36,7 @@
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
         app:popUpToInclusive="false"
-        app:popUpToSaveState="true"/>
+        />
 
     <!--Home to productOlds list action-->
     <!--Explore Fragment-->
@@ -55,7 +55,7 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/nav_explore"
             app:popUpToInclusive="false"
-            app:popUpToSaveState="true" />
+             />
     </fragment>
 
 
@@ -64,18 +64,17 @@
         android:id="@+id/nav_orders"
         android:name="com.poona.agrocart.ui.nav_orders.MyOrdersFragment"
         android:label="@string/menu_my_orders"
-        tools:layout="@layout/fragment_my_orders">
+        tools:layout="@layout/fragment_my_orders"/>
 
-        <action
-            android:id="@+id/action_nav_orders_to_orderViewFragment2"
-            app:destination="@id/orderViewFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-    </fragment>
-
+    <action
+        android:id="@+id/action_nav_orders_to_orderViewFragment2"
+        app:destination="@id/orderViewFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:popUpTo="@+id/nav_orders"
+        app:popUpToInclusive="true"/>
     <!--My Profile Fragment-->
     <fragment
         android:id="@+id/nav_profile"
@@ -95,7 +94,10 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+
+            app:popUpTo="@+id/nav_cart"
+            app:popUpToInclusive="true"/>
 
         <action
             android:id="@+id/action_nav_cart_to_nav_explore"
@@ -103,7 +105,10 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+
+            app:popUpTo="@id/nav_cart"
+            app:popUpToInclusive="true"/>
         <!--Cart to product Details-->
         <action
             android:id="@+id/action_nav_cart_to_productDetails"
@@ -111,7 +116,10 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+
+            app:popUpTo="@id/nav_cart"
+            app:popUpToInclusive="true"/>
         <!--Cart to Basket Details-->
         <action
             android:id="@+id/action_nav_cart_to_basketDetails"
@@ -119,7 +127,10 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+
+            app:popUpTo="@id/nav_cart"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -134,14 +145,20 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right"
+
+            app:popUpTo="@id/nav_favourite"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_nav_favourite_to_nav_product_details2"
             app:destination="@id/nav_product_details"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right"
+
+            app:popUpTo="@id/nav_favourite"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 
@@ -152,7 +169,10 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
+        app:popExitAnim="@anim/slide_out_right"
+
+        app:popUpTo="@id/nav_favourite"
+        app:popUpToInclusive="true"/>
 
     <!--Favourite To ProductOld Details-->
     <action
@@ -161,7 +181,10 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
+        app:popExitAnim="@anim/slide_out_right"
+
+        app:popUpTo="@id/nav_favourite"
+        app:popUpToInclusive="true"/>
 
     <!--ProductOld List Fragment-->
     <fragment
@@ -177,7 +200,10 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
+        app:popExitAnim="@anim/slide_out_right"
+
+        app:popUpTo="@id/nav_products_list"
+        app:popUpToInclusive="true"/>
     <!--Action product list to product detail-->
     <action
         android:id="@+id/action_nav_products_list_to_product_details"
@@ -189,7 +215,7 @@
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_products_list"
         app:popUpToInclusive="false"
-        app:popUpToSaveState="true" />
+         />
     <!--Action product list to basket detail-->
     <action
         android:id="@+id/action_nav_products_list_to_basket_details"
@@ -201,7 +227,7 @@
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_products_list"
         app:popUpToInclusive="false"
-        app:popUpToSaveState="true"/>
+        />
 
     <!--ProductOld Detail Fragment-->
     <fragment
@@ -238,7 +264,10 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+
+            app:popUpTo="@id/nav_store"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -254,7 +283,10 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+
+            app:popUpTo="@id/nav_basket"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -270,7 +302,10 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+
+            app:popUpTo="@id/nav_address"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -292,7 +327,9 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/orderViewFragment"
+            app:popUpToInclusive="false"/>
 
     </fragment>
 
@@ -322,7 +359,18 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
+        app:popExitAnim="@anim/slide_out_right"
+        />
+
+    <action
+        android:id="@+id/action_nav_cms_to_about_us"
+        app:destination="@id/nav_cms"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+
+        />
 
     <!--Coupon Fragment-->
     <fragment
@@ -341,7 +389,10 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+
+            app:popUpTo="@id/nav_help_center"
+            app:popUpToInclusive="true"/>
 
 
         <action
@@ -426,7 +477,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/nav_home"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -442,7 +493,7 @@
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
         app:popUpToInclusive="false"
-        app:popUpToSaveState="true"/>
+        />
 
     <!--Home to explore action-->
     <action
@@ -454,8 +505,7 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
-        app:popUpToInclusive="false"
-        app:popUpToSaveState="true" />
+        app:popUpToInclusive="false" />
 
     <!--Home to ProductOld Details action-->
     <action
@@ -467,8 +517,7 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
-        app:popUpToInclusive="false"
-        app:popUpToSaveState="true" />
+        app:popUpToInclusive="false" />
 
 
     <!--Home to order track action-->
@@ -487,7 +536,10 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
+        app:popExitAnim="@anim/slide_out_right"
+
+        app:popUpTo="@+id/nav_explore"
+        app:popUpToInclusive="false"/>
 
     <!--FAQ Fragment-->
     <fragment
@@ -513,7 +565,7 @@
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
         app:popUpToInclusive="false"
-        app:popUpToSaveState="true"/>
+        />
 
 
     <!--Home to seasonal Registration-->
@@ -526,7 +578,7 @@
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
         app:popUpToInclusive="false"
-        app:popUpToSaveState="true"/>
+        />
 
     <!--Home to BasketDetails -->
     <action
@@ -538,8 +590,7 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
-        app:popUpToInclusive="false"
-        app:popUpToSaveState="true"/>
+        app:popUpToInclusive="false" />
 
     <!--Search Fragment-->
     <fragment
@@ -561,6 +612,19 @@
     <action
         android:id="@+id/action_nav_basket_details_to_nav_product_review"
         app:destination="@id/nav_product_review"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
+
+    <fragment
+        android:id="@+id/basketItemFragment"
+        android:name="com.poona.agrocart.ui.nav_orders.order_view.BasketItemFragment"
+        android:label="BasketItemFragment"/>
+
+    <action
+        android:id="@+id/action_order_view_fragment_to_nav_basket_item_fragment"
+        app:destination="@id/basketItemFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"

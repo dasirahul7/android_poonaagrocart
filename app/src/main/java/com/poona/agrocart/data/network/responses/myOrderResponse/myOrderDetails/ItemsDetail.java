@@ -2,41 +2,84 @@
 package com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ItemsDetail {
+import java.io.Serializable;
 
-    @SerializedName("item_type")
+public class ItemsDetail  {
+
+    @SerializedName("order_id")
+    @Expose
+    private String orderId;
+    @SerializedName("item_type") //item_type
     @Expose
     private String itemType;
-    @SerializedName("basket_name")
-    @Expose
-    private Object basketName;
-    @SerializedName("product_name")
+    @SerializedName("product_name") //product_name
     @Expose
     private String productName;
-    @SerializedName("weight")
+    @SerializedName("basket_name") //basket_name
+    @Expose
+    private String basketName;
+    @SerializedName("weight") //weight
     @Expose
     private String weight;
-    @SerializedName("unit")
+    @SerializedName("unit") //unit
     @Expose
     private String unit;
-    @SerializedName("cost")
+    @SerializedName("cost") //cost
     @Expose
     private String cost;
-    @SerializedName("offer_cost")
+    @SerializedName("offer_cost") //offer_cost
     @Expose
     private String offerCost;
-    @SerializedName("quantity")
+    @SerializedName("quantity") //quantity
     @Expose
     private String quantity;
-    @SerializedName("feature_img")
+    @SerializedName("feature_img") //feature_img
     @Expose
-    private Object featureImg;
-    @SerializedName("total_price")
+    private String featureImg;
+    @SerializedName("should_deliver_on_date")
+    @Expose
+    private String shouldDeliverOnDate;
+    @SerializedName("order_status")
+    @Expose
+    private String orderStatus;
+    @SerializedName("deliery_slot_start_and_end_time")
+    @Expose
+    private String delierySlotStartAndEndTime;
+    @SerializedName("total_price") //total_price
     @Expose
     private String totalPrice;
+
+   /* protected ItemsDetail(Parcel in) {
+        orderId = in.readString();
+        itemType = in.readString();
+        productName = in.readString();
+        basketName = in.readString();
+        weight = in.readString();
+        unit = in.readString();
+        cost = in.readString();
+        offerCost = in.readString();
+        quantity = in.readString();
+        featureImg = in.readString();
+        shouldDeliverOnDate = in.readString();
+        orderStatus = in.readString();
+        delierySlotStartAndEndTime = in.readString();
+        totalPrice = in.readString();
+    }*/
+
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 
     public String getItemType() {
         return itemType;
@@ -46,20 +89,12 @@ public class ItemsDetail {
         this.itemType = itemType;
     }
 
-    public Object getBasketName() {
+    public String getBasketName() {
         return basketName;
     }
 
-    public void setBasketName(Object basketName) {
+    public void setBasketName(String basketName) {
         this.basketName = basketName;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
     }
 
     public String getWeight() {
@@ -102,12 +137,36 @@ public class ItemsDetail {
         this.quantity = quantity;
     }
 
-    public Object getFeatureImg() {
+    public String getFeatureImg() {
         return featureImg;
     }
 
-    public void setFeatureImg(Object featureImg) {
+    public void setFeatureImg(String featureImg) {
         this.featureImg = featureImg;
+    }
+
+    public String getShouldDeliverOnDate() {
+        return shouldDeliverOnDate;
+    }
+
+    public void setShouldDeliverOnDate(String shouldDeliverOnDate) {
+        this.shouldDeliverOnDate = shouldDeliverOnDate;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public String getDelierySlotStartAndEndTime() {
+        return delierySlotStartAndEndTime;
+    }
+
+    public void setDelierySlotStartAndEndTime(String delierySlotStartAndEndTime) {
+        this.delierySlotStartAndEndTime = delierySlotStartAndEndTime;
     }
 
     public String getTotalPrice() {
@@ -117,5 +176,14 @@ public class ItemsDetail {
     public void setTotalPrice(String totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
 
 }

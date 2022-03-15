@@ -59,6 +59,8 @@ import static com.poona.agrocart.app.AppConstants.SLOT_BY_DATE_API;
 import static com.poona.agrocart.app.AppConstants.STATE_API;
 import static com.poona.agrocart.app.AppConstants.STORE_DETAILS;
 import static com.poona.agrocart.app.AppConstants.STORE_LIST;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_BASKET_CUSTOMER;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_BASKET_PRODUCTS;
 import static com.poona.agrocart.app.AppConstants.TICKET_TYPE;
 import static com.poona.agrocart.app.AppConstants.UPDATE_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_CONFIGURATION;
@@ -110,7 +112,8 @@ import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReas
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.SubscribeBasketListCustomerResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.MyOrderDetailsResponse;
-import com.poona.agrocart.data.network.responses.myOrderResponse.subscriptionBasketDetails.SubscribeBasketDetailsResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.SubscribeBasketDetailsResponse;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.SubscribeBasketItemListResponse;
 import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
@@ -495,8 +498,17 @@ public interface ApiInterface {
     Single<SubscribeBasketDetailsResponse> getMySubscriptionDetailsResponse(@FieldMap HashMap<String, String> mySubscriptionBasketDetailsInputParameter);
 
     @FormUrlEncoded
+    @POST(SUBSCRIBE_BASKET_PRODUCTS)
+    Single<SubscribeBasketItemListResponse> getMySubscriptionBasketItemListResponse(@FieldMap HashMap<String, String> basketItemInputParameter);
+
+    @FormUrlEncoded
     @POST(COMMON_SEARCH)
     Single<CommonSearchResponse> getCommonSearchResponse(@FieldMap HashMap<String,String> hashMap);
+
+    @FormUrlEncoded
+    @POST(SUBSCRIBE_BASKET_CUSTOMER)
+    Single<BaseResponse> getSubscriptionBasketDetailsApi(@FieldMap HashMap<String, String> subscriptionBasketInputParameter);
+
 
     /*GET SLOT BY DATE API
     Created on : 14-march-2021

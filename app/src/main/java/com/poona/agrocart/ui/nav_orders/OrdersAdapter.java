@@ -57,22 +57,22 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         holder.bind(order, context);
 
 
-        String strTotalAmount = orderArrayList.get(0).getPaidAmount();
-        String strTotalQuantity = orderArrayList.get(0).getTotalQuantity();
+        String strTotalAmount = order.getPaidAmount();
+        String strTotalQuantity = order.getTotalQuantity();
 
         if(strTotalAmount == null){
             holder.rvOrderBinding.tvTotalAmount.setText(context.getString(R.string.total_amount_null));
         }else {
-            holder.rvOrderBinding.tvTotalAmount.setText(context.getString(R.string.text_rs) +" "+ orderArrayList.get(0).getPaidAmount());
+            holder.rvOrderBinding.tvTotalAmount.setText(context.getString(R.string.text_rs) +" "+ order.getPaidAmount());
         }
 
         if(strTotalQuantity == null){
             holder.rvOrderBinding.tvTotalQuantity.setText(context.getString(R.string.total_quantity_null));
         }else {
-            holder.rvOrderBinding.tvTotalQuantity.setText(orderArrayList.get(0).getTotalQuantity());
+            holder.rvOrderBinding.tvTotalQuantity.setText(order.getTotalQuantity());
         }
 
-        String selectedDate = orderArrayList.get(0).getCreatedAt();
+        String selectedDate = order.getCreatedAt();
 
         String txtDisplayDate = "";
         try {
