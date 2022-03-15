@@ -73,8 +73,9 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
+
         app:popUpTo="@+id/nav_orders"
-        app:popUpToInclusive="true"/>
+        app:popUpToInclusive="false"/>
     <!--My Profile Fragment-->
     <fragment
         android:id="@+id/nav_profile"
@@ -286,7 +287,7 @@
             app:popExitAnim="@anim/slide_out_right"
 
             app:popUpTo="@id/nav_basket"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="false"/>
 
     </fragment>
 
@@ -328,6 +329,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
+
             app:popUpTo="@+id/orderViewFragment"
             app:popUpToInclusive="false"/>
 
