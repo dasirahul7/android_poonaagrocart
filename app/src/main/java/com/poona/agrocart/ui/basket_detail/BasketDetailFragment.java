@@ -93,8 +93,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private BasketImagesAdapter basketImagesAdapter;
     private CustomTextView tvSubAmount, tvSubQty, tvSubTotalAmount, tvSubQuatity;
 
-    private SubscriptionPlanAdaptor subscriptionPlanAdaptor;
-    private ArrayList<SubscriptionPlan> subscriptionPlans ;
+//    private SubscriptionPlanAdaptor subscriptionPlanAdaptor;
+//    private ArrayList<SubscriptionPlan> subscriptionPlans ;
 
     /*Basket comment adapters*/
     private ArrayList<Review> reviewsArrayList;
@@ -119,7 +119,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private String subscriptionSlotId;
     private String strAmount;
     private int quantity;
-    private String strSubscriptionBasket = "";
+    private String strSubscriptionBasket = "",subTypeId ="";
 
 
 
@@ -937,7 +937,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private HashMap<String, String> SubscriptionBasketInputParameter(){
         HashMap<String, String> map = new HashMap<>();
 
-        map.put(SUBSCRIPTION_TYPE, "1");
+        map.put(SUBSCRIPTION_TYPE, subTypeId);
         map.put(NO_OF_SUBSCRIPTION, String.valueOf(strSubscriptionBasket));
         map.put(START_DATE, "05-Mar-2022");
         map.put(SLOT_ID, "21");
@@ -1020,6 +1020,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void OnSubTypeClick(BasketDetailsResponse.SubscriptionType type) {
-
+        subTypeId = type.getSubscriptionType();
     }
 }

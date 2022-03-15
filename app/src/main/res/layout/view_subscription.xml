@@ -251,15 +251,30 @@
                             android:textStyle="bold"
                             app:setCustomFont="@string/font_poppins_bold" />
 
-                        <com.poona.agrocart.widgets.CustomTextView
-                            android:id="@+id/tv_sub_unit_price"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:textColor="@color/color_total_amount"
-                            android:textSize="@dimen/_16sp"
-                            app:setCustomFont="@string/font_poppins_regular" />
+                            android:orientation="horizontal">
 
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_sub_unit_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{`Rs. `+subscriptionModule.basketRate+ ` X `}"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:textColor="@color/color_total_amount"
+                                android:textSize="@dimen/_16sp"
+                                app:setCustomFont="@string/font_poppins_regular" />
+
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_sub_quality"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:textColor="@color/color_total_amount"
+                                android:textSize="@dimen/_16sp"
+                                app:setCustomFont="@string/font_poppins_regular" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
