@@ -6,7 +6,7 @@
 
         <variable
             name="subscriptionModule"
-            type="com.poona.agrocart.data.network.responses.BasketDetailsResponse.BasketDetails" />
+            type="com.poona.agrocart.ui.basket_detail.BasketDetailViewModel" />
     </data>
 
     <LinearLayout
@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="bottom"
                         android:includeFontPadding="false"
-                        android:text="@{`Rs.`+subscriptionModule.basketRate}"
+                        android:text='@{`Rs.`+subscriptionModule.basketRate}'
                         android:textColor="@color/black"
                         android:textSize="@dimen/_24sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -198,6 +198,7 @@
                         android:elevation="@dimen/_4sdp"
                         android:hint="@string/select_date"
                         android:padding="@dimen/_6sdp"
+                        android:text='@{subscriptionModule.subscriptionStartDateMutable}'
                         android:singleLine="true"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
@@ -215,6 +216,7 @@
                       android:orientation="vertical">
 
                       <Spinner
+                          android:id="@+id/sp_slots"
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
                           android:layout_marginTop="@dimen/_4sdp"
@@ -233,6 +235,7 @@
                     android:weightSum="100">
 
                     <LinearLayout
+                        android:id="@+id/ll_calculate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="50"
@@ -260,6 +263,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_total_amount"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="50"
@@ -270,7 +274,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:gravity="end"
-                            android:text="@string/per_basket"
+                            android:text="@string/total_amount"
                             android:textColor="@color/clr_enter_otp"
                             android:textSize="@dimen/_16sp"
                             android:textStyle="bold"

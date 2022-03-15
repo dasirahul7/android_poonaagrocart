@@ -221,6 +221,7 @@
         <entry key="app/src/main/res/layout/content_splash_activity.xml" value="0.1" />
         <entry key="app/src/main/res/layout/custom_list_item_checked.xml" value="0.14" />
         <entry key="app/src/main/res/layout/custom_media_controller.xml" value="0.350210970464135" />
+        <entry key="app/src/main/res/layout/custom_spinner.xml" value="0.10778985507246377" />
         <entry key="app/src/main/res/layout/custom_spinner_list_item.xml" value="0.15885416666666666" />
         <entry key="app/src/main/res/layout/custom_spinner_list_item_checked.xml" value="0.17" />
         <entry key="app/src/main/res/layout/dialog_basket_filter_list.xml" value="0.18" />

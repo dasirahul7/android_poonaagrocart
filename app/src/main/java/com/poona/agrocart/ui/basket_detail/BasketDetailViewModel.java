@@ -16,7 +16,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.responses.Review;
-import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
+import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +52,11 @@ public class BasketDetailViewModel extends AndroidViewModel {
     public MutableLiveData<ArrayList<Review>> reviewLiveData;
     public MutableLiveData<BasketDetailsResponse.Rating> basketRating;
 
+    /*Subscription here*/
+    public MutableLiveData<DeliverySlot> subscriptionSlotMutable;
+    public MutableLiveData<String> subscriptionStartDateMutable;
+    public MutableLiveData<ArrayList<BasketDetailsResponse.SubscriptionType>> subscriptionTypeMutableList;
+    public MutableLiveData<ArrayList<DeliverySlot>> subscriptionDeliverySlotsLists;
     public MutableLiveData<BasketDetailsResponse.Rating> getBasketRating() {
         return basketRating;
     }
@@ -106,6 +111,15 @@ public class BasketDetailViewModel extends AndroidViewModel {
         basketNoOfRatings.setValue(null);
         yourRating.setValue(null);
         alreadyPurchased.setValue(null);
+        /*subscription*/
+        subscriptionSlotMutable= new MutableLiveData<>();
+        subscriptionStartDateMutable= new MutableLiveData<>();
+        subscriptionTypeMutableList= new MutableLiveData<>();
+        subscriptionDeliverySlotsLists= new MutableLiveData<>();
+        subscriptionSlotMutable.setValue(null);
+        subscriptionStartDateMutable.setValue(null);
+        subscriptionTypeMutableList.setValue(null);
+        subscriptionDeliverySlotsLists.setValue(null);
     }
 
     /*Get BasketDetails API here*/

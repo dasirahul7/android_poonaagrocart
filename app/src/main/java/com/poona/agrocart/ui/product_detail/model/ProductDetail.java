@@ -1,8 +1,8 @@
 package com.poona.agrocart.ui.product_detail.model;
 
+import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
 import com.poona.agrocart.ui.basket_detail.model.ProductItem;
-import com.poona.agrocart.ui.basket_detail.model.Subscription;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ public class ProductDetail extends ProductDetailsResponse {
     public Boolean isFavourite = false;
     public String brand;
     // Basket details
-    private Subscription subscription;
+    private BasketDetailsResponse.Subscription subscription;
     private ArrayList<ProductItem> productList;
     private ArrayList<ProductComment> commentList;
     private ArrayList<BasketContent> basketContents;
@@ -97,11 +97,11 @@ public class ProductDetail extends ProductDetailsResponse {
         this.productList = productList;
     }
 
-    public Subscription getSubscription() {
+    public BasketDetailsResponse.Subscription getSubscription() {
         return subscription;
     }
 
-    public void setSubscription(Subscription subscription) {
+    public void setSubscription(BasketDetailsResponse.Subscription subscription) {
         this.subscription = subscription;
     }
 
