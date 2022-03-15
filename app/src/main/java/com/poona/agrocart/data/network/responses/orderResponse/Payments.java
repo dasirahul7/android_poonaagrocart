@@ -14,4 +14,27 @@ public class Payments {
     @Expose
     public String paymentModeStatus;
 
+    public String getPaymentModeId() {
+        return paymentModeId;
+    }
+
+    public void setPaymentModeId(String paymentModeId) {
+        this.paymentModeId = paymentModeId;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public String getPaymentModeStatus() {
+        return paymentModeStatus;
+    }
+
+    public void setPaymentModeStatus(String paymentModeStatus) {
+        this.paymentModeStatus = paymentModeStatus;
+    }
 }

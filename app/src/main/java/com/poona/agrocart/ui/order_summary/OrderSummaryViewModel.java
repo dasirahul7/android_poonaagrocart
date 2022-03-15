@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -24,6 +25,7 @@ import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.Coupon;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.Delivery;
+import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlotResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.Payments;
@@ -35,6 +37,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -61,7 +64,7 @@ public class OrderSummaryViewModel extends AndroidViewModel {
     public MutableLiveData<String> paymentOnlineMutable= new MutableLiveData<>();
     public MutableLiveData<String> paymentWalletMutable= new MutableLiveData<>();
     public MutableLiveData<ArrayList<AddressesResponse.Address>> arrayAddressListMutableLiveData= new MutableLiveData<>();
-    public MutableLiveData<ArrayList<Delivery>> arrayDeliveryListMutableLiveData= new MutableLiveData<>();
+    public MutableLiveData<Delivery> arrayDeliveryListMutableLiveData= new MutableLiveData<>();
     public MutableLiveData<ArrayList<Coupon>> arrayCouponListMutableLiveData= new MutableLiveData<>();
     public MutableLiveData<ArrayList<ItemsDetail>> arrayItemListMutableLiveData= new MutableLiveData<>();
     public MutableLiveData<ArrayList<Payments>> arrayPaymentListMutableLiveData= new MutableLiveData<>();
@@ -100,13 +103,13 @@ public class OrderSummaryViewModel extends AndroidViewModel {
         customerPhoneMutable.setValue(preferences.getUserMobile());
         deliveryAddressMutable.setValue(preferences.getDeliveryAddress());
         /*Delivery date and time*/
-        deliveryDateMutable.setValue(orderSummaryResponse.delivery.get(0).deliveryDate);
-        preferences.setDeliveryDate(orderSummaryResponse.delivery.get(0).deliveryDate);
-        deliverySlotMutable.setValue(orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotStartTime+" - "+orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotEndTime);
-        preferences.setDeliverySlot(orderSummaryResponse.delivery.get(0).deliverySlots.get(0).slotId);
+        deliveryDateMutable.setValue(orderSummaryResponse.delivery.deliveryDate);
+        preferences.setDeliveryDate(orderSummaryResponse.delivery.deliveryDate);
+        deliverySlotMutable.setValue(orderSummaryResponse.delivery.deliverySlots.get(0).slotTime);
+        preferences.setDeliverySlot(orderSummaryResponse.delivery.deliverySlots.get(0).slotId);
         /*Delivery charge and total amount*/
         subTotalMutable.setValue(String.valueOf(orderSummaryResponse.subTotal).trim());
-        discountMutable.setValue(String.valueOf(orderSummaryResponse.discount).trim());
+//        discountMutable.setValue(String.valueOf(orderSummaryResponse.discount).trim());
         deliveryChargesMutable.setValue(String.valueOf(orderSummaryResponse.deliveryCharges).trim());
         finalTotalMutable.setValue(String.valueOf(orderSummaryResponse.totalAmount).trim());
         youWillSaveMutable.setValue(String.valueOf(orderSummaryResponse.discount).trim());
@@ -194,7 +197,7 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                             errorResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     ApplyCouponResponse.class);
                             applyCouponResponseMutableLiveData.setValue(errorResponse);
-                        } catch (IOException ioException) {
+                        } catch (Exception ioException) {
                             ioException.printStackTrace();
                             Log.e(TAG, ioException.getMessage());
                             ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(1, "");
@@ -233,7 +236,7 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                         Gson gson = new GsonBuilder().create();
                         BaseResponse baseResponse =new BaseResponse();
                         try {
-                            baseResponse = gson.fromJson(((HttpException)e).response().errorBody().string(),BaseResponse.class);
+                            baseResponse = gson.fromJson(Objects.requireNonNull(Objects.requireNonNull(((HttpException) e).response()).errorBody()).string(),BaseResponse.class);
                             placeOrderResponseMutableLive.setValue(baseResponse);
                         }catch (JsonSyntaxException | IOException exception){
                             Log.e(TAG, "onError: "+exception.getMessage() );
@@ -242,5 +245,45 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                     }
                 });
         return placeOrderResponseMutableLive;
+    }
+
+    /*Get Delivery Slo By Date on 14-Mar-2022*/
+    public LiveData<OrderSummaryResponse> deliverySlotResponseLiveData(ProgressDialog progressDialog,
+                                                                       HashMap<String,String> hashMap,
+                                                                       OrderSummaryFragment orderSummaryFragment){
+        MutableLiveData<OrderSummaryResponse> deliverySlotByDateResponseMutable = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(orderSummaryFragment.context)
+                .create(ApiInterface.class)
+                .getDeliverySlotByDateResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<OrderSummaryResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull OrderSummaryResponse deliverySlotByDateResponse) {
+                        if (deliverySlotByDateResponse!=null){
+
+                            if (progressDialog!=null) {
+                                progressDialog.dismiss();
+                                deliverySlotByDateResponseMutable.setValue(deliverySlotByDateResponse);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Gson gson = new GsonBuilder().create();
+                        OrderSummaryResponse deliverySlotResponse = new OrderSummaryResponse();
+                        try {
+                            deliverySlotResponse = gson.fromJson(((HttpException)e).response().errorBody().string(),
+                                    OrderSummaryResponse.class);
+                            deliverySlotByDateResponseMutable.setValue(deliverySlotResponse);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                            ((NetworkExceptionListener)orderSummaryFragment).onNetworkException(3,"");
+                        }
+                    }
+                });
+        return deliverySlotByDateResponseMutable;
     }
 }

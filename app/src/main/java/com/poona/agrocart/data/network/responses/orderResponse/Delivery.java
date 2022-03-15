@@ -2,7 +2,6 @@ package com.poona.agrocart.data.network.responses.orderResponse;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.poona.agrocart.ui.order_summary.model.DeliverySlot;
 
 import java.util.ArrayList;
 
@@ -14,4 +13,19 @@ public class Delivery {
     @Expose
     public ArrayList<DeliverySlot> deliverySlots = null;
 
+    public String getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(String deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public ArrayList<DeliverySlot> getDeliverySlots() {
+        return deliverySlots;
+    }
+
+    public void setDeliverySlots(ArrayList<DeliverySlot> deliverySlots) {
+        this.deliverySlots = deliverySlots;
+    }
 }

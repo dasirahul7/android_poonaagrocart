@@ -109,7 +109,6 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
     private void checkVerified() {
         if (preferences.isVerified()) {
             if (!preferences.getUid().isEmpty()) {
-                System.out.println("Address:c"+preferences.getUserAddress());
                 if (!preferences.getUserAddress().isEmpty()&&preferences.getUserAddress()!=null) {
                     startDashBoard();
                 } else

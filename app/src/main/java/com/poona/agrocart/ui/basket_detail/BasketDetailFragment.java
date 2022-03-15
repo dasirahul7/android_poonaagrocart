@@ -19,8 +19,6 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
-import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_BASKET_PRODUCTS;
-import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION_TYPE;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -29,12 +27,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -64,6 +66,7 @@ import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.ExpandIconView;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -116,6 +119,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         return new BasketDetailFragment();
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,9 +148,9 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             }
         });
         scrollView.setOnScrollChangeListener((view, i, i1, i2, i3) -> {
-            if (i3>0)
-            ((HomeActivity)context).binding.appBarHome.textTitle.setText(details.getBasketName());
-            else ((HomeActivity)context).binding.appBarHome.textTitle.setText("");
+            if (i3 > 0)
+                ((HomeActivity) context).binding.appBarHome.textTitle.setText(details.getBasketName());
+            else ((HomeActivity) context).binding.appBarHome.textTitle.setText("");
         });
 
         subscriptionPlanAdaptor();
@@ -181,7 +185,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         basketDetailsBinding.layoutAdded.imgPlus.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.imgMinus.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.tvStartDate.setOnClickListener(this);
-        basketDetailsBinding.layoutAdded.btnLogin.setOnClickListener(this);
 
 
         vpImages = basketDetailsBinding.vpProductImages;
@@ -197,25 +200,27 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         tvSubQty = basketDetailsBinding.layoutAdded.tvSubQty;
         tvSubTotalAmount = basketDetailsBinding.layoutAdded.tvSubAmount;
 
-        setHideOrShowValue();
+        setHodeOrShowValue();
 
 
     }
     private void setReviewsHide(BasketDetailsResponse.Rating rating) {
-        if (details.getAlreadyPurchased()==0){
+        if (details.getAlreadyPurchased() == 0) {
             basketDetailsBinding.llRateView.setVisibility(View.GONE);
-        }else if (!rating.getRatingId().isEmpty() || !rating.getReview().isEmpty()){
+        } else if (!rating.getRatingId().isEmpty() || !rating.getReview().isEmpty()) {
             basketDetailsBinding.llRateView.setVisibility(View.GONE);
-        }else if (basketDetailViewModel.alreadyPurchased.getValue()==1){
+        } else if (basketDetailViewModel.alreadyPurchased.getValue() == 1) {
 //            basketDetailsBinding.ratingBarInput.setEnabled(false);
             basketDetailsBinding.llRateView.setVisibility(View.VISIBLE);
         }
     }
 
+
+
     private void subscriptionPlanAdaptor(){
         subscriptionPlans = new ArrayList<>();
-         basketListingData();
-         //callSubscriptionBasketListApi(showCircleProgressDialog(context, ""));
+        basketListingData();
+        //callSubscriptionBasketListApi(showCircleProgressDialog(context, ""));
         linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         rvPlanSubscription.setHasFixedSize(true);
         rvPlanSubscription.setLayoutManager(linearLayoutManager);
@@ -232,7 +237,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         }
     }
 
-
     private void setBasketValue() {
         basketDetailViewModel.basketName.setValue(details.getBasketName());
         basketDetailViewModel.basketRate.setValue(details.getBasketRate());
@@ -248,7 +252,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             basketDetailViewModel.isInFav.setValue(true);
         else basketDetailViewModel.isInFav.setValue(false);
         /*Basket About and Benefit*/
-        basketDetailViewModel.basketQuantity.setValue(Integer.parseInt(details.getQuantity()));
+        basketDetailViewModel.basketQuantity.setValue(details.getQuantity());
         basketDetailViewModel.basketDetail.setValue(details.getProductDetails());
         basketDetailViewModel.basketAbout.setValue(details.getAboutProduct());
         basketDetailViewModel.basketBenefit.setValue(details.getBenifit());
@@ -281,19 +285,19 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             isFavourite = false;
         }
         /*check if eligible for Rating*/
-        if (basketDetailViewModel.alreadyPurchased.getValue()==1){
+        if (basketDetailViewModel.alreadyPurchased.getValue() == 1) {
             basketDetailsBinding.llRateView.setVisibility(View.VISIBLE);
-        }else basketDetailsBinding.llRateView.setVisibility(View.GONE);
+        } else basketDetailsBinding.llRateView.setVisibility(View.GONE);
 
         /*Rating and reviews*/
         basketDetailViewModel.basketRating.setValue(details.getBasketRating());
         basketDetailViewModel.basketAvgRating.setValue(details.getAverageRating());
-        if (details.getAverageRating()==null){
+        if (details.getAverageRating() == null) {
             basketDetailsBinding.llAvgRating.setVisibility(View.GONE);
             basketDetailsBinding.ratingBelowLine.setVisibility(View.GONE);
         }
-        if (details.getNoOrUsersRated()!=null)
-        basketDetailViewModel.basketNoOfRatings.setValue(details.getNoOrUsersRated()+" Ratings");
+        if (details.getNoOrUsersRated() != null)
+            basketDetailViewModel.basketNoOfRatings.setValue(details.getNoOrUsersRated() + " Ratings");
         else {
             basketDetailsBinding.llAvgRating.setVisibility(View.GONE);
             basketDetailsBinding.ratingBelowLine.setVisibility(View.GONE);
@@ -302,33 +306,28 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         if (basketDetailViewModel.isInCart.getValue()) {
             basketDetailsBinding.ivMinus.setVisibility(View.VISIBLE);
             basketDetailsBinding.etQuantity.setVisibility(View.VISIBLE);
-            if (basketDetailViewModel.basketQuantity.getValue() > 0) {
-                basketDetailsBinding.ivPlus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
-                if (basketDetailViewModel.basketQuantity.getValue() > 1) {
-                    basketDetailsBinding.ivMinus.setEnabled(true);
-                    basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
-                } else {
-                    basketDetailsBinding.ivMinus.setEnabled(false);
-                    basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
-                }
-                basketDetailsBinding.etQuantity.setText(String.valueOf(details.getQuantity()));
-            } else {
+            System.out.println("quantity: " + basketDetailViewModel.basketQuantity.getValue());
+            if (Integer.parseInt(basketDetailViewModel.basketQuantity.getValue()) > 1) {
+                basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_green_square));
+            } else
                 basketDetailsBinding.ivMinus.setBackground(requireActivity().getDrawable(R.drawable.bg_grey_square));
-            }
+        } else {
+            basketDetailsBinding.ivMinus.setVisibility(View.GONE);
+            basketDetailsBinding.etQuantity.setVisibility(View.GONE);
         }
         /*Average rating and reviews*/
-        if (details.getNoOrUsersRated()==null){
+        if (details.getNoOrUsersRated() == null) {
             basketDetailsBinding.llAvgRating.setVisibility(View.GONE);
             basketDetailsBinding.ratingBelowLine.setVisibility(View.GONE);
-        }else {
+        } else {
             basketDetailsBinding.ratingBelowLine.setVisibility(View.VISIBLE);
             basketDetailsBinding.llAvgRating.setVisibility(View.VISIBLE);
         }
-        if (details.getBasketRating().getRating()!=null && !details.getBasketRating().getRating().isEmpty()){
+        if (details.getBasketRating().getRating() != null && !details.getBasketRating().getRating().isEmpty()) {
             basketDetailViewModel.yourRating.setValue(Float.parseFloat(details.getBasketRating().getRating()));
             ratingBarInput.setRating(basketDetailViewModel.yourRating.getValue());
             ratingBarInput.setIsIndicator(true);
-        }else ratingBarInput.setIsIndicator(false);
+        } else ratingBarInput.setIsIndicator(false);
 
     }
 
@@ -353,7 +352,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         warningToast(context, baseResponse.getMessage());
-                        goToAskSignInSignUpScreen(baseResponse.getMessage(),context);
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(), context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, baseResponse.getMessage());
@@ -398,8 +397,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                                 setReviewsHide(basketDetailsResponse.getBasketDetail().getBasketRating());
                             }
                             /*Raviews and rating*/
-                            if (basketDetailsResponse.getBasketDetail().getReviews()!=null
-                            &&!basketDetailsResponse.getBasketDetail().getReviews().isEmpty()){
+                            if (basketDetailsResponse.getBasketDetail().getReviews() != null
+                                    && !basketDetailsResponse.getBasketDetail().getReviews().isEmpty()) {
                                 reviewsArrayList = new ArrayList<>();
                                 basketDetailViewModel.reviewLiveData.setValue(basketDetailsResponse.getBasketDetail().getReviews());
                                 setBasketReviewsView();
@@ -431,12 +430,12 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     /*Reviews and comments list*/
     private void setBasketReviewsView() {
         reviewsArrayList.clear();
-        basketDetailViewModel.reviewLiveData.observe(getViewLifecycleOwner(),reviews -> {
-            if (reviews!=null && reviews.size()>0){
+        basketDetailViewModel.reviewLiveData.observe(getViewLifecycleOwner(), reviews -> {
+            if (reviews != null && reviews.size() > 0) {
                 reviewsArrayList.addAll(reviews);
                 rvProductComment.setLayoutManager(new LinearLayoutManager(context));
                 rvProductComment.setHasFixedSize(true);
-                reviewsAdapter = new ProductRatingReviewAdapter(context,reviewsArrayList,0);
+                reviewsAdapter = new ProductRatingReviewAdapter(context, reviewsArrayList, 0);
                 rvProductComment.setAdapter(reviewsAdapter);
                 basketDetailsBinding.tvSeeMoreReview.setVisibility(View.VISIBLE);
             }
@@ -457,7 +456,9 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                             e.printStackTrace();
                         }
                         successToast(context, baseResponse.getMessage());
-                        callBasketDetailsApi(showCircleProgressDialog(context, ""));
+                        basketDetailViewModel.isInCart.setValue(true);
+                        details.setQuantity("1");
+                        setBasketValue();
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -481,11 +482,11 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     //increase quantity of basket
-    private void increaseQuantityApi(ProgressDialog progressDialog) {
+    private void updateQuantityApi(ProgressDialog progressDialog, int quantity) {
         Observer<BaseResponse> addToCartBasketObserver = baseResponse -> {
             if (baseResponse != null && progressDialog != null) {
                 progressDialog.dismiss();
-                Log.e(TAG, "callAddToCartBasketApi: " + baseResponse.getMessage());
+                Log.e(TAG, "callUpdateCartBasketApi: " + baseResponse.getMessage());
                 switch (baseResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         try {
@@ -494,6 +495,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                             e.printStackTrace();
                         }
                         successToast(context, baseResponse.getMessage());
+                        details.setQuantity(String.valueOf(quantity));
                         setBasketValue();
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -588,7 +590,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         return map;
     }
 
-    private void setHideOrShowValue() {
+    private void setHodeOrShowValue() {
         //hide all expanded views initially
 
         hideOrShowAboutThisProduct();
@@ -682,8 +684,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         quantity++;
         etQuantity.setText(String.valueOf(quantity));
         AppUtils.setMinusButton(quantity, view);
-        basketDetailViewModel.basketQuantity.setValue(quantity);
-        increaseQuantityApi(showCircleProgressDialog(context, ""));
+        details.setQuantity(String.valueOf(quantity));
+        updateQuantityApi(showCircleProgressDialog(context, ""), quantity);
     }
 
     private void decreaseQuantity(String qty, CustomTextView etQuantity, ImageView view) {
@@ -693,8 +695,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         } else {
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
-            basketDetailViewModel.basketQuantity.setValue(quantity);
-            increaseQuantityApi(showCircleProgressDialog(context, ""));
+            details.setQuantity(String.valueOf(quantity));
+            updateQuantityApi(showCircleProgressDialog(context, ""), quantity);
         }
         AppUtils.setMinusButton(quantity, view);
     }
@@ -800,29 +802,19 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 hideOrShowNutritionDetails();
                 break;
             case R.id.iv_minus:
-                if (basketDetailViewModel.basketQuantity.getValue() > 1) {
+                if (Integer.parseInt(basketDetailsBinding.etQuantity.getText().toString()) > 1) {
                     decreaseQuantity(basketDetailsBinding.etQuantity.getText().toString(),
                             basketDetailsBinding.etQuantity, basketDetailsBinding.ivMinus);
-                }
+                } else basketDetailsBinding.ivMinus.setEnabled(false);
 
                 break;
             case R.id.iv_plus:
-                if (details.getInCart() == 0)
-                    callAddToCartBasketApi(showCircleProgressDialog(context, ""));
-                else {
-                    increaseQuantity(basketDetailsBinding.etQuantity.getText().toString(),
-                            basketDetailsBinding.etQuantity, basketDetailsBinding.ivMinus);
-
-                }
+                addOrRemoveFromCart();
                 break;
-         /*   case R.id.img_minus:
-                decreaseQuantity(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
-                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
+            case R.id.img_minus:
+//                decreaseQuantity(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
+//                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
                 break;
-            case R.id.img_plus:
-                increaseQuantity(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
-                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
-                break;*/
             case R.id.iv_favourite:
                 addOrRemoveFromFavourite();
                 break;
@@ -841,16 +833,24 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 }
                 break;
             case R.id.tv_see_more_review:
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList(REVIEW_LIST, reviewsArrayList);
-                    NavHostFragment.findNavController(BasketDetailFragment.this).
-                            navigate(R.id.action_nav_basket_details_to_nav_product_review, bundle);
-                    break;
-            case R.id.btn_login:
-               callSubscribeBasketApi(showCircleProgressDialog(context,""));
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(REVIEW_LIST, reviewsArrayList);
+                NavHostFragment.findNavController(BasketDetailFragment.this).
+                        navigate(R.id.action_nav_basket_details_to_nav_product_review, bundle);
                 break;
 
 
+        }
+    }
+
+    private void addOrRemoveFromCart() {
+        if (!basketDetailViewModel.isInCart.getValue() || basketDetailsBinding.etQuantity.getText().toString().isEmpty()) {
+            basketDetailsBinding.etQuantity.setText("");
+            callAddToCartBasketApi(showCircleProgressDialog(context, ""));
+        } else {
+            basketDetailsBinding.ivMinus.setEnabled(true);
+            increaseQuantity(basketDetailsBinding.etQuantity.getText().toString(),
+                    basketDetailsBinding.etQuantity, basketDetailsBinding.ivPlus);
         }
     }
 
@@ -914,6 +914,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
         return map;
     }
+
+
 
     @Override
     public void onNetworkException(int from, String type) {

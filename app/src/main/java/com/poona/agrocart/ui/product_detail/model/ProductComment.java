@@ -13,8 +13,8 @@ public class ProductComment {
 
     @BindingAdapter("setImage")
     public static void setImage(ImageView view, String img) {
-        if (img.endsWith(".jpg") || img.endsWith(".jpeg"))
-            view.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//        if (img.endsWith(".jpg") || img.endsWith(".jpeg"))
+//            view.setScaleType(ImageView.ScaleType.CENTER_CROP);
         Glide.with(view.getContext())
                 .load(img)
                 .placeholder(R.drawable.placeholder)

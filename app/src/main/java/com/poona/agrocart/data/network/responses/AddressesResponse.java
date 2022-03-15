@@ -32,7 +32,7 @@ public class AddressesResponse extends BaseResponse implements Serializable {
     }
 
     public static class Address implements Serializable {
-
+        
         @SerializedName("name")
         @Expose
         private String name;
