@@ -73,6 +73,9 @@ public class SubscribeBasketListCustomerResponse {
         @SerializedName("created_at")
         @Expose
         private String createdAt;
+        @SerializedName("subscription_count")
+        @Expose
+        private String subscriptionCount;
 
         public String getOrderId() {
             return orderId;
@@ -154,6 +157,13 @@ public class SubscribeBasketListCustomerResponse {
             this.createdAt = createdAt;
         }
 
+        public String getSubscriptionCount() {
+            return subscriptionCount;
+        }
+
+        public void setSubscriptionCount(String subscriptionCount) {
+            this.subscriptionCount = subscriptionCount;
+        }
     }
 
 }

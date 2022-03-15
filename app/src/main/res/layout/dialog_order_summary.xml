@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_400sdp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="-20dp"
         app:cardCornerRadius="@dimen/_20sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_26sdp">
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/_5sdp">
 
             <com.poona.agrocart.widgets.CustomTextView
                 android:id="@+id/tv_title"
@@ -64,5 +65,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/view_line" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
+
 
 </layout>

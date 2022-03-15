@@ -108,6 +108,7 @@
         <entry key="app/src/main/res/drawable/ic_delete_gray.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/ic_empty_help_center.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_empty_notification.xml" value="0.1055" />
+        <entry key="app/src/main/res/drawable/ic_empty_orders.xml" value="0.1815" />
         <entry key="app/src/main/res/drawable/ic_explore.xml" value="0.17592592592592593" />
         <entry key="app/src/main/res/drawable/ic_gallery.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable/ic_gallery_image_cancel_icon.xml" value="0.1215" />
@@ -229,7 +230,7 @@
         <entry key="app/src/main/res/layout/dialog_delete_notification.xml" value="0.15818725951261223" />
         <entry key="app/src/main/res/layout/dialog_delivery_options.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_new_ticket.xml" value="0.15092592592592594" />
-        <entry key="app/src/main/res/layout/dialog_order_summary.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_order_summary.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_select_photo.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_server_error.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_text_with_button.xml" value="0.11" />

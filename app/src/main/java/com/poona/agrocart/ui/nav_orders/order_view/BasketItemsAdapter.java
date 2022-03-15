@@ -102,7 +102,7 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
                 }
 
                 if(basketItem.getWeight() != null && !basketItem.getWeight().equals("")){
-                    holder.rvBasketDetailBinding.tvWeight.setText(basketItem.getWeight());
+                    holder.rvBasketDetailBinding.tvWeight.setText(basketItem.getWeight() + basketItem.getUnit());
                 }else {
                     holder.rvBasketDetailBinding.tvWeight.setText("N/A");
                 }

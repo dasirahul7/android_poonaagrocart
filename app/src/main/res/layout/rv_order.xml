@@ -173,6 +173,7 @@
                             android:text="@{order.totalQuantity}"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="end"
+                            android:paddingEnd="@dimen/_10sdp"
                             android:textColor="@color/color_total_amount"
                             android:textSize="@dimen/_14sp"
                             app:setCustomFont="@string/font_poppins_regular" />

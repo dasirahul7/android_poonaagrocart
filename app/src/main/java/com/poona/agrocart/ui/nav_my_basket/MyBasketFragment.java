@@ -89,7 +89,6 @@ public class MyBasketFragment extends BaseFragment implements NetworkExceptionLi
 
     private void setRvAdapter(View view) {
         basketOrderArrayList = new ArrayList<>();
-       // basketListingData();
         callSubscriptionBasketListApi(showCircleProgressDialog(context, ""));
         linearLayoutManager = new LinearLayoutManager(requireContext());
         rvBasketItems.setHasFixedSize(true);
@@ -113,10 +112,23 @@ public class MyBasketFragment extends BaseFragment implements NetworkExceptionLi
                                 subscribeBasketListCustomerResponse.getOrderDetials().size() > 0) {
                             basketOrderArrayList.addAll(subscribeBasketListCustomerResponse.getOrderDetials());
                             basketOrdersAdapter.notifyDataSetChanged();
+
+
+                            fragmentMyBasketBinding.llBasketListMain.setVisibility(View.VISIBLE);
+                            fragmentMyBasketBinding.llEmptyScreen.setVisibility(View.GONE);
+
+                        }else {
+                            warningToast(context, subscribeBasketListCustomerResponse.getMessage());
+                            fragmentMyBasketBinding.llEmptyScreen.setVisibility(View.VISIBLE);
+                            fragmentMyBasketBinding.llBasketListMain.setVisibility(View.GONE);
                         }
+
                         break;
                     case STATUS_CODE_404://Validation Errors
                         warningToast(context, subscribeBasketListCustomerResponse.getMessage());
+                        fragmentMyBasketBinding.llEmptyScreen.setVisibility(View.VISIBLE);
+                        fragmentMyBasketBinding.llBasketListMain.setVisibility(View.GONE);
+
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         goToAskSignInSignUpScreen(subscribeBasketListCustomerResponse.getMessage(), context);

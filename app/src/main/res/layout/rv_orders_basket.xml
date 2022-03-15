@@ -124,7 +124,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="bottom"
-                            android:text="@{`Rs. `+basketOrder.paidAmount+ ` X ` + basketOrder.totalQuantity}"
+                            android:text="@{`Rs. `+basketOrder.paidAmount+ ` X ` + basketOrder.subscriptionCount}"
                             android:textColor="@color/colorGrey"
                             android:textSize="@dimen/_18sp"
                             app:setCustomFont="@string/font_poppins_regular" />
