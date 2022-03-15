@@ -328,13 +328,15 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private void checkValuesAndViews() {
         /*hide views if value is empty or null*/
         if (orderSummaryViewModel.discountMutable.getValue() == null ||
-                Float.parseFloat(orderSummaryViewModel.discountMutable.getValue()) == 0.0)
+                Float.parseFloat(orderSummaryViewModel.discountMutable.getValue()) == 0.0){
             fragmentOrderSummaryBinding.llDiscount.setVisibility(View.GONE);
-        else fragmentOrderSummaryBinding.llDiscount.setVisibility(View.VISIBLE);
-        if (orderSummaryViewModel.youWillSaveMutable.getValue() == null ||
-                Float.parseFloat(orderSummaryViewModel.youWillSaveMutable.getValue()) == 0.0)
             fragmentOrderSummaryBinding.tvYouWillSave.setVisibility(View.GONE);
-        else fragmentOrderSummaryBinding.tvYouWillSave.setVisibility(View.VISIBLE);
+        }
+        else {
+            fragmentOrderSummaryBinding.tvYouWillSave.setVisibility(View.VISIBLE);
+            fragmentOrderSummaryBinding.llDiscount.setVisibility(View.VISIBLE);
+        }
+
     }
 
     /*Call Apply Coupon API*/
