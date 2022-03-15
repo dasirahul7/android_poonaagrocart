@@ -134,7 +134,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
                     break;
                 default:
                     rvOrderBinding.tvOrderStatus.setText(context.getString(R.string.pending));
-                    rvOrderBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color4)));
+                    rvOrderBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_order_pending)));
                     break;
             }
             rvOrderBinding.executePendingBindings();
