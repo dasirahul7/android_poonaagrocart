@@ -256,6 +256,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         fragmentOrderViewBinding.viewline1.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.tvSeeMore.setVisibility(View.VISIBLE);
         fragmentOrderViewBinding.llExpectedDate.setVisibility(View.GONE);
+        fragmentOrderViewBinding.tvSavings.setVisibility(View.GONE);
 
         if(isConnectingToInternet(context)){
             callSubscriptBasketDetailsApi(showCircleProgressDialog(context, ""));
@@ -300,10 +301,6 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         rvBasketListItems.setAdapter(basketItemsAdapter);
 
     }
-
-
-
-
 
     /* My Subscription Basket Details Api and managements */
 
@@ -563,8 +560,8 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                             setReviewValue(myOrderReviews);
                             setRatingViewHideShow(myOrderReviews);
 
-
                             orderViewDetailsViewModel.savedAmount.setValue(myOrderDetailsResponse.getDiscountMessage()); //Get the saved value
+
                         }
                         break;
                     case STATUS_CODE_404://Validation Errors
@@ -682,8 +679,6 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         }else{
             orderViewDetailsViewModel.transactionId.setValue("Not Available");
         }
-
-
 
     }
 
