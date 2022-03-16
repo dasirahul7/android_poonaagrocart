@@ -3,6 +3,8 @@ package com.poona.agrocart.data.network.responses.orderResponse;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class DeliverySlot {
 
     @SerializedName("delivery_days_id")

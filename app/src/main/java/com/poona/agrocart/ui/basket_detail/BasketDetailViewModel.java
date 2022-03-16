@@ -17,7 +17,9 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.responses.Review;
+import com.poona.agrocart.data.network.responses.orderResponse.Delivery;
 import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
+import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -376,5 +378,42 @@ public class BasketDetailViewModel extends AndroidViewModel {
         return baseResponseMutableLiveData;
 
 
+    }
+
+    public LiveData<OrderSummaryResponse> deliverySlotResponseLiveData(ProgressDialog progressDialog, HashMap<String, String> deliverySlotParam, BasketDetailFragment basketDetailFragment) {
+        MutableLiveData<OrderSummaryResponse> deliverySlotByDateResponseMutable = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(basketDetailFragment.context)
+                .create(ApiInterface.class)
+                .getDeliverySlotByDateResponse(deliverySlotParam)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<OrderSummaryResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull OrderSummaryResponse deliverySlotByDateResponse) {
+                        if (deliverySlotByDateResponse!=null){
+
+                            if (progressDialog!=null) {
+                                progressDialog.dismiss();
+                                deliverySlotByDateResponseMutable.setValue(deliverySlotByDateResponse);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Gson gson = new GsonBuilder().create();
+                        OrderSummaryResponse deliverySlotResponse = new OrderSummaryResponse();
+                        try {
+                            deliverySlotResponse = gson.fromJson(((HttpException)e).response().errorBody().string(),
+                                    OrderSummaryResponse.class);
+                            deliverySlotByDateResponseMutable.setValue(deliverySlotResponse);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                            ((NetworkExceptionListener)basketDetailFragment).onNetworkException(3,"");
+                        }
+                    }
+                });
+        return deliverySlotByDateResponseMutable;
     }
 }

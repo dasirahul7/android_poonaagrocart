@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.basket_detail;
 
 import static com.poona.agrocart.app.AppConstants.BASKET_ID;
+import static com.poona.agrocart.app.AppConstants.DELIVERY_DATE;
 import static com.poona.agrocart.app.AppConstants.ITEM_TYPE;
 import static com.poona.agrocart.app.AppConstants.NO_OF_SUBSCRIPTION;
 import static com.poona.agrocart.app.AppConstants.ORDER_ID;
@@ -22,6 +23,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION_TYPE;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,12 +59,15 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.responses.Review;
+import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
+import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.databinding.FragmentBasketDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.basket_detail.adapter.BasketImagesAdapter;
 import com.poona.agrocart.ui.basket_detail.adapter.SlotAdaptor;
 import com.poona.agrocart.ui.basket_detail.adapter.SubscriptionAdapter;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.order_summary.OrderSummaryFragment;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductRatingReviewAdapter;
 import com.poona.agrocart.widgets.CustomEditText;
@@ -70,6 +75,7 @@ import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.ExpandIconView;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -119,7 +125,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private String subscriptionSlotId;
     private String strAmount;
     private int quantity;
-    private String strSubscriptionBasket = "",subTypeId ="";
+    private String strSubscriptionBasket = "",subTypeId ="", subStartDate = "", slotStartTime = "", slotEndTime = "";
 
 
 
@@ -427,7 +433,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private void setBasketSubscription(BasketDetailsResponse.Subscription subscription) {
         basketDetailViewModel.subscriptionStartDateMutable.setValue(subscription.getDeliveryDate());
         basketDetailViewModel.subscriptionTypeMutableList.setValue(subscription.getSubscriptionTypes());
-        basketDetailViewModel.subscriptionDeliverySlotsLists.setValue(subscription.getDeliverySlots());
         basketDetailViewModel.subscriptionTypeMutableList.observe(getViewLifecycleOwner(),
                 subscriptionTypes -> {
                     if (subscriptionTypes != null) {
@@ -436,27 +441,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         basketDetailsBinding.layoutAdded.rvSubType.setAdapter(subscribeTypeAdapter);
                     }
                 });
-        basketDetailViewModel.subscriptionDeliverySlotsLists.observe(getViewLifecycleOwner(),deliverySlots -> {
-            if (deliverySlots.size()>0){
-                SlotAdaptor slotAdaptor = new SlotAdaptor(getContext(), deliverySlots);
-                spinerSlots.setAdapter(slotAdaptor);
 
-                spinerSlots.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        hideKeyBoard(requireActivity());
-                        subscriptionSlotId = deliverySlots.get(i).slotId;
-                        basketDetailViewModel.subscriptionSlotMutable.setValue(deliverySlots.get(i));
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-                        hideKeyBoard(requireActivity());
-                    }
-                });
-            }
-        });
 //        float TotalAmount = basketDetailViewModel.basketQuantity * Integer.parseInt(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString().trim());
     }
 
@@ -753,7 +738,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         isBasketContentsVisible = !isBasketContentsVisible;
     }
 
-   /* //Show calender
+    //Show calender
     private void showCalendar(CustomTextView tvDate) {
         //showing date picker dialog
         DatePickerDialog dpd;
@@ -773,10 +758,15 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+
+
+
                 try {
 
                     if (tvDate != null) {
                         tvDate.setText(txtDisplayDate);
+                        basketDetailViewModel.subscriptionStartDateMutable.setValue(txtDisplayDate);
+                        callDeliverySlotByDateAPI(showCircleProgressDialog(context, ""));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -790,7 +780,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         dpd.show();
 
     }
-*/
 
     @Override
     public void onClick(View v) {
@@ -829,25 +818,11 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             case R.id.iv_plus:
                 addOrRemoveFromCart();
                 break;
-            case R.id.img_minus:
-                decreaseQuantitySubscriptionBasket(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
-                       basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
 
-
-                break;
-
-            case R.id.img_plus:
-                increaseQuantitySubscriptionBasket(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
-                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
-
-
-                break;
             case R.id.iv_favourite:
                 addOrRemoveFromFavourite();
                 break;
-            case R.id.tv_start_date:
-                //showCalendar(basketDetailsBinding.layoutAdded.tvStartDate);
-                break;
+
             case R.id.btn_submit:
                 if (isConnectingToInternet(context)) {
                     if (!Objects.requireNonNull(etFeedback.getText()).toString().isEmpty() && !(ratingBarInput.getRating() == 0.0)) {
@@ -865,13 +840,30 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 NavHostFragment.findNavController(BasketDetailFragment.this).
                         navigate(R.id.action_nav_basket_details_to_nav_product_review, bundle);
                 break;
+
+                //subscription basket details
+
+            case R.id.img_minus:
+                decreaseQuantitySubscriptionBasket(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
+                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
+                break;
+
+            case R.id.img_plus:
+                increaseQuantitySubscriptionBasket(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
+                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
+                break;
+            case R.id.tv_start_date:
+                showCalendar(basketDetailsBinding.layoutAdded.tvStartDate);
+                break;
             case R.id.btn_login:
                 strSubscriptionBasket = tvSubQuatity.getText().toString();
-                Toast.makeText(context, ""+strSubscriptionBasket, Toast.LENGTH_SHORT).show();
-                if(!strSubscriptionBasket.isEmpty()){
+                subStartDate = basketDetailsBinding.layoutAdded.tvStartDate.getText().toString();
+                if(!strSubscriptionBasket.isEmpty() && !subStartDate.isEmpty() && !subTypeId.isEmpty()
+                    && !slotStartTime.isEmpty() && !slotEndTime.isEmpty()){
                     callSubscribeBasketApi(showCircleProgressDialog(context, ""));
+                }else {
+                    warningToast(context, "Please check the details ");
                 }
-
                 break;
 
         }
@@ -939,17 +931,18 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
         map.put(SUBSCRIPTION_TYPE, subTypeId);
         map.put(NO_OF_SUBSCRIPTION, String.valueOf(strSubscriptionBasket));
-        map.put(START_DATE, "05-Mar-2022");
-        map.put(SLOT_ID, "21");
+        map.put(START_DATE, subStartDate);
+        map.put(SLOT_ID, subscriptionSlotId);
         map.put(PAYMENT_MODE_ID, "1");
         map.put(BASKET_ID, basketId);
-        map.put(SLOT_START_TIME, "12PM");
-        map.put(SLOT_END_TIME, "3PM");
+        map.put(SLOT_START_TIME, slotStartTime);
+        map.put(SLOT_END_TIME, slotEndTime);
 
         return map;
     }
 
-    private void increaseQuantitySubscriptionBasket(String qty, CustomTextView etQuantity, ImageView view) {
+    @SuppressLint("SetTextI18n")
+    private void increaseQuantitySubscriptionBasket(String qty , CustomTextView etQuantity, ImageView view) {
         int quantity = Integer.parseInt(qty);
         quantity++;
         etQuantity.setText(String.valueOf(quantity));
@@ -959,7 +952,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
            try {
             int multiplication = Integer.parseInt(details.getBasketRate()) * Integer.parseInt(String.valueOf(quantity));
-            tvSubTotalAmount.setText(String.valueOf(multiplication));
+            tvSubTotalAmount.setText("Rs. "+ String.valueOf(multiplication));
 
         }catch (NullPointerException e) {
             e.printStackTrace();
@@ -970,6 +963,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void decreaseQuantitySubscriptionBasket(String qty, CustomTextView etQuantity, ImageView view) {
         int quantity = Integer.parseInt(qty);
         if (quantity == 1) {
@@ -987,10 +981,71 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             }catch (NullPointerException e) {
                 e.printStackTrace();
             }
-            tvSubQuatity.setText(String.valueOf(quantity));
+            tvSubQuatity.setText("Rs. "+String.valueOf(quantity));
 
         }
         AppUtils.setMinusButton(quantity, view);
+    }
+
+    /*Call slots by Date*/
+    private void callDeliverySlotByDateAPI(ProgressDialog progressDialog) {
+        Observer<OrderSummaryResponse> deliverySlotResponseObserver = delverySlotResponse -> {
+            if (delverySlotResponse != null) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                    switch (delverySlotResponse.status) {
+                        case STATUS_CODE_200://Record Create/Update Successfully
+                            basketDetailViewModel.subscriptionDeliverySlotsLists.setValue(delverySlotResponse.getDelivery().getDeliverySlots());
+                            basketDetailViewModel.subscriptionDeliverySlotsLists.observe(getViewLifecycleOwner(),deliverySlots -> {
+                                if (deliverySlots.size()>0){
+                                    SlotAdaptor slotAdaptor = new SlotAdaptor(getContext(), deliverySlots);
+                                    spinerSlots.setAdapter(slotAdaptor);
+
+                                    spinerSlots.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                            hideKeyBoard(requireActivity());
+                                            subscriptionSlotId = deliverySlots.get(i).slotId;
+                                            slotStartTime = deliverySlots.get(i).slotStartTime;
+                                            slotEndTime = deliverySlots.get(i).slotEndTime;
+                                            basketDetailViewModel.subscriptionSlotMutable.setValue(deliverySlots.get(i));
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> adapterView) {
+                                            hideKeyBoard(requireActivity());
+                                        }
+                                    });
+                                }
+                            });
+                            break;
+                        case STATUS_CODE_403://Validation Errors
+                        case STATUS_CODE_400://Validation Errors
+                        case STATUS_CODE_404://Validation Errors
+                            //show no data msg here
+                            warningToast(context, delverySlotResponse.getMessage());
+                            break;
+                        case STATUS_CODE_401://Unauthorized user
+                            goToAskSignInSignUpScreen(delverySlotResponse.getMessage(), context);
+                            break;
+                        case STATUS_CODE_405://Method Not Allowed
+                            infoToast(context, delverySlotResponse.getMessage());
+                            break;
+                    }
+                }
+            }
+        };
+        basketDetailViewModel.deliverySlotResponseLiveData(progressDialog, deliverySlotParam(),
+                BasketDetailFragment.this)
+                .observe(getViewLifecycleOwner(), deliverySlotResponseObserver);
+    }
+
+    private HashMap<String, String> deliverySlotParam(){
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put(DELIVERY_DATE, preferences.getDeliveryDate());
+        return map;
     }
 
     @Override
