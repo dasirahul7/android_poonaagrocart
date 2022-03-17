@@ -171,13 +171,9 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                 if (!Objects.requireNonNull(feedbackComment.getText()).toString().isEmpty() && !(ratingBar.getRating() == 0.0)) {
 
                     if (isBasketVisible){
-                        orderViewDetailsViewModel.savedAmount.setValue(getString(R.string.cancelled_order_message)); //Get the saved value
-                        fragmentOrderViewBinding.tvSavings.setTextColor(R.color.errorColor);
                         warningToast(context, "wait for while");
                         fragmentOrderViewBinding.cardviewComment.setVisibility(View.VISIBLE);
                     }else {
-                        orderViewDetailsViewModel.savedAmount.setValue(getString(R.string.cancelled)); //Get the saved value
-                        fragmentOrderViewBinding.tvSavings.setTextColor(R.color.errorColor);
                         callRatingAndFeedBackApi(showCircleProgressDialog(context, ""));
                         fragmentOrderViewBinding.cardviewComment.setVisibility(View.VISIBLE);
                     }
@@ -408,6 +404,9 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                 fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.cancelled));
                 fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_cancelled)));
 
+                orderViewDetailsViewModel.savedAmount.setValue(getString(R.string.cancelled_order_message)); //Get the saved value
+                fragmentOrderViewBinding.tvSavings.setTextColor(R.color.color_cancelled);
+
                 fragmentOrderViewBinding.llMainLayoutRatingReview.setVisibility(View.VISIBLE);
                 fragmentOrderViewBinding.llCancel.setVisibility(View.GONE);
                 fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
@@ -541,7 +540,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
 
     /*Order Details Api and managements */
     private void callOrderDetailsApi(ProgressDialog progressDialog) {
-        @SuppressLint("NotifyDataSetChanged")
+        @SuppressLint({"NotifyDataSetChanged", "ResourceAsColor"})
         Observer<MyOrderDetailsResponse> myOrderDetailsResponseObserver = myOrderDetailsResponse -> {
             fragmentOrderViewBinding.clOrderViewMainLayout.setVisibility(View.VISIBLE);
             refreshLayout.setRefreshing(false);
@@ -558,6 +557,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                                 myOrderDetailsResponse.getOrderDetials().size() > 0) {
 
                             orderViewDetailsViewModel.savedAmount.setValue(myOrderDetailsResponse.getDiscountMessage()); //Get the saved value
+                            fragmentOrderViewBinding.tvSavings.setTextColor(R.color.colorPrimary);
 
                             orderDetials.addAll(myOrderDetailsResponse.getOrderDetials());
                             setValue(orderDetials);
@@ -643,6 +643,8 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                 fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.cancelled));
                 fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_cancelled)));
 
+                orderViewDetailsViewModel.savedAmount.setValue(getString(R.string.cancelled_order_message)); //Get the saved value
+                fragmentOrderViewBinding.tvSavings.setTextColor(R.color.color_cancelled);
                 fragmentOrderViewBinding.llMainLayoutRatingReview.setVisibility(View.VISIBLE);
                 fragmentOrderViewBinding.llCancel.setVisibility(View.GONE);
                 fragmentOrderViewBinding.btnTrackOrder.setVisibility(View.GONE);
