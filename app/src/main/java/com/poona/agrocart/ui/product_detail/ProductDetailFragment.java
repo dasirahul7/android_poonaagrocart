@@ -374,6 +374,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
         }
         unitId = productDetailViewModel.unitMutableLiveData.getValue().getpId();
+
+        checkValuesAndViews();
+    }
+    private void checkValuesAndViews(){
+        /*check for is in cart and [-] [+]*/
         if (productDetailViewModel.isInCart.getValue()) {
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
@@ -385,7 +390,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             fragmentProductDetailBinding.ivMinus.setVisibility(View.GONE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.GONE);
         }
+        /*product type*/
+        if (details.getProductType()==null || details.getProductType().equalsIgnoreCase(""))
+            fragmentProductDetailBinding.tvExport.setVisibility(View.GONE);
+        else {
+            productDetailViewModel.productTypeMutable.setValue(details.getProductType());
+        }
     }
+
 
     private void changePriceAndUnit(ProductListResponse.ProductUnit unit) {
         details.setUnit(unit);

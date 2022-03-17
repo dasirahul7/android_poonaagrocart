@@ -132,6 +132,9 @@ public class ProductDetailsResponse extends BaseResponse {
         @SerializedName("category_image")
         @Expose
         private String categoryImage;
+        @SerializedName("product_type")
+        @Expose
+        private String productType;
         @SerializedName("average_rating")
         @Expose
         private String averageRating;
@@ -151,6 +154,14 @@ public class ProductDetailsResponse extends BaseResponse {
         @SerializedName("reviews")
         @Expose
         private List<Review> reviews = null;
+
+        public String getProductType() {
+            return productType;
+        }
+
+        public void setProductType(String productType) {
+            this.productType = productType;
+        }
 
         public int getAlreadyPurchased() {
             return alreadyPurchased;

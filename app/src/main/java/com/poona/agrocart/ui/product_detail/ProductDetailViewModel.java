@@ -59,6 +59,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
     public MutableLiveData<String> productNoOfRating;
     public MutableLiveData<String> averageRating;
     public MutableLiveData<Integer> alreadyPurchased;
+    public MutableLiveData<String> productTypeMutable;
 
     public ProductDetailViewModel(@NonNull Application application) {
         super(application);
@@ -85,6 +86,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
         productNoOfRating = new MutableLiveData<>();productNoOfRating.setValue(null);
         averageRating = new MutableLiveData<>();averageRating.setValue(null);
         alreadyPurchased = new MutableLiveData<>();alreadyPurchased.setValue(null);
+        productTypeMutable = new MutableLiveData<>();productTypeMutable.setValue(null);
         productName.setValue(null);
         productLocation.setValue(null);
         productAbout.setValue(null);
