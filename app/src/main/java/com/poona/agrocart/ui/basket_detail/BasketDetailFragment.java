@@ -5,6 +5,7 @@ import static com.poona.agrocart.app.AppConstants.ITEM_TYPE;
 import static com.poona.agrocart.app.AppConstants.NO_OF_SUBSCRIPTION;
 import static com.poona.agrocart.app.AppConstants.ORDER_ID;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_MODE_ID;
+import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.RATING;
 import static com.poona.agrocart.app.AppConstants.REVIEW;
@@ -63,6 +64,7 @@ import com.poona.agrocart.ui.basket_detail.adapter.BasketImagesAdapter;
 import com.poona.agrocart.ui.basket_detail.adapter.SlotAdaptor;
 import com.poona.agrocart.ui.basket_detail.adapter.SubscriptionAdapter;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductRatingReviewAdapter;
 import com.poona.agrocart.widgets.CustomEditText;
@@ -608,6 +610,13 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         return map;
     }
 
+    /*Remove from cart params*/
+    private HashMap<String, String> removeCartParam() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(BASKET_ID, details.getBasketId());
+        return map;
+    }
+
     private void setHodeOrShowValue() {
         //hide all expanded views initially
 
@@ -973,13 +982,12 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private void decreaseQuantitySubscriptionBasket(String qty, CustomTextView etQuantity, ImageView view) {
         int quantity = Integer.parseInt(qty);
         if (quantity == 1) {
-            warningToast(requireActivity(), getString(R.string.quantity_less_than_one));
+            warningToast(requireActivity(), getString(R.string.quantity_less_than_one));//aad remove from cart
+//            callRemoveFromCartAPI(showCircleProgressDialog(context,""));
         } else {
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
             details.setQuantity(String.valueOf(quantity));
-
-
             try {
                 int multiplication = Integer.parseInt(details.getBasketRate()) * Integer.parseInt(String.valueOf(quantity));
                 tvSubTotalAmount.setText(String.valueOf(multiplication));
@@ -992,6 +1000,46 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         }
         AppUtils.setMinusButton(quantity, view);
     }
+
+    private void callRemoveFromCartAPI(ProgressDialog progressDialog) {
+        Observer<BaseResponse> baseResponseObserver= response -> {
+            if (response!=null){
+                if (progressDialog!=null)
+                    progressDialog.dismiss();
+                switch (response.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(requireActivity(), response.getMessage());
+                        basketDetailsBinding.ivMinus.setVisibility(View.GONE);
+                        basketDetailsBinding.etQuantity.setVisibility(View.GONE);
+                        basketDetailsBinding.ivPlus.setVisibility(View.VISIBLE);
+                        details.setInCart(0);
+                        details.setQuantity("");
+                        setBasketValue();
+                        try {
+                            ((HomeActivity)context).setCountBudge(response.getCartItems());
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, response.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(response.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, response.getMessage());
+                        break;
+                }
+            }
+        };
+        basketDetailViewModel.removeFromCartResponseLiveData(progressDialog,removeCartParam(),
+                BasketDetailFragment.this).observe(getViewLifecycleOwner(),baseResponseObserver);
+    }
+
 
     @Override
     public void onNetworkException(int from, String type) {

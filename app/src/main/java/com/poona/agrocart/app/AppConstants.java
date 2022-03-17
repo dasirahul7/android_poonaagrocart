@@ -124,7 +124,6 @@ public class AppConstants {
 
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
-    public static final String ADD_TO_PRODUCT = "add-to-cart-product";
     public static final String RATE_TO_PRODUCT = "rate-product";
 
     /*Basket detail API*/
@@ -145,6 +144,9 @@ public class AppConstants {
 
     /*Search api Keys*/
     public static final String SEARCH_VALUE = "search_value";
+
+    /*Payment related APIs*/
+    public static final String PAYMENT_CRED_API = "payment-credentials";
 
     /*Favourite Api Keys*/
     public static final String ITEM_TYPE = "item_type";
@@ -205,7 +207,11 @@ public class AppConstants {
 
     /*Basket API Keys*/
     public static final String BASKET_ID = "basket_id";
+    /*Add to cart APIs*/
     public static final String ADD_TO_BASKET = "add-to-cart-basket";
+    public static final String ADD_TO_PRODUCT = "add-to-cart-product";
+    public static final String REMOVE_FROM_CART_PRODUCT = "remove-cart-by-product-id";
+    public static final String REMOVE_FROM_CART_BASKET = "remove-cart-by-product-id";
 
     /*Product API Keys*/
     public static final String PRODUCT_ID = "product_id";
@@ -232,7 +238,12 @@ public class AppConstants {
     public static final String DELIVERY_DATE = "delivery_date";
     public static final String SLOT_ID = "slot_id";
     public static final String PAYMENT_MODE_ID = "payment_mode_id";
-
+    public static final String PAYMENT_AMOUNT = "payment_amount";
+    public static final String PAYMENT_SECRET_KEY = "payment_secret_key";
+    public static final String PAYMENT_TYPE = "payment_type";
+    public static final String PAYMENT_CURRENCY = "currency";
+    public static final String PAYMENT_REFERENCE_ID = "payment_reference_id";
+    public static final String PAYMENT_STATUS = "payment_status";
     /*Order view API*/
     public static final String RATE_ORDER = "rate-order";
     public static final String ORDER_CANCEL_REASON = "order-cancel-reason";

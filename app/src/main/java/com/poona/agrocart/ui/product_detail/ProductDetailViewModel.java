@@ -28,6 +28,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
 
 public class ProductDetailViewModel extends AndroidViewModel {
+    /*APIs priority
+    0- product=detail
+    1- Add-to-cart
+    2- remove-from-cart
+    3- Add-to-favorite
+    4- Remove-from-favourite
+    5- Submit-rating and reviews*/
     public static final String TAG = ProductDetailViewModel.class.getSimpleName();
     public MutableLiveData<String> productName;
     public MutableLiveData<String> productBrand;
@@ -135,8 +142,89 @@ public class ProductDetailViewModel extends AndroidViewModel {
         return productDetailsResponseMutableLiveData;
     }
 
-    /*Add to Favourite*/
 
+
+    //Add To Cart Product
+    public LiveData<BaseResponse> addToCartProductLiveData(ProgressDialog progressDialog,
+                                                           HashMap<String, String> hashMap,
+                                                           ProductDetailFragment productDetailFragment) {
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(productDetailFragment.getContext())
+                .create(ApiInterface.class)
+                .addToCartProductResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            Log.e(TAG, "add to cart onSuccess: " + new Gson().toJson(baseResponse));
+                            baseResponseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(1, "");
+                        }
+                    }
+                });
+        return baseResponseMutableLiveData;
+    }
+
+    /*Remove from Cart*/
+    public LiveData<BaseResponse> removeFromCartResponseLiveData(ProgressDialog progressDialog,
+                                                           HashMap<String, String> hashMap,
+                                                           ProductDetailFragment productDetailFragment) {
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(productDetailFragment.getContext())
+                .create(ApiInterface.class)
+                .removeFromBasketCartResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            Log.e(TAG, "add to cart onSuccess: " + new Gson().toJson(baseResponse));
+                            baseResponseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(2, "");
+                        }
+                    }
+                });
+        return baseResponseMutableLiveData;
+    }
+
+    /*Add to Favourite*/
     public LiveData<BaseResponse> addToFavourite(ProgressDialog progressDialog,
                                                  HashMap<String, String> hashMap,
                                                  ProductDetailFragment productDetailFragment) {
@@ -168,7 +256,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(1, "");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(3, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -210,7 +298,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                             removeFromFavouriteResponseObserver.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(1, "");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(3, "");
                         }
 
                         Log.e(TAG, e.getMessage());
@@ -221,45 +309,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
     }
 
 
-    //Add To Cart Product
-    public LiveData<BaseResponse> addToCartProductLiveData(ProgressDialog progressDialog,
-                                                           HashMap<String, String> hashMap,
-                                                           ProductDetailFragment productDetailFragment) {
-        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
 
-        ApiClientAuth.getClient(productDetailFragment.getContext())
-                .create(ApiInterface.class)
-                .addToCartProductResponse(hashMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
-                    @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
-                        if (baseResponse != null) {
-                            progressDialog.dismiss();
-                            Log.e(TAG, "add to cart onSuccess: " + new Gson().toJson(baseResponse));
-                            baseResponseMutableLiveData.setValue(baseResponse);
-                        }
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        progressDialog.dismiss();
-                        Gson gson = new GsonBuilder().create();
-                        BaseResponse response = new BaseResponse();
-                        try {
-                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
-                                    BaseResponse.class);
-
-                            baseResponseMutableLiveData.setValue(response);
-                        } catch (Exception exception) {
-                            Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(2, "");
-                        }
-                    }
-                });
-        return baseResponseMutableLiveData;
-    }
 
     public LiveData<BaseResponse> callSubmitRatingResponseApi(ProgressDialog progressDialog, HashMap<String, String> submitRatingInputParameter,
                                                               ProductDetailFragment productDetailFragment) {
@@ -292,7 +342,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                                 baseResponseMutableLiveData.setValue(response);
                             } catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
-//                            ((NetworkExceptionListener) homeFragment).onNetworkException(1,"");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(5,"");
                             }
 
                             Log.e(TAG, e.getMessage());

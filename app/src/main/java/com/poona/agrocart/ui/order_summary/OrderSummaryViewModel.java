@@ -1,19 +1,15 @@
 package com.poona.agrocart.ui.order_summary;
 
-import static com.poona.agrocart.app.AppConstants.COUPON_ID;
-
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.exoplayer2.source.dash.manifest.BaseUrl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -25,14 +21,11 @@ import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.Coupon;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.Delivery;
-import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlotResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.Payments;
+import com.poona.agrocart.data.network.responses.payment.RazorPayCredentialResponse;
 import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
-import com.poona.agrocart.ui.order_summary.model.Address;
-
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -285,5 +278,44 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                     }
                 });
         return deliverySlotByDateResponseMutable;
+    }
+
+    /*Get Payment Credentials*/
+    public LiveData<RazorPayCredentialResponse> getRazorPayCredentialResponse(ProgressDialog progressDialog,
+                                                                      OrderSummaryFragment orderSummaryFragment){
+
+        MutableLiveData<RazorPayCredentialResponse> razorPayCredentialResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(orderSummaryFragment.context)
+                .create(ApiInterface.class)
+                .getRazorPayCredentialResponse()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<RazorPayCredentialResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull RazorPayCredentialResponse razorPayCredentialResponse) {
+                        if (razorPayCredentialResponse!=null){
+                            if (progressDialog!=null){
+                                razorPayCredentialResponseMutableLiveData.setValue(razorPayCredentialResponse);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Gson gson = new GsonBuilder().create();
+                        RazorPayCredentialResponse payCredentialResponse = new RazorPayCredentialResponse();
+                        try {
+
+                            payCredentialResponse = gson.fromJson(((HttpException)e).response().errorBody().string(),
+                                    RazorPayCredentialResponse.class);
+                            razorPayCredentialResponseMutableLiveData.setValue(payCredentialResponse);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                            ((NetworkExceptionListener)orderSummaryFragment).onNetworkException(4,"");
+                        }
+                    }
+                });
+        return razorPayCredentialResponseMutableLiveData;
     }
 }

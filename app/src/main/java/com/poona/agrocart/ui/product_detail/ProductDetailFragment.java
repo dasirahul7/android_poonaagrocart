@@ -434,10 +434,16 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void setViewPagerAdapterItems() {
         ArrayList<String> images = new ArrayList<>();
-        for (int i = 0; i < details.getProductImgs().size(); i++)
-            images.add(details.getProductImgs().get(i).getProductImg());
-        count = details.getProductImgs().size();
-        if (count >= 0) {
+        if (details.getProductImgs().size()>0){
+            for (int i = 0; i < details.getProductImgs().size(); i++)
+                images.add(details.getProductImgs().get(i).getProductImg());
+        }else {
+            images.add(details.getFeatureImg());
+            images.add(details.getFeatureImg());
+            images.add(details.getFeatureImg());
+        }
+        count = images.size();
+        if (count >0) {
             productImagesAdapter = new ProductImagesAdapter(ProductDetailFragment.this,
                     getChildFragmentManager(), images);
             vpImages.setAdapter(productImagesAdapter);
@@ -475,7 +481,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 if (Integer.parseInt(fragmentProductDetailBinding.etQuantity.getText().toString()) > 1) {
                     decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
                             fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
-                } else fragmentProductDetailBinding.ivMinus.setEnabled(false);
+                } else fragmentProductDetailBinding.ivMinus.setEnabled(false); // call here remove api
                 break;
             case R.id.iv_plus:
                 addOrRemoveFromCart();
@@ -506,6 +512,46 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 break;
         }
 
+    }
+
+    /*Remove from Cart API here*/
+    private void callRemoveFromCartAPI(ProgressDialog progressDialog) {
+        Observer<BaseResponse> baseResponseObserver= response -> {
+            if (response!=null){
+                if (progressDialog!=null)
+                    progressDialog.dismiss();
+                switch (response.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(requireActivity(), response.getMessage());
+                        fragmentProductDetailBinding.ivMinus.setVisibility(View.GONE);
+                        fragmentProductDetailBinding.etQuantity.setVisibility(View.GONE);
+                        fragmentProductDetailBinding.ivPlus.setVisibility(View.VISIBLE);
+                        details.getUnit().setInCart(0);
+                        details.getUnit().setQty(0);
+                        setDetailsValue();
+                        try {
+                            ((HomeActivity)context).setCountBudge(response.getCartItems());
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, response.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(response.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, response.getMessage());
+                        break;
+                }
+            }
+        };
+        productDetailViewModel.removeFromCartResponseLiveData(progressDialog,removeCartParam(),
+                ProductDetailFragment.this).observe(getViewLifecycleOwner(),baseResponseObserver);
     }
 
 
@@ -727,6 +773,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         map.put(QUANTITY, qty);
         return map;
     }
+    private HashMap<String, String> removeCartParam() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(PRODUCT_ID, details.getId());
+        return map;
+    }
 
     //use for me trupti
 
@@ -795,10 +846,13 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         callProductDetailsApi(showCircleProgressDialog(context, ""));
                         break;
                     case 1:
-                        addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
+                        addOrRemoveFromCart();
                         break;
                     case 2:
-                        updateQuantityApi(showCircleProgressDialog(context, ""), details, String.valueOf(details.getUnit().getQty()));
+                        callRemoveFromCartAPI(showCircleProgressDialog(context,""));
+                        break;
+                    case 3:
+                        addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
                         break;
                 }
             }

@@ -13,7 +13,13 @@ import static com.poona.agrocart.app.AppConstants.GOOGLE_API_KEY;
 import static com.poona.agrocart.app.AppConstants.IS_LOGGED_IN;
 import static com.poona.agrocart.app.AppConstants.IS_READ_INTRO;
 import static com.poona.agrocart.app.AppConstants.IS_VERIFIED;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_AMOUNT;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_CURRENCY;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_MODE_ID;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_REFERENCE_ID;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_SECRET_KEY;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_STATUS;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_TYPE;
 import static com.poona.agrocart.app.AppConstants.PREFERENCES_NAME;
 import static com.poona.agrocart.app.AppConstants.SLOT_ID;
 import static com.poona.agrocart.app.AppConstants.USERNAME;
@@ -33,6 +39,7 @@ import com.poona.agrocart.ui.home.model.ProductOld;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -280,6 +287,10 @@ public class AppSharedPreferences {
         this.editor.putString(COUPON_ID,couponId);
         this.editor.commit();
     }
+    public void setPaymentAmount(Integer amount){
+        this.editor.putInt(PAYMENT_AMOUNT,amount);
+        this.editor.commit();
+    }
     public String getDeliveryAddressId(){
         return preferences.getString(ADDRESS_P_ID,"");
     }
@@ -294,5 +305,42 @@ public class AppSharedPreferences {
     }
     public String getCouponId(){
         return preferences.getString(COUPON_ID,"");
+    }
+    public Integer getPaymentAmount(){
+        return preferences.getInt(PAYMENT_AMOUNT,0);
+    }
+
+
+    /*Save secret key in shared preferences*/
+    public void setRazorCredentials(String key, String type, String currency){
+        this.editor.putString(PAYMENT_SECRET_KEY,key);
+        this.editor.putString(PAYMENT_TYPE,type);
+        this.editor.putString(PAYMENT_CURRENCY,currency);
+        this.editor.apply();
+    }
+    public HashMap<String,String> getRazorCredentials(){
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put(PAYMENT_SECRET_KEY,preferences.getString(PAYMENT_SECRET_KEY,""));
+        hashMap.put(PAYMENT_TYPE,preferences.getString(PAYMENT_TYPE,""));
+        hashMap.put(PAYMENT_CURRENCY,preferences.getString(PAYMENT_CURRENCY,""));
+        return hashMap;
+    }
+
+    public void setPaymentReferenceId(String referenceId){
+        this.editor.putString(PAYMENT_REFERENCE_ID,referenceId);
+        this.editor.apply();
+    }
+
+    public String getPaymentReference(){
+        return this.preferences.getString(PAYMENT_REFERENCE_ID,"");
+    }
+
+    public void setPaymentStatus(boolean status){
+        this.editor.putBoolean(PAYMENT_STATUS,status);
+        this.editor.apply();
+
+    }
+    public boolean getPaymentStatus(){
+        return this.preferences.getBoolean(PAYMENT_STATUS,false);
     }
 }
