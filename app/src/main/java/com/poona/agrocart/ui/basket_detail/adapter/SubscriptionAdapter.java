@@ -24,7 +24,7 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
 
     private final Context context;
     private ArrayList<BasketDetailsResponse.SubscriptionType> subscriptionTypes = new ArrayList<>();
-    public int mSelectedItem = 0;
+    public int mSelectedItem = -1;
     private final onSubTypeClickListener onSubTypeClicklistener;
 
     public SubscriptionAdapter(ArrayList<BasketDetailsResponse.SubscriptionType> subscriptionTypes, Context context,

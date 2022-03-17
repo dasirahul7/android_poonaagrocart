@@ -293,7 +293,7 @@
     <string name="default_address">Default</string>
 
     <!--BasketDetail Orders-->
-    <string name="order_id">Order ID -</string>
+    <string name="order_id">Order ID - </string>
     <string name="_12_september_2021">12 September 2021</string>
     <string name="diet_basket">Diet Basket</string>
     <string name="rs_200_x_4">Rs.200 x 4</string>
@@ -320,6 +320,7 @@
     <string name="delivered">Delivered</string>
     <string name="confirmed">Confirmed</string>
     <string name="cancelled">Cancelled</string>
+    <string name="cancelled_order_message">You have cancelled the order</string>
     <string name="status">Status</string>
     <string name="total_quantity">Total Quantity</string>
     <string name="_25">25</string>

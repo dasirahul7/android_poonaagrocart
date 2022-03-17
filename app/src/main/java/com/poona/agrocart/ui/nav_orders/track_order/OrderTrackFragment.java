@@ -1,7 +1,6 @@
 package com.poona.agrocart.ui.nav_orders.track_order;
 
 import static com.poona.agrocart.app.AppConstants.ORDER_ID;
-import static com.poona.agrocart.app.AppConstants.ORDER_SUBSCRIPTION_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
@@ -14,29 +13,34 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.myOrderResponse.orderTrack.OrderTrack;
 import com.poona.agrocart.data.network.responses.myOrderResponse.orderTrack.ProductOrderTrackResponse;
 import com.poona.agrocart.databinding.FragmentOrderTrackBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.nav_orders.order_view.OrderViewFragment;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class OrderTrackFragment extends BaseFragment {
+public class OrderTrackFragment extends BaseFragment implements NetworkExceptionListener {
     private FragmentOrderTrackBinding fragmentOrderTrackBinding;
     private OrderTrackViewModel orderTrackViewModel;
     private View view;
+    private SwipeRefreshLayout refreshLayout;
     private List<OrderTrack> orderTracks = new ArrayList<>();
     private String order_id = "";
+    private String txtDisplayDate="", selectedDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,29 +61,49 @@ public class OrderTrackFragment extends BaseFragment {
 
         initView();
 
-        callOrderTrackApi(showCircleProgressDialog(context, ""));
+        fragmentOrderTrackBinding.clMainLayout.setVisibility(View.GONE);
+
+        if(isConnectingToInternet(context)){
+            callOrderTrackApi(showCircleProgressDialog(context, ""));
+        }else {
+            showNotifyAlert(requireActivity(), getString(R.string.info), getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                if(isConnectingToInternet(context)){
+                    callOrderTrackApi(showCircleProgressDialog(context, ""));
+                }else {
+                    showNotifyAlert(requireActivity(), getString(R.string.info), getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
+
         return view;
     }
 
 
     private void initView() {
         initTitleWithBackBtn(getString(R.string.order_track));
+        refreshLayout = fragmentOrderTrackBinding.rlOrderTrack;
     }
 
     private void callOrderTrackApi(ProgressDialog progressDialog){
         Observer<ProductOrderTrackResponse> productOrderTrackResponseObserver = productOrderTrackResponse -> {
-
             if (productOrderTrackResponse != null) {
                 Log.e("Order Track Api ResponseData", new Gson().toJson(productOrderTrackResponse));
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
+                fragmentOrderTrackBinding.clMainLayout.setVisibility(View.VISIBLE);
+                refreshLayout.setRefreshing(false);
                 switch (productOrderTrackResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         orderTracks.clear();
                         if (productOrderTrackResponse.getOrderDetials()!= null &&
                                 productOrderTrackResponse.getOrderDetials().size() > 0) {
-                            successToast(context, productOrderTrackResponse.getMessage());
                             orderTracks.addAll(productOrderTrackResponse.getOrderDetials());
                             setValues(orderTracks);
                         }
@@ -112,25 +136,41 @@ public class OrderTrackFragment extends BaseFragment {
         return map;
     }
 
-    @SuppressLint("ResourceAsColor")
+    private String DisplayData(String selectedDate) {
+        try {
+            txtDisplayDate = formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "MMM dd yyyy  hh:mm aa");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return txtDisplayDate ;
+    }
+
+
+    @SuppressLint({"ResourceAsColor", "SetTextI18n"})
     private void setValues(List<OrderTrack> orderTracks) {
         orderTrackViewModel.orderId.setValue(orderTracks.get(0).getOrderCode());
-        orderTrackViewModel.expectedDate.setValue(orderTracks.get(0).getShouldDeliverOnDate());
         orderTrackViewModel.cus_name.setValue(orderTracks.get(0).getName());
         orderTrackViewModel.cus_phone.setValue(orderTracks.get(0).getMobile());
         orderTrackViewModel.cus_address.setValue(orderTracks.get(0).getOrderAddressText() + ", " + orderTracks.get(0).getOrderAreaName()+", "+ orderTracks.get(0).getOrderCityName());
 
-
+        selectedDate = orderTracks.get(0).getShouldDeliverOnDate();
+        txtDisplayDate = "";
+        try {
+            txtDisplayDate = formatDate(selectedDate, "dd/mm/yyyy", "MMM dd, yyyy");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        fragmentOrderTrackBinding.tvExpectedDate.setText(getString(R.string.expected_delivery_date)+" "+txtDisplayDate);
 
         switch (orderTracks.get(0).getOrderStatus()){
             case "1":
                 fragmentOrderTrackBinding.imgOrderPlace.setImageResource(R.drawable.ic_tick_green_bg);
-                orderTrackViewModel.place_date.setValue(orderTracks.get(0).getPendingDate());
+                fragmentOrderTrackBinding.tvOrderPlaceDate.setText(DisplayData(orderTracks.get(0).getPendingDate()));
                 fragmentOrderTrackBinding.tvOrderPlaceDate.setVisibility(View.VISIBLE);
                 break;
             case "2":
                 fragmentOrderTrackBinding.imgOrderConfirmed.setImageResource(R.drawable.ic_tick_green_bg);
-                orderTrackViewModel.confirmed_date.setValue(orderTracks.get(0).getConfirmDate());
+                fragmentOrderTrackBinding.tvOrderConfirmedDate.setText(DisplayData(orderTracks.get(0).getConfirmDate()));
                 fragmentOrderTrackBinding.tvOrderConfirmedDate.setVisibility(View.VISIBLE);
 
                 /*condition*/
@@ -139,7 +179,7 @@ public class OrderTrackFragment extends BaseFragment {
                 break;
             case "3":
                 fragmentOrderTrackBinding.imgOrderPacking.setImageResource(R.drawable.ic_tick_green_bg);
-                orderTrackViewModel.packing_date.setValue(orderTracks.get(0).getInProcessDate());
+                fragmentOrderTrackBinding.tvOrderPackDate.setText(DisplayData(orderTracks.get(0).getInProcessDate()));
                 fragmentOrderTrackBinding.tvOrderPackDate.setVisibility(View.VISIBLE);
 
                 /*condition*/
@@ -150,7 +190,7 @@ public class OrderTrackFragment extends BaseFragment {
                 break;
             case "4":
                 fragmentOrderTrackBinding.imgOrderDelivered.setImageResource(R.drawable.ic_tick_green_bg);
-                orderTrackViewModel.delivered_date.setValue(orderTracks.get(0).getConfirmDate());
+                fragmentOrderTrackBinding.tvOrderDeliveredDate.setText(DisplayData(orderTracks.get(0).getConfirmDate()));
                 fragmentOrderTrackBinding.tvOrderDeliveredDate.setVisibility(View.VISIBLE);
 
                 /*condition*/
@@ -165,4 +205,18 @@ public class OrderTrackFragment extends BaseFragment {
 
     }
 
+
+    @Override
+    public void onNetworkException(int from, String type) {
+        showServerErrorDialog(getString(R.string.for_better_user_experience), OrderTrackFragment.this, () -> {
+            if (isConnectingToInternet(context)) {
+                hideKeyBoard(requireActivity());
+                if (from == 0) {
+                    callOrderTrackApi(showCircleProgressDialog(context, ""));
+                }
+            }else {
+                showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+            }
+        }, context);
+    }
 }

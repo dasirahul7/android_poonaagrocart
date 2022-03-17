@@ -17,8 +17,10 @@ import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.
 import com.poona.agrocart.databinding.CancelOrderCategoryRecyclerViewBinding;
 import com.poona.agrocart.ui.nav_orders.model.CancelOrderCategoryList;
 import com.poona.agrocart.ui.nav_orders.order_view.OrderViewFragment;
+import com.poona.agrocart.widgets.CustomCheckBox;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancelCategoryAdaptor.OrderCancelCategoryViewHolder> {
@@ -26,11 +28,19 @@ public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancel
     private List<ItemsDetail> cancelOrderCategoryLists;
     private Context context;
     private CheckBox checkCategory;
+    private OnCategoryClickListener onCategoryClickListener;
+    private ArrayList<String> orderIds = new ArrayList<>();
     OrderViewFragment orderViewFragment = new OrderViewFragment();
 
-    public OrderCancelCategoryAdaptor(Context context, List<ItemsDetail> cancelOrderCategoryLists) {
+    public OrderCancelCategoryAdaptor(Context context, List<ItemsDetail> cancelOrderCategoryLists, OrderViewFragment orderViewFragment) {
         this.context=context;
         this.cancelOrderCategoryLists=cancelOrderCategoryLists;
+        this.onCategoryClickListener = orderViewFragment;
+    }
+
+    public interface OnCategoryClickListener {
+        void onItemCheck(ItemsDetail item , ArrayList<String> orderId);
+        void onItemUncheck(ItemsDetail item , ArrayList<String> orderId);
     }
 
     @NonNull
@@ -49,14 +59,36 @@ public class OrderCancelCategoryAdaptor extends RecyclerView.Adapter<OrderCancel
         viewHolder.bind(cancelOrderCategoryList);
 
         checkCategory = viewHolder.binding.cbCategory;
-        viewHolder.binding.llMain.setOnClickListener(view -> {
+        checkCategory.setChecked(cancelOrderCategoryList.isSelected());
+        checkCategory.setTag(cancelOrderCategoryList);
+
+       /* viewHolder.binding.llMain.setOnClickListener(view -> {
             if (viewHolder.binding.cbCategory.isChecked()) {
                 viewHolder.binding.cbCategory.setChecked(false);
             }else{
                 viewHolder.binding.cbCategory.setChecked(true);
+                orderIds.add(contact.get)
+            }
+        });*/
+
+        checkCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomCheckBox category = (CustomCheckBox) view;
+                ItemsDetail contact = (ItemsDetail) category.getTag();
+
+                contact.setSelected(category.isChecked());
+                cancelOrderCategoryList.setSelected(category.isChecked());
+
+                if (category.isChecked()){
+                    orderIds.add(contact.getOrderId());
+                    onCategoryClickListener.onItemCheck(contact,orderIds);
+                }else {
+                    orderIds.remove(contact.getOrderId());
+                    onCategoryClickListener.onItemUncheck(contact,orderIds);
+                }
             }
         });
-
 
         /*Select the date and time*/
        /* String selectedDate = cancelOrderCategoryList.getShouldDeliverOnDate();

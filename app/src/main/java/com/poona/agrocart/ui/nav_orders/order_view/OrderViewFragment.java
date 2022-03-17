@@ -27,6 +27,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -79,7 +80,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class OrderViewFragment extends BaseFragment implements OrderCancelReasonAdaptor.OnTypeClickListener, NetworkExceptionListener {
+public class OrderViewFragment extends BaseFragment implements OrderCancelReasonAdaptor.OnTypeClickListener, NetworkExceptionListener, OrderCancelCategoryAdaptor.OnCategoryClickListener {
 
     private FragmentOrderViewBinding fragmentOrderViewBinding;
     private OrderViewDetailsViewModel orderViewDetailsViewModel;
@@ -97,6 +98,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
     private int offset = 0;
     private int visibleItemCount = 0;
     private int totalCount = 0;
+    private ArrayList<String> orderIds = new ArrayList<>();
 
     /*My Product Details*/
     private List<MyOrderDetial> orderDetials = new ArrayList<>();
@@ -145,6 +147,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         return view;
     }
 
+    @SuppressLint("ResourceAsColor")
     private void initView() {
         ratingBar = fragmentOrderViewBinding.ratingBarInput;
         feedbackComment = fragmentOrderViewBinding.etFeedback;
@@ -166,8 +169,19 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
 
             if (isConnectingToInternet(context)) {
                 if (!Objects.requireNonNull(feedbackComment.getText()).toString().isEmpty() && !(ratingBar.getRating() == 0.0)) {
-                    callRatingAndFeedBackApi(showCircleProgressDialog(context, ""));
-                    fragmentOrderViewBinding.cardviewComment.setVisibility(View.VISIBLE);
+
+                    if (isBasketVisible){
+                        orderViewDetailsViewModel.savedAmount.setValue(getString(R.string.cancelled_order_message)); //Get the saved value
+                        fragmentOrderViewBinding.tvSavings.setTextColor(R.color.errorColor);
+                        warningToast(context, "wait for while");
+                        fragmentOrderViewBinding.cardviewComment.setVisibility(View.VISIBLE);
+                    }else {
+                        orderViewDetailsViewModel.savedAmount.setValue(getString(R.string.cancelled)); //Get the saved value
+                        fragmentOrderViewBinding.tvSavings.setTextColor(R.color.errorColor);
+                        callRatingAndFeedBackApi(showCircleProgressDialog(context, ""));
+                        fragmentOrderViewBinding.cardviewComment.setVisibility(View.VISIBLE);
+                    }
+
                 } else {
                     errorToast(context, "Please fill the field");
                 }
@@ -301,12 +315,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
 
     }
 
-
-
-
-
     /* My Subscription Basket Details Api and managements */
-
     private void callSubscriptBasketDetailsApi(ProgressDialog progressDialog) {
         Observer<SubscribeBasketDetailsResponse> subscribeBasketDetailsResponseObserver = subscribeBasketDetailsResponse -> {
 
@@ -497,6 +506,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                             /*allBasketItem.clear();
                             allBasketItem.addAll(basketItemList);*/
                             basketItemsAdapter.notifyDataSetChanged();
+
                         }
 
                         break;
@@ -530,7 +540,6 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
     }
 
     /*Order Details Api and managements */
-
     private void callOrderDetailsApi(ProgressDialog progressDialog) {
         @SuppressLint("NotifyDataSetChanged")
         Observer<MyOrderDetailsResponse> myOrderDetailsResponseObserver = myOrderDetailsResponse -> {
@@ -548,6 +557,8 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                         if (myOrderDetailsResponse.getOrderDetials()!= null &&
                                 myOrderDetailsResponse.getOrderDetials().size() > 0) {
 
+                            orderViewDetailsViewModel.savedAmount.setValue(myOrderDetailsResponse.getDiscountMessage()); //Get the saved value
+
                             orderDetials.addAll(myOrderDetailsResponse.getOrderDetials());
                             setValue(orderDetials);
 
@@ -564,7 +575,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                             setRatingViewHideShow(myOrderReviews);
 
 
-                            orderViewDetailsViewModel.savedAmount.setValue(myOrderDetailsResponse.getDiscountMessage()); //Get the saved value
+
                         }
                         break;
                     case STATUS_CODE_404://Validation Errors
@@ -683,8 +694,6 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
             orderViewDetailsViewModel.transactionId.setValue("Not Available");
         }
 
-
-
     }
 
     private void setReviewValue(List<MyOrderReview>reviewValue) {
@@ -778,7 +787,6 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
     }
 
     /* Cancel Order Manager */
-
     private void CancelOrderDialogBox() {
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().addFlags(Window.FEATURE_NO_TITLE);
@@ -801,8 +809,8 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         setCancelCategoryAdapter();
 
         if(isConnectingToInternet(context)){
-
             setCancelReasonAdapter();
+
         }else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
@@ -816,12 +824,9 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         }
 
         btnSubmit.setOnClickListener(view1 -> {
-            if(isBasketVisible){
-                infoToast(context, "Coming Soon.....");
-                dialog.dismiss();
-            }else {
                 if (isConnectingToInternet(context)){
                     if(!strReasonType.equalsIgnoreCase("")) {
+
                         callOrderCancelSuccessFullyApi(showCircleProgressDialog(context,""));
                         dialog.dismiss();
                     }else {
@@ -830,7 +835,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                 }else {
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 }
-            }
+
         });
 
         crossImage.setOnClickListener(view -> {
@@ -883,12 +888,11 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         orderCancelCategory.setHasFixedSize(true);
         orderCancelCategory.setLayoutManager(linearLayoutManager);
 
-        orderCancelCategoryAdaptor = new OrderCancelCategoryAdaptor(context, basketItemList);
+        orderCancelCategoryAdaptor = new OrderCancelCategoryAdaptor(context, basketItemList, this);
         orderCancelCategory.setAdapter(orderCancelCategoryAdaptor);
     }
 
     /* Cancel Order Api */
-
     private void callOrderCancelReasonApi(ProgressDialog progressDialog) {
         @SuppressLint("NotifyDataSetChanged") Observer<OrderCancelReasonResponse> orderCancelReasonResponseObserver = orderCancelReasonResponse -> {
             if (orderCancelReasonResponse != null) {
@@ -939,7 +943,12 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, orderCancelSuccessfullyResponse.getMessage());
 
-                        callOrderDetailsApi(showCircleProgressDialog(context, ""));
+                        if(isBasketVisible){
+                            callSubscriptBasketDetailsApi(showCircleProgressDialog(context, ""));
+                        }else {
+                            callOrderDetailsApi(showCircleProgressDialog(context, ""));
+                        }
+
 
                         break;
                     case STATUS_CODE_404://Validation Errors
@@ -972,8 +981,8 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         return map;
     }
 
-    /* Rating and FeedBack api */
 
+    /* Rating and FeedBack api */
     private void callRatingAndFeedBackApi(ProgressDialog progressDialog){
         Observer<BaseResponse> ratingAndFeedBackResponseObserver = ratingAndFeedBackResponse ->  {
             if (ratingAndFeedBackResponse != null) {
@@ -1047,5 +1056,29 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         }, context);
+    }
+
+    @Override
+    public void onItemCheck(ItemsDetail item, ArrayList<String> orderId) {
+        if(orderId != null && !orderId.isEmpty()){
+            this.orderIds=orderId;
+            order_id = TextUtils.join(",", orderId);
+        }else {
+            this.orderIds=orderId;
+            order_id = TextUtils.join(", ", orderId);
+        }
+
+    }
+
+    @Override
+    public void onItemUncheck(ItemsDetail item, ArrayList<String> orderId) {
+        if(orderId != null && !orderId.isEmpty()){
+            this.orderIds=orderId;
+            order_id = TextUtils.join(",", orderId);
+        }else {
+            this.orderIds=orderId;
+            order_id = TextUtils.join(",", orderId);
+        }
+
     }
 }

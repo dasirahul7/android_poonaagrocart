@@ -148,8 +148,8 @@
                             android:enabled="false"
                             android:gravity="center"
                             android:padding="@dimen/_5sdp"
-                            android:singleLine="true"
                             android:text="@string/_1"
+                            android:singleLine="true"
                             android:textAlignment="center"
                             android:textColor="@color/clr_enter_otp"
                             android:textSize="@dimen/_16sp"
@@ -188,8 +188,8 @@
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_start_date"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_26sdp"
-                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.1"
                         android:gravity="start"
                         android:layout_marginVertical="@dimen/_5sdp"
                         android:layout_marginHorizontal="@dimen/_4sdp"
@@ -198,7 +198,6 @@
                         android:elevation="@dimen/_4sdp"
                         android:hint="@string/select_date"
                         android:padding="@dimen/_6sdp"
-                        android:text='@{subscriptionModule.subscriptionStartDateMutable}'
                         android:singleLine="true"
                         android:textColor="@color/color_grey_txt"
                         android:textSize="@dimen/_14sp"
@@ -206,21 +205,21 @@
 
                   <LinearLayout
                       android:layout_width="match_parent"
-                      android:layout_height="@dimen/_26sdp"
-                      android:layout_weight="1"
+                      android:layout_height="match_parent"
+                      android:layout_weight="0.9"
                       android:layout_gravity="center"
                       android:layout_marginVertical="@dimen/_5sdp"
-                      android:layout_marginHorizontal="@dimen/_4sdp"
+                      android:layout_marginStart="@dimen/_4sdp"
+                      android:layout_marginEnd="@dimen/_2sdp"
                       android:elevation="@dimen/_4sdp"
+                      android:paddingTop="@dimen/_2sdp"
                       android:background="@drawable/bg_dashboard_et_layout"
                       android:orientation="vertical">
 
                       <Spinner
                           android:id="@+id/sp_slots"
                           android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="@dimen/_4sdp"
-                          android:paddingStart="@dimen/_4sdp"
+                          android:layout_height="match_parent"
                           />
 
                   </LinearLayout>
@@ -271,6 +270,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_2sdp"
+                                android:text="@string/_1"
                                 android:textColor="@color/color_total_amount"
                                 android:textSize="@dimen/_16sp"
                                 app:setCustomFont="@string/font_poppins_regular" />
@@ -301,6 +301,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:gravity="end"
+                            android:text="@{`Rs. `+subscriptionModule.basketRate}"
                             android:textColor="@color/color_total_amount"
                             android:textSize="@dimen/_16sp"
                             app:setCustomFont="@string/font_poppins_regular" />

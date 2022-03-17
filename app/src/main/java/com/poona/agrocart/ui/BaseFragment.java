@@ -335,7 +335,7 @@ public abstract class BaseFragment extends Fragment implements DrawerLocker {
         return checkConnection;
     }
 
-    protected void goToAskSignInSignUpScreen(String message, Context context) {
+    public void goToAskSignInSignUpScreen(String message, Context context) {
         goToAskSignInSignUpScreenDialog(message, context);
     }
     protected void goToAskSelectLocationScreen(String message, Context context) {

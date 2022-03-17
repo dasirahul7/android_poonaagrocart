@@ -189,6 +189,13 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
                         rvBasketDetailBinding.tvOrderStatus.setText(context.getString(R.string.cancelled));
                         rvBasketDetailBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_cancelled)));
 
+                        if(isBasketVisible){
+                            rvBasketDetailBinding.btnTrackOrder.setVisibility(View.VISIBLE);
+                        }else {
+                            rvBasketDetailBinding.btnTrackOrder.setVisibility(View.GONE);
+                        }
+
+
                         break;
                     default:
                         rvBasketDetailBinding.btnTrackOrder.setVisibility(View.VISIBLE);
