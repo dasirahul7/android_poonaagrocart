@@ -216,6 +216,7 @@
         <entry key="app/src/main/res/layout/app_bar_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/best_selling_row_item.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/bottom_sheet_filter_dialog.xml" value="0.14194100042753313" />
         <entry key="app/src/main/res/layout/cancel_order_category_recycler_view.xml" value="0.25" />
         <entry key="app/src/main/res/layout/cancel_order_reason_recycler_view.xml" value="0.33" />
         <entry key="app/src/main/res/layout/cat_row_item.xml" value="0.25" />

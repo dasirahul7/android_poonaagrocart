@@ -1,7 +1,18 @@
 package com.poona.agrocart.ui.bottom_sheet;
 
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppUtils.infoToast;
+import static com.poona.agrocart.app.AppUtils.showCircleProgressDialog;
+import static com.poona.agrocart.app.AppUtils.successToast;
+import static com.poona.agrocart.app.AppUtils.warningToast;
+
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +20,20 @@ import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.filterResponse.BrandFliterList;
+import com.poona.agrocart.data.network.responses.filterResponse.CategoryFilterList;
+import com.poona.agrocart.data.network.responses.filterResponse.FilterListResponse;
+import com.poona.agrocart.data.network.responses.filterResponse.SortByFilterList;
 import com.poona.agrocart.databinding.BottomSheetFilterDialogBinding;
+import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_explore.adapter.FilterItemAdapter;
 import com.poona.agrocart.ui.nav_explore.model.FilterItem;
 import com.poona.agrocart.widgets.ExpandIconView;
@@ -26,9 +44,9 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
     private BottomSheetFilterDialogBinding bottomSheetFilterFragment;
     private FilterItemAdapter categoryAdapter, sortByAdapter, brandAdapter;
     private BasketFilterViewModel basketFilterViewModel;
-    private ArrayList<FilterItem> categoryItems;
-    private ArrayList<FilterItem> filterItems;
-    private ArrayList<FilterItem> brandItems;
+    private ArrayList<FilterItem> categoryItems = new ArrayList<>();
+    private ArrayList<FilterItem> filterItems = new ArrayList<>();
+    private ArrayList<FilterItem> brandItems = new ArrayList<>();
     private BottomSheetListener mListener;
     private boolean isCategoryVisible = true;
     private boolean isFilterVisible = true;
@@ -38,7 +56,7 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         bottomSheetFilterFragment = BottomSheetFilterDialogBinding.inflate(LayoutInflater.from(getActivity()));
         basketFilterViewModel = new ViewModelProvider(this).get(BasketFilterViewModel.class);
-        setRvAdapter();
+        callFilterListApi(showCircleProgressDialog(getContext(),""));
         setClicks();
         //Hide all list by default
         setFilterHideOrShow();
@@ -89,9 +107,18 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
     }
 
     private void setRvAdapter() {
+
         //setCategory
         basketFilterViewModel.getCategoryLiveData().observe(getViewLifecycleOwner(), categoryFilterItems -> {
-            categoryItems = categoryFilterItems;
+            for (CategoryFilterList item: categoryFilterItems){
+                FilterItem filterItem = new FilterItem(item.getId(),item.getCategoryName(),false);
+                categoryItems.add(filterItem);
+                try {
+                    System.out.println("CategoryFilterList "+item.getCategoryName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             categoryAdapter = new FilterItemAdapter(categoryItems, getActivity());
             bottomSheetFilterFragment.rvCategoryList.setLayoutManager(new LinearLayoutManager(getActivity(),
                     RecyclerView.VERTICAL, false));
@@ -100,16 +127,32 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         });
         //set SotBy and Filter
         basketFilterViewModel.getFilterItemLiveData().observe(getViewLifecycleOwner(), sortByFilterItems -> {
-            filterItems = sortByFilterItems;
-            sortByAdapter = new FilterItemAdapter(filterItems, getActivity());
-            bottomSheetFilterFragment.rvSortList.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    RecyclerView.VERTICAL, false));
-            bottomSheetFilterFragment.rvSortList.setHasFixedSize(true);
+            for (SortByFilterList item: sortByFilterItems){
+                FilterItem filterItem = new FilterItem(item.getPriceFilterId(),item.getPriceFilter(),false);
+                filterItems.add(filterItem);
+                try {
+                    System.out.println("SortByFilterList "+item.getPriceFilter());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+          sortByAdapter = new FilterItemAdapter(filterItems, getActivity());
+          bottomSheetFilterFragment.rvSortList.setLayoutManager(new LinearLayoutManager(getActivity(),
+                   RecyclerView.VERTICAL, false));
+          bottomSheetFilterFragment.rvSortList.setHasFixedSize(true);
             bottomSheetFilterFragment.rvSortList.setAdapter(sortByAdapter);
         });
-        // set Brand Filter
+       //set Brand Filter
         basketFilterViewModel.getBrandItemLiveData().observe(getViewLifecycleOwner(), brandFilterItems -> {
-            brandItems = brandFilterItems;
+            for (BrandFliterList item: brandFilterItems){
+                FilterItem filterItem = new FilterItem(item.getBrandId(),item.getBrandName(),false);
+                brandItems.add(filterItem);
+                try {
+                    System.out.println("BrandFliterList "+item.getBrandName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             brandAdapter = new FilterItemAdapter(brandItems, getActivity());
             bottomSheetFilterFragment.rvBrandList.setHasFixedSize(true);
             bottomSheetFilterFragment.rvBrandList.setLayoutManager(new LinearLayoutManager(getActivity(),
@@ -208,4 +251,46 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
 //    public int getTheme() {
 //        return R.style.CustomBottomSheetDialog;
 //    }
+
+    private void callFilterListApi(ProgressDialog progressDialog){
+        Observer<FilterListResponse> filterListResponseObserver = filterListResponse -> {
+            if (filterListResponse != null) {
+                Log.e("Filter List Api ResponseData", new Gson().toJson(filterListResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (filterListResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(getContext(), filterListResponse.getMessage());
+                        try {
+                            Log.d("TAG", "callFilterListApi: "+filterListResponse.getData().getCategoryList().size());
+                            Log.d("TAG", "callFilterListApi: "+filterListResponse.getData().getPriceFilterList().size());
+                            Log.d("TAG", "callFilterListApi: "+filterListResponse.getData().getBrandList().size());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        basketFilterViewModel.iniFiltersList(filterListResponse);
+                        setRvAdapter();
+
+                        break;
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(getContext(), filterListResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        //goToAskSignInSignUpScreen(getContext(), filterListResponse.getMessage());
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(getContext(), filterListResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+
+        };
+        basketFilterViewModel.getFilterListPesponse(progressDialog,BottomSheetFilterFragment.this)
+                .observe(getViewLifecycleOwner(),filterListResponseObserver );
+    }
 }

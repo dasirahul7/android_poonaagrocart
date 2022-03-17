@@ -22,6 +22,7 @@ import static com.poona.agrocart.app.AppConstants.DELETE_CART_LIST_API;
 import static com.poona.agrocart.app.AppConstants.DELETE_NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.FAQ;
 import static com.poona.agrocart.app.AppConstants.FAVOURITE_LIST_API;
+import static com.poona.agrocart.app.AppConstants.FILTER_LIST;
 import static com.poona.agrocart.app.AppConstants.HOME_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BASKET_API;
@@ -89,6 +90,7 @@ import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.HomeBasketResponse;
 import com.poona.agrocart.data.network.responses.UpdateLocationResponse;
+import com.poona.agrocart.data.network.responses.filterResponse.FilterListResponse;
 import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
 import com.poona.agrocart.data.network.responses.IntroScreenResponse;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
@@ -523,5 +525,7 @@ public interface ApiInterface {
     @POST(ORDER_TRACK)
     Single<ProductOrderTrackResponse> getOrderTrackResponse(@FieldMap HashMap<String, String> orderTrackInputParameter);
 
+    @GET(FILTER_LIST)
+    Single<FilterListResponse> getFilterListResponse();
 
 }

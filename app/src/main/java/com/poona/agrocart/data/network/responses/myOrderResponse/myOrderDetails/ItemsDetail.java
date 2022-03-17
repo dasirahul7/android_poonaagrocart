@@ -71,7 +71,15 @@ public class ItemsDetail  {
         delierySlotStartAndEndTime = in.readString();
         totalPrice = in.readString();
     }*/
+   private boolean isSelected;
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public String getOrderId() {
         return orderId;

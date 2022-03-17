@@ -143,6 +143,9 @@ public class AppConstants {
     /*Search API*/
     public static final String COMMON_SEARCH="common-search";
 
+    /*Filter Listing API*/
+    public static final String FILTER_LIST="filter-list";
+
     /*Search api Keys*/
     public static final String SEARCH_VALUE = "search_value";
 
