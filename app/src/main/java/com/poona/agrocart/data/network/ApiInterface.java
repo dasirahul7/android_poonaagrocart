@@ -58,6 +58,8 @@ import static com.poona.agrocart.app.AppConstants.REMOVE_FROM_CART_BASKET;
 import static com.poona.agrocart.app.AppConstants.REMOVE_FROM_CART_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.REPLY_TO_TICKET;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
+import static com.poona.agrocart.app.AppConstants.SEASONAL_DETAILS;
+import static com.poona.agrocart.app.AppConstants.SEASONAL_REGISTER;
 import static com.poona.agrocart.app.AppConstants.SET_DEFAULT_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.SLOT_BY_DATE_API;
@@ -114,6 +116,7 @@ import com.poona.agrocart.data.network.responses.help_center_response.SendMessag
 import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.SeasonalProduct;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.SubscribeBasketListCustomerResponse;
@@ -541,7 +544,16 @@ public interface ApiInterface {
     @GET(PAYMENT_CRED_API)
     Single<RazorPayCredentialResponse> getRazorPayCredentialResponse();
 
+    /*Filter list*/
     @GET(FILTER_LIST)
     Single<FilterListResponse> getFilterListResponse();
 
+    /*Seasonal product registration*/
+    @FormUrlEncoded
+    @POST(SEASONAL_REGISTER)
+    Single<BaseResponse> seasonalProductRegistration(@FieldMap HashMap<String,String> hashMap);
+    /*Seasonal product details*/
+    @FormUrlEncoded
+    @POST(SEASONAL_DETAILS)
+    Single<SeasonalProductResponse> seasonalProductDetails(@FieldMap HashMap<String,String> hashMap);
 }

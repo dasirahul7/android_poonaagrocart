@@ -1373,16 +1373,39 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void OnBannerClick(Banner banner) {
-        if (banner.getCategoryId()!=null && !banner.getCategoryId().isEmpty()){
-            System.out.println("go to category ");
-        }else if (banner.getProductId()!=null && !banner.getProductId().isEmpty()){
-            System.out.println("go to Product ");
-        }else if (banner.getAdvUrl()!=null && !banner.getAdvUrl().isEmpty()){
-            System.out.println("go to URL ");
-            Intent viewIntent =
-                    new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(banner.getAdvUrl()));
-            startActivity(viewIntent);
+        try {
+            if (banner.getProductId()!=null && !banner.getProductId().isEmpty()){
+                System.out.println("go to Product ");
+                try {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(PRODUCT_ID, banner.getProductId());
+                    NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }else if (banner.getCategoryId()!=null && !banner.getCategoryId().isEmpty()){
+                System.out.println("go to category ");
+                /*redirect to product list by category*/
+                try {
+                    String cat_id = banner.getCategoryId();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(CATEGORY_ID, cat_id);
+                    bundle.putString(LIST_TITLE, banner.getCategoryName());
+                    bundle.putString(LIST_TYPE, banner.getCategoryType());
+                    NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+            else if (banner.getAdvUrl()!=null && !banner.getAdvUrl().isEmpty()){
+                System.out.println("go to URL ");
+                Intent viewIntent =
+                        new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(banner.getAdvUrl()));
+                startActivity(viewIntent);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 }

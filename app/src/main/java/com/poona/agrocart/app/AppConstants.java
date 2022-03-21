@@ -259,6 +259,10 @@ public class AppConstants {
     public static final String SUBSCRIBE_BASKET_CUSTOMER = "subscribe-basket-customer";
     public static final String ORDER_TRACK = "order-track";
 
+    /*Seasonal APIs*/
+    public static final String SEASONAL_REGISTER ="seasonal-product-registeration";
+    public static final String SEASONAL_DETAILS ="seasonal-product-details";
+
    /* Rating and Review */
    public static final String RATING = "rating";
    public static final String REVIEW = "review";
@@ -275,6 +279,8 @@ public class AppConstants {
     public static final String ALTERNATE_MOBILE_NUMBER = "alternate_mobile";
     public static final String GENDER = "gender";
     public static final String DATE_OF_BIRTH = "date_of_birth";
+
+
 
     /*add address post parameters*/
     public static final String ADD_UPDATE_ADDRESS_DETAILS = "add_update_address_details";

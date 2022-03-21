@@ -1,14 +1,17 @@
 package com.poona.agrocart.ui.seasonal;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
 import com.poona.agrocart.data.network.responses.homeResponse.SeasonalProduct;
 import com.poona.agrocart.databinding.FragmentSeasonalRegBinding;
@@ -37,7 +40,7 @@ public class SeasonalRegFragment extends BaseFragment {
     private DotsIndicator dotsIndicator;
     private String image;
     private ArrayList<String> images;
-
+    private Button btnRegister;
     public static SeasonalRegFragment newInstance(String param1, String param2) {
         SeasonalRegFragment fragment = new SeasonalRegFragment();
         return fragment;
@@ -59,7 +62,20 @@ public class SeasonalRegFragment extends BaseFragment {
         seasonalViewModel = new ViewModelProvider(this).get(SeasonalViewModel.class);
         seasonRoot = fragmentSeasonalRegBinding.getRoot();
         initView();
+
+
+        btnRegister.setOnClickListener(view -> {
+            if (isConnectingToInternet(context)){
+                callSeasonalProductRegistrationAPI(showCircleProgressDialog(context,""));
+            }else showNotifyAlert(requireActivity(), context.getString(R.string.info),
+                    context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        });
         return seasonRoot;
+    }
+
+    /*Call Seasonal Registration API*/
+    private void callSeasonalProductRegistrationAPI(ProgressDialog showCircleProgressDialog) {
+
     }
 
     private void initView() {
@@ -67,6 +83,7 @@ public class SeasonalRegFragment extends BaseFragment {
         fragmentSeasonalRegBinding.etAddress.setHint(preferences.getUserAddress());
         vpImages = fragmentSeasonalRegBinding.vpProductImages;
         dotsIndicator = fragmentSeasonalRegBinding.dotsIndicator;
+        btnRegister = fragmentSeasonalRegBinding.btnRegister;
         initTitleWithBackBtn("Seasonal Product Registration");
        images = new ArrayList<>();
         seasonalProduct = new SeasonalProduct();
