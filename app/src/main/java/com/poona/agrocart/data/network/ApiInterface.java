@@ -23,6 +23,7 @@ import static com.poona.agrocart.app.AppConstants.DELETE_NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.FAQ;
 import static com.poona.agrocart.app.AppConstants.FAVOURITE_LIST_API;
 import static com.poona.agrocart.app.AppConstants.FILTER_LIST;
+import static com.poona.agrocart.app.AppConstants.GET_UNITS;
 import static com.poona.agrocart.app.AppConstants.HOME_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BASKET_API;
@@ -93,6 +94,7 @@ import com.poona.agrocart.data.network.responses.CmsResponse;
 import com.poona.agrocart.data.network.responses.CommonSearchResponse;
 import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
+import com.poona.agrocart.data.network.responses.GetUnitResponse;
 import com.poona.agrocart.data.network.responses.HomeBasketResponse;
 import com.poona.agrocart.data.network.responses.UpdateLocationResponse;
 import com.poona.agrocart.data.network.responses.filterResponse.FilterListResponse;
@@ -552,8 +554,14 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(SEASONAL_REGISTER)
     Single<BaseResponse> seasonalProductRegistration(@FieldMap HashMap<String,String> hashMap);
+
     /*Seasonal product details*/
     @FormUrlEncoded
     @POST(SEASONAL_DETAILS)
     Single<SeasonalProductResponse> seasonalProductDetails(@FieldMap HashMap<String,String> hashMap);
+
+    /*Get list of Units*/
+
+    @GET(GET_UNITS)
+    Single<GetUnitResponse> getUnitResponse();
 }

@@ -262,8 +262,13 @@ public class AppConstants {
     /*Seasonal APIs*/
     public static final String SEASONAL_REGISTER ="seasonal-product-registeration";
     public static final String SEASONAL_DETAILS ="seasonal-product-details";
+    public static final String GET_UNITS ="unit";
 
-   /* Rating and Review */
+    /*Seasonal Param Keys*/
+    public static final String SEASONAL_P_ID = "seasonal_product_id";
+    public static final String UNIT_ID = "unit_id";
+
+    /* Rating and Review */
    public static final String RATING = "rating";
    public static final String REVIEW = "review";
    public static final String REVIEW_LIST = "review_list";
