@@ -28,6 +28,7 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -97,7 +98,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener, BannerAdapter.OnBannerClickListener {
     private static final String TAG = HomeFragment.class.getSimpleName();
     private static final int CATEGORY = 0;
     private static final int BASKET = 1;
@@ -217,18 +218,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         return root;
     }
 
-
-    private void setRvBanners() {
-        makeVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
-        this.NumberOfBanners = banners.size();
-        bannerAdapter = new BannerAdapter(banners, requireActivity());
-//
-        fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
-        // Set up tab indicators
-        fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
-        loadBannerImages(banners);
-    }
-
     private void setRvCategory() {
         categoryManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
         categoryAdapter = new CategoryAdapter(categories, requireActivity(), category -> {
@@ -306,7 +295,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
 
     private void setRvExclusive() {
-        // Redirect to ProductOld details
         makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
         exclusiveOfferManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
         offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), this::toProductDetail, (binding, product, position) -> {
@@ -1186,7 +1174,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         AutoScrollViewPager autoScrollViewPager = fragmentHomeBinding.viewPagerBanner;
 
-        bannerAdapter = new BannerAdapter(bannersList, requireActivity());
+        bannerAdapter = new BannerAdapter(bannersList, requireActivity(),this);
         autoScrollViewPager.setAdapter(bannerAdapter);
         fragmentHomeBinding.dotsIndicator.setViewPager(autoScrollViewPager);
 
@@ -1383,4 +1371,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
 
+    @Override
+    public void OnBannerClick(Banner banner) {
+        if (banner.getCategoryId()!=null && !banner.getCategoryId().isEmpty()){
+            System.out.println("go to category ");
+        }else if (banner.getProductId()!=null && !banner.getProductId().isEmpty()){
+            System.out.println("go to Product ");
+        }else if (banner.getAdvUrl()!=null && !banner.getAdvUrl().isEmpty()){
+            System.out.println("go to URL ");
+            Intent viewIntent =
+                    new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(banner.getAdvUrl()));
+            startActivity(viewIntent);
+        }
+    }
 }

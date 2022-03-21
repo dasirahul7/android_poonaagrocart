@@ -39,6 +39,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -73,7 +74,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
         signUpViewModel = new ViewModelProvider(this).get(SignUpViewModel.class);
         fragmentSignUpBinding.setSignUpViewModel(signUpViewModel);
-
+        fragmentSignUpBinding.setVariable(BR.signInViewModel,signUpViewModel);
+        fragmentSignUpBinding.executePendingBindings();
         initView();
 
         ivBack.setOnClickListener(v -> Navigation.findNavController(view).popBackStack());
@@ -91,12 +93,13 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         Bundle bundle = getArguments();
         if (bundle != null) {
             fragmentSignUpBinding.etPhoneNo.setText(bundle.getString(AppConstants.USER_MOBILE));
+            fragmentSignUpBinding.countryCodePicker.setDefaultCountryUsingNameCode(bundle.getString(AppConstants.COUNTRY_CODE));
             Log.d(TAG, "initView: " + bundle.getString(AppConstants.USER_MOBILE));
 
             basicDetails.setMobileNumber(fragmentSignUpBinding.etPhoneNo.getText().toString());
 
             signUpViewModel.mobileNo.setValue(basicDetails.getMobileNumber());
-            signUpViewModel.countryCode.setValue(basicDetails.getCountryCode());
+            signUpViewModel.countryCode.setValue(preferences.getUserCountry());
         }
 
         fragmentSignUpBinding.ivPoonaAgroMainLogo.bringToFront();

@@ -72,6 +72,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.ar.sceneform:filament-android:1.17.1'
     testImplementation 'junit:junit:4.13.2'
 
     /*androidx*/

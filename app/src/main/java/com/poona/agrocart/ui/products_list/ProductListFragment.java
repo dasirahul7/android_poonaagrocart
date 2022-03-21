@@ -153,7 +153,6 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
 
     private void setTitleBar() {
         initTitleWithBackBtn(ListTitle);
-
     }
 
     private void setRVAdapter() {
