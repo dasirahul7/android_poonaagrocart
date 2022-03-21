@@ -3,6 +3,7 @@ package com.poona.agrocart.ui.nav_orders.order_view;
 import static com.poona.agrocart.app.AppConstants.ITEM_LIST;
 import static com.poona.agrocart.app.AppConstants.LIMIT;
 import static com.poona.agrocart.app.AppConstants.OFFSET;
+import static com.poona.agrocart.app.AppConstants.ORDER_ID;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUBSCRIPTION_ID;
 import static com.poona.agrocart.app.AppConstants.REVIEW_LIST;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
@@ -19,6 +20,7 @@ import androidx.databinding.DataBindingUtil;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,7 +44,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class BasketItemFragment extends BaseFragment {
+public class BasketItemFragment extends BaseFragment implements BasketItemsAdapter.OnTrackListener {
 
     private FragmentBasketItemBinding fragmentBasketItemBinding;
     private BasketItemViewHolder basketItemViewHolder;
@@ -150,7 +152,7 @@ public class BasketItemFragment extends BaseFragment {
         rvBasketItem.setHasFixedSize(true);
         rvBasketItem.setLayoutManager(linearLayoutManager);
 
-        basketItemsAdapter = new BasketItemsAdapter(basketItemList,isBasketVisible, getContext(),1);
+        basketItemsAdapter = new BasketItemsAdapter(basketItemList,isBasketVisible, getContext(),1,this);
         rvBasketItem.setAdapter(basketItemsAdapter);
 
         //Added the Pagination
@@ -217,5 +219,16 @@ public class BasketItemFragment extends BaseFragment {
         map.put(LIMIT, String.valueOf(limit));
 
         return map;
+    }
+
+    @Override
+    public void onTrackButtonClick(String orderId) {
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putString(ORDER_ID, orderId);
+            Navigation.findNavController(view).navigate(R.id.action_basketItemFragment_to_nav_order_track, bundle);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 }

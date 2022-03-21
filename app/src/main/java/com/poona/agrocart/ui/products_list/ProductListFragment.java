@@ -342,9 +342,9 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
         map.put(AppConstants.SEARCH, fragmentProductListBinding.etProductSearch.getText().toString().trim());
-        map.put(AppConstants.SORT_BY, strSortBy);
-        map.put(AppConstants.BRAND_ID, StrBrandId);
-        map.put(AppConstants.CATEGORY_ID, strCategoryId);
+//        map.put(AppConstants.SORT_BY, strSortBy);
+//        map.put(AppConstants.BRAND_ID, StrBrandId);
+//        map.put(AppConstants.CATEGORY_ID, strCategoryId);
 
         return map;
     }

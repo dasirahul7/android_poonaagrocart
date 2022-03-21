@@ -80,7 +80,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class OrderViewFragment extends BaseFragment implements OrderCancelReasonAdaptor.OnTypeClickListener, NetworkExceptionListener, OrderCancelCategoryAdaptor.OnCategoryClickListener {
+public class OrderViewFragment extends BaseFragment implements OrderCancelReasonAdaptor.OnTypeClickListener, NetworkExceptionListener, OrderCancelCategoryAdaptor.OnCategoryClickListener, BasketItemsAdapter.OnTrackListener {
 
     private FragmentOrderViewBinding fragmentOrderViewBinding;
     private OrderViewDetailsViewModel orderViewDetailsViewModel;
@@ -307,18 +307,8 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         rvBasketListItems.setHasFixedSize(true);
         rvBasketListItems.setLayoutManager(linearLayoutManager);
 
-        basketItemsAdapter = new BasketItemsAdapter(basketItemList, isBasketVisible, getContext(),0);
+        basketItemsAdapter = new BasketItemsAdapter(basketItemList, isBasketVisible, getContext(),0,this);
         rvBasketListItems.setAdapter(basketItemsAdapter);
-
-        basketItemsAdapter.setOnTrackListener(new BasketItemsAdapter.OnTrackListener() {
-            @Override
-            public void onTrackButtonClick(int position) {
-                subOrderId = subscriptBasketDetails.get(position).getOrderId();
-                Bundle bundle = new Bundle();
-                bundle.putString(ORDER_ID, subOrderId);
-                Navigation.findNavController(view).navigate(R.id.action_orderViewFragment_to_nav_order_track, bundle);
-            }
-        });
 
     }
 
@@ -1093,5 +1083,16 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
             order_id = TextUtils.join(",", orderId);
         }
 
+    }
+
+    @Override
+    public void onTrackButtonClick(String orderId) {
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putString(ORDER_ID, orderId);
+            Navigation.findNavController(view).navigate(R.id.action_orderViewFragment_to_nav_order_track, bundle);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 }
