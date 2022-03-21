@@ -1,6 +1,8 @@
 package com.poona.agrocart.ui.products_list.adapter;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -56,6 +58,7 @@ public class BasketGridAdapter extends RecyclerView.Adapter<BasketGridAdapter.Ba
             super(productListItemBinding.getRoot());
             this.basketListItemBinding = productListItemBinding;
         }
+
 
         public void bind(BasketResponse.Basket basket) {
             basketListItemBinding.setVariable(BR.basket, basket);

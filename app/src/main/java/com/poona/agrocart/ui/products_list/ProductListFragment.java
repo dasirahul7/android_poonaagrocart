@@ -62,6 +62,7 @@ import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.ProductListByResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.homeResponse.Basket;
+import com.poona.agrocart.data.network.responses.homeResponse.Category;
 import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.FragmentProductListBinding;
 import com.poona.agrocart.ui.BaseFragment;
@@ -114,6 +115,8 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
             }
         }
     });
+    private String strCategoryId, StrBrandId, strSortBy;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -125,9 +128,24 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         setTitleBar();
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setOnClickListener(v -> {
-            // Show the Filter Dialog
-            BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment();
-            filterFragment.show(getChildFragmentManager(), "FilterFragment");
+                    // Show the Filter Dialog
+            if (CategoryId == null) {
+                fromScreen = getArguments().getString(FROM_SCREEN);
+                if (fromScreen.equalsIgnoreCase(AllBasket)) {
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(false);
+                    filterFragment.show(getChildFragmentManager(), "FilterFragment");
+                }else if (fromScreen.equalsIgnoreCase(AllSelling)) {
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true);
+                    filterFragment.show(getChildFragmentManager(), "FilterFragment");
+                } else if (fromScreen.equalsIgnoreCase(AllExclusive)) {
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true);
+                    filterFragment.show(getChildFragmentManager(), "FilterFragment");
+                }
+            } else {
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(false);
+                    filterFragment.show(getChildFragmentManager(), "FilterFragment");
+                }
+
         });
         setRVAdapter();
         setScrollListener();
@@ -176,14 +194,16 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private void checkAndLoadData(String loading) {
         if (CategoryId == null) {
             fromScreen = getArguments().getString(FROM_SCREEN);
-            if (fromScreen.equalsIgnoreCase(AllBasket))
+            if (fromScreen.equalsIgnoreCase(AllBasket)) {
                 seeAllBasketListApi(showCircleProgressDialog(context, ""), loading);
-            else if (fromScreen.equalsIgnoreCase(AllSelling)) {
-                seeAllBestSellingApi(showCircleProgressDialog(context, ""), loading);
+            }else if (fromScreen.equalsIgnoreCase(AllSelling)) {
+                BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true);
             } else if (fromScreen.equalsIgnoreCase(AllExclusive)) {
                 seeAllExclusiveApi(showCircleProgressDialog(context, ""), loading);
             }
-        } else callProductListApi(showCircleProgressDialog(context, ""), loading);
+        } else {
+            callProductListApi(showCircleProgressDialog(context, ""), loading);
+        }
     }
 
     /*All Exclusive API*/
@@ -317,6 +337,18 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                 .observe(getViewLifecycleOwner(), basketResponseObserver);
     }
 
+    private HashMap<String, String> seeAllParams() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(AppConstants.LIMIT, String.valueOf(limit));
+        map.put(AppConstants.OFFSET, String.valueOf(offset));
+        map.put(AppConstants.SEARCH, fragmentProductListBinding.etProductSearch.getText().toString().trim());
+        map.put(AppConstants.SORT_BY, strSortBy);
+        map.put(AppConstants.BRAND_ID, StrBrandId);
+        map.put(AppConstants.CATEGORY_ID, strCategoryId);
+
+        return map;
+    }
+
     /*Product list API calling*/
     private void callProductListApi(ProgressDialog showCircleProgressDialog, String apiFrom) {
         if (apiFrom.equalsIgnoreCase("onScrolled")) {
@@ -435,13 +467,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         return map;
     }
 
-    private HashMap<String, String> seeAllParams() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put(AppConstants.LIMIT, String.valueOf(limit));
-        map.put(AppConstants.OFFSET, String.valueOf(offset));
-        map.put(AppConstants.SEARCH, fragmentProductListBinding.etProductSearch.getText().toString().trim());
-        return map;
-    }
+
 
     /*Listing Basket*/
     private void makeBasketListing() {

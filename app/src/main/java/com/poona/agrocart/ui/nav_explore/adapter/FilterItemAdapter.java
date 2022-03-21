@@ -10,8 +10,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.ItemsDetail;
 import com.poona.agrocart.databinding.RowCheckBoxItemBinding;
+import com.poona.agrocart.ui.bottom_sheet.BottomSheetFilterFragment;
 import com.poona.agrocart.ui.nav_explore.model.FilterItem;
+import com.poona.agrocart.widgets.CustomCheckBox;
 
 import java.util.ArrayList;
 
@@ -27,7 +30,11 @@ public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.Fi
 //        this.onItemClickListener = listener;
     }
 
-    public void setOnItemClickListener(OnFilterClickListener onFilterClickListener) {
+    public OnFilterClickListener getOnFilterClickListener() {
+        return onFilterClickListener;
+    }
+
+    public void setOnFilterClickListener(OnFilterClickListener onFilterClickListener) {
         this.onFilterClickListener = onFilterClickListener;
     }
 
@@ -43,7 +50,27 @@ public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.Fi
     public void onBindViewHolder(@NonNull FilterItemAdapter.FilterViewHolder holder, int position) {
         FilterItem item = filterItems.get(position);
         holder.itemBinding.setModuleFilter(item);
-        holder.bindItem(item, onFilterClickListener);
+        holder.bindItem(item);
+
+        holder.itemBinding.checkbox.setChecked(item.isSelected());
+        holder.itemBinding.checkbox.setTag(item);
+
+        holder.itemBinding.checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomCheckBox category = (CustomCheckBox) view;
+                FilterItem contact = (FilterItem) category.getTag();
+
+                contact.setSelected(category.isChecked());
+                item.setSelected(category.isChecked());
+
+                if (category.isChecked()){
+                    onFilterClickListener.onItemCheck(contact);
+                }else {
+                    onFilterClickListener.onItemUncheck(contact);
+                }
+            }
+        });
     }
 
     @Override
@@ -53,7 +80,8 @@ public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.Fi
 
 
     public interface OnFilterClickListener {
-        void onItemClick(int position);
+        void onItemCheck(FilterItem item );
+        void onItemUncheck(FilterItem item);
     }
 
     public class FilterViewHolder extends RecyclerView.ViewHolder {
@@ -64,7 +92,7 @@ public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.Fi
             this.itemBinding = itemBinding;
         }
 
-        public void bindItem(FilterItem item, OnFilterClickListener onFilterClickListener) {
+        public void bindItem(FilterItem item) {
             itemBinding.setModuleFilter(item);
             itemBinding.executePendingBindings();
             itemBinding.checkView.setOnClickListener(v -> {
