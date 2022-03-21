@@ -186,6 +186,9 @@ public class AppConstants {
     public static final String LIMIT = "limit";
     public static final String OFFSET = "offset";
     public static final String SEARCH = "search";
+    public static final String SORT_BY = "sort_by";
+    public static final String BRAND_ID = "brand_id";
+    //public static final String CATEGORY_ID = "category_id";
 
     /*API KEYS*/
     public static final String MOBILE_NUMBER = "mobile";

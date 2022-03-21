@@ -65,55 +65,62 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-
                     <LinearLayout
-                        android:id="@+id/ll_category_filter"
+                        android:id="@+id/ll_main_category_filter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_10sdp"
-                        android:paddingVertical="@dimen/_5sdp">
+                        android:orientation="vertical">
 
-                        <com.poona.agrocart.widgets.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="10"
-                            android:gravity="center_vertical"
-                            android:text="@string/category"
-                            android:textColor="@color/clr_enter_otp"
-                            android:textSize="@dimen/_16sp"
-                            app:setCustomFont="@string/font_poppins_regular" />
+                        <LinearLayout
+                            android:id="@+id/ll_category_filter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:paddingVertical="@dimen/_5sdp">
 
-                        <com.poona.agrocart.widgets.ExpandIconView
-                            android:id="@+id/iv_category"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:layout_gravity="right"
-                            android:layout_weight="1"
-                            app:eiv_animationDuration="300"
-                            app:eiv_colorLess="@color/black"
-                            app:eiv_colorMore="@color/black"
-                            app:eiv_roundedCorners="true"
-                            app:eiv_switchColor="true" />
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="10"
+                                android:gravity="center_vertical"
+                                android:text="@string/category"
+                                android:textColor="@color/clr_enter_otp"
+                                android:textSize="@dimen/_16sp"
+                                app:setCustomFont="@string/font_poppins_regular" />
 
+                            <com.poona.agrocart.widgets.ExpandIconView
+                                android:id="@+id/iv_category"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="right"
+                                android:layout_weight="1"
+                                app:eiv_animationDuration="300"
+                                app:eiv_colorLess="@color/black"
+                                app:eiv_colorMore="@color/black"
+                                app:eiv_roundedCorners="true"
+                                app:eiv_switchColor="true" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginStart="@dimen/_20sdp"
+                            android:layout_marginEnd="@dimen/_20sdp"
+                            android:background="@color/filter_line_color" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_category_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_marginStart="@dimen/_20sdp"
+                            android:layout_marginEnd="@dimen/_20sdp"
+                            android:paddingTop="@dimen/_5sdp" />
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_marginEnd="@dimen/_20sdp"
-                        android:background="@color/filter_line_color" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_category_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_marginEnd="@dimen/_20sdp"
-                        android:paddingTop="@dimen/_5sdp" />
 
 
                     <!-- Sort By Filter-->

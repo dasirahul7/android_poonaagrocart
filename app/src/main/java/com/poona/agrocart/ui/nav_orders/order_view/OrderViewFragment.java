@@ -84,7 +84,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
 
     private FragmentOrderViewBinding fragmentOrderViewBinding;
     private OrderViewDetailsViewModel orderViewDetailsViewModel;
-    private String order_id = "", subscriptionBasketOrderId = "";
+    private String order_id = "", subscriptionBasketOrderId = "", subOrderId = "";
     private RecyclerView rvBasketListItems;
     private LinearLayoutManager linearLayoutManager;
     private BasketItemsAdapter basketItemsAdapter;
@@ -294,6 +294,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         if(isConnectingToInternet(context)){
             if(isBasketVisible){
                 callSubscriptionBasketItemList(showCircleProgressDialog(context, ""));
+
             }else {
                 callOrderDetailsApi(showCircleProgressDialog(context, ""));
             }
@@ -308,6 +309,16 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
 
         basketItemsAdapter = new BasketItemsAdapter(basketItemList, isBasketVisible, getContext(),0);
         rvBasketListItems.setAdapter(basketItemsAdapter);
+
+        basketItemsAdapter.setOnTrackListener(new BasketItemsAdapter.OnTrackListener() {
+            @Override
+            public void onTrackButtonClick(int position) {
+                subOrderId = subscriptBasketDetails.get(position).getOrderId();
+                Bundle bundle = new Bundle();
+                bundle.putString(ORDER_ID, subOrderId);
+                Navigation.findNavController(view).navigate(R.id.action_orderViewFragment_to_nav_order_track, bundle);
+            }
+        });
 
     }
 

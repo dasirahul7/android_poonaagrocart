@@ -31,6 +31,7 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
     private static int DETAIL =0;
     private static int REVIEW =1;
     OrderViewFragment orderViewFragment = new OrderViewFragment();
+    public OnTrackListener onTrackListener;
     private ImageView imageView;
 
     public BasketItemsAdapter(ArrayList<ItemsDetail> basketItems, boolean isBasketVisible, Context context, int from) {
@@ -46,6 +47,18 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
         RvBasketDetailBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.rv_basket_detail, parent, false);
         return new BasketItemViewHolder(binding, isBasketVisible);
+    }
+
+    public interface OnTrackListener{
+        void onTrackButtonClick(int position);
+    }
+
+    public OnTrackListener getOnTrackListener() {
+        return onTrackListener;
+    }
+
+    public void setOnTrackListener(OnTrackListener onTrackListener) {
+        this.onTrackListener = onTrackListener;
     }
 
     @SuppressLint("SetTextI18n")
@@ -159,11 +172,16 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
                 rvBasketDetailBinding.tvQuantity.setVisibility(View.VISIBLE);
                 rvBasketDetailBinding.tvOrderStatus.setVisibility(View.GONE);
             }
+
+            rvBasketDetailBinding.btnTrackOrder.setOnClickListener(view -> {
+                onTrackListener.onTrackButtonClick(getLayoutPosition());
+            });
         }
 
         @SuppressLint("ResourceType")
         public void bind(ItemsDetail basketItem, Context context) {
             rvBasketDetailBinding.setVariable(BR.basketItemModel, basketItem);
+
 
             if (this.isBasketVisible) {
 

@@ -12,11 +12,14 @@ import static com.poona.agrocart.app.AppUtils.warningToast;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
@@ -32,6 +36,7 @@ import com.poona.agrocart.data.network.responses.filterResponse.BrandFliterList;
 import com.poona.agrocart.data.network.responses.filterResponse.CategoryFilterList;
 import com.poona.agrocart.data.network.responses.filterResponse.FilterListResponse;
 import com.poona.agrocart.data.network.responses.filterResponse.SortByFilterList;
+import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.ItemsDetail;
 import com.poona.agrocart.databinding.BottomSheetFilterDialogBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_explore.adapter.FilterItemAdapter;
@@ -44,6 +49,7 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
     private BottomSheetFilterDialogBinding bottomSheetFilterFragment;
     private FilterItemAdapter categoryAdapter, sortByAdapter, brandAdapter;
     private BasketFilterViewModel basketFilterViewModel;
+    private LinearLayout linearLayout;
     private ArrayList<FilterItem> categoryItems = new ArrayList<>();
     private ArrayList<FilterItem> filterItems = new ArrayList<>();
     private ArrayList<FilterItem> brandItems = new ArrayList<>();
@@ -51,17 +57,36 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
     private boolean isCategoryVisible = true;
     private boolean isFilterVisible = true;
     private boolean isBrandVisible = true;
+    private View view;
+    private boolean showCategory;
+    private String sortById = "", brandId = "", strCategoryId = "";
+    public ArrayList<String> sortByIds = new ArrayList<>();
+    public ArrayList<String> brandIds = new ArrayList<>();
+    public ArrayList<String> categoryIds = new ArrayList<>();
+    public BottomSheetFilterFragment(boolean showCategory) {
+        this.showCategory = showCategory;
+    }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView( LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         bottomSheetFilterFragment = BottomSheetFilterDialogBinding.inflate(LayoutInflater.from(getActivity()));
         basketFilterViewModel = new ViewModelProvider(this).get(BasketFilterViewModel.class);
+         view = bottomSheetFilterFragment.getRoot();
+
         callFilterListApi(showCircleProgressDialog(getContext(),""));
         setClicks();
+
         //Hide all list by default
         setFilterHideOrShow();
         setBrandHideOrShow();
-        return bottomSheetFilterFragment.getRoot();
+
+        if (showCategory) {
+            bottomSheetFilterFragment.llMainCategoryFilter.setVisibility(View.VISIBLE);
+        } else {
+            bottomSheetFilterFragment.llMainCategoryFilter.setVisibility(View.GONE);
+        }
+
+        return view;
     }
 
     private void setClicks() {
@@ -71,10 +96,17 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         bottomSheetFilterFragment.llSortByFilter.setOnClickListener(this);
         bottomSheetFilterFragment.ivBrand.setOnClickListener(this);
         bottomSheetFilterFragment.llBrandFilter.setOnClickListener(this);
+
+        bottomSheetFilterFragment.applyBtn.setOnClickListener(view1 -> {
+            Log.d("TAG", "setClicks:sortby "+sortById);
+            Log.d("TAG", "setClicks:category "+brandId);
+            Log.d("TAG", "setClicks:brand "+strCategoryId);
+        });
     }
 
     private void setCategoryHideOrShow() {
         if (isCategoryVisible) {
+
             bottomSheetFilterFragment.ivCategory.setState(ExpandIconView.MORE, true);
             collapseView(bottomSheetFilterFragment.rvCategoryList);
         } else {
@@ -124,6 +156,22 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
                     RecyclerView.VERTICAL, false));
             bottomSheetFilterFragment.rvCategoryList.setHasFixedSize(true);
             bottomSheetFilterFragment.rvCategoryList.setAdapter(categoryAdapter);
+            categoryAdapter.setOnFilterClickListener(new FilterItemAdapter.OnFilterClickListener() {
+                @Override
+                public void onItemCheck(FilterItem item) {
+                    categoryIds.add(item.getId());
+
+                    strCategoryId = String.valueOf(categoryIds);
+                }
+
+                @Override
+                public void onItemUncheck(FilterItem item) {
+                    categoryIds.remove(item.getId());
+
+                    strCategoryId = String.valueOf(categoryIds);
+
+                }
+            });
         });
         //set SotBy and Filter
         basketFilterViewModel.getFilterItemLiveData().observe(getViewLifecycleOwner(), sortByFilterItems -> {
@@ -141,6 +189,19 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
                    RecyclerView.VERTICAL, false));
           bottomSheetFilterFragment.rvSortList.setHasFixedSize(true);
             bottomSheetFilterFragment.rvSortList.setAdapter(sortByAdapter);
+            sortByAdapter.setOnFilterClickListener(new FilterItemAdapter.OnFilterClickListener() {
+                @Override
+                public void onItemCheck(FilterItem item) {
+                    sortByIds.add(item.getId());
+                    sortById = String.valueOf(sortByIds);
+                }
+
+                @Override
+                public void onItemUncheck(FilterItem item) {
+                    sortByIds.remove(item.getId());
+                    sortById = String.valueOf(sortByIds);
+                }
+            });
         });
        //set Brand Filter
         basketFilterViewModel.getBrandItemLiveData().observe(getViewLifecycleOwner(), brandFilterItems -> {
@@ -158,6 +219,20 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
             bottomSheetFilterFragment.rvBrandList.setLayoutManager(new LinearLayoutManager(getActivity(),
                     RecyclerView.VERTICAL, false));
             bottomSheetFilterFragment.rvBrandList.setAdapter(brandAdapter);
+            brandAdapter.setOnFilterClickListener(new FilterItemAdapter.OnFilterClickListener() {
+                @Override
+                public void onItemCheck(FilterItem item) {
+                    brandIds.add(item.getId());
+                    brandId = String.valueOf(brandIds);
+                }
+
+                @Override
+                public void onItemUncheck(FilterItem item) {
+                    brandIds.remove(item.getId());
+                    brandId = String.valueOf(brandIds);
+                }
+            });
+
         });
 
     }
@@ -242,6 +317,7 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         a.setDuration((int) (targetHeight / v.getContext().getResources().getDisplayMetrics().density + 300));
         v.startAnimation(a);
     }
+
 
     public interface BottomSheetListener {
         void onBottomSheetClick();
