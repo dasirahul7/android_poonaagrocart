@@ -1,5 +1,10 @@
 package com.poona.agrocart.ui.bottom_sheet;
 
+import static com.poona.agrocart.app.AppConstants.BRAND_ID;
+import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
+import static com.poona.agrocart.app.AppConstants.CATEGORY_ID_VALUE;
+import static com.poona.agrocart.app.AppConstants.ORDER_ID;
+import static com.poona.agrocart.app.AppConstants.SORT_BY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
@@ -24,7 +29,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ReportFragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,6 +48,7 @@ import com.poona.agrocart.databinding.BottomSheetFilterDialogBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_explore.adapter.FilterItemAdapter;
 import com.poona.agrocart.ui.nav_explore.model.FilterItem;
+import com.poona.agrocart.ui.products_list.ProductListFragment;
 import com.poona.agrocart.widgets.ExpandIconView;
 
 import java.util.ArrayList;
@@ -59,19 +67,50 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
     private boolean isBrandVisible = true;
     private View view;
     private boolean showCategory;
-    private String sortById = "", brandId = "", strCategoryId = "";
+    private Bundle bundle;
+    public String sortById = "", brandId = "", strCategoryId = "";
     public ArrayList<String> sortByIds = new ArrayList<>();
     public ArrayList<String> brandIds = new ArrayList<>();
     public ArrayList<String> categoryIds = new ArrayList<>();
-    public BottomSheetFilterFragment(boolean showCategory) {
+    public ArrayList<String> preCategoryIds = new ArrayList<>();
+    public OnClickButtonListener onClickButtonListener;
+
+
+    public ArrayList<String> getPreCategoryIds() {
+        return preCategoryIds;
+    }
+
+    public void setPreCategoryIds(ArrayList<String> preCategoryIds) {
+        this.preCategoryIds = preCategoryIds;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+            try {
+                if (bundle!=null){
+                    if (bundle.getStringArrayList(CATEGORY_ID_VALUE)!=null)
+                    preCategoryIds = getArguments().getStringArrayList(CATEGORY_ID_VALUE);
+                }
+                Log.e("TAG", "onCreate: "+getPreCategoryIds().size() );
+            }catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+    }
+
+    public BottomSheetFilterFragment(boolean showCategory,Bundle bundle) {
         this.showCategory = showCategory;
+        this.bundle = bundle;
+
     }
 
     @Override
     public View onCreateView( LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         bottomSheetFilterFragment = BottomSheetFilterDialogBinding.inflate(LayoutInflater.from(getActivity()));
         basketFilterViewModel = new ViewModelProvider(this).get(BasketFilterViewModel.class);
-         view = bottomSheetFilterFragment.getRoot();
+        view = bottomSheetFilterFragment.getRoot();
 
         callFilterListApi(showCircleProgressDialog(getContext(),""));
         setClicks();
@@ -89,6 +128,7 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         return view;
     }
 
+
     private void setClicks() {
         bottomSheetFilterFragment.ivCategory.setOnClickListener(this);
         bottomSheetFilterFragment.llCategoryFilter.setOnClickListener(this);
@@ -98,11 +138,35 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         bottomSheetFilterFragment.llBrandFilter.setOnClickListener(this);
 
         bottomSheetFilterFragment.applyBtn.setOnClickListener(view1 -> {
+            onClickButtonListener.itemClick(categoryIds, brandIds, sortByIds);
+            dismiss();
+           /* Bundle bundle = new Bundle();
+            bundle.putStringArrayList(CATEGORY_ID_VALUE, categoryIds);
+            bundle.putStringArrayList(BRAND_ID, brandIds);
+            bundle.putStringArrayList(SORT_BY, sortByIds);
             Log.d("TAG", "setClicks:sortby "+sortById);
-            Log.d("TAG", "setClicks:category "+brandId);
-            Log.d("TAG", "setClicks:brand "+strCategoryId);
+            Log.d("TAG", "setClicks:category "+strCategoryId);
+            Log.d("TAG", "setClicks:brand "+brandId);
+            NavHostFragment.findNavController(BottomSheetFilterFragment.this).navigate(R.id.action_bottom_sheet_fragment_to_nav_products_list
+                    , bundle);*/
+
         });
     }
+
+    public interface OnClickButtonListener{
+        void itemClick(ArrayList<String> categoryId, ArrayList<String>  brandId, ArrayList<String>  sortId);
+    }
+
+    public OnClickButtonListener getOnClickButtonListener() {
+        return onClickButtonListener;
+    }
+
+    public void setOnClickButtonListener(OnClickButtonListener onClickButtonListener) {
+        this.onClickButtonListener = onClickButtonListener;
+    }
+
+
+
 
     private void setCategoryHideOrShow() {
         if (isCategoryVisible) {
@@ -143,10 +207,17 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         //setCategory
         basketFilterViewModel.getCategoryLiveData().observe(getViewLifecycleOwner(), categoryFilterItems -> {
             for (CategoryFilterList item: categoryFilterItems){
-                FilterItem filterItem = new FilterItem(item.getId(),item.getCategoryName(),false);
-                categoryItems.add(filterItem);
+                if(item.getId().isEmpty()){
+                    FilterItem filterItem = new FilterItem(item.getId(),item.getCategoryName(),false);
+                    if (preCategoryIds.contains(filterItem.getId()))
+                        filterItem.setSelected(true);
+                }else {
+                    FilterItem filterItem = new FilterItem(item.getId(), item.getCategoryName(), false);
+                    categoryItems.add(filterItem);
+                }
+
                 try {
-                    System.out.println("CategoryFilterList "+item.getCategoryName());
+                    System.out.println("CategoryFilterList "+item.getId());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -184,10 +255,10 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
                     e.printStackTrace();
                 }
             }
-          sortByAdapter = new FilterItemAdapter(filterItems, getActivity());
-          bottomSheetFilterFragment.rvSortList.setLayoutManager(new LinearLayoutManager(getActivity(),
-                   RecyclerView.VERTICAL, false));
-          bottomSheetFilterFragment.rvSortList.setHasFixedSize(true);
+            sortByAdapter = new FilterItemAdapter(filterItems, getActivity());
+            bottomSheetFilterFragment.rvSortList.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    RecyclerView.VERTICAL, false));
+            bottomSheetFilterFragment.rvSortList.setHasFixedSize(true);
             bottomSheetFilterFragment.rvSortList.setAdapter(sortByAdapter);
             sortByAdapter.setOnFilterClickListener(new FilterItemAdapter.OnFilterClickListener() {
                 @Override
@@ -203,7 +274,7 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
                 }
             });
         });
-       //set Brand Filter
+        //set Brand Filter
         basketFilterViewModel.getBrandItemLiveData().observe(getViewLifecycleOwner(), brandFilterItems -> {
             for (BrandFliterList item: brandFilterItems){
                 FilterItem filterItem = new FilterItem(item.getBrandId(),item.getBrandName(),false);

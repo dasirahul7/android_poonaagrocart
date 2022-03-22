@@ -52,6 +52,19 @@ public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.Fi
         holder.itemBinding.setModuleFilter(item);
         holder.bindItem(item);
 
+       /* holder.itemBinding.checkbox.setOnClickListener(v -> {
+            if (itemBinding.checkbox.isChecked()) {
+                itemBinding.checkbox.setChecked(false);
+                itemBinding.tvFilter.setTextColor(context.getColor(R.color.colorPrimary));
+            } else {
+                itemBinding.checkbox.setChecked(true);
+                itemBinding.tvFilter.setTextColor(context.getColor(R.color.black));
+            }
+
+
+        });*/
+
+
         holder.itemBinding.checkbox.setChecked(item.isSelected());
         holder.itemBinding.checkbox.setTag(item);
 
@@ -66,8 +79,10 @@ public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.Fi
 
                 if (category.isChecked()){
                     onFilterClickListener.onItemCheck(contact);
+
                 }else {
                     onFilterClickListener.onItemUncheck(contact);
+
                 }
             }
         });
@@ -95,24 +110,7 @@ public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.Fi
         public void bindItem(FilterItem item) {
             itemBinding.setModuleFilter(item);
             itemBinding.executePendingBindings();
-            itemBinding.checkView.setOnClickListener(v -> {
-                if (itemBinding.checkbox.isChecked()) {
-                    itemBinding.checkbox.setChecked(false);
-                    setCheckedView();
-                } else {
-                    itemBinding.checkbox.setChecked(true);
-                    setCheckedView();
-                }
-
-
-            });
-
         }
 
-        private void setCheckedView() {
-            if (itemBinding.checkbox.isChecked())
-                itemBinding.tvFilter.setTextColor(context.getColor(R.color.colorPrimary));
-            else itemBinding.tvFilter.setTextColor(context.getColor(R.color.black));
-        }
     }
 }

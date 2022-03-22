@@ -104,11 +104,6 @@ public class OrderViewDetailsViewModel extends AndroidViewModel {
 
     }
 
-
-
-
-
-
     public LiveData<MyOrderDetailsResponse> getMyOrderDetails(ProgressDialog progressDialog, Context context
             , HashMap<String, String> myOrderDetailsInputParameter, OrderViewFragment orderViewFragment) {
         MutableLiveData<MyOrderDetailsResponse> myOrderDetailsResponseMutableLiveData = new MutableLiveData<>();
@@ -358,5 +353,44 @@ public class OrderViewDetailsViewModel extends AndroidViewModel {
                 });
 
         return subscribeBasketItemListResponseMutableLiveData;
+    }
+
+    public LiveData<BaseResponse> getSubBasketRatingAndFeedBack(ProgressDialog progressDialog, Context context
+            , HashMap<String, String> subBasketRatingAndFeedBackInputParameter, OrderViewFragment orderViewFragment) {
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(context)
+                .create(ApiInterface.class)
+                .getSubBasketSubmitRatingResponseOrder(subBasketRatingAndFeedBackInputParameter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            baseResponseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) orderViewFragment).onNetworkException(6,"");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return baseResponseMutableLiveData;
+
     }
 }

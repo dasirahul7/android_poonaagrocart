@@ -171,7 +171,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                 if (!Objects.requireNonNull(feedbackComment.getText()).toString().isEmpty() && !(ratingBar.getRating() == 0.0)) {
 
                     if (isBasketVisible){
-                        warningToast(context, "wait for while");
+                        callSubBasketRatingAndFeedBackApi(showCircleProgressDialog(context, ""));
                         fragmentOrderViewBinding.cardviewComment.setVisibility(View.VISIBLE);
                     }else {
                         callRatingAndFeedBackApi(showCircleProgressDialog(context, ""));
@@ -346,6 +346,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                             subscriptBasketReviews.addAll(subscribeBasketDetailsResponse.getBasketSubscriptionDetails().get(0).getReviews());
                             setSubscriptionBasketReviewValue(subscriptBasketReviews);
                             setSubscriptionBasketRatingViewHideShow(subscriptBasketReviews);
+
 
                         }
                         break;
@@ -839,7 +840,6 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         btnSubmit.setOnClickListener(view1 -> {
                 if (isConnectingToInternet(context)){
                     if(!strReasonType.equalsIgnoreCase("")) {
-
                         callOrderCancelSuccessFullyApi(showCircleProgressDialog(context,""));
                         dialog.dismiss();
                     }else {
@@ -1034,6 +1034,52 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
     private HashMap<String, String> RatingAndFeedBackInputParameter(){
         HashMap<String, String> map = new HashMap<>();
         map.put(ORDER_ID, order_id);
+        map.put(RATING, String.valueOf(ratingBar.getRating()));
+        map.put(REVIEW,feedbackComment.getText().toString().trim());
+
+        return map;
+    }
+
+    /* Subscription Rating And feedback basket */
+
+    private void callSubBasketRatingAndFeedBackApi(ProgressDialog progressDialog){
+        Observer<BaseResponse> ratingAndFeedBackResponseObserver = ratingAndFeedBackResponse ->  {
+            if (ratingAndFeedBackResponse != null) {
+                Log.e("Subscription Basket Rating Response", new Gson().toJson(ratingAndFeedBackResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (ratingAndFeedBackResponse.getStatus()) {
+                    case STATUS_CODE_200://success
+                        callSubscriptBasketDetailsApi(showCircleProgressDialog(context, ""));
+                        break;
+                    case STATUS_CODE_400://Validation Errors
+                        warningToast(context, ratingAndFeedBackResponse.getMessage());
+                        break;
+                    case STATUS_CODE_404://Record not Found
+                        warningToast(context, ratingAndFeedBackResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+//                        warningToast(context, ratingAndFeedBackResponse.getMessage());
+                        goToAskSignInSignUpScreen( ratingAndFeedBackResponse.getMessage(),context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, ratingAndFeedBackResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+        };
+        orderViewDetailsViewModel.getSubBasketRatingAndFeedBack(progressDialog,context,SubBasketRatingAndFeedBackInputParameter(),OrderViewFragment.this)
+                .observe(getViewLifecycleOwner(), ratingAndFeedBackResponseObserver);
+    }
+
+    private HashMap<String, String> SubBasketRatingAndFeedBackInputParameter(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put(ORDER_SUBSCRIPTION_ID, subscriptionBasketOrderId);
         map.put(RATING, String.valueOf(ratingBar.getRating()));
         map.put(REVIEW,feedbackComment.getText().toString().trim());
 
