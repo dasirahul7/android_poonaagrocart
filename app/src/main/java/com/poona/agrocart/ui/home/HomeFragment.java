@@ -15,6 +15,7 @@ import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
+import static com.poona.agrocart.app.AppConstants.SEASONAL_P_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -322,11 +323,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private void setRvSeasonal() {
 
-        seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProduct -> {
+        seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProductId -> {
             try {
-                System.out.println("seasonal image" + seasonalProduct.getProductAdsAmage());
                 Bundle bundle = new Bundle();
-                bundle.putString("image", seasonalProduct.getProductAdsAmage());
+                bundle.putString(SEASONAL_P_ID, seasonalProductId);
                 NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -951,6 +951,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     //Seasonal ProductOld listing here
+    //Todo delete later
     private void callSeasonalProductApi(ProgressDialog progressDialog, String loadType) {
         if (loadType.equalsIgnoreCase("onScrolled")) {
             seasonalOffset = seasonalOffset + 1;
@@ -976,12 +977,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
                             fragmentHomeBinding.recSeasonal.setLayoutManager(seasonalManager);
-                            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProduct -> {
+                            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProductId -> {
                                 //TODO crash here
                                 try {
-                                    System.out.println("seasonal image" + seasonalProduct.getProductImage());
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("image", seasonalProduct.getProductAdsAmage());
+                                    bundle.putString(SEASONAL_P_ID, seasonalProductId);
                                     NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
                                 } catch (Exception e) {
                                     e.printStackTrace();

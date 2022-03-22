@@ -2,16 +2,13 @@ package com.poona.agrocart.ui.seasonal;
 
 import android.app.Application;
 import android.app.ProgressDialog;
-import android.widget.ProgressBar;
+import android.util.Log;
 
-import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.common.api.Api;
-import com.google.common.graph.MutableValueGraph;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.data.network.ApiClientAuth;
@@ -19,6 +16,7 @@ import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.GetUnitResponse;
+import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,49 +28,58 @@ import retrofit2.HttpException;
 
 public class SeasonalViewModel extends AndroidViewModel {
 
+    public MutableLiveData<String> productNameMutable;
+    public MutableLiveData<String> productImageMutable;
+    public MutableLiveData<String> productDetailMutable;
     public MutableLiveData<ArrayList<GetUnitResponse.UnitData>> arrayListUnitLiveData = new MutableLiveData<>();
     public SeasonalViewModel(@NonNull Application application) {
         super(application);
+        productNameMutable = new MutableLiveData<>();
+        productImageMutable = new MutableLiveData<>();
+        productDetailMutable = new MutableLiveData<>();
+        productNameMutable.setValue(null);
+        productImageMutable.setValue(null);
+        productDetailMutable.setValue(null);
         arrayListUnitLiveData.setValue(null);
     }
 
 
-    /*Get Unit lists*/
+    /*Get Seasonal Product Detail */
+    public LiveData<SeasonalProductResponse> getSeasonalResponseLiveData(ProgressDialog progressDialog,
+                                                                     HashMap<String,String> hashMap,
+                                                                     SeasonalRegFragment seasonalRegFragment){
+        MutableLiveData<SeasonalProductResponse> seasonalProductResponseMutableLiveData = new MutableLiveData<>();
 
-//    public LiveData<GetUnitResponse> getUnitResponseLiveData(ProgressDialog progressDialog,
-//                                                             SeasonalRegFragment seasonalRegFragment){
-//        MutableLiveData<GetUnitResponse> getUnitResponseMutableLiveData = new MutableLiveData<>();
-//
-//        ApiClientAuth.getClient(seasonalRegFragment.context)
-//                .create(ApiInterface.class)
-//                .getUnitResponse()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeWith(new DisposableSingleObserver<GetUnitResponse>() {
-//                    @Override
-//                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull GetUnitResponse getUnitResponse) {
-//                        if (getUnitResponse!=null){
-//                            if (progressDialog!=null)
-//                                progressDialog.dismiss();
-//                            getUnitResponseMutableLiveData.setValue(getUnitResponse);
-//                        }
-//                    }
-//                    @Override
-//                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-//                        Gson gson = new GsonBuilder().create();
-//                        GetUnitResponse getUnitResponse = new GetUnitResponse();
-//                        try {
-//                            getUnitResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
-//                                    GetUnitResponse.class);
-//                            getUnitResponseMutableLiveData.setValue(getUnitResponse);
-//                        } catch (Exception exception) {
-//                            exception.printStackTrace();
-//                            ((NetworkExceptionListener) seasonalRegFragment).onNetworkException(0,"");
-//                        }
-//                    }
-//                });
-//        return getUnitResponseMutableLiveData;
-//    }
+        ApiClientAuth.getClient(seasonalRegFragment.context)
+                .create(ApiInterface.class)
+                .seasonalProductDetails(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<SeasonalProductResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull SeasonalProductResponse seasonalProductResponse) {
+                        if (seasonalProductResponse!=null){
+                            if (progressDialog!=null)
+                                progressDialog.dismiss();
+                            seasonalProductResponseMutableLiveData.setValue(seasonalProductResponse);
+                        }
+                    }
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Gson gson = new GsonBuilder().create();
+                        SeasonalProductResponse seasonalProductResponse = new SeasonalProductResponse();
+                        try {
+                            seasonalProductResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    SeasonalProductResponse.class);
+                            seasonalProductResponseMutableLiveData.setValue(seasonalProductResponse);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                            ((NetworkExceptionListener) seasonalRegFragment).onNetworkException(0,"");
+                        }
+                    }
+                });
+        return seasonalProductResponseMutableLiveData;
+    }
 
     public LiveData<BaseResponse> seasonalProductRegistrationResponse(ProgressDialog progressDialog,
                                                                        HashMap<String,String> hashMap,
@@ -91,6 +98,7 @@ public class SeasonalViewModel extends AndroidViewModel {
                             if (progressDialog!=null)
                                 progressDialog.dismiss();
                             seasonalProductRegMutableLiveData.setValue(response);
+                            Log.d("TAG", "Seasonal register onSuccess: " + new Gson().toJson(response));
                         }
                     }
 
@@ -104,7 +112,7 @@ public class SeasonalViewModel extends AndroidViewModel {
                           seasonalProductRegMutableLiveData.setValue(baseResponse);
                         } catch (Exception exception) {
                             exception.printStackTrace();
-                            ((NetworkExceptionListener) seasonalRegFragment).onNetworkException(1,"");
+                            ((NetworkExceptionListener) seasonalRegFragment).onNetworkException(2,"");
                         }
                     }
                 });

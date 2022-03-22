@@ -51,7 +51,7 @@ public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAd
     }
 
     public interface OnSeasonalClickListener {
-        void onSeasonRegister(SeasonalProduct seasonalProduct);
+        void onSeasonRegister(String seasonalId);
     }
 
     public class SeasonBannerHolder extends RecyclerView.ViewHolder {
@@ -68,7 +68,7 @@ public class SeasonalBannerAdapter extends RecyclerView.Adapter<SeasonalBannerAd
             seasonalBannerBinding.setVariable(BR.moduleSeasonBanner, seasonalProduct);
             seasonalBannerBinding.executePendingBindings();
             seasonalBannerBinding.tvRegister.setOnClickListener(view -> {
-                onSeasonalClickListener.onSeasonRegister(seasonalProduct);
+                onSeasonalClickListener.onSeasonRegister(seasonalProduct.getId());
             });
         }
     }

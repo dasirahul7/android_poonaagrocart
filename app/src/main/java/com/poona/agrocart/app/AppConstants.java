@@ -270,6 +270,7 @@ public class AppConstants {
     /*Seasonal Param Keys*/
     public static final String SEASONAL_P_ID = "seasonal_product_id";
     public static final String UNIT_ID = "unit_id";
+    public static final String ADDRESS = "address";
 
     /* Rating and Review */
    public static final String RATING = "rating";
