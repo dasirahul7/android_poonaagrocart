@@ -197,7 +197,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
             if (fromScreen.equalsIgnoreCase(AllBasket)) {
                 seeAllBasketListApi(showCircleProgressDialog(context, ""), loading);
             }else if (fromScreen.equalsIgnoreCase(AllSelling)) {
-                BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true);
+                seeAllBestSellingApi(showCircleProgressDialog(context, ""), loading);
             } else if (fromScreen.equalsIgnoreCase(AllExclusive)) {
                 seeAllExclusiveApi(showCircleProgressDialog(context, ""), loading);
             }
