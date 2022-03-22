@@ -5,16 +5,24 @@ import static com.poona.agrocart.app.AppConstants.AllExclusive;
 import static com.poona.agrocart.app.AppConstants.AllSelling;
 import static com.poona.agrocart.app.AppConstants.BASKET;
 import static com.poona.agrocart.app.AppConstants.BASKET_ID;
+import static com.poona.agrocart.app.AppConstants.BRAND_ID;
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
+
+import static com.poona.agrocart.app.AppConstants.CATEGORY_ID_VALUE;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
+import static com.poona.agrocart.app.AppConstants.LIMIT;
 import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
 import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
+import static com.poona.agrocart.app.AppConstants.OFFSET;
+
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.PU_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
+import static com.poona.agrocart.app.AppConstants.SEARCH;
 import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
+import static com.poona.agrocart.app.AppConstants.SORT_BY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -115,7 +123,10 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
             }
         }
     });
-    private String strCategoryId, StrBrandId, strSortBy;
+    private String strCategoryId ="", StrBrandId="", strSortBy="" ;
+    private ArrayList<String> strCarArray = new ArrayList<>();
+
+   //, StrBrandId, strSortBy;
 
 
     @Override
@@ -128,22 +139,76 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         setTitleBar();
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setOnClickListener(v -> {
+
+           /* Bundle bundle = new Bundle();
+            bundle.putStringArrayList(CATEGORY_ID_VALUE,strCarArray);
+            bundle.putString(SORT_BY,strSortBy);
+            bundle.putString(BRAND_ID,StrBrandId);*/
+
                     // Show the Filter Dialog
+
             if (CategoryId == null) {
                 fromScreen = getArguments().getString(FROM_SCREEN);
                 if (fromScreen.equalsIgnoreCase(AllBasket)) {
-                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(false);
+
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(false,null);
                     filterFragment.show(getChildFragmentManager(), "FilterFragment");
+                    filterFragment.setOnClickButtonListener(new BottomSheetFilterFragment.OnClickButtonListener() {
+
+                        @Override
+                        public void itemClick(ArrayList<String> categoryId, ArrayList<String> brandId, ArrayList<String> sortId) {
+                            strCategoryId = TextUtils.join(",", categoryId);
+                            StrBrandId = TextUtils.join(",",brandId) ;
+                            strSortBy = TextUtils.join(",",sortId);
+                            seeAllBasketListApi(showCircleProgressDialog(context,""), "load");
+
+                        }
+                    });
+
                 }else if (fromScreen.equalsIgnoreCase(AllSelling)) {
-                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true);
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true,null);
                     filterFragment.show(getChildFragmentManager(), "FilterFragment");
+                    try {
+                        System.out.println("category :"+strCategoryId);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                   filterFragment.setOnClickButtonListener(new BottomSheetFilterFragment.OnClickButtonListener() {
+                       @Override
+                       public void itemClick(ArrayList<String> categoryId, ArrayList<String> brandId, ArrayList<String> sortId) {
+                          strCategoryId = TextUtils.join(",", categoryId);
+                           StrBrandId = TextUtils.join(",",brandId) ;
+                          strSortBy = TextUtils.join(",",sortId);
+                          seeAllBestSellingApi(showCircleProgressDialog(context,""), "load");
+
+                       }
+                   });
                 } else if (fromScreen.equalsIgnoreCase(AllExclusive)) {
-                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true);
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true,null);
                     filterFragment.show(getChildFragmentManager(), "FilterFragment");
+                    filterFragment.setOnClickButtonListener(new BottomSheetFilterFragment.OnClickButtonListener() {
+                        @Override
+                        public void itemClick(ArrayList<String> categoryId, ArrayList<String> brandId, ArrayList<String> sortId) {
+                            strCategoryId = TextUtils.join(",", categoryId);
+                            StrBrandId = TextUtils.join(",",brandId) ;
+                            strSortBy = TextUtils.join(",",sortId);
+                            seeAllExclusiveApi(showCircleProgressDialog(context,""), "load");
+                        }
+                    });
                 }
             } else {
-                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(false);
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(false,null);
                     filterFragment.show(getChildFragmentManager(), "FilterFragment");
+
+                filterFragment.setOnClickButtonListener(new BottomSheetFilterFragment.OnClickButtonListener() {
+                    @Override
+                    public void itemClick(ArrayList<String> categoryId, ArrayList<String> brandId, ArrayList<String> sortId) {
+                        strCategoryId = TextUtils.join(",", categoryId);
+                        StrBrandId = TextUtils.join(",",brandId) ;
+                        strSortBy = TextUtils.join(",",sortId);
+                        callProductListApi(showCircleProgressDialog(context,""), "load");
+                    }
+                });
                 }
 
         });
@@ -265,6 +330,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         //Best selling listing
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null) {
                             //Todo need to change that
+                            successToast(context, bestSellingResponse.getMessage());
                             if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
                                 productArrayList.addAll(bestSellingResponse.getBestSellingData().getBestSellingProductList());
                                 productListViewModel.productListMutableLiveData.setValue(bestSellingResponse.getBestSellingData().getBestSellingProductList());
@@ -342,9 +408,9 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         map.put(AppConstants.LIMIT, String.valueOf(limit));
         map.put(AppConstants.OFFSET, String.valueOf(offset));
         map.put(AppConstants.SEARCH, fragmentProductListBinding.etProductSearch.getText().toString().trim());
-//        map.put(AppConstants.SORT_BY, strSortBy);
-//        map.put(AppConstants.BRAND_ID, StrBrandId);
-//        map.put(AppConstants.CATEGORY_ID, strCategoryId);
+        map.put(AppConstants.SORT_BY, String.valueOf(strSortBy));
+        map.put(AppConstants.BRAND_ID, String.valueOf(StrBrandId));
+        map.put(AppConstants.CATEGORY_ID, String.valueOf(strCategoryId));
 
         return map;
     }
@@ -363,6 +429,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (ListType.equalsIgnoreCase(BASKET)) {
                             //Basket listing
+                            basketArrayList.clear();
                             if (productListByResponse.getProductListResponseDt().getBasketList() != null) {
                                 if (productListByResponse.getProductListResponseDt().getBasketList().size() > 0) {
                                     basketArrayList = productListByResponse.getProductListResponseDt().getBasketList();
@@ -460,9 +527,9 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     /*API parameters*/
     private HashMap<String, String> parameters() {
         HashMap<String, String> map = new HashMap<>();
-        map.put(AppConstants.LIMIT, String.valueOf(limit));
-        map.put(AppConstants.OFFSET, String.valueOf(offset));
-        map.put(AppConstants.SEARCH, fragmentProductListBinding.etProductSearch.getText().toString().trim());
+        map.put(LIMIT, String.valueOf(limit));
+        map.put(OFFSET, String.valueOf(offset));
+        map.put(SEARCH, fragmentProductListBinding.etProductSearch.getText().toString().trim());
         map.put(CATEGORY_ID, CategoryId);
         return map;
     }

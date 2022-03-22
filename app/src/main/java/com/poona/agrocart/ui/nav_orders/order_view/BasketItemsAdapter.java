@@ -193,27 +193,23 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
                         rvBasketDetailBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_in_process)));*/
                         break;
                     case "4":
+                        rvBasketDetailBinding.tvOrderStatus.setVisibility(View.VISIBLE);
                         rvBasketDetailBinding.tvOrderStatus.setText(context.getString(R.string.delivered));
                         rvBasketDetailBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_delivered)));
 
                         rvBasketDetailBinding.btnTrackOrder.setVisibility(View.GONE);
                         break;
                     case "2":
+                        rvBasketDetailBinding.tvOrderStatus.setVisibility(View.VISIBLE);
                         rvBasketDetailBinding.tvOrderStatus.setText(context.getString(R.string.confirmed));
                         rvBasketDetailBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_confirmed)));
 
                         rvBasketDetailBinding.btnTrackOrder.setVisibility(View.GONE);
                         break;
                     case "5":
+                        rvBasketDetailBinding.tvOrderStatus.setVisibility(View.VISIBLE);
                         rvBasketDetailBinding.tvOrderStatus.setText(context.getString(R.string.cancelled));
                         rvBasketDetailBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_cancelled)));
-
-                        if(isBasketVisible){
-                            rvBasketDetailBinding.btnTrackOrder.setVisibility(View.VISIBLE);
-                        }else {
-                            rvBasketDetailBinding.btnTrackOrder.setVisibility(View.GONE);
-                        }
-
 
                         break;
                     default:

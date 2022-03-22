@@ -635,4 +635,17 @@
         app:popExitAnim="@anim/slide_out_right" />
 
 
+    <fragment
+        android:id="@+id/BottomSheetFragment"
+        android:name="com.poona.agrocart.ui.bottom_sheet.BottomSheetFilterFragment"
+        android:label="BottomSheetFragment"/>
+
+    <action
+        android:id="@+id/action_bottom_sheet_fragment_to_nav_products_list"
+        app:destination="@id/nav_products_list"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
+
 </navigation>

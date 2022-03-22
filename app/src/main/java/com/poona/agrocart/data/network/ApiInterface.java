@@ -49,6 +49,7 @@ import static com.poona.agrocart.app.AppConstants.ORDER_TRACK;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_CRED_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
+import static com.poona.agrocart.app.AppConstants.RATE_SUBSCRIBED_BASKET;
 import static com.poona.agrocart.app.AppConstants.RATE_TO_BASKET;
 import static com.poona.agrocart.app.AppConstants.RATE_ORDER;
 import static com.poona.agrocart.app.AppConstants.RATE_TO_PRODUCT;
@@ -549,6 +550,10 @@ public interface ApiInterface {
     /*Filter list*/
     @GET(FILTER_LIST)
     Single<FilterListResponse> getFilterListResponse();
+
+    @FormUrlEncoded
+    @POST(RATE_SUBSCRIBED_BASKET)
+    Single<BaseResponse> getSubBasketSubmitRatingResponseOrder(@FieldMap HashMap<String, String> subBasketRatingAndFeedBackInputParameter);
 
     /*Seasonal product registration*/
     @FormUrlEncoded
