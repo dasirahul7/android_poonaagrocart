@@ -36,6 +36,7 @@ import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
@@ -104,6 +105,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private String CouponId;
     private String PaymentModeId;
 
+    /*Subscription Basket Screen*/
+    private boolean isSubscriptionBasketVisible = true;
+
     @Override
     public void onPause() {
         super.onPause();
@@ -141,6 +145,14 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
         initTitleWithBackBtn(getString(R.string.order_summary));
         initView();
+
+        Bundle bundle = this.getArguments();
+        isSubscriptionBasketVisible = bundle.getBoolean("isSubscriptionBasketVisible");
+        Toast.makeText(context, ""+isSubscriptionBasketVisible, Toast.LENGTH_SHORT).show();
+        /*if (isSubscriptionBasketVisible) {
+            Toast.makeText(context, ""+isSubscriptionBasketVisible, Toast.LENGTH_SHORT).show();
+            //setBasketContentsVisible();
+        }*/
 
         /*OnScrollview scrolled*/
         scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -229,7 +241,14 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
             callOrderSummaryAPI(showCircleProgressDialog(context, ""));
         } else showNotifyAlert(requireActivity(), context.getString(R.string.info),
                 context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+
+
+
+
+
     }
+
+
 
     /*Call Order place api here*/
     private void callOrderPlaceAPI(ProgressDialog progressDialog) {

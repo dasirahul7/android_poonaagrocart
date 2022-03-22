@@ -343,6 +343,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                             subscriptBasketDetails.addAll(subscribeBasketDetailsResponse.getBasketSubscriptionDetails());
                             setSubscriptBasketValue(subscriptBasketDetails);
 
+
                             subscriptBasketReviews.addAll(subscribeBasketDetailsResponse.getBasketSubscriptionDetails().get(0).getReviews());
                             setSubscriptionBasketReviewValue(subscriptBasketReviews);
                             setSubscriptionBasketRatingViewHideShow(subscriptBasketReviews);
@@ -958,6 +959,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
 
                         if(isBasketVisible){
                             callSubscriptBasketDetailsApi(showCircleProgressDialog(context, ""));
+                            callSubscriptionBasketItemList(showCircleProgressDialog(context, ""));
                         }else {
                             callOrderDetailsApi(showCircleProgressDialog(context, ""));
                         }
