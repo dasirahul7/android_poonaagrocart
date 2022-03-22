@@ -23,6 +23,7 @@ import static com.poona.agrocart.app.AppConstants.DELETE_NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.FAQ;
 import static com.poona.agrocart.app.AppConstants.FAVOURITE_LIST_API;
 import static com.poona.agrocart.app.AppConstants.FILTER_LIST;
+import static com.poona.agrocart.app.AppConstants.GET_UNITS;
 import static com.poona.agrocart.app.AppConstants.HOME_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BANNER_API;
 import static com.poona.agrocart.app.AppConstants.HOME_BASKET_API;
@@ -45,6 +46,7 @@ import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL;
 import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL_REASON;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY_API;
 import static com.poona.agrocart.app.AppConstants.ORDER_TRACK;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_CRED_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.RATE_SUBSCRIBED_BASKET;
@@ -54,8 +56,12 @@ import static com.poona.agrocart.app.AppConstants.RATE_TO_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.REGISTER_API;
 import static com.poona.agrocart.app.AppConstants.REMOVE_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.REMOVE_FAVOURITE_ITEM_API;
+import static com.poona.agrocart.app.AppConstants.REMOVE_FROM_CART_BASKET;
+import static com.poona.agrocart.app.AppConstants.REMOVE_FROM_CART_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.REPLY_TO_TICKET;
 import static com.poona.agrocart.app.AppConstants.RESEND_OTP;
+import static com.poona.agrocart.app.AppConstants.SEASONAL_DETAILS;
+import static com.poona.agrocart.app.AppConstants.SEASONAL_REGISTER;
 import static com.poona.agrocart.app.AppConstants.SET_DEFAULT_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.SIGN_OUT_API;
 import static com.poona.agrocart.app.AppConstants.SLOT_BY_DATE_API;
@@ -89,6 +95,7 @@ import com.poona.agrocart.data.network.responses.CmsResponse;
 import com.poona.agrocart.data.network.responses.CommonSearchResponse;
 import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
+import com.poona.agrocart.data.network.responses.GetUnitResponse;
 import com.poona.agrocart.data.network.responses.HomeBasketResponse;
 import com.poona.agrocart.data.network.responses.UpdateLocationResponse;
 import com.poona.agrocart.data.network.responses.filterResponse.FilterListResponse;
@@ -112,6 +119,7 @@ import com.poona.agrocart.data.network.responses.help_center_response.SendMessag
 import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.SeasonalProduct;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.SubscribeBasketListCustomerResponse;
@@ -122,8 +130,8 @@ import com.poona.agrocart.data.network.responses.myOrderResponse.orderTrack.Prod
 import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
-import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlotResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
+import com.poona.agrocart.data.network.responses.payment.RazorPayCredentialResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.ViewConfigurationResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
@@ -132,9 +140,6 @@ import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResp
 
 import java.util.HashMap;
 
-import javax.inject.Singleton;
-
-import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
@@ -274,6 +279,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(HOME_BASKET_API)
     Single<HomeBasketResponse> homeBasketResponse(@FieldMap HashMap<String, String> categoryParams);
+
     @FormUrlEncoded
     @POST(HOME_BASKET_API)
     Single<BasketResponse> basketResponse(@FieldMap HashMap<String, String> categoryParams);
@@ -362,7 +368,6 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(RATE_TO_BASKET)
     Single<BaseResponse> getSubmitRatingResponseBasket(@FieldMap HashMap<String, String> submitRatingInputParameter);
-
 
 
     /*Basket detail API*/
@@ -476,7 +481,9 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(ORDER_CANCEL)
-    Single<BaseResponse> getOrderCancelSuccessfullyResponse(@FieldMap HashMap<String, String> orderCancelSuccessfullyInputParameter);;
+    Single<BaseResponse> getOrderCancelSuccessfullyResponse(@FieldMap HashMap<String, String> orderCancelSuccessfullyInputParameter);
+
+    ;
 
     @GET(CUSTOMER_ORDER_LIST)
     Single<OrderListResponse> getOrderListResponse();
@@ -508,7 +515,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(COMMON_SEARCH)
-    Single<CommonSearchResponse> getCommonSearchResponse(@FieldMap HashMap<String,String> hashMap);
+    Single<CommonSearchResponse> getCommonSearchResponse(@FieldMap HashMap<String, String> hashMap);
 
     @FormUrlEncoded
     @POST(SUBSCRIBE_BASKET_CUSTOMER)
@@ -520,12 +527,27 @@ public interface ApiInterface {
      */
     @FormUrlEncoded
     @POST(SLOT_BY_DATE_API)
-    Single<OrderSummaryResponse> getDeliverySlotByDateResponse(@FieldMap HashMap<String,String> hashMap);
+    Single<OrderSummaryResponse> getDeliverySlotByDateResponse(@FieldMap HashMap<String, String> hashMap);
 
     @FormUrlEncoded
     @POST(ORDER_TRACK)
     Single<ProductOrderTrackResponse> getOrderTrackResponse(@FieldMap HashMap<String, String> orderTrackInputParameter);
 
+    /*Remove product from cart*/
+    @FormUrlEncoded
+    @POST(REMOVE_FROM_CART_PRODUCT)
+    Single<BaseResponse> removeFromProductCartResponse(@FieldMap HashMap<String,String> hashMap);
+
+    /*remove basket from cart*/
+    @FormUrlEncoded
+    @POST(REMOVE_FROM_CART_BASKET)
+    Single<BaseResponse> removeFromBasketCartResponse(@FieldMap HashMap<String,String> hashMap);
+
+    /*get payment credentials*/
+    @GET(PAYMENT_CRED_API)
+    Single<RazorPayCredentialResponse> getRazorPayCredentialResponse();
+
+    /*Filter list*/
     @GET(FILTER_LIST)
     Single<FilterListResponse> getFilterListResponse();
 
@@ -533,4 +555,18 @@ public interface ApiInterface {
     @POST(RATE_SUBSCRIBED_BASKET)
     Single<BaseResponse> getSubBasketSubmitRatingResponseOrder(@FieldMap HashMap<String, String> subBasketRatingAndFeedBackInputParameter);
 
+    /*Seasonal product registration*/
+    @FormUrlEncoded
+    @POST(SEASONAL_REGISTER)
+    Single<BaseResponse> seasonalProductRegistration(@FieldMap HashMap<String,String> hashMap);
+
+    /*Seasonal product details*/
+    @FormUrlEncoded
+    @POST(SEASONAL_DETAILS)
+    Single<SeasonalProductResponse> seasonalProductDetails(@FieldMap HashMap<String,String> hashMap);
+
+    /*Get list of Units*/
+
+    @GET(GET_UNITS)
+    Single<GetUnitResponse> getUnitResponse();
 }

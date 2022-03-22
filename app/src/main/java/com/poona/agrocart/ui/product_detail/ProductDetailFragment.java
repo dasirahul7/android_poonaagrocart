@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.product_detail;
 
+import static com.poona.agrocart.app.AppConstants.BASE_URL;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.PU_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
@@ -13,10 +14,16 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +31,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -38,8 +46,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.gson.Gson;
 import com.poona.agrocart.BR;
+import com.poona.agrocart.BuildConfig;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.app.AppUtils;
@@ -52,13 +64,9 @@ import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.home.model.ProductOld;
-import com.poona.agrocart.ui.nav_favourites.FavouriteItemAdapter;
-import com.poona.agrocart.ui.nav_favourites.FavouriteItemsFragment;
-import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductRatingReviewAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductImagesAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.UnitAdapter;
-import com.poona.agrocart.ui.product_detail.model.AllReview;
 import com.poona.agrocart.ui.product_detail.model.BasketContent;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomEditText;
@@ -66,12 +74,13 @@ import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.ExpandIconView;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
-import java.io.Serializable;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
+import io.reactivex.rxjava3.annotations.NonNull;
 
 public class ProductDetailFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
     private static final String TAG = ProductDetailFragment.class.getSimpleName();
@@ -228,6 +237,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         fragmentProductDetailBinding.ivPlus.setOnClickListener(this);
         fragmentProductDetailBinding.ivMinus.setOnClickListener(this);
         fragmentProductDetailBinding.ivFavourite.setOnClickListener(this);
+        fragmentProductDetailBinding.ivShare.setOnClickListener(this);
 
 
         vpImages = fragmentProductDetailBinding.vpProductImages;
@@ -364,6 +374,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             fragmentProductDetailBinding.ivFavourite.setImageResource(R.drawable.ic_heart_without_colour);
         }
         unitId = productDetailViewModel.unitMutableLiveData.getValue().getpId();
+
+        checkValuesAndViews();
+    }
+    private void checkValuesAndViews(){
+        /*check for is in cart and [-] [+]*/
         if (productDetailViewModel.isInCart.getValue()) {
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
@@ -375,7 +390,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             fragmentProductDetailBinding.ivMinus.setVisibility(View.GONE);
             fragmentProductDetailBinding.etQuantity.setVisibility(View.GONE);
         }
+        /*product type*/
+        if (details.getProductType()==null || details.getProductType().equalsIgnoreCase(""))
+            fragmentProductDetailBinding.tvExport.setVisibility(View.GONE);
+        else {
+            productDetailViewModel.productTypeMutable.setValue(details.getProductType());
+        }
     }
+
 
     private void changePriceAndUnit(ProductListResponse.ProductUnit unit) {
         details.setUnit(unit);
@@ -424,10 +446,16 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void setViewPagerAdapterItems() {
         ArrayList<String> images = new ArrayList<>();
-        for (int i = 0; i < details.getProductImgs().size(); i++)
-            images.add(details.getProductImgs().get(i).getProductImg());
-        count = details.getProductImgs().size();
-        if (count >= 0) {
+        if (details.getProductImgs().size()>0){
+            for (int i = 0; i < details.getProductImgs().size(); i++)
+                images.add(details.getProductImgs().get(i).getProductImg());
+        }else {
+            images.add(details.getFeatureImg());
+            images.add(details.getFeatureImg());
+            images.add(details.getFeatureImg());
+        }
+        count = images.size();
+        if (count >0) {
             productImagesAdapter = new ProductImagesAdapter(ProductDetailFragment.this,
                     getChildFragmentManager(), images);
             vpImages.setAdapter(productImagesAdapter);
@@ -465,7 +493,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 if (Integer.parseInt(fragmentProductDetailBinding.etQuantity.getText().toString()) > 1) {
                     decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
                             fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
-                } else fragmentProductDetailBinding.ivMinus.setEnabled(false);
+                } else fragmentProductDetailBinding.ivMinus.setEnabled(false); // call here remove api
                 break;
             case R.id.iv_plus:
                 addOrRemoveFromCart();
@@ -473,8 +501,69 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             case R.id.iv_favourite:
                 addOrRemoveFromFavourite();
                 break;
+            case R.id.iv_share:
+                if (isConnectingToInternet(context)) {
+                    Log.e("Share_url", "Share_url " + details.getFeatureImg());
+                    if (details.getFeatureImg()!= null) {
+                        if (!details.getFeatureImg().equals("null")) {
+                            if (!details.getFeatureImg().equals("")) {
+                                shareProduct();
+                            } else {
+                                infoToast(context, "URL is empty.");
+                            }
+                        } else {
+                            infoToast(context, "URL is null.");
+                        }
+                    } else {
+                        infoToast(context, "URL is null.");
+                    }
+                }
+                else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+                break;
         }
 
+    }
+
+    /*Remove from Cart API here*/
+    private void callRemoveFromCartAPI(ProgressDialog progressDialog) {
+        Observer<BaseResponse> baseResponseObserver= response -> {
+            if (response!=null){
+                if (progressDialog!=null)
+                    progressDialog.dismiss();
+                switch (response.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(requireActivity(), response.getMessage());
+                        fragmentProductDetailBinding.ivMinus.setVisibility(View.GONE);
+                        fragmentProductDetailBinding.etQuantity.setVisibility(View.GONE);
+                        fragmentProductDetailBinding.ivPlus.setVisibility(View.VISIBLE);
+                        details.getUnit().setInCart(0);
+                        details.getUnit().setQty(0);
+                        setDetailsValue();
+                        try {
+                            ((HomeActivity)context).setCountBudge(response.getCartItems());
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, response.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(response.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, response.getMessage());
+                        break;
+                }
+            }
+        };
+        productDetailViewModel.removeFromCartResponseLiveData(progressDialog,removeCartParam(),
+                ProductDetailFragment.this).observe(getViewLifecycleOwner(),baseResponseObserver);
     }
 
 
@@ -696,6 +785,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         map.put(QUANTITY, qty);
         return map;
     }
+    private HashMap<String, String> removeCartParam() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(PRODUCT_ID, details.getId());
+        return map;
+    }
 
     //use for me trupti
 
@@ -764,10 +858,13 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         callProductDetailsApi(showCircleProgressDialog(context, ""));
                         break;
                     case 1:
-                        addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
+                        addOrRemoveFromCart();
                         break;
                     case 2:
-                        updateQuantityApi(showCircleProgressDialog(context, ""), details, String.valueOf(details.getUnit().getQty()));
+                        callRemoveFromCartAPI(showCircleProgressDialog(context,""));
+                        break;
+                    case 3:
+                        addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
                         break;
                 }
             }
@@ -841,4 +938,52 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         else fragmentProductDetailBinding.tvSeeMoreReview.setVisibility(View.VISIBLE);
     }
 
+    /*share Product with images*/
+    public void shareProduct(){
+        try {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                // Do the file write
+
+                Glide.with(this)
+                        .asBitmap()
+                        .load(details.getFeatureImg())
+                        .into(new CustomTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                resource.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+                                String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), resource, "Product img", null);
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.setType("image/jpeg");
+                                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
+                                intent.setType("text/plain");
+                                intent.putExtra(Intent.EXTRA_SUBJECT, "Poona App");
+                                String shareMessage = "\nDownload Poona agro Cart& win exciting prices.\n\n";
+                                shareMessage = shareMessage + "Purchase "+details.getProductName() +"Only at ₹ "+details.getUnit().getOfferPrice()+" download app here :\n\n"+BASE_URL + BuildConfig.APPLICATION_ID + "\n\n";
+                                intent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                                startActivity(Intent.createChooser(intent, "Share With..."));
+                            }
+
+                            /**
+                             * Need to check build config
+                             ********
+                             *********/
+
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                            }
+                        });
+
+            } else {
+                // Request permission from the user
+                ActivityCompat.requestPermissions(requireActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            }
+
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

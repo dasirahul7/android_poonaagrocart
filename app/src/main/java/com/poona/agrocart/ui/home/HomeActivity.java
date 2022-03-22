@@ -3,6 +3,8 @@ package com.poona.agrocart.ui.home;
 import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
 import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_CURRENCY;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_SECRET_KEY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -12,6 +14,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -64,6 +67,10 @@ import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
 import com.poona.agrocart.widgets.imageview.CircularImageView;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -73,7 +80,7 @@ import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements PaymentResultListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     public ActivityHomeBinding binding;
@@ -98,6 +105,7 @@ public class HomeActivity extends BaseActivity {
         preferences = new AppSharedPreferences(HomeActivity.this);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Checkout.preload(this);
         toolbar = binding.appBarHome.toolbar;
 //        backBtn = binding.appBarHome.backImg;
         initToolbar();
@@ -460,5 +468,54 @@ public class HomeActivity extends BaseActivity {
             e.printStackTrace();
         }
 
+    }
+
+    public void startPayment() {
+        /*
+          You need to pass current activity in order to let Razorpay create CheckoutActivity
+         */
+        final Activity activity = this;
+
+        final Checkout checkout = new Checkout();
+        HashMap <String,String> keyMap = new HashMap();
+        keyMap = preferences.getRazorCredentials();
+        checkout.setKeyID(keyMap.get(PAYMENT_SECRET_KEY));
+
+        try {
+            JSONObject options = new JSONObject();
+            options.put("name", "Razorpay Corp");
+            options.put("description", "Demoing Charges");
+            options.put("send_sms_hash",true);
+            options.put("allow_rotation", true);
+            //You can omit the image option to fetch the image from dashboard
+            options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
+            options.put("currency", keyMap.get(PAYMENT_CURRENCY));
+            options.put("amount", preferences.getPaymentAmount() * 100);
+
+            JSONObject preFill = new JSONObject();
+            preFill.put("email", "test@razorpay.com");
+            preFill.put("contact", "9876543210");
+
+            options.put("prefill", preFill);
+
+            checkout.open(activity, options);
+        } catch (Exception e) {
+            Toast.makeText(activity, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT)
+                    .show();
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        Toast.makeText(HomeActivity.this,"SuccessFull Payment integrated"+s,Toast.LENGTH_LONG).show();
+        preferences.setPaymentReferenceId(s);
+        preferences.setPaymentStatus(true);
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+        Toast.makeText(HomeActivity.this,"Failed Payment integrated"+s,Toast.LENGTH_LONG).show();
+        preferences.setPaymentStatus(false);
     }
 }

@@ -20,6 +20,7 @@ import com.poona.agrocart.data.network.responses.Review;
 import com.poona.agrocart.data.network.responses.orderResponse.Delivery;
 import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
+import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -379,6 +380,45 @@ public class BasketDetailViewModel extends AndroidViewModel {
 
 
     }
+    public LiveData<BaseResponse> removeFromCartResponseLiveData(ProgressDialog progressDialog,
+                                                                 HashMap<String, String> hashMap,
+                                                                 BasketDetailFragment basketDetailFragment) {
+        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(basketDetailFragment.getContext())
+                .create(ApiInterface.class)
+                .removeFromBasketCartResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse baseResponse) {
+                        if (baseResponse != null) {
+                            progressDialog.dismiss();
+                            Log.e(TAG, "add to cart onSuccess: " + new Gson().toJson(baseResponse));
+                            baseResponseMutableLiveData.setValue(baseResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse response = new BaseResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    BaseResponse.class);
+
+                            baseResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) basketDetailFragment).onNetworkException(2, "");
+                        }
+                    }
+                });
+        return baseResponseMutableLiveData;
+    }
+
 
     public LiveData<OrderSummaryResponse> deliverySlotResponseLiveData(ProgressDialog progressDialog, HashMap<String, String> deliverySlotParam, BasketDetailFragment basketDetailFragment) {
         MutableLiveData<OrderSummaryResponse> deliverySlotByDateResponseMutable = new MutableLiveData<>();

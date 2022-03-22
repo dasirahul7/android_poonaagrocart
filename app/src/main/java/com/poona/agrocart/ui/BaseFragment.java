@@ -17,7 +17,9 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.ParseException;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -343,6 +345,9 @@ public abstract class BaseFragment extends Fragment implements DrawerLocker {
     }
 
     protected void goToAskAndDismiss(String message, Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            message =  String.valueOf(Html.fromHtml(message, Html.FROM_HTML_MODE_COMPACT)).trim();
+        else message = String.valueOf(Html.fromHtml(message)).trim();
         goToAskAndDismissDialog(message, context);
     }
 

@@ -34,11 +34,12 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
     public OnTrackListener onTrackListener;
     private ImageView imageView;
 
-    public BasketItemsAdapter(ArrayList<ItemsDetail> basketItems, boolean isBasketVisible, Context context, int from) {
+    public BasketItemsAdapter(ArrayList<ItemsDetail> basketItems, boolean isBasketVisible, Context context, int from ,OnTrackListener onTrackListener) {
         this.basketItems = basketItems;
         this.isBasketVisible = isBasketVisible;
         this.context = context;
         this.from = from;
+        this.onTrackListener = onTrackListener;
     }
 
     @NonNull
@@ -50,7 +51,7 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
     }
 
     public interface OnTrackListener{
-        void onTrackButtonClick(int position);
+        void onTrackButtonClick(String orderId);
     }
 
     public OnTrackListener getOnTrackListener() {
@@ -173,16 +174,16 @@ public class BasketItemsAdapter extends RecyclerView.Adapter<BasketItemsAdapter.
                 rvBasketDetailBinding.tvOrderStatus.setVisibility(View.GONE);
             }
 
-            rvBasketDetailBinding.btnTrackOrder.setOnClickListener(view -> {
-                onTrackListener.onTrackButtonClick(getLayoutPosition());
-            });
+
         }
 
         @SuppressLint("ResourceType")
         public void bind(ItemsDetail basketItem, Context context) {
             rvBasketDetailBinding.setVariable(BR.basketItemModel, basketItem);
 
-
+            rvBasketDetailBinding.btnTrackOrder.setOnClickListener(view -> {
+                onTrackListener.onTrackButtonClick(basketItem.getOrderId());
+            });
             if (this.isBasketVisible) {
 
                 switch (basketItem.getOrderStatus()) {

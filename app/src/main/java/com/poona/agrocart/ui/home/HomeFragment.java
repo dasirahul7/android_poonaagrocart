@@ -15,6 +15,7 @@ import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_KEY;
 import static com.poona.agrocart.app.AppConstants.SEARCH_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
+import static com.poona.agrocart.app.AppConstants.SEASONAL_P_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -28,6 +29,7 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -97,7 +99,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener, BannerAdapter.OnBannerClickListener {
     private static final String TAG = HomeFragment.class.getSimpleName();
     private static final int CATEGORY = 0;
     private static final int BASKET = 1;
@@ -217,18 +219,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         return root;
     }
 
-
-    private void setRvBanners() {
-        makeVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
-        this.NumberOfBanners = banners.size();
-        bannerAdapter = new BannerAdapter(banners, requireActivity());
-//
-        fragmentHomeBinding.viewPagerBanner.setAdapter(bannerAdapter);
-        // Set up tab indicators
-        fragmentHomeBinding.dotsIndicator.setViewPager(fragmentHomeBinding.viewPagerBanner);
-        loadBannerImages(banners);
-    }
-
     private void setRvCategory() {
         categoryManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
         categoryAdapter = new CategoryAdapter(categories, requireActivity(), category -> {
@@ -306,7 +296,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
 
     private void setRvExclusive() {
-        // Redirect to ProductOld details
         makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
         exclusiveOfferManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
         offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), this::toProductDetail, (binding, product, position) -> {
@@ -334,11 +323,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private void setRvSeasonal() {
 
-        seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProduct -> {
+        seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProductId -> {
             try {
-                System.out.println("seasonal image" + seasonalProduct.getProductAdsAmage());
                 Bundle bundle = new Bundle();
-                bundle.putString("image", seasonalProduct.getProductAdsAmage());
+                bundle.putString(SEASONAL_P_ID, seasonalProductId);
                 NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -963,6 +951,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     //Seasonal ProductOld listing here
+    //Todo delete later
     private void callSeasonalProductApi(ProgressDialog progressDialog, String loadType) {
         if (loadType.equalsIgnoreCase("onScrolled")) {
             seasonalOffset = seasonalOffset + 1;
@@ -988,12 +977,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
                             fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
                             fragmentHomeBinding.recSeasonal.setLayoutManager(seasonalManager);
-                            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProduct -> {
+                            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProductId -> {
                                 //TODO crash here
                                 try {
-                                    System.out.println("seasonal image" + seasonalProduct.getProductImage());
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("image", seasonalProduct.getProductAdsAmage());
+                                    bundle.putString(SEASONAL_P_ID, seasonalProductId);
                                     NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -1186,7 +1174,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         AutoScrollViewPager autoScrollViewPager = fragmentHomeBinding.viewPagerBanner;
 
-        bannerAdapter = new BannerAdapter(bannersList, requireActivity());
+        bannerAdapter = new BannerAdapter(bannersList, requireActivity(),this);
         autoScrollViewPager.setAdapter(bannerAdapter);
         fragmentHomeBinding.dotsIndicator.setViewPager(autoScrollViewPager);
 
@@ -1383,4 +1371,41 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
 
+    @Override
+    public void OnBannerClick(Banner banner) {
+        try {
+            if (banner.getProductId()!=null && !banner.getProductId().isEmpty()){
+                System.out.println("go to Product ");
+                try {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(PRODUCT_ID, banner.getProductId());
+                    NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }else if (banner.getCategoryId()!=null && !banner.getCategoryId().isEmpty()){
+                System.out.println("go to category ");
+                /*redirect to product list by category*/
+                try {
+                    String cat_id = banner.getCategoryId();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(CATEGORY_ID, cat_id);
+                    bundle.putString(LIST_TITLE, banner.getCategoryName());
+                    bundle.putString(LIST_TYPE, banner.getCategoryType());
+                    NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+            else if (banner.getAdvUrl()!=null && !banner.getAdvUrl().isEmpty()){
+                System.out.println("go to URL ");
+                Intent viewIntent =
+                        new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(banner.getAdvUrl()));
+                startActivity(viewIntent);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 }

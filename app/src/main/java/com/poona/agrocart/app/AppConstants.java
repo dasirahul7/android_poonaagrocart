@@ -124,7 +124,6 @@ public class AppConstants {
 
     /*Product list API*/
     public static final String PRODUCT_LIST_BY_API = "product-by-category-list";
-    public static final String ADD_TO_PRODUCT = "add-to-cart-product";
     public static final String RATE_TO_PRODUCT = "rate-product";
 
     /*Basket detail API*/
@@ -148,6 +147,9 @@ public class AppConstants {
 
     /*Search api Keys*/
     public static final String SEARCH_VALUE = "search_value";
+
+    /*Payment related APIs*/
+    public static final String PAYMENT_CRED_API = "payment-credentials";
 
     /*Favourite Api Keys*/
     public static final String ITEM_TYPE = "item_type";
@@ -211,7 +213,11 @@ public class AppConstants {
 
     /*Basket API Keys*/
     public static final String BASKET_ID = "basket_id";
+    /*Add to cart APIs*/
     public static final String ADD_TO_BASKET = "add-to-cart-basket";
+    public static final String ADD_TO_PRODUCT = "add-to-cart-product";
+    public static final String REMOVE_FROM_CART_PRODUCT = "remove-cart-by-product-id";
+    public static final String REMOVE_FROM_CART_BASKET = "remove-cart-by-product-id";
 
     /*Product API Keys*/
     public static final String PRODUCT_ID = "product_id";
@@ -238,7 +244,12 @@ public class AppConstants {
     public static final String DELIVERY_DATE = "delivery_date";
     public static final String SLOT_ID = "slot_id";
     public static final String PAYMENT_MODE_ID = "payment_mode_id";
-
+    public static final String PAYMENT_AMOUNT = "payment_amount";
+    public static final String PAYMENT_SECRET_KEY = "payment_secret_key";
+    public static final String PAYMENT_TYPE = "payment_type";
+    public static final String PAYMENT_CURRENCY = "currency";
+    public static final String PAYMENT_REFERENCE_ID = "payment_reference_id";
+    public static final String PAYMENT_STATUS = "payment_status";
     /*Order view API*/
     public static final String RATE_ORDER = "rate-order";
     public static final String ORDER_CANCEL_REASON = "order-cancel-reason";
@@ -252,7 +263,17 @@ public class AppConstants {
     public static final String ORDER_TRACK = "order-track";
     public static final String RATE_SUBSCRIBED_BASKET = "rate-subscribed-basket";
 
-   /* Rating and Review */
+    /*Seasonal APIs*/
+    public static final String SEASONAL_REGISTER ="seasonal-product-registeration";
+    public static final String SEASONAL_DETAILS ="seasonal-product-details";
+    public static final String GET_UNITS ="unit";
+
+    /*Seasonal Param Keys*/
+    public static final String SEASONAL_P_ID = "seasonal_product_id";
+    public static final String UNIT_ID = "unit_id";
+    public static final String ADDRESS = "address";
+
+    /* Rating and Review */
    public static final String RATING = "rating";
    public static final String REVIEW = "review";
    public static final String REVIEW_LIST = "review_list";
@@ -268,6 +289,8 @@ public class AppConstants {
     public static final String ALTERNATE_MOBILE_NUMBER = "alternate_mobile";
     public static final String GENDER = "gender";
     public static final String DATE_OF_BIRTH = "date_of_birth";
+
+
 
     /*add address post parameters*/
     public static final String ADD_UPDATE_ADDRESS_DETAILS = "add_update_address_details";

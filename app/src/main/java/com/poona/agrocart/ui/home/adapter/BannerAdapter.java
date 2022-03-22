@@ -23,10 +23,17 @@ public class BannerAdapter extends PagerAdapter {
     private final List<Banner> banner;
     private final Context context;
     private LayoutInflater layoutInflater;
+    private OnBannerClickListener onBannerClickListener;
 
-    public BannerAdapter(List<Banner> banner, Context context) {
+    public interface OnBannerClickListener{
+        void OnBannerClick(Banner banner);
+    }
+
+    public BannerAdapter(List<Banner> banner, Context context
+            ,OnBannerClickListener onBannerClickListener) {
         this.banner = banner;
         this.context = context;
+        this.onBannerClickListener = onBannerClickListener;
     }
 
     @NonNull
@@ -48,6 +55,9 @@ public class BannerAdapter extends PagerAdapter {
                     .into(imageView);
         }
         container.addView(view);
+        view.setOnClickListener(view1 -> {
+            onBannerClickListener.OnBannerClick(banner.get(position));
+        });
         return view;
     }
 

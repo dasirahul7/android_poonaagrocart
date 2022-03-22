@@ -16,17 +16,49 @@ public class Banner {
     @SerializedName("category_id")
     @Expose
     private String categoryId;
+    @SerializedName("category_name")
+    @Expose
+    private String categoryName;
+    @SerializedName("category_type")
+    @Expose
+    private String categoryType;
     @SerializedName("product_id")
     @Expose
-    private Object productId;
+    private String productId;
+    @SerializedName("product_name")
+    @Expose
+    private String productName;
     @SerializedName("adv_image")
     @Expose
     private String advImage;
 
+    public String getCategoryType() {
+        return categoryType;
+    }
+
+    public void setCategoryType(String categoryType) {
+        this.categoryType = categoryType;
+    }
 
     private boolean isDummy;
 
     public Banner() {
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public Banner(String id, String advUrl, String advImage) {
@@ -75,11 +107,11 @@ public class Banner {
         this.categoryId = categoryId;
     }
 
-    public Object getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(Object productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 

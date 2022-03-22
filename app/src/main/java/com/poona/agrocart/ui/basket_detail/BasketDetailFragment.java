@@ -68,6 +68,7 @@ import com.poona.agrocart.ui.basket_detail.adapter.SlotAdaptor;
 import com.poona.agrocart.ui.basket_detail.adapter.SubscriptionAdapter;
 import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.order_summary.OrderSummaryFragment;
+import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductRatingReviewAdapter;
 import com.poona.agrocart.widgets.CustomEditText;
@@ -125,7 +126,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private String subscriptionSlotId;
     private String strAmount;
     private int quantity;
-    private String strSubscriptionBasket = "",subTypeId ="", subStartDate = "", slotStartTime = "", slotEndTime = "";
+    private String strSubscriptionBasket = "",subTypeId ="", subStartDate = "", slotStartTime = "", slotEndTime = "";//need to remove later
 
 
 
@@ -433,6 +434,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private void setBasketSubscription(BasketDetailsResponse.Subscription subscription) {
         basketDetailViewModel.subscriptionStartDateMutable.setValue(subscription.getDeliveryDate());
         basketDetailViewModel.subscriptionTypeMutableList.setValue(subscription.getSubscriptionTypes());
+        basketDetailViewModel.subscriptionDeliverySlotsLists.setValue(subscription.getDeliverySlots());
         basketDetailViewModel.subscriptionTypeMutableList.observe(getViewLifecycleOwner(),
                 subscriptionTypes -> {
                     if (subscriptionTypes != null) {
@@ -441,7 +443,27 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         basketDetailsBinding.layoutAdded.rvSubType.setAdapter(subscribeTypeAdapter);
                     }
                 });
+        basketDetailViewModel.subscriptionDeliverySlotsLists.observe(getViewLifecycleOwner(),deliverySlots -> {
+            if (deliverySlots.size()>0){
+                SlotAdaptor slotAdaptor = new SlotAdaptor(getContext(), deliverySlots);
+                spinerSlots.setAdapter(slotAdaptor);
 
+                spinerSlots.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        hideKeyBoard(requireActivity());
+                        subscriptionSlotId = deliverySlots.get(i).slotId;
+                        basketDetailViewModel.subscriptionSlotMutable.setValue(deliverySlots.get(i));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        hideKeyBoard(requireActivity());
+                    }
+                });
+            }
+        });
 //        float TotalAmount = basketDetailViewModel.basketQuantity * Integer.parseInt(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString().trim());
     }
 
@@ -590,6 +612,13 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         if (favTo)
             map.put(ITEM_TYPE, "basket");
         map.put(BASKET_ID, basketId);
+        return map;
+    }
+
+    /*Remove from cart params*/
+    private HashMap<String, String> removeCartParam() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(BASKET_ID, details.getBasketId());
         return map;
     }
 
@@ -758,9 +787,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-
-
                 try {
 
                     if (tvDate != null) {
@@ -780,6 +806,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         dpd.show();
 
     }
+
 
     @Override
     public void onClick(View v) {
@@ -818,11 +845,25 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             case R.id.iv_plus:
                 addOrRemoveFromCart();
                 break;
+            case R.id.img_minus:
+                decreaseQuantitySubscriptionBasket(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
+                       basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
 
+
+                break;
+
+            case R.id.img_plus:
+                increaseQuantitySubscriptionBasket(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
+                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
+
+
+                break;
             case R.id.iv_favourite:
                 addOrRemoveFromFavourite();
                 break;
-
+            case R.id.tv_start_date:
+                //showCalendar(basketDetailsBinding.layoutAdded.tvStartDate);
+                break;
             case R.id.btn_submit:
                 if (isConnectingToInternet(context)) {
                     if (!Objects.requireNonNull(etFeedback.getText()).toString().isEmpty() && !(ratingBarInput.getRating() == 0.0)) {
@@ -840,35 +881,16 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 NavHostFragment.findNavController(BasketDetailFragment.this).
                         navigate(R.id.action_nav_basket_details_to_nav_product_review, bundle);
                 break;
-
-                //subscription basket details
-
-            case R.id.img_minus:
-                decreaseQuantitySubscriptionBasket(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
-                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
-                break;
-
-            case R.id.img_plus:
-                increaseQuantitySubscriptionBasket(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString(),
-                        basketDetailsBinding.layoutAdded.tvSubQty, basketDetailsBinding.layoutAdded.imgMinus);
-                break;
-            case R.id.tv_start_date:
-                showCalendar(basketDetailsBinding.layoutAdded.tvStartDate);
-                break;
             case R.id.btn_login:
-                Bundle bundle1 = new Bundle();
-                //bundle1.putString(SUBSCRIPTION_TYPE, subTypeId);
-                bundle1.putBoolean("isSubscriptionBasketVisible", false);
-                NavHostFragment.findNavController(BasketDetailFragment.this).
-                        navigate(R.id.action_nav_basket_details_to_nav_order_summary,bundle1);
-               /* strSubscriptionBasket = tvSubQuatity.getText().toString();
+                strSubscriptionBasket = tvSubQuatity.getText().toString();
                 subStartDate = basketDetailsBinding.layoutAdded.tvStartDate.getText().toString();
                 if(!strSubscriptionBasket.isEmpty() && !subStartDate.isEmpty() && !subTypeId.isEmpty()
                     && !slotStartTime.isEmpty() && !slotEndTime.isEmpty()){
                     callSubscribeBasketApi(showCircleProgressDialog(context, ""));
                 }else {
                     warningToast(context, "Please check the details ");
-                }*/
+                }
+
                 break;
 
         }
@@ -895,7 +917,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     /*Subscribe Basket parameter and api */
 
-   /* private void callSubscribeBasketApi(ProgressDialog progressDialog){
+    private void callSubscribeBasketApi(ProgressDialog progressDialog){
         Observer<BaseResponse> baseResponseObserver = baseResponse -> {
             if (baseResponse != null) {
                 Log.e("Subscribe Basket  Api ResponseData", new Gson().toJson(baseResponse));
@@ -944,7 +966,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         map.put(SLOT_END_TIME, slotEndTime);
 
         return map;
-    }*/
+    }
 
     @SuppressLint("SetTextI18n")
     private void increaseQuantitySubscriptionBasket(String qty , CustomTextView etQuantity, ImageView view) {
@@ -972,7 +994,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private void decreaseQuantitySubscriptionBasket(String qty, CustomTextView etQuantity, ImageView view) {
         int quantity = Integer.parseInt(qty);
         if (quantity == 1) {
-            warningToast(requireActivity(), getString(R.string.quantity_less_than_one));
+            warningToast(requireActivity(), getString(R.string.quantity_less_than_one));//aad remove from cart
+//            callRemoveFromCartAPI(showCircleProgressDialog(context,""));
         } else {
             quantity--;
             etQuantity.setText(String.valueOf(quantity));
@@ -986,11 +1009,51 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             }catch (NullPointerException e) {
                 e.printStackTrace();
             }
-            tvSubQuatity.setText("Rs. "+String.valueOf(quantity));
+            tvSubQuatity.setText(String.valueOf(quantity));
 
         }
         AppUtils.setMinusButton(quantity, view);
     }
+
+    private void callRemoveFromCartAPI(ProgressDialog progressDialog) {
+        Observer<BaseResponse> baseResponseObserver= response -> {
+            if (response!=null){
+                if (progressDialog!=null)
+                    progressDialog.dismiss();
+                switch (response.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(requireActivity(), response.getMessage());
+                        basketDetailsBinding.ivMinus.setVisibility(View.GONE);
+                        basketDetailsBinding.etQuantity.setVisibility(View.GONE);
+                        basketDetailsBinding.ivPlus.setVisibility(View.VISIBLE);
+                        details.setInCart(0);
+                        details.setQuantity("");
+                        setBasketValue();
+                        try {
+                            ((HomeActivity)context).setCountBudge(response.getCartItems());
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, response.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(response.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, response.getMessage());
+                        break;
+                }
+            }
+        };
+        basketDetailViewModel.removeFromCartResponseLiveData(progressDialog,removeCartParam(),
+                BasketDetailFragment.this).observe(getViewLifecycleOwner(),baseResponseObserver);
+    }
+
 
     /*Call slots by Date*/
     private void callDeliverySlotByDateAPI(ProgressDialog progressDialog) {

@@ -21,8 +21,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/nav_home"
-            app:popUpToInclusive="false"
-             />
+            app:popUpToInclusive="false" />
 
     </fragment>
     <!--Home to profile action-->
@@ -35,8 +34,7 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
-        app:popUpToInclusive="false"
-        />
+        app:popUpToInclusive="false" />
 
     <!--Home to productOlds list action-->
     <!--Explore Fragment-->
@@ -54,8 +52,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/nav_explore"
-            app:popUpToInclusive="false"
-             />
+            app:popUpToInclusive="false" />
     </fragment>
 
 
@@ -64,7 +61,7 @@
         android:id="@+id/nav_orders"
         android:name="com.poona.agrocart.ui.nav_orders.MyOrdersFragment"
         android:label="@string/menu_my_orders"
-        tools:layout="@layout/fragment_my_orders"/>
+        tools:layout="@layout/fragment_my_orders" />
 
     <action
         android:id="@+id/action_nav_orders_to_orderViewFragment2"
@@ -75,7 +72,7 @@
         app:popExitAnim="@anim/slide_out_right"
 
         app:popUpTo="@+id/nav_orders"
-        app:popUpToInclusive="false"/>
+        app:popUpToInclusive="false" />
     <!--My Profile Fragment-->
     <fragment
         android:id="@+id/nav_profile"
@@ -96,9 +93,8 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-
             app:popUpTo="@+id/nav_cart"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/action_nav_cart_to_nav_explore"
@@ -109,7 +105,7 @@
             app:popExitAnim="@anim/slide_out_right"
 
             app:popUpTo="@id/nav_cart"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
         <!--Cart to product Details-->
         <action
             android:id="@+id/action_nav_cart_to_productDetails"
@@ -120,7 +116,7 @@
             app:popExitAnim="@anim/slide_out_right"
 
             app:popUpTo="@id/nav_cart"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
         <!--Cart to Basket Details-->
         <action
             android:id="@+id/action_nav_cart_to_basketDetails"
@@ -131,7 +127,7 @@
             app:popExitAnim="@anim/slide_out_right"
 
             app:popUpTo="@id/nav_cart"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
 
     </fragment>
 
@@ -139,7 +135,7 @@
     <fragment
         android:id="@+id/nav_favourite"
         android:name="com.poona.agrocart.ui.nav_favourites.FavouriteItemsFragment"
-        tools:layout="@layout/fragment_favourite_items" >
+        tools:layout="@layout/fragment_favourite_items">
         <action
             android:id="@+id/action_nav_favourite_to_basketDetailFragment"
             app:destination="@id/basketDetailFragment"
@@ -149,7 +145,7 @@
             app:popExitAnim="@anim/slide_out_right"
 
             app:popUpTo="@id/nav_favourite"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_nav_favourite_to_nav_product_details2"
             app:destination="@id/nav_product_details"
@@ -159,7 +155,7 @@
             app:popExitAnim="@anim/slide_out_right"
 
             app:popUpTo="@id/nav_favourite"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
 
@@ -173,7 +169,7 @@
         app:popExitAnim="@anim/slide_out_right"
 
         app:popUpTo="@id/nav_favourite"
-        app:popUpToInclusive="true"/>
+        app:popUpToInclusive="true" />
 
     <!--Favourite To ProductOld Details-->
     <action
@@ -185,7 +181,7 @@
         app:popExitAnim="@anim/slide_out_right"
 
         app:popUpTo="@id/nav_favourite"
-        app:popUpToInclusive="true"/>
+        app:popUpToInclusive="true" />
 
     <!--ProductOld List Fragment-->
     <fragment
@@ -204,7 +200,7 @@
         app:popExitAnim="@anim/slide_out_right"
 
         app:popUpTo="@id/nav_products_list"
-        app:popUpToInclusive="true"/>
+        app:popUpToInclusive="true" />
     <!--Action product list to product detail-->
     <action
         android:id="@+id/action_nav_products_list_to_product_details"
@@ -215,8 +211,7 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_products_list"
-        app:popUpToInclusive="false"
-         />
+        app:popUpToInclusive="false" />
     <!--Action product list to basket detail-->
     <action
         android:id="@+id/action_nav_products_list_to_basket_details"
@@ -227,19 +222,18 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_products_list"
-        app:popUpToInclusive="false"
-        />
+        app:popUpToInclusive="false" />
 
     <!--ProductOld Detail Fragment-->
     <fragment
         android:id="@+id/nav_product_details"
         android:name="com.poona.agrocart.ui.product_detail.ProductDetailFragment"
-        tools:layout="@layout/fragment_product_detail" >
+        tools:layout="@layout/fragment_product_detail">
 
     </fragment>
 
 
-  <!--  Product All Review Fragment-->
+    <!--  Product All Review Fragment-->
     <fragment
         android:id="@+id/nav_product_review"
         android:name="com.poona.agrocart.ui.product_detail.product_all_review.ProductAllReviewFragment"
@@ -251,7 +245,7 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"/>
+        app:popExitAnim="@anim/slide_out_right" />
 
     <!--Our stores fragment-->
     <fragment
@@ -268,7 +262,7 @@
             app:popExitAnim="@anim/slide_out_right"
 
             app:popUpTo="@id/nav_store"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
 
     </fragment>
 
@@ -287,7 +281,7 @@
             app:popExitAnim="@anim/slide_out_right"
 
             app:popUpTo="@id/nav_basket"
-            app:popUpToInclusive="false"/>
+            app:popUpToInclusive="false" />
 
     </fragment>
 
@@ -306,7 +300,7 @@
             app:popExitAnim="@anim/slide_out_right"
 
             app:popUpTo="@id/nav_address"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
 
     </fragment>
 
@@ -331,7 +325,7 @@
             app:popExitAnim="@anim/slide_out_right"
 
             app:popUpTo="@+id/orderViewFragment"
-            app:popUpToInclusive="false"/>
+            app:popUpToInclusive="false" />
 
     </fragment>
 
@@ -361,8 +355,7 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        />
+        app:popExitAnim="@anim/slide_out_right" />
 
     <action
         android:id="@+id/action_nav_cms_to_about_us"
@@ -394,7 +387,7 @@
             app:popExitAnim="@anim/slide_out_right"
 
             app:popUpTo="@id/nav_help_center"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
 
 
         <action
@@ -429,7 +422,9 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/nav_order_summary"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_nav_order_summary_to_addAddressFragment"
             app:destination="@id/addressesFormFragment2"
@@ -479,7 +474,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/nav_home"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
 
     </fragment>
 
@@ -494,8 +489,7 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
-        app:popUpToInclusive="false"
-        />
+        app:popUpToInclusive="false" />
 
     <!--Home to explore action-->
     <action
@@ -541,7 +535,7 @@
         app:popExitAnim="@anim/slide_out_right"
 
         app:popUpTo="@+id/nav_explore"
-        app:popUpToInclusive="false"/>
+        app:popUpToInclusive="false" />
 
     <!--FAQ Fragment-->
     <fragment
@@ -566,8 +560,7 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
-        app:popUpToInclusive="false"
-        />
+        app:popUpToInclusive="false" />
 
 
     <!--Home to seasonal Registration-->
@@ -579,8 +572,7 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
-        app:popUpToInclusive="false"
-        />
+        app:popUpToInclusive="false" />
 
     <!--Home to BasketDetails -->
     <action
@@ -617,7 +609,7 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"/>
+        app:popExitAnim="@anim/slide_out_right" />
 
     <action
         android:id="@+id/action_nav_basket_details_to_nav_order_summary"
@@ -630,7 +622,17 @@
     <fragment
         android:id="@+id/basketItemFragment"
         android:name="com.poona.agrocart.ui.nav_orders.order_view.BasketItemFragment"
-        android:label="BasketItemFragment"/>
+        android:label="BasketItemFragment">
+        <action
+            android:id="@+id/action_basketItemFragment_to_nav_order_track"
+            app:destination="@id/nav_order_track"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/basketItemFragment"
+            app:popUpToInclusive="false"/>
+    </fragment>
 
     <action
         android:id="@+id/action_order_view_fragment_to_nav_basket_item_fragment"
@@ -638,7 +640,8 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"/>
+        app:popExitAnim="@anim/slide_out_right" />
+
 
     <fragment
         android:id="@+id/BottomSheetFragment"

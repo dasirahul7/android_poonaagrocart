@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="seasonalModule"
+            type="com.poona.agrocart.ui.seasonal.SeasonalViewModel" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,8 +41,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/vp_product_images"
+                    <ImageView
+                        android:id="@+id/iv_seasonal_img"
+                        setImage="@{seasonalModule.productImageMutable}"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_200sdp" />
 
@@ -76,7 +84,7 @@
                 <com.poona.agrocart.widgets.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Seasonal product name"
+                    android:text='@{seasonalModule.productNameMutable ?? ""}'
                     android:textColor="@color/clr_enter_otp"
                     android:textSize="@dimen/_24sp"
                     app:setCustomFont="@string/font_poppins_regular" />
@@ -96,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:maxLines="4"
-                    android:text="@string/sample_about_seasonal" />
+                    android:text='@{seasonalModule.productDetailMutable ?? ""}' />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_name"
@@ -113,11 +121,15 @@
 
                 <com.poona.agrocart.widgets.CustomEditText
                     android:id="@+id/et_username"
+                    style="@style/FormEdittextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="-8dp"
+                    android:layout_marginEnd="-8dp"
                     android:background="@drawable/background_with_shadow_edittext"
                     android:padding="@dimen/_12sdp"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_15sdp"
                     android:singleLine="true"
                     app:layout_constraintTop_toBottomOf="@+id/tv_name_text" />
 
@@ -137,13 +149,18 @@
                     android:id="@+id/et_mobile_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="-8dp"
-                    android:background="@drawable/background_with_shadow_edittext"
                     android:digits="@string/digits"
                     android:imeOptions="actionSend"
                     android:inputType="phone"
                     android:maxLength="10"
+                    style="@style/FormEdittextStyle"
+                    android:background="@drawable/background_with_shadow_edittext"
+                    android:layout_marginEnd="-8dp"
+                    android:layout_marginStart="-8dp"
                     android:padding="@dimen/_12sdp"
+                    android:paddingHorizontal="@dimen/_15sdp"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_15sdp"
                     android:singleLine="true"
                     android:textSize="@dimen/_16sp"
                     app:layout_constraintTop_toBottomOf="@+id/tv_name_text"
@@ -173,12 +190,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/quantity" />
 
-                        <Spinner
-                            android:id="@+id/spinner_qty"
+                        <com.poona.agrocart.widgets.CustomEditText
+                            android:id="@+id/et_quantity"
                             style="@style/FormShortEdittextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_30sdp"
-                            android:background="@drawable/bg_my_profile_spinner" />
+                            android:background="@drawable/bg_my_profile_spinner"
+                            android:inputType="numberDecimal"
+                            android:paddingStart="@dimen/_15sdp"
+                            android:textSize="@dimen/_14sp"
+                            tools:ignore="RtlSymmetry" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -223,11 +244,16 @@
                     android:id="@+id/et_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="-8dp"
-                    android:background="@drawable/background_with_shadow_edittext"
                     android:imeOptions="actionNext"
+                    style="@style/FormEdittextStyle"
+                    android:background="@drawable/background_with_shadow_edittext"
+                    android:layout_marginEnd="-8dp"
+                    android:layout_marginStart="-8dp"
                     android:padding="@dimen/_12sdp"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_15sdp"
                     android:singleLine="true"
+                    android:textSize="@dimen/_16sp"
                     app:layout_constraintTop_toBottomOf="@+id/tv_name_text" />
 
                 <com.poona.agrocart.widgets.CustomButton

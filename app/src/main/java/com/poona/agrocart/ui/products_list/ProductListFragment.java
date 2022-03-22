@@ -128,14 +128,6 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
 
    //, StrBrandId, strSortBy;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -244,7 +236,6 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
 
     private void setTitleBar() {
         initTitleWithBackBtn(ListTitle);
-
     }
 
     private void setRVAdapter() {
@@ -271,7 +262,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
             if (fromScreen.equalsIgnoreCase(AllBasket)) {
                 seeAllBasketListApi(showCircleProgressDialog(context, ""), loading);
             }else if (fromScreen.equalsIgnoreCase(AllSelling)) {
-                seeAllBestSellingApi(showCircleProgressDialog(context,""), loading);
+                seeAllBestSellingApi(showCircleProgressDialog(context, ""), loading);
             } else if (fromScreen.equalsIgnoreCase(AllExclusive)) {
                 seeAllExclusiveApi(showCircleProgressDialog(context, ""), loading);
             }
@@ -351,6 +342,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
                         if (load.equalsIgnoreCase("load")){
+                            productArrayList.clear();
                             fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
                             warningToast(context, bestSellingResponse.getMessage());
                         }

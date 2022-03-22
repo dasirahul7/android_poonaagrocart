@@ -41,7 +41,7 @@
     <string name="privacy_policy_terms_n_conditions">By continuing you agree to our Terms of Service and Privacy Policy</string>
     <!--Location screen-->
     <string name="select_location">Select Your Location</string>
-    <string name="switch_on_location">Swithch on your location to stay in tune with \n what’s happening in your area</string>
+    <string name="switch_on_location">Switch on your location to stay in tune with \n what’s happening in your area</string>
     <string name="your_city">Your City</string>
     <string name="your_area">Your Area</string>
     <string name="submit">Submit</string>
