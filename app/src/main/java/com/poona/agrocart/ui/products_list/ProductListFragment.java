@@ -342,6 +342,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
                         if (load.equalsIgnoreCase("load")){
+                            productArrayList.clear();
                             fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
                             warningToast(context, bestSellingResponse.getMessage());
                         }
