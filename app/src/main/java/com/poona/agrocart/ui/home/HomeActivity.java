@@ -484,7 +484,7 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
         try {
             JSONObject options = new JSONObject();
             options.put("name", "Razorpay Corp");
-            options.put("description", "Demoing Charges");
+            options.put("description", "Online Purchase");
             options.put("send_sms_hash",true);
             options.put("allow_rotation", true);
             //You can omit the image option to fetch the image from dashboard

@@ -13,6 +13,17 @@ public class Payments {
     @SerializedName("payment_mode_status")
     @Expose
     public String paymentModeStatus;
+@SerializedName("wallet_balance")
+    @Expose
+    public String balance;
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
 
     public String getPaymentModeId() {
         return paymentModeId;

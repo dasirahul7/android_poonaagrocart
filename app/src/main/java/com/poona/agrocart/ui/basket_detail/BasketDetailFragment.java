@@ -934,6 +934,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
                         Bundle bundle1 = new Bundle();
                         bundle1.putString(SUBSCRIBE_NOW_ID, subscriptionNowId);
+                        /*send title for subscription*/
+                        bundle1.putString(FROM_SCREEN, "Subscription Summary");
                         bundle1.putBoolean(SUBSCRIPTION, true);
                         NavHostFragment.findNavController(BasketDetailFragment.this).
                                 navigate(R.id.action_nav_basket_details_to_nav_order_summary,bundle1);

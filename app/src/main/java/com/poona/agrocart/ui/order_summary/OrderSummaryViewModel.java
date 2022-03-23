@@ -41,26 +41,31 @@ public class OrderSummaryViewModel extends AndroidViewModel {
     private static String TAG = OrderSummaryViewModel.class.getSimpleName();
     public MutableLiveData<String> customerNameMutable = new MutableLiveData<>();
     public MutableLiveData<String> customerPhoneMutable = new MutableLiveData<>();
-    public MutableLiveData<String> deliveryAddressMutable= new MutableLiveData<>();
-    public MutableLiveData<String> deliveryDateMutable= new MutableLiveData<>();
-    public MutableLiveData<String> deliverySlotMutable= new MutableLiveData<>();
-    public MutableLiveData<String> availableCouponMutable= new MutableLiveData<>();
-    public MutableLiveData<String> enteredCouponMutable= new MutableLiveData<>();
-    public MutableLiveData<String> couponMessageMutable= new MutableLiveData<>();
-    public MutableLiveData<String> subTotalMutable= new MutableLiveData<>();
-    public MutableLiveData<String> discountMutable= new MutableLiveData<>();
-    public MutableLiveData<String> finalTotalMutable= new MutableLiveData<>();
-    public MutableLiveData<String> deliveryChargesMutable= new MutableLiveData<>();
-    public MutableLiveData<String> youWillSaveMutable= new MutableLiveData<>();
-    public MutableLiveData<String> availableWalletMutable= new MutableLiveData<>();
-    public MutableLiveData<String> paymentCashMutable= new MutableLiveData<>();
-    public MutableLiveData<String> paymentOnlineMutable= new MutableLiveData<>();
-    public MutableLiveData<String> paymentWalletMutable= new MutableLiveData<>();
-    public MutableLiveData<ArrayList<AddressesResponse.Address>> arrayAddressListMutableLiveData= new MutableLiveData<>();
-    public MutableLiveData<Delivery> arrayDeliveryListMutableLiveData= new MutableLiveData<>();
-    public MutableLiveData<ArrayList<Coupon>> arrayCouponListMutableLiveData= new MutableLiveData<>();
-    public MutableLiveData<ArrayList<ItemsDetail>> arrayItemListMutableLiveData= new MutableLiveData<>();
-    public MutableLiveData<ArrayList<Payments>> arrayPaymentListMutableLiveData= new MutableLiveData<>();
+    public MutableLiveData<String> deliveryAddressMutable = new MutableLiveData<>();
+    public MutableLiveData<String> deliveryDateMutable = new MutableLiveData<>();
+    public MutableLiveData<String> deliverySlotMutable = new MutableLiveData<>();
+    public MutableLiveData<String> availableCouponMutable = new MutableLiveData<>();
+    public MutableLiveData<String> enteredCouponMutable = new MutableLiveData<>();
+    public MutableLiveData<String> couponMessageMutable = new MutableLiveData<>();
+    public MutableLiveData<String> subTotalMutable = new MutableLiveData<>();
+    public MutableLiveData<String> discountMutable = new MutableLiveData<>();
+    public MutableLiveData<String> finalTotalMutable = new MutableLiveData<>();
+    public MutableLiveData<String> deliveryChargesMutable = new MutableLiveData<>();
+    public MutableLiveData<String> youWillSaveMutable = new MutableLiveData<>();
+    public MutableLiveData<String> availableWalletMutable = new MutableLiveData<>();
+    public MutableLiveData<String> paymentCashMutable = new MutableLiveData<>();
+    public MutableLiveData<String> paymentOnlineMutable = new MutableLiveData<>();
+    public MutableLiveData<String> paymentWalletMutable = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<AddressesResponse.Address>> arrayAddressListMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<Delivery> arrayDeliveryListMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<Coupon>> arrayCouponListMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<ItemsDetail>> arrayItemListMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<Payments>> arrayPaymentListMutableLiveData = new MutableLiveData<>();
+    /*for subscription*/
+    public MutableLiveData<String> subscribeNowIdMutable = new MutableLiveData<>();
+    public MutableLiveData<String> subscriptionTypeMutable = new MutableLiveData<>();
+    public MutableLiveData<String> noOfBasketMutable = new MutableLiveData<>();
+    public MutableLiveData<String> basketIdMutable = new MutableLiveData<>();
 
     public OrderSummaryViewModel(@NonNull Application application) {
         super(application);
@@ -88,6 +93,7 @@ public class OrderSummaryViewModel extends AndroidViewModel {
         arrayPaymentListMutableLiveData.setValue(null);
     }
 
+    /*init Order - summary here*/
     public void initViewModel(OrderSummaryResponse orderSummaryResponse, Context context) {
         AppSharedPreferences preferences = new AppSharedPreferences(context);
         /*Address and name */
@@ -98,8 +104,8 @@ public class OrderSummaryViewModel extends AndroidViewModel {
         /*Delivery date and time*/
         deliveryDateMutable.setValue(orderSummaryResponse.delivery.deliveryDate);
         preferences.setDeliveryDate(orderSummaryResponse.delivery.deliveryDate);
-        try{
-            if (orderSummaryResponse.delivery.deliverySlots.size()>0){
+        try {
+            if (orderSummaryResponse.delivery.deliverySlots.size() > 0) {
                 deliverySlotMutable.setValue(orderSummaryResponse.delivery.deliverySlots.get(0).slotTime);
                 preferences.setDeliverySlot(orderSummaryResponse.delivery.deliverySlots.get(0).slotId);
             }
@@ -119,10 +125,43 @@ public class OrderSummaryViewModel extends AndroidViewModel {
         arrayCouponListMutableLiveData.setValue(orderSummaryResponse.couponCodeList);
         arrayItemListMutableLiveData.setValue(orderSummaryResponse.itemsDetails);
         arrayPaymentListMutableLiveData.setValue(orderSummaryResponse.paymentMode);
+        availableWalletMutable.setValue(orderSummaryResponse.walletBalance);
 
     }
 
 
+    /*init subscription summary here*/
+    public void initSubscriptionSummary(OrderSummaryResponse orderSummaryResponse,
+                                        Context context) {
+        AppSharedPreferences preferences = new AppSharedPreferences(context);
+        /*Address and name */
+        customerNameMutable.setValue(preferences.getUserName());
+        customerPhoneMutable.setValue(preferences.getUserMobile());
+        customerPhoneMutable.setValue(preferences.getUserMobile());
+        deliveryAddressMutable.setValue(preferences.getDeliveryAddress());
+        /*Delivery date and time*/
+        deliveryDateMutable.setValue(orderSummaryResponse.getItemsDetails().get(0).subStartDate);
+        preferences.setDeliveryDate(orderSummaryResponse.getItemsDetails().get(0).subStartDate);
+        preferences.setDeliverySlot(orderSummaryResponse.getItemsDetails().get(0).subSlotId);
+        deliverySlotMutable.setValue(orderSummaryResponse.getItemsDetails().get(0).subSlotTime);
+        /*Delivery charge and total amount*/
+        subTotalMutable.setValue(String.valueOf(orderSummaryResponse.subTotal).trim());
+        deliveryChargesMutable.setValue(String.valueOf(orderSummaryResponse.deliveryCharges).trim());
+        finalTotalMutable.setValue(String.valueOf(orderSummaryResponse.totalAmount).trim());
+        youWillSaveMutable.setValue(String.valueOf(orderSummaryResponse.discount));
+
+        /*Arraylist initialization*/
+        arrayAddressListMutableLiveData.setValue(orderSummaryResponse.address);
+        arrayCouponListMutableLiveData.setValue(orderSummaryResponse.couponCodeList);
+        arrayItemListMutableLiveData.setValue(orderSummaryResponse.itemsDetails);
+        arrayPaymentListMutableLiveData.setValue(orderSummaryResponse.paymentMode);
+        availableWalletMutable.setValue(orderSummaryResponse.walletBalance);
+        /*init extra data for subscription*/
+        subscribeNowIdMutable.setValue(orderSummaryResponse.getItemsDetails().get(0).subscribeNowId);
+        subscriptionTypeMutable.setValue(orderSummaryResponse.getItemsDetails().get(0).subscriptionType);
+        noOfBasketMutable.setValue(orderSummaryResponse.getItemsDetails().get(0).noOfSubscription);
+        basketIdMutable.setValue(orderSummaryResponse.getItemsDetails().get(0).basketId);
+    }
 
     /*Order Summary API*/
     public LiveData<OrderSummaryResponse> getOrderSummaryResponse(ProgressDialog progressDialog,
@@ -137,17 +176,17 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<OrderSummaryResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull OrderSummaryResponse orderSummaryResponse) {
-                        if (orderSummaryResponse!=null){
-                            if (progressDialog!=null)
+                        if (orderSummaryResponse != null) {
+                            if (progressDialog != null)
                                 progressDialog.dismiss();
                             orderSummaryResponseMutableLiveData.setValue(orderSummaryResponse);
-                            Log.e(TAG, "Order Summary onSuccess: "+new Gson().toJson(orderSummaryResponse) );
+                            Log.e(TAG, "Order Summary onSuccess: " + new Gson().toJson(orderSummaryResponse));
                         }
                     }
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        if (progressDialog!=null)
+                        if (progressDialog != null)
                             progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         OrderSummaryResponse errorResponse = new OrderSummaryResponse();
@@ -157,18 +196,60 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                             orderSummaryResponseMutableLiveData.setValue(errorResponse);
                         } catch (Exception ioException) {
                             ioException.printStackTrace();
-                            Log.e(TAG, "onError: "+ioException.getMessage() );
-                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(0,"");
+                            Log.e(TAG, "onError: " + ioException.getMessage());
+                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(0, "");
                         }
                     }
                 });
         return orderSummaryResponseMutableLiveData;
     }
 
+    /*Subscription Order Summary API*/
+    public LiveData<OrderSummaryResponse> getSubscriptionSummaryResponse(ProgressDialog progressDialog,
+                                                                         HashMap<String, String> hashMap,
+                                                                         OrderSummaryFragment orderSummaryFragment) {
+
+        MutableLiveData<OrderSummaryResponse> basketSummaryResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(orderSummaryFragment.getContext())
+                .create(ApiInterface.class)
+                .getSubscriptionSummaryResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<OrderSummaryResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull OrderSummaryResponse orderSummaryResponse) {
+                        if (orderSummaryResponse != null) {
+                            if (progressDialog != null)
+                                progressDialog.dismiss();
+                            basketSummaryResponseMutableLiveData.setValue(orderSummaryResponse);
+                            Log.e(TAG, "Basket Summary onSuccess: " + new Gson().toJson(orderSummaryResponse));
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        OrderSummaryResponse errorResponse = new OrderSummaryResponse();
+                        try {
+                            errorResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    OrderSummaryResponse.class);
+                            basketSummaryResponseMutableLiveData.setValue(errorResponse);
+                        } catch (Exception ioException) {
+                            ioException.printStackTrace();
+                            Log.e(TAG, "onError: " + ioException.getMessage());
+                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(5, "");
+                        }
+                    }
+                });
+        return basketSummaryResponseMutableLiveData;
+    }
+
     /*Apply Coupon API*/
     public LiveData<ApplyCouponResponse> getApplyCouponResponse(ProgressDialog progressDialog,
-                                                                 HashMap<String,String> hashMap,
-                                                                 OrderSummaryFragment orderSummaryFragment){
+                                                                HashMap<String, String> hashMap,
+                                                                OrderSummaryFragment orderSummaryFragment) {
 
         MutableLiveData<ApplyCouponResponse> applyCouponResponseMutableLiveData = new MutableLiveData<>();
         ApiClientAuth.getClient(orderSummaryFragment.getContext())
@@ -179,8 +260,8 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<ApplyCouponResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ApplyCouponResponse applyCouponResponse) {
-                        if (applyCouponResponse!=null){
-                            if (progressDialog!=null)
+                        if (applyCouponResponse != null) {
+                            if (progressDialog != null)
                                 progressDialog.dismiss();
                             applyCouponResponseMutableLiveData.setValue(applyCouponResponse);
                         }
@@ -188,7 +269,7 @@ public class OrderSummaryViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        if (progressDialog!=null)
+                        if (progressDialog != null)
                             progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
                         ApplyCouponResponse errorResponse = new ApplyCouponResponse();
@@ -207,9 +288,9 @@ public class OrderSummaryViewModel extends AndroidViewModel {
     }
 
     /*Order place api*/
-    public LiveData<BaseResponse> getOrderPlaceAPIResponse(ProgressDialog  progressDialog,
-                                                    HashMap<String,String> hashMap,
-                                                    OrderSummaryFragment orderSummaryFragment){
+    public LiveData<BaseResponse> getOrderPlaceAPIResponse(ProgressDialog progressDialog,
+                                                           HashMap<String, String> hashMap,
+                                                           OrderSummaryFragment orderSummaryFragment) {
         MutableLiveData<BaseResponse> placeOrderResponseMutableLive = new MutableLiveData<>();
 
         ApiClientAuth.getClient(orderSummaryFragment.getContext())
@@ -220,36 +301,76 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse response) {
-                       if (response!=null){
-                           if (progressDialog!=null){
-                               progressDialog.dismiss();
-                               placeOrderResponseMutableLive.setValue(response);
-                           }
-                       }
+                        if (response != null) {
+                            if (progressDialog != null) {
+                                progressDialog.dismiss();
+                                placeOrderResponseMutableLive.setValue(response);
+                            }
+                        }
                     }
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        if (progressDialog!=null)
+                        if (progressDialog != null)
                             progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
-                        BaseResponse baseResponse =new BaseResponse();
+                        BaseResponse baseResponse = new BaseResponse();
                         try {
-                            baseResponse = gson.fromJson(Objects.requireNonNull(Objects.requireNonNull(((HttpException) e).response()).errorBody()).string(),BaseResponse.class);
+                            baseResponse = gson.fromJson(Objects.requireNonNull(Objects.requireNonNull(((HttpException) e).response()).errorBody()).string(), BaseResponse.class);
                             placeOrderResponseMutableLive.setValue(baseResponse);
-                        }catch (JsonSyntaxException | IOException exception){
-                            Log.e(TAG, "onError: "+exception.getMessage() );
-                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(2,"");
+                        } catch (JsonSyntaxException | IOException exception) {
+                            Log.e(TAG, "onError: " + exception.getMessage());
+                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(2, "");
                         }
                     }
                 });
         return placeOrderResponseMutableLive;
     }
 
-    /*Get Delivery Slo By Date on 14-Mar-2022*/
-    public LiveData<OrderSummaryResponse> deliverySlotResponseLiveData(ProgressDialog progressDialog,
+    /*Subscription Order done API*/
+    public LiveData<BaseResponse> getSubscriptionBasketCustomerResponse(ProgressDialog progressDialog,
                                                                        HashMap<String,String> hashMap,
                                                                        OrderSummaryFragment orderSummaryFragment){
+        MutableLiveData<BaseResponse> subscribeBasketMutableLive = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(orderSummaryFragment.getContext())
+                .create(ApiInterface.class)
+                .getSubscriptionBasketCustomerApi(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse response) {
+                        if (response != null) {
+                            if (progressDialog != null) {
+                                progressDialog.dismiss();
+                                subscribeBasketMutableLive.setValue(response);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        BaseResponse baseResponse = new BaseResponse();
+                        try {
+                            baseResponse = gson.fromJson(Objects.requireNonNull(Objects.requireNonNull(((HttpException) e).response()).errorBody()).string(), BaseResponse.class);
+                            subscribeBasketMutableLive.setValue(baseResponse);
+                        } catch (JsonSyntaxException | IOException exception) {
+                            Log.e(TAG, "onError: " + exception.getMessage());
+                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(2, "");
+                        }
+                    }
+                });
+        return subscribeBasketMutableLive;
+    }
+
+    /*Get Delivery Slo By Date on 14-Mar-2022*/
+    public LiveData<OrderSummaryResponse> deliverySlotResponseLiveData(ProgressDialog progressDialog,
+                                                                       HashMap<String, String> hashMap,
+                                                                       OrderSummaryFragment orderSummaryFragment) {
         MutableLiveData<OrderSummaryResponse> deliverySlotByDateResponseMutable = new MutableLiveData<>();
 
         ApiClientAuth.getClient(orderSummaryFragment.context)
@@ -260,9 +381,9 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<OrderSummaryResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull OrderSummaryResponse deliverySlotByDateResponse) {
-                        if (deliverySlotByDateResponse!=null){
+                        if (deliverySlotByDateResponse != null) {
 
-                            if (progressDialog!=null) {
+                            if (progressDialog != null) {
                                 progressDialog.dismiss();
                                 deliverySlotByDateResponseMutable.setValue(deliverySlotByDateResponse);
                             }
@@ -274,12 +395,12 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                         Gson gson = new GsonBuilder().create();
                         OrderSummaryResponse deliverySlotResponse = new OrderSummaryResponse();
                         try {
-                            deliverySlotResponse = gson.fromJson(((HttpException)e).response().errorBody().string(),
+                            deliverySlotResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     OrderSummaryResponse.class);
                             deliverySlotByDateResponseMutable.setValue(deliverySlotResponse);
                         } catch (Exception exception) {
                             exception.printStackTrace();
-                            ((NetworkExceptionListener)orderSummaryFragment).onNetworkException(3,"");
+                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(3, "");
                         }
                     }
                 });
@@ -288,7 +409,7 @@ public class OrderSummaryViewModel extends AndroidViewModel {
 
     /*Get Payment Credentials*/
     public LiveData<RazorPayCredentialResponse> getRazorPayCredentialResponse(ProgressDialog progressDialog,
-                                                                      OrderSummaryFragment orderSummaryFragment){
+                                                                              OrderSummaryFragment orderSummaryFragment) {
 
         MutableLiveData<RazorPayCredentialResponse> razorPayCredentialResponseMutableLiveData = new MutableLiveData<>();
 
@@ -300,8 +421,8 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                 .subscribeWith(new DisposableSingleObserver<RazorPayCredentialResponse>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull RazorPayCredentialResponse razorPayCredentialResponse) {
-                        if (razorPayCredentialResponse!=null){
-                            if (progressDialog!=null){
+                        if (razorPayCredentialResponse != null) {
+                            if (progressDialog != null) {
                                 razorPayCredentialResponseMutableLiveData.setValue(razorPayCredentialResponse);
                             }
                         }
@@ -313,15 +434,17 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                         RazorPayCredentialResponse payCredentialResponse = new RazorPayCredentialResponse();
                         try {
 
-                            payCredentialResponse = gson.fromJson(((HttpException)e).response().errorBody().string(),
+                            payCredentialResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
                                     RazorPayCredentialResponse.class);
                             razorPayCredentialResponseMutableLiveData.setValue(payCredentialResponse);
                         } catch (Exception exception) {
                             exception.printStackTrace();
-                            ((NetworkExceptionListener)orderSummaryFragment).onNetworkException(4,"");
+                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(4, "");
                         }
                     }
                 });
         return razorPayCredentialResponseMutableLiveData;
     }
+
+
 }
