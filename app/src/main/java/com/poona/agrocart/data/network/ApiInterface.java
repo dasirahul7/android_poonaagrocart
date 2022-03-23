@@ -47,6 +47,7 @@ import static com.poona.agrocart.app.AppConstants.ORDER_CANCEL_REASON;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY_API;
 import static com.poona.agrocart.app.AppConstants.ORDER_TRACK;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_CRED_API;
+import static com.poona.agrocart.app.AppConstants.PAYMENT_FOR_WALLET;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.RATE_SUBSCRIBED_BASKET;
@@ -73,6 +74,7 @@ import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_BASKET_PRODUCTS;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_NOW;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION_SUMMARY_API;
 import static com.poona.agrocart.app.AppConstants.TICKET_TYPE;
+import static com.poona.agrocart.app.AppConstants.TRANSACTION_TYPE_LIST_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_CONFIGURATION;
 import static com.poona.agrocart.app.AppConstants.UPDATE_LOCATION_API;
@@ -83,6 +85,7 @@ import static com.poona.agrocart.app.AppConstants.VIEW_CONFIGURATION;
 import static com.poona.agrocart.app.AppConstants.VIEW_GALLERY;
 import static com.poona.agrocart.app.AppConstants.VIEW_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_TICKET;
+import static com.poona.agrocart.app.AppConstants.WALLET_TRANSACTION_LIST;
 
 import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.data.network.responses.AreaResponse;
@@ -122,7 +125,6 @@ import com.poona.agrocart.data.network.responses.help_center_response.SendMessag
 import com.poona.agrocart.data.network.responses.help_center_response.TicketListResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.TicketTypeResponse;
 import com.poona.agrocart.data.network.responses.help_center_response.recieveMessage.RecieveMessageResponse;
-import com.poona.agrocart.data.network.responses.homeResponse.SeasonalProduct;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderCancelReasonResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.OrderListResponse;
 import com.poona.agrocart.data.network.responses.myOrderResponse.SubscribeBasketListCustomerResponse;
@@ -137,13 +139,14 @@ import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryRespo
 import com.poona.agrocart.data.network.responses.payment.RazorPayCredentialResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.ViewConfigurationResponse;
+import com.poona.agrocart.data.network.responses.walletTransaction.TransactionTypeResponse;
+import com.poona.agrocart.data.network.responses.walletTransaction.WalletTransactionListResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
 import com.poona.agrocart.ui.nav_stores.model.OurStoreListResponse;
 import com.poona.agrocart.ui.nav_stores.model.store_details.OurStoreViewDataResponse;
 
 import java.util.HashMap;
 
-import io.reactivex.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
@@ -584,4 +587,17 @@ public interface ApiInterface {
     @POST(SUBSCRIBE_BASKET_CUSTOMER)
     Single<BaseResponse> getSubscriptionBasketCustomerApi(@FieldMap HashMap<String, String> subscriptionBasketInputParameter);
 
+    /*Payment To Wallet API*/
+    @FormUrlEncoded
+    @POST(PAYMENT_FOR_WALLET)
+    Single<BaseResponse> paymentToWallet(@FieldMap HashMap<String,String> hashMap);
+
+    /*Wallet transaction types API*/
+    @GET(TRANSACTION_TYPE_LIST_API)
+    Single<TransactionTypeResponse> getTransactionTypeApiResponse();
+
+    /*Wallet transaction lis API*/
+    @FormUrlEncoded
+    @POST(WALLET_TRANSACTION_LIST)
+    Single<WalletTransactionListResponse> getWalletTransactionListResponse(@FieldMap HashMap<String, String> hashMap);
 }

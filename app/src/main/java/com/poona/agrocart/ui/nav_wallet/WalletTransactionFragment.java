@@ -1,9 +1,18 @@
 package com.poona.agrocart.ui.nav_wallet;
 
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
+import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +23,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppConstants;
+import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.databinding.FragmentWalletTransactionBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.nav_my_basket.BasketOrdersAdapter;
 import com.poona.agrocart.ui.nav_my_basket.model.BasketOrder;
+import com.poona.agrocart.widgets.CustomButton;
+import com.poona.agrocart.widgets.CustomEditText;
 import com.poona.agrocart.widgets.CustomTextView;
 
 import java.text.ParseException;
@@ -29,18 +45,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 public class WalletTransactionFragment extends BaseFragment implements View.OnClickListener {
     private final boolean isWallet = true;
     private final String[] status = {"Paid", "Refund", "Added"};
     long fromTime = 0;
     private FragmentWalletTransactionBinding fragmentWalletTransactionBinding;
+    private WalletTransactionViewModel walletTransactionViewModel;
     private RecyclerView rvTransactions;
     private LinearLayoutManager linearLayoutManager;
     private BasketOrdersAdapter basketOrdersAdapter;
     private ArrayList<BasketOrder> transactionsArrayList;
     private Calendar calendarFrom, calendarTo;
     private DatePickerDialog datePickerDialog;
+    private boolean onCreate, onResume;
+    private String walletAddAmount ="";
 
     @Override
     public void onStop() {
@@ -58,8 +78,9 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentWalletTransactionBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_wallet_transaction, container, false);
         fragmentWalletTransactionBinding.setLifecycleOwner(this);
+        walletTransactionViewModel = new ViewModelProvider(this).get(WalletTransactionViewModel.class);
         final View view = fragmentWalletTransactionBinding.getRoot();
-
+        onCreate = true;
         initView();
         setRvAdapter(view);
 
@@ -213,7 +234,9 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
         ImageView closeImg = dialog.findViewById(R.id.close_btn);
         LinearLayout walletDialog = dialog.findViewById(R.id.wallet_dialog);
         CustomTextView tvContent = dialog.findViewById(R.id.tv_content);
+        CustomEditText etAmount = dialog.findViewById(R.id.et_amount);
         CustomTextView tvTitle = dialog.findViewById(R.id.dialog_title);
+        CustomButton btnPay = dialog.findViewById(R.id.btn_pay);
         tvTitle.setText(R.string.entr_amount);
         walletDialog.setVisibility(View.VISIBLE);
         tvContent.setVisibility(View.INVISIBLE);
@@ -221,7 +244,69 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
             dialog.dismiss();
         });
         dialog.show();
+
+        /*pay for wallet*/
+        btnPay.setOnClickListener(view -> {
+            etAmount.clearFocus();
+            if (!TextUtils.isEmpty(etAmount.getText())){
+                walletAddAmount = etAmount.getText().toString().trim();
+                ((HomeActivity)context).startPayment();
+            }
+            else{
+                etAmount.setError("enter amount");
+                etAmount.requestFocus();
+            }
+
+        });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        onResume = true;
+        if (preferences.getPaymentReference()!=null || !preferences.getPaymentReference().equalsIgnoreCase(""))
+            infoToast(context,"Payment ref is "+preferences.getPaymentReference());
+        if (preferences.getPaymentStatus()){
+            fragmentWalletTransactionBinding.mainLayout.setVisibility(View.GONE);
+            callAddToWalletApi(showCircleProgressDialog(context,""));
+        }
+        else if (!onCreate)goToAskAndDismiss("Payment Failed",context);
+    }
 
+    private void callAddToWalletApi(ProgressDialog progressDialog) {
+        Observer<BaseResponse> baseResponseObserver = response -> {
+            if (response!=null){
+                if (progressDialog!=null){
+                    progressDialog.dismiss();
+                    switch (response.getStatus()) {
+                        case STATUS_CODE_200://Record Create/Update Successfully
+                            successToast(context, response.getMessage());
+                            preferences.setPaymentStatus(false);
+                            break;
+                        case STATUS_CODE_403://Validation Errors
+                        case STATUS_CODE_400://Validation Errors
+                        case STATUS_CODE_404://Validation Errors
+                            //show no data msg here
+                            warningToast(context, response.getMessage());
+                            break;
+                        case STATUS_CODE_401://Unauthorized user
+                            goToAskSignInSignUpScreen(response.getMessage(), context);
+                            break;
+                        case STATUS_CODE_405://Method Not Allowed
+                            infoToast(context, response.getMessage());
+                            break;
+                    }
+                }
+            }
+        };
+        walletTransactionViewModel.addToWalletApiResponse(progressDialog,addWalletParams(),WalletTransactionFragment.this)
+                .observe(getViewLifecycleOwner(),baseResponseObserver);
+    }
+
+    private HashMap<String, String> addWalletParams() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(AppConstants.WALLET_AMOUNT, walletAddAmount);
+        map.put(AppConstants.PAYMENT_REFERENCE_ID, preferences.getPaymentReference());
+        return map;
+    }
 }
