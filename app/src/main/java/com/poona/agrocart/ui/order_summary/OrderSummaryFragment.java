@@ -17,6 +17,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_NOW_ID;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
 
 import android.app.DatePickerDialog;
@@ -41,11 +42,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -53,6 +56,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.gson.Gson;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
+import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.data.network.responses.BaseResponse;
@@ -60,12 +64,15 @@ import com.poona.agrocart.data.network.responses.Coupon;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
+import com.poona.agrocart.data.network.responses.orderResponse.Payments;
 import com.poona.agrocart.data.network.responses.payment.RazorPayCredentialResponse;
 import com.poona.agrocart.databinding.DialogDeliveryOptionsBinding;
 import com.poona.agrocart.databinding.FragmentOrderSummaryBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.home.HomeActivity;
 import com.poona.agrocart.ui.order_summary.adapter.AddressDialogAdapter;
 import com.poona.agrocart.ui.order_summary.adapter.DeliveryDialogAdapter;
+import com.poona.agrocart.ui.order_summary.adapter.PaymentAdapter;
 import com.poona.agrocart.ui.order_summary.adapter.PromoCodeDialogAdapter;
 import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
 import com.poona.agrocart.ui.splash_screen.OnBackPressedListener;
@@ -76,7 +83,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class OrderSummaryFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener, AddressDialogAdapter.OnAddressClickListener, DeliveryDialogAdapter.OnSlotClickListener, OnBackPressedListener {
+public class OrderSummaryFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener, AddressDialogAdapter.OnAddressClickListener, DeliveryDialogAdapter.OnSlotClickListener, OnBackPressedListener, PaymentAdapter.OnPaymentClickListener {
     private int PAYMENT_MODE;
     private static  final int COD = 0;
     private static final int ONLINE = 1;
@@ -115,7 +122,24 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private boolean onResume,onCreate;
 
     /*Subscription Basket Screen*/
-    private boolean isSubscriptionSummary = true;
+    private boolean isSubscriptionSummary = false;
+    private String subscribeNowId="";
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (this.getArguments()!=null && this.getArguments().get(SUBSCRIPTION)!=null&& this.getArguments().get(FROM_SCREEN)!=null){
+            try {
+                Bundle bundle = this.getArguments();
+                isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
+                subscribeNowId = bundle.getString(SUBSCRIBE_NOW_ID);
+                Toast.makeText(context, "Subscription summary", Toast.LENGTH_SHORT).show();
+                initTitleWithBackBtn(bundle.getString(FROM_SCREEN));
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public void onPause() {
@@ -165,13 +189,17 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         initTitleWithBackBtn(getString(R.string.order_summary));
         initView();
 
-        //Bundle bundle = this.getArguments();
-        //isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
-       // Toast.makeText(context, ""+ isSubscriptionSummary, Toast.LENGTH_SHORT).show();
-        /*if (isSubscriptionBasketVisible) {
-            Toast.makeText(context, ""+isSubscriptionBasketVisible, Toast.LENGTH_SHORT).show();
-            //setBasketContentsVisible();
-        }*/
+        if (this.getArguments()!=null && this.getArguments().get(SUBSCRIPTION)!=null&& this.getArguments().get(FROM_SCREEN)!=null){
+            try {
+                Bundle bundle = this.getArguments();
+                isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
+                subscribeNowId = bundle.getString(SUBSCRIBE_NOW_ID);
+                Toast.makeText(context, "Subscription summary", Toast.LENGTH_SHORT).show();
+                initTitleWithBackBtn(bundle.getString(FROM_SCREEN));
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
 
         /*OnScrollview scrolled*/
         scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -187,7 +215,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 rlRefreshPage.setRefreshing(true);
                 mainLayout.setVisibility(View.GONE);
                 if (isConnectingToInternet(context)) {
-                    callOrderSummaryAPI(showCircleProgressDialog(context, ""));
+                    if (isSubscriptionSummary)
+                        callSubscriptionSummary(showCircleProgressDialog(context,""));
+                    else callOrderSummaryAPI(showCircleProgressDialog(context, ""));
                 } else {
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 }
@@ -237,12 +267,6 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         scrollView = fragmentOrderSummaryBinding.scrollView;
         mainLayout.setVisibility(View.GONE);
         Typeface font = Typeface.createFromAsset(context.getAssets(), getString(R.string.font_poppins_medium));
-        fragmentOrderSummaryBinding.rbCod.setTypeface(font);
-        fragmentOrderSummaryBinding.rbOnline.setTypeface(font);
-        fragmentOrderSummaryBinding.rbWalletBalance.setTypeface(font);
-        fragmentOrderSummaryBinding.rbCod.setOnClickListener(this);
-        fragmentOrderSummaryBinding.rbOnline.setOnClickListener(this);
-        fragmentOrderSummaryBinding.rbWalletBalance.setOnClickListener(this);
         fragmentOrderSummaryBinding.ivAddressOption.setOnClickListener(this);
         fragmentOrderSummaryBinding.tbnGetCode.setOnClickListener(this);
         fragmentOrderSummaryBinding.btnRemove.setOnClickListener(this);
@@ -258,12 +282,15 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         fragmentOrderSummaryBinding.btnMakePayment.setOnClickListener(this::onClick);
 
         if (isConnectingToInternet(context)) {
-            callOrderSummaryAPI(showCircleProgressDialog(context, ""));
+            if (isSubscriptionSummary)
+                callSubscriptionSummary(showCircleProgressDialog(context,""));
+            else callOrderSummaryAPI(showCircleProgressDialog(context, ""));
             CallPaymentCredentialApi(showCircleProgressDialog(context,""));
         } else showNotifyAlert(requireActivity(), context.getString(R.string.info),
                 context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
-
     }
+
+
 
     /*Call Order place api here*/
     private void callOrderPlaceAPI(ProgressDialog progressDialog) {
@@ -292,8 +319,28 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
             }
         };
-        orderSummaryViewModel.getOrderPlaceAPIResponse(progressDialog, placeOrderMaps(), OrderSummaryFragment.this)
-                .observe(getViewLifecycleOwner(), baseResponseObserver);
+        if (isSubscriptionSummary){
+            try {
+                /*call subscribe API here*/
+                orderSummaryViewModel.getSubscriptionBasketCustomerResponse(progressDialog, subscribeBasketParams(),OrderSummaryFragment.this).observe(getViewLifecycleOwner(),baseResponseObserver);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
+      else  orderSummaryViewModel.getOrderPlaceAPIResponse(progressDialog, placeOrderMaps(), OrderSummaryFragment.this)
+                    .observe(getViewLifecycleOwner(), baseResponseObserver);
+    }
+
+    private HashMap<String, String> subscribeBasketParams() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(AppConstants.SUBSCRIPTION_TYPE, orderSummaryViewModel.subscriptionTypeMutable.getValue());
+        map.put(AppConstants.NO_OF_SUBSCRIPTION, orderSummaryViewModel.noOfBasketMutable.getValue());
+        map.put(AppConstants.START_DATE, preferences.getDeliveryDate());
+        map.put(AppConstants.SLOT_ID, preferences.getDeliverySlot());
+        map.put(AppConstants.BASKET_ID, orderSummaryViewModel.basketIdMutable.getValue());
+        map.put(AppConstants.PAYMENT_MODE_ID, preferences.getPaymentMode());
+        map.put(AppConstants.PAYMENT_REFERENCE_ID, preferences.getPaymentReference());
+        return map;
     }
 
     private HashMap<String, String> placeOrderMaps() {
@@ -359,6 +406,70 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         };
         orderSummaryViewModel.getOrderSummaryResponse(progressDialog, OrderSummaryFragment.this)
                 .observe(getViewLifecycleOwner(), orderSummaryResponseObserver);
+    }
+
+    /*Call Subscription Summary API here*/
+    private void callSubscriptionSummary(ProgressDialog progressDialog){
+
+        Observer<OrderSummaryResponse> subscriptionSummaryResponseObserver = orderSummaryResponse -> {
+            if (orderSummaryResponse != null) {
+                rlRefreshPage.setRefreshing(false);
+                if (progressDialog != null)
+                    progressDialog.dismiss();
+                Log.e(TAG, "call Subscription SummaryAPI: " + new Gson().toJson(orderSummaryResponse));
+                switch (orderSummaryResponse.status) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        mainLayout.setVisibility(View.VISIBLE);
+                        if (orderSummaryResponse.address.size() == 0) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString(ADD_UPDATE_ADDRESS_DETAILS, ADD_ADDRESS_DETAILS);
+                            bundle.putString(FROM_SCREEN, ORDER_SUMMARY);
+                            NavHostFragment.findNavController(OrderSummaryFragment.this).navigate(R.id.action_nav_order_summary_to_addAddressFragment, bundle);
+                        } else {
+                            stepAddress = "";
+                            stepOrder = "";
+                            stepPayment = "";
+                            checkOrderSummaryStatus();
+                            fragmentOrderSummaryBinding.ivEditDate.setVisibility(View.GONE);
+                            orderSummaryViewModel.initSubscriptionSummary(orderSummaryResponse, context);
+                            fragmentOrderSummaryBinding.setOrderSummaryViewModel(orderSummaryViewModel);
+                            fragmentOrderSummaryBinding.setVariable(BR.orderSummaryViewModel, orderSummaryViewModel);
+                            preferences.setPaymentAmount(orderSummaryResponse.totalAmount);
+                            initAddressDialog();
+//                            initExpectedDeliveryDialog();
+//                            initPromoCodeDialog();
+                            fragmentOrderSummaryBinding.llCoupon.setVisibility(View.GONE);
+                            initItemsDetails();
+                            initPaymentTypes();
+                            checkValuesAndViews();
+
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, orderSummaryResponse.message);
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(orderSummaryResponse.message, context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, orderSummaryResponse.message);
+                        break;
+                }
+
+            }
+
+        };
+        orderSummaryViewModel.getSubscriptionSummaryResponse(progressDialog, subscriptionParam(),
+                OrderSummaryFragment.this).observe(getViewLifecycleOwner(),subscriptionSummaryResponseObserver);
+    }
+
+    private HashMap<String, String> subscriptionParam() {
+        HashMap<String,String> map = new HashMap<>();
+        map.put(SUBSCRIBE_NOW_ID,getArguments().getString(SUBSCRIBE_NOW_ID));
+        return map;
     }
 
     /*check if value null or empty view should be hide*/
@@ -447,14 +558,16 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     /*Init payment options here*/
     private void initPaymentTypes() {
         orderSummaryViewModel.arrayPaymentListMutableLiveData.observe(getViewLifecycleOwner(), payments -> {
-            if (payments.size() > 0) {
-                if (payments.get(0).paymentModeStatus.equalsIgnoreCase("1"))
-                    orderSummaryViewModel.paymentCashMutable.setValue(payments.get(0).paymentType);
-                if (payments.get(1).paymentModeStatus.equalsIgnoreCase("1"))
-                    orderSummaryViewModel.paymentOnlineMutable.setValue(payments.get(0).paymentType);
-                if (payments.get(2).paymentModeStatus.equalsIgnoreCase("1"))
-                    orderSummaryViewModel.paymentWalletMutable.setValue(payments.get(0).paymentType);
+            ArrayList<Payments> paymentsArrayList = new ArrayList<>();
+            for (Payments payment:payments){
+                payment.setBalance(orderSummaryViewModel.availableWalletMutable.getValue());
+                paymentsArrayList.add(payment);
             }
+            PaymentAdapter paymentAdapter = new PaymentAdapter(paymentsArrayList,context,this);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+            fragmentOrderSummaryBinding.rvPayment.setLayoutManager(gridLayoutManager);
+            fragmentOrderSummaryBinding.rvPayment.setHasFixedSize(true);
+            fragmentOrderSummaryBinding.rvPayment.setAdapter(paymentAdapter);
         });
     }
 
@@ -568,24 +681,22 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                     e.printStackTrace();
                 }
                 break;
-            case R.id.rb_cod:
-                PaymentModeId = orderSummaryViewModel.arrayPaymentListMutableLiveData.getValue().get(0).paymentModeId;
-                preferences.setPaymentMode(PaymentModeId);
-                PAYMENT_MODE =0;
-                summaryRadioAction(true);
-                break;
-            case R.id.rb_online:
-                PaymentModeId = orderSummaryViewModel.arrayPaymentListMutableLiveData.getValue().get(1).paymentModeId;
-                preferences.setPaymentMode(PaymentModeId);
-                PAYMENT_MODE =1;
-                summaryRadioAction(true);
-                break;
-            case R.id.rb_wallet_balance:
-                PaymentModeId = orderSummaryViewModel.arrayPaymentListMutableLiveData.getValue().get(2).paymentModeId;
-                preferences.setPaymentMode(PaymentModeId);
-                PAYMENT_MODE =2;
-                summaryRadioAction(false);
-                break;
+//            case R.id.rb_cod:
+//
+//                summaryRadioAction(true);
+//                break;
+//            case R.id.rb_online:
+//                PaymentModeId = orderSummaryViewModel.arrayPaymentListMutableLiveData.getValue().get(1).paymentModeId;
+//                preferences.setPaymentMode(PaymentModeId);
+//                PAYMENT_MODE =1;
+//                summaryRadioAction(true);
+//                break;
+//            case R.id.rb_wallet_balance:
+//                PaymentModeId = orderSummaryViewModel.arrayPaymentListMutableLiveData.getValue().get(2).paymentModeId;
+//                preferences.setPaymentMode(PaymentModeId);
+//                PAYMENT_MODE =2;
+//                summaryRadioAction(false);
+//                break;
             case R.id.iv_address_option:
                 openAddressOptionsDialog();
                 break;
@@ -612,9 +723,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 break;
             case ONLINE:
                 System.out.println("ONLINE");
-                goToAskAndDismiss("noline payment not available",context);
+//                goToAskAndDismiss("noline payment not available",context);
                 //Todo online payment is here
-//                ((HomeActivity)context).startPayment();
+                ((HomeActivity)context).startPayment();
                 break;
             case WALLET:
                 callWalletPayment(showCircleProgressDialog(context,""));
@@ -627,6 +738,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void callWalletPayment(ProgressDialog progressDialog) {
+        progressDialog.dismiss();
         infoToast(context,"Wallet payment required");
     }
 
@@ -636,48 +748,34 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 if (progressDialog!=null)
                     progressDialog.dismiss();
                 switch (razorPayResponse.getStatus()){
-                        case STATUS_CODE_200://Record Create/Update Successfully
-                            if (razorPayResponse.getData().getKeyId()!=null
-                                    && !razorPayResponse.getData().getKeyId().equalsIgnoreCase("")){
-                                preferences.setRazorCredentials(razorPayResponse.getData().getKeyId(),
-                                        razorPayResponse.getData().getType(),
-                                        razorPayResponse.getData().getCurrency());
-                                Log.d(TAG, "CallPaymentCredentialApi: "+razorPayResponse.getData().getKeyId());
-                                preferences.setPaymentReferenceId("");
-                            }
-                            break;
-                        case STATUS_CODE_403://Validation Errors
-                        case STATUS_CODE_400://Validation Errors
-                        case STATUS_CODE_404://Validation Errors
-                            //show no data msg here
-                            warningToast(context, razorPayResponse.getMessage());
-                            break;
-                        case STATUS_CODE_401://Unauthorized user
-                            goToAskSignInSignUpScreen(razorPayResponse.getMessage(), context);
-                            break;
-                        case STATUS_CODE_405://Method Not Allowed
-                            infoToast(context, razorPayResponse.getMessage());
-                            break;
-                    }
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (razorPayResponse.getData().getKeyId()!=null
+                                && !razorPayResponse.getData().getKeyId().equalsIgnoreCase("")){
+                            preferences.setRazorCredentials(razorPayResponse.getData().getKeyId(),
+                                    razorPayResponse.getData().getType(),
+                                    razorPayResponse.getData().getCurrency());
+                            Log.d(TAG, "CallPaymentCredentialApi: "+razorPayResponse.getData().getKeyId());
+                            preferences.setPaymentReferenceId("");
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, razorPayResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(razorPayResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, razorPayResponse.getMessage());
+                        break;
+                }
 
             }
         };
         orderSummaryViewModel.getRazorPayCredentialResponse(progressDialog,OrderSummaryFragment.this)
                 .observe(getViewLifecycleOwner(),razorPayCredentialResponseObserver);
-
-    }
-
-    private void summaryRadioAction(boolean group) {
-        if (group) {
-            if (fragmentOrderSummaryBinding.rbCod.isChecked() || fragmentOrderSummaryBinding.rbOnline.isChecked()) {
-                fragmentOrderSummaryBinding.rbWalletBalance.setChecked(false);
-            }
-        } else {
-            if (fragmentOrderSummaryBinding.rbWalletBalance.isChecked()) {
-                fragmentOrderSummaryBinding.rbCod.setChecked(false);
-                fragmentOrderSummaryBinding.rbOnline.setChecked(false);
-            }
-        }
 
     }
 
@@ -895,5 +993,18 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onBackPressed() {
         NavHostFragment.findNavController(OrderSummaryFragment.this).popBackStack();
+    }
+
+    @Override
+    public void OnPaymentClick(Payments payments) {
+        System.out.println("payment "+payments.getPaymentType());
+        if (payments.getPaymentType().equals("Cash on Delivery"))
+            PAYMENT_MODE = 0;
+        else if (payments.getPaymentType().contains("Online"))
+            PAYMENT_MODE = 1;
+        else if (payments.getPaymentType().equals("Wallet Balance"))
+            PAYMENT_MODE = 2;
+        PaymentModeId = payments.getPaymentModeId();
+        preferences.setPaymentMode(PaymentModeId);
     }
 }

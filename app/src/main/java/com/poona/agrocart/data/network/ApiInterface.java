@@ -71,6 +71,7 @@ import static com.poona.agrocart.app.AppConstants.STORE_LIST;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_BASKET_CUSTOMER;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_BASKET_PRODUCTS;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_NOW;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION_SUMMARY_API;
 import static com.poona.agrocart.app.AppConstants.TICKET_TYPE;
 import static com.poona.agrocart.app.AppConstants.UPDATE_ADDRESS_API;
 import static com.poona.agrocart.app.AppConstants.UPDATE_CONFIGURATION;
@@ -479,6 +480,11 @@ public interface ApiInterface {
     @GET(ORDER_SUMMARY_API)
     Single<OrderSummaryResponse> getOrderSummaryResponse();
 
+    /*Subscription Summary API here */
+    @FormUrlEncoded
+    @POST(SUBSCRIPTION_SUMMARY_API)
+    Single<OrderSummaryResponse> getSubscriptionSummaryResponse(@FieldMap HashMap<String,String> hashMap);
+
     @GET(ORDER_CANCEL_REASON)
     Single<OrderCancelReasonResponse> getOrderCancelReasonResponse();
 
@@ -520,9 +526,9 @@ public interface ApiInterface {
     @POST(COMMON_SEARCH)
     Single<CommonSearchResponse> getCommonSearchResponse(@FieldMap HashMap<String, String> hashMap);
 
-  /*  @FormUrlEncoded
+    @FormUrlEncoded
     @POST(SUBSCRIBE_BASKET_CUSTOMER)
-    Single<BaseResponse> getSubscriptionBasketDetailsApi(@FieldMap HashMap<String, String> subscriptionBasketInputParameter);*/
+    Single<BaseResponse> getSubscriptionBasketCustomerApi(@FieldMap HashMap<String, String> subscriptionBasketInputParameter);
 
 
     /*GET SLOT BY DATE API

@@ -235,6 +235,8 @@ public class AppConstants {
     public static final String ORDER_PLACE_API = "place-order-customer";
     public static final String APPLY_COUPON_API = "apply-coupon";
     public static final String SLOT_BY_DATE_API = "get-available-slot-by-date";
+    /*Subscription Summary API*/
+    public static final String SUBSCRIPTION_SUMMARY_API = "subscribe-summary";
 
     /*Order Summary API KEYS*/
     public static final String ORDER_SUMMARY ="order-summary";

@@ -532,7 +532,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     private void redirectToOrderSummary(View v) {
         if (isConnectingToInternet(context)) {
             Bundle bundle = new Bundle();
-           // bundle.putBoolean(SUBSCRIPTION, false);
+            bundle.putBoolean(SUBSCRIPTION, false);
+            bundle.putString(FROM_SCREEN, "Order Summary");
             Navigation.findNavController(v).navigate(R.id.action_nav_cart_to_nav_order_summary);
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

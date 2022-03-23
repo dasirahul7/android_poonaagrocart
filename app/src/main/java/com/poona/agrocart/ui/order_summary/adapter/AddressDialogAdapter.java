@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.poona.agrocart.BR;
 import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.databinding.RowAddressRadioBinding;
 

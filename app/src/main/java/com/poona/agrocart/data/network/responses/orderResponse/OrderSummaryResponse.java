@@ -30,6 +30,9 @@ public class OrderSummaryResponse {
     @SerializedName("total_amount")
     @Expose
     public Integer totalAmount;
+    @SerializedName("wallet_balance")
+    @Expose
+    public String walletBalance;
     @SerializedName("address")
     @Expose
     public ArrayList<AddressesResponse.Address> address = null;

@@ -58,5 +58,25 @@ public class ItemsDetail {
     @SerializedName("basket_rate")
     @Expose
     public String basketRate;
+    /*field of subscription items*/
+    @SerializedName("subscribe_now_id")
+    @Expose
+    public String subscribeNowId;
+    @SerializedName("subscription_type")
+    @Expose
+    public String subscriptionType;
+    @SerializedName("no_of_subscription")
+    @Expose
+    public String noOfSubscription;
+    @SerializedName("start_date")
+    @Expose
+    public String subStartDate;
+    @SerializedName("slot_id")
+    @Expose
+    public String subSlotId;
+    @SerializedName("slot_time")
+    @Expose
+    public String subSlotTime;
+
 
 }
