@@ -1203,3 +1203,13 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         subTypeId = type.getSubscriptionType();
     }
 }
+    /*Subscription Basket Screen*//*
+    private boolean isSubscriptionSummary = true;*/
+
+//Bundle bundle = this.getArguments();
+//isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
+// Toast.makeText(context, ""+ isSubscriptionSummary, Toast.LENGTH_SHORT).show();
+        /*if (isSubscriptionBasketVisible) {
+            Toast.makeText(context, ""+isSubscriptionBasketVisible, Toast.LENGTH_SHORT).show();
+            //setBasketContentsVisible();
+        }*/
