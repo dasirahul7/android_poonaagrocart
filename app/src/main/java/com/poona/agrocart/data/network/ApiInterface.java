@@ -526,10 +526,6 @@ public interface ApiInterface {
     @POST(COMMON_SEARCH)
     Single<CommonSearchResponse> getCommonSearchResponse(@FieldMap HashMap<String, String> hashMap);
 
-    @FormUrlEncoded
-    @POST(SUBSCRIBE_BASKET_CUSTOMER)
-    Single<BaseResponse> getSubscriptionBasketCustomerApi(@FieldMap HashMap<String, String> subscriptionBasketInputParameter);
-
 
     /*GET SLOT BY DATE API
     Created on : 14-march-2021
@@ -575,13 +571,17 @@ public interface ApiInterface {
     Single<SeasonalProductResponse> seasonalProductDetails(@FieldMap HashMap<String,String> hashMap);
 
     /*Get list of Units*/
-
     @GET(GET_UNITS)
     Single<GetUnitResponse> getUnitResponse();
 
+    /*Subscribe Now API here*/
     @FormUrlEncoded
     @POST(SUBSCRIBE_NOW)
     Single<SubscribeNowResponse> getSubscriptionNowApi(@FieldMap HashMap<String, String> subscriptionNowInputParameter);
 
+    /*final Subscription for  basket */
+    @FormUrlEncoded
+    @POST(SUBSCRIBE_BASKET_CUSTOMER)
+    Single<BaseResponse> getSubscriptionBasketCustomerApi(@FieldMap HashMap<String, String> subscriptionBasketInputParameter);
 
 }

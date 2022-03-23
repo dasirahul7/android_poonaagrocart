@@ -133,7 +133,6 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 Bundle bundle = this.getArguments();
                 isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
                 subscribeNowId = bundle.getString(SUBSCRIBE_NOW_ID);
-                Toast.makeText(context, "Subscription summary", Toast.LENGTH_SHORT).show();
                 initTitleWithBackBtn(bundle.getString(FROM_SCREEN));
             } catch (Exception exception) {
                 exception.printStackTrace();
