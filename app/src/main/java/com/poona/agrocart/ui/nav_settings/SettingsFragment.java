@@ -107,7 +107,7 @@ public class SettingsFragment extends BaseFragment {
     private void callUpdatedNotificationApi(ProgressDialog progressDialog) {
         Observer<ViewConfigurationResponse> viewConfigurationResponseObserver = viewConfigurationResponse -> {
             if (viewConfigurationResponse != null) {
-                Log.e("UpdatedNotification Api ResponseData", new Gson().toJson(viewConfigurationResponse));
+                Log.e("Updated Notification Api ResponseData", new Gson().toJson(viewConfigurationResponse));
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }

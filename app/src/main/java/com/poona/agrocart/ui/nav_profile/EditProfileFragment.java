@@ -756,6 +756,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_date_of_birth_input:
+                hideKeyBoard(requireActivity());
                 showCalendar();
                 break;
             case R.id.iv_choose_profile_photo:

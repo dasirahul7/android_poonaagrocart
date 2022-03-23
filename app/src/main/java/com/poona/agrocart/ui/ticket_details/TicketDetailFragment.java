@@ -156,6 +156,7 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
             strMessage = ticketDetailsViewModel.etMessage.getValue();
             if (isConnectingToInternet(context)) {
                 if (!strMessage.equalsIgnoreCase(""))
+                    hideKeyBoard(requireActivity());
                     callSendMessageApi(showCircleProgressDialog(context, ""));
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
@@ -229,14 +230,14 @@ public class TicketDetailFragment extends BaseFragment implements NetworkExcepti
                             ticketDetailsViewModel.ticketDate.setValue(userTicketsDetails.get(0).getCreatedOn());
                             ticketDetailsViewModel.subject.setValue(userTicketsDetails.get(0).getSubject());
                             ticketDetailsViewModel.remark.setValue(userTicketsDetails.get(0).getRemark());
+                            ticketDetailsViewModel.status.setValue(userTicketsDetails.get(0).getStatus());
 
                             if (userTicketsDetails.get(0).getStatus().equalsIgnoreCase("Pending")) {
                                 fragmentTicketDetailBinding.tvTicketStatus.setTextColor(ContextCompat.getColor(context, R.color.color_pending));
-                                ticketDetailsViewModel.status.setValue(userTicketsDetails.get(0).getStatus());
                             } else if (userTicketsDetails.get(0).getStatus().equalsIgnoreCase("Ongoing")) {
                                 fragmentTicketDetailBinding.tvTicketStatus.setTextColor(ContextCompat.getColor(context, R.color.color_ongoing));
-                                ticketDetailsViewModel.status.setValue(userTicketsDetails.get(0).getStatus());
-
+                            }else {
+                                fragmentTicketDetailBinding.tvTicketStatus.setTextColor(ContextCompat.getColor(context, R.color.color_delivered));
                             }
 
                             String selectedDate = userTicketsDetails.get(0).getCreatedOn();

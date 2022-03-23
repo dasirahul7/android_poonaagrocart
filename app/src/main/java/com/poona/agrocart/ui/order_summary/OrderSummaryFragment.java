@@ -263,13 +263,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         } else showNotifyAlert(requireActivity(), context.getString(R.string.info),
                 context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
 
-
-
-
-
     }
-
-
 
     /*Call Order place api here*/
     private void callOrderPlaceAPI(ProgressDialog progressDialog) {
