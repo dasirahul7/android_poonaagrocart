@@ -86,7 +86,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketVi
             } else if (ticket.getStatus().equals("Ongoing")) {
                 rvTicketBinding.tvTicketStatus.setTextColor(Color.parseColor(helpCenterFragment.context.getString(R.color.color_ongoing)));
             } else {
-                rvTicketBinding.tvTicketStatus.setTextColor(Color.parseColor(helpCenterFragment.context.getString(R.color.color_pending)));
+                rvTicketBinding.tvTicketStatus.setTextColor(Color.parseColor(helpCenterFragment.context.getString(R.color.color_delivered)));
             }
             rvTicketBinding.executePendingBindings();
 

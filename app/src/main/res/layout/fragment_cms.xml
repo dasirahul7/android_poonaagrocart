@@ -48,7 +48,7 @@
                         android:id="@+id/iv_back"
                         android:layout_width="?attr/actionBarSize"
                         android:layout_height="?attr/actionBarSize"
-                        android:padding="@dimen/_14sdp"
+                        android:padding="@dimen/_16sdp"
                         android:src="@drawable/ic_back" />
 
                     <com.poona.agrocart.widgets.CustomTextView
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginHorizontal="@dimen/_22sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
                 android:gravity="center"
                 android:text="@string/error_message_terms_and_conditions"
                 android:textColor="@color/black"

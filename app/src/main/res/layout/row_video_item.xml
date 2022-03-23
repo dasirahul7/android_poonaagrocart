@@ -12,14 +12,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_main_layout"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/_180sdp"
+        android:layout_height="@dimen/_170sdp"
         android:paddingLeft="@dimen/_5sdp"
         android:paddingRight="@dimen/_5sdp">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/photoCard"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="@dimen/_180sdp"
+            android:layout_width="@dimen/_140sdp"
+            android:layout_height="@dimen/_170sdp"
             android:background="@android:color/transparent"
             app:cardCornerRadius="@dimen/_10sdp"
             app:cardUseCompatPadding="true"
@@ -31,8 +31,8 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/itemImg"
                 setImage="@{galleryVideo.videoImage}"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="@dimen/_180sdp"
+                android:layout_width="@dimen/_140sdp"
+                android:layout_height="@dimen/_170sdp"
                 android:scaleType="fitXY" />
 
             <ImageView

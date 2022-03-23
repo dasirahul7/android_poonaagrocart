@@ -775,17 +775,18 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private void showCalendar(CustomTextView tvDate) {
         //showing date picker dialog
         DatePickerDialog dpd;
-        calendar = Calendar.getInstance();
+       calendar = Calendar.getInstance();
         Calendar mcurrentDate = Calendar.getInstance();
         mYear = mcurrentDate.get(Calendar.YEAR);
         mMonth = mcurrentDate.get(Calendar.MONTH);
         mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
+        //Set next date
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
         dpd = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 String txtDisplayDate = null;
-                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                String selectedDate = year + "-" + (month + 1) + "-" + (dayOfMonth);
                 try {
                     txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
                 } catch (ParseException e) {
@@ -806,7 +807,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         },
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
         );
-        dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        dpd.getDatePicker().setMinDate(System.currentTimeMillis());
         dpd.show();
 
     }
@@ -976,6 +977,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     /*Subscribe Basket Api*/
+
     /*private void callSubscribeBasketApi(ProgressDialog progressDialog){
         Observer<BaseResponse> baseResponseObserver = baseResponse -> {
             if (baseResponse != null) {

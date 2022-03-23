@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
             android:background="@drawable/bg_gallery_tab"
-            android:padding="@dimen/_10sdp"
+            android:padding="@dimen/_6sdp"
             app:tabGravity="fill"
             app:tabIndicatorColor="@android:color/transparent"
             app:tabIndicatorHeight="0dp"

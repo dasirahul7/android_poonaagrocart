@@ -50,6 +50,8 @@ public class OurStoreAdapter extends RecyclerView.Adapter<OurStoreAdapter.OurSto
         // set page image
         Glide.with(context)
                 .load(IMAGE_DOC_BASE_URL + ourStoresList.get(position).getStoreImage())
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
                 .into(imageView);
     }
 
