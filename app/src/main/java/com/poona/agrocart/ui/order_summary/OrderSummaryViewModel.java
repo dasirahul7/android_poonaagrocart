@@ -98,8 +98,14 @@ public class OrderSummaryViewModel extends AndroidViewModel {
         /*Delivery date and time*/
         deliveryDateMutable.setValue(orderSummaryResponse.delivery.deliveryDate);
         preferences.setDeliveryDate(orderSummaryResponse.delivery.deliveryDate);
-        deliverySlotMutable.setValue(orderSummaryResponse.delivery.deliverySlots.get(0).slotTime);
-        preferences.setDeliverySlot(orderSummaryResponse.delivery.deliverySlots.get(0).slotId);
+        try{
+            if (orderSummaryResponse.delivery.deliverySlots.size()>0){
+                deliverySlotMutable.setValue(orderSummaryResponse.delivery.deliverySlots.get(0).slotTime);
+                preferences.setDeliverySlot(orderSummaryResponse.delivery.deliverySlots.get(0).slotId);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         /*Delivery charge and total amount*/
         subTotalMutable.setValue(String.valueOf(orderSummaryResponse.subTotal).trim());
 //        discountMutable.setValue(String.valueOf(orderSummaryResponse.discount).trim());

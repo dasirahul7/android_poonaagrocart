@@ -317,7 +317,7 @@
                     android:background="@color/color_horizontal_line" />
 
                 <com.poona.agrocart.widgets.CustomButton
-                    android:id="@+id/btn_login"
+                    android:id="@+id/btn_subscribe_now"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
