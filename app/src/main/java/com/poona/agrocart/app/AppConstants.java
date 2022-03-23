@@ -59,6 +59,7 @@ public class AppConstants {
     /*API names here*/
     /*login & register APIs*/
     public static final String FROM_SCREEN = "from_screen";
+    public static final String SUBSCRIPTION = "subscription";
     public static final String LOGIN_API = "api-login-customer";
     public static final String VERIFY_OTP_API = "verify-otp-customer";
     public static final String RESEND_OTP = "resend-otp";

@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.basket_detail;
 
 import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.DELIVERY_DATE;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.ITEM_TYPE;
 import static com.poona.agrocart.app.AppConstants.NO_OF_SUBSCRIPTION;
 import static com.poona.agrocart.app.AppConstants.ORDER_ID;
@@ -20,6 +21,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION_TYPE;
 
 import android.annotation.SuppressLint;
@@ -882,14 +884,20 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         navigate(R.id.action_nav_basket_details_to_nav_product_review, bundle);
                 break;
             case R.id.btn_login:
-                strSubscriptionBasket = tvSubQuatity.getText().toString();
+
+                Bundle bundle1 = new Bundle();
+                //bundle1.putString(SUBSCRIPTION_TYPE, subTypeId);
+                bundle1.putBoolean(SUBSCRIPTION, true);
+                NavHostFragment.findNavController(BasketDetailFragment.this).
+                        navigate(R.id.action_nav_basket_details_to_nav_order_summary,bundle1);
+                /*strSubscriptionBasket = tvSubQuatity.getText().toString();
                 subStartDate = basketDetailsBinding.layoutAdded.tvStartDate.getText().toString();
                 if(!strSubscriptionBasket.isEmpty() && !subStartDate.isEmpty() && !subTypeId.isEmpty()
                     && !slotStartTime.isEmpty() && !slotEndTime.isEmpty()){
                     callSubscribeBasketApi(showCircleProgressDialog(context, ""));
                 }else {
                     warningToast(context, "Please check the details ");
-                }
+                }*/
 
                 break;
 
@@ -917,7 +925,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
     /*Subscribe Basket parameter and api */
 
-    private void callSubscribeBasketApi(ProgressDialog progressDialog){
+    /*private void callSubscribeBasketApi(ProgressDialog progressDialog){
         Observer<BaseResponse> baseResponseObserver = baseResponse -> {
             if (baseResponse != null) {
                 Log.e("Subscribe Basket  Api ResponseData", new Gson().toJson(baseResponse));
@@ -967,7 +975,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
         return map;
     }
-
+*/
     @SuppressLint("SetTextI18n")
     private void increaseQuantitySubscriptionBasket(String qty , CustomTextView etQuantity, ImageView view) {
         int quantity = Integer.parseInt(qty);

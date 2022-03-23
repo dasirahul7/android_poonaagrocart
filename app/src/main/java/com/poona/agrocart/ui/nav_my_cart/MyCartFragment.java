@@ -3,6 +3,7 @@ package com.poona.agrocart.ui.nav_my_cart;
 import static com.poona.agrocart.app.AppConstants.BASKET_ID;
 import static com.poona.agrocart.app.AppConstants.CART_ID;
 import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
+import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.PU_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
@@ -13,6 +14,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_402;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -529,7 +531,9 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
     private void redirectToOrderSummary(View v) {
         if (isConnectingToInternet(context)) {
-            Navigation.findNavController(v).navigate(R.id.action_nav_cart_to_nav_order_summary);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(SUBSCRIPTION, false);
+            Navigation.findNavController(v).navigate(R.id.action_nav_cart_to_nav_order_summary, bundle);
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }

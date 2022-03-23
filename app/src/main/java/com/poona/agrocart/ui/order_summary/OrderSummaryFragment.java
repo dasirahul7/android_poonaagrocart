@@ -17,6 +17,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -114,7 +115,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private boolean onResume,onCreate;
 
     /*Subscription Basket Screen*/
-    private boolean isSubscriptionBasketVisible = true;
+    private boolean isSubscriptionSummary = true;
 
     @Override
     public void onPause() {
@@ -164,8 +165,8 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         initView();
 
         Bundle bundle = this.getArguments();
-        isSubscriptionBasketVisible = bundle.getBoolean("isSubscriptionBasketVisible");
-        Toast.makeText(context, ""+isSubscriptionBasketVisible, Toast.LENGTH_SHORT).show();
+        isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
+        Toast.makeText(context, ""+ isSubscriptionSummary, Toast.LENGTH_SHORT).show();
         /*if (isSubscriptionBasketVisible) {
             Toast.makeText(context, ""+isSubscriptionBasketVisible, Toast.LENGTH_SHORT).show();
             //setBasketContentsVisible();
