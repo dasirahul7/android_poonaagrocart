@@ -320,7 +320,7 @@
     <string name="delivered">Delivered</string>
     <string name="confirmed">Confirmed</string>
     <string name="cancelled">Cancelled</string>
-    <string name="cancelled_order_message">You have cancelled the order</string>
+    <string name="cancelled_order_message">Order Has been cancelled</string>
     <string name="status">Status</string>
     <string name="total_quantity">Total Quantity</string>
     <string name="_25">25</string>
