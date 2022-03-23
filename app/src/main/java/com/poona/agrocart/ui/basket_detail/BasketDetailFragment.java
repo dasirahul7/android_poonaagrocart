@@ -21,6 +21,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_403;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIBE_NOW_ID;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION_TYPE;
 
@@ -61,6 +62,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.responses.Review;
+import com.poona.agrocart.data.network.responses.basketSubscriptionResponse.SubscribeNowResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.databinding.FragmentBasketDetailBinding;
@@ -864,7 +866,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 addOrRemoveFromFavourite();
                 break;
             case R.id.tv_start_date:
-                //showCalendar(basketDetailsBinding.layoutAdded.tvStartDate);
+                showCalendar(basketDetailsBinding.layoutAdded.tvStartDate);
                 break;
             case R.id.btn_submit:
                 if (isConnectingToInternet(context)) {
@@ -884,20 +886,14 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         navigate(R.id.action_nav_basket_details_to_nav_product_review, bundle);
                 break;
             case R.id.btn_login:
-
-                Bundle bundle1 = new Bundle();
-                //bundle1.putString(SUBSCRIPTION_TYPE, subTypeId);
-                bundle1.putBoolean(SUBSCRIPTION, true);
-                NavHostFragment.findNavController(BasketDetailFragment.this).
-                        navigate(R.id.action_nav_basket_details_to_nav_order_summary,bundle1);
-                /*strSubscriptionBasket = tvSubQuatity.getText().toString();
+                strSubscriptionBasket = tvSubQuatity.getText().toString();
                 subStartDate = basketDetailsBinding.layoutAdded.tvStartDate.getText().toString();
                 if(!strSubscriptionBasket.isEmpty() && !subStartDate.isEmpty() && !subTypeId.isEmpty()
                     && !slotStartTime.isEmpty() && !slotEndTime.isEmpty()){
                     callSubscribeBasketApi(showCircleProgressDialog(context, ""));
                 }else {
                     warningToast(context, "Please check the details ");
-                }*/
+                }
 
                 break;
 
@@ -924,6 +920,59 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     /*Subscribe Basket parameter and api */
+
+    private void callSubscribeBasketApi(ProgressDialog progressDialog){
+        Observer<SubscribeNowResponse> subscribeNowResponseObserver = subscribeNowResponse -> {
+            if (subscribeNowResponse != null) {
+                Log.e("Subscribe Now  Api ResponseData", new Gson().toJson(subscribeNowResponse));
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                switch (subscribeNowResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, subscribeNowResponse.getMessage());
+                        String subscriptionNowId = String.valueOf(subscribeNowResponse.getSubscribeNowId());
+
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString(SUBSCRIBE_NOW_ID, subscriptionNowId);
+                        bundle1.putBoolean(SUBSCRIPTION, true);
+                        NavHostFragment.findNavController(BasketDetailFragment.this).
+                                navigate(R.id.action_nav_basket_details_to_nav_order_summary);
+
+                        break;
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, subscribeNowResponse.getMessage());
+
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(subscribeNowResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, subscribeNowResponse.getMessage());
+                        break;
+                }
+            } else {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+
+        };
+        basketDetailViewModel.getSubscrideBasketApi(context, progressDialog, SubscriptionNowInputParameter(), BasketDetailFragment.this)
+                .observe(getViewLifecycleOwner(), subscribeNowResponseObserver);
+    }
+
+    private HashMap<String, String> SubscriptionNowInputParameter(){
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put(SUBSCRIPTION_TYPE, subTypeId);
+        map.put(NO_OF_SUBSCRIPTION, String.valueOf(strSubscriptionBasket));
+        map.put(START_DATE, subStartDate);
+        map.put(SLOT_ID, subscriptionSlotId);
+        map.put(BASKET_ID, basketId);
+
+        return map;
+    }
 
     /*private void callSubscribeBasketApi(ProgressDialog progressDialog){
         Observer<BaseResponse> baseResponseObserver = baseResponse -> {

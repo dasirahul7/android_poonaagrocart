@@ -261,6 +261,7 @@ public class AppConstants {
     public static final String MY_SUBSCRIBE_BASKET_DETAILS_CUSTOMER = "my-subscribe-basket-details-customer";
     public static final String SUBSCRIBE_BASKET_PRODUCTS = "subscribed-basket-products";
     public static final String SUBSCRIBE_BASKET_CUSTOMER = "subscribe-basket-customer";
+    public static final String SUBSCRIBE_NOW = "subscribe-now";
     public static final String ORDER_TRACK = "order-track";
     public static final String RATE_SUBSCRIBED_BASKET = "rate-subscribed-basket";
 
@@ -367,7 +368,7 @@ public class AppConstants {
     public static String ORDER_SUBSCRIPTION_ID = "order_subscription_id";
     public static String CANCEL_ID = "cancel_id";
     public static final String ITEM_LIST = "item_list";
-
+    public static final String SUBSCRIBE_NOW_ID = "subscribe_now_id";
     public static final String SUBSCRIPTION_TYPE = "subscription_type";
     public static final String NO_OF_SUBSCRIPTION = "no_of_subscription";
     public static final String START_DATE = "start_date";

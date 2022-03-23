@@ -17,6 +17,7 @@ import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.responses.Review;
+import com.poona.agrocart.data.network.responses.basketSubscriptionResponse.SubscribeNowResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.Delivery;
 import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
@@ -340,18 +341,18 @@ public class BasketDetailViewModel extends AndroidViewModel {
     }
 
 
-    public LiveData<BaseResponse> getSubscrideBasketApi(Context context, ProgressDialog progressDialog
-            , HashMap<String, String> subscriptionBasketInputParameter, BasketDetailFragment basketDetailFragment) {
+    public LiveData<SubscribeNowResponse> getSubscrideBasketApi(Context context, ProgressDialog progressDialog
+            , HashMap<String, String> SubscriptionNowInputParameter, BasketDetailFragment basketDetailFragment) {
 
-        MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
+        MutableLiveData<SubscribeNowResponse> baseResponseMutableLiveData = new MutableLiveData<>();
         ApiClientAuth.getClient(context)
                 .create(ApiInterface.class)
-                .getSubscriptionBasketDetailsApi(subscriptionBasketInputParameter)
+                .getSubscriptionNowApi(SubscriptionNowInputParameter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                .subscribeWith(new DisposableSingleObserver<SubscribeNowResponse>() {
                     @Override
-                    public void onSuccess(BaseResponse baseResponse) {
+                    public void onSuccess(SubscribeNowResponse baseResponse) {
                         if (baseResponse != null) {
                             progressDialog.dismiss();
                             baseResponseMutableLiveData.setValue(baseResponse);
@@ -362,10 +363,10 @@ public class BasketDetailViewModel extends AndroidViewModel {
                     public void onError(Throwable e) {
                         progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
-                        BaseResponse response = new BaseResponse();
+                        SubscribeNowResponse response = new SubscribeNowResponse();
                         try {
                             response = gson.fromJson(((HttpException) e).response().errorBody().string(),
-                                    BaseResponse.class);
+                                    SubscribeNowResponse.class);
 
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {

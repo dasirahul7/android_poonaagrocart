@@ -135,6 +135,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     public void onResume() {
         super.onResume();
         onResume= true;
+
         requireActivity().findViewById(R.id.bottom_navigation_view).setVisibility(View.GONE);
         setBottomMarginInDps(0);
         if (preferences.getPaymentReference()!=null || !preferences.getPaymentReference().equalsIgnoreCase(""))
@@ -164,9 +165,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         initTitleWithBackBtn(getString(R.string.order_summary));
         initView();
 
-        Bundle bundle = this.getArguments();
-        isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
-        Toast.makeText(context, ""+ isSubscriptionSummary, Toast.LENGTH_SHORT).show();
+        //Bundle bundle = this.getArguments();
+        //isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
+       // Toast.makeText(context, ""+ isSubscriptionSummary, Toast.LENGTH_SHORT).show();
         /*if (isSubscriptionBasketVisible) {
             Toast.makeText(context, ""+isSubscriptionBasketVisible, Toast.LENGTH_SHORT).show();
             //setBasketContentsVisible();
@@ -639,11 +640,12 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                     progressDialog.dismiss();
                 switch (razorPayResponse.getStatus()){
                         case STATUS_CODE_200://Record Create/Update Successfully
-                            if (razorPayResponse.getData().getKeySecret()!=null
-                                    && !razorPayResponse.getData().getKeySecret().equalsIgnoreCase("")){
+                            if (razorPayResponse.getData().getKeyId()!=null
+                                    && !razorPayResponse.getData().getKeyId().equalsIgnoreCase("")){
                                 preferences.setRazorCredentials(razorPayResponse.getData().getKeyId(),
                                         razorPayResponse.getData().getType(),
                                         razorPayResponse.getData().getCurrency());
+                                Log.d(TAG, "CallPaymentCredentialApi: "+razorPayResponse.getData().getKeyId());
                                 preferences.setPaymentReferenceId("");
                             }
                             break;
