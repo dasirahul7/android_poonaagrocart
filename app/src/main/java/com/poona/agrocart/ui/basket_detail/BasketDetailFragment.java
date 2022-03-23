@@ -200,7 +200,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         basketDetailsBinding.layoutAdded.imgPlus.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.imgMinus.setOnClickListener(this);
         basketDetailsBinding.layoutAdded.tvStartDate.setOnClickListener(this);
-        basketDetailsBinding.layoutAdded.btnLogin.setOnClickListener(this);
+        basketDetailsBinding.layoutAdded.btnSubscribeNow.setOnClickListener(this);
 
         vpImages = basketDetailsBinding.vpProductImages;
         dotsIndicator = basketDetailsBinding.dotsIndicator;
@@ -881,7 +881,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 NavHostFragment.findNavController(BasketDetailFragment.this).
                         navigate(R.id.action_nav_basket_details_to_nav_product_review, bundle);
                 break;
-            case R.id.btn_login:
+            case R.id.btn_subscribe_now:
                 strSubscriptionBasket = tvSubQuatity.getText().toString();
                 subStartDate = basketDetailsBinding.layoutAdded.tvStartDate.getText().toString();
                 if(!strSubscriptionBasket.isEmpty() && !subStartDate.isEmpty() && !subTypeId.isEmpty()

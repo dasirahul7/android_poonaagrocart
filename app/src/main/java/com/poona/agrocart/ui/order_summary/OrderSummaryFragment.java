@@ -467,13 +467,16 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         deliverySlotArrayList = new ArrayList<>();
         orderSummaryViewModel.arrayDeliveryListMutableLiveData.observe(getViewLifecycleOwner(), deliveries -> {
 //            deliveryArrayList= deliveries;
-            ArrayList<DeliverySlot> tempSlots = new ArrayList<>();
-            for (DeliverySlot deliverySlot : deliveries.deliverySlots) {
-                if (deliverySlot.isAvailable > 0)
-                    tempSlots.add(deliverySlot);
-            }
-            deliverySlotArrayList.addAll(tempSlots);
-            deliveryDialogAdapter = new DeliveryDialogAdapter(deliverySlotArrayList, context, this);
+            if (deliveries.deliverySlots.size()>0){
+                ArrayList<DeliverySlot> tempSlots = new ArrayList<>();
+                for (DeliverySlot deliverySlot : deliveries.deliverySlots) {
+                    if (deliverySlot.isAvailable > 0) {
+                        tempSlots.add(deliverySlot);
+                    }
+                }
+                deliverySlotArrayList.addAll(tempSlots);
+                deliveryDialogAdapter = new DeliveryDialogAdapter(deliverySlotArrayList, context, this);
+            }else infoToast(context,"no slot available");
         });
     }
 
