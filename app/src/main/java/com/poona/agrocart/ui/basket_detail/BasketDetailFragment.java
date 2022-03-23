@@ -888,8 +888,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             case R.id.btn_subscribe_now:
                 strSubscriptionBasket = tvSubQuatity.getText().toString();
                 subStartDate = basketDetailsBinding.layoutAdded.tvStartDate.getText().toString();
-                if(!strSubscriptionBasket.isEmpty() && !subStartDate.isEmpty() && !subTypeId.isEmpty()
-                    && !slotStartTime.isEmpty() && !slotEndTime.isEmpty()){
+                if(!strSubscriptionBasket.isEmpty() && !subStartDate.isEmpty() && !subTypeId.isEmpty()){
                     callSubscribeBasketApi(showCircleProgressDialog(context, ""));
                 }else {
                     warningToast(context, "Please check the details ");
@@ -937,7 +936,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         bundle1.putString(SUBSCRIBE_NOW_ID, subscriptionNowId);
                         bundle1.putBoolean(SUBSCRIPTION, true);
                         NavHostFragment.findNavController(BasketDetailFragment.this).
-                                navigate(R.id.action_nav_basket_details_to_nav_order_summary);
+                                navigate(R.id.action_nav_basket_details_to_nav_order_summary,bundle1);
 
                         break;
                     case STATUS_CODE_404://Validation Errors
@@ -974,6 +973,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         return map;
     }
 
+    /*Subscribe Basket Api*/
     /*private void callSubscribeBasketApi(ProgressDialog progressDialog){
         Observer<BaseResponse> baseResponseObserver = baseResponse -> {
             if (baseResponse != null) {
@@ -1025,6 +1025,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         return map;
     }
 */
+
+
     @SuppressLint("SetTextI18n")
     private void increaseQuantitySubscriptionBasket(String qty , CustomTextView etQuantity, ImageView view) {
         int quantity = Integer.parseInt(qty);
@@ -1203,13 +1205,3 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         subTypeId = type.getSubscriptionType();
     }
 }
-    /*Subscription Basket Screen*//*
-    private boolean isSubscriptionSummary = true;*/
-
-//Bundle bundle = this.getArguments();
-//isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
-// Toast.makeText(context, ""+ isSubscriptionSummary, Toast.LENGTH_SHORT).show();
-        /*if (isSubscriptionBasketVisible) {
-            Toast.makeText(context, ""+isSubscriptionBasketVisible, Toast.LENGTH_SHORT).show();
-            //setBasketContentsVisible();
-        }*/
