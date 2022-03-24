@@ -16,8 +16,10 @@ import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
+import com.poona.agrocart.data.network.responses.walletTransaction.TransactionType;
 import com.poona.agrocart.data.network.responses.walletTransaction.TransactionTypeResponse;
-import com.poona.agrocart.data.network.responses.walletTransaction.WalletTransactionType;
+import com.poona.agrocart.data.network.responses.walletTransaction.WalletTransaction;
+import com.poona.agrocart.data.network.responses.walletTransaction.WalletTransactionListResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,28 +37,32 @@ public class WalletTransactionViewModel extends AndroidViewModel {
     public MutableLiveData<String> walletFromDateMutable;
     public MutableLiveData<String> walletToDateMutable;
     public MutableLiveData<String> transactionTypeMutable;
-    public MutableLiveData<ArrayList<WalletTransactionType>> walletTransactionTypeListMutable;
+    public MutableLiveData<ArrayList<WalletTransaction>> walletTransactionMutableList;
+    public MutableLiveData<ArrayList<TransactionType>> transactionTypeMutableList;
     public WalletTransactionViewModel(@NonNull Application application) {
         super(application);
         walletBalanceMutable = new MutableLiveData<>();
         walletFromDateMutable = new MutableLiveData<>();
         walletToDateMutable = new MutableLiveData<>();
         transactionTypeMutable = new MutableLiveData<>();
-        walletTransactionTypeListMutable = new MutableLiveData<>();
+        transactionTypeMutableList = new MutableLiveData<>();
+        walletTransactionMutableList = new MutableLiveData<>();
         walletBalanceMutable.setValue(null);
         walletFromDateMutable.setValue(null);
         walletToDateMutable.setValue(null);
         transactionTypeMutable.setValue(null);
-        walletTransactionTypeListMutable.setValue(null);
+        transactionTypeMutableList.setValue(null);
+        walletTransactionMutableList.setValue(null);
     }
 
     /*
     onNetworkException : priorities
     0 :getTransactionTypeApiResponse
-    1 :getPaymentToWalletApiResponse
+    1 :getWalletTransactionListApiResponse
+    2 :getPaymentToWalletApiResponse
    */
     /*call transaction type lis API here*/
-    public LiveData<TransactionTypeResponse> transactionTypeResponseLiveData(ProgressDialog progressDialog,
+    public LiveData<TransactionTypeResponse> getTransactionTypeResponseLiveData(ProgressDialog progressDialog,
                                                                              WalletTransactionFragment walletTransactionFragment){
         MutableLiveData<TransactionTypeResponse> transactionTypeResponseMutableLiveData = new MutableLiveData<>();
 
@@ -94,10 +100,48 @@ public class WalletTransactionViewModel extends AndroidViewModel {
         return transactionTypeResponseMutableLiveData;
     }
 
+    /*Call Wallet Transaction List API here*/
+    public LiveData<WalletTransactionListResponse> getWalletTransactionListResponse(ProgressDialog progressDialog,
+                                                                                    HashMap<String,String> hashMap,
+                                                                                    WalletTransactionFragment walletTransactionFragment){
+        MutableLiveData<WalletTransactionListResponse> transactionListResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(walletTransactionFragment.getContext())
+                .create(ApiInterface.class)
+                .getWalletTransactionListResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<WalletTransactionListResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull WalletTransactionListResponse walletTransactionListResponse) {
+                        if (walletTransactionListResponse!=null){
+                            if (progressDialog!=null)
+                                progressDialog.dismiss();
+                            transactionListResponseMutableLiveData.setValue(walletTransactionListResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        WalletTransactionListResponse transactionListResponse = new WalletTransactionListResponse();
+                        try {
+                            transactionListResponse = gson.fromJson(Objects.requireNonNull(Objects.requireNonNull(((HttpException) e).response()).errorBody()).string(),
+                                    WalletTransactionListResponse.class);
+                            transactionListResponseMutableLiveData.setValue(transactionListResponse);
+                        } catch (JsonSyntaxException | IOException exception) {
+                            Log.e(TAG, "onError: " + exception.getMessage());
+                            ((NetworkExceptionListener) walletTransactionFragment).onNetworkException(1, "");
+                        }
+                    }
+                });
+        return transactionListResponseMutableLiveData;
+    }
     /*Call Payment To Wallet API here*/
-    public LiveData<BaseResponse> addToWalletApiResponse(ProgressDialog progressDialog,
-                                                         HashMap<String,String> hashMap,
-                                                         WalletTransactionFragment walletTransactionFragment){
+    public LiveData<BaseResponse> callPaymentToWalletApiResponse(ProgressDialog progressDialog,
+                                                                 HashMap<String,String> hashMap,
+                                                                 WalletTransactionFragment walletTransactionFragment){
         MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
         ApiClientAuth.getClient(walletTransactionFragment.context)
                 .create(ApiInterface.class)
@@ -126,7 +170,7 @@ public class WalletTransactionViewModel extends AndroidViewModel {
                             baseResponseMutableLiveData.setValue(baseResponse);
                         } catch (JsonSyntaxException | IOException exception) {
                             Log.e(TAG, "onError: " + exception.getMessage());
-                            ((NetworkExceptionListener) walletTransactionFragment).onNetworkException(1, "");
+                            ((NetworkExceptionListener) walletTransactionFragment).onNetworkException(2, "");
                         }
                     }
                 });

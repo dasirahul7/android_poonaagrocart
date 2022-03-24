@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+    <data>
+        <variable
+            name="wallet"
+            type="com.poona.agrocart.ui.nav_wallet.WalletTransactionViewModel" />
+    </data>
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main_layout"
@@ -59,10 +66,10 @@
 
                             <com.poona.agrocart.widgets.CustomTextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="@dimen/_24sdp"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:paddingStart="@dimen/_16sdp"
-                                android:text="@string/rs_1500"
+                                android:text='@{`Rs. `+wallet.walletBalanceMutable ?? ""}'
                                 android:textColor="@color/txt_dark_green"
                                 android:textSize="@dimen/_20sp"
                                 android:textStyle="bold" />
@@ -90,16 +97,20 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+
             <Spinner
                 android:id="@+id/spinner_paid"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:elevation="@dimen/_2sdp"
+                android:paddingTop="@dimen/_4sdp"
+                android:paddingStart="@dimen/_4sdp"
+                android:paddingEnd="@dimen/_4sdp"
+                android:gravity="start|center_vertical"
                 android:layout_marginTop="@dimen/_14sdp"
+                android:textSize="@dimen/_12sp"
                 android:background="@drawable/bg_my_profile_spinner"
-                android:elevation="@dimen/_6sdp"
-                android:paddingStart="@dimen/_6sdp"
-                android:textSize="@dimen/_14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_wallet_amount"
                 app:setCustomFont="@string/font_poppins_regular"
@@ -115,6 +126,7 @@
                 app:layout_constraintTop_toBottomOf="@id/spinner_paid">
 
                 <LinearLayout
+                    android:id="@+id/ll_from_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
@@ -145,12 +157,14 @@
                         android:background="@drawable/bg_my_profile_dob"
                         android:elevation="@dimen/_6sdp"
                         android:padding="@dimen/alerter_padding_half"
+                        android:text="@{wallet.walletFromDateMutable}"
                         android:textColor="@color/color_spinner"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_to_date"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
@@ -181,6 +195,7 @@
                         android:elevation="@dimen/_6sdp"
                         android:enabled="false"
                         android:padding="@dimen/alerter_padding_half"
+                        android:text="@{wallet.walletToDateMutable}"
                         android:textColor="@color/color_spinner"
                         android:textSize="@dimen/_14sp"
                         app:setCustomFont="@string/font_poppins_regular" />
@@ -196,11 +211,21 @@
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:paddingBottom="@dimen/_8sdp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ll_from_and_to_date" />
+            <com.poona.agrocart.widgets.CustomTextView
+                android:visibility="gone"
+                android:id="@+id/tv_no_data"
+                android:gravity="center"
+                android:text="No Transaction available"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_from_and_to_date" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </layout>

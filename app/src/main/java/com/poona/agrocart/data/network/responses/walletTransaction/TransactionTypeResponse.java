@@ -14,7 +14,7 @@ public class TransactionTypeResponse {
     private String message;
     @SerializedName("wallet_transaction_type_list")
     @Expose
-    private ArrayList<WalletTransactionType> walletTransactionTypeList = null;
+    private ArrayList<TransactionType> transactionTypeList = null;
 
     public Integer getStatus() {
         return status;
@@ -32,11 +32,11 @@ public class TransactionTypeResponse {
         this.message = message;
     }
 
-    public ArrayList<WalletTransactionType> getWalletTransactionTypeList() {
-        return walletTransactionTypeList;
+    public ArrayList<TransactionType> getTransactionTypeList() {
+        return transactionTypeList;
     }
 
-    public void setWalletTransactionTypeList(ArrayList<WalletTransactionType> walletTransactionTypeList) {
-        this.walletTransactionTypeList = walletTransactionTypeList;
+    public void setTransactionTypeList(ArrayList<TransactionType> transactionTypeList) {
+        this.transactionTypeList = transactionTypeList;
     }
 }

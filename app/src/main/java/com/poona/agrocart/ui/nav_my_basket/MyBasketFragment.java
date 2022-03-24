@@ -148,6 +148,7 @@ public class MyBasketFragment extends BaseFragment implements NetworkExceptionLi
     }
 
     /*Download the document*/
+/*
     private void beginDownload(String docPdf) {
         DownloadManager.Request request = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -204,6 +205,7 @@ public class MyBasketFragment extends BaseFragment implements NetworkExceptionLi
             }
         }
     }
+*/
 
     @Override
     public void onNetworkException(int from, String type) {

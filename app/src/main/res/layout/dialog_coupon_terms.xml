@@ -83,6 +83,7 @@
                     android:gravity="start"
                     android:padding="@dimen/_8sdp"
                     android:singleLine="true"
+                    android:inputType="numberDecimal"
                     android:textColor="@color/color_grey_txt"
                     android:textSize="@dimen/_14sp"
                     app:setCustomFont="@string/font_poppins_regular" />

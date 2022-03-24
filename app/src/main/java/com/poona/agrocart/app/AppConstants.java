@@ -279,7 +279,7 @@ public class AppConstants {
 
     /*Wallet & Transaction KEYS here*/
     public static final String WALLET_AMOUNT ="wallet_amt";
-    public static final String TRANSACTION_ID ="wallet_transaction_type_id";
+    public static final String TRANSACTION_TYPE_ID ="wallet_transaction_type_id";
     public static final String FROM_DATE ="from_date";
     public static final String TO_DATE ="to_date";
 

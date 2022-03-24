@@ -227,6 +227,7 @@
         <entry key="app/src/main/res/layout/content_splash_activity.xml" value="0.1" />
         <entry key="app/src/main/res/layout/custom_list_item_checked.xml" value="0.14" />
         <entry key="app/src/main/res/layout/custom_media_controller.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/custom_spinner.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/custom_spinner_list_item.xml" value="0.15885416666666666" />
         <entry key="app/src/main/res/layout/custom_spinner_list_item_checked.xml" value="0.17" />
         <entry key="app/src/main/res/layout/dialog_basket_filter_list.xml" value="0.18" />
@@ -295,7 +296,7 @@
         <entry key="app/src/main/res/layout/fragment_ticket_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_verify_otp.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_video.xml" value="0.17291666666666666" />
-        <entry key="app/src/main/res/layout/fragment_wallet_transaction.xml" value="0.14673913043478262" />
+        <entry key="app/src/main/res/layout/fragment_wallet_transaction.xml" value="0.1" />
         <entry key="app/src/main/res/layout/home_basket_item.xml" value="0.15489130434782608" />
         <entry key="app/src/main/res/layout/home_best_selling_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/home_cat_item.xml" value="0.15489130434782608" />
@@ -344,6 +345,7 @@
         <entry key="app/src/main/res/layout/rv_store.xml" value="0.22" />
         <entry key="app/src/main/res/layout/rv_ticket.xml" value="0.18" />
         <entry key="app/src/main/res/layout/rv_ticket_comment.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/rv_transaction.xml" value="0.33" />
         <entry key="app/src/main/res/layout/store_location_fragment.xml" value="0.16" />
         <entry key="app/src/main/res/layout/subscription_plan_type_recycler_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/text_spinner_wallet_transactions.xml" value="0.13958333333333334" />
