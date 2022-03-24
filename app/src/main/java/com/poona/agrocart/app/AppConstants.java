@@ -222,6 +222,7 @@ public class AppConstants {
 
     /*Product API Keys*/
     public static final String PRODUCT_ID = "product_id";
+    public static final String PRODUCT_NAME = "product_name";
 
     public static final String PU_ID = "pu_id";
     public static final String QUANTITY = "quantity";

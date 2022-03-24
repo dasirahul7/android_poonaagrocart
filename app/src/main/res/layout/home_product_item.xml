@@ -67,7 +67,7 @@
                     android:text='@{homeProductModel.productName ?? ""}'
                     android:textColor="@color/blue_txt_color"
                     android:textSize="@dimen/_16sp"
-                    app:setCustomFont="@string/font_poppins_bold" />
+                    app:setCustomFont="@string/font_poppins_semi_bold" />
 
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_location"

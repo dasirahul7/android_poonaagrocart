@@ -4,13 +4,17 @@ import static com.poona.agrocart.app.AppConstants.BRAND_ID;
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID_VALUE;
 import static com.poona.agrocart.app.AppConstants.ORDER_ID;
+import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
 import static com.poona.agrocart.app.AppConstants.SORT_BY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppUtils.hideKeyBoard;
 import static com.poona.agrocart.app.AppUtils.infoToast;
+import static com.poona.agrocart.app.AppUtils.isConnectingToInternet;
 import static com.poona.agrocart.app.AppUtils.showCircleProgressDialog;
+import static com.poona.agrocart.app.AppUtils.showNotifyAlert;
 import static com.poona.agrocart.app.AppUtils.successToast;
 import static com.poona.agrocart.app.AppUtils.warningToast;
 
@@ -39,6 +43,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.filterResponse.BrandFliterList;
 import com.poona.agrocart.data.network.responses.filterResponse.CategoryFilterList;
 import com.poona.agrocart.data.network.responses.filterResponse.FilterListResponse;
@@ -52,8 +57,9 @@ import com.poona.agrocart.ui.products_list.ProductListFragment;
 import com.poona.agrocart.widgets.ExpandIconView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class BottomSheetFilterFragment extends BottomSheetDialogFragment implements View.OnClickListener {
+public class BottomSheetFilterFragment extends BottomSheetDialogFragment implements View.OnClickListener, NetworkExceptionListener {
     private BottomSheetFilterDialogBinding bottomSheetFilterFragment;
     private FilterItemAdapter categoryAdapter, sortByAdapter, brandAdapter;
     private BasketFilterViewModel basketFilterViewModel;
@@ -67,42 +73,25 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
     private boolean isBrandVisible = true;
     private View view;
     private boolean showCategory;
-    private Bundle bundle;
+    private Bundle bundle ;
     public String sortById = "", brandId = "", strCategoryId = "";
     public ArrayList<String> sortByIds = new ArrayList<>();
     public ArrayList<String> brandIds = new ArrayList<>();
     public ArrayList<String> categoryIds = new ArrayList<>();
+    
     public ArrayList<String> preCategoryIds = new ArrayList<>();
     public OnClickButtonListener onClickButtonListener;
-
-
-    public ArrayList<String> getPreCategoryIds() {
-        return preCategoryIds;
-    }
-
-    public void setPreCategoryIds(ArrayList<String> preCategoryIds) {
-        this.preCategoryIds = preCategoryIds;
-    }
+    ProductListFragment productListFragment = new ProductListFragment();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-            try {
-                if (bundle!=null){
-                    if (bundle.getStringArrayList(CATEGORY_ID_VALUE)!=null)
-                    preCategoryIds = getArguments().getStringArrayList(CATEGORY_ID_VALUE);
-                }
-                Log.e("TAG", "onCreate: "+getPreCategoryIds().size() );
-            }catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-
+        
     }
 
-    public BottomSheetFilterFragment(boolean showCategory,Bundle bundle) {
+    public BottomSheetFilterFragment(boolean showCategory) {
         this.showCategory = showCategory;
-        this.bundle = bundle;
+
 
     }
 
@@ -111,8 +100,13 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         bottomSheetFilterFragment = BottomSheetFilterDialogBinding.inflate(LayoutInflater.from(getActivity()));
         basketFilterViewModel = new ViewModelProvider(this).get(BasketFilterViewModel.class);
         view = bottomSheetFilterFragment.getRoot();
+        initView();
+        if(isConnectingToInternet(requireContext())){
+            callFilterListApi(showCircleProgressDialog(getContext(),""));
+        }else {
+            showNotifyAlert(requireActivity(), getString(R.string.info), getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
 
-        callFilterListApi(showCircleProgressDialog(getContext(),""));
         setClicks();
 
         //Hide all list by default
@@ -127,6 +121,23 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
 
         return view;
     }
+
+
+
+    private void initView() {
+
+        bundle = this.getArguments();
+        if(bundle != null){
+            strCategoryId = bundle.getString(CATEGORY_ID_VALUE);
+            brandId = bundle.getString(BRAND_ID);
+            sortById= bundle.getString(SORT_BY);
+        }
+
+
+
+    }
+
+
 
 
     private void setClicks() {
@@ -151,6 +162,21 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
                     , bundle);*/
 
         });
+    }
+
+    @Override
+    public void onNetworkException(int from, String type) {
+
+            if (isConnectingToInternet(getContext())) {
+                hideKeyBoard(requireActivity());
+                switch (from) {
+                    case 0:
+                        callFilterListApi(showCircleProgressDialog(getContext(),""));
+                        break;
+
+                }
+            }
+
     }
 
     public interface OnClickButtonListener{
@@ -209,8 +235,11 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
             for (CategoryFilterList item: categoryFilterItems){
                 if(item.getId().isEmpty()){
                     FilterItem filterItem = new FilterItem(item.getId(),item.getCategoryName(),false);
+                    preCategoryIds = new ArrayList<String>(Arrays.asList(strCategoryId.split(",")));
+
                     if (preCategoryIds.contains(filterItem.getId()))
-                        filterItem.setSelected(true);
+
+                        filterItem.isSelected();
                 }else {
                     FilterItem filterItem = new FilterItem(item.getId(), item.getCategoryName(), false);
                     categoryItems.add(filterItem);

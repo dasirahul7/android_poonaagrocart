@@ -396,6 +396,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
                 fragmentOrderViewBinding.tvOrderStatus.setText(context.getString(R.string.delivered));
                 fragmentOrderViewBinding.tvOrderStatus.setTextColor(Color.parseColor(context.getString(R.color.color_delivered)));
 
+                fragmentOrderViewBinding.llCancel.setVisibility(View.GONE);
                 fragmentOrderViewBinding.llMainLayoutRatingReview.setVisibility(View.VISIBLE);
 
                 break;

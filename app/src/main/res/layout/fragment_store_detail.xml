@@ -16,8 +16,6 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_main_layout"
                 android:layout_width="match_parent"
@@ -38,44 +36,50 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/green_cart_bg"
-                        android:padding="@dimen/_10sdp">
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:paddingHorizontal="@dimen/_6sdp"
+                        >
 
-                        <com.poona.agrocart.widgets.CustomTextView
-                            android:id="@+id/tv_store_name"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_height="match_parent"
                             android:layout_toStartOf="@+id/img_store"
-                            android:padding="@dimen/_5sdp"
-                            android:text="@{storeDetailViewModel.storeName}"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_24sp"
-                            android:textStyle="bold"
-                            app:setCustomFont="@string/font_poppins_bold"
-                            app:textAllCaps="false" />
-
-                        <com.poona.agrocart.widgets.CustomTextView
-                            android:id="@+id/tv_store_location"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_5sdp"
-                            android:layout_marginBottom="@dimen/_10sdp"
-                            android:layout_toStartOf="@+id/img_store"
-                            android:padding="@dimen/_5sdp"
-                            android:text="@{storeDetailViewModel.storeArea + storeDetailViewModel.storeCity}"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_12sp"
-                            app:setCustomFont="@string/font_poppins_regular" />
+                            android:weightSum="2"
+                            android:orientation="vertical">
+
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_store_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.9"
+                                android:text="@{storeDetailViewModel.storeName}"
+                                android:fallbackLineSpacing="true"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_18sp"
+                                app:setCustomFont="@string/font_poppins_semi_bold"
+                                app:textAllCaps="false" />
+
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_store_location"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.1"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:layout_gravity="bottom"
+                                android:text="@{storeDetailViewModel.storeArea +`, `+storeDetailViewModel.storeCity}"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12sp"
+                                app:setCustomFont="@string/font_poppins_regular" />
+
+                        </LinearLayout>
+
 
 
                         <ImageView
                             android:id="@+id/img_store"
-                            android:layout_width="@dimen/_110sdp"
-                            android:layout_height="@dimen/_110sdp"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_100sdp"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true" />
 

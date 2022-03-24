@@ -242,7 +242,7 @@
         <entry key="app/src/main/res/layout/faq_recycler_view_item.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_about_us.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_addresses.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_addresses_form.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_addresses_form.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_app_info.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_basket_detail.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_basket_item.xml" value="0.1537037037037037" />

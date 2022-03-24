@@ -140,7 +140,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:includeFontPadding="false"
-                            android:text="@{`Rs.`+basketViewModel.basketRate}"
+                            android:text="@{`Rs. `+basketViewModel.basketRate}"
                             android:textColor="@color/clr_enter_otp"
                             android:textSize="@dimen/_24sp"
                             app:setCustomFont="@string/font_poppins_regular" />

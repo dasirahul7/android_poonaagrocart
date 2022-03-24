@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.product_detail;
 
 import static com.poona.agrocart.app.AppConstants.BASE_URL;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
+import static com.poona.agrocart.app.AppConstants.PRODUCT_NAME;
 import static com.poona.agrocart.app.AppConstants.PU_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.RATING;
@@ -123,6 +124,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private ArrayList<Review> allReview = new ArrayList<>();
     private NestedScrollView scrollView;
     private RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    private String strProductName = "";
 
 
     @Override
@@ -130,6 +132,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             strProductId = getArguments().getString(PRODUCT_ID);
+            strProductName = getArguments().getString(PRODUCT_NAME);
         }
     }
 
@@ -140,6 +143,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         fragmentProductDetailBinding.setLifecycleOwner(this);
         root = fragmentProductDetailBinding.getRoot();
         initTitleWithBackBtn("");
+
         initView();
         setSimilarItems();
         rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -163,7 +167,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             else {
                 layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
                 ((HomeActivity)context).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
-                ((HomeActivity)context).binding.appBarHome.textTitle.setText("");
+                ((HomeActivity)context).binding.appBarHome.textTitle.setText(strProductName);
             }
         });
 
@@ -320,6 +324,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void setDetailsValue() {
         unit = details.getUnit();
+
+
         productDetailViewModel.productName.setValue(details.getProductName());
         if (details.getLocation().isEmpty())
             fragmentProductDetailBinding.tvLocation.setVisibility(View.GONE);
@@ -354,6 +360,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         productDetailViewModel.productWeightPolicy.setValue(details.getWeightPolicy());
         productDetailViewModel.productNutrition.setValue(details.getNutrition());
         productDetailViewModel.productBrand.setValue(details.getBrandName());
+
+        ((HomeActivity)context).binding.appBarHome.textTitle.setText(details.getProductName());
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
+        ((HomeActivity)context).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
+
         if (details.getIsO3().equalsIgnoreCase("yes"))
             productDetailViewModel.isOrganic.setValue(true);
         else

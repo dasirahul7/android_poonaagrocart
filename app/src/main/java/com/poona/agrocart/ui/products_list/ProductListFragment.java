@@ -16,6 +16,7 @@ import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
 import static com.poona.agrocart.app.AppConstants.OFFSET;
 
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
+import static com.poona.agrocart.app.AppConstants.PRODUCT_NAME;
 import static com.poona.agrocart.app.AppConstants.PU_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.SEARCH;
@@ -126,6 +127,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private String strCategoryId ="", StrBrandId="", strSortBy="" ;
     private ArrayList<String> strCarArray = new ArrayList<>();
 
+
    //, StrBrandId, strSortBy;
 
 
@@ -140,18 +142,14 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setVisibility(View.VISIBLE);
         ((HomeActivity) requireActivity()).binding.appBarHome.basketMenu.setOnClickListener(v -> {
 
-           /* Bundle bundle = new Bundle();
-            bundle.putStringArrayList(CATEGORY_ID_VALUE,strCarArray);
-            bundle.putString(SORT_BY,strSortBy);
-            bundle.putString(BRAND_ID,StrBrandId);*/
 
-                    // Show the Filter Dialog
+            // Show the Filter Dialog
 
             if (CategoryId == null) {
                 fromScreen = getArguments().getString(FROM_SCREEN);
                 if (fromScreen.equalsIgnoreCase(AllBasket)) {
 
-                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(false,null);
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(false);
                     filterFragment.show(getChildFragmentManager(), "FilterFragment");
                     filterFragment.setOnClickButtonListener(new BottomSheetFilterFragment.OnClickButtonListener() {
 
@@ -161,30 +159,32 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                             StrBrandId = TextUtils.join(",",brandId) ;
                             strSortBy = TextUtils.join(",",sortId);
                             seeAllBasketListApi(showCircleProgressDialog(context,""), "load");
-
+                            basketArrayList.clear();
                         }
                     });
 
                 }else if (fromScreen.equalsIgnoreCase(AllSelling)) {
-                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true,null);
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true);
                     filterFragment.show(getChildFragmentManager(), "FilterFragment");
                     try {
                         System.out.println("category :"+strCategoryId);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                    filterFragment.setOnClickButtonListener(new BottomSheetFilterFragment.OnClickButtonListener() {
                        @Override
                        public void itemClick(ArrayList<String> categoryId, ArrayList<String> brandId, ArrayList<String> sortId) {
                           strCategoryId = TextUtils.join(",", categoryId);
                            StrBrandId = TextUtils.join(",",brandId) ;
                           strSortBy = TextUtils.join(",",sortId);
-                          seeAllBestSellingApi(showCircleProgressDialog(context,""), "load");
 
+                          seeAllBestSellingApi(showCircleProgressDialog(context,""), "load");
+                           productArrayList.clear();
                        }
                    });
                 } else if (fromScreen.equalsIgnoreCase(AllExclusive)) {
-                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true,null);
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true);
                     filterFragment.show(getChildFragmentManager(), "FilterFragment");
                     filterFragment.setOnClickButtonListener(new BottomSheetFilterFragment.OnClickButtonListener() {
                         @Override
@@ -193,11 +193,12 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                             StrBrandId = TextUtils.join(",",brandId) ;
                             strSortBy = TextUtils.join(",",sortId);
                             seeAllExclusiveApi(showCircleProgressDialog(context,""), "load");
+                            productArrayList.clear();
                         }
                     });
                 }
             } else {
-                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(false,null);
+                    BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(false);
                     filterFragment.show(getChildFragmentManager(), "FilterFragment");
 
                 filterFragment.setOnClickButtonListener(new BottomSheetFilterFragment.OnClickButtonListener() {
@@ -212,6 +213,14 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                 }
 
         });
+        /* Bundle bundle = new Bundle();
+                    bundle.putString(CATEGORY_ID_VALUE,strCategoryId);
+                    bundle.putString(SORT_BY,strSortBy);
+                    bundle.putString(BRAND_ID,StrBrandId);
+                    filterFragment.setArguments(bundle);*/
+
+
+
         setRVAdapter();
         setScrollListener();
         searchProducts(view);
@@ -232,6 +241,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         });
         return view;
     }
+
 
 
     private void setTitleBar() {
@@ -283,6 +293,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                 Log.e(TAG, "seeAllExclusiveApi: " + new Gson().toJson(exclusiveResponse));
                 switch (exclusiveResponse.getStatus()) {
                     case STATUS_CODE_200:
+                        productArrayList.clear();
                         if (exclusiveResponse.getExclusiveData().getExclusivesList() != null
                                 && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
                             // Exclusive data listing
@@ -295,6 +306,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
                         if (loadType.equalsIgnoreCase("load")){
+                            productArrayList.clear();
                             fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
                             warningToast(context, exclusiveResponse.getMessage());
                         }
@@ -328,10 +340,12 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                 switch (bestSellingResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         //Best selling listing
+                        productArrayList.clear();
                         if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null) {
                             //Todo need to change that
                             successToast(context, bestSellingResponse.getMessage());
                             if (bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
+
                                 productArrayList.addAll(bestSellingResponse.getBestSellingData().getBestSellingProductList());
                                 productListViewModel.productListMutableLiveData.setValue(bestSellingResponse.getBestSellingData().getBestSellingProductList());
                                 makeProductListing();
@@ -376,6 +390,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         pullToRefreshExplore.setRefreshing(false);
                         if (basketResponse.getData().getBaskets() != null) {
                             if (basketResponse.getData().getBaskets().size() > 0) {
+                                basketArrayList.clear();
                                 basketArrayList.addAll(basketResponse.getData().getBaskets());
                                 makeBasketListing();
                             }
@@ -450,10 +465,13 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
-                        if (apiFrom.equalsIgnoreCase("load")) {
+                       /* if (apiFrom.equalsIgnoreCase("load")) {
                             fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
                             warningToast(context, productListByResponse.getMessage());
-                        }
+                        }*/
+                        basketArrayList.clear();
+                        fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
+                        warningToast(context, productListByResponse.getMessage());
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         goToAskSignInSignUpScreen(productListByResponse.getMessage(), context);
@@ -597,6 +615,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private void redirectToProductsDetail(Product product) {
         Bundle bundle = new Bundle();
         bundle.putString(PRODUCT_ID, product.getProductId());
+        bundle.putString(PRODUCT_NAME, product.getProductName());
         NavHostFragment.findNavController(ProductListFragment.this).navigate(R.id.action_nav_products_list_to_product_details, bundle);
     }
 
