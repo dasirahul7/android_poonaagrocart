@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.poona.agrocart.BR;
 import com.poona.agrocart.data.network.responses.orderResponse.Payments;
-import com.poona.agrocart.databinding.RowAddressRadioBinding;
+import com.poona.agrocart.data.shared_preferences.AppSharedPreferences;
 import com.poona.agrocart.databinding.RowPaymentRadioBinding;
+import com.poona.agrocart.ui.order_summary.OrderSummaryFragment;
 
 import java.util.ArrayList;
 
@@ -23,21 +24,26 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
     private CompoundButton lastCheckedRB;
     private Context pContext;
     private OnPaymentClickListener onPaymentClickListener;
+    private AppSharedPreferences preferences;
+    private OrderSummaryFragment summaryFragment;
 
     /*interface for payment clicks*/
     public interface OnPaymentClickListener{
         void OnPaymentClick(Payments payments);
     }
-    public PaymentAdapter(ArrayList<Payments> paymentsArrayList,Context context,OnPaymentClickListener onPaymentClickListener) {
+    public PaymentAdapter(ArrayList<Payments> paymentsArrayList,Context context,
+                          OnPaymentClickListener onPaymentClickListener,
+                          OrderSummaryFragment summaryFragment) {
         this.paymentsArrayList = paymentsArrayList;
         this.pContext=context;
         this.onPaymentClickListener=onPaymentClickListener;
+        this.summaryFragment=summaryFragment;
     }
     @NonNull
     @Override
     public PaymentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         rowPaymentRadioBinding = RowPaymentRadioBinding.inflate(LayoutInflater.from(pContext), parent, false);
-        return new PaymentViewHolder(rowPaymentRadioBinding);
+        return new PaymentViewHolder(rowPaymentRadioBinding,summaryFragment);
     }
 
 
@@ -46,6 +52,8 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
     public void onBindViewHolder(@NonNull PaymentViewHolder holder, int position) {
         Payments payments = paymentsArrayList.get(position);
         rowPaymentRadioBinding.setPaymentModule(payments);
+        preferences = new AppSharedPreferences(pContext);
+
         // radio Selected Item
         rowPaymentRadioBinding.rbPayment.setChecked(mSelectedItem == position);
         rowPaymentRadioBinding.rbPayment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -68,9 +76,11 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
 
     public class PaymentViewHolder extends RecyclerView.ViewHolder {
         private final RowPaymentRadioBinding rowPaymentRadioBinding;
-        public PaymentViewHolder(@NonNull RowPaymentRadioBinding rowPaymentRadioBinding) {
+        private OrderSummaryFragment summaryFragment;
+        public PaymentViewHolder(@NonNull RowPaymentRadioBinding rowPaymentRadioBinding, OrderSummaryFragment summaryFragment) {
             super(rowPaymentRadioBinding.getRoot());
             this.rowPaymentRadioBinding = rowPaymentRadioBinding;
+            this.summaryFragment = summaryFragment;
             itemView.setOnClickListener(v -> {
                 mSelectedItem = getBindingAdapterPosition();
             });
@@ -83,7 +93,11 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
                 rowPaymentRadioBinding.tvWalletBalance.setVisibility(View.VISIBLE);
             else rowPaymentRadioBinding.tvWalletBalance.setVisibility(View.GONE);
             rowPaymentRadioBinding.rbPayment.setOnClickListener(view -> {
-                onPaymentClickListener.OnPaymentClick(payments);
+                if (payments.paymentType.equalsIgnoreCase("Wallet balance") && Integer.parseInt(payments.balance)<preferences.getPaymentAmount()){
+                    summaryFragment.walletAlertAndDismiss("insufficient balance in wallet ",pContext);
+                    rowPaymentRadioBinding.rbPayment.setChecked(false);
+                }
+                else onPaymentClickListener.OnPaymentClick(payments);
             });
         }
     }

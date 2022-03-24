@@ -273,6 +273,17 @@ public class AppConstants {
     public static final String SEASONAL_DETAILS ="seasonal-product-details";
     public static final String GET_UNITS ="unit";
 
+    /*Wallet & Transaction API here*/
+    public static final String PAYMENT_FOR_WALLET = "payment-to-wallet";
+    public static final String TRANSACTION_TYPE_LIST_API = "wallet-transaction-type";
+    public static final String WALLET_TRANSACTION_LIST = "wallet-transaction-list";
+
+    /*Wallet & Transaction KEYS here*/
+    public static final String WALLET_AMOUNT ="wallet_amt";
+    public static final String TRANSACTION_TYPE_ID ="wallet_transaction_type_id";
+    public static final String FROM_DATE ="from_date";
+    public static final String TO_DATE ="to_date";
+
     /*Seasonal Param Keys*/
     public static final String SEASONAL_P_ID = "seasonal_product_id";
     public static final String UNIT_ID = "unit_id";

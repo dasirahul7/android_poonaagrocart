@@ -223,7 +223,7 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
         MenuItem signOut = m.findItem(R.id.nav_signout);
 
         menuItemAboutUs.setOnMenuItemClickListener(menuItem -> {
-           redirectToCmsFragment(0);
+            redirectToCmsFragment(0);
             return false;
         });
 

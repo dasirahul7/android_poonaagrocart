@@ -409,11 +409,11 @@ public class OrderSummaryViewModel extends AndroidViewModel {
 
     /*Get Payment Credentials*/
     public LiveData<RazorPayCredentialResponse> getRazorPayCredentialResponse(ProgressDialog progressDialog,
-                                                                              OrderSummaryFragment orderSummaryFragment) {
+                                                                              Context context) {
 
         MutableLiveData<RazorPayCredentialResponse> razorPayCredentialResponseMutableLiveData = new MutableLiveData<>();
 
-        ApiClientAuth.getClient(orderSummaryFragment.context)
+        ApiClientAuth.getClient(context)
                 .create(ApiInterface.class)
                 .getRazorPayCredentialResponse()
                 .subscribeOn(Schedulers.io())
@@ -439,7 +439,7 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                             razorPayCredentialResponseMutableLiveData.setValue(payCredentialResponse);
                         } catch (Exception exception) {
                             exception.printStackTrace();
-                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(4, "");
+                            ((NetworkExceptionListener) context).onNetworkException(4, "");
                         }
                     }
                 });

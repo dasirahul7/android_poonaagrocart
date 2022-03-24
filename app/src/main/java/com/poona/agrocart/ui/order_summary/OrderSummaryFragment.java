@@ -23,11 +23,14 @@ import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -43,6 +46,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -76,6 +80,7 @@ import com.poona.agrocart.ui.order_summary.adapter.PaymentAdapter;
 import com.poona.agrocart.ui.order_summary.adapter.PromoCodeDialogAdapter;
 import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
 import com.poona.agrocart.ui.splash_screen.OnBackPressedListener;
+import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
 
 import java.text.ParseException;
@@ -133,7 +138,6 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 Bundle bundle = this.getArguments();
                 isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
                 subscribeNowId = bundle.getString(SUBSCRIBE_NOW_ID);
-                Toast.makeText(context, "Subscription summary", Toast.LENGTH_SHORT).show();
                 initTitleWithBackBtn(bundle.getString(FROM_SCREEN));
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -168,7 +172,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
             fragmentOrderSummaryBinding.mainLayout.setVisibility(View.GONE);
             callOrderPlaceAPI(showCircleProgressDialog(context,""));
         }
-        else if (!onCreate)goToAskAndDismiss("Payment Failed",context);
+        else if (!onCreate)walletAlertAndDismiss("Payment Failed",context);
     }
 
     @Override
@@ -563,7 +567,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 payment.setBalance(orderSummaryViewModel.availableWalletMutable.getValue());
                 paymentsArrayList.add(payment);
             }
-            PaymentAdapter paymentAdapter = new PaymentAdapter(paymentsArrayList,context,this);
+            PaymentAdapter paymentAdapter = new PaymentAdapter(paymentsArrayList,context,this,OrderSummaryFragment.this);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
             fragmentOrderSummaryBinding.rvPayment.setLayoutManager(gridLayoutManager);
             fragmentOrderSummaryBinding.rvPayment.setHasFixedSize(true);
@@ -728,7 +732,9 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 ((HomeActivity)context).startPayment();
                 break;
             case WALLET:
-                callWalletPayment(showCircleProgressDialog(context,""));
+                if (Integer.parseInt(orderSummaryViewModel.availableWalletMutable.getValue())>preferences.getPaymentAmount())
+                callOrderPlaceAPI(showCircleProgressDialog(context,""));
+                else walletAlertAndDismiss("insufficient balance in wallet ",context);
                 System.out.println("WALLET");
                 break;
             default:
@@ -774,7 +780,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
             }
         };
-        orderSummaryViewModel.getRazorPayCredentialResponse(progressDialog,OrderSummaryFragment.this)
+        orderSummaryViewModel.getRazorPayCredentialResponse(progressDialog,context)
                 .observe(getViewLifecycleOwner(),razorPayCredentialResponseObserver);
 
     }
@@ -1007,4 +1013,80 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         PaymentModeId = payments.getPaymentModeId();
         preferences.setPaymentMode(PaymentModeId);
     }
+
+    public void walletAlertAndDismiss(String message, Context context) {
+        AlertDialog.Builder builder = new AlertDialog
+                .Builder(new androidx.appcompat.view.ContextThemeWrapper(context,
+                R.style.CustomAlertDialog));
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_text_with_button, null);
+
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+
+        CustomTextView tvHeading = dialogView.findViewById(R.id.tv_heading);
+        tvHeading.setText(message);
+        // tvHeading.setText(message + "\n\n" + preferences.getAuthorizationToken());
+        tvHeading.setTextIsSelectable(true);
+
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
+
+        CustomButton customButton = dialogView.findViewById(R.id.bt_ok);
+
+        customButton.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        /*dialog.setOnKeyListener((arg0, keyCode, event) -> {
+            // TODO Auto-generated method stub
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                dialog.dismiss();
+                playClickSound();
+            }
+            return true;
+        });*/
+
+        dialog.show();
+
+        // Get screen width and height in pixels
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // The absolute width of the available display size in pixels.
+        int displayWidth = displayMetrics.widthPixels;
+        // The absolute height of the available display size in pixels.
+        int displayHeight = displayMetrics.heightPixels;
+
+        //int displayWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        //int displayHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        // Initialize a new window manager layout parameters
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        // Copy the alert dialog window attributes to new layout parameter instance
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+
+        // Set the alert dialog window width and height
+        // Set alert dialog width equal to screen width 90%
+        // int dialogWindowWidth = (int) (displayWidth * 0.9f);
+        // Set alert dialog height equal to screen height 90%
+        // int dialogWindowHeight = (int) (displayHeight * 0.9f);
+
+        // Set alert dialog width equal to screen width 100%
+        int dialogWindowWidth = (int) (displayWidth * 0.8f);
+        // Set alert dialog height equal to screen height 100%
+        //int dialogWindowHeight = (int) (displayHeight * 0.8f);
+
+        // Set the width and height for the layout parameters
+        // This will bet the width and height of alert dialog
+        layoutParams.width = dialogWindowWidth;
+        //layoutParams.height = dialogWindowHeight;
+
+        // Apply the newly created layout parameters to the alert dialog window
+        dialog.getWindow().setAttributes(layoutParams);
+    }
+
 }
