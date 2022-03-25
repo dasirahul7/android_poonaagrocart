@@ -16,6 +16,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -121,6 +122,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
     long downloadID;
     private DownloadManager downloadManager;
     private String strInvioceDownload, strInvoiceBasketDownload;
+    private Bundle bundle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,6 +130,8 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         if (getArguments() != null) {
             order_id = getArguments().getString(ORDER_ID);
             subscriptionBasketOrderId = getArguments().getString(ORDER_SUBSCRIPTION_ID);
+            bundle = this.getArguments();
+            isBasketVisible = bundle.getBoolean(SUBSCRIPTION);
         }
     }
 
@@ -156,8 +160,6 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         btnDownloadInvoice =fragmentOrderViewBinding.btnDownloadInvoice;
         btnOrderTrack = fragmentOrderViewBinding.btnTrackOrder;
 
-        Bundle bundle = this.getArguments();
-        isBasketVisible = bundle.getBoolean("isBasketVisible");
         rvBasketListItems = fragmentOrderViewBinding.rvBasketItems;
         if (isBasketVisible) {
             setBasketContentsVisible();
@@ -210,7 +212,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         });
 
         fragmentOrderViewBinding.tvSeeMore.setOnClickListener(view -> {
-            isBasketVisible = bundle.getBoolean("isBasketVisible");
+            isBasketVisible = bundle.getBoolean(SUBSCRIPTION);
             NavHostFragment.findNavController(OrderViewFragment.this).
                     navigate(R.id.action_order_view_fragment_to_nav_basket_item_fragment, bundle);
         });

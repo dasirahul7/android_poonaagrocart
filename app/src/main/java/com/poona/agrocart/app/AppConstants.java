@@ -58,8 +58,6 @@ public class AppConstants {
 
     /*API names here*/
     /*login & register APIs*/
-    public static final String FROM_SCREEN = "from_screen";
-    public static final String SUBSCRIPTION = "subscription";
     public static final String LOGIN_API = "api-login-customer";
     public static final String VERIFY_OTP_API = "verify-otp-customer";
     public static final String RESEND_OTP = "resend-otp";
@@ -74,6 +72,9 @@ public class AppConstants {
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String VIEW_PROFILE_API = "view-profile";
     public static final String UPDATE_LOCATION_API = "update-location-customer";
+    /*Bundle Keys*/
+    public static final String FROM_SCREEN = "from_screen";
+    public static final String SUBSCRIPTION = "subscription";
 
     /*Home screen APIs*/
     public static final String HOME_API = "home";

@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.nav_orders;
 
 import static com.poona.agrocart.app.AppConstants.ORDER_ID;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -108,7 +109,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         private void redirectToBasketOrderView(View view, String orderId) {
             Bundle bundle = new Bundle();
             bundle.putString(ORDER_ID, orderId);
-            bundle.putBoolean("isBasketVisible", false);
+            bundle.putBoolean(SUBSCRIPTION, false);
             Navigation.findNavController(view).navigate(R.id.action_nav_orders_to_orderViewFragment2, bundle);
         }
 

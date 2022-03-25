@@ -2,6 +2,7 @@ package com.poona.agrocart.ui.nav_my_basket;
 
 import static com.poona.agrocart.app.AppConstants.ORDER_ID;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUBSCRIPTION_ID;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -62,15 +63,15 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
             holder.rvOrdersBasketBinding.tvTransactionId.setVisibility(View.GONE);
         }
 
-        String selectedDate = basketOrder.getCreatedAt();
-
-        String txtDisplayDate = "";
-        try {
-            txtDisplayDate = myBasketFragment.formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "dd MMM yyyy ");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        holder.rvOrdersBasketBinding.tvDate.setText(txtDisplayDate);
+//        String selectedDate = basketOrder.getCreatedAt();
+//
+//        String txtDisplayDate = "";
+//        try {
+//            txtDisplayDate = myBasketFragment.formatDate(selectedDate, "yyyy-mm-dd hh:mm:ss", "dd MMM yyyy ");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        holder.rvOrdersBasketBinding.tvDate.setText(txtDisplayDate);
 
         switch (basketOrder.getPaymentType()){
 
@@ -124,7 +125,7 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
         private void redirectToBasketOrderView(View v, String orderSubscriptionId) {
             Bundle bundle = new Bundle();
 
-            bundle.putBoolean("isBasketVisible", true);
+            bundle.putBoolean(SUBSCRIPTION, true);
             bundle.putString(ORDER_SUBSCRIPTION_ID, orderSubscriptionId);
             Navigation.findNavController(v).navigate(R.id.action_nav_basket_to_orderViewFragment2, bundle);
         }

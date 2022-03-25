@@ -323,7 +323,6 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-
             app:popUpTo="@+id/orderViewFragment"
             app:popUpToInclusive="false" />
 
@@ -475,11 +474,38 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/nav_home"
             app:popUpToInclusive="true" />
+        <!--OrderDetail to order track action-->
+        <action
+            android:id="@+id/action_orderDetailsFragment_to_nav_order_track"
+            app:destination="@id/nav_order_track"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <!--OrderDetail to Order view action -->
+        <action
+            android:id="@+id/action_orderDetailsFragment_to_orderViewFragment"
+            app:destination="@id/orderViewFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
 
     </fragment>
 
     <!--Home actions-->
 
+    <!--Home to cart action-->
+    <action
+        android:id="@+id/action_nav_explore_baskets_to_nav_cart"
+        app:destination="@id/nav_cart"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:popUpTo="@+id/nav_explore"
+        app:popUpToInclusive="false" />
     <!--Home to our stores action-->
     <action
         android:id="@+id/action_nav_home_to_nav_our_stores"
@@ -513,28 +539,6 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@+id/nav_home"
-        app:popUpToInclusive="false" />
-
-
-    <!--Home to order track action-->
-    <action
-        android:id="@+id/action_orderDetailsFragment_to_nav_order_track"
-        app:destination="@id/nav_order_track"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
-
-    <!--Home to cart action-->
-    <action
-        android:id="@+id/action_nav_explore_baskets_to_nav_cart"
-        app:destination="@id/nav_cart"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-
-        app:popUpTo="@+id/nav_explore"
         app:popUpToInclusive="false" />
 
     <!--FAQ Fragment-->

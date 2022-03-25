@@ -84,6 +84,7 @@
                             android:paddingTop="@dimen/_1sdp"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:gravity="end"
+                            android:text="@{basketOrder.createdAt}"
                             android:textColor="@color/color_order_date_and_time"
                             android:textSize="@dimen/_12sp"
                             app:setCustomFont="@string/font_poppins_regular" />

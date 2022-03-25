@@ -1,6 +1,11 @@
 package com.poona.agrocart.ui.nav_orders.order_details;
 
+import static com.poona.agrocart.app.AppConstants.ORDER_ID;
+import static com.poona.agrocart.app.AppConstants.ORDER_SUBSCRIPTION_ID;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +22,34 @@ import com.poona.agrocart.ui.nav_orders.model.OrderDetails;
 
 public class OrderDetailsFragment extends BaseFragment implements View.OnClickListener {
 
+    private static final String TAG = OrderDetailsFragment.class.getSimpleName();
     private OrderDetailsViewModel orderDetailsViewModel;
     private FragmentOrderDetailsBinding orderDetailsBinding;
     private View orderDetailsRoot;
     private View navHostFragment;
     private ViewGroup.MarginLayoutParams navHostMargins;
     private float scale;
+    private Bundle bundle;
+    private String OrderId;
+    private boolean isSubscription = false;
 
     public static OrderDetailsFragment newInstance() {
         return new OrderDetailsFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            if (this.getArguments()!=null && this.getArguments().get(ORDER_ID) != null){
+                bundle = this.getArguments();
+                OrderId = bundle.getString(ORDER_ID);
+                isSubscription = bundle.getBoolean(SUBSCRIPTION);
+                Log.e(TAG, "onCreateView: "+ OrderId+ "isSubscription: "+isSubscription);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Override
@@ -48,6 +72,8 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
         navHostFragment = requireActivity().findViewById(R.id.nav_host_fragment_content_home);
         navHostMargins = (ViewGroup.MarginLayoutParams) navHostFragment.getLayoutParams();
         navHostMargins.bottomMargin = 0;
+        if (isSubscription)
+            orderDetailsBinding.btnTrackOrder.setText("View Order");
     }
 
     private void setContent() {
@@ -58,9 +84,18 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
         orderDetailsBinding.tvBackToHome.setOnClickListener(this::onClick);
     }
 
-    private void redirectToOrderTrack(View v) {
+    private void redirectToTrackOrder(View v) {
         if (isConnectingToInternet(context)) {
-            Navigation.findNavController(v).navigate(R.id.action_orderDetailsFragment_to_nav_order_track);
+            bundle.putString(ORDER_ID,OrderId);
+            Navigation.findNavController(v).navigate(R.id.action_orderDetailsFragment_to_nav_order_track,bundle);
+        } else {
+            showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+    }
+    private void redirectToOrderView(View v) {
+        if (isConnectingToInternet(context)) {
+            bundle.putString(ORDER_SUBSCRIPTION_ID,OrderId);
+            Navigation.findNavController(v).navigate(R.id.action_orderDetailsFragment_to_orderViewFragment,bundle);
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
@@ -80,7 +115,13 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_track_order:
-                redirectToOrderTrack(v);
+                //redirect screen according to order type
+                /* if normal order then redirect to track order
+               else redirect to Oder view
+                */
+                if (isSubscription)
+                    redirectToOrderView(v);
+                else redirectToTrackOrder(v);
                 break;
             case R.id.tv_back_to_home:
                 redirectToHome(v);

@@ -26,6 +26,7 @@ import com.poona.agrocart.data.network.responses.myOrderResponse.orderTrack.Orde
 import com.poona.agrocart.data.network.responses.myOrderResponse.orderTrack.ProductOrderTrackResponse;
 import com.poona.agrocart.databinding.FragmentOrderTrackBinding;
 import com.poona.agrocart.ui.BaseFragment;
+import com.poona.agrocart.ui.nav_orders.order_details.OrderDetailsFragment;
 import com.poona.agrocart.ui.nav_orders.order_view.OrderViewFragment;
 
 import java.text.ParseException;
@@ -47,8 +48,11 @@ public class OrderTrackFragment extends BaseFragment implements NetworkException
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             order_id = getArguments().getString(ORDER_ID);
-
         }
+    }
+    public OrderTrackFragment newInstance(String orderId) {
+        this.order_id = orderId;
+        return new OrderTrackFragment();
     }
 
     @Override
