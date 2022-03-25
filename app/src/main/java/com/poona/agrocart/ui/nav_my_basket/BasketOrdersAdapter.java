@@ -59,7 +59,7 @@ public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapte
         if(basketOrder.getTransactionId() != null){
             holder.rvOrdersBasketBinding.tvTransactionId.setText(basketOrder.getTransactionId());
         }else{
-            holder.rvOrdersBasketBinding.tvTransactionId.setText("N/A");
+            holder.rvOrdersBasketBinding.tvTransactionId.setVisibility(View.GONE);
         }
 
         String selectedDate = basketOrder.getCreatedAt();

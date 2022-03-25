@@ -248,7 +248,5 @@ public class OurStoresFragment extends BaseFragment implements OurStoreAdapter.O
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
             }
         }, context);
-
-
     }
 }

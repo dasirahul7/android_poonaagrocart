@@ -136,12 +136,13 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         fragmentStoreDetailBinding.fabFindMyLocation.setOnClickListener(view -> {
 
             if(lng != null && lat != null){
-                //String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%f,%f", longitude,latitude);  //unnamed location
-                String uri = String.format(Locale.ENGLISH, ""+strLocation);
+                String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%f,%f", longitude,latitude);  //unnamed location
+               // String uri = String.format(Locale.ENGLISH, ""+strLocation);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                /*intent.setPackage("com.google.android.apps.maps");*/
+                intent.setPackage("com.google.android.apps.maps");
                 startActivity(intent);
             }else{
+
                 warningToast(context,"Location does not found");
             }
 
@@ -213,7 +214,14 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         storeDetailViewModel.aboutStore.setValue(storeDetails.get(0).getAboutStore());
         storeDetailViewModel.contactPersonalNumber.setValue(storeDetails.get(0).getMobileNo());
         storeDetailViewModel.personalAddress.setValue(storeDetails.get(0).getAddress());
-        strLocation = storeDetails.get(0).getMapLink();
+
+        /*if(strLocation != null){
+            strLocation = storeDetails.get(0).getMapLink();
+        }else{
+            warningToast(context, "Place can't be find location");
+
+        }*/
+
 
         /*"https://www.google.com/maps/place/Serene+Hospital/@18.5698376" +
                 ",73.8801823,17z/data=!3m1!4b1!4m5!3m4!1s0x3bc2c0d12583788b:0xdf0059e54abc9e1d!8m2!3d18.5698325!4d73.882371"*/
@@ -222,10 +230,14 @@ public class StoreDetailFragment extends BaseFragment implements OnMapReadyCallb
         lng = storeDetails.get(0).getLongitude();
         lat = storeDetails.get(0).getLatitude();
 
-         if(lng != null && lat != null){
-             longitude = Double.parseDouble(lng);
-             latitude = Double.parseDouble(lat);
-         }
+        try {
+            if(lng != null && lat != null){
+                longitude = Double.parseDouble(lng);
+                latitude = Double.parseDouble(lat);
+            }
+        }catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
 
         if (storeDetails.get(0).getStoreImage() != null) {
             Glide.with(context)

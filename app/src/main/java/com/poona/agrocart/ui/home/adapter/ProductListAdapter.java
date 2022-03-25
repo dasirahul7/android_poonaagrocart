@@ -94,10 +94,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             });
             if (product.getInCart() == 1)
                 productBinding.ivPlus.setEnabled(false);
-
-
         }
-
     }
 
 
