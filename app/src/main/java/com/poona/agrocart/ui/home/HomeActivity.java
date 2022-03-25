@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.home;
 
+import static com.poona.agrocart.app.AppConstants.ABOUT_US;
 import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
 import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
@@ -223,8 +224,9 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
         MenuItem signOut = m.findItem(R.id.nav_signout);
 
         menuItemAboutUs.setOnMenuItemClickListener(menuItem -> {
+            drawer.closeDrawer(GravityCompat.START);
             redirectToCmsFragment(0);
-            return false;
+            return true;
         });
 
         signOut.setOnMenuItemClickListener(item -> {

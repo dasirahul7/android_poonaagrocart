@@ -14,6 +14,7 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
 import com.poona.agrocart.data.network.responses.Review;
 import com.poona.agrocart.databinding.RvProductCommentBinding;
+import com.poona.agrocart.ui.basket_detail.BasketDetailFragment;
 import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class ProductRatingReviewAdapter extends RecyclerView.Adapter<ProductRati
     private int from=0;
     private static int DETAIL =0;
     private static int REVIEW =1;
+    BasketDetailFragment basketDetailFragment;
 
     public ProductRatingReviewAdapter(Context context, List<Review> reviewsList, int from) {
         this.context=context;

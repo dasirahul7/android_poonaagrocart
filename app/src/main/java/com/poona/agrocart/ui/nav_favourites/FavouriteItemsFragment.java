@@ -183,9 +183,14 @@ public class FavouriteItemsFragment extends BaseFragment implements FavouriteIte
         String productId = favouriteItemsList.get(position).getProductId();
         String puId = favouriteItemsList.get(position).getPuId();
         if (itemType.equalsIgnoreCase("basket")){
-            callAddToCartBasketApi(showCircleProgressDialog(context, ""),basketId,position);
+            if(favouriteItemsList.get(position).getInCart() == 0){
+                callAddToCartBasketApi(showCircleProgressDialog(context, ""),basketId,position);
+            }
+
         }else {
-            callAddToCartProductApi(showCircleProgressDialog(context, ""),productId,puId);
+            if(favouriteItemsList.get(position).getInCart() == 0) {
+                callAddToCartProductApi(showCircleProgressDialog(context, ""), productId, puId);
+            }
         }
     }
 

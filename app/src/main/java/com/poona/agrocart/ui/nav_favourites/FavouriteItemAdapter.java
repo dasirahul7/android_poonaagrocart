@@ -67,6 +67,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
             favouriteListItemBinding.tvOrganic.setVisibility(View.INVISIBLE);
             if (favourite.getInCart() == 1){
                 favouriteListItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
+
             } else if (favourite.getInCart() == 0){
                 favouriteListItemBinding.ivPlus.setImageResource(R.drawable.ic_plus_white);
             }
@@ -84,6 +85,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
 
             if (favourite.getInCart() == 1){
               favouriteListItemBinding.ivPlus.setImageResource(R.drawable.ic_added);
+
             } else if (favourite.getInCart() == 0){
                 favouriteListItemBinding.ivPlus.setImageResource(R.drawable.ic_plus_white);
             }

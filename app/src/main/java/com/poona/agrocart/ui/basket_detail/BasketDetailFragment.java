@@ -117,7 +117,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
 
 
     private boolean isProductDetailsVisible = true, isNutritionDetailsVisible = true, isAboutThisProductVisible = true,
-            isBasketContentsVisible = true, isBenefitsVisible = true, isStorageVisible = true, isOtherProductInfo = true,
+            isBasketContentsVisible = false, isBenefitsVisible = true, isStorageVisible = true, isOtherProductInfo = true,
             isVariableWtPolicyVisible = true, isFavourite = false;
     private Calendar calendar;
     private int mYear, mMonth, mDay;
@@ -386,6 +386,12 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                                 reviewsArrayList = new ArrayList<>();
                                 basketDetailViewModel.reviewLiveData.setValue(basketDetailsResponse.getBasketDetail().getReviews());
                                 setBasketReviewsView();
+
+                                if(basketDetailsResponse.getBasketDetail().getReviews().size() > 3){
+                                    basketDetailsBinding.tvSeeMoreReview.setVisibility(View.VISIBLE);
+                                }else {
+                                    basketDetailsBinding.tvSeeMoreReview.setVisibility(View.GONE);
+                                }
                             }
                             /*set Basket Subscription view*/
                             if (basketDetailsResponse.getSubscription() != null
@@ -763,6 +769,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private void hideOrShowBasketContentsList() {
         if (isBasketContentsVisible) {
             basketDetailsBinding.ivProductLists.setState(ExpandIconView.MORE, true);
+            basketDetailsBinding.rvBasketContents.setVisibility(View.VISIBLE);
             collapse(basketDetailsBinding.rvBasketContents);
         } else {
             basketDetailsBinding.ivProductLists.setState(ExpandIconView.LESS, true);
@@ -775,6 +782,41 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private void showCalendar(CustomTextView tvDate) {
         //showing date picker dialog
         DatePickerDialog dpd;
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        //Set next date
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        System.out.println("mYear :" + mYear + ", mMonth " + mMonth + ", mDay " + mDay);
+        DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                String txtDisplayDate = "";
+                try {
+                    txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd-MMM-yyyy");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (tvDate != null) {
+                        tvDate.setText(txtDisplayDate);
+                        basketDetailViewModel.subscriptionStartDateMutable.setValue(txtDisplayDate);
+                        callDeliverySlotByDateAPI(showCircleProgressDialog(context, ""));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        dpd = new DatePickerDialog(requireActivity(), mDateListener, mYear, mMonth, mDay);
+        dpd.getDatePicker().setMinDate(c.getTimeInMillis());
+        dpd.show();
+    }
+   /* private void showCalendar(CustomTextView tvDate) {
+        //showing date picker dialog
+        DatePickerDialog dpd;
        calendar = Calendar.getInstance();
         Calendar mcurrentDate = Calendar.getInstance();
         mYear = mcurrentDate.get(Calendar.YEAR);
@@ -782,7 +824,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
         //Set next date
         calendar.add(Calendar.DAY_OF_MONTH, 1);
-        dpd = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 String txtDisplayDate = null;
@@ -807,10 +849,11 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         },
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
         );
+        dpd = new DatePickerDialog(requireActivity(), dpd, mYear, mMonth, mDay);
         dpd.getDatePicker().setMinDate(System.currentTimeMillis());
         dpd.show();
 
-    }
+    }*/
 
 
     @Override

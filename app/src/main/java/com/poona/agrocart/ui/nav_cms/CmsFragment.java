@@ -1,5 +1,6 @@
 package com.poona.agrocart.ui.nav_cms;
 
+import static com.poona.agrocart.app.AppConstants.ABOUT_US;
 import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
@@ -51,6 +52,7 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
     private View view;
     private String fromScreen = "";
     private int cmsType = 0;
+    private String About = "";
 
     public static CmsFragment newInstance() {
         return new CmsFragment();
@@ -71,8 +73,10 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
         Bundle bundle = getArguments();
         if (bundle != null) {
             fromScreen = bundle.getString(FROM_SCREEN);
+
             cmsType = bundle.getInt(CMS_TYPE);
         }
+
 
         /*visible back button action bar if navigating from  sign in screen*/
         if (fromScreen.equals(fromScreenSignIn) || fromScreen.equals(fromScreenSignUp)) {
@@ -91,8 +95,8 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
         } else if (fromScreen.equals(fromScreenHome)) {
             fragmentCmsBinding.actionBar.setVisibility(View.GONE);
             if (cmsType == 0) {
+                fragmentCmsBinding.rlTitleBar.setVisibility(View.GONE);
                 initTitleBar(getString(R.string.about_us));
-
             } else if (cmsType == 1) {
                 initTitleWithBackBtn(getString(R.string.terms_and_conditions));
             } else if (cmsType == 2) {
@@ -101,6 +105,8 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
                 initTitleWithBackBtn(getString(R.string.return_and_refund_policy));
             }
         }
+
+
 
         wvCms = fragmentCmsBinding.wvCms;
 
