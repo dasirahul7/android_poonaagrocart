@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.verify_otp;
 
 import static com.poona.agrocart.app.AppConstants.COUNTRY_CODE;
+import static com.poona.agrocart.app.AppConstants.FCM_TOKEN;
 import static com.poona.agrocart.app.AppConstants.OTP;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
@@ -338,6 +339,7 @@ public class VerifyOtpFragment extends BaseFragment implements View.OnClickListe
         HashMap<String, String> map = new HashMap<>();
         if (paramType == VERIFY) {
             map.put(OTP, Objects.requireNonNull(fragmentVerifyOtpBinding.etOtp.getText()).toString());
+            map.put(FCM_TOKEN, Objects.requireNonNull(preferences.getFCMToken()));
         }
 //        else {
 //            assert getArguments() != null;

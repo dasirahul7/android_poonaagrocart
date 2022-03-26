@@ -22,6 +22,7 @@ import com.poona.agrocart.data.network.responses.Coupon;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.Delivery;
 import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
+import com.poona.agrocart.data.network.responses.orderResponse.OrderSuccessResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.Payments;
 import com.poona.agrocart.data.network.responses.payment.RazorPayCredentialResponse;
@@ -288,19 +289,19 @@ public class OrderSummaryViewModel extends AndroidViewModel {
     }
 
     /*Order place api*/
-    public LiveData<BaseResponse> getOrderPlaceAPIResponse(ProgressDialog progressDialog,
+    public LiveData<OrderSuccessResponse> getOrderPlaceAPIResponse(ProgressDialog progressDialog,
                                                            HashMap<String, String> hashMap,
                                                            OrderSummaryFragment orderSummaryFragment) {
-        MutableLiveData<BaseResponse> placeOrderResponseMutableLive = new MutableLiveData<>();
+        MutableLiveData<OrderSuccessResponse> placeOrderResponseMutableLive = new MutableLiveData<>();
 
         ApiClientAuth.getClient(orderSummaryFragment.getContext())
                 .create(ApiInterface.class)
                 .getOrderPlaceResponse(hashMap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                .subscribeWith(new DisposableSingleObserver<OrderSuccessResponse>() {
                     @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse response) {
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull OrderSuccessResponse response) {
                         if (response != null) {
                             if (progressDialog != null) {
                                 progressDialog.dismiss();
@@ -314,9 +315,9 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                         if (progressDialog != null)
                             progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
-                        BaseResponse baseResponse = new BaseResponse();
+                        OrderSuccessResponse baseResponse = new OrderSuccessResponse();
                         try {
-                            baseResponse = gson.fromJson(Objects.requireNonNull(Objects.requireNonNull(((HttpException) e).response()).errorBody()).string(), BaseResponse.class);
+                            baseResponse = gson.fromJson(Objects.requireNonNull(Objects.requireNonNull(((HttpException) e).response()).errorBody()).string(), OrderSuccessResponse.class);
                             placeOrderResponseMutableLive.setValue(baseResponse);
                         } catch (JsonSyntaxException | IOException exception) {
                             Log.e(TAG, "onError: " + exception.getMessage());
@@ -328,19 +329,19 @@ public class OrderSummaryViewModel extends AndroidViewModel {
     }
 
     /*Subscription Order done API*/
-    public LiveData<BaseResponse> getSubscriptionBasketCustomerResponse(ProgressDialog progressDialog,
+    public LiveData<OrderSuccessResponse> getSubscriptionBasketCustomerResponse(ProgressDialog progressDialog,
                                                                        HashMap<String,String> hashMap,
                                                                        OrderSummaryFragment orderSummaryFragment){
-        MutableLiveData<BaseResponse> subscribeBasketMutableLive = new MutableLiveData<>();
+        MutableLiveData<OrderSuccessResponse> subscribeBasketMutableLive = new MutableLiveData<>();
 
         ApiClientAuth.getClient(orderSummaryFragment.getContext())
                 .create(ApiInterface.class)
                 .getSubscriptionBasketCustomerApi(hashMap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<BaseResponse>() {
+                .subscribeWith(new DisposableSingleObserver<OrderSuccessResponse>() {
                     @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull BaseResponse response) {
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull OrderSuccessResponse response) {
                         if (response != null) {
                             if (progressDialog != null) {
                                 progressDialog.dismiss();
@@ -354,9 +355,9 @@ public class OrderSummaryViewModel extends AndroidViewModel {
                         if (progressDialog != null)
                             progressDialog.dismiss();
                         Gson gson = new GsonBuilder().create();
-                        BaseResponse baseResponse = new BaseResponse();
+                        OrderSuccessResponse baseResponse = new OrderSuccessResponse();
                         try {
-                            baseResponse = gson.fromJson(Objects.requireNonNull(Objects.requireNonNull(((HttpException) e).response()).errorBody()).string(), BaseResponse.class);
+                            baseResponse = gson.fromJson(Objects.requireNonNull(Objects.requireNonNull(((HttpException) e).response()).errorBody()).string(), OrderSuccessResponse.class);
                             subscribeBasketMutableLive.setValue(baseResponse);
                         } catch (JsonSyntaxException | IOException exception) {
                             Log.e(TAG, "onError: " + exception.getMessage());

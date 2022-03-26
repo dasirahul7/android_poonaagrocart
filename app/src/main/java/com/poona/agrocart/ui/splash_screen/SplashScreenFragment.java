@@ -1,6 +1,7 @@
 package com.poona.agrocart.ui.splash_screen;
 
 import static com.poona.agrocart.app.AppConstants.COUNTRY_CODE;
+import static com.poona.agrocart.app.AppConstants.FCM_TOKEN;
 import static com.poona.agrocart.app.AppConstants.USER_ID;
 import static com.poona.agrocart.app.AppConstants.USER_MOBILE;
 
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -26,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.installations.InstallationTokenResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.poona.agrocart.R;
 import com.poona.agrocart.databinding.FragmentSplashScreenBinding;
 import com.poona.agrocart.ui.BaseFragment;
@@ -135,6 +138,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
 
     private void getFirebaseToken() {
         /*option 1*/
+/*
         FirebaseInstallations.getInstance().getToken(true).addOnCompleteListener(new OnCompleteListener<InstallationTokenResult>() {
             @Override
             public void onComplete(@NonNull Task<InstallationTokenResult> task) {
@@ -147,7 +151,7 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
                 String token = task.getResult().getToken();
 
                 //showInfoToast(SplashScreenActivity.this, token);
-
+                Log.e(TAG, "onComplete: "+ token);
                 preferences.setFCMToken(token);
 
                 // Log and toast
@@ -159,6 +163,28 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
                 Log.d(TAG, msg);
             }
         });
+*/
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        preferences.setFCMToken(token);
+
+                        // Log and toast
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d(TAG, msg);
+//                        Toast.makeText(S.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
 
         /*option 2*/
         /*FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> {

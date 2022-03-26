@@ -20,67 +20,29 @@ public class PushNotification implements Parcelable, Serializable {
             return new PushNotification[size];
         }
     };
-    String title = "";
-    String subtitle = "";
-    String message = "";
-    String messageBy = "";
     String notificationType = "";
-    String msgCount = "";
-    String redirectType = "";
-    String vibrate = "";
-    String orderNo = "";
-    String orderId = "";
-    String tickerText = "";
-    String userType = "";
+    String userId = "";
+    String image = "";
+    String title = "";
+    String message = "";
+    String redirectId = "";
+    String redirectTo = "";
 
     protected PushNotification() {
     }
 
     protected PushNotification(Parcel in) {
-        title = in.readString();
-        subtitle = in.readString();
-        message = in.readString();
-        messageBy = in.readString();
         notificationType = in.readString();
-        msgCount = in.readString();
-        redirectType = in.readString();
-        vibrate = in.readString();
-        orderNo = in.readString();
-        orderId = in.readString();
-        tickerText = in.readString();
-        userType = in.readString();
+        userId = in.readString();
+        image = in.readString();
+        title = in.readString();
+        message = in.readString();
+        redirectId = in.readString();
+        redirectTo = in.readString();
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getMessageBy() {
-        return messageBy;
-    }
-
-    public void setMessageBy(String messageBy) {
-        this.messageBy = messageBy;
+    public static Creator<PushNotification> getCREATOR() {
+        return CREATOR;
     }
 
     public String getNotificationType() {
@@ -91,60 +53,52 @@ public class PushNotification implements Parcelable, Serializable {
         this.notificationType = notificationType;
     }
 
-    public String getMsgCount() {
-        return msgCount;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setMsgCount(String msgCount) {
-        this.msgCount = msgCount;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getRedirectType() {
-        return redirectType;
+    public String getImage() {
+        return image;
     }
 
-    public void setRedirectType(String redirectType) {
-        this.redirectType = redirectType;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getVibrate() {
-        return vibrate;
+    public String getTitle() {
+        return title;
     }
 
-    public void setVibrate(String vibrate) {
-        this.vibrate = vibrate;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getOrderNo() {
-        return orderNo;
+    public String getMessage() {
+        return message;
     }
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getRedirectId() {
+        return redirectId;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setRedirectId(String redirectId) {
+        this.redirectId = redirectId;
     }
 
-    public String getTickerText() {
-        return tickerText;
+    public String getRedirectTo() {
+        return redirectTo;
     }
 
-    public void setTickerText(String tickerText) {
-        this.tickerText = tickerText;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
+    public void setRedirectTo(String redirectTo) {
+        this.redirectTo = redirectTo;
     }
 
     @Override
@@ -154,17 +108,12 @@ public class PushNotification implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeString(subtitle);
-        dest.writeString(message);
-        dest.writeString(messageBy);
         dest.writeString(notificationType);
-        dest.writeString(msgCount);
-        dest.writeString(redirectType);
-        dest.writeString(vibrate);
-        dest.writeString(orderNo);
-        dest.writeString(orderId);
-        dest.writeString(tickerText);
-        dest.writeString(userType);
+        dest.writeString(userId);
+        dest.writeString(image);
+        dest.writeString(title);
+        dest.writeString(message);
+        dest.writeString(redirectId);
+        dest.writeString(redirectTo);
     }
 }

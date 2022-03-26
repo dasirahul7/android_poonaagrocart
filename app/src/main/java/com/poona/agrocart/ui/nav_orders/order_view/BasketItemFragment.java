@@ -10,6 +10,7 @@ import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_404;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_405;
+import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -84,14 +85,14 @@ public class BasketItemFragment extends BaseFragment implements BasketItemsAdapt
         initView();
 
         Bundle bundle = this.getArguments();
-        isBasketVisible = bundle.getBoolean("isBasketVisible");
+        isBasketVisible = bundle.getBoolean(SUBSCRIPTION);
         rvBasketItem = fragmentBasketItemBinding.rvBasketItem;
         if (isBasketVisible) {
             setRVAdapter();
         }
 
        /* Bundle bundle = this.getArguments();
-        isBasketVisible = bundle.getBoolean("isBasketVisible");
+        isBasketVisible = bundle.getBoolean(SUBSCRIPTION);
         rvBasketItem = fragmentBasketItemBinding.rvBasketItem;
         if (isBasketVisible) {
             setRVAdapter();

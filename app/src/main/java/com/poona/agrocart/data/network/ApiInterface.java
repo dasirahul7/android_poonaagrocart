@@ -135,6 +135,7 @@ import com.poona.agrocart.data.network.responses.myOrderResponse.orderTrack.Prod
 import com.poona.agrocart.data.network.responses.notification.DeleteNotificationResponse;
 import com.poona.agrocart.data.network.responses.notification.NotificationListResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
+import com.poona.agrocart.data.network.responses.orderResponse.OrderSuccessResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.data.network.responses.payment.RazorPayCredentialResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
@@ -512,7 +513,7 @@ public interface ApiInterface {
     /*Order place API*/
     @FormUrlEncoded
     @POST(ORDER_PLACE_API)
-    Single<BaseResponse> getOrderPlaceResponse(@FieldMap HashMap<String, String> hashMap);
+    Single<OrderSuccessResponse> getOrderPlaceResponse(@FieldMap HashMap<String, String> hashMap);
 
     @GET(MY_SUBSCRIBE_BASKET_LIST_CUSTOMER)
     Single<SubscribeBasketListCustomerResponse> getSubscriptionBasketListResponse();
@@ -585,7 +586,7 @@ public interface ApiInterface {
     /*final Subscription for  basket */
     @FormUrlEncoded
     @POST(SUBSCRIBE_BASKET_CUSTOMER)
-    Single<BaseResponse> getSubscriptionBasketCustomerApi(@FieldMap HashMap<String, String> subscriptionBasketInputParameter);
+    Single<OrderSuccessResponse> getSubscriptionBasketCustomerApi(@FieldMap HashMap<String, String> subscriptionBasketInputParameter);
 
     /*Payment To Wallet API*/
     @FormUrlEncoded

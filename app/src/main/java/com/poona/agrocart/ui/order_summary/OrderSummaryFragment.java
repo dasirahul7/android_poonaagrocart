@@ -7,6 +7,7 @@ import static com.poona.agrocart.app.AppConstants.COUPON_CODE;
 import static com.poona.agrocart.app.AppConstants.COUPON_ID;
 import static com.poona.agrocart.app.AppConstants.DELIVERY_DATE;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
+import static com.poona.agrocart.app.AppConstants.ORDER_ID;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_MODE_ID;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_REFERENCE_ID;
@@ -63,10 +64,10 @@ import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.AddressesResponse;
-import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.Coupon;
 import com.poona.agrocart.data.network.responses.orderResponse.ApplyCouponResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.ItemsDetail;
+import com.poona.agrocart.data.network.responses.orderResponse.OrderSuccessResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.data.network.responses.orderResponse.Payments;
 import com.poona.agrocart.data.network.responses.payment.RazorPayCredentialResponse;
@@ -74,6 +75,7 @@ import com.poona.agrocart.databinding.DialogDeliveryOptionsBinding;
 import com.poona.agrocart.databinding.FragmentOrderSummaryBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.nav_orders.order_details.OrderDetailsFragment;
 import com.poona.agrocart.ui.order_summary.adapter.AddressDialogAdapter;
 import com.poona.agrocart.ui.order_summary.adapter.DeliveryDialogAdapter;
 import com.poona.agrocart.ui.order_summary.adapter.PaymentAdapter;
@@ -90,7 +92,7 @@ import java.util.HashMap;
 
 public class OrderSummaryFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener, AddressDialogAdapter.OnAddressClickListener, DeliveryDialogAdapter.OnSlotClickListener, OnBackPressedListener, PaymentAdapter.OnPaymentClickListener {
     private int PAYMENT_MODE;
-    private static  final int COD = 0;
+    private static final int COD = 0;
     private static final int ONLINE = 1;
     private static final int WALLET = 2;
     private static String TAG = OrderSummaryFragment.class.getSimpleName();
@@ -124,16 +126,16 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private NestedScrollView scrollView;
     private String CouponId;
     private String PaymentModeId;
-    private boolean onResume,onCreate;
+    private boolean onResume, onCreate;
 
     /*Subscription Basket Screen*/
     private boolean isSubscriptionSummary = false;
-    private String subscribeNowId="";
+    private String subscribeNowId = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (this.getArguments()!=null && this.getArguments().get(SUBSCRIPTION)!=null&& this.getArguments().get(FROM_SCREEN)!=null){
+        if (this.getArguments() != null && this.getArguments().get(SUBSCRIPTION) != null && this.getArguments().get(FROM_SCREEN) != null) {
             try {
                 Bundle bundle = this.getArguments();
                 isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
@@ -162,17 +164,16 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onResume() {
         super.onResume();
-        onResume= true;
+        onResume = true;
 
         requireActivity().findViewById(R.id.bottom_navigation_view).setVisibility(View.GONE);
         setBottomMarginInDps(0);
-        if (preferences.getPaymentReference()!=null || !preferences.getPaymentReference().equalsIgnoreCase(""))
-            infoToast(context,"Payment ref is "+preferences.getPaymentReference());
-        if (preferences.getPaymentStatus()){
+        if (preferences.getPaymentReference() != null || !preferences.getPaymentReference().equalsIgnoreCase(""))
+            infoToast(context, "Payment ref is " + preferences.getPaymentReference());
+        if (preferences.getPaymentStatus()) {
             fragmentOrderSummaryBinding.mainLayout.setVisibility(View.GONE);
-            callOrderPlaceAPI(showCircleProgressDialog(context,""));
-        }
-        else if (!onCreate)walletAlertAndDismiss("Payment Failed",context);
+            callOrderPlaceOrSubscribeAPI(showCircleProgressDialog(context, ""));
+        } else if (!onCreate) walletAlertAndDismiss("Payment Failed", context);
     }
 
     @Override
@@ -193,17 +194,17 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         initTitleWithBackBtn(getString(R.string.order_summary));
         initView();
 
-        if (this.getArguments()!=null && this.getArguments().get(SUBSCRIPTION)!=null&& this.getArguments().get(FROM_SCREEN)!=null){
-            try {
-                Bundle bundle = this.getArguments();
-                isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
-                subscribeNowId = bundle.getString(SUBSCRIBE_NOW_ID);
-                Toast.makeText(context, "Subscription summary", Toast.LENGTH_SHORT).show();
-                initTitleWithBackBtn(bundle.getString(FROM_SCREEN));
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        }
+//        if (this.getArguments() != null && this.getArguments().get(SUBSCRIPTION) != null && this.getArguments().get(FROM_SCREEN) != null) {
+//            try {
+//                Bundle bundle = this.getArguments();
+//                isSubscriptionSummary = bundle.getBoolean(SUBSCRIPTION);
+//                subscribeNowId = bundle.getString(SUBSCRIBE_NOW_ID);
+//                Toast.makeText(context, "Subscription summary", Toast.LENGTH_SHORT).show();
+//                initTitleWithBackBtn(bundle.getString(FROM_SCREEN));
+//            } catch (Exception exception) {
+//                exception.printStackTrace();
+//            }
+//        }
 
         /*OnScrollview scrolled*/
         scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -220,7 +221,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 mainLayout.setVisibility(View.GONE);
                 if (isConnectingToInternet(context)) {
                     if (isSubscriptionSummary)
-                        callSubscriptionSummary(showCircleProgressDialog(context,""));
+                        callSubscriptionSummary(showCircleProgressDialog(context, ""));
                     else callOrderSummaryAPI(showCircleProgressDialog(context, ""));
                 } else {
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
@@ -287,25 +288,26 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
         if (isConnectingToInternet(context)) {
             if (isSubscriptionSummary)
-                callSubscriptionSummary(showCircleProgressDialog(context,""));
+                callSubscriptionSummary(showCircleProgressDialog(context, ""));
             else callOrderSummaryAPI(showCircleProgressDialog(context, ""));
-            CallPaymentCredentialApi(showCircleProgressDialog(context,""));
+            CallPaymentCredentialApi(showCircleProgressDialog(context, ""));
         } else showNotifyAlert(requireActivity(), context.getString(R.string.info),
                 context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
     }
 
 
-
     /*Call Order place api here*/
-    private void callOrderPlaceAPI(ProgressDialog progressDialog) {
-        Observer<BaseResponse> baseResponseObserver = response -> {
+    private void callOrderPlaceOrSubscribeAPI(ProgressDialog progressDialog) {
+        Observer<OrderSuccessResponse> orderSuccessResponseObserver = response -> {
             if (response != null) {
                 progressDialog.dismiss();
                 switch (response.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, response.getMessage());
                         preferences.setPaymentStatus(false);
-                        redirectToOrderDetails();
+                        if (response.getSubscriptionId()!=null)
+                            redirectToOrderDetails(response.getSubscriptionId());
+                        else redirectToOrderDetails(response.getOrderId());
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -323,16 +325,16 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
             }
         };
-        if (isSubscriptionSummary){
+        if (isSubscriptionSummary) {
             try {
                 /*call subscribe API here*/
-                orderSummaryViewModel.getSubscriptionBasketCustomerResponse(progressDialog, subscribeBasketParams(),OrderSummaryFragment.this).observe(getViewLifecycleOwner(),baseResponseObserver);
+                orderSummaryViewModel.getSubscriptionBasketCustomerResponse(progressDialog, subscribeBasketParams(), OrderSummaryFragment.this).observe(getViewLifecycleOwner(), orderSuccessResponseObserver);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-        }
-      else  orderSummaryViewModel.getOrderPlaceAPIResponse(progressDialog, placeOrderMaps(), OrderSummaryFragment.this)
-                    .observe(getViewLifecycleOwner(), baseResponseObserver);
+        } else
+            orderSummaryViewModel.getOrderPlaceAPIResponse(progressDialog, placeOrderMaps(), OrderSummaryFragment.this)
+                    .observe(getViewLifecycleOwner(), orderSuccessResponseObserver);
     }
 
     private HashMap<String, String> subscribeBasketParams() {
@@ -413,7 +415,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     }
 
     /*Call Subscription Summary API here*/
-    private void callSubscriptionSummary(ProgressDialog progressDialog){
+    private void callSubscriptionSummary(ProgressDialog progressDialog) {
 
         Observer<OrderSummaryResponse> subscriptionSummaryResponseObserver = orderSummaryResponse -> {
             if (orderSummaryResponse != null) {
@@ -467,12 +469,12 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
         };
         orderSummaryViewModel.getSubscriptionSummaryResponse(progressDialog, subscriptionParam(),
-                OrderSummaryFragment.this).observe(getViewLifecycleOwner(),subscriptionSummaryResponseObserver);
+                OrderSummaryFragment.this).observe(getViewLifecycleOwner(), subscriptionSummaryResponseObserver);
     }
 
     private HashMap<String, String> subscriptionParam() {
-        HashMap<String,String> map = new HashMap<>();
-        map.put(SUBSCRIBE_NOW_ID,getArguments().getString(SUBSCRIBE_NOW_ID));
+        HashMap<String, String> map = new HashMap<>();
+        map.put(SUBSCRIBE_NOW_ID, getArguments().getString(SUBSCRIBE_NOW_ID));
         return map;
     }
 
@@ -480,11 +482,10 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private void checkValuesAndViews() {
         /*hide views if value is empty or null*/
         if (orderSummaryViewModel.discountMutable.getValue() == null ||
-                Float.parseFloat(orderSummaryViewModel.discountMutable.getValue()) == 0.0){
+                Float.parseFloat(orderSummaryViewModel.discountMutable.getValue()) == 0.0) {
             fragmentOrderSummaryBinding.llDiscount.setVisibility(View.GONE);
             fragmentOrderSummaryBinding.tvYouWillSave.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             fragmentOrderSummaryBinding.tvYouWillSave.setVisibility(View.VISIBLE);
             fragmentOrderSummaryBinding.llDiscount.setVisibility(View.VISIBLE);
         }
@@ -563,11 +564,11 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     private void initPaymentTypes() {
         orderSummaryViewModel.arrayPaymentListMutableLiveData.observe(getViewLifecycleOwner(), payments -> {
             ArrayList<Payments> paymentsArrayList = new ArrayList<>();
-            for (Payments payment:payments){
+            for (Payments payment : payments) {
                 payment.setBalance(orderSummaryViewModel.availableWalletMutable.getValue());
                 paymentsArrayList.add(payment);
             }
-            PaymentAdapter paymentAdapter = new PaymentAdapter(paymentsArrayList,context,this,OrderSummaryFragment.this);
+            PaymentAdapter paymentAdapter = new PaymentAdapter(paymentsArrayList, context, this, OrderSummaryFragment.this);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
             fragmentOrderSummaryBinding.rvPayment.setLayoutManager(gridLayoutManager);
             fragmentOrderSummaryBinding.rvPayment.setHasFixedSize(true);
@@ -599,7 +600,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         deliverySlotArrayList = new ArrayList<>();
         orderSummaryViewModel.arrayDeliveryListMutableLiveData.observe(getViewLifecycleOwner(), deliveries -> {
 //            deliveryArrayList= deliveries;
-            if (deliveries.deliverySlots.size()>0){
+            if (deliveries.deliverySlots.size() > 0) {
                 ArrayList<DeliverySlot> tempSlots = new ArrayList<>();
                 for (DeliverySlot deliverySlot : deliveries.deliverySlots) {
                     if (deliverySlot.isAvailable > 0) {
@@ -608,7 +609,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 }
                 deliverySlotArrayList.addAll(tempSlots);
                 deliveryDialogAdapter = new DeliveryDialogAdapter(deliverySlotArrayList, context, this);
-            }else infoToast(context,"no slot available");
+            } else infoToast(context, "no slot available");
         });
     }
 
@@ -720,21 +721,21 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void checkPaymentType() {
-        switch (PAYMENT_MODE){
+        switch (PAYMENT_MODE) {
             case COD:
                 System.out.println("COD");
-                callOrderPlaceAPI(showCircleProgressDialog(context,""));
+                callOrderPlaceOrSubscribeAPI(showCircleProgressDialog(context, ""));
                 break;
             case ONLINE:
                 System.out.println("ONLINE");
 //                goToAskAndDismiss("noline payment not available",context);
                 //Todo online payment is here
-                ((HomeActivity)context).startPayment();
+                ((HomeActivity) context).startPayment();
                 break;
             case WALLET:
-                if (Integer.parseInt(orderSummaryViewModel.availableWalletMutable.getValue())>preferences.getPaymentAmount())
-                callOrderPlaceAPI(showCircleProgressDialog(context,""));
-                else walletAlertAndDismiss("insufficient balance in wallet ",context);
+                if (Integer.parseInt(orderSummaryViewModel.availableWalletMutable.getValue()) > preferences.getPaymentAmount())
+                    callOrderPlaceOrSubscribeAPI(showCircleProgressDialog(context, ""));
+                else walletAlertAndDismiss("insufficient balance in wallet ", context);
                 System.out.println("WALLET");
                 break;
             default:
@@ -745,22 +746,22 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
     private void callWalletPayment(ProgressDialog progressDialog) {
         progressDialog.dismiss();
-        infoToast(context,"Wallet payment required");
+        infoToast(context, "Wallet payment required");
     }
 
     private void CallPaymentCredentialApi(ProgressDialog progressDialog) {
         Observer<RazorPayCredentialResponse> razorPayCredentialResponseObserver = razorPayResponse -> {
-            if (razorPayResponse!=null){
-                if (progressDialog!=null)
+            if (razorPayResponse != null) {
+                if (progressDialog != null)
                     progressDialog.dismiss();
-                switch (razorPayResponse.getStatus()){
+                switch (razorPayResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
-                        if (razorPayResponse.getData().getKeyId()!=null
-                                && !razorPayResponse.getData().getKeyId().equalsIgnoreCase("")){
+                        if (razorPayResponse.getData().getKeyId() != null
+                                && !razorPayResponse.getData().getKeyId().equalsIgnoreCase("")) {
                             preferences.setRazorCredentials(razorPayResponse.getData().getKeyId(),
                                     razorPayResponse.getData().getType(),
                                     razorPayResponse.getData().getCurrency());
-                            Log.d(TAG, "CallPaymentCredentialApi: "+razorPayResponse.getData().getKeyId());
+                            Log.d(TAG, "CallPaymentCredentialApi: " + razorPayResponse.getData().getKeyId());
                             preferences.setPaymentReferenceId("");
                         }
                         break;
@@ -780,14 +781,18 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
             }
         };
-        orderSummaryViewModel.getRazorPayCredentialResponse(progressDialog,context)
-                .observe(getViewLifecycleOwner(),razorPayCredentialResponseObserver);
+        orderSummaryViewModel.getRazorPayCredentialResponse(progressDialog, context)
+                .observe(getViewLifecycleOwner(), razorPayCredentialResponseObserver);
 
     }
 
-    private void redirectToOrderDetails() {
+    private void redirectToOrderDetails(String orderId) {
         if (isConnectingToInternet(context)) {
-            NavHostFragment.findNavController(OrderSummaryFragment.this).navigate(R.id.action_nav_order_summary_to_orderDetailsFragment);
+            Bundle bundle = new Bundle();
+            bundle.putString(ORDER_ID, orderId);
+            if (isSubscriptionSummary)
+                bundle.putBoolean(SUBSCRIPTION, true);
+            NavHostFragment.findNavController(OrderSummaryFragment.this).navigate(R.id.action_nav_order_summary_to_orderDetailsFragment, bundle);
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
@@ -1003,7 +1008,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void OnPaymentClick(Payments payments) {
-        System.out.println("payment "+payments.getPaymentType());
+        System.out.println("payment " + payments.getPaymentType());
         if (payments.getPaymentType().equals("Cash on Delivery"))
             PAYMENT_MODE = 0;
         else if (payments.getPaymentType().contains("Online"))
