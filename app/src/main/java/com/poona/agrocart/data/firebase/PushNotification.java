@@ -26,6 +26,8 @@ public class PushNotification implements Parcelable, Serializable {
     String title = "";
     String message = "";
     String redirectId = "";
+    String redirectName = "";
+    String redirectType = "";
     String redirectTo = "";
 
     protected PushNotification() {
@@ -38,7 +40,25 @@ public class PushNotification implements Parcelable, Serializable {
         title = in.readString();
         message = in.readString();
         redirectId = in.readString();
+        redirectName = in.readString();
+        redirectType = in.readString();
         redirectTo = in.readString();
+    }
+
+    public String getRedirectType() {
+        return redirectType;
+    }
+
+    public void setRedirectType(String redirectType) {
+        this.redirectType = redirectType;
+    }
+
+    public String getRedirectName() {
+        return redirectName;
+    }
+
+    public void setRedirectName(String redirectName) {
+        this.redirectName = redirectName;
     }
 
     public static Creator<PushNotification> getCREATOR() {
@@ -114,6 +134,8 @@ public class PushNotification implements Parcelable, Serializable {
         dest.writeString(title);
         dest.writeString(message);
         dest.writeString(redirectId);
+        dest.writeString(redirectName);
+        dest.writeString(redirectType);
         dest.writeString(redirectTo);
     }
 }

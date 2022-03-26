@@ -27,9 +27,13 @@ public class BestSellingListAdapter extends RecyclerView.Adapter<BestSellingList
     private  OnProductClickListener onProductClickListener;
     private  OnPlusClickListener onPlusClickListener;
 
-    public BestSellingListAdapter(Context context, ArrayList<Product> productList, HomeFragment homeFragment) {
-        this.bdContext=context;
-        this.productArrayList=productList;
+    public BestSellingListAdapter(ArrayList<Product> products,
+                                     Context bdContext, OnProductClickListener onProductClickListener,
+                                     OnPlusClickListener onPlusClickListener) {
+        this.productArrayList = products;
+        this.bdContext = bdContext;
+        this.onProductClickListener = onProductClickListener;
+        this.onPlusClickListener = onPlusClickListener;
     }
 
     public interface OnProductClickListener {
@@ -37,7 +41,7 @@ public class BestSellingListAdapter extends RecyclerView.Adapter<BestSellingList
     }
 
     public interface OnPlusClickListener {
-        void OnPlusClick(RowBestSellingItemBinding rowBestSellingItemBinding, Product product, int position);
+        void OnPlusClick(Product product, int position);
     }
 
 
@@ -105,7 +109,7 @@ public class BestSellingListAdapter extends RecyclerView.Adapter<BestSellingList
 
 
             sellingItemBinding.imgPlus.setOnClickListener(view1 -> {
-                onPlusClickListener.OnPlusClick(sellingItemBinding, product, position);
+                onPlusClickListener.OnPlusClick(product, position);
             });
         }
     }
