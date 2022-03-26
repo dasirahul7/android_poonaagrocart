@@ -43,8 +43,11 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
         holder.bind(product);
         //Add to CART API
 
-        if (product.getIsO3().equalsIgnoreCase("yes"))
-            holder.productListItemBinding.txtOrganic.setVisibility(View.VISIBLE);
+       if(product.getIsO3() != null){
+           if (product.getIsO3().equalsIgnoreCase("yes"))
+               holder.productListItemBinding.txtOrganic.setVisibility(View.VISIBLE);
+       }
+
 
         holder.productListItemBinding.imgPlus.setOnClickListener(view -> {
             if (product.getInCart() == 0)

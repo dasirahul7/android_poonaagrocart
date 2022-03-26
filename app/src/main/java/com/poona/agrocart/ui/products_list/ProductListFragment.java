@@ -181,7 +181,8 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
 
                           seeAllBestSellingApi(showCircleProgressDialog(context,""), "load");
                            productArrayList.clear();
-                       }
+                           basketArrayList.clear();
+                   }
                    });
                 } else if (fromScreen.equalsIgnoreCase(AllExclusive)) {
                     BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true);
@@ -194,6 +195,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                             strSortBy = TextUtils.join(",",sortId);
                             seeAllExclusiveApi(showCircleProgressDialog(context,""), "load");
                             productArrayList.clear();
+                            basketArrayList.clear();
                         }
                     });
                 }
@@ -251,7 +253,8 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
     private void setRVAdapter() {
         basketArrayList = new ArrayList<>();
         productArrayList = new ArrayList<>();
-
+         basketArrayList.clear();
+         productArrayList.clear();
         gridLayoutManager = new GridLayoutManager(requireContext(), 2);
         rvVegetables.setHasFixedSize(true);
         rvVegetables.setLayoutManager(gridLayoutManager);
@@ -455,6 +458,7 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                         } else {
                             if (productListByResponse.getProductListResponseDt().getProductList() != null) {
                                 if (productListByResponse.getProductListResponseDt().getProductList().size() > 0) {
+                                    productArrayList.clear();
                                     productArrayList.addAll(productListByResponse.getProductListResponseDt().getProductList());
                                     productListViewModel.productListMutableLiveData.setValue(productArrayList);
                                     makeProductListing();
@@ -465,13 +469,11 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
                     case STATUS_CODE_404://Validation Errors
-                       /* if (apiFrom.equalsIgnoreCase("load")) {
+                        if (apiFrom.equalsIgnoreCase("load")) {
                             fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
                             warningToast(context, productListByResponse.getMessage());
-                        }*/
-                        basketArrayList.clear();
-                        fragmentProductListBinding.tvNoData.setVisibility(View.VISIBLE);
-                        warningToast(context, productListByResponse.getMessage());
+                        }
+
                         break;
                     case STATUS_CODE_401://Unauthorized user
                         goToAskSignInSignUpScreen(productListByResponse.getMessage(), context);
@@ -548,6 +550,8 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
         HashMap<String, String> map = new HashMap<>();
         map.put(LIMIT, String.valueOf(limit));
         map.put(OFFSET, String.valueOf(offset));
+        map.put(AppConstants.SORT_BY, String.valueOf(strSortBy));
+        map.put(AppConstants.BRAND_ID, String.valueOf(StrBrandId));
         map.put(SEARCH, fragmentProductListBinding.etProductSearch.getText().toString().trim());
         map.put(CATEGORY_ID, CategoryId);
         return map;

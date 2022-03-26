@@ -125,7 +125,6 @@
                             android:background="@drawable/background_edit_profile_mobile"
                             android:clickable="false"
                             android:drawableEnd="@drawable/ic_sign_up_mobile_check"
-                            android:editable="false"
                             android:enabled="false"
                             android:imeOptions="actionNext"
                             android:inputType="number"
