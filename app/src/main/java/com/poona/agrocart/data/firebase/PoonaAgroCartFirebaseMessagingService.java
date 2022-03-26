@@ -1,7 +1,7 @@
 package com.poona.agrocart.data.firebase;
 
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
-import static com.poona.agrocart.app.AppConstants.PUSH_NOTIFICATION;
+import static com.poona.agrocart.app.AppConstants.NOTIFICATION;
 import static com.poona.agrocart.app.AppConstants.PUSH_NOTIFICATIONS;
 import static com.poona.agrocart.data.firebase.IFCMConstants.FCM_NEW_ORDER_ACTION;
 
@@ -78,14 +78,14 @@ public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingServ
     public void onMessageReceived(RemoteMessage remoteMessage) {
         context = getApplicationContext();
         preference = new AppSharedPreferences(this);
-        Log.d(TAG, "Notification Body back: " + "done");
+        Log.d(TAG, "Notification Body back: " +  remoteMessage.getData());
 //        if (remoteMessage == null)
 //            return;
 
         //Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Notification Body: " + remoteMessage.getNotification().getBody());
-            handleNotification(remoteMessage.getNotification().getBody());
+        if (remoteMessage.getData() != null) {
+            Log.d(TAG, "Notification Body: " + remoteMessage.getData());
+            handleNotification(String.valueOf(remoteMessage.getData()));
         }
 
         if (remoteMessage.getData().size() > 0) {
@@ -110,7 +110,7 @@ public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingServ
     private void handleNotification(String message) {
         if (!isAppIsInBackground(getApplicationContext())) {
             // app is in foreground, broadcast the push message
-            Intent pushNotification = new Intent(PUSH_NOTIFICATION);
+            Intent pushNotification = new Intent(PUSH_NOTIFICATIONS);
             pushNotification.putExtra("message", message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
         } else {
@@ -153,7 +153,7 @@ public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingServ
             notificationType = "";
         }
         try {
-            redirectTo = jsonObject.getString("redirect_type");
+            redirectTo = jsonObject.getString("redirect_to");
         } catch (Exception e) {
             redirectTo = "";
         }
@@ -177,7 +177,7 @@ public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingServ
         Bundle bundle = new Bundle();
         Intent resultIntent = new Intent(this, HomeActivity.class); //Change
 
-        bundle.putString(FROM_SCREEN, PoonaAgroCartFirebaseMessagingService.class.getSimpleName());
+        bundle.putString(FROM_SCREEN, NOTIFICATION);
         bundle.putSerializable(PUSH_NOTIFICATIONS, pushNotification);
         resultIntent.putExtras(bundle);
         //   resultIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -5,6 +5,9 @@ import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_CURRENCY;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_SECRET_KEY;
+import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
+import static com.poona.agrocart.app.AppConstants.PUSH_NOTIFICATIONS;
+import static com.poona.agrocart.app.AppConstants.SEASONAL_P_ID;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -44,6 +47,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -55,6 +59,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.poona.agrocart.R;
+import com.poona.agrocart.data.firebase.PushNotification;
 import com.poona.agrocart.data.network.ApiClientAuth;
 import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.responses.BaseResponse;
@@ -108,6 +113,8 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
         Checkout.preload(this);
         toolbar = binding.appBarHome.toolbar;
 //        backBtn = binding.appBarHome.backImg;
+        /*Notification redirection here*/
+        notificationRedirection();
         initToolbar();
 //        setUserProfile(showCircleProgressDialog(HomeActivity.this,""),profileParam(preferences.getUid()));
         initNavigation();
@@ -116,6 +123,32 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    private void notificationRedirection() {
+        if (getIntent().getExtras()!=null){
+            if (getIntent().getExtras().getString(FROM_SCREEN)!=null){
+                try {
+                    Bundle bundle = getIntent().getExtras();
+                    PushNotification pushNotification = (PushNotification) bundle.getSerializable(PUSH_NOTIFICATIONS);
+                    Log.e(TAG, "notificationRedirection: "+pushNotification.getNotificationType());
+                    //redirect from notification
+                    warningToast(this,pushNotification.getRedirectTo());
+                    switch (pushNotification.getRedirectTo()){
+                        case "exclusive product":
+                            bundle.putString(PRODUCT_ID,pushNotification.getRedirectId());
+                            Navigation.findNavController(HomeActivity.this,R.id.nav_host_fragment_content_home).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
+                            break;
+                        case "seasonal product":
+                            bundle.putString(SEASONAL_P_ID, pushNotification.getRedirectId());
+                            Navigation.findNavController(HomeActivity.this,R.id.nav_host_fragment_content_home).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
+                            break;
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
     }
 
     private HashMap<String, String> profileParam(String userId) {

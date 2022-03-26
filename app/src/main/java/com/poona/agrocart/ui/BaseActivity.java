@@ -8,11 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +33,7 @@ import com.poona.agrocart.data.firebase.PushNotification;
 import com.poona.agrocart.ui.splash_screen.SplashScreenActivity;
 import com.poona.agrocart.widgets.CustomButton;
 import com.poona.agrocart.widgets.CustomTextView;
+import com.poona.agrocart.widgets.toast.CustomToast;
 
 /**
  * Created by Rahul Dasi on 6/10/2020
@@ -69,6 +72,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
                 break;
         }
+    }
+    protected void warningToast(Context context, String message) {
+        CustomToast.Config.getInstance()
+                .setToastTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/poppins/poppins_regular.ttf"))
+                .apply();
+        CustomToast.warning(context, message, Toast.LENGTH_LONG, true).show();
     }
 
     @Override

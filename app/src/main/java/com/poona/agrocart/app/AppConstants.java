@@ -75,6 +75,7 @@ public class AppConstants {
     /*Bundle Keys*/
     public static final String FROM_SCREEN = "from_screen";
     public static final String SUBSCRIPTION = "subscription";
+    public static final String NOTIFICATION = "notification-screen";
 
     /*Home screen APIs*/
     public static final String HOME_API = "home";
