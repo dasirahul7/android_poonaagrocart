@@ -142,7 +142,13 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
 
         initView();
 
-        setRVAdapter();
+        if(isConnectingToInternet(context)){
+
+            setRVAdapter();
+        }else{
+            showNotifyAlert(requireActivity(), getString(R.string.info), getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+        }
+
 
         return view;
     }
@@ -447,7 +453,8 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         if(basketSubscriptionDetailList.get(0).getTransactionId() != null){
             orderViewDetailsViewModel.transactionId.setValue(basketSubscriptionDetailList.get(0).getTransactionId());
         }else{
-            fragmentOrderViewBinding.tvTransactionId.setVisibility(View.GONE);
+            orderViewDetailsViewModel.transactionId.setValue("Not Available");
+
         }
 
     }
@@ -826,6 +833,7 @@ public class OrderViewFragment extends BaseFragment implements OrderCancelReason
         }else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         }
+
 
 
         if(isBasketVisible){

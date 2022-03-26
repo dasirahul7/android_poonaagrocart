@@ -97,7 +97,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private DotsIndicator dotsIndicator;
     private RecyclerView rvProductComment;
     private BasketDetailsResponse.BasketDetails details;
-    private ArrayList<BasketDetailsResponse.BasketProduct> basketProducts;
+    private ArrayList<BasketDetailsResponse.SubscriptionType> subscriptionTypes;
     private BasketProductAdapter basketProductAdapter;
     private RecyclerView rvBasketProducts;
     private LinearLayoutManager linearLayoutManager;
@@ -130,7 +130,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     private String subscriptionSlotId;
     private String strAmount;
     private int quantity;
-    private String strSubscriptionBasket = "",subTypeId ="", subStartDate = "", slotStartTime = "", slotEndTime = "";//need to remove later
+    private String strSubscriptionBasket = "",subTypeId ="", subStartDate = "",  subTypeName = "",slotStartTime = "", slotEndTime = "";//need to remove later
 
 
 
@@ -220,11 +220,12 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         tvSubTotalAmount = basketDetailsBinding.layoutAdded.tvSubAmount;
         tvSubQuatity = basketDetailsBinding.layoutAdded.tvSubQuality;
 
-
         setHodeOrShowValue();
 
-
     }
+
+
+
     private void setReviewsHide(BasketDetailsResponse.Rating rating) {
         if (details.getAlreadyPurchased() == 0) {
             basketDetailsBinding.llRateView.setVisibility(View.GONE);
@@ -442,9 +443,12 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void setBasketSubscription(BasketDetailsResponse.Subscription subscription) {
+       // android:text="@{subscriptionModule.subscriptionStartDateMutable}"
+        basketDetailsBinding.layoutAdded.tvStartDate.setText(subscription.getDeliveryDate());
         basketDetailViewModel.subscriptionStartDateMutable.setValue(subscription.getDeliveryDate());
         basketDetailViewModel.subscriptionTypeMutableList.setValue(subscription.getSubscriptionTypes());
         basketDetailViewModel.subscriptionDeliverySlotsLists.setValue(subscription.getDeliverySlots());
+
         basketDetailViewModel.subscriptionTypeMutableList.observe(getViewLifecycleOwner(),
                 subscriptionTypes -> {
                     if (subscriptionTypes != null) {
@@ -453,6 +457,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         basketDetailsBinding.layoutAdded.rvSubType.setAdapter(subscribeTypeAdapter);
                     }
                 });
+
         basketDetailViewModel.subscriptionDeliverySlotsLists.observe(getViewLifecycleOwner(),deliverySlots -> {
             if (deliverySlots.size()>0){
                 SlotAdaptor slotAdaptor = new SlotAdaptor(getContext(), deliverySlots);
@@ -474,6 +479,9 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 });
             }
         });
+
+
+
 //        float TotalAmount = basketDetailViewModel.basketQuantity * Integer.parseInt(basketDetailsBinding.layoutAdded.tvSubQty.getText().toString().trim());
     }
 
@@ -803,6 +811,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                     if (tvDate != null) {
                         tvDate.setText(txtDisplayDate);
                         basketDetailViewModel.subscriptionStartDateMutable.setValue(txtDisplayDate);
+
                         callDeliverySlotByDateAPI(showCircleProgressDialog(context, ""));
                     }
                 } catch (Exception e) {
@@ -814,46 +823,7 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
         dpd.getDatePicker().setMinDate(c.getTimeInMillis());
         dpd.show();
     }
-   /* private void showCalendar(CustomTextView tvDate) {
-        //showing date picker dialog
-        DatePickerDialog dpd;
-       calendar = Calendar.getInstance();
-        Calendar mcurrentDate = Calendar.getInstance();
-        mYear = mcurrentDate.get(Calendar.YEAR);
-        mMonth = mcurrentDate.get(Calendar.MONTH);
-        mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-        //Set next date
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String txtDisplayDate = null;
-                String selectedDate = year + "-" + (month + 1) + "-" + (dayOfMonth);
-                try {
-                    txtDisplayDate = formatDate(selectedDate, "yyyy-MM-dd", "dd MMM yyyy");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                try {
 
-                    if (tvDate != null) {
-                        tvDate.setText(txtDisplayDate);
-                        basketDetailViewModel.subscriptionStartDateMutable.setValue(txtDisplayDate);
-                        callDeliverySlotByDateAPI(showCircleProgressDialog(context, ""));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                calendar.set(year, month, dayOfMonth);
-            }
-        },
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
-        );
-        dpd = new DatePickerDialog(requireActivity(), dpd, mYear, mMonth, mDay);
-        dpd.getDatePicker().setMinDate(System.currentTimeMillis());
-        dpd.show();
-
-    }*/
 
 
     @Override
@@ -932,11 +902,26 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
             case R.id.btn_subscribe_now:
                 strSubscriptionBasket = tvSubQuatity.getText().toString();
                 subStartDate = basketDetailsBinding.layoutAdded.tvStartDate.getText().toString();
-                if(!strSubscriptionBasket.isEmpty() && !subStartDate.isEmpty() && !subTypeId.isEmpty()){
-                    callSubscribeBasketApi(showCircleProgressDialog(context, ""));
-                }else {
-                    warningToast(context, "Please check the details ");
-                }
+                callSubscribeBasketApi(showCircleProgressDialog(context, ""));
+
+                   /*if(subTypeId.isEmpty()){
+                       warningToast(context, "Please check Subscription duration");
+                       if(subTypeName.equalsIgnoreCase("daily")){
+                           if (!strSubscriptionBasket.equalsIgnoreCase("2")){
+                               warningToast(context, "at least to quantity should be their");
+                           }
+                       }
+                   }else {
+                       callSubscribeBasketApi(showCircleProgressDialog(context, ""));
+                   }*/
+
+               /* if(subTypeName.equalsIgnoreCase("daily")){
+                    if (!strSubscriptionBasket.equalsIgnoreCase("2")){
+                        warningToast(context, "at least to quantity should be their");
+                    }else {
+                        callSubscribeBasketApi(showCircleProgressDialog(context, ""));
+                    }
+                }*/
 
                 break;
 
@@ -976,13 +961,19 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                         successToast(context, subscribeNowResponse.getMessage());
                         String subscriptionNowId = String.valueOf(subscribeNowResponse.getSubscribeNowId());
 
-                        Bundle bundle1 = new Bundle();
-                        bundle1.putString(SUBSCRIBE_NOW_ID, subscriptionNowId);
-                        /*send title for subscription*/
-                        bundle1.putString(FROM_SCREEN, "Subscription Summary");
-                        bundle1.putBoolean(SUBSCRIPTION, true);
-                        NavHostFragment.findNavController(BasketDetailFragment.this).
-                                navigate(R.id.action_nav_basket_details_to_nav_order_summary,bundle1);
+
+
+                                Bundle bundle1 = new Bundle();
+                                bundle1.putString(SUBSCRIBE_NOW_ID, subscriptionNowId);
+                                /*send title for subscription*/
+                                bundle1.putString(FROM_SCREEN, "Subscription Summary");
+                                bundle1.putBoolean(SUBSCRIPTION, true);
+                                NavHostFragment.findNavController(BasketDetailFragment.this).
+                                        navigate(R.id.action_nav_basket_details_to_nav_order_summary,bundle1);
+
+
+
+
 
                         break;
                     case STATUS_CODE_404://Validation Errors
@@ -1250,5 +1241,6 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void OnSubTypeClick(BasketDetailsResponse.SubscriptionType type) {
         subTypeId = type.getSubscriptionType();
+        subTypeName = type.getSubscriptionTypeName();
     }
 }

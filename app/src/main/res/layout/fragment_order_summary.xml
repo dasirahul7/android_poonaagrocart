@@ -581,7 +581,7 @@
                             <com.poona.agrocart.widgets.CustomTextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="70"
+                                android:layout_weight="60"
                                 android:text="@string/sub_total"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_16sp"
@@ -591,7 +591,7 @@
                                 android:id="@+id/tv_subTotal"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="30"
+                                android:layout_weight="40"
                                 android:gravity="end"
                                 android:text='@{`Rs.`+orderSummaryViewModel.subTotalMutable}'
                                 android:textColor="@color/color_discount_text"
@@ -618,7 +618,7 @@
                             <com.poona.agrocart.widgets.CustomTextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="70"
+                                android:layout_weight="60"
                                 android:text="@string/coupon_discount"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_16sp"
@@ -628,7 +628,7 @@
                                 android:id="@+id/tv_discount"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="30"
+                                android:layout_weight="40"
                                 android:gravity="end"
                                 android:text='@{`Rs.`+orderSummaryViewModel.discountMutable}'
                                 android:textColor="@color/color_discount_text"
@@ -648,7 +648,7 @@
                             <com.poona.agrocart.widgets.CustomTextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="70"
+                                android:layout_weight="60"
                                 android:text="@string/delivery_charges"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_16sp"
@@ -658,7 +658,7 @@
                                 android:id="@+id/tv_delivery_charges"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="30"
+                                android:layout_weight="40"
                                 android:gravity="end"
                                 android:text='@{`Rs.`+orderSummaryViewModel.deliveryChargesMutable}'
                                 android:textColor="@color/color_discount_text"
@@ -688,7 +688,7 @@
                             <com.poona.agrocart.widgets.CustomTextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="70"
+                                android:layout_weight="60"
                                 android:text="@string/total_amount"
                                 android:textColor="@color/color_discount_text"
                                 android:textSize="@dimen/_16sp"
@@ -698,7 +698,7 @@
                                 android:id="@+id/tv_total_amount"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="30"
+                                android:layout_weight="40"
                                 android:gravity="end"
                                 android:text='@{`Rs.`+orderSummaryViewModel.finalTotalMutable}'
                                 android:textColor="@color/color_discount_text"

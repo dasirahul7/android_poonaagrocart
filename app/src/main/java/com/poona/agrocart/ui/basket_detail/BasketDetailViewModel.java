@@ -122,7 +122,7 @@ public class BasketDetailViewModel extends AndroidViewModel {
         subscriptionTypeMutableList= new MutableLiveData<>();
         subscriptionDeliverySlotsLists= new MutableLiveData<>();
         subscriptionSlotMutable.setValue(null);
-        subscriptionStartDateMutable.setValue(null);
+        subscriptionStartDateMutable.setValue("");
         subscriptionTypeMutableList.setValue(null);
         subscriptionDeliverySlotsLists.setValue(null);
     }

@@ -30,7 +30,7 @@
                 android:id="@+id/cl_order_view_main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
                 android:background="@color/white"
                 tools:context=".ui.nav_orders.order_view.OrderViewFragment">
 
@@ -503,7 +503,7 @@
                             android:paddingHorizontal="@dimen/_6sdp"
                             android:layout_gravity="center_vertical"
                             android:text="@string/my_order_note"
-                            android:textColor="@color/colorGrey"
+                            android:textColor="@color/color_discount_text"
                             android:textSize="@dimen/_12sp"
                             app:setCustomFont="@string/font_poppins_regular" />
 
@@ -687,9 +687,8 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_cancel_order"
                         android:layout_gravity="center_vertical"
-                        android:singleLine="true"
                         android:textSize="@dimen/_12sp"
-                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:text="Your order has been cancelled.Money will be refunded into your wallet"/>
                 </LinearLayout>

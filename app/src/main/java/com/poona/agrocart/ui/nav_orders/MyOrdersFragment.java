@@ -96,7 +96,6 @@ public class MyOrdersFragment extends BaseFragment implements NetworkExceptionLi
                                 orderListResponse.getOrderList().size() > 0) {
                             orderArrayList.addAll(orderListResponse.getOrderList());
                             ordersAdapter.notifyDataSetChanged();
-
                             fragmentMyOrdersBinding.llMainLayout.setVisibility(View.VISIBLE);
                             fragmentMyOrdersBinding.llEmptyScreen.setVisibility(View.GONE);
 

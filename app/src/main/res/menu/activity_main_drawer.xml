@@ -21,8 +21,9 @@
             android:icon="@drawable/ic_address"
             android:title="@string/menu_addresses"
             app:popUpTo="@+id/nav_home"
-            app:popUpToInclusive="false"
-            app:popUpToSaveState="true"/>
+            app:showAsAction="always"
+            app:popUpToInclusive="true"
+            app:popUpToSaveState="false"/>
         <item
             android:id="@+id/nav_store"
             android:icon="@drawable/ic_our_store"

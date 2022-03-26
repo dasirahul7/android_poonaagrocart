@@ -42,6 +42,10 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
         holder.productListItemBinding.setProductModule(product);
         holder.bind(product);
         //Add to CART API
+
+        if (product.getIsO3().equalsIgnoreCase("yes"))
+            holder.productListItemBinding.txtOrganic.setVisibility(View.VISIBLE);
+
         holder.productListItemBinding.imgPlus.setOnClickListener(view -> {
             if (product.getInCart() == 0)
                 onProductClickListener.onAddClick(product.getProductId(), product.getPuId(), position);
@@ -79,6 +83,8 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
             if (product.getInCart() == 1)
                 productListItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
             else productListItemBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
+
+
 //            if (Product.isOrganic())
 //                productListItemBinding.txtOrganic.setVisibility(View.VISIBLE);
 //            if (Product.getWeight().equals("0")) {
