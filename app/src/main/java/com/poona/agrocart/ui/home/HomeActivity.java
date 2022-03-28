@@ -269,6 +269,12 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
         View cart_badge = LayoutInflater.from(this)
                 .inflate(R.layout.action_layout_my_cart,
                         mbottomNavigationMenuView, false);
+        //set home click on bottom home menu
+        View bHomeMenu = mbottomNavigationMenuView.getChildAt(0);
+        //bottom home menu click
+        bHomeMenu.setOnClickListener(view1 -> {
+            Navigation.findNavController(HomeActivity.this, R.id.nav_host_fragment_content_home).navigate(R.id.nav_home);
+        });
 
         textCartItemCount = (TextView) cart_badge.findViewById(R.id.cart_badge);
         itemView.addView(cart_badge);

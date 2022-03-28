@@ -608,7 +608,18 @@
         android:id="@+id/searchFragment"
         android:name="com.poona.agrocart.ui.search.SearchFragment"
         android:label="SearchFragment"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_nav_product_details"
+            app:destination="@id/nav_product_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/searchFragment"
+            app:popUpToInclusive="false"/>
+    </fragment>
 
     <!--Seasonal registration screen-->
     <fragment
