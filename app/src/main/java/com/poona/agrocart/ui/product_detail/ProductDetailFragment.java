@@ -407,6 +407,16 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         else {
             productDetailViewModel.productTypeMutable.setValue(details.getProductType());
         }
+        if (details.getSpecialOffer().isEmpty()){
+            fragmentProductDetailBinding.cardOfferMsg.setVisibility(View.GONE);
+        }else fragmentProductDetailBinding.cardOfferMsg.setVisibility(View.VISIBLE);
+        if (details.getProductDetails()==null||details.getProductDetails().equals("")) {
+            makeInVisible(fragmentProductDetailBinding.llProductDetails,null);
+        } else makeVisible(fragmentProductDetailBinding.llProductDetails,null);
+        if (details.getAboutProduct()==null||details.getAboutProduct().equals("")) {
+            makeInVisible(fragmentProductDetailBinding.llAboutThisProduct,null);
+        } else makeVisible(fragmentProductDetailBinding.llAboutThisProduct,null);
+
     }
 
 
@@ -504,7 +514,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 if (Integer.parseInt(fragmentProductDetailBinding.etQuantity.getText().toString()) > 1) {
                     decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
                             fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
-                } else fragmentProductDetailBinding.ivMinus.setEnabled(false); // call here remove api
+                } else callRemoveFromCartAPI(showCircleProgressDialog(context,"")); // call here remove api
                 break;
             case R.id.iv_plus:
                 addOrRemoveFromCart();
@@ -997,4 +1007,31 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             e.printStackTrace();
         }
     }
+    private void makeVisible(View linearView, View view) {
+        try {
+            if (linearView != null) {
+                linearView.setVisibility(View.VISIBLE);
+            }
+            if (view != null) {
+                view.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    private void makeInVisible(View linearView, View view) {
+        try {
+            if (linearView != null) {
+                linearView.setVisibility(View.GONE);
+            }
+            if (view != null) {
+                view.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
