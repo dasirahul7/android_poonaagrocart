@@ -238,7 +238,7 @@
         <entry key="app/src/main/res/layout/dialog_order_summary.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_select_photo.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/dialog_server_error.xml" value="0.19270833333333334" />
-        <entry key="app/src/main/res/layout/dialog_text_with_button.xml" value="0.11" />
+        <entry key="app/src/main/res/layout/dialog_text_with_button.xml" value="0.21" />
         <entry key="app/src/main/res/layout/explore_fragment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/faq_recycler_view_item.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_about_us.xml" value="0.14" />

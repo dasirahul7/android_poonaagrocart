@@ -1,6 +1,5 @@
 package com.poona.agrocart.ui.nav_my_basket;
 
-import static com.poona.agrocart.app.AppConstants.ORDER_ID;
 import static com.poona.agrocart.app.AppConstants.ORDER_SUBSCRIPTION_ID;
 import static com.poona.agrocart.app.AppConstants.SUBSCRIPTION;
 
@@ -19,9 +18,7 @@ import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.data.network.responses.myOrderResponse.SubscribeBasketListCustomerResponse;
 import com.poona.agrocart.databinding.RvOrdersBasketBinding;
-import com.poona.agrocart.ui.nav_my_basket.model.BasketOrder;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 public class BasketOrdersAdapter extends RecyclerView.Adapter<BasketOrdersAdapter.BasketOrdersViewHolder> {

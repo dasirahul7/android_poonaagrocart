@@ -372,10 +372,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                     case STATUS_CODE_200://Record Create/Update Successfully
                         mainLayout.setVisibility(View.VISIBLE);
                         if (orderSummaryResponse.address.size() == 0) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString(ADD_UPDATE_ADDRESS_DETAILS, ADD_ADDRESS_DETAILS);
-                            bundle.putString(FROM_SCREEN, ORDER_SUMMARY);
-                            NavHostFragment.findNavController(OrderSummaryFragment.this).navigate(R.id.action_nav_order_summary_to_addAddressFragment, bundle);
+                            AddressFilledDialogBox(getString(R.string.address_filled_screen), context);
                         } else {
                             stepAddress = "";
                             stepOrder = "";
@@ -427,10 +424,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                     case STATUS_CODE_200://Record Create/Update Successfully
                         mainLayout.setVisibility(View.VISIBLE);
                         if (orderSummaryResponse.address.size() == 0) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString(ADD_UPDATE_ADDRESS_DETAILS, ADD_ADDRESS_DETAILS);
-                            bundle.putString(FROM_SCREEN, ORDER_SUMMARY);
-                            NavHostFragment.findNavController(OrderSummaryFragment.this).navigate(R.id.action_nav_order_summary_to_addAddressFragment, bundle);
+                            AddressFilledDialogBox(getString(R.string.address_filled_screen), context);
                         } else {
                             stepAddress = "";
                             stepOrder = "";
@@ -1044,6 +1038,85 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
 
         customButton.setOnClickListener(v -> {
             dialog.dismiss();
+        });
+
+        /*dialog.setOnKeyListener((arg0, keyCode, event) -> {
+            // TODO Auto-generated method stub
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                dialog.dismiss();
+                playClickSound();
+            }
+            return true;
+        });*/
+
+        dialog.show();
+
+        // Get screen width and height in pixels
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // The absolute width of the available display size in pixels.
+        int displayWidth = displayMetrics.widthPixels;
+        // The absolute height of the available display size in pixels.
+        int displayHeight = displayMetrics.heightPixels;
+
+        //int displayWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        //int displayHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        // Initialize a new window manager layout parameters
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        // Copy the alert dialog window attributes to new layout parameter instance
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+
+        // Set the alert dialog window width and height
+        // Set alert dialog width equal to screen width 90%
+        // int dialogWindowWidth = (int) (displayWidth * 0.9f);
+        // Set alert dialog height equal to screen height 90%
+        // int dialogWindowHeight = (int) (displayHeight * 0.9f);
+
+        // Set alert dialog width equal to screen width 100%
+        int dialogWindowWidth = (int) (displayWidth * 0.8f);
+        // Set alert dialog height equal to screen height 100%
+        //int dialogWindowHeight = (int) (displayHeight * 0.8f);
+
+        // Set the width and height for the layout parameters
+        // This will bet the width and height of alert dialog
+        layoutParams.width = dialogWindowWidth;
+        //layoutParams.height = dialogWindowHeight;
+
+        // Apply the newly created layout parameters to the alert dialog window
+        dialog.getWindow().setAttributes(layoutParams);
+    }
+
+    public void AddressFilledDialogBox(String message, Context context) {
+        AlertDialog.Builder builder = new AlertDialog
+                .Builder(new androidx.appcompat.view.ContextThemeWrapper(context,
+                R.style.CustomAlertDialog));
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_text_with_button, null);
+
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+
+        CustomTextView tvHeading = dialogView.findViewById(R.id.tv_heading);
+        tvHeading.setText(message);
+        // tvHeading.setText(message + "\n\n" + preferences.getAuthorizationToken());
+        tvHeading.setTextIsSelectable(true);
+
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.StyleDialogUpDownAnimation;
+
+        CustomButton customButton = dialogView.findViewById(R.id.bt_ok);
+
+        customButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            Bundle bundle = new Bundle();
+            bundle.putString(ADD_UPDATE_ADDRESS_DETAILS, ADD_ADDRESS_DETAILS);
+            bundle.putString(FROM_SCREEN, ORDER_SUMMARY);
+            NavHostFragment.findNavController(OrderSummaryFragment.this).navigate(R.id.action_nav_order_summary_to_addAddressFragment, bundle);
         });
 
         /*dialog.setOnKeyListener((arg0, keyCode, event) -> {

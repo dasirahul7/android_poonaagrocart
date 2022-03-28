@@ -5,15 +5,11 @@ import static com.poona.agrocart.app.AppConstants.DELIVERY_DATE;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
 import static com.poona.agrocart.app.AppConstants.ITEM_TYPE;
 import static com.poona.agrocart.app.AppConstants.NO_OF_SUBSCRIPTION;
-import static com.poona.agrocart.app.AppConstants.ORDER_ID;
-import static com.poona.agrocart.app.AppConstants.PAYMENT_MODE_ID;
 import static com.poona.agrocart.app.AppConstants.QUANTITY;
 import static com.poona.agrocart.app.AppConstants.RATING;
 import static com.poona.agrocart.app.AppConstants.REVIEW;
 import static com.poona.agrocart.app.AppConstants.REVIEW_LIST;
-import static com.poona.agrocart.app.AppConstants.SLOT_END_TIME;
 import static com.poona.agrocart.app.AppConstants.SLOT_ID;
-import static com.poona.agrocart.app.AppConstants.SLOT_START_TIME;
 import static com.poona.agrocart.app.AppConstants.START_DATE;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_400;
@@ -29,6 +25,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,15 +34,11 @@ import android.widget.DatePicker;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -63,7 +56,6 @@ import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.BasketDetailsResponse;
 import com.poona.agrocart.data.network.responses.Review;
 import com.poona.agrocart.data.network.responses.basketSubscriptionResponse.SubscribeNowResponse;
-import com.poona.agrocart.data.network.responses.orderResponse.DeliverySlot;
 import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryResponse;
 import com.poona.agrocart.databinding.FragmentBasketDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
@@ -71,8 +63,6 @@ import com.poona.agrocart.ui.basket_detail.adapter.BasketImagesAdapter;
 import com.poona.agrocart.ui.basket_detail.adapter.SlotAdaptor;
 import com.poona.agrocart.ui.basket_detail.adapter.SubscriptionAdapter;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.order_summary.OrderSummaryFragment;
-import com.poona.agrocart.ui.product_detail.ProductDetailFragment;
 import com.poona.agrocart.ui.product_detail.adapter.BasketProductAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductRatingReviewAdapter;
 import com.poona.agrocart.widgets.CustomEditText;
@@ -904,7 +894,15 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 subStartDate = basketDetailsBinding.layoutAdded.tvStartDate.getText().toString();
                 callSubscribeBasketApi(showCircleProgressDialog(context, ""));
 
-                   /*if(subTypeId.isEmpty()){
+                if(isValidationSabBasket()){
+                    if(isConnectingToInternet(context)){
+                        callSubscribeBasketApi(showCircleProgressDialog(context, ""));
+                    }else {
+                        showNotifyAlert(requireActivity(), getString(R.string.info), getString(R.string.internet_error_message),R.drawable.ic_no_internet);
+                    }
+                }
+
+                /*   if(subTypeId.isEmpty()){
                        warningToast(context, "Please check Subscription duration");
                        if(subTypeName.equalsIgnoreCase("daily")){
                            if (!strSubscriptionBasket.equalsIgnoreCase("2")){
@@ -913,8 +911,8 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                        }
                    }else {
                        callSubscribeBasketApi(showCircleProgressDialog(context, ""));
-                   }*/
-
+                   }
+*/
                /* if(subTypeName.equalsIgnoreCase("daily")){
                     if (!strSubscriptionBasket.equalsIgnoreCase("2")){
                         warningToast(context, "at least to quantity should be their");
@@ -926,6 +924,30 @@ public class BasketDetailFragment extends BaseFragment implements View.OnClickLi
                 break;
 
         }
+    }
+
+    private boolean isValidationSabBasket() {
+        if (TextUtils.isEmpty(subTypeId)) {
+            warningToast(context, "at least 2 quantity should be their");
+            //basketDetailsBinding.layoutAdded.spSlots.requestFocus();
+            if (subTypeName.equalsIgnoreCase("daily"))
+                if (!strSubscriptionBasket.equalsIgnoreCase("2"))
+                    warningToast(context, "at least 2 quantity should be their");
+            return false;
+        } else if (TextUtils.isEmpty(tvSubQuatity.getText().toString())) {
+            basketDetailsBinding.layoutAdded.tvSubQuality.setError("Enter Quantity");
+            basketDetailsBinding.layoutAdded.tvSubQuality.requestFocus();
+            return false;
+        } else if (TextUtils.isEmpty(basketDetailsBinding.layoutAdded.tvStartDate.getText().toString())) {
+            basketDetailsBinding.layoutAdded.tvStartDate.setError("Enter Quantity");
+            basketDetailsBinding.layoutAdded.tvStartDate.requestFocus();
+            return false;
+        }else if(TextUtils.isEmpty(subscriptionSlotId)){
+            basketDetailsBinding.layoutAdded.spSlots.requestFocus();
+            return false;
+        }else
+            return true;
+
     }
 
     private void addOrRemoveFromCart() {
