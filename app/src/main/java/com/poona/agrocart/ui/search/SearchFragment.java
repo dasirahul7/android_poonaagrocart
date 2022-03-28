@@ -32,6 +32,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
@@ -44,7 +45,9 @@ import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.FragmentSearchBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
+import com.poona.agrocart.ui.home.HomeFragment;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
+import com.poona.agrocart.ui.intro.IntroScreenFragment;
 import com.poona.agrocart.ui.search.model.CommonSearchItem;
 import com.poona.agrocart.ui.search.adapter.CommonSearchAdapter;
 
@@ -69,8 +72,9 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     private ProductListAdapter searchAdapter;
     private CommonSearchAdapter commonSearchAdapter;
     private final ArrayList<Product> productList = new ArrayList<>();
-    private final ArrayList<CommonSearchItem> commonSearchItemArrayList = new ArrayList<>();
+//    private final ArrayList<CommonSearchItem> commonSearchItemArrayList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
+    private SwipeRefreshLayout pullToRefresh;
 
     @Nullable
     @Override
@@ -89,12 +93,29 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         }
         //pagination here
 //        setScrollListener();
+
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pullToRefresh.setRefreshing(true);
+                if (isConnectingToInternet(context)) {
+                    callCommonSearchProductApi(showCircleProgressDialog(context,""),"load");
+                } else {
+                    showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
+                }
+            }
+        });
+
         return searchView;
     }
 
     private void callCommonSearchProductApi(ProgressDialog progressDialog, String load) {
+        if (load.equalsIgnoreCase("onScrolled")){
+            offset = offset+1;
+        }else offset = 0;
         Observer<CommonSearchResponse> commonSearchResponseObserver = commonSearchResponse -> {
             if (commonSearchResponse != null) {
+                pullToRefresh.setRefreshing(false);
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                     switch (commonSearchResponse.getStatus()) {
@@ -166,7 +187,9 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                                     if (isConnectingToInternet(context)) {
                                         productList.clear();
 //                                        callSearchProductApi(searchView, showCircleProgressDialog(context, ""), "load");
-                                        callCommonSearchProductApi(showCircleProgressDialog(context, ""), "load");
+                                        if (fragmentSearchBinding.etSearch.getText().toString().isEmpty())
+                                            NavHostFragment.findNavController(SearchFragment.this).popBackStack();
+                                        else callCommonSearchProductApi(showCircleProgressDialog(context, ""), "load");
                                     } else {
                                         showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                                     }
@@ -189,7 +212,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
             ((HomeActivity) requireActivity()).binding.appBarHome.toolbar.setNavigationIcon(d);
         });
         linearLayoutManager = new LinearLayoutManager(requireContext());
-
+        pullToRefresh = fragmentSearchBinding.rlRefreshPage;
         bundle = getArguments();
         assert bundle != null;
         searchKey = bundle.getString(SEARCH_KEY);
@@ -266,8 +289,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         fragmentSearchBinding.recProduct.setHasFixedSize(true);
         fragmentSearchBinding.recProduct.setLayoutManager(linearLayoutManager);
         searchViewModel.arrayListMutableSearchLiveData.observe(getViewLifecycleOwner(), commonSearchItems -> {
-            commonSearchItemArrayList.addAll(commonSearchItems);
-            commonSearchAdapter = new CommonSearchAdapter(commonSearchItemArrayList, this);
+            commonSearchAdapter = new CommonSearchAdapter(commonSearchItems, this);
             fragmentSearchBinding.recProduct.setAdapter(commonSearchAdapter);
         });
 //        searchAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> addToCartProduct(product, position));
@@ -280,7 +302,6 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                 switch (response.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         successToast(context, response.getMessage());
-                        commonSearchItemArrayList.clear();
                         searchViewModel.arrayListMutableSearchLiveData.getValue().get(position).setInCart(1);
                         setSearchProductList();
                         try {
@@ -313,10 +334,10 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                     .observe(getViewLifecycleOwner(), baseResponseObserver);
     }
 
-    public void toProductDetail(Product product) {
+    public void toProductDetail(CommonSearchItem product) {
         Bundle bundle = new Bundle();
         bundle.putString(PRODUCT_ID, product.getProductId());
-        NavHostFragment.findNavController(SearchFragment.this).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+        NavHostFragment.findNavController(SearchFragment.this).navigate(R.id.action_searchFragment_to_nav_product_details, bundle);
     }
 
 
@@ -383,7 +404,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onSearchItemClick(CommonSearchItem commonSearchItem) {
-
+      toProductDetail(commonSearchItem);
     }
 
     @Override

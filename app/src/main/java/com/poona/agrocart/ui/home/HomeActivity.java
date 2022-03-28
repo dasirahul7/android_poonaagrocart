@@ -1,9 +1,13 @@
 package com.poona.agrocart.ui.home;
 
 import static com.poona.agrocart.app.AppConstants.ABOUT_US;
+import static com.poona.agrocart.app.AppConstants.AllExclusive;
+import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
 import static com.poona.agrocart.app.AppConstants.CMS_TYPE;
 import static com.poona.agrocart.app.AppConstants.CUSTOMER_ID;
 import static com.poona.agrocart.app.AppConstants.FROM_SCREEN;
+import static com.poona.agrocart.app.AppConstants.LIST_TITLE;
+import static com.poona.agrocart.app.AppConstants.LIST_TYPE;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_CURRENCY;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_SECRET_KEY;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
@@ -127,22 +131,40 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
     }
 
     private void notificationRedirection() {
-        if (getIntent().getExtras()!=null){
-            if (getIntent().getExtras().getString(FROM_SCREEN)!=null){
+        if (getIntent().getExtras() != null) {
+            if (getIntent().getExtras().getString(FROM_SCREEN) != null) {
                 try {
                     Bundle bundle = getIntent().getExtras();
                     PushNotification pushNotification = (PushNotification) bundle.getSerializable(PUSH_NOTIFICATIONS);
-                    Log.e(TAG, "notificationRedirection: "+pushNotification.getNotificationType());
+                    Log.e(TAG, "notificationRedirection: " + pushNotification.getNotificationType());
                     //redirect from notification
-                    warningToast(this,pushNotification.getRedirectTo());
-                    switch (pushNotification.getRedirectTo()){
+                    warningToast(this, pushNotification.getRedirectTo());
+                    switch (pushNotification.getRedirectTo()) {
                         case "exclusive product":
-                            bundle.putString(PRODUCT_ID,pushNotification.getRedirectId());
-                            Navigation.findNavController(HomeActivity.this,R.id.nav_host_fragment_content_home).navigate(R.id.action_nav_home_to_nav_product_details,bundle);
+                            /*redirect to exclusive */
+                            bundle.putString(LIST_TITLE, AllExclusive);
+                            bundle.putString(FROM_SCREEN, AllExclusive);
+                            Navigation.findNavController(HomeActivity.this, R.id.nav_host_fragment_content_home).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
                             break;
                         case "seasonal product":
+                            /*redirect to seasonal */
                             bundle.putString(SEASONAL_P_ID, pushNotification.getRedirectId());
-                            Navigation.findNavController(HomeActivity.this,R.id.nav_host_fragment_content_home).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
+                            Navigation.findNavController(HomeActivity.this, R.id.nav_host_fragment_content_home).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
+                            break;
+                        case "product":
+                            /*redirect to product*/
+                            bundle.putString(PRODUCT_ID, pushNotification.getRedirectId());
+                            Navigation.findNavController(HomeActivity.this, R.id.nav_host_fragment_content_home).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
+                            break;
+                        case "category":
+                        case "basket":
+                            /*redirect to category*/
+                            if (pushNotification.getRedirectName() != null) {
+                                bundle.putString(CATEGORY_ID, pushNotification.getRedirectId());
+                                bundle.putString(LIST_TITLE, pushNotification.getRedirectName());
+                                bundle.putString(LIST_TYPE, pushNotification.getRedirectType());
+                                Navigation.findNavController(HomeActivity.this, R.id.nav_host_fragment_content_home).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+                            }
                             break;
                     }
                 } catch (Exception exception) {
@@ -247,6 +269,12 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
         View cart_badge = LayoutInflater.from(this)
                 .inflate(R.layout.action_layout_my_cart,
                         mbottomNavigationMenuView, false);
+        //set home click on bottom home menu
+        View bHomeMenu = mbottomNavigationMenuView.getChildAt(0);
+        //bottom home menu click
+        bHomeMenu.setOnClickListener(view1 -> {
+            Navigation.findNavController(HomeActivity.this, R.id.nav_host_fragment_content_home).navigate(R.id.nav_home);
+        });
 
         textCartItemCount = (TextView) cart_badge.findViewById(R.id.cart_badge);
         itemView.addView(cart_badge);
@@ -489,9 +517,9 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
                         textCartItemCount.setVisibility(View.GONE);
                     }
                 } else {
-                    if (mCartItemCount > 99){
+                    if (mCartItemCount > 99) {
                         textCartItemCount.setText("99+");
-                    }else {
+                    } else {
                         textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
                     }
                     if (textCartItemCount.getVisibility() != View.VISIBLE) {
@@ -499,7 +527,7 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
                     }
                 }
             }
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
@@ -512,7 +540,7 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
         final Activity activity = this;
 
         final Checkout checkout = new Checkout();
-        HashMap <String,String> keyMap = new HashMap();
+        HashMap<String, String> keyMap = new HashMap();
         keyMap = preferences.getRazorCredentials();
         checkout.setKeyID(keyMap.get(PAYMENT_SECRET_KEY));
 
@@ -520,7 +548,7 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
             JSONObject options = new JSONObject();
             options.put("name", "Razorpay Corp");
             options.put("description", "Online Purchase");
-            options.put("send_sms_hash",true);
+            options.put("send_sms_hash", true);
             options.put("allow_rotation", true);
             //You can omit the image option to fetch the image from dashboard
             options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
@@ -543,14 +571,14 @@ public class HomeActivity extends BaseActivity implements PaymentResultListener 
 
     @Override
     public void onPaymentSuccess(String s) {
-        Toast.makeText(HomeActivity.this,"SuccessFull Payment integrated"+s,Toast.LENGTH_LONG).show();
+        Toast.makeText(HomeActivity.this, "SuccessFull Payment integrated" + s, Toast.LENGTH_LONG).show();
         preferences.setPaymentReferenceId(s);
         preferences.setPaymentStatus(true);
     }
 
     @Override
     public void onPaymentError(int i, String s) {
-        Toast.makeText(HomeActivity.this,"Failed Payment integrated"+s,Toast.LENGTH_LONG).show();
+        Toast.makeText(HomeActivity.this, "Failed Payment integrated" + s, Toast.LENGTH_LONG).show();
         preferences.setPaymentStatus(false);
     }
 }

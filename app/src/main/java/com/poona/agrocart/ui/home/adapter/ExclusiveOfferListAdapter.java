@@ -34,6 +34,7 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
         this.bdContext = bdContext;
         this.onProductClickListener = onProductClickListener;
         this.onPlusClickListener = onPlusClickListener;
+        setHasStableIds(true);
     }
 
     @NonNull
@@ -46,11 +47,22 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
     @Override
     public void onBindViewHolder(@NonNull ExclusiveItemHolder holder, int position) {
         Product product = products.get(position);
-        rowExclusiveItemBinding.setExclusiveOfferModule(product);
         holder.bindData(product, position);
-        rowExclusiveItemBinding.imgPlus.setOnClickListener(view1 -> {
+        System.out.println("name : "+product.getProductName());
+        holder.itemBinding.imgPlus.setOnClickListener(view1 -> {
             onPlusClickListener.OnPlusClick(rowExclusiveItemBinding, product, position);
         });
+        holder.setIsRecyclable(false);// prevent repeating items
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     @Override
@@ -67,23 +79,26 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
     }
 
     public class ExclusiveItemHolder extends RecyclerView.ViewHolder {
+        private RowExclusiveItemBinding  itemBinding;
         public ExclusiveItemHolder(RowExclusiveItemBinding rowExclusiveItemBinding) {
             super(rowExclusiveItemBinding.getRoot());
+            this.itemBinding = rowExclusiveItemBinding;
         }
 
         public void bindData(Product product, int position) {
-            rowExclusiveItemBinding.setVariable(BR.exclusiveOfferModule, product);
-            rowExclusiveItemBinding.executePendingBindings();
+            this.itemBinding.setExclusiveOfferModule(product);
+            this.itemBinding.setVariable(BR.exclusiveOfferModule, product);
+            this.itemBinding.executePendingBindings();
 //            rowExclusiveItemBinding.txtItemPrice.setText(product.getProductUnits().get(0).getOfferPrice());
             if (product.getSpecialOffer().isEmpty())
-                rowExclusiveItemBinding.txtItemName.setVisibility(View.INVISIBLE);
+                this.itemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
             if (product.getSpecialOffer().isEmpty())
-                rowExclusiveItemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
+                this.itemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
             if (product.getIsO3().equalsIgnoreCase("yes"))
-                rowExclusiveItemBinding.txtOrganic.setVisibility(View.VISIBLE);
+                this.itemBinding.txtOrganic.setVisibility(View.VISIBLE);
             if (product.getInCart() == 1)
-                rowExclusiveItemBinding.imgPlus.setImageResource(R.drawable.ic_added);
-            else rowExclusiveItemBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
+                this.itemBinding.imgPlus.setImageResource(R.drawable.ic_added);
+            else this.itemBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -91,13 +106,5 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
                 }
             });
         }
-    }
-
-    public boolean isAdded() {
-        return added;
-    }
-
-    public void setAdded(boolean added) {
-        this.added = added;
     }
 }

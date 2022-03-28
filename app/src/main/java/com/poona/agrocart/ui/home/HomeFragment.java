@@ -31,8 +31,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcelable;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -41,7 +39,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -49,7 +46,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -58,27 +54,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.github.demono.AutoScrollViewPager;
-import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.poona.agrocart.BR;
 import com.poona.agrocart.R;
 import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
-import com.poona.agrocart.data.network.responses.BannerResponse;
 import com.poona.agrocart.data.network.responses.BaseResponse;
-import com.poona.agrocart.data.network.responses.BasketResponse;
 import com.poona.agrocart.data.network.responses.BestSellingResponse;
 import com.poona.agrocart.data.network.responses.CategoryResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.HomeBasketResponse;
 import com.poona.agrocart.data.network.responses.homeResponse.Banner;
 import com.poona.agrocart.data.network.responses.homeResponse.Basket;
-import com.poona.agrocart.data.network.responses.homeResponse.Category;
 import com.poona.agrocart.data.network.responses.homeResponse.HomeResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
-import com.poona.agrocart.data.network.responses.ProfileResponse;
 import com.poona.agrocart.data.network.responses.SeasonalProductResponse;
-import com.poona.agrocart.data.network.responses.StoreBannerResponse;
 import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.data.network.responses.homeResponse.SeasonalProduct;
 import com.poona.agrocart.data.network.responses.homeResponse.StoreBanner;
@@ -90,11 +80,9 @@ import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
 import com.poona.agrocart.ui.home.adapter.ExclusiveOfferListAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.SeasonalBannerAdapter;
-import com.poona.agrocart.ui.home.model.ProductOld;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -113,7 +101,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private final long DELAY_MS = 500;
     private final long PERIOD_MS = 3000;
 
-    private final int limit = 10;
+    private final int limit = 8;
     private final int offset = 0;
     private Timer timer = new Timer();
     private boolean isTyping = false;
@@ -144,16 +132,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private BasketAdapter basketAdapter;
     private SeasonalBannerAdapter seasonalBannerAdapter;
 
-    private ArrayList<Product> bestSellings = new ArrayList<>();
-    private ArrayList<Product> offerProducts = new ArrayList<>();
-    private ArrayList<Product> productList = new ArrayList<>();
+    //    private ArrayList<Product> bestSellings = new ArrayList<>();
+//    private ArrayList<Product> offerProducts = new ArrayList<>();
+//    private ArrayList<Product> productList = new ArrayList<>();
     //    private ArrayList<BannerResponse.Banner> banners = new ArrayList<>();
-    private ArrayList<Banner> banners = new ArrayList<>();
-    private ArrayList<Category> categories = new ArrayList<>();
-    private ArrayList<Basket> baskets = new ArrayList<>();
-    private ArrayList<SeasonalProduct> seasonalProductList = new ArrayList<>();
-    private ArrayList<StoreBannerResponse.StoreBanner> storeBannerList = new ArrayList<>();
-    private ArrayList<StoreBanner> storeBannerList1 = new ArrayList<>();
+//    private ArrayList<Banner> banners = new ArrayList<>();
+//    private ArrayList<Category> categories = new ArrayList<>();
+//    private ArrayList<Basket> baskets = new ArrayList<>();
+//    private ArrayList<SeasonalProduct> seasonalProductList = new ArrayList<>();
+    private StoreBanner storeBanner;
     private ArrayList<String> BasketIds = new ArrayList<>();
     private int categoryOffset = 0, basketOffset = 0, bestSellingOffset = 0,
             seasonalOffset = 0, exclusiveOffset = 0, productOffset = 0;
@@ -167,6 +154,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             seasonalManager, bestSellingManager, exclusiveOfferManager;
     private boolean scrolling = false;
     private SwipeRefreshLayout rlRefreshPage;
+    private int addType;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -179,14 +167,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         if (isConnectingToInternet(context)) {
             clearLists();
             callHomeScreenApi(showCircleProgressDialog(context, ""));
-//            callCategoryApi(showCircleProgressDialog(context, ""), "load");
-//            callBannerApi(showCircleProgressDialog(context, ""));
-//            callBasketApi(showCircleProgressDialog(context, ""), "load");
-//            callExclusiveOfferApi(showCircleProgressDialog(context, ""), "load");
-//            callBestSellingApi(showCircleProgressDialog(context, ""), "load");
-//            callStoreBannerApi(showCircleProgressDialog(context, ""));
-//            callSeasonalProductApi(showCircleProgressDialog(context, ""), "load");
-//            callProductListApi(showCircleProgressDialog(context, ""), "load");
             searchProducts();
         } else {
             showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
@@ -200,14 +180,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 if (isConnectingToInternet(context)) {
                     clearLists();
                     callHomeScreenApi(showCircleProgressDialog(context, ""));
-//                    callCategoryApi(showCircleProgressDialog(context, ""), "load");
-//                    callBasketApi(showCircleProgressDialog(context, ""), "load");
-//                    callBannerApi(showCircleProgressDialog(context, ""));
-//                    callExclusiveOfferApi(showCircleProgressDialog(context, ""), "load");
-//                    callBestSellingApi(showCircleProgressDialog(context, ""), "load");
-//                    callStoreBannerApi(showCircleProgressDialog(context, ""));
-//                    callSeasonalProductApi(showCircleProgressDialog(context, ""), "load");
-//                    callProductListApi(showCircleProgressDialog(context, ""), "load");
                 } else {
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 }
@@ -221,89 +193,65 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private void setRvCategory() {
         categoryManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-        categoryAdapter = new CategoryAdapter(categories, requireActivity(), category -> {
-            String cat_id = category.getId();
-            Bundle bundle = new Bundle();
-            bundle.putString(CATEGORY_ID, cat_id);
-            bundle.putString(LIST_TITLE, category.getCategoryName());
-            bundle.putString(LIST_TYPE, category.getCategoryType());
-            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
-            System.out.println("category size" + categories.size());
-        });
         fragmentHomeBinding.recCategory.setLayoutManager(categoryManager);
-        fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
         fragmentHomeBinding.recCategory.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recCategory.getRecycledViewPool().setMaxRecycledViews(0, 0);
+        homeViewModel.categoryMutableList.observe(getViewLifecycleOwner(), categories -> {
+            categoryAdapter = new CategoryAdapter(categories, requireActivity(), category -> {
+                String cat_id = category.getId();
+                Bundle bundle = new Bundle();
+                bundle.putString(CATEGORY_ID, cat_id);
+                bundle.putString(LIST_TITLE, category.getCategoryName());
+                bundle.putString(LIST_TYPE, category.getCategoryType());
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_products_list, bundle);
+            });
+
+            fragmentHomeBinding.recCategory.setAdapter(categoryAdapter);
+        });
+
+//        fragmentHomeBinding.recCategory.getRecycledViewPool().setMaxRecycledViews(0, 0);
 
     }
 
     private void setRvBasket() {
         basketManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
-        basketAdapter = new BasketAdapter(baskets, getActivity(), this::toBasketDetail);
         fragmentHomeBinding.recBasket.setLayoutManager(basketManager);
-        fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
-        fragmentHomeBinding.recBasket.getRecycledViewPool().setMaxRecycledViews(0, 0);
+        homeViewModel.basketMutableList.observe(getViewLifecycleOwner(), basketsList -> {
+            basketAdapter = new BasketAdapter(basketsList, getActivity(), this::toBasketDetail);
+            fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
+            fragmentHomeBinding.recBasket.getRecycledViewPool().setMaxRecycledViews(0, 0);
+        });
     }
 
     private void setRvBestSelling() {
-
         bestSellingManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
         fragmentHomeBinding.recBestSelling.setHasFixedSize(true);
         fragmentHomeBinding.recBestSelling.setLayoutManager(bestSellingManager);
-
-        bestsellingAdapter = new ExclusiveOfferListAdapter(bestSellings, requireActivity(), this::toProductDetail, (binding, product, position) -> {
-            if (product.getInCart() == 0) {
-                addToCartProduct(product, BEST_SELLING, position);
-            }
+        homeViewModel.bestSellingMutableList.observe(getViewLifecycleOwner(), products -> {
+            bestsellingAdapter = new ExclusiveOfferListAdapter(products, requireActivity(), this::toProductDetail, (binding, product, position) -> {
+                if (product.getInCart() == 0) {
+                    addToCartProduct(product, BEST_SELLING, position);
+                }
+            });
+            fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
         });
-        fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
-
-        /* call addOnScrollListener to recyclerview */
-        setScrollListener();
-
-
     }
 
     private int visibleItemCount = 0;
     private final int totalCount = 6;
 
-    private void setScrollListener() {
-        fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(false);
-        fragmentHomeBinding.recBestSelling.setLayoutManager(bestSellingManager);
-        fragmentHomeBinding.recBestSelling.setAdapter(bestsellingAdapter);
-        Parcelable recyclerViewState;
-        recyclerViewState = fragmentHomeBinding.recBestSelling.getLayoutManager().onSaveInstanceState();
-
-// Restore state
-        fragmentHomeBinding.recBestSelling.getLayoutManager().onRestoreInstanceState(recyclerViewState);
-//        fragmentHomeBinding.recBestSelling.getRecycledViewPool().setMaxRecycledViews(0, 0);
-        NestedScrollView mScrollView = fragmentHomeBinding.navBestSelling;
-        mScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
-                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                    if (v.getChildAt(v.getChildCount() - 1) != null) {
-                        visibleItemCount = bestSellingManager.getItemCount();
-
-                        if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
-                                && visibleItemCount != totalCount) {
-                            callBestSellingApi(null, "onScrolled");
-                        } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
-                                && visibleItemCount == totalCount) {
-                            infoToast(requireContext(), getString(R.string.no_more_records));
-                        }
-                    }
-                });
-    }
-
 
     private void setRvExclusive() {
         makeVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
         exclusiveOfferManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-        offerListAdapter = new ExclusiveOfferListAdapter(offerProducts, getActivity(), this::toProductDetail, (binding, product, position) -> {
-            addToCartProduct(product, EXCLUSIVE, position);
-        });
-        fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);
+//        fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recExOffers.setLayoutManager(exclusiveOfferManager);
-        fragmentHomeBinding.recExOffers.setAdapter(offerListAdapter);
+        homeViewModel.exclusiveMutableList.observe(getViewLifecycleOwner(), products -> {
+            offerListAdapter = new ExclusiveOfferListAdapter(products, getActivity(), this::toProductDetail, (binding, product, position) -> {
+                addToCartProduct(product, EXCLUSIVE, position);
+            });
+            fragmentHomeBinding.recExOffers.setAdapter(offerListAdapter);
+        });
+
 //        fragmentHomeBinding.recExOffers.getRecycledViewPool().setMaxRecycledViews(0, 0);
 
     }
@@ -313,250 +261,71 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         fragmentHomeBinding.recProduct.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recProduct.setHasFixedSize(true);
         fragmentHomeBinding.recProduct.setLayoutManager(productManager);
-        productListAdapter = new ProductListAdapter(productList, getActivity(), this::toProductDetail, (binding, product, position) -> {
-            addToCartProduct(product, PRODUCT, position);
+        homeViewModel.productMutableList.observe(getViewLifecycleOwner(), products -> {
+            productListAdapter = new ProductListAdapter(products, getActivity(), this::toProductDetail, (binding, product, position) -> {
+                addToCartProduct(product, PRODUCT, position);
+            });
+            fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
         });
-        fragmentHomeBinding.recProduct.setAdapter(productListAdapter);
-        fragmentHomeBinding.recProduct.getRecycledViewPool().setMaxRecycledViews(0, 0);
+
+//        fragmentHomeBinding.recProduct.getRecycledViewPool().setMaxRecycledViews(0, 0);
     }
 
 
     private void setRvSeasonal() {
 
-        seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProductId -> {
-            try {
-                Bundle bundle = new Bundle();
-                bundle.putString(SEASONAL_P_ID, seasonalProductId);
-                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
         seasonalManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
         fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
         fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
         fragmentHomeBinding.recSeasonal.setLayoutManager(seasonalManager);
-        fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
-        fragmentHomeBinding.recSeasonal.getRecycledViewPool().setMaxRecycledViews(0, 0);
-    }
-
-    private void setPaginationForLists() {
-        fragmentHomeBinding.recCategory.setNestedScrollingEnabled(true);
-        fragmentHomeBinding.recBasket.setNestedScrollingEnabled(true);
-        fragmentHomeBinding.recBestSelling.setNestedScrollingEnabled(true);
-        fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(true);
-        fragmentHomeBinding.recExOffers.setNestedScrollingEnabled(true);
-        fragmentHomeBinding.recProduct.setNestedScrollingEnabled(true);
-        //Category OnScroll
-        fragmentHomeBinding.recCategory.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    scrolling = true;
-                    System.out.println("scrolling" + scrolling);
+        homeViewModel.seasonalProductMutableList.observe(getViewLifecycleOwner(), seasonalProducts -> {
+            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProducts, seasonalProductId -> {
+                try {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(SEASONAL_P_ID, seasonalProductId);
+                    NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }
+            });
 
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleCategoryCount = categoryManager.getChildCount();
-                int totalCategoryCount = categoryManager.getItemCount();
-                System.out.println("visibleCategoryCount: " + visibleCategoryCount + " totalCategoryCount " +
-                        totalCategoryCount);
-                if (scrolling && (categories.size() == totalCategoryCount)) {
-                    scrolling = false;
-                    try {
-                        callCategoryApi(null, "onScrolled");
-                        fragmentHomeBinding.recCategory.smoothScrollBy(dx, dy);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                System.out.println("scrolling" + scrolling);
-            }
+            fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
         });
-
-        // Basket OnScroll
-        fragmentHomeBinding.recBasket.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    scrolling = true;
-                    System.out.println("scrolling" + scrolling);
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleBasketCount = 0, totalBasketCount = 0, scrolledBaskets = 0;
-                visibleBasketCount = basketManager.getChildCount();
-                totalBasketCount = basketManager.getItemCount();
-                scrolledBaskets = basketManager.findLastCompletelyVisibleItemPosition();
-                System.out.println("visibleBasketCount: " + visibleBasketCount + " totalBasketCount " +
-                        totalBasketCount + " scrolledBaskets " + scrolledBaskets);
-                if (scrolling && (baskets.size() == totalBasketCount)) {
-                    scrolling = false;
-                    try {
-                        callBasketApi(showCircleProgressDialog(context, ""), "onScrolled");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                System.out.println("scrolling" + scrolling);
-            }
-        });
-
-        //Best Selling OnScroll
-       /* fragmentHomeBinding.recBestSelling.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    scrolling = true;
-                    System.out.println("scrolling" + scrolling);
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleSellingCount = bestSellingManager.getChildCount();
-                int totalSellingCount = bestSellingManager.getItemCount();
-                System.out.println("visibleSellingCount: " + visibleSellingCount + " totalSellingCount " +
-                        totalSellingCount);
-                if (scrolling && (bestSellings.size() == totalSellingCount)) {
-                    scrolling = false;
-                    try {
-                        callBestSellingApi(null, "onScrolled");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                System.out.println("scrolling" + scrolling);
-            }
-        });*/
-
-        //Seasonal OnScroll
-        fragmentHomeBinding.recSeasonal.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    scrolling = true;
-                    System.out.println("scrolling" + scrolling);
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleSeasonalCount = seasonalManager.getChildCount();
-                int totalSeasonalCount = seasonalManager.getItemCount();
-                System.out.println("visibleSeasonalCount: " + visibleSeasonalCount + " totalSeasonalCount " +
-                        totalSeasonalCount);
-                if (scrolling && (seasonalProductList.size() == totalSeasonalCount)) {
-                    scrolling = false;
-                    try {
-//                        callSeasonalProductApi(null, "onScrolled");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                System.out.println("scrolling" + scrolling);
-            }
-        });
-
-        //Exclusive OnScrolled
-        fragmentHomeBinding.recExOffers.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    scrolling = true;
-                    System.out.println("scrolling" + scrolling);
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleCount = exclusiveOfferManager.getChildCount();
-                int totalCount = exclusiveOfferManager.getItemCount();
-                System.out.println("visibleExclusive: " + visibleCount + " totalExclusive " +
-                        totalCount);
-                if (scrolling && (offerProducts.size() == totalCount)) {
-                    scrolling = false;
-                    try {
-                        callExclusiveOfferApi(null, "onScrolled");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                System.out.println("scrolling" + scrolling);
-            }
-        });
-
-        //Product OnScrolled
-        fragmentHomeBinding.recProduct.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                int visibleCount = productManager.getChildCount();
-                int totalCount = productManager.getItemCount();
-                System.out.println("visibleExclusive: " + visibleCount + " totalExclusive " +
-                        totalCount);
-                if (productList.size() == totalCount) {
-                    try {
-                        callProductListApi(null, "onScrolled");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        });
+//        fragmentHomeBinding.recSeasonal.getRecycledViewPool().setMaxRecycledViews(0, 0);
     }
 
     private void checkEmpties() {
         //check if banner is empty
-        if (banners == null || banners.size() == 0) {
+        if (homeViewModel.bannerMutableList == null) {
             makeInVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
         }
         //check if category is empty
-        if (categories == null || categories.size() == 0) {
+        if (homeViewModel.categoryMutableList == null) {
             makeInVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
         }
         //check if Basket is empty
-        if (baskets == null || baskets.size() == 0) {
+        if (homeViewModel.bestSellingMutableList == null) {
             makeInVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
         }
         //check if Best selling is Empty
-        if (bestSellings == null || bestSellings.size() == 0) {
+        if (homeViewModel.bestSellingMutableList.getValue() == null) {
             makeInVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
         }
         //check if seasonalProductList is Empty
-        if (seasonalProductList == null || seasonalProductList.size() == 0) {
+        if (homeViewModel.seasonalProductMutableList == null) {
             makeInVisible(fragmentHomeBinding.recSeasonal, null);
         }
         // check if exclusive offer is Empty
-        if (offerProducts == null || offerProducts.size() == 0) {
+        if (homeViewModel.exclusiveMutableList.getValue() == null) {
             makeInVisible(fragmentHomeBinding.recExOffers, fragmentHomeBinding.rlExclusiveOffer);
         }
         //check if storeBannerList is Empty
-        if (storeBannerList == null || storeBannerList.size() == 0) {
+        if (storeBanner == null) {
             makeInVisible(fragmentHomeBinding.cardviewOurShops, null);
             makeInVisible(null, fragmentHomeBinding.rlO3Banner);
         }
         // check if productList is Empty
-        if (productList == null || productList.size() == 0) {
+        if (homeViewModel.productMutableList == null) {
             makeInVisible(fragmentHomeBinding.recProduct, null);
         }
 
@@ -564,13 +333,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private void clearLists() {
         fragmentHomeBinding.homeLayout.setVisibility(View.GONE);
-        banners.clear();
-        categories.clear();
-        baskets.clear();
-        bestSellings.clear();
-        seasonalProductList.clear();
-        offerProducts.clear();
-        productList.clear();
         checkEmpties();
     }
 
@@ -618,6 +380,214 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             }
         });
     }
+    /*Home screen API*/
+    private void callHomeScreenApi(ProgressDialog progressDialog) {
+        @SuppressLint("NotifyDataSetChanged") Observer<HomeResponse> homeResponseObserver = homeResponse -> {
+            if (homeResponse != null) {
+                if (progressDialog != null)
+                    progressDialog.dismiss();
+                Log.e(TAG, "callHomeAPiResponse: " + new Gson().toJson(homeResponse));
+                switch (homeResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        try {
+                            ((HomeActivity) context).setCountBudge(homeResponse.getCartItems());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        //setHeader
+                        if (homeResponse != null) {
+                            System.out.println("user name :" + homeResponse.getHomeResponseData().getUserData().getName());
+                            if (homeResponse.getHomeResponseData().getUserData().getAreaName() == null
+                                    || homeResponse.getHomeResponseData().getUserData().getCityName() == null) {
+                                preferences.setUserAddress(null);
+                                preferences.setIsLoggedIn(false);
+                                warningToast(context, "Address is invalid");
+                                goToAskSelectLocationScreen("InValid Address", context);
+                            } else {
+                                preferences.setUserProfile(homeResponse.getHomeResponseData().getUserData().getImage());
+                                preferences.setUserName(homeResponse.getHomeResponseData().getUserData().getName());
+                                preferences.setUserAddress(homeResponse.getHomeResponseData().getUserData().getCityName()
+                                        + ", " + homeResponse.getHomeResponseData().getUserData().getAreaName());
+                                if (homeResponse.getHomeResponseData().getUserData().getImage() != null
+                                        && !TextUtils.isEmpty(homeResponse.getHomeResponseData().getUserData().getImage())) {
+                                    ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getHomeResponseData().getUserData().getName());
+                                    loadingImage(context, homeResponse.getHomeResponseData().getUserData().getImage(), ((HomeActivity) context).civProfilePhoto);
+                                }
+                            }
+                        }
+                        //Add All Banner
+                        Log.e(TAG, "callHomeScreenApi: " + homeResponse.getHomeResponseData().getCategoryData().size());
+                        if (homeResponse.getHomeResponseData().getBannerDetails().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
+                            makeVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
+//                            banners.addAll(homeResponse.getHomeResponseData().getBannerDetails());
+                            homeViewModel.bannerMutableList.setValue(homeResponse.getHomeResponseData().getBannerDetails());
+                            loadBannerImages();
+                        }
+//                        setRvBanners();
+                        //Add Category
+                        if (homeResponse.getHomeResponseData().getCategoryData() != null) {
+                            //Should remove this latter
+                            rlRefreshPage.setRefreshing(false);
+                            if (homeResponse.getHomeResponseData().getCategoryData() != null
+                                    && homeResponse.getHomeResponseData().getCategoryData().size() > 0) {
+                                makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
+//                                categories.addAll(homeResponse.getHomeResponseData().getCategoryData());
+//                                categoryAdapter.notifyDataSetChanged();
+                                homeViewModel.categoryMutableList.setValue(homeResponse.getHomeResponseData().getCategoryData());
+                                setRvCategory();
+//                                System.out.println("categories " + categories.size());
+                                fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        //Add Baskets
+                        if (homeResponse.getHomeResponseData().getBasketList() != null
+                                && homeResponse.getHomeResponseData().getBasketList().size() > 0) {
+                            makeVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
+//                            baskets.addAll(homeResponse.getHomeResponseData().getBasketList());
+                            homeViewModel.basketMutableList.setValue(homeResponse.getHomeResponseData().getBasketList());
+                            setRvBasket();
+                            basketAdapter.notifyDataSetChanged();
+                        }
+                        //Add Bestselling
+                        if (homeResponse.getHomeResponseData().getBestSellingProductList() != null
+                                && homeResponse.getHomeResponseData().getBestSellingProductList().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
+                            makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
+                            homeViewModel.bestSellingMutableList.setValue(homeResponse.getHomeResponseData().getBestSellingProductList());
+                            setRvBestSelling();
+//                            bestSellings.addAll(homeResponse.getHomeResponseData().getBestSellingProductList());
+                            bestsellingAdapter.notifyDataSetChanged();
+                        }
+
+                        //Add Seasonal
+                        if (homeResponse.getHomeResponseData().getSeasonalProduct() != null
+                                && homeResponse.getHomeResponseData().getSeasonalProduct().size() > 0) {
+                            makeVisible(fragmentHomeBinding.recSeasonal, null);
+                            rlRefreshPage.setRefreshing(false);
+                            for (int i = 0; i < homeResponse.getHomeResponseData().getSeasonalProduct().size(); i++) {
+                                if (i / 2 == 0) {
+                                    homeResponse.getHomeResponseData().getSeasonalProduct().get(i).setType("Green");
+                                } else {
+                                    homeResponse.getHomeResponseData().getSeasonalProduct().get(i).setType("Yellow");
+                                }
+                            }
+                            homeViewModel.seasonalProductMutableList.setValue(homeResponse.getHomeResponseData().getSeasonalProduct());
+                            setRvSeasonal();
+//                            seasonalProductList.addAll(homeResponse.getHomeResponseData().getSeasonalProduct());
+                            seasonalBannerAdapter.notifyDataSetChanged();
+                        }
+                        //Add Exclusive
+                        if (homeResponse.getHomeResponseData().getExclusiveList() != null
+                                && homeResponse.getHomeResponseData().getExclusiveList().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
+                            homeViewModel.exclusiveMutableList.setValue(homeResponse.getHomeResponseData().getExclusiveList());
+                            setRvExclusive();
+//                            offerProducts.addAll(homeResponse.getHomeResponseData().getExclusiveList());
+                            offerListAdapter.notifyDataSetChanged();
+                        }
+
+                        //Add Product
+                        if (homeResponse.getHomeResponseData().getProductList() != null
+                                && homeResponse.getHomeResponseData().getProductList().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
+                            makeVisible(fragmentHomeBinding.recProduct, null);
+                            //Should remove this latter
+                            homeViewModel.productMutableList.setValue(homeResponse.getHomeResponseData().getProductList());
+                            setRvProduct();
+//                            productList.addAll(homeResponse.getHomeResponseData().getProductList());
+                            productListAdapter.notifyDataSetChanged();
+                        }
+                        //Add Store Response
+                        if (homeResponse.getHomeResponseData().getStoreBanner().size() > 0) {
+                            rlRefreshPage.setRefreshing(false);
+                            makeVisible(fragmentHomeBinding.cardviewOurShops, null);
+                            makeVisible(null, fragmentHomeBinding.rlO3Banner);
+                            storeBanner = homeResponse.getHomeResponseData().getStoreBanner().get(0);
+                            fragmentHomeBinding.setStoreBanner(storeBanner);
+                            fragmentHomeBinding.setVariable(BR.storeBanner, storeBanner);
+                            fragmentHomeBinding.executePendingBindings();
+                            fragmentHomeBinding.cardviewOurShops.setOnClickListener(v -> {
+                                redirectToOurShops(root);
+                            });
+
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, homeResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(homeResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, homeResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        homeViewModel.homeResponseLiveData(progressDialog,
+                listingParams(offset, ""), HomeFragment.this)
+                .observe(getViewLifecycleOwner(), homeResponseObserver);
+    }
+
+    /*Add to cart API*/
+    private void addToCartProduct(Product product,
+                                  int addType, int position) {
+        this.addType = addType;
+        @SuppressLint("NotifyDataSetChanged") Observer<BaseResponse> baseResponseObserver = response -> {
+            if (response != null) {
+                Log.e(TAG, "addToCartProduct: " + new Gson().toJson(response));
+                switch (response.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(context, response.getMessage());
+                        try {
+                            ((HomeActivity) context).setCountBudge(response.getCartItems());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        switch (addType) {
+                            case BEST_SELLING:
+                                homeViewModel.bestSellingMutableList.getValue().get(position).setInCart(1);
+                                bestsellingAdapter.notifyDataSetChanged();
+                                break;
+                            case EXCLUSIVE:
+                                homeViewModel.exclusiveMutableList.getValue().get(position).setInCart(1);
+                                offerListAdapter.notifyDataSetChanged();
+                                break;
+                            case PRODUCT:
+                                homeViewModel.productMutableList.getValue().get(position).setInCart(1);
+                                productListAdapter.notifyDataSetChanged();
+                                break;
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        warningToast(context, response.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(response.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, response.getMessage());
+                        break;
+                }
+
+            }
+        };
+        if (product.getInCart() == 0) {
+            try {
+                homeViewModel.addToCartProductLiveData(addToCartParam(product), HomeFragment.this)
+                        .observe(getViewLifecycleOwner(), baseResponseObserver);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else infoToast(context, "remove product from cart");
+    }
 
     /*Call Category API*/
     private void callCategoryApi(ProgressDialog progressDialog, String loadType) {
@@ -638,8 +608,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             if (categoryResponse.getCategoryData().getCategoryList() != null
                                     && categoryResponse.getCategoryData().getCategoryList().size() > 0) {
                                 makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
-                                categories.addAll(categoryResponse.getCategoryData().getCategoryList());
-                                System.out.println("categories " + categories.size());
+//                                categories.addAll(categoryResponse.getCategoryData().getCategoryList());
+//                                System.out.println("categories " + categories.size());
                                 fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
                             }
                         }
@@ -681,9 +651,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                 && basketResponse.getData().getBaskets().size() > 0) {
                             rlRefreshPage.setRefreshing(false);
                             makeVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
-                            baskets.addAll(basketResponse.getData().getBaskets());
-                            System.out.println("basket list :" + baskets.size());
-                            basketAdapter = new BasketAdapter(baskets, getActivity(), this::toBasketDetail);
+//                            baskets.addAll(basketResponse.getData().getBaskets());
+//                            System.out.println("basket list :" + baskets.size());
+//                            basketAdapter = new BasketAdapter(baskets, getActivity(), this::toBasketDetail);
                             basketManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
                             fragmentHomeBinding.recBasket.setLayoutManager(basketManager);
                             fragmentHomeBinding.recBasket.setAdapter(basketAdapter);
@@ -710,155 +680,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     }
 
-
-    //    //Home screen API
-    private void callHomeScreenApi(ProgressDialog progressDialog) {
-        @SuppressLint("NotifyDataSetChanged") Observer<HomeResponse> homeResponseObserver = homeResponse -> {
-            if (homeResponse != null) {
-                if (progressDialog != null)
-                    progressDialog.dismiss();
-                Log.e(TAG, "callHomeAPiResponse: " + new Gson().toJson(homeResponse));
-                switch (homeResponse.getStatus()) {
-                    case STATUS_CODE_200://Record Create/Update Successfully
-                        try {
-                            ((HomeActivity) context).setCountBudge(homeResponse.getCartItems());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        //setHeader
-                        if (homeResponse != null) {
-                            System.out.println("user name :"+homeResponse.getHomeResponseData().getUserData().getName());
-                            if (homeResponse.getHomeResponseData().getUserData().getAreaName()==null
-                                    ||homeResponse.getHomeResponseData().getUserData().getCityName()==null){
-                                preferences.setUserAddress(null);
-                                preferences.setIsLoggedIn(false);
-                                warningToast(context,"Address is invalid");
-                                goToAskSelectLocationScreen("InValid Address",context);
-                            }else {
-                                preferences.setUserProfile(homeResponse.getHomeResponseData().getUserData().getImage());
-                                preferences.setUserName(homeResponse.getHomeResponseData().getUserData().getName());
-                                preferences.setUserAddress(homeResponse.getHomeResponseData().getUserData().getCityName()
-                                        + ", " + homeResponse.getHomeResponseData().getUserData().getAreaName());
-                                if (homeResponse.getHomeResponseData().getUserData().getImage() != null
-                                        && !TextUtils.isEmpty(homeResponse.getHomeResponseData().getUserData().getImage())) {
-                                    ((HomeActivity) context).tvUserName.setText("Hello! " + homeResponse.getHomeResponseData().getUserData().getName());
-                                    loadingImage(context, homeResponse.getHomeResponseData().getUserData().getImage(), ((HomeActivity) context).civProfilePhoto);
-                                }
-                            }
-                        }
-                        //Add All Banner
-                        Log.e(TAG, "callHomeScreenApi: " + homeResponse.getHomeResponseData().getCategoryData().size());
-                        if (homeResponse.getHomeResponseData().getBannerDetails().size() > 0) {
-                            rlRefreshPage.setRefreshing(false);
-                            makeVisible(fragmentHomeBinding.viewPagerBanner, fragmentHomeBinding.dotsIndicator);
-                            banners.addAll(homeResponse.getHomeResponseData().getBannerDetails());
-                            loadBannerImages(banners);
-                        }
-//                        setRvBanners();
-                        //Add Category
-                        if (homeResponse.getHomeResponseData().getCategoryData() != null) {
-                            //Should remove this latter
-                            rlRefreshPage.setRefreshing(false);
-                            setRvCategory();
-                            if (homeResponse.getHomeResponseData().getCategoryData() != null
-                                    && homeResponse.getHomeResponseData().getCategoryData().size() > 0) {
-                                makeVisible(fragmentHomeBinding.recCategory, fragmentHomeBinding.rlCategory);
-                                categories.addAll(homeResponse.getHomeResponseData().getCategoryData());
-//                                categoryAdapter.notifyDataSetChanged();
-                                System.out.println("categories " + categories.size());
-                                fragmentHomeBinding.homeLayout.setVisibility(View.VISIBLE);
-                            }
-                        }
-                        //Add Baskets
-                        setRvBasket();
-                        if (homeResponse.getHomeResponseData().getBasketList() != null
-                                && homeResponse.getHomeResponseData().getBasketList().size() > 0) {
-                            makeVisible(fragmentHomeBinding.recBasket, fragmentHomeBinding.rlBasket);
-                            baskets.addAll(homeResponse.getHomeResponseData().getBasketList());
-                            basketAdapter.notifyDataSetChanged();
-                        }
-                        //Add Bestselling
-                        setRvBestSelling();
-                        if (homeResponse.getHomeResponseData().getBestSellingProductList() != null
-                                && homeResponse.getHomeResponseData().getBestSellingProductList().size() > 0) {
-                            rlRefreshPage.setRefreshing(false);
-                            makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
-
-                            bestSellings.addAll(homeResponse.getHomeResponseData().getBestSellingProductList());
-                            bestsellingAdapter.notifyDataSetChanged();
-                        }
-
-                        //Add Seasonal
-                        setRvSeasonal();
-                        if (homeResponse.getHomeResponseData().getSeasonalProduct() != null
-                                && homeResponse.getHomeResponseData().getSeasonalProduct().size() > 0) {
-                            makeVisible(fragmentHomeBinding.recSeasonal, null);
-                            rlRefreshPage.setRefreshing(false);
-                            for (int i = 0; i < homeResponse.getHomeResponseData().getSeasonalProduct().size(); i++) {
-                                if (i / 2 == 0) {
-                                    homeResponse.getHomeResponseData().getSeasonalProduct().get(i).setType("Green");
-                                } else {
-                                    homeResponse.getHomeResponseData().getSeasonalProduct().get(i).setType("Yellow");
-                                }
-                            }
-                            seasonalProductList.addAll(homeResponse.getHomeResponseData().getSeasonalProduct());
-                            seasonalBannerAdapter.notifyDataSetChanged();
-                        }
-                        //Add Exclusive
-                        if (homeResponse.getHomeResponseData().getExclusiveList() != null
-                                && homeResponse.getHomeResponseData().getExclusiveList().size() > 0) {
-                            setRvExclusive();
-                            rlRefreshPage.setRefreshing(false);
-                            offerProducts.addAll(homeResponse.getHomeResponseData().getExclusiveList());
-                            offerListAdapter.notifyDataSetChanged();
-                        }
-
-                        //Add Product
-                        if (homeResponse.getHomeResponseData().getProductList() != null
-                                && homeResponse.getHomeResponseData().getProductList().size() > 0) {
-                            rlRefreshPage.setRefreshing(false);
-                            makeVisible(fragmentHomeBinding.recProduct, null);
-                            //Should remove this latter
-                            setRvProduct();
-                            productList.addAll(homeResponse.getHomeResponseData().getProductList());
-                            productListAdapter.notifyDataSetChanged();
-                        }
-                        //Add Store Response
-                        if (homeResponse.getHomeResponseData().getStoreBanner().size() > 0) {
-                            rlRefreshPage.setRefreshing(false);
-                            makeVisible(fragmentHomeBinding.cardviewOurShops, null);
-                            makeVisible(null, fragmentHomeBinding.rlO3Banner);
-                            storeBannerList1.addAll(homeResponse.getHomeResponseData().getStoreBanner());
-                            StoreBanner storeBanner = homeResponse.getHomeResponseData().getStoreBanner().get(0);
-                            fragmentHomeBinding.setStoreBanner(storeBanner);
-                            fragmentHomeBinding.setVariable(BR.storeBanner, storeBanner);
-                            fragmentHomeBinding.executePendingBindings();
-                            fragmentHomeBinding.cardviewOurShops.setOnClickListener(v -> {
-                                redirectToOurShops(root);
-                            });
-
-                        }
-                        break;
-                    case STATUS_CODE_403://Validation Errors
-                    case STATUS_CODE_400://Validation Errors
-                    case STATUS_CODE_404://Validation Errors
-                        warningToast(context, homeResponse.getMessage());
-                        break;
-                    case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen(homeResponse.getMessage(), context);
-                        break;
-                    case STATUS_CODE_405://Method Not Allowed
-                        infoToast(context, homeResponse.getMessage());
-                        break;
-                }
-
-            }
-        };
-        homeViewModel.homeResponseLiveData(progressDialog,
-                listingParams(offset, ""), HomeFragment.this)
-                .observe(getViewLifecycleOwner(), homeResponseObserver);
-    }
-
     //    // ProductOld listing here
     private void callProductListApi(ProgressDialog progressDialog, String loadType) {
         if (loadType.equalsIgnoreCase("onScrolled")) {
@@ -876,9 +697,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             rlRefreshPage.setRefreshing(false);
                             makeVisible(fragmentHomeBinding.recProduct, null);
                             //Should remove this latter
-                            productList.clear();
+//                            productList.clear();
                             setRvProduct();
-                            productList.addAll(productListResponse.getProductResponseDt().getProductList());
+//                            productList.addAll(productListResponse.getProductResponseDt().getProductList());
                             productListAdapter.notifyDataSetChanged();
 
                         }
@@ -917,17 +738,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 switch (bestSellingResponse.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
                         if (bestSellingOffset == 0)
-                            bestSellings.clear();
+//                            bestSellings.clear();
 
-                        if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null
-                                && bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
+                            if (bestSellingResponse.getBestSellingData().getBestSellingProductList() != null
+                                    && bestSellingResponse.getBestSellingData().getBestSellingProductList().size() > 0) {
 
-                            //  makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
-                            //  setRvBestSelling();
-                            bestSellings.addAll(bestSellingResponse.getBestSellingData().getBestSellingProductList());
-                            bestsellingAdapter.notifyDataSetChanged();
-                            setRvBestSelling();
-                        }
+                                //  makeVisible(fragmentHomeBinding.recBestSelling, fragmentHomeBinding.rlBestSelling);
+                                //  setRvBestSelling();
+//                            bestSellings.addAll(bestSellingResponse.getBestSellingData().getBestSellingProductList());
+                                bestsellingAdapter.notifyDataSetChanged();
+//                            setRvBestSelling();
+                            }
                         break;
                     case STATUS_CODE_403://Validation Errors
                     case STATUS_CODE_400://Validation Errors
@@ -972,21 +793,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                     seasonalProductResponse.getSeasonalProducts().get(i).setType("Yellow");
                             }
                             makeVisible(fragmentHomeBinding.recSeasonal, null);
-                            seasonalProductList = seasonalProductResponse.getSeasonalProducts();
-                            seasonalManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
-                            fragmentHomeBinding.recSeasonal.setNestedScrollingEnabled(false);
-                            fragmentHomeBinding.recSeasonal.setHasFixedSize(true);
-                            fragmentHomeBinding.recSeasonal.setLayoutManager(seasonalManager);
-                            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProductId -> {
-                                //TODO crash here
-                                try {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString(SEASONAL_P_ID, seasonalProductId);
-                                    NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            });
+//                            seasonalProductList = seasonalProductResponse.getSeasonalProducts();
+                            homeViewModel.seasonalProductMutableList.setValue(seasonalProductResponse.getSeasonalProducts());
+                            setRvSeasonal();
+//                            seasonalBannerAdapter = new SeasonalBannerAdapter(getActivity(), seasonalProductList, seasonalProductId -> {
+//                                //TODO crash here
+//                                try {
+//                                    Bundle bundle = new Bundle();
+//                                    bundle.putString(SEASONAL_P_ID, seasonalProductId);
+//                                    NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_seasonalRegFragment, bundle);
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//                            });
                             fragmentHomeBinding.recSeasonal.setAdapter(seasonalBannerAdapter);
                         }
                         break;
@@ -1026,7 +845,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                                 && exclusiveResponse.getExclusiveData().getExclusivesList().size() > 0) {
                             rlRefreshPage.setRefreshing(false);
                             setRvExclusive();
-                            offerProducts.addAll(exclusiveResponse.getExclusiveData().getExclusivesList());
+//                            offerProducts.addAll(exclusiveResponse.getExclusiveData().getExclusivesList());
                             offerListAdapter.notifyDataSetChanged();
 //
                         }
@@ -1050,61 +869,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         homeViewModel.exclusiveResponseLiveData(progressDialog, listingParams("", EXCLUSIVE), HomeFragment.this)
                 .observe(getViewLifecycleOwner(), exclusiveResponseObserver);
     }
-
-    private void addToCartProduct(Product product,
-                                  int addType, int position) {
-        Observer<BaseResponse> baseResponseObserver = response -> {
-            if (response != null) {
-                Log.e(TAG, "addToCartProduct: " + new Gson().toJson(response));
-                switch (response.getStatus()) {
-                    case STATUS_CODE_200://Record Create/Update Successfully
-                        successToast(context, response.getMessage());
-                        try {
-                            ((HomeActivity) context).setCountBudge(response.getCartItems());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        switch (addType) {
-                            case BEST_SELLING:
-                                bestSellings.clear();
-                                callBestSellingApi(null, "load");
-                                break;
-                            case EXCLUSIVE:
-                                offerProducts.clear();
-                                callExclusiveOfferApi(null, "load");
-                                break;
-                            case PRODUCT:
-                                productList.clear();
-                                callProductListApi(null, "load");
-                                break;
-                        }
-                        break;
-                    case STATUS_CODE_403://Validation Errors
-                    case STATUS_CODE_400://Validation Errors
-                    case STATUS_CODE_404://Validation Errors
-                        warningToast(context, response.getMessage());
-                        break;
-                    case STATUS_CODE_401://Unauthorized user
-                        goToAskSignInSignUpScreen(response.getMessage(), context);
-                        break;
-                    case STATUS_CODE_405://Method Not Allowed
-                        infoToast(context, response.getMessage());
-                        break;
-                }
-
-            }
-        };
-        if (product.getInCart() == 0) {
-            try {
-                homeViewModel.addToCartProductLiveData(addToCartParam(product), HomeFragment.this)
-                        .observe(getViewLifecycleOwner(), baseResponseObserver);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } else infoToast(context, "remove product from cart");
-    }
-
 
     private void makeVisible(View recyclerView, View relativeLayout) {
         try {
@@ -1170,17 +934,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //        }, DELAY_MS, PERIOD_MS);
 //    }
 
-    private void loadBannerImages(List<Banner> bannersList) {
-
+    private void loadBannerImages() {
         AutoScrollViewPager autoScrollViewPager = fragmentHomeBinding.viewPagerBanner;
 
-        bannerAdapter = new BannerAdapter(bannersList, requireActivity(),this);
-        autoScrollViewPager.setAdapter(bannerAdapter);
-        fragmentHomeBinding.dotsIndicator.setViewPager(autoScrollViewPager);
+        homeViewModel.bannerMutableList.observe(getViewLifecycleOwner(), bannersList -> {
+            bannerAdapter = new BannerAdapter(bannersList, requireActivity(), this);
+            autoScrollViewPager.setAdapter(bannerAdapter);
+            fragmentHomeBinding.dotsIndicator.setViewPager(autoScrollViewPager);
 
-        if (bannersList == null || bannersList.size() == 1 || bannersList.size() == 0) {
-            fragmentHomeBinding.dotsIndicator.setVisibility(View.VISIBLE);
-        }
+            if (bannersList == null || bannersList.size() == 1 || bannersList.size() == 0) {
+                fragmentHomeBinding.dotsIndicator.setVisibility(View.VISIBLE);
+            }
+        });
+
         // start auto scroll
         autoScrollViewPager.startAutoScroll();
 
@@ -1258,15 +1024,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setSelected(true);
         ((HomeActivity) requireActivity()).binding.appBarHome.tvAddress.setText(preferences.getUserAddress());
         ((HomeActivity) requireActivity()).binding.appBarHome.logImg.setVisibility(View.VISIBLE);
-//        NavigationView navigationView = ((HomeActivity) requireActivity()).binding.navView;
-//        View headerView = navigationView.getHeaderView(0);
-//        RelativeLayout rlEditProfile = headerView.findViewById(R.id.rl_edit_profile);
-//        rlEditProfile.setOnClickListener(v -> {
-//            ((HomeActivity) requireActivity()).drawer.closeDrawer(GravityCompat.START);
-//            Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_profile);
-////            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_nav_profile);
-//        });
-
     }
 
     @Override
@@ -1347,22 +1104,41 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             if (isConnectingToInternet(context)) {
                 hideKeyBoard(requireActivity());
                 switch (from) {
-                    case 1:
-                        callCategoryApi(showCircleProgressDialog(context, type), type);
-                        break;
-                    case 3:
-                        callExclusiveOfferApi(showCircleProgressDialog(context, ""), type);
-                        break;
-                    case 4:
-                        callBestSellingApi(showCircleProgressDialog(context, ""), type);
-                        break;
-                    case 8:
-                        clearLists();
+                    case 0:
                         callHomeScreenApi(showCircleProgressDialog(context, ""));
                         break;
-                    case 5:
-                        callSeasonalProductApi(showCircleProgressDialog(context, ""), type);
+                    case 1:
+                        infoToast(context, "try again");
                         break;
+                         /*
+                            0 :- Home API
+                            1 :- Add to cart Product API
+                            2 :- Banner API
+                            3 :- Category API
+                            4 :- Basket API
+                            5 :- Best selling API
+                            6 :- Seasonal API
+                            7 :- Exclusive API
+                            8 :- Store Banner API
+                            9 :-Product List API
+                         */
+
+//                    case 2:
+//                        ca(showCircleProgressDialog(context,""),type);
+//                        break;
+//                    case 3:
+//                        callCategoryApi(showCircleProgressDialog(context, ""), type);
+//                        break;
+//                    case 4:
+//                        callBestSellingApi(showCircleProgressDialog(context, ""), type);
+//                        break;
+//                    case 8:
+//                        clearLists();
+//                        callHomeScreenApi(showCircleProgressDialog(context, ""));
+//                        break;
+//                    case 5:
+//                        callSeasonalProductApi(showCircleProgressDialog(context, ""), type);
+//                        break;
 
                 }
             }
@@ -1374,7 +1150,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void OnBannerClick(Banner banner) {
         try {
-            if (banner.getProductId()!=null && !banner.getProductId().isEmpty()){
+            if (banner.getProductId() != null && !banner.getProductId().isEmpty()) {
                 System.out.println("go to Product ");
                 try {
                     Bundle bundle = new Bundle();
@@ -1383,7 +1159,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }
-            }else if (banner.getCategoryId()!=null && !banner.getCategoryId().isEmpty()){
+            } else if (banner.getCategoryId() != null && !banner.getCategoryId().isEmpty()) {
                 System.out.println("go to category ");
                 /*redirect to product list by category*/
                 try {
@@ -1396,8 +1172,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }
-            }
-            else if (banner.getAdvUrl()!=null && !banner.getAdvUrl().isEmpty()){
+            } else if (banner.getAdvUrl() != null && !banner.getAdvUrl().isEmpty()) {
                 System.out.println("go to URL ");
                 Intent viewIntent =
                         new Intent(Intent.ACTION_VIEW,

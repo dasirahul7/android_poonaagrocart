@@ -120,7 +120,7 @@ public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingServ
 
     private void handleNotificationData(JSONObject jsonObject) {
         String notificationType = "", userId = "", image = "", title = "", message = "",
-                redirectId = "", redirectTo = "";
+                redirectId = "",redirectName ="",redirectType ="", redirectTo = "";
 
         try {
             title = jsonObject.getString("title");
@@ -148,6 +148,16 @@ public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingServ
             redirectId = "";
         }
         try {
+            redirectName = jsonObject.getString("redirect_name");
+        } catch (Exception e) {
+            redirectName = "";
+        }
+        try {
+            redirectType = jsonObject.getString("redirect_type");
+        } catch (Exception e) {
+            redirectType = "";
+        }
+        try {
             notificationType = jsonObject.getString("notification_type");
         } catch (Exception e) {
             notificationType = "";
@@ -162,10 +172,12 @@ public class PoonaAgroCartFirebaseMessagingService extends FirebaseMessagingServ
         pushNotification.setTitle(title);
         pushNotification.setNotificationType(notificationType);
         pushNotification.setMessage(message);
+        pushNotification.setRedirectId(redirectId);
         pushNotification.setRedirectTo(redirectTo);
+        pushNotification.setRedirectName(redirectName);
+        pushNotification.setRedirectType(redirectType);
         pushNotification.setImage(image);
         pushNotification.setUserId(userId);
-        pushNotification.setRedirectId(redirectId);
 
         showNotification(pushNotification);
     }
