@@ -13,6 +13,17 @@
         tools:layout="@layout/fragment_home">
 
         <action
+            android:id="@+id/action_nav_home_to_nav_orders"
+            app:destination="@id/nav_orders"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/nav_home"
+            app:popUpToInclusive="true" />
+
+        <action
             android:id="@+id/action_nav_home_to_nav_products_list"
             app:destination="@id/nav_products_list"
             app:enterAnim="@anim/slide_in_right"
@@ -299,9 +310,8 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/nav_address"
-            app:restoreState="true"
-            app:launchSingleTop="true"
-            />
+            app:restoreState="false"
+            app:launchSingleTop="true"/>
 
     </fragment>
 

@@ -84,7 +84,7 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
             /*set title to toolbar*/
             if (cmsType == 0) {
                 fragmentCmsBinding.tvTitle.setText(R.string.about_us);
-
+                fragmentCmsBinding.rlTitleBar.setVisibility(View.GONE);
             } else if (cmsType == 1) {
                 fragmentCmsBinding.tvTitle.setText(R.string.terms_and_conditions);
             } else if (cmsType == 2) {
@@ -95,8 +95,8 @@ public class CmsFragment extends BaseFragment implements NetworkExceptionListene
         } else if (fromScreen.equals(fromScreenHome)) {
             fragmentCmsBinding.actionBar.setVisibility(View.GONE);
             if (cmsType == 0) {
-                fragmentCmsBinding.rlTitleBar.setVisibility(View.GONE);
                 initTitleBar(getString(R.string.about_us));
+                fragmentCmsBinding.rlTitleBar.setVisibility(View.GONE);
             } else if (cmsType == 1) {
                 initTitleWithBackBtn(getString(R.string.terms_and_conditions));
             } else if (cmsType == 2) {

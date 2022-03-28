@@ -148,6 +148,10 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         bottomSheetFilterFragment.ivBrand.setOnClickListener(this);
         bottomSheetFilterFragment.llBrandFilter.setOnClickListener(this);
 
+        bottomSheetFilterFragment.closeBtn.setOnClickListener( view1 -> {
+            dismiss();
+        });
+
         bottomSheetFilterFragment.applyBtn.setOnClickListener(view1 -> {
             onClickButtonListener.itemClick(categoryIds, brandIds, sortByIds);
             dismiss();

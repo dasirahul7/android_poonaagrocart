@@ -153,6 +153,7 @@
                     android:imeOptions="actionSend"
                     android:inputType="phone"
                     android:maxLength="10"
+                    android:enabled="false"
                     style="@style/FormEdittextStyle"
                     android:background="@drawable/background_with_shadow_edittext"
                     android:layout_marginEnd="-8dp"
@@ -192,14 +193,11 @@
 
                         <com.poona.agrocart.widgets.CustomEditText
                             android:id="@+id/et_quantity"
-                            style="@style/FormShortEdittextStyle"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_30sdp"
-                            android:background="@drawable/bg_my_profile_spinner"
-                            android:inputType="numberDecimal"
-                            android:paddingStart="@dimen/_15sdp"
-                            android:textSize="@dimen/_14sp"
-                            tools:ignore="RtlSymmetry" />
+                            android:layout_height="@dimen/_44sdp"
+                            android:background="@drawable/background_with_shadow_edittext"
+                            android:singleLine="true"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_name_text" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -213,7 +211,7 @@
                             style="@style/FormShortTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/type" />
+                            android:text="@string/unit" />
 
                         <Spinner
                             android:id="@+id/spinner_type"
