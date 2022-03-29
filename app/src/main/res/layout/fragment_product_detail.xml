@@ -127,6 +127,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ll_product_name" />
 
+                <!--export here-->
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_export"
                     android:layout_width="wrap_content"
@@ -141,7 +142,7 @@
                     app:layout_constraintStart_toEndOf="@+id/tv_location"
                     app:layout_constraintTop_toBottomOf="@+id/ll_product_name" />
 
-                <!--            Weight list-->
+                <!--Weight list-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_weights"
                     android:layout_width="match_parent"
@@ -154,7 +155,7 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
 
-                <!--            Out of stock-->
+                <!--Out of stock-->
                 <LinearLayout
                     android:id="@+id/ll_out_of_stock"
                     android:layout_width="match_parent"
@@ -212,7 +213,7 @@
 
                 </LinearLayout>
 
-                <!--            //Price and Quantity-->
+                <!--Price and Quantity-->
                 <LinearLayout
                     android:id="@+id/ll_price_and_qty"
                     android:layout_width="match_parent"
@@ -565,7 +566,6 @@
                             app:setCustomFont="@string/font_poppins_regular" />
                     </LinearLayout>
                 </LinearLayout>
-                <!--Benefits ends here-->
 
                 <!--Storage and Use start here-->
                 <LinearLayout
@@ -582,37 +582,38 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:weightSum="100">
+
                         <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_16sdp"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="100">
-
-                        <com.poona.agrocart.widgets.CustomTextView
-                            android:id="@+id/tv_storage_and_use"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="90"
-                            android:text="@string/storage_and_uses"
-                            android:textColor="@color/clr_enter_otp"
-                            android:textSize="@dimen/_16sp"
-                            app:setCustomFont="@string/font_poppins_regular" />
+                            android:layout_marginHorizontal="@dimen/_16sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:orientation="horizontal"
+                            android:weightSum="100">
 
-                        <com.poona.agrocart.widgets.ExpandIconView
-                            android:id="@+id/iv_storage_use_hide_show"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="10"
-                            app:eiv_animationDuration="300"
-                            app:eiv_colorLess="@color/black"
-                            app:eiv_colorMore="@color/black"
-                            app:eiv_roundedCorners="true"
-                            app:eiv_switchColor="true" />
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_storage_and_use"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="90"
+                                android:text="@string/storage_and_uses"
+                                android:textColor="@color/clr_enter_otp"
+                                android:textSize="@dimen/_16sp"
+                                app:setCustomFont="@string/font_poppins_regular" />
 
-                    </LinearLayout>
+                            <com.poona.agrocart.widgets.ExpandIconView
+                                android:id="@+id/iv_storage_use_hide_show"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="10"
+                                app:eiv_animationDuration="300"
+                                app:eiv_colorLess="@color/black"
+                                app:eiv_colorMore="@color/black"
+                                app:eiv_roundedCorners="true"
+                                app:eiv_switchColor="true" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
                     <View
@@ -639,185 +640,206 @@
                         app:setCustomFont="@string/font_poppins_regular" />
 
                 </LinearLayout>
-                <!--storage and use end here-->
+
+                <!--Other info here-->
                 <LinearLayout
                     android:id="@+id/ll_other_product_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_16sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:weightSum="100"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ll_storage_and_use">
 
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_other_product_info"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:id="@+id/ll_other_info_product"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="90"
-                        android:text="@string/other_product_info"
-                        android:textColor="@color/clr_enter_otp"
-                        android:textSize="@dimen/_16sp"
-                        app:setCustomFont="@string/font_poppins_regular" />
+                        android:orientation="vertical">
 
-                    <com.poona.agrocart.widgets.ExpandIconView
-                        android:id="@+id/iv_other_product_info_hide_show"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="10"
-                        app:eiv_animationDuration="300"
-                        app:eiv_colorLess="@color/black"
-                        app:eiv_colorMore="@color/black"
-                        app:eiv_roundedCorners="true"
-                        app:eiv_switchColor="true" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_other_product_info"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="90"
+                                android:text="@string/other_product_info"
+                                android:textColor="@color/clr_enter_otp"
+                                android:textSize="@dimen/_16sp"
+                                app:setCustomFont="@string/font_poppins_regular" />
+
+                            <com.poona.agrocart.widgets.ExpandIconView
+                                android:id="@+id/iv_other_product_info_hide_show"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="10"
+                                app:eiv_animationDuration="300"
+                                app:eiv_colorLess="@color/black"
+                                app:eiv_colorMore="@color/black"
+                                app:eiv_roundedCorners="true"
+                                app:eiv_switchColor="true" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@color/clr_custom_edit_text_otp" />
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_other_product_info_brief"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:text="@{productDetailModule.productOtherInfo}"
+                            android:textColor="@color/color_grey_txt"
+                            android:textSize="@dimen/_14sp"
+                            app:setCustomFont="@string/font_poppins_regular" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/line6"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    android:layout_marginHorizontal="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/clr_custom_edit_text_otp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ll_other_product_info" />
-
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/tv_other_product_info_brief"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:text="@{productDetailModule.productOtherInfo}"
-                    android:textColor="@color/color_grey_txt"
-                    android:textSize="@dimen/_14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/line6"
-                    app:setCustomFont="@string/font_poppins_regular" />
-
+                <!--Weight and policy here-->
                 <LinearLayout
                     android:id="@+id/ll_variable_weight_policy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_16sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:weightSum="100"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_other_product_info_brief">
+                    app:layout_constraintTop_toBottomOf="@+id/ll_other_product_info">
 
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_variable_weight_policy"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:id="@+id/ll_variable_weight_policy_product"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="90"
-                        android:text="@string/variable_weight_policy"
-                        android:textColor="@color/clr_enter_otp"
-                        android:textSize="@dimen/_16sp"
-                        app:setCustomFont="@string/font_poppins_regular" />
+                        android:orientation="vertical"
+                        android:weightSum="100">
 
-                    <com.poona.agrocart.widgets.ExpandIconView
-                        android:id="@+id/iv_variable_weight_policy_show_hide"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="10"
-                        app:eiv_animationDuration="300"
-                        app:eiv_colorLess="@color/black"
-                        app:eiv_colorMore="@color/black"
-                        app:eiv_roundedCorners="true"
-                        app:eiv_switchColor="true" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="100">
+
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_variable_weight_policy"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="90"
+                                android:text="@string/variable_weight_policy"
+                                android:textColor="@color/clr_enter_otp"
+                                android:textSize="@dimen/_16sp"
+                                app:setCustomFont="@string/font_poppins_regular" />
+
+                            <com.poona.agrocart.widgets.ExpandIconView
+                                android:id="@+id/iv_variable_weight_policy_show_hide"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="10"
+                                app:eiv_animationDuration="300"
+                                app:eiv_colorLess="@color/black"
+                                app:eiv_colorMore="@color/black"
+                                app:eiv_roundedCorners="true"
+                                app:eiv_switchColor="true" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@color/clr_custom_edit_text_otp" />
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_variable_weight_policy_breif"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:text="@{productDetailModule.productWeightPolicy}"
+                            android:textColor="@color/color_grey_txt"
+                            android:textSize="@dimen/_14sp"
+                            app:setCustomFont="@string/font_poppins_regular" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/line7"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    android:layout_marginHorizontal="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/clr_custom_edit_text_otp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ll_variable_weight_policy" />
-
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/tv_variable_weight_policy_breif"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:text="@{productDetailModule.productWeightPolicy}"
-                    android:textColor="@color/color_grey_txt"
-                    android:textSize="@dimen/_14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/line7"
-                    app:setCustomFont="@string/font_poppins_regular" />
-
+                <!--Nutrition start here here-->
                 <LinearLayout
                     android:id="@+id/ll_nutritions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_marginHorizontal="@dimen/_16sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="100"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_variable_weight_policy_breif">
-
-                    <com.poona.agrocart.widgets.CustomTextView
-                        android:id="@+id/tv_nutritions"
-                        android:layout_width="0dp"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_variable_weight_policy">
+                    <LinearLayout
+                        android:id="@+id/ll_nutritions_product"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="90"
-                        android:text="@string/nutritions"
-                        android:textColor="@color/clr_enter_otp"
-                        android:textSize="@dimen/_16sp"
-                        app:setCustomFont="@string/font_poppins_regular" />
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:weightSum="100"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            >
+                            <com.poona.agrocart.widgets.CustomTextView
+                                android:id="@+id/tv_nutritions"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="90"
+                                android:text="@string/nutritions"
+                                android:textColor="@color/clr_enter_otp"
+                                android:textSize="@dimen/_16sp"
+                                app:setCustomFont="@string/font_poppins_regular" />
 
-                    <com.poona.agrocart.widgets.ExpandIconView
-                        android:id="@+id/iv_nutritions_show_hide"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="10"
-                        app:eiv_animationDuration="300"
-                        app:eiv_colorLess="@color/black"
-                        app:eiv_colorMore="@color/black"
-                        app:eiv_roundedCorners="true"
-                        app:eiv_switchColor="true" />
+                            <com.poona.agrocart.widgets.ExpandIconView
+                                android:id="@+id/iv_nutritions_show_hide"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="10"
+                                app:eiv_animationDuration="300"
+                                app:eiv_colorLess="@color/black"
+                                app:eiv_colorMore="@color/black"
+                                app:eiv_roundedCorners="true"
+                                app:eiv_switchColor="true" />
+
+                        </LinearLayout>
+                        <View
+                            android:id="@+id/line8"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@color/clr_custom_edit_text_otp"
+                            />
+
+                        <com.poona.agrocart.widgets.CustomTextView
+                            android:id="@+id/tv_nutritions_brief"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:text="@{productDetailModule.productNutrition}"
+                            android:textColor="@color/color_grey_txt"
+                            android:textSize="@dimen/_14sp"
+                            app:setCustomFont="@string/font_poppins_regular" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/line8"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    android:layout_marginHorizontal="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/clr_custom_edit_text_otp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ll_nutritions" />
-
-                <com.poona.agrocart.widgets.CustomTextView
-                    android:id="@+id/tv_nutritions_brief"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:text="@{productDetailModule.productNutrition}"
-                    android:textColor="@color/color_grey_txt"
-                    android:textSize="@dimen/_14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/line8"
-                    app:setCustomFont="@string/font_poppins_regular" />
-
-
+                <!--similar item here-->
                 <LinearLayout
                     android:id="@+id/ll_similar"
                     android:layout_width="match_parent"
@@ -827,7 +849,7 @@
                     android:orientation="vertical"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_nutritions_brief">
+                    app:layout_constraintTop_toBottomOf="@+id/ll_nutritions">
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_similar"
@@ -841,14 +863,20 @@
                         android:textSize="@dimen/_16sdp"
                         app:fontFamily="@font/poppins" />
 
+                    <androidx.core.widget.NestedScrollView
+                        android:id="@+id/nv_similar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="horizontal">
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_similar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_similar" />
+                    </androidx.core.widget.NestedScrollView>
                 </LinearLayout>
 
-
+                <!-- Your Rating here-->
                 <LinearLayout
                     android:id="@+id/ll_rating_review"
                     android:layout_width="match_parent"
@@ -1010,8 +1038,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
-
+                <!--list of reviews-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_product_review"
                     android:layout_width="match_parent"
@@ -1022,7 +1049,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ll_rating_review" />
-
+                <!--see more reviews-->
                 <com.poona.agrocart.widgets.CustomTextView
                     android:id="@+id/tv_see_more_review"
                     android:layout_width="wrap_content"

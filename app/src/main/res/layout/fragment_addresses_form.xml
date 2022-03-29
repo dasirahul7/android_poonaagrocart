@@ -232,7 +232,16 @@
                         android:text="@string/pin_code" />
 
 
+                    <Spinner
+                        android:id="@+id/spinner_pincode"
+                        style="@style/FormShortEdittextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_33sdp"
+                        android:background="@drawable/bg_my_profile_spinner"
+                        android:paddingEnd="@dimen/_12sdp" />
+
                     <com.poona.agrocart.widgets.CustomEditText
+                        android:visibility="gone"
                         android:id="@+id/et_pincode"
                         style="@style/FormEdittextStyle"
                         android:layout_width="match_parent"

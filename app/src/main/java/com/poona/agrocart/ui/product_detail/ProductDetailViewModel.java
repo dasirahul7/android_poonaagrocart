@@ -17,9 +17,13 @@ import com.poona.agrocart.data.network.ApiInterface;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
+import com.poona.agrocart.data.network.responses.ProductListByResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
+import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.ui.nav_favourites.FavouriteItemsFragment;
+import com.poona.agrocart.ui.products_list.ProductListFragment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -33,8 +37,9 @@ public class ProductDetailViewModel extends AndroidViewModel {
     1- Add-to-cart
     2- remove-from-cart
     3- Add-to-favorite
-    4- Remove-from-favourite
-    5- Submit-rating and reviews*/
+    3- Remove-from-favourite
+    5- Submit-rating and reviews
+    6- Similar items here*/
     public static final String TAG = ProductDetailViewModel.class.getSimpleName();
     public MutableLiveData<String> productName;
     public MutableLiveData<String> productBrand;
@@ -60,6 +65,8 @@ public class ProductDetailViewModel extends AndroidViewModel {
     public MutableLiveData<String> averageRating;
     public MutableLiveData<Integer> alreadyPurchased;
     public MutableLiveData<String> productTypeMutable;
+    // Similar items here
+    public MutableLiveData<ArrayList<Product>> similarProductListMutable;
 
     public ProductDetailViewModel(@NonNull Application application) {
         super(application);
@@ -99,10 +106,13 @@ public class ProductDetailViewModel extends AndroidViewModel {
         isInFav.setValue(null);
         unitMutableLiveData.setValue(null);
         sellingPrice.setValue(null);
+        //similar items
+        similarProductListMutable = new MutableLiveData<>();
+        similarProductListMutable.setValue(null);
 
     }
 
-    //Product Details API
+    // 0: Product Details API
     public LiveData<ProductDetailsResponse> productDetailsResponseLiveData(ProgressDialog progressDialog,
                                                                            HashMap<String, String> hashMap,
                                                                            ProductDetailFragment productDetailFragment) {
@@ -146,9 +156,10 @@ public class ProductDetailViewModel extends AndroidViewModel {
 
 
 
-    //Add To Cart Product
+    // 1: Add To Cart Product
     public LiveData<BaseResponse> addToCartProductLiveData(ProgressDialog progressDialog,
                                                            HashMap<String, String> hashMap,
+                                                           String type,
                                                            ProductDetailFragment productDetailFragment) {
         MutableLiveData<BaseResponse> baseResponseMutableLiveData = new MutableLiveData<>();
 
@@ -179,14 +190,14 @@ public class ProductDetailViewModel extends AndroidViewModel {
                             baseResponseMutableLiveData.setValue(response);
                         } catch (Exception exception) {
                             Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(1, "");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(1, type);
                         }
                     }
                 });
         return baseResponseMutableLiveData;
     }
 
-    /*Remove from Cart*/
+    /* 2: Remove from Cart*/
     public LiveData<BaseResponse> removeFromCartResponseLiveData(ProgressDialog progressDialog,
                                                            HashMap<String, String> hashMap,
                                                            ProductDetailFragment productDetailFragment) {
@@ -226,7 +237,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
         return baseResponseMutableLiveData;
     }
 
-    /*Add to Favourite*/
+    /* 3: Add to Favourite*/
     public LiveData<BaseResponse> addToFavourite(ProgressDialog progressDialog,
                                                  HashMap<String, String> hashMap,
                                                  ProductDetailFragment productDetailFragment) {
@@ -267,7 +278,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
         return baseResponseMutableLiveData;
     }
 
-    /*Remove from favourite*/
+    /*3: Remove from favourite*/
     public LiveData<BaseResponse> removeFromFavoriteResponse(ProgressDialog progressDialog,
                                                              HashMap<String, String> hashMap,
                                                              ProductDetailFragment productDetailFragment) {
@@ -310,9 +321,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
 
     }
 
-
-
-
+    /* 4: Submit Rating and review*/
     public LiveData<BaseResponse> callSubmitRatingResponseApi(ProgressDialog progressDialog, HashMap<String, String> submitRatingInputParameter,
                                                               ProductDetailFragment productDetailFragment) {
 
@@ -344,7 +353,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
                                 baseResponseMutableLiveData.setValue(response);
                             } catch (Exception exception) {
                                 Log.e(TAG, exception.getMessage());
-                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(5,"");
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(4,"");
                             }
 
                             Log.e(TAG, e.getMessage());
@@ -352,4 +361,49 @@ public class ProductDetailViewModel extends AndroidViewModel {
                     });
             return baseResponseMutableLiveData;
         }
+
+    /* 5: Similar Product list*/
+    public LiveData<ProductListByResponse> callSimilarProductApi(ProgressDialog progressDialog,
+                                                                         HashMap<String, String> hashMap,
+                                                                         ProductDetailFragment productDetailFragment,
+                                                                         String apiFrom) {
+        MutableLiveData<ProductListByResponse> productListByResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(productDetailFragment.getContext())
+                .create(ApiInterface.class)
+                .productsByCategoryResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<ProductListByResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ProductListByResponse productListByResponse) {
+                        if (productListByResponse != null) {
+                            progressDialog.dismiss();
+                            productListByResponseMutableLiveData.setValue(productListByResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        ProductListByResponse response = new ProductListByResponse();
+                        try {
+                            response = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    ProductListByResponse.class);
+
+                            productListByResponseMutableLiveData.setValue(response);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) productDetailFragment).onNetworkException(5, apiFrom);
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+
+        return productListByResponseMutableLiveData;
+    }
+
+
 }

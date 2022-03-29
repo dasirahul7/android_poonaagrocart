@@ -43,6 +43,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -62,6 +63,7 @@ import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.data.network.responses.AreaResponse;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.CityResponse;
+import com.poona.agrocart.data.network.responses.PinCodeResponse;
 import com.poona.agrocart.databinding.FragmentAddressesFormBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.login.BasicDetails;
@@ -112,6 +114,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private View view;
     private List<BasicDetails> cityList;
     private List<BasicDetails> areaList;
+    private List<BasicDetails> pincodeList;
     private BasicDetails basicDetails;
     ActivityResultLauncher<Intent> activityGoogleMapLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -127,10 +130,12 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private String selectedStateId = "0";
     private String selectedCityId = "0";
     private String selectedAreaId = "0";
-    private String selectedState, selectedCity, selectedArea;
+    private String selectedPinCodeId = "0";
+    private String selectedState, selectedCity, selectedArea,selectedPinCode;
     private final int check = 0;
     private CityResponse cityResponse = null;
     private AreaResponse areaResponse = null;
+    private PinCodeResponse pinCodeResponse = null;
     private boolean checkIsValidPinCode = false;
     private AddressesResponse.Address address = null;
     private String addOrUpdate = "";
@@ -153,6 +158,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         basicDetails = new BasicDetails();
         cityList = new ArrayList<>();
         areaList = new ArrayList<>();
+        pincodeList = new ArrayList<>();
 
         initView();
 
@@ -249,9 +255,18 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     selectedAreaId = address.getAreaId();
                     selectedArea = address.getAreaName();
 
+                    if (address.getPincode()!=null){
+                        try {
+                            selectedPinCodeId = address.getPincode();
+                            selectedPinCode = address.getPincode();
+                        } catch (NullPointerException exception) {
+                            exception.printStackTrace();
+                        }
+                    }
+
                     if (isConnectingToInternet(context)) {
                         hideKeyBoard(requireActivity());
-                        getCityAreaApiResponses(showCircleProgressDialog(context, ""));
+                        getCityAreaPinCodeApiResponses(showCircleProgressDialog(context, ""));
                         fragmentAddressesFormBinding.btnAddAddress.setText(R.string.update_address);
                     } else {
                         showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
@@ -366,6 +381,50 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     System.out.println("selected area " + areaList.get(i).getId());
                     selectedAreaId = areaList.get(i).getId();
                     selectedArea = areaList.get(i).getName();
+                    if (!selectedAreaId.equals("0"))
+                    callPinCodeApi(showCircleProgressDialog(context, ""));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        setupPinCodeSpinner();
+    }
+
+    private void setupPinCodeSpinner() {
+        if (pincodeList != null && pincodeList.size() > 0) {
+            pincodeList.clear();
+        }
+
+        BasicDetails basicDetails = new BasicDetails();
+        basicDetails.setId("0");
+        basicDetails.setName("Select");
+        pincodeList.add(basicDetails);
+
+        if (pinCodeResponse != null && pinCodeResponse.getPinCode() != null && pinCodeResponse.getPinCode().size() > 0) {
+            for (int i = 0; i < pinCodeResponse.getPinCode().size(); i++) {
+                BasicDetails details = new BasicDetails();
+                details.setId(pinCodeResponse.getPinCode().get(i).getPinCode());
+                details.setName(pinCodeResponse.getPinCode().get(i).getPinCode());
+                pincodeList.add(details);
+            }
+        }
+
+        CustomArrayAdapter pinCodeArrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.text_spinner_wallet_transactions, pincodeList);
+        fragmentAddressesFormBinding.spinnerPincode.setAdapter(pinCodeArrayAdapter);
+
+        fragmentAddressesFormBinding.spinnerPincode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                basicDetails.setPinCode(adapterView.getItemAtPosition(i).toString());
+                addressesViewModel.pinCode.setValue(basicDetails.getPinCode());
+                if (pincodeList != null) {
+                    System.out.println("selected pincode " + pincodeList.get(i).getPinCode());
+                    selectedPinCodeId = pincodeList.get(i).getId();
+                    selectedPinCode = pincodeList.get(i).getName();
                 }
             }
 
@@ -453,10 +512,57 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                 AddAddressFragment.this, getAreaParameters())
                 .observe(getViewLifecycleOwner(), areaResponseObserver);
     }
+    /* PinVode API*/
+    private void callPinCodeApi(ProgressDialog showCircleProgressDialog) {
+        /*print user input parameters*/
+        for (Map.Entry<String, String> entry : getPinCodeParameters().entrySet()) {
+            Log.e(TAG, "Key : " + entry.getKey() + " : " + entry.getValue());
+        }
+
+        Observer<PinCodeResponse> pinCodeResponseObserver = pinCodeResponse -> {
+            if (pinCodeResponse != null) {
+                showCircleProgressDialog.dismiss();
+                switch (pinCodeResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (pinCodeResponse.getStatus() == 200) {
+                            if (pinCodeResponse.getPinCode() != null) {
+                                if (pinCodeResponse.getPinCode().size() > 0) {
+                                    this.pinCodeResponse = pinCodeResponse;
+                                    setupPinCodeSpinner();
+                                }
+                            }
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://No records found
+                        this.pinCodeResponse = null;
+                        setupPinCodeSpinner();
+                        warningToast(context, areaResponse.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(areaResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, areaResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        addressesViewModel.getPinCodeResponse(showCircleProgressDialog,
+                AddAddressFragment.this, getPinCodeParameters())
+                .observe(getViewLifecycleOwner(), pinCodeResponseObserver);
+    }
 
     private HashMap<String, String> getAreaParameters() {
         HashMap<String, String> map = new HashMap<>();
         map.put(CITY_ID, selectedCityId);
+        return map;
+    }
+    private HashMap<String, String> getPinCodeParameters() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(AREA_ID, selectedAreaId);
         return map;
     }
 
@@ -716,8 +822,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         return map;
     }
 
-    private void getCityAreaApiResponses(ProgressDialog progressDialog) {
-        addressesViewModel.getCityAreaResponses(context, getAreaParameters())
+    private void getCityAreaPinCodeApiResponses(ProgressDialog progressDialog) {
+        addressesViewModel.getCityAreaPinCodeResponses(context, getAreaParameters(),getPinCodeParameters())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new io.reactivex.rxjava3.core.Observer<List<String>>() {
                     @Override
@@ -735,6 +841,10 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                         }.getType();
                         areaResponse = new GsonBuilder().create().fromJson(strings.get(1), areaType);
 
+                        Type pinCodeType = new TypeToken<PinCodeResponse>() {
+                        }.getType();
+                        pinCodeResponse = new GsonBuilder().create().fromJson(strings.get(2), pinCodeType);
+
                         setupCitySpinner();
                         setDefaultSelectedValues();
 
@@ -748,13 +858,14 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                             try {
                                 cityResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), CityResponse.class);
                                 areaResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), AreaResponse.class);
+                                pinCodeResponse = gson.fromJson(((HttpException) e).response().errorBody().string(), PinCodeResponse.class);
 
                                 setupCitySpinner();
                             } catch (Exception exception) {
                                 exception.printStackTrace();
                                 showServerErrorDialog(getString(R.string.for_better_user_experience), AddAddressFragment.this, () -> {
                                     if (isConnectingToInternet(context)) {
-                                        getCityAreaApiResponses(showCircleProgressDialog(context, ""));
+                                        getCityAreaPinCodeApiResponses(showCircleProgressDialog(context, ""));
                                     } else {
                                         showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                                     }
@@ -809,6 +920,17 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     for (int i = 0; i < areaList.size(); i++) {
                         if (areaList.get(i).getId().equals(addressesViewModel.area.getValue())) {
                             fragmentAddressesFormBinding.spinnerArea.setSelection(i);
+                        }
+                    }
+                }
+            }
+            if (selectedPinCodeId != null && !TextUtils.isEmpty(selectedPinCodeId)) {
+                basicDetails.setPinCode(selectedPinCodeId);
+                addressesViewModel.pinCode.setValue(basicDetails.getPinCode());
+                if (pincodeList != null && pincodeList.size() > 0) {
+                    for (int i = 0; i < pincodeList.size(); i++) {
+                        if (pincodeList.get(i).getPinCode().equals(addressesViewModel.pinCode.getValue())) {
+                            fragmentAddressesFormBinding.spinnerPincode.setSelection(i);
                         }
                     }
                 }
@@ -1024,8 +1146,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     checkPinCodeAvailableApi(showCircleProgressDialog(context, ""));
                 } else if (from == 4) {
                     callUpdateAddressApi(showCircleProgressDialog(context, ""));
-                } else if (from == 5) {
-                    getCityAreaApiResponses(showCircleProgressDialog(context, ""));
+                } else if (from == 6) {
+                    getCityAreaPinCodeApiResponses(showCircleProgressDialog(context, ""));
                 }
             } else {
                 showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);

@@ -68,6 +68,7 @@ public class AppConstants {
     public static final String AREA_API = "area";
     public static final String CITY_WITH_ID_API = "city-by-state-id";
     public static final String AREA_WITH_ID_API = "area-by-city-id";
+    public static final String PIN_CODE_WITH_ID_API = "pincode-by-area-id";
     public static final String MY_PROFILE_API = "profile-view-customer";
     public static final String UPDATE_MY_PROFILE_API = "profile-update-customer";
     public static final String VIEW_PROFILE_API = "view-profile";
