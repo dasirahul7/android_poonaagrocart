@@ -28,9 +28,9 @@
         <com.poona.agrocart.widgets.CustomTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="25"
+            android:layout_weight="30"
             android:singleLine="true"
-            android:text='@{`Rs.`+productAndPrice.pricePerQuantity+` X `+productAndPrice.quantity}'
+            android:text='@{`Rs. `+productAndPrice.pricePerQuantity+` X `+productAndPrice.quantity}'
             android:textColor="@color/black"
             android:textSize="@dimen/_16sp"
             app:setCustomFont="@string/font_poppins_regular" />
@@ -38,8 +38,8 @@
         <com.poona.agrocart.widgets.CustomTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="25"
-            android:gravity="center"
+            android:layout_weight="20"
+            android:gravity="end"
             android:singleLine="true"
             android:text='@{`Rs.`+productAndPrice.totalPrice}'
             android:textColor="@color/color_discount_text"

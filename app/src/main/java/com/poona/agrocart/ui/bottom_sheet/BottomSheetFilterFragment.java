@@ -1,10 +1,7 @@
 package com.poona.agrocart.ui.bottom_sheet;
 
 import static com.poona.agrocart.app.AppConstants.BRAND_ID;
-import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
 import static com.poona.agrocart.app.AppConstants.CATEGORY_ID_VALUE;
-import static com.poona.agrocart.app.AppConstants.ORDER_ID;
-import static com.poona.agrocart.app.AppConstants.SEARCH_TYPE;
 import static com.poona.agrocart.app.AppConstants.SORT_BY;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_200;
 import static com.poona.agrocart.app.AppConstants.STATUS_CODE_401;
@@ -21,7 +18,6 @@ import static com.poona.agrocart.app.AppUtils.warningToast;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,15 +27,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ReportFragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.gson.Gson;
 import com.poona.agrocart.R;
@@ -48,9 +40,7 @@ import com.poona.agrocart.data.network.responses.filterResponse.BrandFliterList;
 import com.poona.agrocart.data.network.responses.filterResponse.CategoryFilterList;
 import com.poona.agrocart.data.network.responses.filterResponse.FilterListResponse;
 import com.poona.agrocart.data.network.responses.filterResponse.SortByFilterList;
-import com.poona.agrocart.data.network.responses.myOrderResponse.myOrderDetails.ItemsDetail;
 import com.poona.agrocart.databinding.BottomSheetFilterDialogBinding;
-import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.nav_explore.adapter.FilterItemAdapter;
 import com.poona.agrocart.ui.nav_explore.model.FilterItem;
 import com.poona.agrocart.ui.products_list.ProductListFragment;
@@ -59,7 +49,7 @@ import com.poona.agrocart.widgets.ExpandIconView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class BottomSheetFilterFragment extends BottomSheetDialogFragment implements View.OnClickListener, NetworkExceptionListener {
+public class BottomSheetFilterFragment extends BottomSheetDialogFragment implements View.OnClickListener, NetworkExceptionListener, ProductListFragment.OnFilterClickListener {
     private BottomSheetFilterDialogBinding bottomSheetFilterFragment;
     private FilterItemAdapter categoryAdapter, sortByAdapter, brandAdapter;
     private BasketFilterViewModel basketFilterViewModel;
@@ -78,21 +68,21 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
     public ArrayList<String> sortByIds = new ArrayList<>();
     public ArrayList<String> brandIds = new ArrayList<>();
     public ArrayList<String> categoryIds = new ArrayList<>();
-    
+    private String getStrCategoryId = "", getStrSortId = "", getStrBrandId = "";
     public ArrayList<String> preCategoryIds = new ArrayList<>();
     public OnClickButtonListener onClickButtonListener;
     ProductListFragment productListFragment = new ProductListFragment();
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
     }
 
-    public BottomSheetFilterFragment(boolean showCategory) {
+    public BottomSheetFilterFragment(boolean showCategory, Bundle bundle) {
         this.showCategory = showCategory;
-
-
+        this.bundle = bundle;
     }
 
     @Override
@@ -100,7 +90,9 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         bottomSheetFilterFragment = BottomSheetFilterDialogBinding.inflate(LayoutInflater.from(getActivity()));
         basketFilterViewModel = new ViewModelProvider(this).get(BasketFilterViewModel.class);
         view = bottomSheetFilterFragment.getRoot();
-        initView();
+
+
+        showFilterValue();
         if(isConnectingToInternet(requireContext())){
             callFilterListApi(showCircleProgressDialog(getContext(),""));
         }else {
@@ -119,26 +111,39 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
             bottomSheetFilterFragment.llMainCategoryFilter.setVisibility(View.GONE);
         }
 
+       /* bundle = getArguments();
+        if(bundle != null)
+            getStrSortId = bundle.getString(SORT_BY);*/
+           // brandId = bundle.getString(BRAND_ID);
+           // sortById= bundle.getString(SORT_BY);
+
+       // getOnClickButtonListener();
+
         return view;
     }
 
+    private void showFilterValue() {
 
+        /*try {
+            bundle = new Bundle();
+            bundle = this.getArguments();
+            getStrCategoryId = bundle.getString(CATEGORY_ID_VALUE);
+            Log.d("TAG", "showFilterValue: "+getStrCategoryId);
+            //bottomSheetFragment.show( getChildFragmentManager(), bottomSheetFragment.getTag()); // Assuming you are using Activity
+        }catch (NullPointerException e) {
+            e.printStackTrace();
+        }*/
 
-    private void initView() {
-
-        bundle = this.getArguments();
+       /* bundle = this.getArguments();
         if(bundle != null){
             strCategoryId = bundle.getString(CATEGORY_ID_VALUE);
             brandId = bundle.getString(BRAND_ID);
             sortById= bundle.getString(SORT_BY);
         }
-
+*/
 
 
     }
-
-
-
 
     private void setClicks() {
         bottomSheetFilterFragment.ivCategory.setOnClickListener(this);
@@ -183,6 +188,14 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
 
     }
 
+    @Override
+    public void filterItemClick(String sort) {
+        this.getStrSortId = sort;
+
+        System.out.println("sortby"+getStrSortId);
+    }
+
+
     public interface OnClickButtonListener{
         void itemClick(ArrayList<String> categoryId, ArrayList<String>  brandId, ArrayList<String>  sortId);
     }
@@ -194,8 +207,6 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
     public void setOnClickButtonListener(OnClickButtonListener onClickButtonListener) {
         this.onClickButtonListener = onClickButtonListener;
     }
-
-
 
 
     private void setCategoryHideOrShow() {
@@ -239,7 +250,7 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
             for (CategoryFilterList item: categoryFilterItems){
                 if(item.getId().isEmpty()){
                     FilterItem filterItem = new FilterItem(item.getId(),item.getCategoryName(),false);
-                    preCategoryIds = new ArrayList<String>(Arrays.asList(strCategoryId.split(",")));
+                    preCategoryIds = new ArrayList<String>(Arrays.asList(getStrCategoryId.split(",")));
 
                     if (preCategoryIds.contains(filterItem.getId()))
 

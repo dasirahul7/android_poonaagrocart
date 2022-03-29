@@ -198,6 +198,7 @@
                             android:layout_marginStart="@dimen/_10sdp"
                             android:paddingStart="@dimen/_16sdp"
                             android:paddingEnd="@dimen/_10sdp"
+                            android:inputType="number"
                             android:background="@drawable/background_with_shadow_small_edittext"
                             android:singleLine="true"
                             app:layout_constraintTop_toBottomOf="@+id/tv_name_text" />

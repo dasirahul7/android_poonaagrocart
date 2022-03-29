@@ -67,7 +67,7 @@ public class SeasonalRegFragment extends BaseFragment implements NetworkExceptio
     private ArrayList<String> images;
     private Button btnRegister;
     private Spinner unitSpinner;
-    private String selectedUnitId;
+    private String selectedUnitId, selectedUnitName = "";
     private String seasonal_id;
 
     public static SeasonalRegFragment newInstance(String param1, String param2) {
@@ -101,7 +101,9 @@ public class SeasonalRegFragment extends BaseFragment implements NetworkExceptio
         btnRegister.setOnClickListener(view -> {
             if (isConnectingToInternet(context)) {
                 if (isValidSeasonalReg())
-                    callSeasonalProductRegistrationAPI(showCircleProgressDialog(context, ""));
+
+                        callSeasonalProductRegistrationAPI(showCircleProgressDialog(context, ""));
+
             } else showNotifyAlert(requireActivity(), context.getString(R.string.info),
                     context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
         });
@@ -123,7 +125,8 @@ public class SeasonalRegFragment extends BaseFragment implements NetworkExceptio
             fragmentSeasonalRegBinding.etMobileNo.setError("enter mobile");
             fragmentSeasonalRegBinding.etMobileNo.requestFocus();
             return false;
-        } else if (TextUtils.isEmpty(selectedUnitId)) {
+        } else if (!selectedUnitName.equalsIgnoreCase("Select unit")) {
+            fragmentSeasonalRegBinding.etMobileNo.setError("Select Unit");
             fragmentSeasonalRegBinding.spinnerType.requestFocus();
             return false;
         } else if (TextUtils.isEmpty(fragmentSeasonalRegBinding.etQuantity.getText().toString())) {
@@ -147,6 +150,7 @@ public class SeasonalRegFragment extends BaseFragment implements NetworkExceptio
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     hideKeyBoard(requireActivity());
                     selectedUnitId = unitData.get(i).getId();
+                    selectedUnitName = unitData.get(i).getUnitName();
                 }
 
                 @Override

@@ -51,7 +51,11 @@ public class UnitAdaptor extends ArrayAdapter<GetUnitResponse.UnitData> {
         }
         GetUnitResponse.UnitData currentItem = getItem(position);
         if (currentItem != null) {
-            textViewShiftName.setText(currentItem.getUnitName());
+            if(position == 0){
+                textViewShiftName.setText("Select Unit");
+            }else {
+                textViewShiftName.setText(currentItem.getUnitName());
+            }
             textViewShiftName.setGravity(View.TEXT_ALIGNMENT_TEXT_START);
         }
         return convertView;
