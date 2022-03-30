@@ -48,6 +48,7 @@ import static com.poona.agrocart.app.AppConstants.ORDER_SUMMARY_API;
 import static com.poona.agrocart.app.AppConstants.ORDER_TRACK;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_CRED_API;
 import static com.poona.agrocart.app.AppConstants.PAYMENT_FOR_WALLET;
+import static com.poona.agrocart.app.AppConstants.PIN_CODE_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_LIST_BY_API;
 import static com.poona.agrocart.app.AppConstants.RATE_SUBSCRIBED_BASKET;
@@ -102,6 +103,7 @@ import com.poona.agrocart.data.network.responses.CouponResponse;
 import com.poona.agrocart.data.network.responses.ExclusiveResponse;
 import com.poona.agrocart.data.network.responses.GetUnitResponse;
 import com.poona.agrocart.data.network.responses.HomeBasketResponse;
+import com.poona.agrocart.data.network.responses.PinCodeResponse;
 import com.poona.agrocart.data.network.responses.UpdateLocationResponse;
 import com.poona.agrocart.data.network.responses.basketSubscriptionResponse.SubscribeNowResponse;
 import com.poona.agrocart.data.network.responses.filterResponse.FilterListResponse;
@@ -214,7 +216,10 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(AREA_WITH_ID_API)
-    Observable<AreaResponse> getAreaObservableResponse(@FieldMap HashMap<String, String> data);
+    Observable<AreaResponse> getAreaObservableResponse(@FieldMap HashMap<String, String> data);@FormUrlEncoded
+
+    @POST(PIN_CODE_WITH_ID_API)
+    Observable<PinCodeResponse> getPinCodeObservableResponse(@FieldMap HashMap<String, String> data);
 
     @FormUrlEncoded
     @POST(CITY_WITH_ID_API)
@@ -226,6 +231,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(AREA_WITH_ID_API)
     Single<AreaResponse> getAreaResponse(@FieldMap HashMap<String, String> data);
+
+    @FormUrlEncoded
+    @POST(PIN_CODE_WITH_ID_API)
+    Single<PinCodeResponse> getPinCodeResponse(@FieldMap HashMap<String, String> data);
 
     @FormUrlEncoded
     @POST(ADD_ADDRESS_API)

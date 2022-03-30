@@ -20,6 +20,7 @@ import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.data.network.responses.AreaResponse;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.CityResponse;
+import com.poona.agrocart.data.network.responses.PinCodeResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -190,6 +191,47 @@ public class AddressesViewModel extends AndroidViewModel {
                     }
                 });
         return areaResponseMutableLiveData;
+    }
+
+    public LiveData<PinCodeResponse> getPinCodeResponse(ProgressDialog progressDialog,
+                                                  AddAddressFragment addAddressFragment,
+                                                  HashMap<String, String> hashmap) {
+        MutableLiveData<PinCodeResponse> pinCodeResponseMutableLiveData = new MutableLiveData<>();
+
+        ApiClientAuth.getClient(addAddressFragment.getContext())
+                .create(ApiInterface.class)
+                .getPinCodeResponse(hashmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<PinCodeResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull PinCodeResponse pinCodeResponse) {
+                        if (pinCodeResponse != null) {
+                            progressDialog.dismiss();
+                            pinCodeResponseMutableLiveData.setValue(pinCodeResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        progressDialog.dismiss();
+
+                        Gson gson = new GsonBuilder().create();
+                        PinCodeResponse pinCodeResponse = new PinCodeResponse();
+                        try {
+                            pinCodeResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    PinCodeResponse.class);
+
+                            pinCodeResponseMutableLiveData.setValue(pinCodeResponse);
+                        } catch (Exception exception) {
+                            Log.e(TAG, exception.getMessage());
+                            ((NetworkExceptionListener) addAddressFragment).onNetworkException(1, "");
+                        }
+
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+        return pinCodeResponseMutableLiveData;
     }
 
     public LiveData<BaseResponse> addAddressResponse(ProgressDialog progressDialog,
@@ -397,23 +439,27 @@ public class AddressesViewModel extends AndroidViewModel {
         return responseMutableLiveData;
     }
 
-    public Observable<List<String>> getCityAreaResponses(Context context, HashMap<String, String> areaHashMap) {
+    public Observable<List<String>> getCityAreaPinCodeResponses(Context context, HashMap<String, String> areaHashMap, HashMap<String, String> pinCodeHashMap) {
         Observable<CityResponse> cityResponseObservable = ApiClientAuth
                 .getClient(context).create(ApiInterface.class).getCityObservableResponse();
         Observable<AreaResponse> areaResponseObservable = ApiClientAuth
                 .getClient(context).create(ApiInterface.class).getAreaObservableResponse(areaHashMap);
+        Observable<PinCodeResponse> pinCodeResponseObservable = ApiClientAuth
+                .getClient(context).create(ApiInterface.class).getPinCodeObservableResponse(pinCodeHashMap);
 
         @SuppressLint("LongLogTag") Observable<List<String>> observableResult =
                 Observable.zip(
                         cityResponseObservable.subscribeOn(Schedulers.io()),
                         areaResponseObservable.subscribeOn(Schedulers.io()),
-                        (cityResponse, areaResponse) -> {
+                        pinCodeResponseObservable.subscribeOn(Schedulers.io()),
+                        (cityResponse, areaResponse,pinCodeResponse) -> {
                             //Log.e("City Api ResponseData", new Gson().toJson(cityResponse));
                             //Log.e("Area Api ResponseData", new Gson().toJson(areaResponse));
 
                             List<String> list = new ArrayList();
                             list.add(new Gson().toJson(cityResponse));
                             list.add(new Gson().toJson(areaResponse));
+                            list.add(new Gson().toJson(pinCodeResponse));
                             return list;
                         });
 

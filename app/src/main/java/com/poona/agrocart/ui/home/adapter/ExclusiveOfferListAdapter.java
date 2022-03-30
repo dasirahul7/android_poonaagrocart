@@ -90,13 +90,13 @@ public class ExclusiveOfferListAdapter extends RecyclerView.Adapter<ExclusiveOff
             this.itemBinding.setVariable(BR.exclusiveOfferModule, product);
             this.itemBinding.executePendingBindings();
 //            rowExclusiveItemBinding.txtItemPrice.setText(product.getProductUnits().get(0).getOfferPrice());
-            if (product.getSpecialOffer().isEmpty())
+            if (product.getSpecialOffer()!=null && product.getSpecialOffer().isEmpty())
                 this.itemBinding.txtItemOffer.setVisibility(View.INVISIBLE);
-            if (product.getSpecialOffer().isEmpty())
+            if (product.getSpecialOffer()!=null && product.getSpecialOffer().isEmpty())
                 this.itemBinding.txtItemPrice.setVisibility(View.INVISIBLE);
-            if (product.getIsO3().equalsIgnoreCase("yes"))
+            if (product.getIsO3()!=null && product.getIsO3().equalsIgnoreCase("yes"))
                 this.itemBinding.txtOrganic.setVisibility(View.VISIBLE);
-            if (product.getInCart() == 1)
+            if (product.getIsO3()!=null && product.getInCart() == 1)
                 this.itemBinding.imgPlus.setImageResource(R.drawable.ic_added);
             else this.itemBinding.imgPlus.setImageResource(R.drawable.ic_plus_white);
             itemView.setOnClickListener(new View.OnClickListener() {

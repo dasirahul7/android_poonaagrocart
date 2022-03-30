@@ -1,19 +1,15 @@
 package com.poona.agrocart.data.network.responses;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.Html;
 import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.poona.agrocart.R;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class ProductDetailsResponse extends BaseResponse {
@@ -39,18 +35,21 @@ public class ProductDetailsResponse extends BaseResponse {
         @SerializedName("product_visible_to")
         @Expose
         private String productVisibleTo;
-        @SerializedName("brand_id_fk")
+        @SerializedName("brand_id")
         @Expose
-        private String brandIdFk;
+        private String brandId;
+        @SerializedName("category_id")
+        @Expose
+        private String categoryId;
         @SerializedName("special_offer")
         @Expose
         private String specialOffer;
-        @SerializedName("gst_id_fk")
+        @SerializedName("gst_id")
         @Expose
-        private String gstIdFk;
-        @SerializedName("hsn_id_fk")
+        private String gstId;
+        @SerializedName("hsn_id")
         @Expose
-        private String hsnIdFk;
+        private String hsnId;
         @SerializedName("is_o3")
         @Expose
         private String isO3;
@@ -155,6 +154,14 @@ public class ProductDetailsResponse extends BaseResponse {
         @Expose
         private List<Review> reviews = null;
 
+        public String getCategoryId() {
+            return categoryId;
+        }
+
+        public void setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+        }
+
         public String getProductType() {
             return productType;
         }
@@ -245,12 +252,12 @@ public class ProductDetailsResponse extends BaseResponse {
             this.productVisibleTo = productVisibleTo;
         }
 
-        public String getBrandIdFk() {
-            return brandIdFk;
+        public String getBrandId() {
+            return brandId;
         }
 
-        public void setBrandIdFk(String brandIdFk) {
-            this.brandIdFk = brandIdFk;
+        public void setBrandId(String brandId) {
+            this.brandId = brandId;
         }
 
         public String getSpecialOffer() {
@@ -261,20 +268,20 @@ public class ProductDetailsResponse extends BaseResponse {
             this.specialOffer = specialOffer;
         }
 
-        public String getGstIdFk() {
-            return gstIdFk;
+        public String getGstId() {
+            return gstId;
         }
 
-        public void setGstIdFk(String gstIdFk) {
-            this.gstIdFk = gstIdFk;
+        public void setGstId(String gstId) {
+            this.gstId = gstId;
         }
 
-        public String getHsnIdFk() {
-            return hsnIdFk;
+        public String getHsnId() {
+            return hsnId;
         }
 
-        public void setHsnIdFk(String hsnIdFk) {
-            this.hsnIdFk = hsnIdFk;
+        public void setHsnId(String hsnId) {
+            this.hsnId = hsnId;
         }
 
         public String getIsO3() {

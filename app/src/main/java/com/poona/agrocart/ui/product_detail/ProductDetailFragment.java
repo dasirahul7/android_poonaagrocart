@@ -1,6 +1,9 @@
 package com.poona.agrocart.ui.product_detail;
 
 import static com.poona.agrocart.app.AppConstants.BASE_URL;
+import static com.poona.agrocart.app.AppConstants.CATEGORY_ID;
+import static com.poona.agrocart.app.AppConstants.LIMIT;
+import static com.poona.agrocart.app.AppConstants.OFFSET;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_ID;
 import static com.poona.agrocart.app.AppConstants.PRODUCT_NAME;
 import static com.poona.agrocart.app.AppConstants.PU_ID;
@@ -24,11 +27,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -59,12 +64,14 @@ import com.poona.agrocart.app.AppUtils;
 import com.poona.agrocart.data.network.NetworkExceptionListener;
 import com.poona.agrocart.data.network.responses.BaseResponse;
 import com.poona.agrocart.data.network.responses.ProductDetailsResponse;
+import com.poona.agrocart.data.network.responses.ProductListByResponse;
 import com.poona.agrocart.data.network.responses.ProductListResponse;
 import com.poona.agrocart.data.network.responses.Review;
+import com.poona.agrocart.data.network.responses.homeResponse.Product;
 import com.poona.agrocart.databinding.FragmentProductDetailBinding;
 import com.poona.agrocart.ui.BaseFragment;
 import com.poona.agrocart.ui.home.HomeActivity;
-import com.poona.agrocart.ui.home.model.ProductOld;
+import com.poona.agrocart.ui.home.adapter.ExclusiveOfferListAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductRatingReviewAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.ProductImagesAdapter;
 import com.poona.agrocart.ui.product_detail.adapter.UnitAdapter;
@@ -125,6 +132,17 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     private NestedScrollView scrollView;
     private RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     private String strProductName = "";
+    /*similar items variables here*/
+    private ArrayList<Product> similarArrayList = new ArrayList<>();
+    private RecyclerView rvSimilar;
+    private NestedScrollView nvSimilar;
+    private LinearLayoutManager similarLayoutManager;
+    private ExclusiveOfferListAdapter similarAdapter;
+    private int similarOffset = 0, similarLimit = 5;
+    private Product product;
+    private int currentItemPosition = 0;
+    private int visibleItemCount;
+    private int totalSimilarCount;
 
 
     @Override
@@ -145,7 +163,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         initTitleWithBackBtn("");
 
         initView();
-        setSimilarItems();
         rlRefreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -159,15 +176,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         });
 
         scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (view, i, i1, i2, i3) -> {
-            if (i3>0){
-                ((HomeActivity)context).binding.appBarHome.textTitle.setText(details.getProductName());
+            if (i3 > 0) {
+                ((HomeActivity) context).binding.appBarHome.textTitle.setText(details.getProductName());
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
-                ((HomeActivity)context).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
-            }
-            else {
+                ((HomeActivity) context).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
+            } else {
                 layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                ((HomeActivity)context).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
-                ((HomeActivity)context).binding.appBarHome.textTitle.setText(strProductName);
+                ((HomeActivity) context).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
+                ((HomeActivity) context).binding.appBarHome.textTitle.setText(strProductName);
             }
         });
 
@@ -192,23 +208,10 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         return root;
     }
 
-    private void setSimilarItems() {
-//        productDetailViewModel.getSimilarProductLiveData().observe(getViewLifecycleOwner(), similarItems -> {
-//            this.similarProductOlds = similarItems;
-//            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
-//            productListAdapter = new OfferProductListAdapter(this.similarProductOlds, requireActivity(), root);
-//            fragmentProductDetailBinding.rvSimilar.setNestedScrollingEnabled(false);
-//            fragmentProductDetailBinding.rvSimilar.setLayoutManager(layoutManager);
-//            fragmentProductDetailBinding.rvSimilar.setAdapter(productListAdapter);
-//            productListAdapter.setOnProductClick(product -> {
-//                toProductDetail(product, root);
-//            });
-//        });
-
-    }
-
     private void initView() {
         scrollView = fragmentProductDetailBinding.scrollView;
+        rvSimilar = fragmentProductDetailBinding.rvSimilar;
+        nvSimilar = fragmentProductDetailBinding.nvSimilar;
         fragmentProductDetailBinding.itemLayout.setVisibility(View.GONE);
         ((HomeActivity) requireActivity()).binding.appBarHome.rlProductTag.setVisibility(View.VISIBLE);
         txtOrganic = ((HomeActivity) requireActivity()).binding.appBarHome.txtOrganic;
@@ -265,9 +268,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                             fragmentProductDetailBinding.itemLayout.setVisibility(View.VISIBLE);
                             details = productDetailsResponse.getProductDetails();
                             rlRefreshPage.setRefreshing(false);
-                            for (ProductListResponse.ProductUnit unit : details.getProductUnits()) {
-                                details.setUnit(details.getProductUnits().get(0));
-                            }
+                            details.setUnit(details.getProductUnits().get(0));
                             UnitAdapter unitAdapter = new UnitAdapter(details.getProductUnits(), details.getIsCart(), requireActivity(), this::changePriceAndUnit);
                             fragmentProductDetailBinding.rvWeights.setAdapter(unitAdapter);
                             setDetailsValue();
@@ -275,7 +276,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                             fragmentProductDetailBinding.setVariable(BR.productDetailModule, productDetailViewModel);
                             fragmentProductDetailBinding.rvWeights.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false));
                             setViewPagerAdapterItems();
-
                             /*Rating and Reviews*/
                             if (productDetailsResponse.getProductDetails().getRating() != null) {
                                 setRatingViewHideShow(productDetailsResponse.getProductDetails().getRating());
@@ -288,7 +288,12 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                                 allReview.addAll(reviewsList);
                                 setAdaptor(reviewsList);
                                 productRatingReviewAdapter.notifyDataSetChanged();
-                            }else fragmentProductDetailBinding.tvSeeMoreReview.setVisibility(View.GONE);
+                            } else
+                                fragmentProductDetailBinding.tvSeeMoreReview.setVisibility(View.GONE);
+                            //Add similar items here
+                            if (details.getCategoryId() != null && !details.getCategoryId().equals("")) {
+                                callSimilarItemAPI(showCircleProgressDialog(context, ""), details.getCategoryId(), "load");
+                            }
                         }
                         break;
                     case STATUS_CODE_403://Validation Errors
@@ -312,11 +317,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void setRatingViewHideShow(ProductDetailsResponse.Rating rating) {
-        if (productDetailViewModel.alreadyPurchased.getValue()==0){
+        if (productDetailViewModel.alreadyPurchased.getValue() == 0) {
             fragmentProductDetailBinding.llRateView.setVisibility(View.GONE);
-        }else if (!rating.getRatingId().isEmpty() || !rating.getReview().isEmpty()){
+        } else if (!rating.getRatingId().isEmpty() || !rating.getReview().isEmpty()) {
             fragmentProductDetailBinding.llRateView.setVisibility(View.GONE);
-        }else if (productDetailViewModel.alreadyPurchased.getValue()==1){
+        } else if (productDetailViewModel.alreadyPurchased.getValue() == 1) {
 //            basketDetailsBinding.ratingBarInput.setEnabled(false);
             fragmentProductDetailBinding.llRateView.setVisibility(View.VISIBLE);
         }
@@ -324,8 +329,6 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     private void setDetailsValue() {
         unit = details.getUnit();
-
-
         productDetailViewModel.productName.setValue(details.getProductName());
         if (details.getLocation().isEmpty())
             fragmentProductDetailBinding.tvLocation.setVisibility(View.GONE);
@@ -335,7 +338,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         productDetailViewModel.offerPrice.setValue("Rs. " + details.getUnit().getOfferPrice());
         productDetailViewModel.offer.setValue(details.getUnit().getPercDiscount());
         productDetailViewModel.specialOffer.setValue(details.getSpecialOffer());
-        if (details.getAverageRating()==null){
+        if (details.getAverageRating() == null) {
             fragmentProductDetailBinding.llReview.setVisibility(View.GONE);
             fragmentProductDetailBinding.ratingBelowLine.setVisibility(View.GONE);
         }
@@ -361,9 +364,9 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         productDetailViewModel.productNutrition.setValue(details.getNutrition());
         productDetailViewModel.productBrand.setValue(details.getBrandName());
 
-        ((HomeActivity)context).binding.appBarHome.textTitle.setText(details.getProductName());
+        ((HomeActivity) context).binding.appBarHome.textTitle.setText(details.getProductName());
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
-        ((HomeActivity)context).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
+        ((HomeActivity) context).binding.appBarHome.textTitle.setLayoutParams(layoutParams);
 
         if (details.getIsO3().equalsIgnoreCase("yes"))
             productDetailViewModel.isOrganic.setValue(true);
@@ -388,7 +391,61 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
         checkValuesAndViews();
     }
-    private void checkValuesAndViews(){
+
+    private void callSimilarItemAPI(ProgressDialog progressDialog, String categoryId, String type) {
+        if (type.equalsIgnoreCase("onScrolled")) {
+            similarOffset = similarOffset + 1;
+        } else {
+            similarArrayList.clear();
+            similarOffset = 0;
+        }
+        Observer<ProductListByResponse> listByResponseObserver = productListByResponse -> {
+            if (productListByResponse != null) {
+                if (progressDialog != null)
+                    progressDialog.dismiss();
+                rlRefreshPage.setRefreshing(false);
+                switch (productListByResponse.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        if (productListByResponse.getProductListResponseDt().getProductList()!=null
+                                && productListByResponse.getProductListResponseDt().getProductList().size() > 0) {
+                            totalSimilarCount = productListByResponse.getTotalCount();
+                            similarArrayList.addAll(productListByResponse.getProductListResponseDt().getProductList());
+                            productDetailViewModel.similarProductListMutable.setValue(similarArrayList);
+                            fragmentProductDetailBinding.llSimilar.setVisibility(View.VISIBLE);
+                            setSimilarRvAdapter();
+                        }
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        if (type.equalsIgnoreCase("load")) {
+                            warningToast(context, productListByResponse.getMessage());
+                        }
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(productListByResponse.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, productListByResponse.getMessage());
+                        break;
+                }
+
+            }
+        };
+        productDetailViewModel.callSimilarProductApi(progressDialog, similarParams(categoryId), ProductDetailFragment.this, type)
+                .observe(getViewLifecycleOwner(), listByResponseObserver);
+    }
+
+    /*similar product params*/
+    private HashMap<String, String> similarParams(String categoryId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(CATEGORY_ID, categoryId);
+        map.put(LIMIT, String.valueOf(similarLimit));
+        map.put(OFFSET, String.valueOf(similarOffset));
+        return map;
+    }
+
+    private void checkValuesAndViews() {
         /*check for is in cart and [-] [+]*/
         if (productDetailViewModel.isInCart.getValue()) {
             fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
@@ -402,11 +459,33 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             fragmentProductDetailBinding.etQuantity.setVisibility(View.GONE);
         }
         /*product type*/
-        if (details.getProductType()==null || details.getProductType().equalsIgnoreCase(""))
+        if (details.getProductType() == null || details.getProductType().equalsIgnoreCase(""))
             fragmentProductDetailBinding.tvExport.setVisibility(View.GONE);
         else {
             productDetailViewModel.productTypeMutable.setValue(details.getProductType());
         }
+        if (details.getSpecialOffer().isEmpty()) {
+            fragmentProductDetailBinding.cardOfferMsg.setVisibility(View.GONE);
+        } else fragmentProductDetailBinding.cardOfferMsg.setVisibility(View.VISIBLE);
+        if (details.getProductDetails() == null || details.getProductDetails().equals("")) {
+            makeHidden(fragmentProductDetailBinding.llProductDetails, null);
+        } else makeVisible(fragmentProductDetailBinding.llProductDetails, null);
+        if (details.getAboutProduct() == null || details.getAboutProduct().equals("")) {
+            makeHidden(fragmentProductDetailBinding.llAboutThisProduct, null);
+        } else makeVisible(fragmentProductDetailBinding.llAboutThisProduct, null);
+        if (details.getBenifit() == null || details.getBenifit().equals("")) {
+            makeHidden(fragmentProductDetailBinding.llBenefitsProducts, null);
+        } else makeVisible(fragmentProductDetailBinding.llBenefitsProducts, null);
+        if (details.getStoragesUses() == null || details.getStoragesUses().equals("")) {
+            makeHidden(fragmentProductDetailBinding.llStorageAndUseProduct, null);
+        } else makeVisible(fragmentProductDetailBinding.llStorageAndUseProduct, null);
+        if (details.getWeightPolicy() == null || details.getWeightPolicy().equals("")) {
+            makeHidden(fragmentProductDetailBinding.llVariableWeightPolicyProduct, null);
+        } else makeVisible(fragmentProductDetailBinding.llVariableWeightPolicyProduct, null);
+        if (details.getNutrition() == null || details.getNutrition().equals("")) {
+            makeHidden(fragmentProductDetailBinding.llNutritionsProduct, null);
+        } else makeVisible(fragmentProductDetailBinding.llNutritionsProduct, null);
+
     }
 
 
@@ -455,18 +534,19 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     }
 
+    /*Product images */
     private void setViewPagerAdapterItems() {
         ArrayList<String> images = new ArrayList<>();
-        if (details.getProductImgs().size()>0){
+        if (details.getProductImgs().size() > 0) {
             for (int i = 0; i < details.getProductImgs().size(); i++)
                 images.add(details.getProductImgs().get(i).getProductImg());
-        }else {
+        } else {
             images.add(details.getFeatureImg());
             images.add(details.getFeatureImg());
             images.add(details.getFeatureImg());
         }
         count = images.size();
-        if (count >0) {
+        if (count > 0) {
             productImagesAdapter = new ProductImagesAdapter(ProductDetailFragment.this,
                     getChildFragmentManager(), images);
             vpImages.setAdapter(productImagesAdapter);
@@ -504,7 +584,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 if (Integer.parseInt(fragmentProductDetailBinding.etQuantity.getText().toString()) > 1) {
                     decreaseQuantity(fragmentProductDetailBinding.etQuantity.getText().toString(),
                             fragmentProductDetailBinding.etQuantity, fragmentProductDetailBinding.ivMinus);
-                } else fragmentProductDetailBinding.ivMinus.setEnabled(false); // call here remove api
+                } else
+                    callRemoveFromCartAPI(showCircleProgressDialog(context, "")); // call here remove api
                 break;
             case R.id.iv_plus:
                 addOrRemoveFromCart();
@@ -515,7 +596,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             case R.id.iv_share:
                 if (isConnectingToInternet(context)) {
                     Log.e("Share_url", "Share_url " + details.getFeatureImg());
-                    if (details.getFeatureImg()!= null) {
+                    if (details.getFeatureImg() != null) {
                         if (!details.getFeatureImg().equals("null")) {
                             if (!details.getFeatureImg().equals("")) {
                                 shareProduct();
@@ -528,8 +609,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                     } else {
                         infoToast(context, "URL is null.");
                     }
-                }
-                else {
+                } else {
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 }
                 break;
@@ -539,9 +619,9 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
 
     /*Remove from Cart API here*/
     private void callRemoveFromCartAPI(ProgressDialog progressDialog) {
-        Observer<BaseResponse> baseResponseObserver= response -> {
-            if (response!=null){
-                if (progressDialog!=null)
+        Observer<BaseResponse> baseResponseObserver = response -> {
+            if (response != null) {
+                if (progressDialog != null)
                     progressDialog.dismiss();
                 switch (response.getStatus()) {
                     case STATUS_CODE_200://Record Create/Update Successfully
@@ -553,7 +633,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         details.getUnit().setQty(0);
                         setDetailsValue();
                         try {
-                            ((HomeActivity)context).setCountBudge(response.getCartItems());
+                            ((HomeActivity) context).setCountBudge(response.getCartItems());
                         } catch (Exception exception) {
                             exception.printStackTrace();
                         }
@@ -573,8 +653,8 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                 }
             }
         };
-        productDetailViewModel.removeFromCartResponseLiveData(progressDialog,removeCartParam(),
-                ProductDetailFragment.this).observe(getViewLifecycleOwner(),baseResponseObserver);
+        productDetailViewModel.removeFromCartResponseLiveData(progressDialog, removeCartParam(),
+                ProductDetailFragment.this).observe(getViewLifecycleOwner(), baseResponseObserver);
     }
 
 
@@ -633,10 +713,12 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         isAboutThisProductVisible = !isAboutThisProductVisible;
     }
 
+    //add or remove from favourite
     private void addOrRemoveFromFavourite() {
         addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
     }
 
+    //add or remove from cart
     private void addOrRemoveFromCart() {
         if (details.getUnit().getInCart() == 0 || fragmentProductDetailBinding.etQuantity.getText().toString().isEmpty()) {
             fragmentProductDetailBinding.etQuantity.setText("");
@@ -648,7 +730,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         }
     }
 
-    //Add or Remove from CArt
+    //Add or Remove from Cart
     private void callAddToCartApi(ProgressDialog showCircleProgressDialog,
                                   ProductDetailsResponse.ProductDetails details) {
         Observer<BaseResponse> addToCartResponseObserver = addToCartResponse -> {
@@ -662,7 +744,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
                         try {
-                            ((HomeActivity)context).setCountBudge(addToCartResponse.getCartItems());
+                            ((HomeActivity) context).setCountBudge(addToCartResponse.getCartItems());
                         } catch (Exception exception) {
                             exception.printStackTrace();
                         }
@@ -687,10 +769,11 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             }
         };
         productDetailViewModel.addToCartProductLiveData(showCircleProgressDialog,
-                addToCartParam(details), ProductDetailFragment.this)
+                addToCartParam(details), "Details", ProductDetailFragment.this)
                 .observe(getViewLifecycleOwner(), addToCartResponseObserver);
     }
 
+    // Update product quantity
     private void updateQuantityApi(ProgressDialog showCircleProgressDialog,
                                    ProductDetailsResponse.ProductDetails details, String qty) {
         Observer<BaseResponse> addToCartResponseObserver = addToCartResponse -> {
@@ -702,7 +785,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         successToast(requireActivity(), addToCartResponse.getMessage());
                         fragmentProductDetailBinding.ivMinus.setVisibility(View.VISIBLE);
                         fragmentProductDetailBinding.etQuantity.setVisibility(View.VISIBLE);
-                        ((HomeActivity)context).setCountBudge(addToCartResponse.getCartItems());
+                        ((HomeActivity) context).setCountBudge(addToCartResponse.getCartItems());
                         setDetailsValue();
 //                        changePriceAndUnit(details.getUnit());
                         break;
@@ -723,7 +806,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             }
         };
         productDetailViewModel.addToCartProductLiveData(showCircleProgressDialog,
-                updateCartParam(details, qty), ProductDetailFragment.this)
+                updateCartParam(details, qty), "Details", ProductDetailFragment.this)
                 .observe(getViewLifecycleOwner(), addToCartResponseObserver);
     }
 
@@ -789,6 +872,14 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         return map;
     }
 
+    private HashMap<String, String> addToCartParam(Product product) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(PRODUCT_ID, product.getProductId());
+        map.put(PU_ID, product.getPuId());
+        map.put(QUANTITY, "1");
+        return map;
+    }
+
     private HashMap<String, String> updateCartParam(ProductDetailsResponse.ProductDetails product, String qty) {
         HashMap<String, String> map = new HashMap<>();
         map.put(PRODUCT_ID, product.getId());
@@ -796,6 +887,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         map.put(QUANTITY, qty);
         return map;
     }
+
     private HashMap<String, String> removeCartParam() {
         HashMap<String, String> map = new HashMap<>();
         map.put(PRODUCT_ID, details.getId());
@@ -848,14 +940,9 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         isProductDetailsVisible = !isProductDetailsVisible;
     }
 
-    private void toProductDetail(ProductOld productOld, View root) {
+    private void toProductDetail(Product product) {
         Bundle bundle = new Bundle();
-        bundle.putString("name", productOld.getName());
-        bundle.putString("image", productOld.getImg());
-        bundle.putString("price", productOld.getPrice());
-        bundle.putString("brand", productOld.getBrand());
-        bundle.putString("quantity", productOld.getQuantity());
-        bundle.putBoolean("organic", productOld.isOrganic());
+        bundle.putString(PRODUCT_ID, product.getProductId());
         Navigation.findNavController(root).navigate(R.id.action_nav_home_to_nav_product_details, bundle);
     }
 
@@ -869,13 +956,22 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         callProductDetailsApi(showCircleProgressDialog(context, ""));
                         break;
                     case 1:
-                        addOrRemoveFromCart();
+                        if (!type.equalsIgnoreCase("similar"))
+                            addToCartSimilarProduct(showCircleProgressDialog(context, ""), this.product, this.currentItemPosition);
+                        else addOrRemoveFromCart();
                         break;
                     case 2:
-                        callRemoveFromCartAPI(showCircleProgressDialog(context,""));
+                        callRemoveFromCartAPI(showCircleProgressDialog(context, ""));
                         break;
                     case 3:
                         addOrRemoveFavouriteApi(showCircleProgressDialog(context, ""), !isFavourite);
+                        break;
+                    case 4:
+                        callRatingAndReviewAPi(showCircleProgressDialog(context, ""));
+                        break;
+                    case 5:
+                        if (details.getCategoryId()!=null&& !details.getCategoryId().equalsIgnoreCase(""))
+                            callSimilarItemAPI(showCircleProgressDialog(context, ""), details.getCategoryId(), "load");
                         break;
                 }
             }
@@ -906,7 +1002,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                         break;
                     case STATUS_CODE_401://Unauthorized user
 //                        warningToast(context, baseResponse.getMessage());
-                        goToAskSignInSignUpScreen(baseResponse.getMessage(),context);
+                        goToAskSignInSignUpScreen(baseResponse.getMessage(), context);
                         break;
                     case STATUS_CODE_405://Method Not Allowed
                         infoToast(context, baseResponse.getMessage());
@@ -932,6 +1028,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
     }
 
 
+    /*set all review list here*/
     private void setAdaptor(List<Review> reviewsList) {
 
         //Initializing our superheroes list
@@ -941,16 +1038,93 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
         rvProductReview.setHasFixedSize(true);
         rvProductReview.setLayoutManager(linearLayoutManager);
         //initializing our adapter
-        productRatingReviewAdapter = new ProductRatingReviewAdapter(context, reviewsList,0);
+        productRatingReviewAdapter = new ProductRatingReviewAdapter(context, reviewsList, 0);
         //Adding adapter to recyclerview
         rvProductReview.setAdapter(productRatingReviewAdapter);
         if (reviewsList.isEmpty())
-        fragmentProductDetailBinding.tvSeeMoreReview.setVisibility(View.GONE);
+            fragmentProductDetailBinding.tvSeeMoreReview.setVisibility(View.GONE);
         else fragmentProductDetailBinding.tvSeeMoreReview.setVisibility(View.VISIBLE);
     }
 
+    /*set similar product list here*/
+    private void setSimilarRvAdapter() {
+        similarLayoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false);
+        rvSimilar.setHasFixedSize(true);
+        rvSimilar.setLayoutManager(similarLayoutManager);
+        productDetailViewModel.similarProductListMutable.observe(getViewLifecycleOwner(), products -> {
+            similarAdapter = new ExclusiveOfferListAdapter(products, requireActivity(), this::toProductDetail, (binding, product, position) -> {
+                if (product.getInCart() == 0) {
+                    addToCartSimilarProduct(showCircleProgressDialog(context, ""), product, position);
+                }
+            });
+            rvSimilar.setAdapter(similarAdapter);
+        });
+        setScrollListener();
+    }
+
+    private void setScrollListener() {
+        rvSimilar.setNestedScrollingEnabled(false);
+        Parcelable recyclerViewState;
+        recyclerViewState = rvSimilar.getLayoutManager().onSaveInstanceState();
+        rvSimilar.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@androidx.annotation.NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (similarAdapter.getItemCount()!=totalSimilarCount){
+//                    callSimilarItemAPI(showCircleProgressDialog(context,""),details.getCategoryId(),"onScrolled");
+                }
+            }
+        });
+//        nvSimilar.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+//                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+//                    if (v.getChildAt(v.getChildCount() - 1) != null) {
+//                        visibleItemCount = similarLayoutManager.getItemCount();
+//                        if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+//                                && visibleItemCount != totalSimilarCount) {
+//                            callSimilarItemAPI(showCircleProgressDialog(context,""), details.getCategoryId(),"onScrolled");
+//                        } else if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY
+//                                && visibleItemCount == totalSimilarCount) {
+//                            infoToast(requireContext(), getString(R.string.no_more_records));
+//                        }
+//                    }
+//                });
+    }
+
+    //add to cart similar product
+    private void addToCartSimilarProduct(ProgressDialog progressDialog, Product product, int position) {
+        this.product = product;
+        this.currentItemPosition = position;
+        Observer<BaseResponse> baseResponseObserver = response -> {
+            if (response != null) {
+                if (progressDialog != null)
+                    progressDialog.dismiss();
+                switch (response.getStatus()) {
+                    case STATUS_CODE_200://Record Create/Update Successfully
+                        successToast(requireActivity(), response.getMessage());
+                        productDetailViewModel.similarProductListMutable.getValue().get(position).setInCart(1);
+                        similarAdapter.notifyDataSetChanged();
+                        break;
+                    case STATUS_CODE_403://Validation Errors
+                    case STATUS_CODE_400://Validation Errors
+                    case STATUS_CODE_404://Validation Errors
+                        //show no data msg here
+                        warningToast(context, response.getMessage());
+                        break;
+                    case STATUS_CODE_401://Unauthorized user
+                        goToAskSignInSignUpScreen(response.getMessage(), context);
+                        break;
+                    case STATUS_CODE_405://Method Not Allowed
+                        infoToast(context, response.getMessage());
+                        break;
+                }
+            }
+        };
+        productDetailViewModel.addToCartProductLiveData(progressDialog, addToCartParam(product), "Similar", ProductDetailFragment.this)
+                .observe(getViewLifecycleOwner(), baseResponseObserver);
+    }
+
     /*share Product with images*/
-    public void shareProduct(){
+    public void shareProduct() {
         try {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 // Do the file write
@@ -970,7 +1144,7 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
                                 intent.setType("text/plain");
                                 intent.putExtra(Intent.EXTRA_SUBJECT, "Poona App");
                                 String shareMessage = "\nDownload Poona agro Cart& win exciting prices.\n\n";
-                                shareMessage = shareMessage + "Purchase "+details.getProductName() +"Only at ₹ "+details.getUnit().getOfferPrice()+" download app here :\n\n"+BASE_URL + BuildConfig.APPLICATION_ID + "\n\n";
+                                shareMessage = shareMessage + "Purchase " + details.getProductName() + "Only at ₹ " + details.getUnit().getOfferPrice() + " download app here :\n\n" + BASE_URL + BuildConfig.APPLICATION_ID + "\n\n";
                                 intent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                                 startActivity(Intent.createChooser(intent, "Share With..."));
                             }
@@ -992,9 +1166,37 @@ public class ProductDetailFragment extends BaseFragment implements View.OnClickL
             }
 
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private void makeVisible(View linearView, View view) {
+        try {
+            if (linearView != null) {
+                linearView.setVisibility(View.VISIBLE);
+            }
+            if (view != null) {
+                view.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void makeHidden(View linearView, View view) {
+        try {
+            if (linearView != null) {
+                linearView.setVisibility(View.GONE);
+            }
+            if (view != null) {
+                view.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
