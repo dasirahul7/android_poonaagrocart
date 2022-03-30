@@ -26,6 +26,7 @@
     <string name="update_address">Update Address</string>
     <string name="update_downloaded">Successfully updated Fresh Cut Vendor App!</string>
     <string name="restart">Restart</string>
+    <string name="address_filled_screen">Please Filed the Address </string>
 
     <!--base fragment strings-->
     <string name="ensure_your_all_permissions">Ensure all your permissions</string>

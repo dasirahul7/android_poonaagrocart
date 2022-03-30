@@ -580,6 +580,7 @@
                             android:id="@+id/ll_sub_total"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingHorizontal="@dimen/_4sdp"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:orientation="horizontal"
                             android:weightSum="100">
@@ -617,6 +618,7 @@
                             android:id="@+id/ll_discount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingHorizontal="@dimen/_4sdp"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:orientation="horizontal"
                             android:weightSum="100">
@@ -648,7 +650,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_2sdp"
+                            android:paddingHorizontal="@dimen/_4sdp"
                             android:orientation="horizontal"
+                            android:layout_gravity="center"
                             android:weightSum="100">
 
                             <com.poona.agrocart.widgets.CustomTextView
@@ -687,6 +691,7 @@
                             android:id="@+id/ll_total_amount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingHorizontal="@dimen/_4sdp"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:orientation="horizontal"
                             android:weightSum="100">

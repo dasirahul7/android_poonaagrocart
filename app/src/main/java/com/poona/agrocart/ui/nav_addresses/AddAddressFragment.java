@@ -166,6 +166,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         return view;
     }
 
+
     private void initView() {
         fragmentAddressesFormBinding.tvCurrentLocation.setOnClickListener(this);
         fragmentAddressesFormBinding.btnAddAddress.setOnClickListener(this);
@@ -240,7 +241,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     if (isConnectingToInternet(context)) {
                         hideKeyBoard(requireActivity());
                         callCityApi(showCircleProgressDialog(context, ""));
-                        fragmentAddressesFormBinding.btnAddAddress.setText(R.string.add_address);
+                        fragmentAddressesFormBinding.btnAddAddress.setText( R.string.add_address);
                     } else {
                         showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                     }

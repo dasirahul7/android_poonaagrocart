@@ -60,7 +60,7 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
 
         if (favourite.getItemType().equalsIgnoreCase("basket")) {
             favouriteListItemBinding.tvName.setText(favourite.getBasketName());
-            favouriteListItemBinding.tvOfferActualPrice.setText("RS." + favourite.getBasketRate());
+            favouriteListItemBinding.tvOfferActualPrice.setText("RS. " + favourite.getBasketRate());
             favouriteListItemBinding.tvSellingPrice.setVisibility(View.GONE);
             favouriteListItemBinding.tvLocation.setVisibility(View.GONE);
             favouriteListItemBinding.tvProductWeight.setVisibility(View.GONE);
@@ -74,8 +74,8 @@ public class FavouriteItemAdapter extends RecyclerView.Adapter<FavouriteItemAdap
 
         } else {
             favouriteListItemBinding.tvName.setText(favourite.getProductName());
-            favouriteListItemBinding.tvOfferActualPrice.setText("RS." + favourite.getOffer_price());
-            favouriteListItemBinding.tvSellingPrice.setText("RS." + favourite.getSelling_price());
+            favouriteListItemBinding.tvOfferActualPrice.setText("RS. " + favourite.getOffer_price());
+            favouriteListItemBinding.tvSellingPrice.setText("RS. " + favourite.getSelling_price());
             favouriteListItemBinding.tvProductWeight.setText(favourite.getWeight() + "" + favourite.getUnitName());
             if (favourite.getIs_o3().equalsIgnoreCase("yes")){
                 favouriteListItemBinding.tvOrganic.setVisibility(View.VISIBLE);

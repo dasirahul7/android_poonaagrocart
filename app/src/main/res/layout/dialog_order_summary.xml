@@ -16,53 +16,72 @@
             android:layout_gravity="bottom"
             android:layout_margin="@dimen/_5sdp">
 
-            <com.poona.agrocart.widgets.CustomTextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_margin="@dimen/_5sdp"
-                android:gravity="center_vertical"
-                android:padding="@dimen/_5sdp"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_10sdp"
-                android:text="@string/set_delivery_address"
-                android:textColor="@color/clr_enter_otp"
-                android:textSize="@dimen/_16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:setCustomFont="@string/font_poppins_bold" />
-
-            <ImageView
-                android:id="@+id/close_btn"
-                android:layout_width="@dimen/_16sdp"
-                android:layout_height="@dimen/_18sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="@dimen/_10sdp"
-                android:src="@drawable/ic_cross"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/view_line"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:background="@color/filter_line_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:paddingVertical="@dimen/_20sdp"
-                android:id="@+id/rv_address"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_line" />
+                app:layout_constraintTop_toTopOf="parent">
+
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:weightSum="2">
+                   <com.poona.agrocart.widgets.CustomTextView
+                       android:id="@+id/tv_title"
+                       android:layout_weight="1.8"
+                       android:layout_width="wrap_content"
+                       android:layout_height="@dimen/_30sdp"
+                       android:layout_margin="@dimen/_5sdp"
+                       android:gravity="center_vertical"
+                       android:padding="@dimen/_5sdp"
+                       android:paddingStart="@dimen/_10sdp"
+                       android:paddingEnd="@dimen/_10sdp"
+                       android:text="@string/set_delivery_address"
+                       android:textColor="@color/clr_enter_otp"
+                       android:textSize="@dimen/_16sp"
+                       android:textStyle="bold"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:setCustomFont="@string/font_poppins_bold" />
+
+                   <ImageView
+                       android:id="@+id/close_btn"
+                       android:layout_weight="0.2"
+                       android:layout_width="@dimen/_10sdp"
+                       android:layout_height="@dimen/_14sdp"
+                       android:layout_gravity="center"
+                       android:layout_margin="@dimen/_10sdp"
+                       android:src="@drawable/ic_cross"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintTop_toTopOf="parent" />
+               </LinearLayout>
+
+                <View
+                    android:id="@+id/view_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:background="@color/filter_line_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="@dimen/_20sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_line" />
+            </LinearLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 

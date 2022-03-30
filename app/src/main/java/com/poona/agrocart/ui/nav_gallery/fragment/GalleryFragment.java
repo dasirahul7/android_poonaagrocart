@@ -61,6 +61,7 @@ public class GalleryFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.d("TAG", "onResume: ");
+        initTitleBar(getString(R.string.menu_gallery));
         setFragmentItem();
 
         CustomTextView tabPhoto = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.gallery_tab_item, null);
