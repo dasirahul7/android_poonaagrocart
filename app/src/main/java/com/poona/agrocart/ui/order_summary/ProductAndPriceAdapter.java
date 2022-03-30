@@ -53,6 +53,8 @@ public class ProductAndPriceAdapter extends RecyclerView.Adapter<ProductAndPrice
         public void bind(ItemsDetail itemsDetail) {
             rvProductAndPriceDetailsBinding.setVariable(BR.productAndPrice, itemsDetail);
             rvProductAndPriceDetailsBinding.executePendingBindings();
+            if (itemsDetail.subscribeNowId!=null)
+                rvProductAndPriceDetailsBinding.tvQuantity.setText(itemsDetail.pricePerQuantity+" X "+itemsDetail.noOfSubscription);
         }
     }
 }

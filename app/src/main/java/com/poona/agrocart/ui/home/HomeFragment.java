@@ -46,8 +46,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,6 +82,7 @@ import com.poona.agrocart.ui.home.adapter.CategoryAdapter;
 import com.poona.agrocart.ui.home.adapter.ExclusiveOfferListAdapter;
 import com.poona.agrocart.ui.home.adapter.ProductListAdapter;
 import com.poona.agrocart.ui.home.adapter.SeasonalBannerAdapter;
+import com.poona.agrocart.ui.splash_screen.OnBackPressedListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,7 +90,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener, BannerAdapter.OnBannerClickListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, NetworkExceptionListener, BannerAdapter.OnBannerClickListener , OnBackPressedListener {
     private static final String TAG = HomeFragment.class.getSimpleName();
     private static final int CATEGORY = 0;
     private static final int BASKET = 1;
@@ -1182,5 +1185,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 }

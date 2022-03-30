@@ -28,6 +28,7 @@
     <string name="restart">Restart</string>
     <string name="address_filled_screen">Please Filed the Address </string>
 
+
     <!--base fragment strings-->
     <string name="ensure_your_all_permissions">Ensure all your permissions</string>
     <string name="select_file">Select file</string>
@@ -477,6 +478,8 @@ at. Eros id quam facilisi dolor. Viverra felis vivamus et eget tempus.</string>
         <item>issue</item>
     </string-array>
 
+    <!--Splash screen-->
+    <string name="splash_gif">https://cmsweb.m-staging.in/poona_agro_testing_dev/uploads/admin/splash_screen_media/gif/shopping_cart.gif</string>
     <!--    Gallery-->
     <string name="sample_photo">https://www.linkpicture.com/q/unsplash_QvkAQTNj4zk_1.png</string>
     <!--    Order Summary Dialog-->

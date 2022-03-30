@@ -220,9 +220,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 rlRefreshPage.setRefreshing(true);
                 mainLayout.setVisibility(View.GONE);
                 if (isConnectingToInternet(context)) {
-                    if (isSubscriptionSummary)
-                        callSubscriptionSummary(showCircleProgressDialog(context, ""));
-                    else callOrderSummaryAPI(showCircleProgressDialog(context, ""));
+                    initView();
                 } else {
                     showNotifyAlert(requireActivity(), context.getString(R.string.info), context.getString(R.string.internet_error_message), R.drawable.ic_no_internet);
                 }
@@ -265,6 +263,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         preferences.setPaymentMode("");
         preferences.setDeliveryDate("");
         preferences.setPaymentReferenceId("");
+        fragmentOrderSummaryBinding.etCouponCode.setText("");
         rvProductsAndPrices = fragmentOrderSummaryBinding.rvProductsAndPrices;
         mainLayout = fragmentOrderSummaryBinding.mainLayout;
         itemProgress = fragmentOrderSummaryBinding.itemsProgress;
@@ -346,6 +345,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
         map.put(AppConstants.BASKET_ID, orderSummaryViewModel.basketIdMutable.getValue());
         map.put(AppConstants.PAYMENT_MODE_ID, preferences.getPaymentMode());
         map.put(AppConstants.PAYMENT_REFERENCE_ID, preferences.getPaymentReference());
+        map.put(AppConstants.COUPON_ID, preferences.getCouponId());
         return map;
     }
 
@@ -437,8 +437,8 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                             preferences.setPaymentAmount(orderSummaryResponse.totalAmount);
                             initAddressDialog();
 //                            initExpectedDeliveryDialog();
-//                            initPromoCodeDialog();
-                            fragmentOrderSummaryBinding.llCoupon.setVisibility(View.GONE);
+                            initPromoCodeDialog();
+//                            fragmentOrderSummaryBinding.llCoupon.setVisibility(View.GONE);
                             initItemsDetails();
                             initPaymentTypes();
                             checkValuesAndViews();
@@ -536,13 +536,22 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                 }
             }
         };
-        orderSummaryViewModel.getApplyCouponResponse(progressDialog, applyCouponParams(),
-                OrderSummaryFragment.this).observe(getViewLifecycleOwner(), applyCouponResponseObserver);
+        if (isSubscriptionSummary){
+            //Apply coupon for subscription summary
+            orderSummaryViewModel.getApplyCouponSubscriptionResponse(progressDialog, applyCouponParams(),
+                    OrderSummaryFragment.this).observe(getViewLifecycleOwner(), applyCouponResponseObserver);
+        }else {
+            //Apply coupon for order summary
+            orderSummaryViewModel.getApplyCouponResponse(progressDialog, applyCouponParams(),
+                    OrderSummaryFragment.this).observe(getViewLifecycleOwner(), applyCouponResponseObserver);
+        }
 //        fragmentOrderSummaryBinding.etCouponCode.setText("");
     }
 
     private HashMap<String, String> applyCouponParams() {
         HashMap<String, String> map = new HashMap<>();
+        if (isSubscriptionSummary)
+            map.put(SUBSCRIBE_NOW_ID,subscribeNowId);
         if (fragmentOrderSummaryBinding.etCouponCode.getText().toString().trim() != null
                 && !fragmentOrderSummaryBinding.etCouponCode.getText().toString().trim().isEmpty()
                 && fragmentOrderSummaryBinding.btnRemove.getText().toString().equalsIgnoreCase("Apply"))
@@ -629,6 +638,7 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                         rvProductsAndPrices.setLayoutManager(linearLayoutManager);
                         productAndPriceAdapter = new ProductAndPriceAdapter(itemsDetailArrayList);
                         rvProductsAndPrices.setAdapter(productAndPriceAdapter);
+                        productAndPriceAdapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -987,6 +997,15 @@ public class OrderSummaryFragment extends BaseFragment implements View.OnClickLi
                         break;
                     case 1:
                         callApplyCouponAPI(showCircleProgressDialog(context, ""));
+                        break;
+                    case 2:
+                        callOrderPlaceOrSubscribeAPI(showCircleProgressDialog(context,""));
+                        break;
+                    case 3:
+                        callDeliverySlotByDateAPI(showCircleProgressDialog(context,""));
+                        break;
+                    case 4:
+                        CallPaymentCredentialApi(showCircleProgressDialog(context,""));
                         break;
                 }
             } else {

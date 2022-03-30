@@ -19,7 +19,7 @@
 
             <ImageView
                 android:id="@+id/iv_background_main"
-                android:layout_width="@dimen/_250sdp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_250sdp"
                 android:layout_gravity="end"
                 android:adjustViewBounds="true"

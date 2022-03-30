@@ -93,8 +93,14 @@ public class OrderSummaryViewModel extends AndroidViewModel {
         arrayItemListMutableLiveData.setValue(null);
         arrayPaymentListMutableLiveData.setValue(null);
     }
-
-    /*init Order - summary here*/
+    /*
+    * 0: getOrderSummaryResponse
+    * 1: getApplyCouponResponse
+    * 2: getSubscriptionBasketCustomerResponse || getOrderPlaceAPIResponse
+    * 3: deliverySlotResponseLiveData
+    * 4: getRazorPayCredentialResponse
+    * */
+    /* init Order - summary here*/
     public void initViewModel(OrderSummaryResponse orderSummaryResponse, Context context) {
         AppSharedPreferences preferences = new AppSharedPreferences(context);
         /*Address and name */
@@ -164,7 +170,7 @@ public class OrderSummaryViewModel extends AndroidViewModel {
         basketIdMutable.setValue(orderSummaryResponse.getItemsDetails().get(0).basketId);
     }
 
-    /*Order Summary API*/
+    /* 1 : Order Summary API*/
     public LiveData<OrderSummaryResponse> getOrderSummaryResponse(ProgressDialog progressDialog,
                                                                   OrderSummaryFragment orderSummaryFragment) {
         MutableLiveData<OrderSummaryResponse> orderSummaryResponseMutableLiveData = new MutableLiveData<>();
@@ -247,7 +253,7 @@ public class OrderSummaryViewModel extends AndroidViewModel {
         return basketSummaryResponseMutableLiveData;
     }
 
-    /*Apply Coupon API*/
+    /*Apply Coupon API for Order*/
     public LiveData<ApplyCouponResponse> getApplyCouponResponse(ProgressDialog progressDialog,
                                                                 HashMap<String, String> hashMap,
                                                                 OrderSummaryFragment orderSummaryFragment) {
@@ -256,6 +262,47 @@ public class OrderSummaryViewModel extends AndroidViewModel {
         ApiClientAuth.getClient(orderSummaryFragment.getContext())
                 .create(ApiInterface.class)
                 .getApplyCouponResponse(hashMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<ApplyCouponResponse>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull ApplyCouponResponse applyCouponResponse) {
+                        if (applyCouponResponse != null) {
+                            if (progressDialog != null)
+                                progressDialog.dismiss();
+                            applyCouponResponseMutableLiveData.setValue(applyCouponResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
+                        Gson gson = new GsonBuilder().create();
+                        ApplyCouponResponse errorResponse = new ApplyCouponResponse();
+                        try {
+                            errorResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
+                                    ApplyCouponResponse.class);
+                            applyCouponResponseMutableLiveData.setValue(errorResponse);
+                        } catch (Exception ioException) {
+                            ioException.printStackTrace();
+                            Log.e(TAG, ioException.getMessage());
+                            ((NetworkExceptionListener) orderSummaryFragment).onNetworkException(1, "");
+                        }
+                    }
+                });
+        return applyCouponResponseMutableLiveData;
+    }
+
+    /*Apply Coupon API for Subscription*/
+    public LiveData<ApplyCouponResponse> getApplyCouponSubscriptionResponse(ProgressDialog progressDialog,
+                                                                HashMap<String, String> hashMap,
+                                                                OrderSummaryFragment orderSummaryFragment) {
+
+        MutableLiveData<ApplyCouponResponse> applyCouponResponseMutableLiveData = new MutableLiveData<>();
+        ApiClientAuth.getClient(orderSummaryFragment.getContext())
+                .create(ApiInterface.class)
+                .getApplyCouponSubscriptionResponse(hashMap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<ApplyCouponResponse>() {

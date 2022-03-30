@@ -6,6 +6,7 @@ import static com.poona.agrocart.app.AppConstants.ADD_TO_BASKET;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_FAVOURITE;
 import static com.poona.agrocart.app.AppConstants.ADD_TO_PRODUCT;
 import static com.poona.agrocart.app.AppConstants.APPLY_COUPON_API;
+import static com.poona.agrocart.app.AppConstants.APPLY_COUPON_SUBSCRIBE_API;
 import static com.poona.agrocart.app.AppConstants.AREA_WITH_ID_API;
 import static com.poona.agrocart.app.AppConstants.BASKET_DETAIL_API;
 import static com.poona.agrocart.app.AppConstants.CART_LIST_API;
@@ -88,6 +89,7 @@ import static com.poona.agrocart.app.AppConstants.VIEW_PROFILE_API;
 import static com.poona.agrocart.app.AppConstants.VIEW_TICKET;
 import static com.poona.agrocart.app.AppConstants.WALLET_TRANSACTION_LIST;
 
+import com.poona.agrocart.app.AppConstants;
 import com.poona.agrocart.data.network.responses.AddressesResponse;
 import com.poona.agrocart.data.network.responses.AreaResponse;
 import com.poona.agrocart.data.network.responses.BannerResponse;
@@ -142,6 +144,7 @@ import com.poona.agrocart.data.network.responses.orderResponse.OrderSummaryRespo
 import com.poona.agrocart.data.network.responses.payment.RazorPayCredentialResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.UpdateConfigurationResponse;
 import com.poona.agrocart.data.network.responses.settingResponse.ViewConfigurationResponse;
+import com.poona.agrocart.data.network.responses.splashResponse.SplashResponse;
 import com.poona.agrocart.data.network.responses.walletTransaction.TransactionTypeResponse;
 import com.poona.agrocart.data.network.responses.walletTransaction.WalletTransactionListResponse;
 import com.poona.agrocart.ui.nav_faq.model.FaqListResponse;
@@ -166,6 +169,12 @@ import retrofit2.http.PartMap;
  * Created by Rahul Dasi on 6/10/2020
  */
 public interface ApiInterface {
+
+    /*Splash Screen API
+    * Created on 31-Mar-2022
+     */
+    @GET(AppConstants.SPLASH_SCREEN_API)
+    Single<SplashResponse> getSplashScreenResponse();
     /*Login API*/
     @FormUrlEncoded
     @POST(LOGIN_API)
@@ -514,10 +523,16 @@ public interface ApiInterface {
     @POST(MY_ORDER_Details_CUSTOMER)
     Single<MyOrderDetailsResponse> getMyOrderDetailsResponse(@FieldMap HashMap<String, String> myOrderDetailsInputParameter);
 
-    /*Apply coupon API*/
+    /*Apply coupon API Order*/
     @FormUrlEncoded
     @POST(APPLY_COUPON_API)
     Single<ApplyCouponResponse> getApplyCouponResponse(@FieldMap HashMap<String, String> hashMap);
+
+    /*Apply coupon API Subscription
+    * created on 30-Mar-2022*/
+    @FormUrlEncoded
+    @POST(APPLY_COUPON_SUBSCRIBE_API)
+    Single<ApplyCouponResponse> getApplyCouponSubscriptionResponse(@FieldMap HashMap<String, String> hashMap);
 
     /*Order place API*/
     @FormUrlEncoded

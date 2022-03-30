@@ -71,7 +71,11 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
     private void initView(View view) {
         fragmentSplashScreenBinding.btnRetry.setOnClickListener(this);
         fragmentSplashScreenBinding.btnCancel.setOnClickListener(this);
-
+        try {
+            loadingImage(context,getString(R.string.splash_gif),fragmentSplashScreenBinding.ivBackgroundMain);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Animation anim = new AlphaAnimation(0.0f, 1.0f);
         anim.setDuration(600);
         anim.setStartOffset(20);
@@ -223,4 +227,45 @@ public class SplashScreenFragment extends BaseFragment implements View.OnClickLi
                 break;
         }
     }
+
+    /*Splash Screen API here*/
+//    private void callSplashScreenAPI() {
+//        ApiClientAuth.getClient(this.context )
+//                .create(ApiInterface.class)
+//                .getSplashScreenResponse()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeWith(new DisposableSingleObserver<SplashResponse>() {
+//                    @Override
+//                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull SplashResponse splashResponse) {
+//                        if (splashResponse!=null){
+//                            try {
+//                                if (splashResponse.getSplashData().getGifImage()!=null
+//                                        && !splashResponse.getSplashData().getGifImage().equals(""))
+//                                    loadingImage(context,splashResponse.getSplashData().getGifImage(),fragmentSplashScreenBinding.ivBackgroundMain);
+//                                if (splashResponse.getSplashData().getLogoImage()!=null
+//                                        && !splashResponse.getSplashData().getLogoImage().equals(""))
+//                                    loadingImage(context,splashResponse.getSplashData().getLogoImage(),fragmentSplashScreenBinding.ivLogo);
+//                                fragmentSplashScreenBinding.linearLayoutCompat.setVisibility(View.VISIBLE);
+//                            } catch (NullPointerException exception) {
+//                                exception.printStackTrace();
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+//                        Gson gson = new GsonBuilder().create();
+//                        SplashResponse splashResponse = new SplashResponse();
+//                        try {
+//                            splashResponse = gson.fromJson(((HttpException) e).response().errorBody().string(),
+//                                    SplashResponse.class);
+//                        } catch (Exception exception) {
+//                            Log.e(TAG, exception.getMessage());
+//                        }
+//                        infoToast(context,splashResponse.getMessage());
+//                        fragmentSplashScreenBinding.linearLayoutCompat.setVisibility(View.VISIBLE);
+//                    }
+//                });
+//    }
 }

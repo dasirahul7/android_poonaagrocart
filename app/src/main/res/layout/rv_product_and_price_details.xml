@@ -26,11 +26,12 @@
             app:setCustomFont="@string/font_poppins_regular" />
 
         <com.poona.agrocart.widgets.CustomTextView
+            android:id="@+id/tv_quantity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
             android:singleLine="true"
-            android:text='@{`Rs. `+productAndPrice.pricePerQuantity+` X `+productAndPrice.quantity}'
+            android:text='@{`Rs. `+productAndPrice.pricePerQuantity+` X `+productAndPrice.quantity ?? productAndPrice.noOfSubscription }'
             android:textColor="@color/black"
             android:textSize="@dimen/_16sp"
             app:setCustomFont="@string/font_poppins_regular" />

@@ -829,6 +829,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private HashMap<String, String> checkPinCodeAvailableParameters() {
         HashMap<String, String> map = new HashMap<>();
         map.put(PIN_CODE, basicDetails.getPinCode());
+        map.put(AREA_ID, selectedAreaId);
         return map;
     }
 

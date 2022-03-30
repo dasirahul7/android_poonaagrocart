@@ -57,6 +57,10 @@ public class AppConstants {
     public static final int STATUS_CODE_1 = 1;
 
     /*API names here*/
+
+    /*Splash screen API*/
+    public static final String SPLASH_SCREEN_API = "splash-screen";
+
     /*login & register APIs*/
     public static final String LOGIN_API = "api-login-customer";
     public static final String VERIFY_OTP_API = "verify-otp-customer";
@@ -238,6 +242,7 @@ public class AppConstants {
     public static final String ORDER_SUMMARY_API = "order-summary-customer";
     public static final String ORDER_PLACE_API = "place-order-customer";
     public static final String APPLY_COUPON_API = "apply-coupon";
+    public static final String APPLY_COUPON_SUBSCRIBE_API = "apply-coupon-to-subscribed-order";
     public static final String SLOT_BY_DATE_API = "get-available-slot-by-date";
     /*Subscription Summary API*/
     public static final String SUBSCRIPTION_SUMMARY_API = "subscribe-summary";
