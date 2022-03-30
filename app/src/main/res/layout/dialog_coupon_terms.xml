@@ -30,13 +30,13 @@
                 android:id="@+id/dialog_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
+                android:padding="@dimen/_4sdp"
                 android:text="@string/menu_terms_conditions"
                 android:textColor="@color/clr_enter_otp"
                 android:textSize="@dimen/_14sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:setCustomFont="@string/font_poppins_bold" />
+                app:setCustomFont="@string/font_poppins_semi_bold" />
 
 
             <View
@@ -92,11 +92,13 @@
                     android:id="@+id/btn_pay"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="@dimen/_80sdp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_31sdp"
                     android:layout_margin="@dimen/_4sdp"
-                    android:background="@drawable/bg_button_orange_"
+                    android:background="@drawable/bg_green_rectangle"
+                    android:backgroundTint="@color/colorPrimary"
                     android:gravity="center|center_vertical"
                     android:includeFontPadding="false"
+                    android:layout_gravity="center"
                     android:text="@string/Pay"
                     android:textAllCaps="false"
                     android:textColor="@color/background_color_orange_white"

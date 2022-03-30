@@ -154,6 +154,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             String itemType = cartItemsList.get(position).getItemType();
             String productId = cartItemsList.get(position).getProductId();
             String puId = cartItemsList.get(position).getPuId();
+
             if (itemType.equalsIgnoreCase("basket")){
                 callAddToCartBasketApi(showCircleProgressDialog(context, ""),basketId ,quantity);
             }else {
@@ -400,8 +401,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         ((HomeActivity) requireActivity()).binding.appBarHome.imgDelete.setVisibility(View.GONE);
     }
 
-
-
     private void callAddToCartBasketApi(ProgressDialog progressDialog, String basketId, String quantity) {
 
         @SuppressLint("NotifyDataSetChanged")
@@ -567,6 +566,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         bundle.putString(PRODUCT_ID, productId);
         Navigation.findNavController(view).navigate(R.id.action_nav_cart_to_productDetails, bundle);
     }
+
     private void toBasketDetail(String basketId) {
         Bundle bundle = new Bundle();
         bundle.putString(BASKET_ID, basketId);

@@ -156,11 +156,18 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
                 rowProductItemBinding.etQuantity.setText(String.valueOf(quantity));
                 setMinus(quantity);
                 return quantity;
-            }else if (onCartItemDeleteClickListener != null) {
+            }else
+                selectedDeleteItem = getBindingAdapterPosition();
+            if (onCartItemDeleteClickListener != null) {
                 if (selectedDeleteItem != RecyclerView.NO_POSITION) {
                     onCartItemDeleteClickListener.onCartItemDeleteClick(selectedDeleteItem, rowProductItemBinding);
                 }
             }
+                /*if (onCartItemDeleteClickListener != null) {
+                if (selectedDeleteItem != RecyclerView.NO_POSITION) {
+                    onCartItemDeleteClickListener.onCartItemDeleteClick(selectedDeleteItem, rowProductItemBinding);
+                }
+            }*/
             return quantity;
         }
 
@@ -178,6 +185,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Cart
                 rowProductItemBinding.ivMinus.setBackgroundResource(R.drawable.bg_green_square);
             } else {
                 rowProductItemBinding.ivMinus.setBackgroundResource(R.drawable.bg_grey_square);
+
             }
         }
 
