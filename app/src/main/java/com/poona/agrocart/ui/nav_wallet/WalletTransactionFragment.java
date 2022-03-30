@@ -326,6 +326,7 @@ public class WalletTransactionFragment extends BaseFragment implements View.OnCl
                 walletAddAmount = etAmount.getText().toString().trim();
                 preferences.setPaymentAmount(Integer.parseInt(walletAddAmount));
                 ((HomeActivity)context).startPayment();
+                dialog.dismiss();
             }
             else{
                 etAmount.setError("enter amount");

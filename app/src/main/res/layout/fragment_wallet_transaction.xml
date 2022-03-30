@@ -137,26 +137,25 @@
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_14sdp"
+                        android:layout_marginHorizontal="@dimen/_14sdp"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:layout_marginEnd="@dimen/_20sdp"
-                        android:padding="@dimen/alerter_padding_half"
+                        android:padding="@dimen/_8sdp"
+                        android:layout_gravity="center_vertical"
                         android:text="@string/from"
                         android:textColor="@color/color15"
-                        android:textSize="@dimen/_18sp"
+                        android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_from_date"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginStart="@dimen/_14sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_14sdp"
                         android:layout_marginTop="@dimen/_4sdp"
-                        android:layout_marginEnd="@dimen/_20sdp"
-                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:padding="@dimen/_8sdp"
                         android:background="@drawable/bg_my_profile_dob"
                         android:elevation="@dimen/_6sdp"
-                        android:padding="@dimen/alerter_padding_half"
                         android:text="@{wallet.walletFromDateMutable}"
                         android:textColor="@color/color_spinner"
                         android:textSize="@dimen/_14sp"
@@ -174,16 +173,31 @@
                     <com.poona.agrocart.widgets.CustomTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_14sdp"
+                        android:layout_marginHorizontal="@dimen/_14sdp"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:layout_marginEnd="@dimen/_16sdp"
-                        android:padding="@dimen/alerter_padding_half"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/_8sdp"
                         android:text="@string/to_date"
                         android:textColor="@color/color15"
-                        android:textSize="@dimen/_18sp"
+                        android:textSize="@dimen/_16sp"
                         app:setCustomFont="@string/font_poppins_semi_bold" />
 
                     <com.poona.agrocart.widgets.CustomTextView
+                        android:id="@+id/tv_to_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_14sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:padding="@dimen/_8sdp"
+                        android:background="@drawable/bg_my_profile_dob"
+                        android:elevation="@dimen/_6sdp"
+                        android:text="@{wallet.walletToDateMutable}"
+                        android:textColor="@color/color_spinner"
+                        android:textSize="@dimen/_14sp"
+                        app:setCustomFont="@string/font_poppins_regular" />
+
+                   <!-- <com.poona.agrocart.widgets.CustomTextView
                         android:id="@+id/tv_to_date"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
@@ -198,7 +212,7 @@
                         android:text="@{wallet.walletToDateMutable}"
                         android:textColor="@color/color_spinner"
                         android:textSize="@dimen/_14sp"
-                        app:setCustomFont="@string/font_poppins_regular" />
+                        app:setCustomFont="@string/font_poppins_regular" />-->
 
                 </LinearLayout>
 

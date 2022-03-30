@@ -227,6 +227,13 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
 
                 }else if (fromScreen.equalsIgnoreCase(AllSelling)) {
                     BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true, null);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString(SORT_BY, strSortBy);
+                    bundle.putString(CATEGORY_ID_VALUE, strCategoryId);
+                    bundle.putString(BRAND_ID, StrBrandId);
+                    filterFragment.setArguments(bundle);
+
                     filterFragment.show(getChildFragmentManager(), "FilterFragment");
                     try {
                         System.out.println("category :"+strCategoryId);
@@ -249,12 +256,6 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
                 } else if (fromScreen.equalsIgnoreCase(AllExclusive)) {
                     BottomSheetFilterFragment filterFragment = new BottomSheetFilterFragment(true, null);
                     filterFragment.show(getChildFragmentManager(), "FilterFragment");
-
-                    try {
-                        onFilterClickListener.filterItemClick(strSortBy);
-                    }catch (NullPointerException e) {
-                        e.printStackTrace();
-                    }
 
 
 

@@ -43,9 +43,18 @@ public class TypeAdaptor extends ArrayAdapter<TransactionType> {
                     R.layout.custom_spinner, parent, false);
         }
         TextView textView = convertView.findViewById(R.id.text_view_name);
+
+
         TransactionType currentItem = getItem(position);
         if (currentItem != null) {
-            textView.setText(currentItem.getWalletTransactionType());
+            if (position == 0) {
+                // Set the hint text color gray
+                textView.setText("Select Transaction mode");
+            } else {
+                textView.setText(currentItem.getWalletTransactionType());
+            }
+
+
             textView.setGravity(Gravity.CENTER_VERTICAL);
         }
         return convertView;
