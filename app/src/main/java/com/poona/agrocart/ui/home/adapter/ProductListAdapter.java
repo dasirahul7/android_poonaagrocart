@@ -59,7 +59,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         productBinding.imgPlus.setOnClickListener(view -> {
             onPlusClickListener.OnPlusClick(productBinding, product, position);
         });
-
+        holder.setIsRecyclable(false);// prevent repeating items
     }
 
     @Override
