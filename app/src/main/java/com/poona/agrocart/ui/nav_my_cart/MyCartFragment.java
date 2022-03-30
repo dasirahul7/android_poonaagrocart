@@ -317,6 +317,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         return map;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void removeCartItem(RowProductItemBinding binding) {
         Animation anim = AnimationUtils.loadAnimation(requireContext(),
                 android.R.anim.slide_out_right);

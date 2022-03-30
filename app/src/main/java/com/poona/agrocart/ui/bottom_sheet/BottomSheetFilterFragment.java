@@ -91,6 +91,8 @@ public class BottomSheetFilterFragment extends BottomSheetDialogFragment impleme
         basketFilterViewModel = new ViewModelProvider(this).get(BasketFilterViewModel.class);
         view = bottomSheetFilterFragment.getRoot();
 
+        assert getArguments() != null;
+        sortById= getArguments().getString(SORT_BY);
 
         showFilterValue();
         if(isConnectingToInternet(requireContext())){

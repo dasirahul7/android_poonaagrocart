@@ -148,6 +148,16 @@ public class ProductListFragment extends BaseFragment implements NetworkExceptio
 
     }
 
+    public static ProductListFragment newInstance (String strSortBy){
+        ProductListFragment productListFragment = new ProductListFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(SORT_BY, strSortBy);
+        productListFragment.setArguments(bundle);
+
+        return productListFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentProductListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_list, container, false);
