@@ -41,9 +41,20 @@ public class PinCodeResponse {
     }
 
     public class PinCode {
+        @SerializedName("id")
+        @Expose
+        private String id;
         @SerializedName("pin_code")
         @Expose
         public String pinCode;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public String getPinCode() {
             return pinCode;

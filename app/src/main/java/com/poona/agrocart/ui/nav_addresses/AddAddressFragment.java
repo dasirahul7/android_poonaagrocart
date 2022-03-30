@@ -140,6 +140,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
     private AddressesResponse.Address address = null;
     private String addOrUpdate = "";
     private int checkCity = 0;
+    private int checkPinCode = 0;
     /*
      * get address from google map start
      * */
@@ -192,29 +193,29 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             }
         });
 
-        fragmentAddressesFormBinding.etPincode.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() == 6) {
-                    checkIsValidPinCode = false;
-                    fragmentAddressesFormBinding.etPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    hideKeyBoard(requireActivity());
-                    getUserInputAndSetIntoPojo();
-                    checkValidPinCodeEntered();
-                } else {
-                    checkIsValidPinCode = false;
-                    fragmentAddressesFormBinding.etPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                }
-            }
-        });
+//        fragmentAddressesFormBinding.etPincode.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if (s.length() == 6) {
+//                    checkIsValidPinCode = false;
+//                    fragmentAddressesFormBinding.etPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//                    hideKeyBoard(requireActivity());
+//                    getUserInputAndSetIntoPojo();
+//                    checkValidPinCodeEntered();
+//                } else {
+//                    checkIsValidPinCode = false;
+//                    fragmentAddressesFormBinding.etPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//                }
+//            }
+//        });
 
         multiplePermissionActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
             Log.d("PERMISSIONS", "Launcher result: " + isGranted.toString());
@@ -381,8 +382,8 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     System.out.println("selected area " + areaList.get(i).getId());
                     selectedAreaId = areaList.get(i).getId();
                     selectedArea = areaList.get(i).getName();
-                    if (!selectedAreaId.equals("0"))
-                    callPinCodeApi(showCircleProgressDialog(context, ""));
+                    if (++checkPinCode > 1 && !selectedAreaId.equals("0"))
+                        callPinCodeApi(showCircleProgressDialog(context, ""));
                 }
             }
 
@@ -407,7 +408,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
         if (pinCodeResponse != null && pinCodeResponse.getPinCode() != null && pinCodeResponse.getPinCode().size() > 0) {
             for (int i = 0; i < pinCodeResponse.getPinCode().size(); i++) {
                 BasicDetails details = new BasicDetails();
-                details.setId(pinCodeResponse.getPinCode().get(i).getPinCode());
+                details.setId(pinCodeResponse.getPinCode().get(i).getId());
                 details.setName(pinCodeResponse.getPinCode().get(i).getPinCode());
                 pincodeList.add(details);
             }
@@ -425,6 +426,7 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     System.out.println("selected pincode " + pincodeList.get(i).getPinCode());
                     selectedPinCodeId = pincodeList.get(i).getId();
                     selectedPinCode = pincodeList.get(i).getName();
+                    checkValidPinCodeEntered();
                 }
             }
 
@@ -578,6 +580,13 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
             for (int i = 0; i < areaList.size(); i++) {
                 if (areaList.get(i).getName().equals(fragmentAddressesFormBinding.spinnerArea.getSelectedItem().toString())) {
                     addressesViewModel.area.setValue(areaList.get(i).getId());
+                }
+            }
+        }
+        if (pincodeList != null && pincodeList.size() > 0) {
+            for (int i = 0; i < pincodeList.size(); i++) {
+                if (pincodeList.get(i).getName().equals(fragmentAddressesFormBinding.spinnerPincode.getSelectedItem().toString())) {
+                    addressesViewModel.pinCode.setValue(pincodeList.get(i).getId());
                 }
             }
         }
@@ -913,6 +922,17 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     }
                 }
             }
+            if (selectedPinCodeId != null && !TextUtils.isEmpty(selectedPinCodeId)) {
+                basicDetails.setPinCode(selectedPinCodeId);
+                addressesViewModel.pinCode.setValue(basicDetails.getPinCode());
+                if (pincodeList != null && pincodeList.size() > 0) {
+                    for (int i = 0; i < pincodeList.size(); i++) {
+                        if (pincodeList.get(i).getId().equalsIgnoreCase(addressesViewModel.pinCode.getValue())) {
+                            fragmentAddressesFormBinding.spinnerPincode.setSelection(i);
+                        }
+                    }
+                }
+            }
             if (selectedAreaId != null && !TextUtils.isEmpty(selectedAreaId)) {
                 basicDetails.setArea(selectedAreaId);
                 addressesViewModel.area.setValue(basicDetails.getArea());
@@ -920,17 +940,6 @@ public class AddAddressFragment extends BaseFragment implements View.OnClickList
                     for (int i = 0; i < areaList.size(); i++) {
                         if (areaList.get(i).getId().equals(addressesViewModel.area.getValue())) {
                             fragmentAddressesFormBinding.spinnerArea.setSelection(i);
-                        }
-                    }
-                }
-            }
-            if (selectedPinCodeId != null && !TextUtils.isEmpty(selectedPinCodeId)) {
-                basicDetails.setPinCode(selectedPinCodeId);
-                addressesViewModel.pinCode.setValue(basicDetails.getPinCode());
-                if (pincodeList != null && pincodeList.size() > 0) {
-                    for (int i = 0; i < pincodeList.size(); i++) {
-                        if (pincodeList.get(i).getPinCode().equals(addressesViewModel.pinCode.getValue())) {
-                            fragmentAddressesFormBinding.spinnerPincode.setSelection(i);
                         }
                     }
                 }
